@@ -8,10 +8,14 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idd="clr-namespace:Dock.Avalonia.Dock;assembly=Dock.Avalonia"
              xmlns:idh="clr-namespace:Dock.Avalonia.Handlers;assembly=Dock.Avalonia"
+             xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
+            <DataTemplate DataType="Dock:IDockSplitter">
+                <idc:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock}"/>
+            </DataTemplate>
             <DataTemplate DataType="Dock:IDockStrip">
                 <idd:StripControl Width="{Binding Width}" Height="{Binding Height}"/>
             </DataTemplate>

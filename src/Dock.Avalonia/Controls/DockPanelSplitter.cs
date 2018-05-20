@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 
 namespace Avalonia.Controls
 {
@@ -100,14 +102,12 @@ namespace Avalonia.Controls
                 height = _element.MaxHeight;
             }
 
-            var panel = Parent as Panel;
+            var panel = GetPanel();
             var dock = DockPanel.GetDock(this);
             if (dock == Dock.Top && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
             }
-
-            System.Console.WriteLine($"{_element.Name} height: {height} dy: {dy}");
 
             _element.Height = height;
         }
@@ -126,14 +126,12 @@ namespace Avalonia.Controls
                 width = _element.MaxWidth;
             }
 
-            var panel = Parent as Panel;
+            var panel = GetPanel();
             var dock = DockPanel.GetDock(this);
             if (dock == Dock.Left && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;
             }
-
-            System.Console.WriteLine($"{_element.Name} width: {width} dx: {dx}");
 
             _element.Width = width;
         }
@@ -156,17 +154,53 @@ namespace Avalonia.Controls
             }
         }
 
-        private void UpdateTargetElement()
+        private Panel GetPanel()
         {
-            if (!(this.Parent is Panel panel))
+            if (this.Parent is ContentPresenter presenter)
             {
-                return;
+                if (presenter.GetVisualParent() is Panel panel)
+                {
+                    return panel;
+                }
+            }
+            else
+            {
+                if (this.Parent is Panel panel)
+                {
+                    return panel;
+                }
             }
 
-            int index = panel.Children.IndexOf(this);
-            if (index > 0 && panel.Children.Count > 0)
+            return null;
+        }
+
+        private void UpdateTargetElement()
+        {
+            if (this.Parent is ContentPresenter presenter)
             {
-                _element = panel.Children[index - 1] as Control;
+                if (!(presenter.GetVisualParent() is Panel panel))
+                {
+                    return;
+                }
+
+                int index = panel.Children.IndexOf(this.Parent);
+                if (index > 0 && panel.Children.Count > 0)
+                {
+                    _element = (panel.Children[index - 1] as ContentPresenter).Child as Control;
+                }
+            }
+            else
+            {
+                if (!(this.Parent is Panel panel))
+                {
+                    return;
+                }
+
+                int index = panel.Children.IndexOf(this);
+                if (index > 0 && panel.Children.Count > 0)
+                {
+                    _element = panel.Children[index - 1] as Control;
+                }
             }
         }
     }

@@ -28,7 +28,7 @@
                     </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <DockPanel Width="{Binding Width}" Height="{Binding Height}" LastChildFill="True"/>
+                            <DockPanel LastChildFill="True"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

@@ -16,9 +16,7 @@ namespace Avalonia.Controls
         /// Defines the <see cref="Thickness"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
-            AvaloniaProperty.Register<DockPanel, double>(
-                nameof(Thickness),
-                defaultValue: 4.0);
+            AvaloniaProperty.Register<DockPanel, double>(nameof(Thickness), 4.0);
 
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).

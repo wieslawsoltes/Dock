@@ -14,16 +14,16 @@
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Dock:IDockSplitter">
-                <idc:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock}"/>
+                <idc:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}"/>
             </DataTemplate>
             <DataTemplate DataType="Dock:IDockStrip">
-                <idd:StripControl Width="{Binding Width}" Height="{Binding Height}"/>
+                <idd:StripControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
             </DataTemplate>
             <DataTemplate DataType="Dock:IDockLayout">
-                <ItemsControl Items="{Binding Views}" Width="{Binding Width}" Height="{Binding Height}">
+                <ItemsControl Items="{Binding Views}" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
                     <ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
-                            <Setter Property="DockPanel.Dock" Value="{Binding Dock}"/>
+                            <Setter Property="DockPanel.Dock" Value="{Binding Dock, Mode=OneWay}"/>
                         </Style>
                     </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>

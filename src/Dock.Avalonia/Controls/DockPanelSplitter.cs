@@ -44,14 +44,14 @@ namespace Avalonia.Controls
         {
             get
             {
-                var dock = DockPanel.GetDock(this);
+                var dock = GetDock(this);
                 return dock == Dock.Top || dock == Dock.Bottom;
             }
         }
 
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            var dock = DockPanel.GetDock(this);
+            var dock = GetDock(this);
             if (IsHorizontal)
             {
                 AdjustHeight(e.Vector.Y, dock);
@@ -103,7 +103,7 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = DockPanel.GetDock(this);
+            var dock = GetDock(this);
             if (dock == Dock.Top && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
@@ -127,7 +127,7 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = DockPanel.GetDock(this);
+            var dock = GetDock(this);
             if (dock == Dock.Left && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;
@@ -152,6 +152,15 @@ namespace Avalonia.Controls
                 Cursor = new Cursor(StandardCursorType.SizeWestEast);
                 PseudoClasses.Add(":vertical");
             }
+        }
+
+        private Dock GetDock(Control control)
+        {
+            if (this.Parent is ContentPresenter presenter)
+            {
+                return DockPanel.GetDock(presenter);
+            }
+            return DockPanel.GetDock(control);
         }
 
         private Panel GetPanel()

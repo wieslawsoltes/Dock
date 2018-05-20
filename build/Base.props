@@ -1,0 +1,42 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Version>0.0.1</Version>
+    <Authors>Wiesław Šoltés</Authors>
+    <Company>Wiesław Šoltés</Company>
+    <Description>A docking layout system.</Description>
+    <Copyright>Copyright © Wiesław Šoltés 2018</Copyright>
+    <PackageLicenseUrl>https://github.com/wieslawsoltes/Dock/blob/master/LICENSE.TXT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
+    <PackageTags>dock;docking;layout;avalonia</PackageTags>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Release'))">
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Platform.Contains('AnyCPU'))">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"/>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'"/>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net461' and '$(OS)' == 'Unix'">
+    <FrameworkPathOverride>/usr/lib/mono/4.6.1-api</FrameworkPathOverride>
+    <FrameworkPathOverride Condition="$([MSBuild]::IsOsPlatform('OSX'))">/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/4.6.1-api</FrameworkPathOverride>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+  </ItemGroup>
+</Project>

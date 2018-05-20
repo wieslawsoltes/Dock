@@ -1,0 +1,37 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<UserControl x:Class="Dock.Avalonia.Dock.LayoutControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:idd="clr-namespace:Dock.Avalonia.Dock;assembly=Dock.Avalonia"
+             xmlns:idh="clr-namespace:Dock.Avalonia.Handlers;assembly=Dock.Avalonia"
+             xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             Design.Width="1200" Design.Height="540">
+    <ContentControl Content="{Binding}">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="Dock:IDockStrip">
+                <idd:StripControl Width="{Binding Width}" Height="{Binding Height}"/>
+            </DataTemplate>
+            <DataTemplate DataType="Dock:IDockLayout">
+                <ItemsControl Items="{Binding Views}" Width="{Binding Width}" Height="{Binding Height}">
+                    <ItemsControl.Styles>
+                        <Style Selector="ItemsControl > ContentPresenter">
+                            <Setter Property="DockPanel.Dock" Value="{Binding Dock}"/>
+                        </Style>
+                    </ItemsControl.Styles>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel Width="{Binding Width}" Height="{Binding Height}" LastChildFill="True"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </DataTemplate>
+            <DataTemplate DataType="Dock:IDockRoot">
+                <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
+</UserControl>

@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50-CC9F-4DDC-9524-55D56E63A840}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73}"
+	ProjectSection(SolutionItems) = preProject
+		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
+		build\Avalonia.props = build\Avalonia.props
+		build\Base.props = build\Base.props
+		build\CsvHelper.props = build\CsvHelper.props
+		build\EmbedXaml.props = build\EmbedXaml.props
+		build\NETCore.props = build\NETCore.props
+		build\Rx.props = build\Rx.props
+		build\SharpDX.props = build\SharpDX.props
+		build\SkiaSharp.props = build\SkiaSharp.props
+		build\XUnit.props = build\XUnit.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B46A85D-102E-46F5-9B74-F1616E850605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B46A85D-102E-46F5-9B74-F1616E850605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B46A85D-102E-46F5-9B74-F1616E850605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B46A85D-102E-46F5-9B74-F1616E850605}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B46A85D-102E-46F5-9B74-F1616E850605} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{9F77EE50-CC9F-4DDC-9524-55D56E63A840} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+		{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}
+	EndGlobalSection
+EndGlobal

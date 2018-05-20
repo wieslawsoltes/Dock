@@ -1,0 +1,65 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia">
+  <Style Selector="local|DockPanelSplitter">
+    <Setter Property="Template">
+      <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"/>
+          </ControlTemplate>
+      </Setter>
+  </Style>
+  <!--
+  <Style Selector="local|DockPanelSplitter:vertical">
+    <Setter Property="Width" Value="6"/>
+    <Setter Property="Background" Value="{DynamicResource ThemeControlLightBrush}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}">
+          <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Styles>
+              <Style Selector="Ellipse">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="4"/>
+                <Setter Property="Height" Value="4"/>
+                <Setter Property="Fill" Value="{DynamicResource ThemeControlMidBrush}"/>
+                <Setter Property="Margin" Value="1"/>
+              </Style>
+            </StackPanel.Styles>
+            <Ellipse/>
+            <Ellipse/>
+            <Ellipse/>
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="local|DockPanelSplitter:horizontal">
+    <Setter Property="Height" Value="6"/>
+    <Setter Property="Background" Value="{DynamicResource ThemeControlLightBrush}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Styles>
+              <Style Selector="Ellipse">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="4"/>
+                <Setter Property="Height" Value="4"/>
+                <Setter Property="Fill" Value="{DynamicResource ThemeControlMidBrush}"/>
+                <Setter Property="Margin" Value="1"/>
+              </Style>
+            </StackPanel.Styles>
+            <Ellipse/>
+            <Ellipse/>
+            <Ellipse/>
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  -->
+</Styles>

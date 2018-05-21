@@ -37,13 +37,11 @@ Open up a terminal prompt and execute the commands.
 
 Target framework `netstandard2.0`:
 ```
-dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
 ```
 
 Target framework `net461`:
 ```
-dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f net461
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461
 ```
 

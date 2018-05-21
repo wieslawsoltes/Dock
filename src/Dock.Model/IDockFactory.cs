@@ -11,9 +11,14 @@ namespace Dock.Model
     public interface IDockFactory
     {
         /// <summary>
-        /// Gets or sets  <see cref="IDock.Context"/> locator registry.
+        /// Gets or sets <see cref="IDock.Context"/> locator registry.
         /// </summary>
         IDictionary<Type, Func<object>> ContextLocator { get; set; }
+
+        /// <summary>
+        /// Gets or sets <see cref="IDockHost"/> locator.
+        /// </summary>
+        Func<IDockHost> HostLocator { get; set; }
 
         /// <summary>
         /// Gets context.
@@ -68,10 +73,5 @@ namespace Dock.Model
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
         IDock CreateDefaultLayout();
-
-        /// <summary>
-        /// Creates new or updates current layout.
-        /// </summary>
-        void CreateOrUpdateLayout();
     }
 }

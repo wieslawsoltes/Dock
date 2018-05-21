@@ -12,19 +12,11 @@ namespace Dock.Avalonia.Factories
     /// </summary>
     public abstract class BaseDockFactory : IDockFactory
     {
-        private readonly IServiceProvider _serviceProvider;
-
         /// <inheritdoc/>
         public virtual IDictionary<Type, Func<object>> ContextLocator { get; set; }
 
-        /// <summary>
-        /// Initialize new instance of <see cref="BaseDockFactory"/> class.
-        /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        public BaseDockFactory(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+        /// <inheritdoc/>
+        public virtual Func<IDockHost> HostLocator { get; set; }
 
         /// <inheritdoc/>
         public virtual object GetContext(object source, object context)
@@ -40,7 +32,7 @@ namespace Dock.Avalonia.Factories
         /// <inheritdoc/>
         public virtual void Update(IDockWindow window, object context)
         {
-            window.Host = (IDockHost)_serviceProvider.GetService(typeof(IDockHost));
+            window.Host = HostLocator?.Invoke();
             window.Context = GetContext(window, context);
 
             if (window.Layout != null)
@@ -122,8 +114,5 @@ namespace Dock.Avalonia.Factories
 
         /// <inheritdoc/>
         public abstract IDock CreateDefaultLayout();
-
-        /// <inheritdoc/>
-        public abstract void CreateOrUpdateLayout();
     }
 }

@@ -21,9 +21,13 @@ build_script:
 
     dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
-    dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+    dotnet restore tests/Dock.Model.UnitTests
 
-    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+    dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f net461
+
+    dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet restore src/Dock.Avalonia
 
@@ -35,9 +39,17 @@ build_script:
 
     dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet restore tests/Dock.Avalonia.UnitTests
+
+    dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f net461
+
     dotnet pack src/Dock.Avalonia/Dock.Avalonia.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+
+    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 artifacts:
   - path: src\Dock.Model\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg

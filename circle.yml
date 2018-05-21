@@ -12,9 +12,13 @@ jobs:
       - run: dotnet restore src/Dock.Model
       - run: dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
       - run: dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
+      - run: dotnet restore tests/Dock.Model.UnitTests
+      - run: dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
       - run: dotnet restore src/Dock.Avalonia
       - run: dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
       - run: dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
+      - run: dotnet restore tests/Dock.Avalonia.UnitTests
+      - run: dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
     notify:
       webhooks:
         - url: https://webhooks.gitter.im/e/8b279fde181500f42d66

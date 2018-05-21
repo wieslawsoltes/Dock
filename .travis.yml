@@ -12,9 +12,13 @@ script:
   - dotnet restore src/Dock.Model
   - dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
+  - dotnet restore tests/Dock.Model.UnitTests
+  - dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
   - dotnet restore src/Dock.Avalonia
   - dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
+  - dotnet restore tests/Dock.Avalonia.UnitTests
+  - dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
 notifications:
   webhooks:
     urls:

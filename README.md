@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/wieslawsoltes/Dock.svg?branch=master)](https://travis-ci.org/wieslawsoltes/Dock)
 [![CircleCI](https://circleci.com/gh/wieslawsoltes/Dock/tree/master.svg?style=svg)](https://circleci.com/gh/wieslawsoltes/Dock/tree/master)
 
-[![NuGet](https://img.shields.io/nuget/v/Math.Spatial.svg)](https://www.nuget.org/packages/Dock.Model)
+[![NuGet](https://img.shields.io/nuget/v/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Model)
 [![MyGet](https://img.shields.io/myget/dock-nightly/vpre/Dock.Model.svg?label=myget)](https://www.myget.org/gallery/dock-nightly) 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/wieslawsoltes/dock/badge)](https://www.codefactor.io/repository/github/wieslawsoltes/dock)

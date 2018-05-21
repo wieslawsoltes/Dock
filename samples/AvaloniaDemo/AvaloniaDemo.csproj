@@ -15,7 +15,7 @@
   <Import Project="..\..\build\EmbedXaml.props" />
 
   <Import Project="..\..\build\Base.props" />
-  <!-- <Import Project="..\..\build\NETCore.props" /> -->
+  <Import Project="..\..\build\NETCore.props" />
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />

@@ -215,7 +215,7 @@ namespace AvaloniaDemo
                         Width = double.NaN,
                         Height = 340,
                         Title = "LeftPaneTop",
-                        CurrentView = projectView,
+                        CurrentView = leftTopView1,
                         Views = new ObservableCollection<IDock>
                         {
                             leftTopView1,
@@ -230,7 +230,7 @@ namespace AvaloniaDemo
                         Width = double.NaN,
                         Height = double.NaN,
                         Title = "LeftPaneBottom",
-                        CurrentView = groupsView,
+                        CurrentView = leftBottomView1,
                         Views = new ObservableCollection<IDock>
                         {
                             leftBottomView1,
@@ -258,7 +258,7 @@ namespace AvaloniaDemo
                         Width = double.NaN,
                         Height = 340,
                         Title = "RightPaneTop",
-                        CurrentView = stylesView,
+                        CurrentView = rightTopView1,
                         Views = new ObservableCollection<IDock>
                         {
                             rightTopView1,
@@ -273,7 +273,7 @@ namespace AvaloniaDemo
                         Width = double.NaN,
                         Height = double.NaN,
                         Title = "RightPaneBottom",
-                        CurrentView = toolsView,
+                        CurrentView = rightBottomView1,
                         Views = new ObservableCollection<IDock>
                         {
                             rightBottomView1,
@@ -348,7 +348,7 @@ namespace AvaloniaDemo
 
         public MainWindowViewModel(IDock layout)
         {
-            _factory = DemoDockFactory();
+            _factory = new DemoDockFactory();
 
             // create default layout or use existing
             _layout = layout == null ? _factory.CreateDefaultLayout() : layout;
@@ -389,7 +389,7 @@ namespace AvaloniaDemo
             };
 
             // set host locator
-            HostLocator = () => new HostWindow();
+            _factory.HostLocator = () => new HostWindow();
 
             // update layout contexts
             _factory.Update(_layout, this);

@@ -1,0 +1,11 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Application xmlns="https://github.com/avaloniaui">
+    <Application.Styles>
+        <!-- Theme -->
+        <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
+        <StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
+        <!-- DockPanelSplitter -->
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
+    </Application.Styles>
+</Application>

@@ -1,0 +1,49 @@
+version: '{build}'
+image: Visual Studio 2017
+skip_branch_with_pr: true
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  MYGET_API_KEY:
+    secure: xhYvrWYPHdNI+mQD+f4Zu3baL7fqW+nO/hYXJdN070Lej8wpa6gfrLi1NGtnQlAs
+  MYGET_API_URL: https://www.myget.org/F/dock-nightly/api/v2/package
+test: off
+deploy: off
+build_script:
+- cmd: >-
+    dotnet restore src/Dock.Model
+
+    dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model\bin\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+
+    dotnet restore src/Dock.Avalonia
+
+    dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet pack src/Dock.Avalonia/Dock.Avalonia.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Avalonia\bin\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+artifacts:
+  - path: src\Dock.Model\bin\Release\*.nupkg
+  - path: src\Dock.Avalonia\bin\Release\*.nupkg
+notifications:
+- provider: Webhook
+  url: https://webhooks.gitter.im/e/b8334e4ccc2876427242
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

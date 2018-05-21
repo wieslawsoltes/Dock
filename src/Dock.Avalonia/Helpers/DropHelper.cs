@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.PanAndZoom;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
@@ -10,10 +9,17 @@ namespace Dock.Avalonia.Helpers
 {
     public static class DropHelper
     {
-        public static Point FixInvalidPosition(IControl control, Point point)
+        private static Point TransformPoint(Matrix matrix, Point point)
+        {
+            return new Point(
+                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
+                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
+        }
+
+        private static Point FixInvalidPosition(IControl control, Point point)
         {
             var matrix = control?.RenderTransform?.Value;
-            return matrix != null ? MatrixHelper.TransformPoint(matrix.Value.Invert(), point) : point;
+            return matrix != null ? MTransformPoint(matrix.Value.Invert(), point) : point;
         }
 
         public static Point GetPosition(object sender, DragEventArgs e)

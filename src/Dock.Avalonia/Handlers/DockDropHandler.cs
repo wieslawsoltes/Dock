@@ -38,7 +38,7 @@ namespace Dock.Avalonia.Handlers
                         {
                             if (bExecute)
                             {
-                                layout?.MoveView(container, sourceIndex, targetIndex);
+                                container.MoveView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -46,7 +46,7 @@ namespace Dock.Avalonia.Handlers
                         {
                             if (bExecute)
                             {
-                                layout?.SwapView(container, sourceIndex, targetIndex);
+                                container.SwapView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -77,7 +77,7 @@ namespace Dock.Avalonia.Handlers
                         {
                             if (bExecute)
                             {
-                                layout?.MoveView(sourceLayout, targetLayout, sourceIndex, targetIndex);
+                                sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -87,7 +87,7 @@ namespace Dock.Avalonia.Handlers
                     {
                         if (bExecute)
                         {
-                            layout?.SwapView(sourceLayout, targetLayout, sourceIndex, targetIndex);
+                            sourceLayout.SwapView(targetLayout, sourceIndex, targetIndex);
                         }
                         return true;
                     }
@@ -126,7 +126,7 @@ namespace Dock.Avalonia.Handlers
                 {
                     if (bExecute)
                     {
-                        layout?.MoveView(sourceLayout, targetLayout, sourceIndex, targetIndex);
+                        sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
                     }
                     return true;
                 }
@@ -134,7 +134,7 @@ namespace Dock.Avalonia.Handlers
                 {
                     if (bExecute)
                     {
-                        layout?.SwapView(sourceLayout, targetLayout, sourceIndex, targetIndex);
+                        sourceLayout.SwapView(targetLayout, sourceIndex, targetIndex);
                     }
                     return true;
                 }

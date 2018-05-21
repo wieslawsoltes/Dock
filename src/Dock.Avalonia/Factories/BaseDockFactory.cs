@@ -89,7 +89,7 @@ namespace Dock.Avalonia.Factories
         {
             var view = source.Views[viewIndex];
 
-            source.RemoveView(source, viewIndex);
+            source.RemoveView(viewIndex);
 
             var dockLayout = new DockLayout
             {

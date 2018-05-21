@@ -19,7 +19,7 @@ namespace Dock.Avalonia.Helpers
         private static Point FixInvalidPosition(IControl control, Point point)
         {
             var matrix = control?.RenderTransform?.Value;
-            return matrix != null ? MTransformPoint(matrix.Value.Invert(), point) : point;
+            return matrix != null ? TransformPoint(matrix.Value.Invert(), point) : point;
         }
 
         public static Point GetPosition(object sender, DragEventArgs e)

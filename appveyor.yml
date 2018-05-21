@@ -11,7 +11,7 @@ test: off
 deploy: off
 build_script:
 - cmd: >-
-    dotnet restore src/Dock.Model
+    dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
@@ -21,15 +21,11 @@ build_script:
 
     dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
-    dotnet restore tests/Dock.Model.UnitTests
-
     dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
 
     dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f net461
 
     dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
-
-    dotnet restore src/Dock.Avalonia
 
     dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
@@ -38,8 +34,6 @@ build_script:
     dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
-
-    dotnet restore tests/Dock.Avalonia.UnitTests
 
     dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
 

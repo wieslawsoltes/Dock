@@ -86,6 +86,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void OnChangeCurrentView(IDock view)
         {
+            System.Console.WriteLine($"OnChangeCurrentView view: {view}");
             if (view != null && _currentView != null && view != _currentView)
             {
                 _currentView.CloseWindows();
@@ -105,6 +106,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void OnChangeCurrentView(string title)
         {
+            System.Console.WriteLine($"OnChangeCurrentView title: {title}");
             OnChangeCurrentView(_views.FirstOrDefault(view => view.Title == title));
         }
 

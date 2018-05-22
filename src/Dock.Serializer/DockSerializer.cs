@@ -34,7 +34,7 @@ namespace Dock.Serializer
         /// </summary>
         /// <param name="path">The file to check.</param>
         /// <returns>True if path contains the name of an existing file; otherwise, false.</returns>
-        public static bool IFileSystem.Exists(string path)
+        public static bool Exists(string path)
         {
             return System.IO.File.Exists(path);
         }

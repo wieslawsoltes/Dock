@@ -63,7 +63,7 @@ namespace Dock.Serializer
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="value">The object instance.</param>
         /// <returns>The new instance of object of type <see cref="string"/>.</returns>
-        public string IJsonSerializer.Serialize<T>(T value)
+        public string Serialize<T>(T value)
         {
             return JsonConvert.SerializeObject(value, Settings);
         }
@@ -74,7 +74,7 @@ namespace Dock.Serializer
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="json">The json string.</param>
         /// <returns>The new instance of object of type <typeparamref name="T"/>.</returns>
-        public T IJsonSerializer.Deserialize<T>(string json)
+        public T Deserialize<T>(string json)
         {
             return JsonConvert.DeserializeObject<T>(json, Settings);
         }

@@ -32,16 +32,21 @@ namespace AvaloniaDemo
 #endif
             try
             {
+                MainWindowViewModel vm = new MainWindowViewModel();
                 IDock layout = null;
+
                 string path = DockSerializer.GetBasePath("Layout.json");
                 if (DockSerializer.Exists(path))
                 {
                     layout = DockSerializer.Load<DockRoot>(path);
                 }
 
-                var vm = new MainWindowViewModel(layout);
-
-                BuildAvaloniaApp().Start<MainWindow>(() => vm);
+                BuildAvaloniaApp().Start<MainWindow>(() =>
+                {
+                    // NOTE: Initialize layout after main window is created so child windows can be created.
+                    vm.InitLayout(layout);
+                    return vm;
+                });
 
                 DockSerializer.Save(path, vm.Layout);
             }

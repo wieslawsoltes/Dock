@@ -13,15 +13,6 @@ namespace AvaloniaDemo
         {
             this.InitializeComponent();
             this.AttachDevTools();
-
-            DataContextChanged += (sender, e) =>
-            {
-                if (DataContext is MainWindowViewModel vm)
-                {
-                    // TODO: Windows are not shown when layout is first loaded. They show only when you call Navigate.
-                    vm.Layout?.CurrentView?.ShowWindows();
-                }
-            };
         }
 
         private void InitializeComponent()

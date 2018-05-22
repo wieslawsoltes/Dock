@@ -74,15 +74,15 @@ namespace AvaloniaDemo
     {
         public override IDock CreateDefaultLayout()
         {
-            // Init
+            // Home
 
-            var initView = new InitView
+            var homeView = new InitView
             {
-                Id = "Init",
+                Id = "Home",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = "Init"
+                Title = "Home"
             };
 
             // Center
@@ -367,10 +367,10 @@ namespace AvaloniaDemo
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Root",
-                CurrentView = initView,
+                CurrentView = homeView,
                 Views = new ObservableCollection<IDock>
                 {
-                    initView,
+                    homeView,
                     mainView,
                 }
             };
@@ -381,7 +381,14 @@ namespace AvaloniaDemo
 
     public class MainWindowViewModel : ObservableObject
     {
+        private IDockFactory _factory;
         private IDock _layout;
+
+        public IDockFactory Factory
+        {
+            get => _factory;
+            set => Update(ref _factory, value);
+        }
 
         public IDock Layout
         {
@@ -389,13 +396,23 @@ namespace AvaloniaDemo
             set => Update(ref _layout, value);
         }
 
-        public void InitLayout(IDockFactory factory, IDock layout)
+        public void InitLayout(IDock layout)
         {
-            factory.ContextLocator = new Dictionary<string, Func<object>>
+            _factory = new DemoDockFactory();
+
+            _layout = layout ?? _factory.CreateDefaultLayout();
+
+            var homeView = _layout.Views.FirstOrDefault(v => v.Title == "Home");
+            if (homeView != null)
+            {
+                _layout.CurrentView = homeView;
+            }
+
+            _factory.ContextLocator = new Dictionary<string, Func<object>>
             {
                 ["DockLayout"] = () => this,
                 ["DockWindow"] = () => this,
-                ["Init"] = () => layout,
+                ["Home"] = () => _layout,
                 ["Center"] = () => this,
                 ["LeftTop1"] = () => this,
                 ["LeftTop2"] = () => this,
@@ -424,24 +441,11 @@ namespace AvaloniaDemo
                 ["Root"] = () => this
             };
 
-            factory.HostLocator = () => new HostWindow();
+            _factory.HostLocator = () => new HostWindow();
 
-            factory.Update(layout, this);
-        }
+            _factory.Update(_layout, this);
 
-        public MainWindowViewModel(IDock layout)
-        {
-            var factory = new DemoDockFactory();
-
-            _layout = layout ?? factory.CreateDefaultLayout();
-
-            var init = _layout.Views.FirstOrDefault(v => v.Title == "Init");
-            if (init != null)
-            {
-                _layout.CurrentView = init;
-            }
-
-            InitLayout(factory, _layout);
+            _layout.Navigate(_layout.CurrentView);
         }
     }
 }

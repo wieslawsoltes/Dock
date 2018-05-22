@@ -157,7 +157,8 @@
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Back" Command="{Binding Layout.GoBack}" IsEnabled="{Binding Layout.CanGoBack}" Margin="4"/>
             <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Margin="4"/>
-            <TextBox x:Name="id" Text="Init" Width="100" Margin="4"/>
+            <Button Content="Home" Command="{Binding Layout.Navigate}" CommandParameter="Home" Margin="4"/>
+            <TextBox x:Name="id" Text="Home" Width="100" Margin="4"/>
             <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #id.Text}" Margin="4"/>
             <Button Content="ShowWindows" Command="{Binding Layout.CurrentView.ShowWindows}" Margin="4"/>
             <Button Content="HideWindows" Command="{Binding Layout.CurrentView.HideWindows}" Margin="4"/>

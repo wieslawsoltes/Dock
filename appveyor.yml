@@ -25,6 +25,20 @@ build_script:
 
     dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Serializer/Dock.Serializer.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f net461
+
+    dotnet pack src/Dock.Serializer/Dock.Serializer.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -48,6 +62,8 @@ build_script:
     copy "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT\vcruntime140.dll" samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
 
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+
+    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 artifacts:

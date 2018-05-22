@@ -141,11 +141,11 @@ namespace Dock.Model
             }
         }
 
-        private void NavigateSnapshot(object value)
+        private void NavigateSnapshot(IDock dock)
         {
             if (_forward.Count > 0)
                 _forward.Clear();
-            _back.Push(value);
+            _back.Push(dock);
         }
 
         public void NavigateImpl(object root, bool bSnapshot)

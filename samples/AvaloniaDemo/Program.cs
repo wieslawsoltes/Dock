@@ -39,9 +39,11 @@ namespace AvaloniaDemo
                     layout = DockSerializer.Load<DockRoot>(path);
                 }
 
-                BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel(layout));
+                var vm = new MainWindowViewModel(layout);
 
-                DockSerializer.Save(path, layout);
+                BuildAvaloniaApp().Start<MainWindow>(() => vm);
+
+                DockSerializer.Save(path, vm.Layout);
             }
             catch (Exception ex)
             {

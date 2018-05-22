@@ -159,6 +159,8 @@
             <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Margin="4"/>
             <TextBox x:Name="id" Text="Init" Width="100" Margin="4"/>
             <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #id.Text}" Margin="4"/>
+            <Button Content="ShowWindows" Command="{Binding Layout.CurrentView.ShowWindows}" Margin="4"/>
+            <Button Content="HideWindows" Command="{Binding Layout.CurrentView.HideWindows}" Margin="4"/>
         </StackPanel>
         <idd:LayoutControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
     </Grid>

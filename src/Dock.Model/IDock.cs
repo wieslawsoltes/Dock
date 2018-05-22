@@ -5,10 +5,15 @@ using System.Collections.Generic;
 namespace Dock.Model
 {
     /// <summary>
-    /// Navigation service contract.
+    /// Navigation contract.
     /// </summary>
-    public interface INavigationService
+    public interface IDockNavigation
     {
+        /// <summary>
+        /// Gets or sets views.
+        /// </summary>
+        IList<IDock> Views { get; set; }
+
         /// <summary>
         /// Gets or sets current view.
         /// </summary>
@@ -42,9 +47,9 @@ namespace Dock.Model
     }
 
     /// <summary>
-    /// Windows service contract.
+    /// Windows contract.
     /// </summary>
-    public interface IWindowsService
+    public interface IDockWindows
     {
         /// <summary>
         /// Gets or sets windows.
@@ -77,7 +82,7 @@ namespace Dock.Model
     /// <summary>
     /// Dock contract.
     /// </summary>
-    public interface IDock : INavigationService, IWindowsService
+    public interface IDock : IDockNavigation, IDockWindows
     {
         /// <summary>
         /// Gets or sets id.
@@ -108,11 +113,6 @@ namespace Dock.Model
         /// Gets view context.
         /// </summary>
         object Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets views.
-        /// </summary>
-        IList<IDock> Views { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.

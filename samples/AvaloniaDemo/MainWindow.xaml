@@ -150,7 +150,10 @@
             </Grid>
         </DataTemplate>
     </Window.DataTemplates>
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*" Background="Transparent">
+        <i:Interaction.Behaviors>
+            <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static idh:DockDropHandler.Instance}"/>
+        </i:Interaction.Behaviors>
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Back" Command="{Binding Layout.GoBack}" IsEnabled="{Binding Layout.CanGoBack}" Margin="4"/>
             <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Margin="4"/>

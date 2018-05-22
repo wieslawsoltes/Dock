@@ -77,7 +77,7 @@ namespace Dock.Model
         public IDock CurrentView
         {
             get => _currentView;
-            setq
+            set
             {
                 Update(ref _currentView, value);
                 Notify(nameof(CanGoBack));
@@ -103,7 +103,7 @@ namespace Dock.Model
         public bool CanGoBack => _back.Count > 0;
 
         /// <inheritdoc/>
-        public bool CanGoForward => _forward.Count > 0
+        public bool CanGoForward => _forward.Count > 0;
 
         /// <inheritdoc/>
         public void GoBack()

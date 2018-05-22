@@ -159,7 +159,7 @@ namespace Dock.Model
             {
                 if (_currentView != null)
                 {
-                    _currentView.CloseWindows();
+                    _currentView.HideWindows();
                 }
 
                 CurrentView = null;
@@ -169,7 +169,7 @@ namespace Dock.Model
             {
                 if (dock != null && _currentView != null && dock != _currentView)
                 {
-                    _currentView.CloseWindows();
+                    _currentView.HideWindows();
                 }
 
                 if (dock != null && _currentView != dock)
@@ -225,7 +225,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void CloseWindows()
+        public virtual void HideWindows()
         {
             if (_windows != null)
             {

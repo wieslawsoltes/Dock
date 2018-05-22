@@ -84,30 +84,33 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public void OnChangeCurrentView(IDock view)
+        public void OnChangeCurrentView(object view)
         {
-            System.Console.WriteLine($"OnChangeCurrentView view: {view}");
-            if (view != null && _currentView != null && view != _currentView)
+            if (view is IDock dock)
             {
-                _currentView.CloseWindows();
-            }
+                if (dock != null && _currentView != null && dock != _currentView)
+                {
+                    _currentView.CloseWindows();
+                }
 
-            if (view != null && _currentView != view)
+                if (dock != null && _currentView != dock)
+                {
+                    CurrentView = dock;
+                }
+
+                if (_currentView != null)
+                {
+                    _currentView.ShowWindows();
+                }
+            }
+            else if (view is string title)
             {
-                CurrentView = view;
+                var result = _views.FirstOrDefault(view => view.Title == title);
+                if (result != null)
+                {
+                    OnChangeCurrentView(result);
+                }
             }
-
-            if (_currentView != null)
-            {
-                _currentView.ShowWindows();
-            }
-        }
-
-        /// <inheritdoc/>
-        public void OnChangeCurrentView(string title)
-        {
-            System.Console.WriteLine($"OnChangeCurrentView title: {title}");
-            OnChangeCurrentView(_views.FirstOrDefault(view => view.Title == title));
         }
 
         /// <inheritdoc/>

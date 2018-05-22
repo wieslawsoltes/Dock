@@ -11,7 +11,8 @@
         xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
         UseLayoutRounding="True"
-        Title="Dock Avalonia Demo" Height="640" Width="640">
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Title="Dock Avalonia Demo" Height="700" Width="1200">
     <Window.DataTemplates>
         <DataTemplate DataType="local:InitView">
             <Grid>

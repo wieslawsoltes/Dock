@@ -58,13 +58,7 @@ namespace Dock.Model
         /// Change current view.
         /// </summary>
         /// <param name="view">The view instance.</param>
-        void OnChangeCurrentView(IDock view);
-
-        /// <summary>
-        /// Change current view.
-        /// </summary>
-        /// <param name="title">The view title.</param>
-        void OnChangeCurrentView(string title);
+        void OnChangeCurrentView(object view);
 
         /// <summary>
         /// Show windows.

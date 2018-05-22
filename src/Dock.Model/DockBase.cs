@@ -177,12 +177,12 @@ namespace Dock.Model
 
                 if (dock != null && _currentView != dock)
                 {
-                    CurrentView = dock;
-
-                    if (bSnapshot)
+                    if (_currentView != null && bSnapshot == true)
                     {
-                        NavigateSnapshot(CurrentView);
+                        NavigateSnapshot(_currentView);
                     }
+
+                    CurrentView = dock;
                 }
 
                 if (_currentView != null)

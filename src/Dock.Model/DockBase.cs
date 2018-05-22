@@ -1,19 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Dock.Model
 {
-    internal static class IEnumerableExtensions
-    {
-        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T,IEnumerable<T>> f)
-        {
-            return e.SelectMany(c => f(c).Flatten(f)).Concat(e);
-        }
-    }
-
     /// <summary>
     /// Dock base class.
     /// </summary>
@@ -205,7 +196,7 @@ namespace Dock.Model
                 }
                 else
                 {
-                    var views = _views.Where(v => v.Views != null).Flatten(v => v.Views);
+                    var views = _views.Flatten(v => v.Views);
                     var result2 = views.FirstOrDefault(v => v.Id == id);
                     if (result2 != null)
                     {

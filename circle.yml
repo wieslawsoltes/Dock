@@ -10,13 +10,13 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init
-      - run: dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release
       - run: dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
       - run: dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
       - run: dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
       - run: dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
       - run: dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
       - run: dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
+      - run: dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release
     notify:
       webhooks:
         - url: https://webhooks.gitter.im/e/8b279fde181500f42d66

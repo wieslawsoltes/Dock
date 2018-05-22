@@ -433,7 +433,7 @@ namespace AvaloniaDemo
         {
             var factory = new DemoDockFactory();
 
-            _layout = layout == null ? factory.CreateDefaultLayout() : layout;
+            _layout = layout ?? factory.CreateDefaultLayout();
 
             var init = _layout.Views.FirstOrDefault(v => v.Title == "Init");
             if (init != null)

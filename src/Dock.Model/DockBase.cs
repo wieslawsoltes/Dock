@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,9 @@ namespace Dock.Model
     /// </summary>
     public abstract class DockBase : ObservableObject, IDock
     {
+        private readonly Stack<IDock> _back = new Stack<IDock>();
+        private readonly Stack<IDock> _forward = new Stack<IDock>();
+        private string _id;
         private string _dock;
         private double _width;
         private double _height;
@@ -19,6 +23,13 @@ namespace Dock.Model
         private IDock _currentView;
         private IList<IDockWindow> _windows;
         private IDockFactory _factory;
+
+        /// <inheritdoc/>
+        public string Id
+        {
+            get => _id;
+            set => Update(ref _id, value);
+        }
 
         /// <inheritdoc/>
         public string Dock
@@ -66,7 +77,12 @@ namespace Dock.Model
         public IDock CurrentView
         {
             get => _currentView;
-            set => Update(ref _currentView, value);
+            setq
+            {
+                Update(ref _currentView, value);
+                Notify(nameof(CanGoBack));
+                Notify(nameof(CanGoForward));
+            }
         }
 
         /// <inheritdoc/>
@@ -84,9 +100,45 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public void OnChangeCurrentView(object view)
+        public bool CanGoBack => _back.Count > 0;
+
+        /// <inheritdoc/>
+        public bool CanGoForward => _forward.Count > 0
+
+        /// <inheritdoc/>
+        public void GoBack()
         {
-            if (view is IDock dock)
+            if (_back.Count > 0)
+            {
+                var root = _back.Pop();
+                Navigate(root);
+                _forward.Push(root);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void GoForward()
+        {
+            if (_forward.Count > 0)
+            {
+                var root = _forward.Pop();
+                Navigate(root);
+                _back.Push(root);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Navigate(object root)
+        {
+            if (root == null)
+            {
+                if (_currentView != null)
+                {
+                    _currentView.CloseWindows();
+                }
+                CurrentView = null;
+            }
+            else if (root is IDock dock)
             {
                 if (dock != null && _currentView != null && dock != _currentView)
                 {
@@ -103,12 +155,12 @@ namespace Dock.Model
                     _currentView.ShowWindows();
                 }
             }
-            else if (view is string title)
+            else if (root is string id)
             {
-                var result = _views.FirstOrDefault(v => v.Title == title);
+                var result = _views.FirstOrDefault(v => v.Id == id);
                 if (result != null)
                 {
-                    OnChangeCurrentView(result);
+                    Navigate(result);
                 }
             }
         }
@@ -148,6 +200,12 @@ namespace Dock.Model
         {
             _windows?.Remove(window);
         }
+
+        /// <summary>
+        /// Check whether the <see cref="Id"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(_id);
 
         /// <summary>
         /// Check whether the <see cref="Dock"/> property has changed from its default value.
@@ -202,5 +260,17 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeFactory() => false;
+
+        /// <summary>
+        /// Check whether the <see cref="CanGoBack"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeCanGoBack() => false;
+
+        /// <summary>
+        /// Check whether the <see cref="Factory"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeCanGoForward() => false;
     }
 }

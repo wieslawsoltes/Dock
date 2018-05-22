@@ -78,6 +78,7 @@ namespace AvaloniaDemo
 
             var initView = new InitView
             {
+                Id = "Init",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -88,6 +89,7 @@ namespace AvaloniaDemo
 
             var centerView = new CenterView
             {
+                Id = "Center",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -98,7 +100,8 @@ namespace AvaloniaDemo
 
             var leftTopView1 = new LeftTopView1
             {
-                Dock = "",
+                Id = "LeftTop1",
+                Dock = "LeftTop1",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftTop1"
@@ -106,6 +109,7 @@ namespace AvaloniaDemo
 
             var leftTopView2 = new LeftTopView2
             {
+                Id = "LeftTop2",
                 Dock = "",
                 Width = 200,
                 Height = 200,
@@ -114,6 +118,7 @@ namespace AvaloniaDemo
 
             var leftTopView3 = new LeftTopView3
             {
+                Id = "LeftTop3",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -124,6 +129,7 @@ namespace AvaloniaDemo
 
             var leftBottomView1 = new LeftBottomView1
             {
+                Id = "LeftBottom1",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -132,6 +138,7 @@ namespace AvaloniaDemo
 
             var leftBottomView2 = new LeftBottomView2
             {
+                Id = "LeftBottom2",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -140,6 +147,7 @@ namespace AvaloniaDemo
 
             var leftBottomView3 = new LeftBottomView3
             {
+                Id = "LeftBottom3",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -150,6 +158,7 @@ namespace AvaloniaDemo
 
             var rightTopView1 = new RightTopView1
             {
+                Id = "RightTop1",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -158,6 +167,7 @@ namespace AvaloniaDemo
 
             var rightTopView2 = new RightTopView2
             {
+                Id = "RightTop2",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -166,6 +176,7 @@ namespace AvaloniaDemo
 
             var rightTopView3 = new RightTopView3
             {
+                Id = "RightTop3",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -176,6 +187,7 @@ namespace AvaloniaDemo
 
             var rightBottomView1 = new RightBottomView1
             {
+                Id = "RightBottom1",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -184,6 +196,7 @@ namespace AvaloniaDemo
 
             var rightBottomView2 = new RightBottomView2
             {
+                Id = "RightBottom2",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -192,6 +205,7 @@ namespace AvaloniaDemo
 
             var rightBottomView3 = new RightBottomView3
             {
+                Id = "RightBottom3",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -202,6 +216,7 @@ namespace AvaloniaDemo
 
             var leftPane = new DockLayout
             {
+                Id = "LeftPane",
                 Dock = "Left",
                 Width = 200,
                 Height = double.NaN,
@@ -211,6 +226,7 @@ namespace AvaloniaDemo
                 {
                     new DockStrip
                     {
+                        Id = "LeftPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
                         Height = 340,
@@ -223,9 +239,15 @@ namespace AvaloniaDemo
                             leftTopView3
                         }
                     },
-                    new DockSplitter() { Dock = "Top", Title = "LeftPaneTopSplitter" },
+                    new DockSplitter()
+                    {
+                        Id = "LeftPaneTopSplitter",
+                        Dock = "Top",
+                        Title = "LeftPaneTopSplitter"
+                    },
                     new DockStrip
                     {
+                        Id = "LeftPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
                         Height = double.NaN,
@@ -245,6 +267,7 @@ namespace AvaloniaDemo
 
             var rightPane = new DockLayout
             {
+                Id = "RightPane",
                 Dock = "Right",
                 Width = 240,
                 Height = double.NaN,
@@ -254,6 +277,7 @@ namespace AvaloniaDemo
                 {
                     new DockStrip
                     {
+                        Id = "RightPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
                         Height = 340,
@@ -266,9 +290,15 @@ namespace AvaloniaDemo
                             rightTopView3
                         }
                     },
-                    new DockSplitter() { Dock = "Top", Title = "RightPaneTopSplitter" },
+                    new DockSplitter()
+                    {
+                        Id = "RightPaneTopSplitter",
+                        Dock = "Top",
+                        Title = "RightPaneTopSplitter"
+                    },
                     new DockStrip
                     {
+                        Id = "RightPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
                         Height = double.NaN,
@@ -288,6 +318,7 @@ namespace AvaloniaDemo
 
             var mainLayout = new DockLayout
             {
+                Id = "MainLayout",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -296,15 +327,26 @@ namespace AvaloniaDemo
                 Views = new ObservableCollection<IDock>
                 {
                     leftPane,
-                    new DockSplitter() { Dock = "Left", Title = "LeftSplitter" },
+                    new DockSplitter()
+                    {
+                        Id = "LeftSplitter",
+                        Dock = "Left",
+                        Title = "LeftSplitter"
+                    },
                     rightPane,
-                    new DockSplitter() { Dock = "Right", Title = "RightSplitter" },
+                    new DockSplitter()
+                    {
+                        Id = "RightSplitter",
+                        Dock = "Right",
+                        Title = "RightSplitter"
+                    },
                     centerView
                 }
             };
 
             var mainView = new MainView
             {
+                Id = "Main",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
@@ -320,9 +362,11 @@ namespace AvaloniaDemo
 
             var layout = new DockRoot
             {
+                Id = "Root",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
+                Title = "Root",
                 CurrentView = initView,
                 Views = new ObservableCollection<IDock>
                 {
@@ -347,29 +391,36 @@ namespace AvaloniaDemo
 
         public void InitLayout(IDockFactory factory, IDock layout)
         {
-            factory.ContextLocator = new Dictionary<Type, Func<object>>
+            factory.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [typeof(DockLayout)] = () => this,
-                [typeof(DockRoot)] = () => this,
-                [typeof(DockSplitter)] = () => this,
-                [typeof(DockStrip)] = () => this,
-                [typeof(DockView)] = () => this,
-                [typeof(DockWindow)] = () => this,
-                [typeof(InitView)] = () => layout,
-                [typeof(CenterView)] = () => this,
-                [typeof(LeftTopView1)] = () => this,
-                [typeof(LeftTopView2)] = () => this,
-                [typeof(LeftTopView3)] = () => this,
-                [typeof(LeftBottomView1)] = () => this,
-                [typeof(LeftBottomView2)] = () => this,
-                [typeof(LeftBottomView3)] = () => this,
-                [typeof(RightTopView1)] = () => this,
-                [typeof(RightTopView2)] = () => this,
-                [typeof(RightTopView3)] = () => this,
-                [typeof(RightBottomView1)] = () => this,
-                [typeof(RightBottomView2)] = () => this,
-                [typeof(RightBottomView3)] = () => this,
-                [typeof(MainView)] = () => this
+                ["Window"] = () => this,
+                ["Init"] = () => layout,
+                ["Center"] = () => this,
+                ["LeftTop1"] = () => this,
+                ["LeftTop2"] = () => this,
+                ["LeftTop3"] = () => this,
+                ["LeftBottom1"] = () => this,
+                ["LeftBottom2"] = () => this,
+                ["LeftBottom3"] = () => this,
+                ["RightTop1"] = () => this,
+                ["RightTop2"] = () => this,
+                ["RightTop3"] = () => this,
+                ["RightBottom1"] = () => this,
+                ["RightBottom2"] = () => this,
+                ["RightBottom3"] = () => this,
+                ["LeftPane"] = () => this,
+                ["LeftPaneTop"] = () => this,
+                ["LeftPaneTopSplitter"] = () => this,
+                ["LeftPaneBottom"] = () => this,
+                ["RightPane"] = () => this,
+                ["RightPaneTop"] = () => this,
+                ["RightPaneTopSplitter"] = () => this,
+                ["RightPaneBottom"] = () => this,
+                ["MainLayout"] = () => this,
+                ["LeftSplitter"] = () => this,
+                ["RightSplitter"] = () => this,
+                ["Main"] = () => this,
+                ["Root"] = () => this
             };
 
             factory.HostLocator = () => new HostWindow();

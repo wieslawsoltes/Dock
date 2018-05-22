@@ -13,7 +13,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets <see cref="IDock.Context"/> locator registry.
         /// </summary>
-        IDictionary<Type, Func<object>> ContextLocator { get; set; }
+        IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <summary>
         /// Gets or sets <see cref="IDockHost"/> locator.
@@ -23,10 +23,10 @@ namespace Dock.Model
         /// <summary>
         /// Gets context.
         /// </summary>
-        /// <param name="source">The source object.</param>
+        /// <param name="id">The object id.</param>
         /// <param name="context">The default context.</param>
         /// <returns>The located context or default context.</returns>
-        object GetContext(object source, object context);
+        object GetContext(string id, object context);
 
         /// <summary>
         /// Updates window.

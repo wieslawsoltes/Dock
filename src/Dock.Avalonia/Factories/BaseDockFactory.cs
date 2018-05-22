@@ -13,18 +13,21 @@ namespace Dock.Avalonia.Factories
     public abstract class BaseDockFactory : IDockFactory
     {
         /// <inheritdoc/>
-        public virtual IDictionary<Type, Func<object>> ContextLocator { get; set; }
+        public virtual IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <inheritdoc/>
         public virtual Func<IDockHost> HostLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual object GetContext(object source, object context)
+        public virtual object GetContext(string id, object context)
         {
-            Func<object> locator = null;
-            if (ContextLocator?.TryGetValue(source?.GetType(), out locator) == true)
+            if (!string.IsNullOrEmpty(id))
             {
-                return locator?.Invoke();
+                Func<object> locator = null;
+                if (ContextLocator?.TryGetValue(id, out locator) == true)
+                {
+                    return locator?.Invoke();
+                }
             }
             return context;
         }
@@ -85,8 +88,9 @@ namespace Dock.Avalonia.Factories
 
             var dockLayout = new DockLayout
             {
+                Id = "Window",
                 Dock = "",
-                Title = "",
+                Title = "Window",
                 CurrentView = view,
                 Views = new ObservableCollection<IDock> { view }
             };

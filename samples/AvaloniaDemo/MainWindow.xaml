@@ -20,15 +20,17 @@
         <DataTemplate DataType="local:InitView">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
-                    <Button Content="Main" Command="{Binding Context.OnChangeCurrentView}" CommandParameter="Main"/>
+                    <Button Content="Main" Command="{Binding Context.Navigate}" CommandParameter="Main"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="local:CenterView">
             <Grid Width="300" Height="300" Background="LightGray">
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -37,6 +39,7 @@
         <DataTemplate DataType="local:LeftTopView1">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -45,6 +48,7 @@
         <DataTemplate DataType="local:LeftTopView2">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -53,6 +57,7 @@
         <DataTemplate DataType="local:LeftTopView3">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -61,6 +66,7 @@
         <DataTemplate DataType="local:LeftBottomView1">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -69,6 +75,7 @@
         <DataTemplate DataType="local:LeftBottomView2">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -77,6 +84,7 @@
         <DataTemplate DataType="local:LeftBottomView3">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -85,6 +93,7 @@
         <DataTemplate DataType="local:RightTopView1">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -93,6 +102,7 @@
         <DataTemplate DataType="local:RightTopView2">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -101,6 +111,7 @@
         <DataTemplate DataType="local:RightTopView3">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -109,6 +120,7 @@
         <DataTemplate DataType="local:RightBottomView1">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -117,6 +129,7 @@
         <DataTemplate DataType="local:RightBottomView2">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -125,6 +138,7 @@
         <DataTemplate DataType="local:RightBottomView3">
             <Grid>
                 <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
                 </StackPanel>
@@ -136,5 +150,13 @@
             </Grid>
         </DataTemplate>
     </Window.DataTemplates>
-    <idd:LayoutControl DataContext="{Binding Layout}"/>
+    <Grid RowDefinitions="Auto,*">
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button Content="Back" Command="{Binding Layout.GoBack}" IsEnabled="{Binding Layout.CanGoBack}" Margin="4"/>
+            <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Margin="4"/>
+            <TextBox x:Name="id" Text="Init" Width="100" Margin="4"/>
+            <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #id.Text}" Margin="4"/>
+        </StackPanel>
+        <idd:LayoutControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+    </Grid>
 </Window>

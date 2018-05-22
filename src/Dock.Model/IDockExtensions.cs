@@ -4,6 +4,9 @@ using System;
 
 namespace Dock.Model
 {
+    /// <summary>
+    /// Dock extension methods.
+    /// </summary>
     public static class IDockExtensions
     {
         /// <summary>

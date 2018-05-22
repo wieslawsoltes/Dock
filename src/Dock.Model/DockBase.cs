@@ -80,6 +80,7 @@ namespace Dock.Model
             set
             {
                 Update(ref _currentView, value);
+
                 Notify(nameof(CanGoBack));
                 Notify(nameof(CanGoForward));
             }
@@ -111,8 +112,8 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                Navigate(root);
                 _forward.Push(root);
+                NavigateImpl(root, false);
             }
         }
 
@@ -122,13 +123,32 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                Navigate(root);
                 _back.Push(root);
+                NavigateImpl(root, false);
             }
         }
 
-        /// <inheritdoc/>
-        public void Navigate(object root)
+        private void NavigateReset()
+        {
+            if (_back.Count > 0)
+            {
+                _back.Clear();
+            }
+
+            if (_forward.Count > 0)
+            {
+                _forward.Clear();
+            }
+        }
+
+        private void NavigateSnapshot(object value)
+        {
+            if (_forward.Count > 0)
+                _forward.Clear();
+            _back.Push(value);
+        }
+
+        public void NavigateImpl(object root, bool bSnapshot)
         {
             if (root == null)
             {
@@ -136,7 +156,9 @@ namespace Dock.Model
                 {
                     _currentView.CloseWindows();
                 }
+
                 CurrentView = null;
+                NavigateReset();
             }
             else if (root is IDock dock)
             {
@@ -148,6 +170,11 @@ namespace Dock.Model
                 if (dock != null && _currentView != dock)
                 {
                     CurrentView = dock;
+
+                    if (bSnapshot)
+                    {
+                        NavigateSnapshot(CurrentView);
+                    }
                 }
 
                 if (_currentView != null)
@@ -160,9 +187,15 @@ namespace Dock.Model
                 var result = _views.FirstOrDefault(v => v.Id == id);
                 if (result != null)
                 {
-                    Navigate(result);
+                    NavigateImpl(result, bSnapshot);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        public void Navigate(object root)
+        {
+            NavigateImpl(root, true);
         }
 
         /// <inheritdoc/>

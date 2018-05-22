@@ -18,7 +18,7 @@
                 <StackPanel>
                     <TextBlock Text="{Binding Title}"/>
                     <TextBlock Text="{Binding Context}"/>
-                    <Button Content="Main" Command="{Binding Context.OnChangeCurrentView}" CommandParameter="Main">
+                    <Button Content="Main" Command="{Binding Context.OnChangeCurrentView}" CommandParameter="Main"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>

@@ -105,7 +105,7 @@ namespace Dock.Model
             }
             else if (view is string title)
             {
-                var result = _views.FirstOrDefault(view => view.Title == title);
+                var result = _views.FirstOrDefault(v => v.Title == title);
                 if (result != null)
                 {
                     OnChangeCurrentView(result);

@@ -8,7 +8,7 @@ namespace Dock.Serializer
     /// </summary>
     public static class DockSerializer
     {
-        private static Serializer = new NewtonsoftJsonSerializer();
+        private static NewtonsoftJsonSerializer Serializer = new NewtonsoftJsonSerializer();
 
         /// <summary>
         /// Gets the base directory path.

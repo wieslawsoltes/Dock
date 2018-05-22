@@ -199,7 +199,7 @@ namespace Dock.Model
                 }
                 else
                 {
-                    var views = _views.Flatten(v => v.Views);
+                    var views = _views.Where(v => v.Views != null).Flatten(v => v.Views);
                     var result2 = views.FirstOrDefault(v => v.Id == id);
                     if (result2 != null)
                     {

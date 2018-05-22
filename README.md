@@ -17,6 +17,15 @@ A docking layout system.
 
 **Dock** is a docking layout system for [Avalonia](https://github.com/AvaloniaUI/Avalonia) applications. Use of Dock is governed by the MIT License.
 
+## Demo
+
+| Version               | Download                                                                                                                                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Windows 7 8.1 10 x64  | [AvaloniaDemo-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/samples/AvaloniaDemo/bin/AnyCPU/Release/netcoreapp2.0/win7-x64/AvaloniaDemo-win7-x64.zip?branch=master)                  |
+| MacOSX 10.12 x64      | [AvaloniaDemo-osx.10.12-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/samples/AvaloniaDemo/bin/AnyCPU/Release/netcoreapp2.0/osx.10.12-x64/AvaloniaDemo-osx.10.12-x64.zip?branch=master)        |
+| Ubuntu 14.04+ x64     | [AvaloniaDemo-ubuntu.14.04-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/samples/AvaloniaDemo/bin/AnyCPU/Release/netcoreapp2.0/ubuntu.14.04-x64/AvaloniaDemo-ubuntu.14.04-x64.zip?branch=master)  |
+| Debian 8 x64          | [AvaloniaDemo-debian.8-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/samples/AvaloniaDemo/bin/AnyCPU/Release/netcoreapp2.0/debian.8-x64/AvaloniaDemo-debian.8-x64.zip?branch=master)          |
+
 ## Building Dock
 
 First, clone the repository or download the latest zip.

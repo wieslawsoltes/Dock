@@ -57,6 +57,12 @@ build_script:
 
     dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r win7-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r ubuntu.14.04-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r debian.8-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r osx.10.12-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     copy "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT\msvcp140.dll" samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
 
     copy "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT\vcruntime140.dll" samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
@@ -70,7 +76,13 @@ artifacts:
   - path: src\Dock.Model\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
-    name: AvaloniaDemo-win7-x64-build$(appveyor_build_version)
+    name: AvaloniaDemo-win7-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\ubuntu.14.04-x64\publish
+    name: AvaloniaDemo-ubuntu.14.04-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\debian.8-x64\publish
+    name: AvaloniaDemo-debian.8-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\osx.10.12-x64\publish
+    name: AvaloniaDemo-osx.10.12-x64
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/b8334e4ccc2876427242

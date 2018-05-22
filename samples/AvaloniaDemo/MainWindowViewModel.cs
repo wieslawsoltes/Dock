@@ -393,7 +393,8 @@ namespace AvaloniaDemo
         {
             factory.ContextLocator = new Dictionary<string, Func<object>>
             {
-                ["Window"] = () => this,
+                ["DockLayout"] = () => this,
+                ["DockWindow"] = () => this,
                 ["Init"] = () => layout,
                 ["Center"] = () => this,
                 ["LeftTop1"] = () => this,

@@ -18,6 +18,13 @@ namespace Dock.Model
         private IDockHost _host;
 
         /// <inheritdoc/>
+        public string Id
+        {
+            get => _id;
+            set => Update(ref _id, value);
+        }
+
+        /// <inheritdoc/>
         public double X
         {
             get => _x;
@@ -91,6 +98,12 @@ namespace Dock.Model
             _host?.GetSize(ref _width, ref _height);
             _host?.Destroy();
         }
+
+        /// <summary>
+        /// Check whether the <see cref="Id"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(_id);
 
         /// <summary>
         /// Check whether the <see cref="X"/> property has changed from its default value.

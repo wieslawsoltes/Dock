@@ -9,6 +9,11 @@ namespace Dock.Model
     public interface IDockWindow
     {
         /// <summary>
+        /// Gets or sets id.
+        /// </summary>
+        string Id { get; set; }
+
+        /// <summary>
         /// Gets or sets window X coordinate.
         /// </summary>
         double X { get; set; }

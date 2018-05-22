@@ -44,6 +44,11 @@ namespace Dock.Model
         object Context { get; set; }
 
         /// <summary>
+        /// Gets or sets dock factory.
+        /// </summary>
+        IDockFactory Factory { get; set; }
+
+        /// <summary>
         /// Gets or sets views layout.
         /// </summary>
         IDock Layout { get; set; }

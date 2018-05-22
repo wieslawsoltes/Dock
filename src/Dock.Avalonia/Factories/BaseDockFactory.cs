@@ -35,8 +35,8 @@ namespace Dock.Avalonia.Factories
         /// <inheritdoc/>
         public virtual void Update(IDockWindow window, object context)
         {
-            window.Host = HostLocator?.Invoke();
             window.Context = GetContext(window.Id, context);
+            window.Factory = this;
 
             if (window.Layout != null)
             {

@@ -15,6 +15,7 @@ namespace Dock.Model
         private double _height;
         private string _title;
         private object _context;
+        private IDockFactory _factory;
         private IDock _layout;
         private IDockHost _host;
 
@@ -68,6 +69,13 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public IDockFactory Factory
+        {
+            get => _factory;
+            set => Update(ref _factory, value);
+        }
+
+        /// <inheritdoc/>
         public IDock Layout
         {
             get => _layout;
@@ -84,20 +92,31 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Present()
         {
-            _host?.SetPosition(_x, _y);
-            _host?.SetSize(_width, _height);
-            _host?.SetTitle(_title);
-            _host?.SetContext(_context);
-            _host?.SetLayout(_layout);
-            _host?.Present();
+            if (_host == null)
+            {
+                _host = _factory.HostLocator?.Invoke();
+            }
+
+            if (_host != null)
+            {
+                _host.SetPosition(_x, _y);
+                _host.SetSize(_width, _height);
+                _host.SetTitle(_title);
+                _host.SetContext(_context);
+                _host.SetLayout(_layout);
+                _host.Present();
+            }
         }
 
         /// <inheritdoc/>
         public void Destroy()
         {
-            _host?.GetPosition(ref _x, ref _y);
-            _host?.GetSize(ref _width, ref _height);
-            _host?.Destroy();
+            if (_host != null)
+            {
+                _host.GetPosition(ref _x, ref _y);
+                _host.GetSize(ref _width, ref _height);
+                _host.Destroy();
+            }
         }
 
         /// <summary>
@@ -141,6 +160,12 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeContext() => false;
+
+        /// <summary>
+        /// Check whether the <see cref="Factory"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeFactory() => false;
 
         /// <summary>
         /// Check whether the <see cref="Layout"/> property has changed from its default value.

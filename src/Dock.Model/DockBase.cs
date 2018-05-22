@@ -18,10 +18,10 @@ namespace Dock.Model
         private double _height;
         private string _title;
         private object _context;
+        private IDockFactory _factory;
         private IList<IDock> _views;
         private IDock _currentView;
         private IList<IDockWindow> _windows;
-        private IDockFactory _factory;
 
         /// <inheritdoc/>
         public string Id
@@ -66,6 +66,13 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public IDockFactory Factory
+        {
+            get => _factory;
+            set => Update(ref _factory, value);
+        }
+
+        /// <inheritdoc/>
         public IList<IDock> Views
         {
             get => _views;
@@ -90,13 +97,6 @@ namespace Dock.Model
         {
             get => _windows;
             set => Update(ref _windows, value);
-        }
-
-        /// <inheritdoc/>
-        public IDockFactory Factory
-        {
-            get => _factory;
-            set => Update(ref _factory, value);
         }
 
         /// <inheritdoc/>
@@ -285,6 +285,12 @@ namespace Dock.Model
         public virtual bool ShouldSerializeContext() => false;
 
         /// <summary>
+        /// Check whether the <see cref="Factory"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeFactory() => false;
+
+        /// <summary>
         /// Check whether the <see cref="Views"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
@@ -301,12 +307,6 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeWindows() => _windows != null;
-
-        /// <summary>
-        /// Check whether the <see cref="Factory"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeFactory() => false;
 
         /// <summary>
         /// Check whether the <see cref="CanGoBack"/> property has changed from its default value.

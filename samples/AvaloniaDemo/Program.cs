@@ -32,7 +32,6 @@ namespace AvaloniaDemo
 #endif
             try
             {
-                // Load Layout
                 IDock layout = null;
                 string path = DockSerializer.GetBasePath("Layout.json");
                 if (DockSerializer.Exists(path))
@@ -40,10 +39,8 @@ namespace AvaloniaDemo
                     layout = DockSerializer.Load<DockRoot>(path);
                 }
 
-                // Start Application
                 BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel(layout));
 
-                // Save Layout
                 DockSerializer.Save(path, layout);
             }
             catch (Exception ex)

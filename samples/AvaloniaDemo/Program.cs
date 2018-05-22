@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Text;
 using System.Threading;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using Dock.Model;
+using Dock.Serializer;
 
 namespace AvaloniaDemo
 {
@@ -29,7 +32,19 @@ namespace AvaloniaDemo
 #endif
             try
             {
-                BuildAvaloniaApp().Start<MainWindow>();
+                // Load Layout
+                IDock layout = null;
+                string path = DockSerializer.GetBasePath("Layout.json");
+                if (DockSerializer.Exists(path))
+                {
+                    layout = DockSerializer.Load<DockRoot>(path);
+                }
+
+                // Start Application
+                BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel(layout));
+
+                // Save Layout
+                DockSerializer.Save(path, layout);
             }
             catch (Exception ex)
             {

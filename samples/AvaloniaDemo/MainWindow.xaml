@@ -13,6 +13,9 @@
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="Dock Avalonia Demo" Height="700" Width="1200">
+    <Window.Styles>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
+    </Window.Styles>
     <Window.DataTemplates>
         <DataTemplate DataType="local:InitView">
             <Grid>

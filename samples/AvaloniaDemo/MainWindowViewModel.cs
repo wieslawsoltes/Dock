@@ -337,7 +337,6 @@ namespace AvaloniaDemo
 
     public class MainWindowViewModel : ObservableObject
     {
-        private IDockFactory _factory;
         private IDock _layout;
 
         public IDock Layout
@@ -346,32 +345,17 @@ namespace AvaloniaDemo
             set => Update(ref _layout, value);
         }
 
-        public MainWindowViewModel(IDock layout)
+        public void InitLayout(IDockFactory factory, IDock layout)
         {
-            _factory = new DemoDockFactory();
-
-            // create default layout or use existing
-            _layout = layout == null ? _factory.CreateDefaultLayout() : layout;
-
-            // find current view by title
-            var init = _layout.Views.FirstOrDefault(v => v.Title == "Init");
-            if (init != null)
+            factory.ContextLocator = new Dictionary<Type, Func<object>>
             {
-                _layout.CurrentView = init;
-            }
-
-            // set context locators
-            _factory.ContextLocator = new Dictionary<Type, Func<object>>
-            {
-                [typeof(IDock)] = () => this,
-                [typeof(IDockWindow)] = () => this,
                 [typeof(DockLayout)] = () => this,
                 [typeof(DockRoot)] = () => this,
                 [typeof(DockSplitter)] = () => this,
                 [typeof(DockStrip)] = () => this,
                 [typeof(DockView)] = () => this,
                 [typeof(DockWindow)] = () => this,
-                [typeof(InitView)] = () => _layout,
+                [typeof(InitView)] = () => layout,
                 [typeof(CenterView)] = () => this,
                 [typeof(LeftTopView1)] = () => this,
                 [typeof(LeftTopView2)] = () => this,
@@ -388,11 +372,24 @@ namespace AvaloniaDemo
                 [typeof(MainView)] = () => this
             };
 
-            // set host locator
-            _factory.HostLocator = () => new HostWindow();
+            factory.HostLocator = () => new HostWindow();
 
-            // update layout contexts
-            _factory.Update(_layout, this);
+            factory.Update(layout, this);
+        }
+
+        public MainWindowViewModel(IDock layout)
+        {
+            var factory = new DemoDockFactory();
+
+            _layout = layout == null ? factory.CreateDefaultLayout() : layout;
+
+            var init = _layout.Views.FirstOrDefault(v => v.Title == "Init");
+            if (init != null)
+            {
+                _layout.CurrentView = init;
+            }
+
+            InitLayout(factory, _layout);
         }
     }
 }

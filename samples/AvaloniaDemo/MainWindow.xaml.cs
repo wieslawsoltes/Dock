@@ -12,7 +12,6 @@ namespace AvaloniaDemo
         public MainWindow()
         {
             this.InitializeComponent();
-            DataContext = new MainWindowViewModel(null);
             this.AttachDevTools();
         }
 

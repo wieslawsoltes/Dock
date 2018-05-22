@@ -120,7 +120,10 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                _forward.Push(root);
+                if (_currentView != null)
+                {
+                    _forward.Push(_currentView);
+                }
                 NavigateImpl(root, false);
             }
         }
@@ -131,7 +134,10 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                _back.Push(root);
+                if (_currentView != null)
+                {
+                    _back.Push(_currentView);
+                }
                 NavigateImpl(root, false);
             }
         }

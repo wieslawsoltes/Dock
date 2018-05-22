@@ -8,6 +8,7 @@ namespace Dock.Model
     /// </summary>
     public class DockWindow : ObservableObject, IDockWindow
     {
+        private string _id;
         private double _x;
         private double _y;
         private double _width;

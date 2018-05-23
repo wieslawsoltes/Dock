@@ -1,15 +1,20 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AvaloniaDemo.ViewModels.Views;
+using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
 {
+    /// <inheritdoc/>
     public class MainWindowDockFactory : BaseDockFactory
     {
-        public override IDock CreateDefaultLayout()
+        /// <inheritdoc/>
+        public override IDock CreateLayout()
         {
             // Home
 
@@ -314,6 +319,57 @@ namespace AvaloniaDemo.ViewModels
             };
 
             return layout;
+        }
+
+        /// <inheritdoc/>
+        public override void InitLayout(IDock layout, object context)
+        {
+            this.ContextLocator = new Dictionary<string, Func<object>>
+            {
+                [nameof(DockLayout)] = () => context,
+                [nameof(DockStrip)] = () => context,
+                [nameof(DockWindow)] = () => context,
+                ["Dock"] = () => context,
+                ["Home"] = () => layout,
+                ["Center"] = () => context,
+                ["LeftTop1"] = () => context,
+                ["LeftTop2"] = () => context,
+                ["LeftTop3"] = () => context,
+                ["LeftBottom1"] = () => context,
+                ["LeftBottom2"] = () => context,
+                ["LeftBottom3"] = () => context,
+                ["RightTop1"] = () => context,
+                ["RightTop2"] = () => context,
+                ["RightTop3"] = () => context,
+                ["RightBottom1"] = () => context,
+                ["RightBottom2"] = () => context,
+                ["RightBottom3"] = () => context,
+                ["LeftPane"] = () => context,
+                ["LeftPaneTop"] = () => context,
+                ["LeftPaneTopSplitter"] = () => context,
+                ["LeftPaneBottom"] = () => context,
+                ["RightPane"] = () => context,
+                ["RightPaneTop"] = () => context,
+                ["RightPaneTopSplitter"] = () => context,
+                ["RightPaneBottom"] = () => context,
+                ["MainLayout"] = () => context,
+                ["LeftSplitter"] = () => context,
+                ["RightSplitter"] = () => context,
+                ["MainLayout"] = () => context,
+                ["Main"] = () => context,
+                ["Root"] = () => context
+            };
+
+            this.HostLocator = new Dictionary<string, Func<IDockHost>>
+            {
+                [nameof(DockWindow)] = () => new HostWindow(),
+                ["Dock"] = () => new HostWindow()
+            };
+
+            this.Update(layout, context);
+
+            layout.CurrentView = layout.DefaultView;
+            layout.CurrentView.ShowWindows();
         }
     }
 }

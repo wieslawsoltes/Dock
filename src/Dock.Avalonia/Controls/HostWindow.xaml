@@ -12,8 +12,10 @@
         UseLayoutRounding="True"
         WindowState="Normal"
         Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}">
-    <i:Interaction.Behaviors>
-        <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
-    </i:Interaction.Behaviors>
-    <idc:DockControl x:Name="dock"/>
+    <Grid Background="Transparent">
+        <i:Interaction.Behaviors>
+            <id:DropBehavior Context="{Binding #dock.DataContext}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+        </i:Interaction.Behaviors>
+        <idc:DockControl x:Name="dock"/>
+    </Grid>
 </Window>

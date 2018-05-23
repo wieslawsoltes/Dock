@@ -93,6 +93,9 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public abstract IDock CreateDefaultLayout();
+        public abstract IDock CreateLayout();
+
+        /// <inheritdoc/>
+        public abstract void InitLayout(IDock layout, object context);
     }
 }

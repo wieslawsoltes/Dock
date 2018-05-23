@@ -32,7 +32,8 @@ namespace AvaloniaDemo
 #endif
             try
             {
-                MainWindowViewModel vm = new MainWindowViewModel();
+                var vm = new MainWindowViewModel();
+                var factory = new MainWindowDockFactory();
                 IDock layout = null;
 
                 string path = DockSerializer.GetBasePath("Layout.json");
@@ -44,7 +45,9 @@ namespace AvaloniaDemo
                 BuildAvaloniaApp().Start<MainWindow>(() =>
                 {
                     // NOTE: Initialize layout after main window was created so child windows can be created.
-                    vm.InitLayout(layout);
+                    vm.Factory = factory;
+                    vm.Layout = layout ?? vm.Factory.CreateLayout();
+                    vm.Factory.InitLayout(vm.Layout, vm);
                     return vm;
                 });
 

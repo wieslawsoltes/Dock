@@ -64,9 +64,16 @@ namespace Dock.Model
         void Update(IList<IDock> views, object context);
 
         /// <summary>
-        /// Creates default layout.
+        /// Creates layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock CreateDefaultLayout();
+        IDock CreateLayout();
+
+        /// <summary>
+        /// Initialize layout.
+        /// </summary>
+        /// <param name="layout">The layout to initialize.</param>
+        /// <param name="context">The context object.</param>
+        void InitLayout(IDock layout, object context);
     }
 }

@@ -7,7 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
-namespace Dock.Avalonia.Controls
+namespace Avalonia.Controls
 {
     /// <summary>
     /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.

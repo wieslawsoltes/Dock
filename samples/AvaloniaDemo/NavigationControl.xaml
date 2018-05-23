@@ -4,7 +4,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Design.Width="400" Design.Height="24">
-    <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto"
+    <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
         <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"/>
         <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"/>
         <Button Content="Home" Command="{Binding Navigate}" CommandParameter="Home" Grid.Column="2"/>

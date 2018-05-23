@@ -15,5 +15,5 @@
     <i:Interaction.Behaviors>
         <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
     </i:Interaction.Behaviors>
-    <idc:StripControl x:Name="dock"/>
+    <idc:DockControl x:Name="dock"/>
 </Window>

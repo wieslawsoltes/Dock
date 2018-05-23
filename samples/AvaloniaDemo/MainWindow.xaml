@@ -155,6 +155,6 @@
             <TextBox x:Name="id" Text="Init" Width="100" Margin="4"/>
             <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #id.Text}" Margin="4"/>
         </StackPanel>
-        <idc:LayoutControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
     </Grid>
 </Window>

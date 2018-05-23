@@ -6,14 +6,14 @@ using Avalonia.Markup.Xaml;
 namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Interaction logic for <see cref="LayoutControl"/> xaml.
+    /// Interaction logic for <see cref="DockControl"/> xaml.
     /// </summary>
-    public class LayoutControl : UserControl
+    public class DockControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LayoutControl"/> class.
+        /// Initializes a new instance of the <see cref="DockControl"/> class.
         /// </summary>
-        public LayoutControl()
+        public DockControl()
         {
             this.InitializeComponent();
         }

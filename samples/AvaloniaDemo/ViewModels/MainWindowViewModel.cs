@@ -33,7 +33,9 @@ namespace AvaloniaDemo.ViewModels
             _factory.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(DockLayout)] = () => this,
+                [nameof(DockStrip)] = () => this,
                 [nameof(DockWindow)] = () => this,
+                ["Dock"] = () => this,
                 ["Home"] = () => _layout,
                 ["Center"] = () => this,
                 ["LeftTop1"] = () => this,
@@ -72,7 +74,8 @@ namespace AvaloniaDemo.ViewModels
 
             _factory.Update(_layout, this);
 
-            _layout.Navigate(_layout.DefaultView);
+            _layout.CurrentView = _layout.DefaultView;
+            _layout.CurrentView.ShowWindows();
         }
     }
 }

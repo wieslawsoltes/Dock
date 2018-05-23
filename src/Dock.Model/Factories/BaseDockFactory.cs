@@ -32,7 +32,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual IDockHost GetkHost(string id)
+        public virtual IDockHost GetHost(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {

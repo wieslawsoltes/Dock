@@ -6,7 +6,7 @@
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
         Width="300" Height="400"
         UseLayoutRounding="True"

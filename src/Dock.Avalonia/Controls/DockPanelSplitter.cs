@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
-namespace Avalonia.Controls
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel" />.
+    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
     /// </summary>
     public class DockPanelSplitter : Thumb
     {

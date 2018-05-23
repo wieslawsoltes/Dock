@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.ViewModels;
 using Dock.Model;
 using Dock.Serializer;
 

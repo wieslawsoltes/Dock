@@ -1,14 +1,15 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Application xmlns="https://github.com/avaloniaui"
-             xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo">
+             xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
+             xmlns:Views="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo">
     <Application.Styles>
         <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
         <StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
         <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
     <Application.DataTemplates>
-        <DataTemplate DataType="local:HomeView">
+        <DataTemplate DataType="Views:HomeView">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -18,7 +19,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:CenterView">
+        <DataTemplate DataType="Views:CenterView">
             <Grid Width="300" Height="300" Background="LightGray">
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -27,7 +28,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftTopView1">
+        <DataTemplate DataType="Views:LeftTopView1">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -36,7 +37,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftTopView2">
+        <DataTemplate DataType="Views:LeftTopView2">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -45,7 +46,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftTopView3">
+        <DataTemplate DataType="Views:LeftTopView3">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -54,7 +55,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftBottomView1">
+        <DataTemplate DataType="Views:LeftBottomView1">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -63,7 +64,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftBottomView2">
+        <DataTemplate DataType="Views:LeftBottomView2">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -72,7 +73,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:LeftBottomView3">
+        <DataTemplate DataType="Views:LeftBottomView3">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -81,7 +82,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightTopView1">
+        <DataTemplate DataType="Views:RightTopView1">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -90,7 +91,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightTopView2">
+        <DataTemplate DataType="Views:RightTopView2">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -99,7 +100,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightTopView3">
+        <DataTemplate DataType="Views:RightTopView3">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -108,7 +109,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightBottomView1">
+        <DataTemplate DataType="Views:RightBottomView1">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -117,7 +118,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightBottomView2">
+        <DataTemplate DataType="Views:RightBottomView2">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -126,7 +127,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:RightBottomView3">
+        <DataTemplate DataType="Views:RightBottomView3">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>
@@ -135,7 +136,7 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
-        <DataTemplate DataType="local:MainView">
+        <DataTemplate DataType="Views:MainView">
             <Grid>
                 <ContentControl Content="{Binding CurrentView}"/>
             </Grid>

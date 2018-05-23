@@ -70,7 +70,7 @@ namespace AvaloniaDemo
     {
     }
 
-    public class DemoDockFactory : BaseDockFactory
+    public class MainWindowDockFactory : BaseDockFactory
     {
         public override IDock CreateDefaultLayout()
         {
@@ -368,6 +368,7 @@ namespace AvaloniaDemo
                 Height = double.NaN,
                 Title = "Root",
                 CurrentView = homeView,
+                DefaultView = homeView,
                 Views = new ObservableCollection<IDock>
                 {
                     homeView,
@@ -398,15 +399,9 @@ namespace AvaloniaDemo
 
         public void InitLayout(IDock layout)
         {
-            _factory = new DemoDockFactory();
+            _factory = new MainWindowDockFactory();
 
             _layout = layout ?? _factory.CreateDefaultLayout();
-
-            var homeView = _layout.Views.FirstOrDefault(v => v.Title == "Home");
-            if (homeView != null)
-            {
-                _layout.CurrentView = homeView;
-            }
 
             _factory.ContextLocator = new Dictionary<string, Func<object>>
             {
@@ -445,7 +440,7 @@ namespace AvaloniaDemo
 
             _factory.Update(_layout, this);
 
-            _layout.Navigate(_layout.CurrentView);
+            _layout.Navigate(_layout.HomeView);
         }
     }
 }

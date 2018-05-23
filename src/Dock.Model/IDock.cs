@@ -20,6 +20,11 @@ namespace Dock.Model
         IDock CurrentView { get; set; }
 
         /// <summary>
+        /// Gets or sets default view.
+        /// </summary>
+        IDock DefaultView { get; set; }
+
+        /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
         /// </summary>
         bool CanGoBack { get; }

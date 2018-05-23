@@ -15,7 +15,7 @@
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>
-        <local:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="0"/>
+        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="0"/>
         <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
     </Grid>
 </Window>

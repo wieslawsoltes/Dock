@@ -21,6 +21,7 @@ namespace Dock.Model
         private IDockFactory _factory;
         private IList<IDock> _views;
         private IDock _currentView;
+        private IDock _defaultView;
         private IList<IDockWindow> _windows;
 
         /// <inheritdoc/>
@@ -90,6 +91,13 @@ namespace Dock.Model
                 Notify(nameof(CanGoBack));
                 Notify(nameof(CanGoForward));
             }
+        }
+
+        /// <inheritdoc/>
+        public IDock DefaultView
+        {
+            get => _defaultView;
+            set => Update(ref _defaultView, value);
         }
 
         /// <inheritdoc/>
@@ -289,6 +297,12 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeCurrentView() => _currentView != null;
+
+        /// <summary>
+        /// Check whether the <see cref="DefaultView"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeDefaultView() => _defaultView != null;
 
         /// <summary>
         /// Check whether the <see cref="Windows"/> property has changed from its default value.

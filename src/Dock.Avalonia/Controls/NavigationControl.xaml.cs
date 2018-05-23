@@ -3,7 +3,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
     /// Interaction logic for <see cref="NavigationControl"/> xaml.

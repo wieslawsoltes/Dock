@@ -48,6 +48,7 @@ namespace AvaloniaDemo
                     return vm;
                 });
 
+                vm.Layout.CurrentView.HideWindows();
                 DockSerializer.Save(path, vm.Layout);
             }
             catch (Exception ex)

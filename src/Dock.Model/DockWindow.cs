@@ -90,11 +90,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public void Present()
+        public void Present(bool isDialog)
         {
             if (_host == null)
             {
-                _host = _factory.HostLocator?.Invoke();
+                _host = _factory?.GetHost(_id);
             }
 
             if (_host != null)
@@ -104,7 +104,7 @@ namespace Dock.Model
                 _host.SetTitle(_title);
                 _host.SetContext(_context);
                 _host.SetLayout(_layout);
-                _host.Present();
+                _host.Present(isDialog);
             }
         }
 

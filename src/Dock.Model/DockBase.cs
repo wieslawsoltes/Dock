@@ -227,7 +227,7 @@ namespace Dock.Model
             {
                 foreach (var window in _windows)
                 {
-                    window.Present();
+                    window.Present(false);
                 }
             }
         }

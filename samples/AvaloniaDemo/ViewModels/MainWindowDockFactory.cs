@@ -299,7 +299,7 @@ namespace AvaloniaDemo.ViewModels
                 }
             };
 
-            // Main
+            // Root
 
             var layout = new DockRoot
             {

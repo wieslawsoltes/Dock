@@ -15,7 +15,7 @@ namespace Dock.Model.Factories
         public virtual IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual Func<IDockHost> HostLocator { get; set; }
+        public virtual IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <inheritdoc/>
         public virtual object GetContext(string id, object context)
@@ -32,9 +32,23 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
+        public virtual object IDockHost(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                Func<IDockHost> locator = null;
+                if (HostLocator?.TryGetValue(id, out locator) == true)
+                {
+                    return locator?.Invoke();
+                }
+            }
+            throw new Exception($"Dock host with {id} is not registered.");
+        }
+
+        /// <inheritdoc/>
         public virtual void Update(IDockWindow window, object context)
         {
-            window.Host = HostLocator?.Invoke();
+            window.Host = GetHost(window.Id);
             window.Context = GetContext(window.Id, context);
 
             if (window.Layout != null)

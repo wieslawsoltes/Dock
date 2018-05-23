@@ -12,9 +12,16 @@ namespace Dock.Avalonia.Controls
     public abstract class HostWindowBase : Window, IDockHost
     {
         /// <inheritdoc/>
-        public void Present()
+        public void Present(bool isDialog)
         {
-            this.Show();
+            if (isDialog)
+            {
+                this.ShowDialog();
+            }
+            else
+            {
+                this.Show();
+            }
         }
 
         /// <inheritdoc/>
@@ -32,7 +39,10 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetPosition(double x, double y)
         {
-            Position = new Point(x, y);
+            if (x != double.NaN && y != double.NaN)
+            {
+                Position = new Point(x, y);
+            }
         }
 
         /// <inheritdoc/>
@@ -45,8 +55,15 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetSize(double width, double height)
         {
-            this.Width = width;
-            this.Height = height;
+            if (width != double.NaN)
+            {
+                this.Width = width;
+            }
+
+            if (height != double.NaN)
+            {
+                this.Height = height;
+            }
         }
 
         /// <inheritdoc/>

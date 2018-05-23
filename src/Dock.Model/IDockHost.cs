@@ -11,7 +11,8 @@ namespace Dock.Model
         /// <summary>
         /// Presents host.
         /// </summary>
-        void Present();
+        /// <param name="isDialog">The value that indicates whether window is dialog.</param>
+        void Present(bool isDialog);
 
         /// <summary>
         /// Destroys host.

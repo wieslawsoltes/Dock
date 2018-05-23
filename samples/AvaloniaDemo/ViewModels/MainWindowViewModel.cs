@@ -63,11 +63,15 @@ namespace AvaloniaDemo.ViewModels
                 ["MainLayout"] = () => this,
                 ["LeftSplitter"] = () => this,
                 ["RightSplitter"] = () => this,
+                ["MainLayout"] = () => this,
                 ["Main"] = () => this,
                 ["Root"] = () => this
             };
 
-            _factory.HostLocator = () => new HostWindow();
+            _factory.HostLocator = new Dictionary<string, Func<IDockHost>>
+            {
+                ["Dock"] = () => new HostWindow()
+            };
 
             _factory.Update(_layout, this);
 

@@ -16,9 +16,9 @@ namespace Dock.Model
         IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <summary>
-        /// Gets or sets <see cref="IDockHost"/> locator.
+        /// Gets or sets <see cref="IDockHost"/> locator registry.
         /// </summary>
-        Func<IDockHost> HostLocator { get; set; }
+        IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <summary>
         /// Gets context.
@@ -27,6 +27,13 @@ namespace Dock.Model
         /// <param name="context">The default context.</param>
         /// <returns>The located context or default context.</returns>
         object GetContext(string id, object context);
+
+        /// <summary>
+        /// Gets host.
+        /// </summary>
+        /// <param name="id">The host id.</param>
+        /// <returns>The located host.</returns>
+        object GetHost(string id);
 
         /// <summary>
         /// Updates window.

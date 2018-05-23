@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Dock.Model
 {
@@ -151,6 +153,61 @@ namespace Dock.Model
 
             sourceDock.CurrentView = item2;
             targetDock.CurrentView = item1;
+        }
+
+        /// <summary>
+        /// Adds window to dock windows list.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="window">The window to add.</param>
+        public static void AddWindow(this IDock dock, IDockWindow window)
+        {
+            if (dock.Windows == null)
+            {
+                dock.Windows = new ObservableCollection<IDockWindow>();
+            }
+            dock.Windows?.Add(window);
+        }
+
+        /// <summary>
+        /// Removes window from windows list.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="window">The window to remove.</param>
+        public static void RemoveWindow(this IDock dock, IDockWindow window)
+        {
+            dock.Windows?.Remove(window);
+        }
+
+        /// <summary>
+        /// Creates dock window from view.
+        /// </summary>
+        /// <param name="target">The target dock.</param>
+        /// <param name="source">The source dock.</param>
+        /// <param name="sourceIndex">The source view index.</param>
+        /// <param name="context">The context object.</param>
+        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+        public static IDockWindow CreateWindow(this IDock target, IDock source, int sourceIndex, object context)
+        {
+            var view = source.Views[sourceIndex];
+
+            source.RemoveView(sourceIndex);
+
+            var window = new DockWindow()
+            {
+                Id = nameof(DockWindow),
+                Layout = new DockLayout
+                {
+                    Id = nameof(DockLayout),
+                    CurrentView = view,
+                    Views = new ObservableCollection<IDock> { view }
+                }
+            };
+
+            target.AddWindow(window);
+            target.Factory?.Update(window, context);
+
+            return window;
         }
     }
 }

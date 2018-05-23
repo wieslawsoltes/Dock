@@ -3,7 +3,7 @@
 using Avalonia;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.Dock
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
     /// Interaction logic for <see cref="HostWindow"/> xaml.

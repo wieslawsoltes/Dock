@@ -65,18 +65,6 @@ namespace Dock.Model
         /// Hide windows.
         /// </summary>
         void HideWindows();
-
-        /// <summary>
-        /// Adds window.
-        /// </summary>
-        /// <param name="window">The window to add.</param>
-        void AddWindow(IDockWindow window);
-
-        /// <summary>
-        /// Removes window.
-        /// </summary>
-        /// <param name="window">The window to remove.</param>
-        void RemoveWindow(IDockWindow window);
     }
 
     /// <summary>

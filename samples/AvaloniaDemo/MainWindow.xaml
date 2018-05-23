@@ -1,4 +1,4 @@
-﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Window x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
@@ -6,8 +6,6 @@
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idd="clr-namespace:Dock.Avalonia.Dock;assembly=Dock.Avalonia"
-        xmlns:idh="clr-namespace:Dock.Avalonia.Handlers;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
         UseLayoutRounding="True"
@@ -150,19 +148,13 @@
             </Grid>
         </DataTemplate>
     </Window.DataTemplates>
-    <Grid RowDefinitions="Auto,*" Background="Transparent">
-        <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static idh:DockDropHandler.Instance}"/>
-        </i:Interaction.Behaviors>
+    <Grid RowDefinitions="Auto,*">
         <StackPanel Orientation="Horizontal" Grid.Row="0">
             <Button Content="Back" Command="{Binding Layout.GoBack}" IsEnabled="{Binding Layout.CanGoBack}" Margin="4"/>
             <Button Content="Forward" Command="{Binding Layout.GoForward}" IsEnabled="{Binding Layout.CanGoForward}" Margin="4"/>
-            <Button Content="Home" Command="{Binding Layout.Navigate}" CommandParameter="Home" Margin="4"/>
-            <TextBox x:Name="id" Text="Home" Width="100" Margin="4"/>
+            <TextBox x:Name="id" Text="Init" Width="100" Margin="4"/>
             <Button Content="Navigate" Command="{Binding Layout.Navigate}" CommandParameter="{Binding #id.Text}" Margin="4"/>
-            <Button Content="ShowWindows" Command="{Binding Layout.CurrentView.ShowWindows}" Margin="4"/>
-            <Button Content="HideWindows" Command="{Binding Layout.CurrentView.HideWindows}" Margin="4"/>
         </StackPanel>
-        <idd:LayoutControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <idc:LayoutControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
     </Grid>
 </Window>

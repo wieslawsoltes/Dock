@@ -3,17 +3,17 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.Dock
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Interaction logic for <see cref="StripControl"/> xaml.
+    /// Interaction logic for <see cref="LayoutControl"/> xaml.
     /// </summary>
-    public class StripControl : UserControl
+    public class LayoutControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StripControl"/> class.
+        /// Initializes a new instance of the <see cref="LayoutControl"/> class.
         /// </summary>
-        public StripControl()
+        public LayoutControl()
         {
             this.InitializeComponent();
         }

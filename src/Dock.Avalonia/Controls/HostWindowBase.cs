@@ -4,7 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Dock.Model;
 
-namespace Dock.Avalonia
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
     /// Host window base class.

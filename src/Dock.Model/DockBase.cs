@@ -236,18 +236,6 @@ namespace Dock.Model
             }
         }
 
-        /// <inheritdoc/>
-        public virtual void AddWindow(IDockWindow window)
-        {
-            _windows?.Add(window);
-        }
-
-        /// <inheritdoc/>
-        public virtual void RemoveWindow(IDockWindow window)
-        {
-            _windows?.Remove(window);
-        }
-
         /// <summary>
         /// Check whether the <see cref="Id"/> property has changed from its default value.
         /// </summary>

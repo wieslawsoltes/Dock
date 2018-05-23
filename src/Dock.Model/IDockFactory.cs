@@ -57,18 +57,6 @@ namespace Dock.Model
         void Update(IList<IDock> views, object context);
 
         /// <summary>
-        /// Creates dock window from view.
-        /// </summary>
-        /// <param name="layout">The owner layout.</param>
-        /// <param name="context">The context object.</param>
-        /// <param name="source">The source layout.</param>
-        /// <param name="viewIndex">The source view index.</param>
-        /// <param name="x">The X coordinate of window.</param>
-        /// <param name="y">The Y coordinate of window.</param>
-        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow CreateWindow(IDock layout, object context, IDock source, int viewIndex, double x, double y);
-
-        /// <summary>
         /// Creates default layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>

@@ -3,10 +3,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Dock.Avalonia.Helpers;
 using Dock.Model;
 
-namespace Dock.Avalonia.Handlers
+namespace Dock.Avalonia
 {
     public class DockDropHandler : IDropHandler
     {
@@ -167,8 +166,14 @@ namespace Dock.Avalonia.Handlers
                         int itemIndex = strip.ItemContainerGenerator.IndexFromContainer(item);
                         var position = DropHelper.GetPositionScreen(sender, e);
 
-                        var window = layout.Factory?.CreateWindow(layout, context, container, itemIndex, position.X, position.Y);
-                        window?.Present();
+                        var window = layout.CurrentView.CreateWindow(container, itemIndex, context);
+                        window.X = position.X;
+                        window.Y = position.Y;
+                        window.Width = 300;
+                        window.Height = 400;
+                        window.Title = "Dock";
+                        window.Layout.Title = "Dock";
+                        window.Present();
 
                         return true;
                     }

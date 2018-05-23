@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
-namespace Dock.Avalonia.Helpers
+namespace Dock.Avalonia
 {
     public static class DropHelper
     {

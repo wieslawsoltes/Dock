@@ -1,12 +1,11 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Dock.StripControl"
+<UserControl x:Class="Dock.Avalonia.Controls.StripControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-             xmlns:idh="clr-namespace:Dock.Avalonia.Handlers;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Styles>
@@ -24,12 +23,12 @@
     </UserControl.Styles>
     <DockPanel ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static idh:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
             <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1">
                 <i:Interaction.Behaviors>
-                    <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static idh:DockDropHandler.Instance}"/>
+                    <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
                 </i:Interaction.Behaviors>
                 <TabStrip.ItemsPanel>
                     <ItemsPanelTemplate>

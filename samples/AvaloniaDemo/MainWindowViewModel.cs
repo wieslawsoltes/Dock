@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dock.Avalonia.Dock;
-using Dock.Avalonia.Factories;
+using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Factories;
 
 namespace AvaloniaDemo
 {

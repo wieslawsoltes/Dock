@@ -9,7 +9,7 @@ namespace Dock.Model
     /// <summary>
     /// Dock extension methods.
     /// </summary>
-    public static class IDockExtensions
+    public static class DockExtensions
     {
         /// <summary>
         /// Prints dock layout tree to console.

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Dock.Model
 {
-    internal static class IEnumerableExtensions
+    internal static class EnumerableExtensions
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T,IEnumerable<T>> f)
         {

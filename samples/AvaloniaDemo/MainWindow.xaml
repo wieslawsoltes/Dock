@@ -11,7 +11,7 @@
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="Dock Avalonia Demo" Height="700" Width="1200">
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*" Background="Transparent">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>

@@ -70,6 +70,7 @@ namespace AvaloniaDemo.ViewModels
 
             _factory.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
+                [nameof(DockWindow)] = () => new HostWindow(),
                 ["Dock"] = () => new HostWindow()
             };
 

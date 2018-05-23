@@ -8,7 +8,7 @@
         <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
     <Application.DataTemplates>
-        <DataTemplate DataType="local:InitView">
+        <DataTemplate DataType="local:HomeView">
             <Grid>
                 <StackPanel>
                     <TextBlock Text="{Binding Id}"/>

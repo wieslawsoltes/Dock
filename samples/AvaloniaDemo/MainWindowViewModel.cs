@@ -10,7 +10,7 @@ using Dock.Model.Factories;
 
 namespace AvaloniaDemo
 {
-    public class InitView : DockView
+    public class HomeView : DockView
     {
     }
 
@@ -76,7 +76,7 @@ namespace AvaloniaDemo
         {
             // Home
 
-            var homeView = new InitView
+            var homeView = new HomeView
             {
                 Id = "Home",
                 Dock = "",
@@ -410,8 +410,8 @@ namespace AvaloniaDemo
 
             _factory.ContextLocator = new Dictionary<string, Func<object>>
             {
-                ["DockLayout"] = () => this,
-                ["DockWindow"] = () => this,
+                [nameof(DockLayout)] = () => this,
+                [nameof(DockWindow)] = () => this,
                 ["Home"] = () => _layout,
                 ["Center"] = () => this,
                 ["LeftTop1"] = () => this,

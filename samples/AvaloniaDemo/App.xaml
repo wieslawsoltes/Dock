@@ -1,8 +1,144 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<Application xmlns="https://github.com/avaloniaui">
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo">
     <Application.Styles>
         <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
         <StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
+    <Application.DataTemplates>
+        <DataTemplate DataType="local:InitView">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                    <Button Content="Main" Command="{Binding Context.Navigate}" CommandParameter="Main"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:CenterView">
+            <Grid Width="300" Height="300" Background="LightGray">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftTopView1">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftTopView2">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftTopView3">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftBottomView1">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftBottomView2">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:LeftBottomView3">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightTopView1">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightTopView2">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightTopView3">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightBottomView1">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightBottomView2">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:RightBottomView3">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="local:MainView">
+            <Grid>
+                <ContentControl Content="{Binding CurrentView}"/>
+            </Grid>
+        </DataTemplate>
+    </Application.DataTemplates>
 </Application>

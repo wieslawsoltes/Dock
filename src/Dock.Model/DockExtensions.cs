@@ -193,15 +193,24 @@ namespace Dock.Model
 
             source.RemoveView(sourceIndex);
 
+            var dockStrip = new DockStrip
+            {
+                Id = nameof(DockStrip),
+                CurrentView = view,
+                Views = new ObservableCollection<IDock> { view }
+            };
+
+            var dockLayout = new DockLayout
+            {
+                Id = nameof(DockLayout),
+                CurrentView = dockStrip,
+                Views = new ObservableCollection<IDock> { dockStrip }
+            };
+
             var window = new DockWindow()
             {
                 Id = nameof(DockWindow),
-                Layout = new DockLayout
-                {
-                    Id = nameof(DockLayout),
-                    CurrentView = view,
-                    Views = new ObservableCollection<IDock> { view }
-                }
+                Layout = dockLayout
             };
 
             target.AddWindow(window);

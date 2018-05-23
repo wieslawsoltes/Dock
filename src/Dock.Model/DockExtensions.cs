@@ -7,6 +7,17 @@ using System.Collections.ObjectModel;
 namespace Dock.Model
 {
     /// <summary>
+    /// WIP: Defines the available layout split direction.
+    /// </summary>
+    public enum SplitDirection
+    {
+        Left,
+        Bottom,
+        Right,
+        Top
+    }
+
+    /// <summary>
     /// Dock extension methods.
     /// </summary>
     public static class DockExtensions
@@ -217,6 +228,219 @@ namespace Dock.Model
             target.Factory?.Update(window, context);
 
             return window;
+        }
+
+        /// <summary>
+        /// WIP: Replaces view.
+        /// </summary>
+        /// <param name="root">The root dock.</param>
+        /// <param name="source">The source dock.</param>
+        /// <param name="target">The target dock.</param>
+        /// <returns>True when view was replaced, otherwise false.</returns>
+        public static bool ReplaceView(this IDock root, IDock source, IDock target)
+        {
+            if (root.Views != null)
+            {
+                for (int i = 0; i < root.Views.Count; i++)
+                {
+                    if (root.Views[i] == source)
+                    {
+                        root.Views[i] = target;
+                        return true;
+                    }
+                    if (ReplaceView(root.Views[i], source, target) == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// WIP: Creates a new split layout.
+        /// </summary>
+        /// <param name="target">The target dock.</param>
+        /// <param name="context">The context object.</param>
+        /// <param name="direction">The split direction.</param>
+        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
+        public static IDock SplitLayout(this IDock target, object context, SplitDirection direction)
+        {
+            IDock strip1 = null;
+            IDock layout1 = null;
+            IDock strip2 = null;
+            IDock layout2 = null;
+
+            switch (direction)
+            {
+                case SplitDirection.Left:
+                    {
+                        strip1 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = target.CurrentView,
+                            Views = target.Views
+                        };
+
+                        layout1 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Left",
+                            CurrentView = strip1,
+                            Views = new ObservableCollection<IDock> { strip1 }
+                        };
+
+                        strip2 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = null,
+                            Views = new ObservableCollection<IDock>()
+                        };
+
+                        layout2 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Right",
+                            CurrentView = strip2,
+                            Views = new ObservableCollection<IDock> { strip2 }
+                        };
+                    }
+                    break;
+                case SplitDirection.Right:
+                    {
+                        strip1 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = null,
+                            Views = new ObservableCollection<IDock>()
+                        };
+
+                        layout1 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Left",
+                            CurrentView = strip1,
+                            Views = new ObservableCollection<IDock> { strip1 }
+                        };
+
+                        strip2 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = target.CurrentView,
+                            Views = target.Views
+                        };
+
+                        layout2 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Right",
+                            CurrentView = strip2,
+                            Views = new ObservableCollection<IDock> { strip2 }
+                        };
+                    }
+                    break;
+                case SplitDirection.Top:
+                    {
+                        strip1 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = target.CurrentView,
+                            Views = target.Views
+                        };
+
+                        layout1 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Top",
+                            CurrentView = strip1,
+                            Views = new ObservableCollection<IDock> { strip1 }
+                        };
+
+                        strip2 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = null,
+                            Views = new ObservableCollection<IDock>()
+                        };
+
+                        layout2 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Bottom",
+                            CurrentView = strip2,
+                            Views = new ObservableCollection<IDock> { strip2 }
+                        };
+                    }
+                    break;
+                case SplitDirection.Bottom:
+                    {
+                        strip1 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = null,
+                            Views = new ObservableCollection<IDock>()
+                        };
+
+                        layout1 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Top",
+                            CurrentView = strip1,
+                            Views = new ObservableCollection<IDock> { strip1 }
+                        };
+
+                        strip2 = new DockStrip
+                        {
+                            Id = nameof(DockStrip),
+                            CurrentView = target.CurrentView,
+                            Views = target.Views
+                        };
+
+                        layout2 = new DockLayout
+                        {
+                            Id = nameof(DockLayout),
+                            Dock = "Bottom",
+                            CurrentView = strip2,
+                            Views = new ObservableCollection<IDock> { strip2 }
+                        };
+                    }
+                    break;
+            }
+
+            string dock = "";
+
+            switch (direction)
+            {
+                case SplitDirection.Left:
+                case SplitDirection.Right:
+                    dock = "Left";
+                    break;
+                case SplitDirection.Bottom:
+                case SplitDirection.Top:
+                    dock = "Top";
+                    break;
+            }
+
+            var splitLayout = new DockLayout
+            {
+                Id = target.Id,
+                Title = target.Title,
+                CurrentView = layout1,
+                Views = new ObservableCollection<IDock>
+                {
+                    layout1,
+                    new DockSplitter()
+                    {
+                        Id = nameof(DockSplitter),
+                        Dock = dock
+                    },
+                    layout2
+                }
+            };
+
+            target.Factory?.Update(splitLayout, context);
+
+            return splitLayout;
         }
     }
 }

@@ -166,6 +166,10 @@ namespace Dock.Avalonia
                         int itemIndex = strip.ItemContainerGenerator.IndexFromContainer(item);
                         var position = DropHelper.GetPositionScreen(sender, e);
 
+                        // WIP: This is work in progress.
+                        //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
+                        //layout.ReplaceView(container, splitLayout);
+
                         var window = layout.CurrentView.CreateWindow(container, itemIndex, context);
                         window.X = position.X;
                         window.Y = position.Y;

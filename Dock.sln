@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50-CC9F-4DDC-9524-55D56E63A840}"
@@ -31,13 +25,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{83BF9680-B260-41B9-906D-EDC70F1B7DDB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71FD12F4-0BCB-422A-9FB0-4137E898E991}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{83BF9680-B260-41B9-906D-EDC70F1B7DDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71FD12F4-0BCB-422A-9FB0-4137E898E991}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.UnitTests", "tests\Dock.Avalonia.UnitTests\Dock.Avalonia.UnitTests.csproj", "{2A9959DB-769C-4524-A817-507C554615EA}"
 EndProject

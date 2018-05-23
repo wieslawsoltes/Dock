@@ -33,7 +33,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="id">The host id.</param>
         /// <returns>The located host.</returns>
-        object GetHost(string id);
+        IDockHost GetHost(string id);
 
         /// <summary>
         /// Updates window.

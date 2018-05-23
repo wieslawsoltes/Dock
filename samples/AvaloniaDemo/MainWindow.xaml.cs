@@ -3,7 +3,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia;
 using Dock.Avalonia.Controls;
 
 namespace AvaloniaDemo

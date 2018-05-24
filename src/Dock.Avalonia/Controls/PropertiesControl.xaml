@@ -21,8 +21,8 @@
         <TabItem Header="Dock">
             <ScrollViewer>
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-                    <TextBlock Text="Dock" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox Text="{Binding Dock, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+                    <TextBlock Text="Id" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
                     <TextBlock Text="Dock" Grid.Row="1" Grid.Column="0"/>
                     <TextBox Text="{Binding Dock, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
                     <TextBlock Text="Width" Grid.Row="2" Grid.Column="0"/>
@@ -42,22 +42,26 @@
         <TabItem Header="Views">
             <ListBox Items="{Binding Views}">
                 <ListBox.DataTemplates>
-                    <TextBlock Text="{Binding Title}" Classes="drag">
-                        <i:Interaction.Behaviors>
-                            <id:DragBehavior/>
-                        </i:Interaction.Behaviors>
-                    </TextBlock>
+                    <DataTemplate DataType="Dock:IDock">
+                        <TextBlock Text="{Binding Title}" Classes="drag">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </DataTemplate>
                 </ListBox.DataTemplates>
             </ListBox>
         </TabItem>
         <TabItem Header="Windows">
             <ListBox Items="{Binding Windows}">
                 <ListBox.DataTemplates>
-                    <TextBlock Text="{Binding Title}" Classes="drag">
-                        <i:Interaction.Behaviors>
-                            <id:DragBehavior/>
-                        </i:Interaction.Behaviors>
-                    </TextBlock>
+                    <DataTemplate DataType="Dock:IDockWindow">
+                        <TextBlock Text="{Binding Title}" Classes="drag">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </DataTemplate>
                 </ListBox.DataTemplates>
             </ListBox>
         </TabItem>

@@ -19,7 +19,7 @@
     </UserControl.Styles>
     <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="*">
         <TreeView x:Name="root" Grid.Column="0" Grid.Row="0">
-            <TreeViewItem Header="{Binding Title}" Items="{Binding Views}">
+            <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}">
                 <TreeViewItem.Styles>
                     <Style Selector="TreeViewItem">
                         <Setter Property="IsExpanded" Value="True"/>
@@ -41,7 +41,7 @@
             <ContentControl Content="{Binding #root.SelectedItem}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
-                        <ac:PropertiesControl/>
+                        <idc:PropertiesControl/>
                     </DataTemplate>
                 </ContentControl.DataTemplates>
             </ContentControl>

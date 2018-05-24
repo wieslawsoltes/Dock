@@ -9,7 +9,7 @@ using Dock.Model;
 using System.Reactive.Linq;
 
 namespace Dock.Avalonia.Controls
-{    
+{
     /// <summary>
     /// Interaction logic for <see cref="DockTarget"/> xaml.
     /// </summary>
@@ -27,13 +27,9 @@ namespace Dock.Avalonia.Controls
         private Control _rightSelector;
         private Control _centerSelector;
 
-        public DockTarget()
-        {            
-        }
-
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);            
+            base.OnTemplateApplied(e);
 
             _topIndicator = e.NameScope.Find<Grid>("PART_TopIndicator");
             _bottomIndicator = e.NameScope.Find<Grid>("PART_BottomIndicator");
@@ -46,38 +42,33 @@ namespace Dock.Avalonia.Controls
             _leftSelector = e.NameScope.Find<Control>("PART_LeftSelector");
             _rightSelector = e.NameScope.Find<Control>("PART_RightSelector");
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
-
-            this.AddHandler(PointerMovedEvent, (o, s) =>
-            {
-
-            }, global::Avalonia.Interactivity.RoutingStrategies.Tunnel);
         }
 
-        internal DockOperation GetSplitDirection (DragEventArgs e)
+        internal DockOperation GetSplitDirection(DragEventArgs e)
         {
             DockOperation result = DockOperation.Window;
 
-            if(InvalidateIndicator(_leftSelector, _leftIndicator, e))
+            if (InvalidateIndicator(_leftSelector, _leftIndicator, e))
             {
                 result = DockOperation.Left;
             }
 
-            if(InvalidateIndicator(_rightSelector, _rightIndicator, e))
+            if (InvalidateIndicator(_rightSelector, _rightIndicator, e))
             {
                 result = DockOperation.Right;
             }
 
-            if(InvalidateIndicator(_topSelector, _topIndicator, e))
+            if (InvalidateIndicator(_topSelector, _topIndicator, e))
             {
                 result = DockOperation.Top;
             }
 
-            if(InvalidateIndicator(_bottomSelector, _bottomIndicator, e))
+            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, e))
             {
                 result = DockOperation.Bottom;
             }
 
-            if(InvalidateIndicator(_centerSelector, _centerIndicator, e))
+            if (InvalidateIndicator(_centerSelector, _centerIndicator, e))
             {
                 result = DockOperation.Fill;
             }
@@ -85,13 +76,13 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator (Control selector, Grid indicator, DragEventArgs e)
+        private bool InvalidateIndicator(Control selector, Grid indicator, DragEventArgs e)
         {
             bool result = false;
 
-            if(selector != null)
+            if (selector != null)
             {
-                if(selector.InputHitTest(e.GetPosition(selector)) != null)
+                if (selector.InputHitTest(e.GetPosition(selector)) != null)
                 {
                     indicator.Opacity = 0.5;
 
@@ -105,21 +96,5 @@ namespace Dock.Avalonia.Controls
 
             return result;
         }
-
-        protected override void OnPointerMoved(PointerEventArgs e)
-        {
-            base.OnPointerMoved(e);
-        }
-
-        protected override void OnPointerEnter(PointerEventArgs e)
-        {
-            base.OnPointerEnter(e);
-        }
-
-        protected override void OnPointerLeave(PointerEventArgs e)
-        {
-            base.OnPointerLeave(e);
-        }
-
     }
 }

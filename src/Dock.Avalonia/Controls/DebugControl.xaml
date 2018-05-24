@@ -32,6 +32,11 @@
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior/>
                             </i:Interaction.Behaviors>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="_Remove" Command="{Binding RemoveView}" CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </TreeDataTemplate>
                 </TreeViewItem.DataTemplates>

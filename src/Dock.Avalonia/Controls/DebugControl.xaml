@@ -7,6 +7,7 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
              xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
@@ -38,7 +39,7 @@
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
         <Grid Grid.Column="2" Grid.Row="0">
-            <ContentControl Content="{Binding #root.SelectedItem, Converter={x:Static idc:TreeViewSelectedItemToObjectConverter.Instance}}">
+            <ContentControl Content="{Binding #root.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <idc:PropertiesControl/>

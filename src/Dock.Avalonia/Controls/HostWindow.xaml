@@ -11,7 +11,7 @@
         Width="300" Height="400"
         UseLayoutRounding="True"
         WindowState="Normal"
-        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}">
+        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}" HasSystemDecorations="False">
     <Grid Background="Transparent">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding #dock.DataContext}" Handler="{x:Static id:DockDropHandler.Instance}"/>

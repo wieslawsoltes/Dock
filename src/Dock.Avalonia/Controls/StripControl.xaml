@@ -29,6 +29,9 @@
         <Style Selector="TabStrip:singleitem">
             <Setter Property="IsVisible" Value="False" />
         </Style>
+        <Style Selector="Grid.grip:floating">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
     </UserControl.Styles>
 
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
@@ -93,11 +96,11 @@
                 </DataTemplate>
             </TabStrip.DataTemplates>
         </TabStrip>
-        <Border Classes="panel" ZIndex="-1" BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1" Margin="0" Padding="0">
-            <Grid RowDefinitions="25,*">
-                <Grid Background="LightGray">
+        <Border Name="PART_Border" Classes="panel" ZIndex="-1" BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1" Margin="0" Padding="0">
+            <Grid RowDefinitions="25,*" DataContext="{Binding CurrentView}">
+                <Grid Background="LightGray" Name="PART_Grip" Classes="grip">
                     <DockPanel Background="LightGray" LastChildFill="True" Margin="8 0">
-                        <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" />
+                        <TextBlock DockPanel.Dock="Left"  Text="{Binding Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" />
                         <Button Classes="chromeButton" DockPanel.Dock="Right">
                             <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
                         </Button>
@@ -110,7 +113,7 @@
                         <Grid Height="6"  Margin="0 0 10 0" Background="Gray" />
                     </DockPanel>
                 </Grid>
-                <ContentControl Grid.Row="1" Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Padding="4" ZIndex="-1" />
+                <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Padding="4" ZIndex="-1" />
             </Grid>
         </Border>
     </DockPanel>

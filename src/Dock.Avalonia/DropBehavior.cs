@@ -71,10 +71,10 @@ namespace Dock.Avalonia
             AssociatedObject.RemoveHandler(DragDrop.DragLeaveEvent, DragLeave);
             AssociatedObject.RemoveHandler(DragDrop.DragOverEvent, DragOver);
             AssociatedObject.RemoveHandler(DragDrop.DropEvent, Drop);
-        }        
+        }
 
         private void AddAdorner(IVisual visual)
-        {            
+        {
             var layer = AdornerLayer.GetAdornerLayer(visual);
 
             if (layer != null)
@@ -111,7 +111,7 @@ namespace Dock.Avalonia
                     _adorner = null;
                 }
             }
-        }        
+        }
 
         private void DragEnter(object sender, DragEventArgs e)
         {

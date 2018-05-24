@@ -1,0 +1,56 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<UserControl x:Class="Dock.Avalonia.Controls.DebugControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
+             xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             Design.Width="600" Design.Height="540">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.drag">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="*">
+        <TreeView x:Name="root" Grid.Column="0" Grid.Row="0">
+            <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}">
+                <TreeViewItem.Styles>
+                    <Style Selector="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="True"/>
+                    </Style>
+                </TreeViewItem.Styles>
+                <TreeViewItem.DataTemplates>
+                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
+                        <TextBlock Text="{Binding Title}" Classes="drag">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior/>
+                            </i:Interaction.Behaviors>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="_Remove" Command="{Binding RemoveView}" CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                    </TreeDataTemplate>
+                </TreeViewItem.DataTemplates>
+            </TreeViewItem>
+        </TreeView>
+        <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
+        <Grid Grid.Column="2" Grid.Row="0">
+            <ContentControl Content="{Binding #root.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="Dock:IDock">
+                        <idc:PropertiesControl/>
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </Grid>
+    </Grid>
+</UserControl>

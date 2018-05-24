@@ -1,0 +1,69 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<UserControl x:Class="Dock.Avalonia.Controls.PropertiesControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             Design.Width="600" Design.Height="540">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.drag">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </UserControl.Styles>
+    <TabControl>
+        <TabItem Header="Dock">
+            <ScrollViewer>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+                    <TextBlock Text="Id" Grid.Row="0" Grid.Column="0"/>
+                    <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+                    <TextBlock Text="Dock" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Dock, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="Width" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox Text="{Binding Width, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
+                    <TextBlock Text="Height" Grid.Row="3" Grid.Column="0"/>
+                    <TextBox Text="{Binding Height, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
+                    <TextBlock Text="Title" Grid.Row="4" Grid.Column="0"/>
+                    <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="4" Grid.Column="1"/>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Context">
+            <Grid>
+                <TextBlock Text="{Binding Context}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Views">
+            <ListBox Items="{Binding Views}">
+                <ListBox.DataTemplates>
+                    <DataTemplate DataType="Dock:IDock">
+                        <TextBlock Text="{Binding Title}" Classes="drag">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+        </TabItem>
+        <TabItem Header="Windows">
+            <ListBox Items="{Binding Windows}">
+                <ListBox.DataTemplates>
+                    <DataTemplate DataType="Dock:IDockWindow">
+                        <TextBlock Text="{Binding Title}" Classes="drag">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior/>
+                            </i:Interaction.Behaviors>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+        </TabItem>
+    </TabControl>
+</UserControl>

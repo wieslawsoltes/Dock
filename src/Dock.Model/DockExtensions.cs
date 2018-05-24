@@ -11,6 +11,7 @@ namespace Dock.Model
     /// </summary>
     public enum SplitDirection
     {
+        None,
         Left,
         Bottom,
         Right,

@@ -6,9 +6,12 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactivity;
+using Dock.Avalonia.Controls;
+using Dock.Model;
 
 namespace Dock.Avalonia
 {
@@ -68,37 +71,47 @@ namespace Dock.Avalonia
             AssociatedObject.RemoveHandler(DragDrop.DragLeaveEvent, DragLeave);
             AssociatedObject.RemoveHandler(DragDrop.DragOverEvent, DragOver);
             AssociatedObject.RemoveHandler(DragDrop.DropEvent, Drop);
-        }
+        }        
 
         private void AddAdorner(IVisual visual)
-        {
+        {            
             var layer = AdornerLayer.GetAdornerLayer(visual);
+
             if (layer != null)
             {
                 if (_adorner?.Parent is Panel panel)
                 {
-                    panel.Children.Remove(_adorner);
+                    layer.Children.Remove(_adorner);
                     _adorner = null;
                 }
 
-                _adorner = new Rectangle
+                _adorner = new DockTarget
                 {
-                    Fill = new SolidColorBrush(0x80A0C5E8),
                     [AdornerLayer.AdornedElementProperty] = visual,
                 };
+
+                ((ISetLogicalParent)_adorner).SetParent(visual as ILogical);
 
                 layer.Children.Add(_adorner);
             }
         }
 
-        private void RemoveAdorner()
+        private void RemoveAdorner(IVisual visual)
         {
-            if (_adorner?.Parent is Panel panel)
+            System.Console.WriteLine("Removing adorner");
+            var layer = AdornerLayer.GetAdornerLayer(visual);
+
+            if (layer != null)
             {
-                panel.Children.Remove(_adorner);
-                _adorner = null;
+                //?.Children.Remove(_adorner);
+                if (_adorner?.Parent is Panel panel)
+                {
+                    layer.Children.Remove(_adorner);
+                    ((ISetLogicalParent)_adorner).SetParent(null);
+                    _adorner = null;
+                }
             }
-        }
+        }        
 
         private void DragEnter(object sender, DragEventArgs e)
         {
@@ -128,19 +141,18 @@ namespace Dock.Avalonia
 
         private void DragLeave(object sender, RoutedEventArgs e)
         {
-            RemoveAdorner();
+            RemoveAdorner(sender as IVisual);
         }
 
         private void DragOver(object sender, DragEventArgs e)
         {
             bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
-            if (isDock && sender is DockPanel panel)
+
+            if (_adorner is DockTarget target)
             {
-                RemoveAdorner();
-                if (sender is IVisual visual)
-                {
-                    AddAdorner(visual);
-                }
+                var position = DropHelper.GetPosition(sender, e);
+
+                target.GetSplitDirection(e);
             }
 
             if (Handler?.Validate(Context, sender, e) == false)
@@ -160,24 +172,34 @@ namespace Dock.Avalonia
 
         private void Drop(object sender, DragEventArgs e)
         {
-            bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
-            if (isDock && sender is DockPanel panel)
+            SplitDirection? splitDirection = null;
+
+            if(_adorner is DockTarget target)
             {
-                RemoveAdorner();
+                splitDirection = target.GetSplitDirection(e);
             }
 
-            if (Handler?.Execute(Context, sender, e) == false)
+            if (splitDirection == null)
             {
-                if (!isDock)
+                bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
+                if (isDock && sender is DockPanel panel)
                 {
-                    e.DragEffects = DragDropEffects.None;
+                    RemoveAdorner(sender as IVisual);
+                }
+
+                if (Handler?.Execute(Context, sender, e) == false)
+                {
+                    if (!isDock)
+                    {
+                        e.DragEffects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
                     e.Handled = true;
                 }
-            }
-            else
-            {
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
             }
         }
     }

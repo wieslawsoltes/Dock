@@ -1,0 +1,30 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+    <Style Selector="local|DockTarget">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid Name="grid"
+                         RowDefinitions="0.3*,*,0.3*" ColumnDefinitions="0.3*,*,0.3*">
+                    <Grid Background="Red"  ColumnSpan="3" Opacity="1" Name="PART_TopIndicator" />
+                    <Grid Background="Blue"  Grid.Row="2" ColumnSpan="3" Opacity="0" Name="PART_BottomIndicator" />
+                    <Grid Background="Green" RowSpan="3" Opacity="0" Name="PART_LeftIndicator" />
+                    <Grid Background="Orange" Grid.Column="2" RowSpan="3" Opacity="0" Name="PART_RightIndicator"/>
+                    <Grid Background="Purple" ColumnSpan="3" RowSpan="3" Opacity="0" Name="PART_CenterIndicator"/>
+                    <Grid RowSpan="3" ColumnSpan="3">
+                        <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                            <Button Name="PART_TopSelector" Content="^"  BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Column="1" />
+                            <Button Name="PART_BottomSelector" Content="V" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
+                            <Button Name="PART_LeftSelector" Content="[" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="1" />
+                            <Button Name="PART_RightSelector" Content=">" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
+                            <Button Name="PART_CenterSelector" Content="*" Height="40" Width="40" BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="1" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -1,7 +1,7 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Application xmlns="https://github.com/avaloniaui"
-             xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Views="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo">
     <Application.Styles>
         <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
@@ -10,6 +10,9 @@
         <StyleInclude Source="resm:Dock.Avalonia.Controls.DockTarget.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
     <Application.DataTemplates>
+        <DataTemplate DataType="Views:DebugView">
+            <idc:DebugControl DataContext="{Binding Context}"/>
+        </DataTemplate>
         <DataTemplate DataType="Views:HomeView">
             <Grid>
                 <StackPanel>

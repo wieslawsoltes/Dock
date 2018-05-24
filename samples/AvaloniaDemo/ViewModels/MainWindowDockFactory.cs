@@ -16,6 +16,17 @@ namespace AvaloniaDemo.ViewModels
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
+            // Debug
+
+            var debugView = new DebugView
+            {
+                Id = "Debug",
+                Dock = "",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "Debug"
+            };
+
             // Home
 
             var homeView = new HomeView
@@ -250,7 +261,8 @@ namespace AvaloniaDemo.ViewModels
                         {
                             rightBottomView1,
                             rightBottomView2,
-                            rightBottomView3
+                            rightBottomView3,
+                            debugView
                         }
                     }
                 }
@@ -330,6 +342,7 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(DockStrip)] = () => context,
                 [nameof(DockWindow)] = () => context,
                 ["Dock"] = () => context,
+                ["Debug"] = () => layout,
                 ["Home"] = () => layout,
                 ["Center"] = () => context,
                 ["LeftTop1"] = () => context,

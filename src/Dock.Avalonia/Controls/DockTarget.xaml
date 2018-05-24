@@ -7,19 +7,19 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="grid"
-                         RowDefinitions="0.3*,*,0.3*" ColumnDefinitions="0.3*,*,0.3*">
-                    <Grid Background="Red"  ColumnSpan="3" Opacity="1" Name="PART_TopIndicator" />
-                    <Grid Background="Blue"  Grid.Row="2" ColumnSpan="3" Opacity="0" Name="PART_BottomIndicator" />
-                    <Grid Background="Green" RowSpan="3" Opacity="0" Name="PART_LeftIndicator" />
-                    <Grid Background="Orange" Grid.Column="2" RowSpan="3" Opacity="0" Name="PART_RightIndicator"/>
-                    <Grid Background="Purple" ColumnSpan="3" RowSpan="3" Opacity="0" Name="PART_CenterIndicator"/>
-                    <Grid RowSpan="3" ColumnSpan="3">
+                         RowDefinitions="*,*" ColumnDefinitions="*,*">
+                    <Grid Background="Red"  ColumnSpan="2" Opacity="1" Name="PART_TopIndicator" />
+                    <Grid Background="Blue"  Grid.Row="1" ColumnSpan="2" Opacity="0" Name="PART_BottomIndicator" />
+                    <Grid Background="Green" RowSpan="2" Opacity="0" Name="PART_LeftIndicator" />
+                    <Grid Background="Orange" Grid.Column="1" RowSpan="2" Opacity="0" Name="PART_RightIndicator"/>
+                    <Grid Background="Purple" ColumnSpan="2" RowSpan="2" Opacity="0" Name="PART_CenterIndicator"/>
+                    <Grid RowSpan="2" ColumnSpan="2">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
-                            <Button Name="PART_TopSelector" Content="^"  BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Column="1" />
-                            <Button Name="PART_BottomSelector" Content="V" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
-                            <Button Name="PART_LeftSelector" Content="[" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="1" />
-                            <Button Name="PART_RightSelector" Content=">" BorderThickness="1" BorderBrush="Black" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
-                            <Button Name="PART_CenterSelector" Content="*" Height="40" Width="40" BorderThickness="1" BorderBrush="Black" Grid.Row="1" Grid.Column="1" />
+                            <Image Name="PART_TopSelector" Source="resm:Dock.Avalonia.Assets.DockAnchorableTop.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Column="1" />
+                            <Image Name="PART_BottomSelector" Source="resm:Dock.Avalonia.Assets.DockAnchorableBottom.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
+                            <Image Name="PART_LeftSelector" Source="resm:Dock.Avalonia.Assets.DockAnchorableLeft.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Row="1" />
+                            <Image Name="PART_RightSelector" Source="resm:Dock.Avalonia.Assets.DockAnchorableRight.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
+                            <Image Name="PART_CenterSelector" Source="resm:Dock.Avalonia.Assets.DockDocumentInside.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Row="1" Grid.Column="1" />
                         </Grid>
                     </Grid>
                 </Grid>

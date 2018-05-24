@@ -98,7 +98,6 @@ namespace Dock.Avalonia
 
         private void RemoveAdorner(IVisual visual)
         {
-            System.Console.WriteLine("Removing adorner");
             var layer = AdornerLayer.GetAdornerLayer(visual);
 
             if (layer != null)

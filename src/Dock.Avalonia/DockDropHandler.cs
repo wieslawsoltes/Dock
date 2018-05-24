@@ -132,7 +132,9 @@ namespace Dock.Avalonia
                                 break;
 
                             case DockOperation.Left:
-                                sourceLayout.SplitLayout(source.DataContext, operation);
+                                var newLayout = sourceLayout.SplitLayout(source.DataContext, operation);
+
+                                sourceLayout.ReplaceView(sourceLayout, newLayout);
                                 break;
                         }
                     }

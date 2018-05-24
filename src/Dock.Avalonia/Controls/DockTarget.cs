@@ -53,33 +53,33 @@ namespace Dock.Avalonia.Controls
             }, global::Avalonia.Interactivity.RoutingStrategies.Tunnel);
         }
 
-        internal SplitDirection? GetSplitDirection (DragEventArgs e)
+        internal DockOperation GetSplitDirection (DragEventArgs e)
         {
-            SplitDirection? result = null;
+            DockOperation result = DockOperation.Window;
 
             if(InvalidateIndicator(_leftSelector, _leftIndicator, e))
             {
-                result = SplitDirection.Left;
+                result = DockOperation.Left;
             }
 
             if(InvalidateIndicator(_rightSelector, _rightIndicator, e))
             {
-                result = SplitDirection.Right;
+                result = DockOperation.Right;
             }
 
             if(InvalidateIndicator(_topSelector, _topIndicator, e))
             {
-                result = SplitDirection.Top;
+                result = DockOperation.Top;
             }
 
             if(InvalidateIndicator(_bottomSelector, _bottomIndicator, e))
             {
-                result = SplitDirection.Bottom;
+                result = DockOperation.Bottom;
             }
 
             if(InvalidateIndicator(_centerSelector, _centerIndicator, e))
             {
-                result = SplitDirection.None;
+                result = DockOperation.Fill;
             }
 
             return result;

@@ -9,13 +9,14 @@ namespace Dock.Model
     /// <summary>
     /// WIP: Defines the available layout split direction.
     /// </summary>
-    public enum SplitDirection
+    public enum DockOperation
     {
-        None,
+        Fill,
         Left,
         Bottom,
         Right,
-        Top
+        Top,
+        Window
     }
 
     /// <summary>
@@ -265,7 +266,7 @@ namespace Dock.Model
         /// <param name="context">The context object.</param>
         /// <param name="direction">The split direction.</param>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        public static IDock SplitLayout(this IDock target, object context, SplitDirection direction)
+        public static IDock SplitLayout(this IDock target, object context, DockOperation direction)
         {
             IDock layout1 = null;
             IDock layout2 = null;
@@ -275,13 +276,13 @@ namespace Dock.Model
 
             switch (direction)
             {
-                case SplitDirection.Left:
-                case SplitDirection.Right:
+                case DockOperation.Left:
+                case DockOperation.Right:
                     width = target.Width == double.NaN ? double.NaN : target.Width / 2.0;
                     height = target.Height == double.NaN ? double.NaN : target.Height;
                     break;
-                case SplitDirection.Top:
-                case SplitDirection.Bottom:
+                case DockOperation.Top:
+                case DockOperation.Bottom:
                     width = target.Width == double.NaN ? double.NaN : target.Width;
                     height = target.Height == double.NaN ? double.NaN : target.Height / 2.0;
                     dock = "Top";
@@ -308,8 +309,8 @@ namespace Dock.Model
 
             switch (direction)
             {
-                case SplitDirection.Left:
-                case SplitDirection.Top:
+                case DockOperation.Left:
+                case DockOperation.Top:
                     {
                         layout1 = new DockLayout
                         {
@@ -326,8 +327,8 @@ namespace Dock.Model
                         };
                     }
                     break;
-                case SplitDirection.Right:
-                case SplitDirection.Bottom:
+                case DockOperation.Right:
+                case DockOperation.Bottom:
                     {
                         layout1 = new DockLayout
                         {
@@ -348,14 +349,14 @@ namespace Dock.Model
 
             switch (direction)
             {
-                case SplitDirection.Left:
-                case SplitDirection.Right:
+                case DockOperation.Left:
+                case DockOperation.Right:
                     layout1.Dock = "Left";
                     layout2.Dock = "Right";
                     dock = "Left";
                     break;
-                case SplitDirection.Top:
-                case SplitDirection.Bottom:
+                case DockOperation.Top:
+                case DockOperation.Bottom:
                     layout1.Dock = "Top";
                     layout2.Dock = "Bottom";
                     dock = "Top";

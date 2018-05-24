@@ -124,7 +124,7 @@ namespace Dock.Avalonia
                 }
             }
 
-            if (Handler?.Validate(Context, sender, e) == false)
+            if (Handler?.Validate(Context, sender, DockOperation.Fill, e) == false)
             {
                 if (!isDock)
                 {
@@ -155,7 +155,7 @@ namespace Dock.Avalonia
                 target.GetSplitDirection(e);
             }
 
-            if (Handler?.Validate(Context, sender, e) == false)
+            if (Handler?.Validate(Context, sender, DockOperation.Fill, e) == false)
             {
                 if (!isDock)
                 {
@@ -172,34 +172,31 @@ namespace Dock.Avalonia
 
         private void Drop(object sender, DragEventArgs e)
         {
-            SplitDirection? splitDirection = null;
+            DockOperation splitDirection = DockOperation.Fill;
 
-            if(_adorner is DockTarget target)
+            if (_adorner is DockTarget target)
             {
                 splitDirection = target.GetSplitDirection(e);
             }
 
-            if (splitDirection == null)
+            bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
+            if (isDock && sender is DockPanel panel)
             {
-                bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
-                if (isDock && sender is DockPanel panel)
-                {
-                    RemoveAdorner(sender as IVisual);
-                }
+                RemoveAdorner(sender as IVisual);
+            }
 
-                if (Handler?.Execute(Context, sender, e) == false)
+            if (Handler?.Execute(Context, sender, splitDirection, e) == false)
+            {
+                if (!isDock)
                 {
-                    if (!isDock)
-                    {
-                        e.DragEffects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
-                else
-                {
-                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
+                    e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
                 }
+            }
+            else
+            {
+                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
+                e.Handled = true;
             }
         }
     }

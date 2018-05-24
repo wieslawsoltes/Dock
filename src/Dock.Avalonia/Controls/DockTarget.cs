@@ -44,7 +44,7 @@ namespace Dock.Avalonia.Controls
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
         }
 
-        internal DockOperation GetSplitDirection(DragEventArgs e)
+        internal DockOperation GetDockOperation(DragEventArgs e)
         {
             DockOperation result = DockOperation.Window;
 

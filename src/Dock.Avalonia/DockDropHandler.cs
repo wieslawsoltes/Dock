@@ -208,20 +208,20 @@ namespace Dock.Avalonia
             return false;
         }
 
-        public bool Validate(object context, object sender, DockOperation split, DragEventArgs e)
+        public bool Validate(object context, object sender, DockOperation operation, DragEventArgs e)
         {
             if (context is IDock layout)
             {
-                return Validate(layout, layout.Context, sender, e,  split, false);
+                return Validate(layout, layout.Context, sender, e,  operation, false);
             }
             return false;
         }
 
-        public bool Execute(object context, object sender, DockOperation split, DragEventArgs e)
+        public bool Execute(object context, object sender, DockOperation operation, DragEventArgs e)
         {
             if (context is IDock layout)
             {
-                return Validate(layout, layout.Context, sender, e, split, true);
+                return Validate(layout, layout.Context, sender, e, operation, true);
             }
             return false;
         }

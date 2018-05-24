@@ -7,19 +7,6 @@ using System.Collections.ObjectModel;
 namespace Dock.Model
 {
     /// <summary>
-    /// WIP: Defines the available layout split direction.
-    /// </summary>
-    public enum DockOperation
-    {
-        Fill,
-        Left,
-        Bottom,
-        Right,
-        Top,
-        Window
-    }
-
-    /// <summary>
     /// Dock extension methods.
     /// </summary>
     public static class DockExtensions
@@ -264,9 +251,9 @@ namespace Dock.Model
         /// </summary>
         /// <param name="target">The target dock.</param>
         /// <param name="context">The context object.</param>
-        /// <param name="direction">The split direction.</param>
+        /// <param name="operation">The dock operation.</param>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        public static IDock SplitLayout(this IDock target, object context, DockOperation direction)
+        public static IDock SplitLayout(this IDock target, object context, DockOperation operation)
         {
             IDock layout1 = null;
             IDock layout2 = null;
@@ -274,7 +261,7 @@ namespace Dock.Model
             double height = double.NaN;
             string dock = "";
 
-            switch (direction)
+            switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Right:
@@ -307,7 +294,7 @@ namespace Dock.Model
                 Views = target.Views
             };
 
-            switch (direction)
+            switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Top:
@@ -347,7 +334,7 @@ namespace Dock.Model
                     break;
             }
 
-            switch (direction)
+            switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Right:

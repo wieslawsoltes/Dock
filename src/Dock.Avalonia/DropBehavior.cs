@@ -152,7 +152,7 @@ namespace Dock.Avalonia
             {
                 var position = DropHelper.GetPosition(sender, e);
 
-                target.GetSplitDirection(e);
+                target.GetDockOperation(e);
             }
 
             if (Handler?.Validate(Context, sender, DockOperation.Fill, e) == false)
@@ -172,11 +172,11 @@ namespace Dock.Avalonia
 
         private void Drop(object sender, DragEventArgs e)
         {
-            DockOperation splitDirection = DockOperation.Fill;
+            DockOperation operation = DockOperation.Fill;
 
             if (_adorner is DockTarget target)
             {
-                splitDirection = target.GetSplitDirection(e);
+                operation = target.GetDockOperation(e);
             }
 
             bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
@@ -185,7 +185,7 @@ namespace Dock.Avalonia
                 RemoveAdorner(sender as IVisual);
             }
 
-            if (Handler?.Execute(Context, sender, splitDirection, e) == false)
+            if (Handler?.Execute(Context, sender, operation, e) == false)
             {
                 if (!isDock)
                 {

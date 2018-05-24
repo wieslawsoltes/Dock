@@ -11,7 +11,7 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DockDropHandler();
 
-        private bool ValidateTabStrip(IDock layout, DragEventArgs e, bool bExecute, TabStrip strip)
+        private bool ValidateTabStrip(IDock layout, DragEventArgs e, bool bExecute, DockOperation operation, TabStrip strip)
         {
             var sourceItem = e.Data.Get(DragDataFormats.Parent);
             var targetItem = (e.Source as IControl)?.Parent?.Parent;
@@ -100,7 +100,7 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateDockPanel(IDock layout, DragEventArgs e, bool bExecute, DockPanel panel)
+        private bool ValidateDockPanel(IDock layout, DragEventArgs e, bool bExecute, DockOperation operation, DockPanel panel)
         {
             var sourceItem = e.Data.Get(DragDataFormats.Parent);
 
@@ -125,7 +125,18 @@ namespace Dock.Avalonia
                 {
                     if (bExecute)
                     {
-                        sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
+                        switch (operation)
+                        {
+                            case DockOperation.Fill:
+                                sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
+                                break;
+
+                            case DockOperation.Left:
+                                var newLayout = sourceLayout.SplitLayout(source.DataContext, operation);
+
+                                sourceLayout.ReplaceView(sourceLayout, newLayout);
+                                break;
+                        }
                     }
                     return true;
                 }
@@ -144,16 +155,16 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool Validate(IDock layout, object context, object sender, DragEventArgs e, bool bExecute)
+        private bool Validate(IDock layout, object context, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
 
             switch (sender)
             {
                 case TabStrip strip:
-                    return ValidateTabStrip(layout, e, bExecute, strip);
+                    return ValidateTabStrip(layout, e, bExecute, operation, strip);
                 case DockPanel panel:
-                    return ValidateDockPanel(layout, e, bExecute, panel);
+                    return ValidateDockPanel(layout, e, bExecute, operation, panel);
             }
 
             if (e.Data.Get(DragDataFormats.Parent) is TabStripItem item)
@@ -163,24 +174,32 @@ namespace Dock.Avalonia
                 {
                     if (bExecute)
                     {
-                        int itemIndex = strip.ItemContainerGenerator.IndexFromContainer(item);
-                        var position = DropHelper.GetPositionScreen(sender, e);
+                        switch(operation)
+                        {
+                            case DockOperation.Fill:
+                                int itemIndex = strip.ItemContainerGenerator.IndexFromContainer(item);
+                                var position = DropHelper.GetPositionScreen(sender, e);
 
-                        // WIP: This is work in progress.
-                        //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
-                        //layout.ReplaceView(container, splitLayout);
+                                // WIP: This is work in progress.
+                                //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
+                                //layout.ReplaceView(container, splitLayout);
 
-                        var window = layout.CurrentView.CreateWindow(container, itemIndex, context);
-                        window.X = position.X;
-                        window.Y = position.Y;
-                        window.Width = 300;
-                        window.Height = 400;
-                        window.Id = "Dock";
-                        window.Title = "Dock";
-                        window.Layout.Title = "Dock";
-                        window.Present(false);
+                                var window = layout.CurrentView.CreateWindow(container, itemIndex, context);
+                                window.X = position.X;
+                                window.Y = position.Y;
+                                window.Width = 300;
+                                window.Height = 400;
+                                window.Id = "Dock";
+                                window.Title = "Dock";
+                                window.Layout.Title = "Dock";
+                                window.Present(false);
 
-                        return true;
+                                return true;
+
+                            default:
+                                System.Console.WriteLine($"DockSplit: {operation}");
+                                break;
+                        }                        
                     }
                     return true;
                 }
@@ -189,20 +208,20 @@ namespace Dock.Avalonia
             return false;
         }
 
-        public bool Validate(object context, object sender, DragEventArgs e)
+        public bool Validate(object context, object sender, DockOperation split, DragEventArgs e)
         {
             if (context is IDock layout)
             {
-                return Validate(layout, layout.Context, sender, e, false);
+                return Validate(layout, layout.Context, sender, e,  split, false);
             }
             return false;
         }
 
-        public bool Execute(object context, object sender, DragEventArgs e)
+        public bool Execute(object context, object sender, DockOperation split, DragEventArgs e)
         {
             if (context is IDock layout)
             {
-                return Validate(layout, layout.Context, sender, e, true);
+                return Validate(layout, layout.Context, sender, e, split, true);
             }
             return false;
         }

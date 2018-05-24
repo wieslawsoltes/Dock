@@ -7,7 +7,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*">
-                    <Grid Background="Red" ColumnSpan="2" Opacity="1" Name="PART_TopIndicator" />
+                    <Grid Background="Red" ColumnSpan="2" Opacity="0" Name="PART_TopIndicator" />
                     <Grid Background="Blue" Grid.Row="1" ColumnSpan="2" Opacity="0" Name="PART_BottomIndicator" />
                     <Grid Background="Green" RowSpan="2" Opacity="0" Name="PART_LeftIndicator" />
                     <Grid Background="Orange" Grid.Column="1" RowSpan="2" Opacity="0" Name="PART_RightIndicator"/>

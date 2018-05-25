@@ -99,7 +99,7 @@
         <Border Name="PART_Border" Classes="panel" ZIndex="-1" BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1" Margin="0" Padding="0">
             <Grid RowDefinitions="25,*" DataContext="{Binding CurrentView}">
                 <Grid Background="LightGray" Name="PART_Grip" Classes="grip">
-                    <DockPanel Background="LightGray" LastChildFill="True" Margin="8 0">
+                    <DockPanel LastChildFill="True" Margin="8 0">
                         <TextBlock DockPanel.Dock="Left"  Text="{Binding Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" />
                         <Button Classes="chromeButton" DockPanel.Dock="Right">
                             <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
@@ -110,7 +110,19 @@
                         <Button Classes="chromeButton" DockPanel.Dock="Right">
                             <Image Source="resm:Dock.Avalonia.Assets.PinMenu_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
                         </Button>
-                        <Grid Height="6"  Margin="0 0 10 0" Background="Gray" />
+                        <Grid Height="5"  Margin="0 0 10 0">
+                            <Grid.Background>
+                                <VisualBrush DestinationRect="0,0,4,5" TileMode="Tile" Stretch="UniformToFill">
+                                    <VisualBrush.Visual>
+                                        <Canvas Width="4" Height="5"  Background="Transparent">
+                                            <Rectangle Height="1" Width="1" Canvas.Left="2" Fill="#474747" />
+                                            <Rectangle Height="1" Width="1" Canvas.Top="2" Fill="#474747" />
+                                            <Rectangle Height="1" Width="1" Canvas.Left="2" Canvas.Top="4" Fill="#474747" />
+                                        </Canvas>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Grid.Background>
+                        </Grid>
                     </DockPanel>
                 </Grid>
                 <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Padding="4" ZIndex="-1" />

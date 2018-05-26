@@ -131,6 +131,36 @@ namespace Dock.Model
         void SplitToWindow(IDock dock);
 
         /// <summary>
+        /// Converts dock to <see cref="IDockLayout"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToLayout(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="IDockRoot"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToRoot(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="IDockSplitter"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToSplitter(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="IDockStrip"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToStrip(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="IDockView"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToView(IDock dock);
+
+        /// <summary>
         /// Creates layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>

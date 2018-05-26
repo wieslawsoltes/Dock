@@ -34,15 +34,49 @@
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="_Split">
+                                        <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
+                                        <Separator/>
+                                        <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
+                                        <Separator/>
+                                        <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
+                                        <Separator/>
+                                        <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
+                                    </MenuItem>
                                     <Separator/>
-                                    <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="_Add">
+                                        <MenuItem Header="Add _Layout" Command="{Binding Factory.AddLayout}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Add _Root" Command="{Binding Factory.AddRoot}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Add _Splitter" Command="{Binding Factory.AddSplitter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Add S_trip" Command="{Binding Factory.AddStrip}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Add _View" Command="{Binding Factory.AddView}" CommandParameter="{Binding}"/>
+                                    </MenuItem>
                                     <Separator/>
-                                    <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
-                                    <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Insert _Before">
+                                        <MenuItem Header="Insert _Layout Before" Command="{Binding Factory.InsertLayoutBefore}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _Root Before" Command="{Binding Factory.InsertRootBefore}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _Splitter Before" Command="{Binding Factory.InsertSplitterBefore}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert S_trip Before" Command="{Binding Factory.InsertStripBefore}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _View Before" Command="{Binding Factory.InsertViewBefore}" CommandParameter="{Binding}"/>
+                                    </MenuItem>
                                     <Separator/>
-                                    <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Insert _After">
+                                        <MenuItem Header="Insert _Layout After" Command="{Binding Factory.InsertLayoutAfter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _Root After" Command="{Binding Factory.InsertRootAfter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _Splitter After" Command="{Binding Factory.InsertSplitterAfter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert S_trip After" Command="{Binding Factory.InsertStripAfter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Insert _View After" Command="{Binding Factory.InsertViewAfter}" CommandParameter="{Binding}"/>
+                                    </MenuItem>
+                                    <Separator/>
+                                    <MenuItem Header="_Convert">
+                                        <MenuItem Header="Convert to _Layout" Command="{Binding Factory.ConvertToLayout}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Convert to _Root" Command="{Binding Factory.ConvertToRoot}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Convert to _Splitter" Command="{Binding Factory.ConvertToSplitter}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Convert to S_trip" Command="{Binding Factory.ConvertToStrip}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="Convert to _View" Command="{Binding Factory.ConvertToView}" CommandParameter="{Binding}"/>
+                                    </MenuItem>
                                     <Separator/>
                                     <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
                                 </ContextMenu>

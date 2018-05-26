@@ -147,7 +147,7 @@ namespace Dock.Model.Factories
                         if (layout != null)
                         {
                             Replace(dock, layout);
-                            dock.Factory?.Update(layout, dock.Context, dock.Parent);
+                            Update(layout, dock.Context, dock.Parent);
                         }
                     }
                     break;
@@ -190,6 +190,79 @@ namespace Dock.Model.Factories
         public void SplitToWindow(IDock dock)
         {
             // TODO:
+        }
+
+        /// <summary>
+        /// Copies properties from source to destination dock.
+        /// </summary>
+        /// <param name="source">The source dock.</param>
+        /// <param name="destination">The destination dock.</param>
+        /// <param name="bCopyViews">The flag indicating whether to copy source views.</param>
+        /// <param name="bCopyWindows">The flag indicating whether to copy source windows.</param>
+        private void Copy(IDock source, IDock destination, bool bCopyViews, bool bCopyWindows)
+        {
+            destination.Id = source.Id;
+            destination.Dock = source.Dock;
+            destination.Width = source.Width;
+            destination.Height = source.Height;
+            destination.Title = source.Title;
+
+            if (bCopyViews)
+            {
+                destination.Views = source.Views;
+                destination.CurrentView = source.CurrentView;
+                destination.DefaultView = source.DefaultView;
+            }
+
+            if (bCopyWindows)
+            {
+                destination.Windows = source.Windows;
+            }
+        }
+
+        /// <inheritdoc/>
+        public void ConvertToLayout(IDock dock)
+        {
+            var layout = new DockLayout();
+            Copy(dock, layout, true, true);
+            Update(layout, dock.Context, dock.Parent);
+            Replace(dock, layout);
+        }
+
+        /// <inheritdoc/>
+        public void ConvertToRoot(IDock dock)
+        {
+            var layout = new DockRoot();
+            Copy(dock, layout, true, true);
+            Update(layout, dock.Context, dock.Parent);
+            Replace(dock, layout);
+        }
+
+        /// <inheritdoc/>
+        public void ConvertToSplitter(IDock dock)
+        {
+            var layout = new DockSplitter();
+            Copy(dock, layout, false, false);
+            Update(layout, dock.Context, dock.Parent);
+            Replace(dock, layout);
+        }
+
+        /// <inheritdoc/>
+        public void ConvertToStrip(IDock dock)
+        {
+            var layout = new DockStrip();
+            Copy(dock, layout, true, false);
+            Update(layout, dock.Context, dock.Parent);
+            Replace(dock, layout);
+        }
+
+        /// <inheritdoc/>
+        public void ConvertToView(IDock dock)
+        {
+            var layout = new DockView();
+            Copy(dock, layout, false, true);
+            Update(layout, dock.Context, dock.Parent);
+            Replace(dock, layout);
         }
 
         /// <inheritdoc/>

@@ -78,34 +78,40 @@ namespace Dock.Model
     public interface IDock : IDockNavigation, IDockWindows
     {
         /// <summary>
-        /// Gets or sets id.
+        /// Gets or sets dock id.
         /// </summary>
         string Id { get; set; }
 
         /// <summary>
-        /// Gets or sets dock.
+        /// Gets or sets dock position.
         /// </summary>
         string Dock { get; set; }
 
         /// <summary>
-        /// Gets or sets width.
+        /// Gets or sets dock width.
         /// </summary>
         double Width { get; set; }
 
         /// <summary>
-        /// Gets or sets height.
+        /// Gets or sets dock height.
         /// </summary>
         double Height { get; set; }
 
         /// <summary>
-        /// Gets view title.
+        /// Gets or sets dock title.
         /// </summary>
         string Title { get; set; }
 
         /// <summary>
-        /// Gets view context.
+        /// Gets or sets dock context.
         /// </summary>
         object Context { get; set; }
+
+        /// <summary>
+        /// Gets or sets dock parent.
+        /// </summary>
+        /// <remarks>If parrent is <see cref="null"/> than dock is root.</remarks>
+        IDock Parent { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.

@@ -44,6 +44,11 @@ namespace Dock.Model
         object Context { get; set; }
 
         /// <summary>
+        /// Gets or sets window owner dock.
+        /// </summary>
+        IDock Owner { get; set; }
+
+        /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
         IDockFactory Factory { get; set; }

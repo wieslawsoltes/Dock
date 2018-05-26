@@ -214,40 +214,13 @@ namespace Dock.Model
             };
 
             target.AddWindow(window);
-            target.Factory?.Update(window, context);
+            target.Factory?.Update(window, context, target);
 
             return window;
         }
 
         /// <summary>
-        /// WIP: Replaces view.
-        /// </summary>
-        /// <param name="root">The root dock.</param>
-        /// <param name="source">The source dock.</param>
-        /// <param name="target">The target dock.</param>
-        /// <returns>True when view was replaced, otherwise false.</returns>
-        public static bool ReplaceView(this IDock root, IDock source, IDock target)
-        {
-            if (root.Views != null)
-            {
-                for (int i = 0; i < root.Views.Count; i++)
-                {
-                    if (root.Views[i] == source)
-                    {
-                        root.Views[i] = target;
-                        return true;
-                    }
-                    if (ReplaceView(root.Views[i], source, target) == true)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// WIP: Creates a new split layout.
+        /// Creates a new split layout.
         /// </summary>
         /// <param name="target">The target dock.</param>
         /// <param name="context">The context object.</param>
@@ -255,124 +228,88 @@ namespace Dock.Model
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
         public static IDock SplitLayout(this IDock target, object context, DockOperation operation)
         {
-            IDock layout1 = null;
-            IDock layout2 = null;
             double width = double.NaN;
             double height = double.NaN;
-            string dock = "";
+            string originalDock = target.Dock;
+            double originalWidth = target.Width;
+            double originalHeight = target.Height;
 
             switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Right:
-                    width = target.Width == double.NaN ? double.NaN : target.Width / 2.0;
+                    width = originalWidth == double.NaN ? double.NaN : originalWidth / 2.0;
                     height = target.Height == double.NaN ? double.NaN : target.Height;
                     break;
                 case DockOperation.Top:
                 case DockOperation.Bottom:
-                    width = target.Width == double.NaN ? double.NaN : target.Width;
-                    height = target.Height == double.NaN ? double.NaN : target.Height / 2.0;
-                    dock = "Top";
+                    width = originalWidth == double.NaN ? double.NaN : originalWidth;
+                    height = originalHeight == double.NaN ? double.NaN : originalHeight / 2.0;
                     break;
             }
 
-            IDock emptyStrip = new DockStrip
+            IDock split = new DockLayout
             {
-                Id = nameof(DockStrip),
+                Id = nameof(DockLayout),
+                Title = nameof(DockLayout),
                 Width = width,
                 Height = height,
                 CurrentView = null,
-                Views = new ObservableCollection<IDock>()
-            };
-
-            IDock targetStrip = new DockStrip
-            {
-                Id = target.Id,
-                Width = width,
-                Height = height,
-                CurrentView = target.CurrentView,
-                Views = target.Views
+                Views = null
             };
 
             switch (operation)
             {
                 case DockOperation.Left:
-                case DockOperation.Top:
-                    {
-                        layout1 = new DockLayout
-                        {
-                            Id = nameof(DockLayout),
-                            CurrentView = null,
-                            Views = new ObservableCollection<IDock> { targetStrip }
-                        };
-
-                        layout2 = new DockLayout
-                        {
-                            Id = nameof(DockLayout),
-                            CurrentView = null,
-                            Views = new ObservableCollection<IDock> { emptyStrip }
-                        };
-                    }
+                    target.Dock = "Left";
+                    target.Width = width;
+                    split.Dock = "Right";
+                    split.Width = width;
                     break;
                 case DockOperation.Right:
+                    target.Dock = "Right";
+                    target.Width = width;
+                    split.Dock = "Left";
+                    split.Width = width;
+                    break;
+                case DockOperation.Top:
+                    target.Dock = "Top";
+                    target.Height = height;
+                    split.Dock = "Bottom";
+                    split.Height = height;
+                    break;
                 case DockOperation.Bottom:
-                    {
-                        layout1 = new DockLayout
-                        {
-                            Id = nameof(DockLayout),
-                            CurrentView = null,
-                            Views = new ObservableCollection<IDock> { emptyStrip }
-                        };
-
-                        layout2 = new DockLayout
-                        {
-                            Id = nameof(DockLayout),
-                            CurrentView = null,
-                            Views = new ObservableCollection<IDock> { targetStrip }
-                        };
-                    }
+                    target.Dock = "Bottom";
+                    target.Height = height;
+                    split.Dock = "Top";
+                    split.Height = height;
                     break;
             }
 
-            switch (operation)
-            {
-                case DockOperation.Left:
-                case DockOperation.Right:
-                    layout1.Dock = "Left";
-                    layout2.Dock = "Right";
-                    dock = "Left";
-                    break;
-                case DockOperation.Top:
-                case DockOperation.Bottom:
-                    layout1.Dock = "Top";
-                    layout2.Dock = "Bottom";
-                    dock = "Top";
-                    break;
-            }
-
-            var splitLayout = new DockLayout
+            var layout = new DockLayout
             {
                 Id = nameof(DockLayout),
-                Dock = "",
-                Width = double.NaN,
-                Height = double.NaN,
-                Title = target.Title,
+                Dock = originalDock,
+                Width = originalWidth,
+                Height = originalHeight,
+                Title = nameof(DockLayout),
                 CurrentView = null,
                 Views = new ObservableCollection<IDock>
                 {
-                    layout1,
+                    (target.Dock == "Left" || target.Dock == "Top") ? target : split,
                     new DockSplitter()
                     {
                         Id = nameof(DockSplitter),
-                        Dock = dock
+                        Title = nameof(DockSplitter),
+                        Dock = (target.Dock == "Left" || target.Dock == "Right") ? "Left" : "Top",
+                        Width = double.NaN,
+                        Height = double.NaN,
                     },
-                    layout2
+                    (target.Dock == "Right" || target.Dock == "Bottom") ? target : split,
                 }
             };
 
-            target.Factory?.Update(splitLayout, context);
-
-            return splitLayout;
+            return layout;
         }
     }
 }

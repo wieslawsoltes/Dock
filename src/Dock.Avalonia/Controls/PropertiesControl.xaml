@@ -18,29 +18,44 @@
         </Style>
     </UserControl.Styles>
     <TabControl>
+        <TabControl.Styles>
+            <Style Selector="TabStripItem">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+            <Style Selector="TextBlock">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+            <Style Selector="TextBox">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
+        </TabControl.Styles>
         <TabItem Header="Dock">
             <ScrollViewer>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-                    <TextBlock Text="Id" Grid.Row="0" Grid.Column="0"/>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+                    <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
                     <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock Text="Dock" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Text="Dock:" Grid.Row="1" Grid.Column="0"/>
                     <TextBox Text="{Binding Dock, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBlock Text="Width" Grid.Row="2" Grid.Column="0"/>
+                    <TextBlock Text="Width:" Grid.Row="2" Grid.Column="0"/>
                     <TextBox Text="{Binding Width, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBlock Text="Height" Grid.Row="3" Grid.Column="0"/>
+                    <TextBlock Text="Height:" Grid.Row="3" Grid.Column="0"/>
                     <TextBox Text="{Binding Height, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
-                    <TextBlock Text="Title" Grid.Row="4" Grid.Column="0"/>
+                    <TextBlock Text="Title:" Grid.Row="4" Grid.Column="0"/>
                     <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="4" Grid.Column="1"/>
+                    <TextBlock Text="Parent:" Grid.Row="5" Grid.Column="0"/>
+                    <TextBox Text="{Binding Parent.Title, Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
                 </Grid>
             </ScrollViewer>
         </TabItem>
         <TabItem Header="Context">
-            <Grid>
+            <Grid Margin="4">
                 <TextBlock Text="{Binding Context}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </TabItem>
         <TabItem Header="Views">
-            <ListBox Items="{Binding Views}">
+            <ListBox Items="{Binding Views}" Margin="4">
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <TextBlock Text="{Binding Title}" Classes="drag">
@@ -53,7 +68,7 @@
             </ListBox>
         </TabItem>
         <TabItem Header="Windows">
-            <ListBox Items="{Binding Windows}">
+            <ListBox Items="{Binding Windows}" Margin="4">
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IDockWindow">
                         <TextBlock Text="{Binding Title}" Classes="drag">

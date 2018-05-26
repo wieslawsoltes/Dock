@@ -379,7 +379,7 @@ namespace AvaloniaDemo.ViewModels
                 ["Dock"] = () => new HostWindow()
             };
 
-            this.Update(layout, context);
+            this.Update(layout, context, null);
 
             layout.CurrentView = layout.DefaultView;
             layout.CurrentView.ShowWindows();

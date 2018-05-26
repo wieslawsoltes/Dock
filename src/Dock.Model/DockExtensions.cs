@@ -214,7 +214,7 @@ namespace Dock.Model
             };
 
             target.AddWindow(window);
-            target.Factory?.Update(window, context);
+            target.Factory?.Update(window, context, target);
 
             return window;
         }
@@ -370,7 +370,7 @@ namespace Dock.Model
                 }
             };
 
-            target.Factory?.Update(splitLayout, context);
+            target.Factory?.Update(splitLayout, context, target.Parent);
 
             return splitLayout;
         }

@@ -40,28 +40,32 @@ namespace Dock.Model
         /// </summary>
         /// <param name="window">The window to update.</param>
         /// <param name="context">The context object.</param>
-        void Update(IDockWindow window, object context);
+        /// <param name="owner">The window owner dock.</param>
+        void Update(IDockWindow window, object context, IDock owner);
 
         /// <summary>
         /// Updates windows.
         /// </summary>
         /// <param name="windows">The windows to update.</param>
         /// <param name="context">The context object.</param>
-        void Update(IList<IDockWindow> windows, object context);
+        /// <param name="owner">The window owner dock.</param>
+        void Update(IList<IDockWindow> windows, object context, IDock owner);
 
         /// <summary>
         /// Update view.
         /// </summary>
         /// <param name="view">The view to update.</param>
         /// <param name="context">The context object.</param>
-        void Update(IDock view, object context);
+        /// <param name="parent">The view parent dock.</param>
+        void Update(IDock view, object context, IDock parent);
 
         /// <summary>
         /// Updates views.
         /// </summary>
         /// <param name="views">The views to update.</param>
         /// <param name="context">The context object.</param>
-        void Update(IList<IDock> views, object context);
+        /// <param name="parent">The view parent dock.</param>
+        void Update(IList<IDock> views, object context, IDock parent);
 
         /// <summary>
         /// Creates layout.

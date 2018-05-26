@@ -18,6 +18,7 @@ namespace Dock.Model
         private double _height;
         private string _title;
         private object _context;
+        private IDock _parent;
         private IDockFactory _factory;
         private IList<IDock> _views;
         private IDock _currentView;
@@ -64,6 +65,13 @@ namespace Dock.Model
         {
             get => _context;
             set => Update(ref _context, value);
+        }
+
+        /// <inheritdoc/>
+        public IDock Parent
+        {
+            get => _parent;
+            set => Update(ref _parent, value);
         }
 
         /// <inheritdoc/>
@@ -279,6 +287,12 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeContext() => false;
+
+        /// <summary>
+        /// Check whether the <see cref="Parent"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeParent() => false;
 
         /// <summary>
         /// Check whether the <see cref="Factory"/> property has changed from its default value.

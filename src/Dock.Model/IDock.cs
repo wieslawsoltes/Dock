@@ -108,6 +108,12 @@ namespace Dock.Model
         object Context { get; set; }
 
         /// <summary>
+        /// Gets or sets dock parent.
+        /// </summary>
+        /// <remarks>If parrent is <see cref="null"/> than dock is root.</remarks>
+        IDock Parent { get; set; }
+
+        /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
         IDockFactory Factory { get; set; }

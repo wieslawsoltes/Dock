@@ -149,7 +149,10 @@ namespace Dock.Model
             }
         }
 
-        private void NavigateReset()
+        /// <summary>
+        /// Resets navigation history.
+        /// </summary>
+        private void ResetNavigation()
         {
             if (_back.Count > 0)
             {
@@ -162,13 +165,22 @@ namespace Dock.Model
             }
         }
 
-        private void NavigateSnapshot(IDock dock)
+        /// <summary>
+        /// Makes snapshot of most recent dock.
+        /// </summary>
+        /// <param name="dock"></param>
+        private void MakeSnapshot(IDock dock)
         {
             if (_forward.Count > 0)
                 _forward.Clear();
             _back.Push(dock);
         }
 
+        /// <summary>
+        /// Implementation of the <see cref="IDockNavigation.Navigate(object)"/> method.
+        /// </summary>
+        /// <param name="root">An object that contains the content to navigate to.</param>
+        /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
         public void NavigateImpl(object root, bool bSnapshot)
         {
             if (root == null)
@@ -179,7 +191,7 @@ namespace Dock.Model
                 }
 
                 CurrentView = null;
-                NavigateReset();
+                ResetNavigation();
             }
             else if (root is IDock dock)
             {
@@ -192,7 +204,7 @@ namespace Dock.Model
                 {
                     if (_currentView != null && bSnapshot == true)
                     {
-                        NavigateSnapshot(_currentView);
+                        MakeSnapshot(_currentView);
                     }
 
                     CurrentView = dock;

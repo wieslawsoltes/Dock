@@ -45,7 +45,7 @@
                     <TextBlock Text="Title:" Grid.Row="4" Grid.Column="0"/>
                     <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="4" Grid.Column="1"/>
                     <TextBlock Text="Parent:" Grid.Row="5" Grid.Column="0"/>
-                    <TextBox Text="{Binding Parent.Title, Mode=OneWay}" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
+                    <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
                 </Grid>
             </ScrollViewer>
         </TabItem>

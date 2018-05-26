@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Dock.Model.Factories
 {
@@ -93,6 +92,104 @@ namespace Dock.Model.Factories
             {
                 Update(view, context, parent);
             }
+        }
+
+        /// <inheritdoc/>
+        public void Remove(IDock dock)
+        {
+            if (dock.Parent != null)
+            {
+                dock.Parent.Views?.Remove(dock);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Move(IDock dock, IDock parent)
+        {
+            IDock orignalParent = dock.Parent;
+            int index = orignalParent.Views.IndexOf(dock);
+
+            orignalParent.Views.Remove(dock);
+            parent.Views.Add(dock);
+
+            Update(dock, dock.Context, parent);
+
+            if (orignalParent.Views.Count > 0)
+            {
+                orignalParent.CurrentView = orignalParent.Views[index > 0 ? index - 1 : 0];
+            }
+
+            parent.CurrentView = dock;
+        }
+
+        /// <inheritdoc/>
+        public void Replace(IDock source, IDock destination)
+        {
+            if (source.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(source);
+                parent.Views.RemoveAt(index);
+                parent.Views.Insert(index, destination);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Split(IDock dock, DockOperation operation)
+        {
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Right:
+                case DockOperation.Top:
+                case DockOperation.Bottom:
+                    {
+                        var layout = dock.SplitLayout(dock.Context, operation);
+                        if (layout != null)
+                        {
+                            Replace(dock, layout);
+                            dock.Factory?.Update(layout, dock.Context, dock.Parent);
+                        }
+                    }
+                    break;
+                default:
+                    throw new NotSupportedException($"Not support dock operation: {operation}.");
+            }
+        }
+
+        /// <inheritdoc/>
+        public void SplitToFill(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void SplitToLeft(IDock dock)
+        {
+            Split(dock, DockOperation.Left);
+        }
+
+        /// <inheritdoc/>
+        public void SplitToRight(IDock dock)
+        {
+            Split(dock, DockOperation.Left);
+        }
+
+        /// <inheritdoc/>
+        public void SplitToTop(IDock dock)
+        {
+            Split(dock, DockOperation.Left);
+        }
+
+        /// <inheritdoc/>
+        public void SplitToBottom(IDock dock)
+        {
+            Split(dock, DockOperation.Left);
+        }
+
+        /// <inheritdoc/>
+        public void SplitToWindow(IDock dock)
+        {
+            // TODO:
         }
 
         /// <inheritdoc/>

@@ -34,7 +34,17 @@
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="_Remove" Command="{Binding RemoveView}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
+                                    <Separator/>
+                                    <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
+                                    <Separator/>
+                                    <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
+                                    <Separator/>
+                                    <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
+                                    <Separator/>
+                                    <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>

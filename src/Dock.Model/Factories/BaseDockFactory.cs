@@ -192,6 +192,96 @@ namespace Dock.Model.Factories
             // TODO:
         }
 
+        /// <inheritdoc/>
+        public void AddLayout(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void AddRoot(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void AddSplitter(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void AddStrip(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void AddView(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertLayoutBefore(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertRootBefore(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertSplitterBefore(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertStripBefore(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertViewBefore(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertLayoutAfter(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertRootAfter(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertSplitterAfter(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertStripAfter(IDock dock)
+        {
+            // TODO:
+        }
+
+        /// <inheritdoc/>
+        public void InsertViewAfter(IDock dock)
+        {
+            // TODO:
+        }
+
         /// <summary>
         /// Copies properties from source to destination dock.
         /// </summary>

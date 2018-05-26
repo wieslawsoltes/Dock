@@ -131,6 +131,96 @@ namespace Dock.Model
         void SplitToWindow(IDock dock);
 
         /// <summary>
+        /// Adds <see cref="IDockLayout"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddLayout(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="IDockRoot"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddRoot(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="IDockSplitter"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddSplitter(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="IDockStrip"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddStrip(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="IDockView"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddView(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockLayout"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertLayoutBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockRoot"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertRootBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockSplitter"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertSplitterBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockStrip"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertStripBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockView"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertViewBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockLayout"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertLayoutAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockRoot"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertRootAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockSplitter"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertSplitterAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockStrip"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertStripAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="IDockView"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertViewAfter(IDock dock);
+
+        /// <summary>
         /// Converts dock to <see cref="IDockLayout"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>

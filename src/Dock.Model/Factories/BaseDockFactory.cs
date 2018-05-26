@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Dock.Model.Factories
 {
@@ -192,94 +193,229 @@ namespace Dock.Model.Factories
             // TODO:
         }
 
+        private void InsertLayout(IDock dock, int index, object context)
+        {
+            var layout = new DockLayout
+            {
+                Id = nameof(DockLayout),
+                Title = nameof(DockLayout),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(layout, context, dock);
+
+            dock.Views.Insert(index, layout);
+        }
+
+        private void InsertRoot(IDock dock, int index, object context)
+        {
+            var root = new DockRoot
+            {
+                Id = nameof(DockRoot),
+                Title = nameof(DockRoot),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(root, context, dock);
+
+            dock.Views.Insert(index, root);
+        }
+
+        private void InsertSplitter(IDock dock, int index, object context)
+        {
+            var splitter = new DockSplitter
+            {
+                Id = nameof(DockSplitter),
+                Title = nameof(DockSplitter),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(splitter, context, dock);
+
+            dock.Views.Insert(index, splitter);
+        }
+
+        private void InsertStrip(IDock dock, int index, object context)
+        {
+            var strip = new DockStrip
+            {
+                Id = nameof(DockStrip),
+                Title = nameof(DockStrip),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(strip, context, dock);
+
+            dock.Views.Insert(index, strip);
+        }
+
+        private void InsertView(IDock dock, int index, object context)
+        {
+            var view = new DockView
+            {
+                Id = nameof(DockView),
+                Title = nameof(DockView),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(view, context, dock);
+
+            dock.Views.Insert(index, view);
+        }
+
         /// <inheritdoc/>
         public void AddLayout(IDock dock)
         {
-            // TODO:
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertLayout(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
         public void AddRoot(IDock dock)
         {
-            // TODO:
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertRoot(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
         public void AddSplitter(IDock dock)
         {
-            // TODO:
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertSplitter(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
         public void AddStrip(IDock dock)
         {
-            // TODO:
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertStrip(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
         public void AddView(IDock dock)
         {
-            // TODO:
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertView(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
         public void InsertLayoutBefore(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertLayout(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertRootBefore(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertRoot(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertSplitterBefore(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertSplitter(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertStripBefore(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertStrip(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertViewBefore(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertView(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertLayoutAfter(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertLayout(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertRootAfter(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertRoot(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertSplitterAfter(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertSplitter(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertStripAfter(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertStrip(parent, index, parent.Context);
+            }
         }
 
         /// <inheritdoc/>
         public void InsertViewAfter(IDock dock)
         {
-            // TODO:
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertView(parent, index, parent.Context);
+            }
         }
 
         /// <summary>

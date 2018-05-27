@@ -3,11 +3,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
-using Avalonia.Media;
 using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactivity;
 using Dock.Avalonia.Controls;
@@ -98,12 +96,10 @@ namespace Dock.Avalonia
 
         private void RemoveAdorner(IVisual visual)
         {
-            System.Console.WriteLine("Removing adorner");
             var layer = AdornerLayer.GetAdornerLayer(visual);
 
             if (layer != null)
             {
-                //?.Children.Remove(_adorner);
                 if (_adorner?.Parent is Panel panel)
                 {
                     layer.Children.Remove(_adorner);
@@ -115,7 +111,10 @@ namespace Dock.Avalonia
 
         private void DragEnter(object sender, DragEventArgs e)
         {
-            bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
+            object sourceContext = e.Data.Get(DragDataFormats.Context);
+            object targetContext = Context;
+            bool isDock = sourceContext is IDock sourceLayout;
+
             if (isDock && sender is DockPanel panel)
             {
                 if (sender is IVisual visual)
@@ -124,7 +123,7 @@ namespace Dock.Avalonia
                 }
             }
 
-            if (Handler?.Validate(Context, sender, DockOperation.Fill, e) == false)
+            if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
             {
                 if (!isDock)
                 {
@@ -146,7 +145,9 @@ namespace Dock.Avalonia
 
         private void DragOver(object sender, DragEventArgs e)
         {
-            bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
+            object sourceContext = e.Data.Get(DragDataFormats.Context);
+            object targetContext = Context;
+            bool isDock = sourceContext is IDock sourceLayout;
 
             if (_adorner is DockTarget target)
             {
@@ -155,7 +156,7 @@ namespace Dock.Avalonia
                 target.GetDockOperation(e);
             }
 
-            if (Handler?.Validate(Context, sender, DockOperation.Fill, e) == false)
+            if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
             {
                 if (!isDock)
                 {
@@ -173,19 +174,21 @@ namespace Dock.Avalonia
         private void Drop(object sender, DragEventArgs e)
         {
             DockOperation operation = DockOperation.Fill;
+            object sourceContext = e.Data.Get(DragDataFormats.Context);
+            object targetContext = Context;
+            bool isDock = sourceContext is IDock sourceLayout;
 
             if (_adorner is DockTarget target)
             {
                 operation = target.GetDockOperation(e);
             }
 
-            bool isDock = e.Data.Get(DragDataFormats.Parent) is TabStripItem item;
             if (isDock && sender is DockPanel panel)
             {
                 RemoveAdorner(sender as IVisual);
             }
 
-            if (Handler?.Execute(Context, sender, operation, e) == false)
+            if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
             {
                 if (!isDock)
                 {

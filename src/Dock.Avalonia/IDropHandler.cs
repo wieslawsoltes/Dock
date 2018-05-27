@@ -7,7 +7,7 @@ namespace Dock.Avalonia
 {
     public interface IDropHandler
     {
-        bool Validate(object context, object sender, DockOperation operation, DragEventArgs e);
-        bool Execute(object context, object sender, DockOperation operation, DragEventArgs e);
+        bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e);
+        bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e);
     }
 }

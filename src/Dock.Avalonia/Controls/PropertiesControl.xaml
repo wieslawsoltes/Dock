@@ -60,7 +60,7 @@
                     <DataTemplate DataType="Dock:IDock">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior/>
+                                <id:DragBehavior Context="{Binding}"/>
                             </i:Interaction.Behaviors>
                         </TextBlock>
                     </DataTemplate>
@@ -73,7 +73,7 @@
                     <DataTemplate DataType="Dock:IDockWindow">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior/>
+                                <id:DragBehavior Context="{Binding}"/>
                             </i:Interaction.Behaviors>
                         </TextBlock>
                     </DataTemplate>

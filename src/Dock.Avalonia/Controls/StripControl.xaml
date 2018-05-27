@@ -23,12 +23,12 @@
     </UserControl.Styles>
     <DockPanel ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
             <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1">
                 <i:Interaction.Behaviors>
-                    <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
                 </i:Interaction.Behaviors>
                 <TabStrip.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -56,7 +56,8 @@
                     <DataTemplate DataType="Dock:IDockView">
                         <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior/>
+                                <id:DragBehavior Context="{Binding}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
                         </StackPanel>

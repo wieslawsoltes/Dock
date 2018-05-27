@@ -141,6 +141,8 @@ namespace Dock.Avalonia
         private void DragLeave(object sender, RoutedEventArgs e)
         {
             RemoveAdorner(sender as IVisual);
+
+            Handler?.Cancel(sender, e);
         }
 
         private void DragOver(object sender, DragEventArgs e)

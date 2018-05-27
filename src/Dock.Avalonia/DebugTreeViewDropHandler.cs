@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Model;
 
 namespace Dock.Avalonia
@@ -53,6 +54,10 @@ namespace Dock.Avalonia
                 return Validate(sourceLayout, targetLayout, sender, e, true);
             }
             return false;
+        }
+
+        public void Cancel(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

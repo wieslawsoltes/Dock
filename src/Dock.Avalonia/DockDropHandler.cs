@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Diagnostics;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Model;
 
 namespace Dock.Avalonia
@@ -217,6 +218,10 @@ namespace Dock.Avalonia
                 return Validate(sourceLayout, targetLayout, sender, e, operation, true);
             }
             return false;
+        }
+
+        public void Cancel(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

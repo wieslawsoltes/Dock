@@ -56,6 +56,38 @@ namespace Dock.Model
         }
 
         /// <summary>
+        /// Searches for root layout.
+        /// </summary>
+        /// <param name="dock">The dock to find root for.</param>
+        /// <returns>The root layout instance or null if root layout was not found.</returns>
+        public static IDock FindRootLayout(this IDock dock)
+        {
+            if (dock.Parent == null)
+            {
+                return dock;
+            }
+
+            if (dock.Views != null)
+            {
+                foreach (var view in dock.Views)
+                {
+                    if (view.Parent == null)
+                    {
+                        return view;
+                    }
+
+                    var result = view.FindRootLayout();
+                    if (result == null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Remove view from the dock.
         /// </summary>
         /// <param name="dock">The views dock.</param>

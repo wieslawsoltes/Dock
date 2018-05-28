@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Controls.StripControl"
+<UserControl x:Class="Dock.Avalonia.Controls.ToolControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
@@ -33,7 +33,6 @@
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </UserControl.Styles>
-
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>

@@ -11,7 +11,7 @@
         Width="300" Height="400"
         UseLayoutRounding="True"
         WindowState="Normal"
-        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}" HasSystemDecorations="False">
+        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}" HasSystemDecorations="True">
     <Border BorderThickness="1" BorderBrush="SkyBlue">
         <AdornerDecorator>
             <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">

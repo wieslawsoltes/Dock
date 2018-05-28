@@ -77,7 +77,7 @@ namespace Dock.Model
                     }
 
                     var result = view.FindRootLayout();
-                    if (result == null)
+                    if (result != null)
                     {
                         return result;
                     }

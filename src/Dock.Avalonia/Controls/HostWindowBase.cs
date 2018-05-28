@@ -16,11 +16,17 @@ namespace Dock.Avalonia.Controls
         {
             if (isDialog)
             {
-                this.ShowDialog();
+                if (!this.IsVisible)
+                {
+                    this.ShowDialog();
+                }
             }
             else
             {
-                this.Show();
+                if (!this.IsVisible)
+                {
+                    this.Show();
+                }
             }
         }
 

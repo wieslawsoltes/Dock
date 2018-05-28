@@ -1,6 +1,6 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Controls.PropertiesControl"
+<UserControl x:Class="Dock.Avalonia.Controls.DockPropertiesControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
@@ -16,24 +16,25 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
+        <Style Selector="TabStripItem">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
     </UserControl.Styles>
     <TabControl>
-        <TabControl.Styles>
-            <Style Selector="TabStripItem">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="FontSize" Value="12"/>
-            </Style>
-            <Style Selector="TextBlock">
-                <Setter Property="Margin" Value="2"/>
-            </Style>
-            <Style Selector="TextBox">
-                <Setter Property="Margin" Value="2"/>
-            </Style>
-            <Style Selector="CheckBox">
-                <Setter Property="Margin" Value="2"/>
-            </Style>
-        </TabControl.Styles>
         <TabItem Header="Dock">
             <ScrollViewer>
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">

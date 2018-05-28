@@ -182,9 +182,6 @@ namespace Dock.Avalonia
                                         window.Y = position.Y;
                                         window.Width = 300;
                                         window.Height = 400;
-                                        window.Id = "Dock";
-                                        window.Title = "Dock";
-                                        window.Layout.Title = "Dock";
                                         window.Present(false);
 
                                         return true;

@@ -498,24 +498,28 @@ namespace Dock.Model.Factories
 
             source.RemoveView(sourceIndex);
 
-            var dockStrip = new DockStrip
+            var strip = new DockStrip
             {
                 Id = nameof(DockStrip),
+                Title = nameof(DockStrip),
                 CurrentView = view,
                 Views = new ObservableCollection<IDock> { view }
             };
 
-            var dockLayout = new DockLayout
+            var root = new DockRoot
             {
-                Id = nameof(DockLayout),
-                CurrentView = dockStrip,
-                Views = new ObservableCollection<IDock> { dockStrip }
+                Id = nameof(DockRoot),
+                Title = nameof(DockRoot),
+                CurrentView = strip,
+                DefaultView = strip,
+                Views = new ObservableCollection<IDock> { strip  }
             };
 
             var window = new DockWindow()
             {
                 Id = nameof(DockWindow),
-                Layout = dockLayout
+                Title = nameof(DockWindow),
+                Layout = root
             };
 
             target.AddWindow(window);

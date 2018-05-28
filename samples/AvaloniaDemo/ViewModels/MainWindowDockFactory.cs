@@ -338,10 +338,10 @@ namespace AvaloniaDemo.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
+                [nameof(DockRoot)] = () => context,
                 [nameof(DockLayout)] = () => context,
                 [nameof(DockStrip)] = () => context,
                 [nameof(DockWindow)] = () => context,
-                ["Dock"] = () => context,
                 ["Debug"] = () => layout,
                 ["Home"] = () => layout,
                 ["Center"] = () => context,
@@ -369,8 +369,7 @@ namespace AvaloniaDemo.ViewModels
                 ["LeftSplitter"] = () => context,
                 ["RightSplitter"] = () => context,
                 ["MainLayout"] = () => context,
-                ["Main"] = () => context,
-                ["Root"] = () => context
+                ["Main"] = () => context
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>

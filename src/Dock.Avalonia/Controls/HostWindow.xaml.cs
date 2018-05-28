@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using System.Reactive.Linq;
+using System;
 
 namespace Dock.Avalonia.Controls
 {
@@ -18,16 +20,9 @@ namespace Dock.Avalonia.Controls
 
         private Grid bottomHorizontalGrip;
         private Grid bottomLeftGrip;
-        private Grid bottomRightGrip;
-        private Button closeButton;
-        private Image icon;
+        private Grid bottomRightGrip;               
         private Grid leftVerticalGrip;
-        private Button minimiseButton;
-        
-        private Button restoreButton;
-        private Grid rightVerticalGrip;
-
-        private Grid titleBar;
+        private Grid rightVerticalGrip;        
         private Grid topHorizontalGrip;
         private Grid topLeftGrip;
         private Grid topRightGrip;
@@ -49,11 +44,8 @@ namespace Dock.Avalonia.Controls
             this.AttachDevTools();
         }
 
-        public void AttachGrip(DocumentControl documentControl)
-        {
-            var grip = documentControl.FindControl<Grid>("PART_Grip");
-            var border = documentControl.FindControl<Border>("PART_Border");
-
+        public void AttachGrip(DockToolChrome chrome)
+        {            
             topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
             bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
             leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
@@ -64,44 +56,20 @@ namespace Dock.Avalonia.Controls
             topRightGrip = this.Find<Grid>("topRightGrip");
             bottomRightGrip = this.Find<Grid>("bottomRightGrip");
 
-            if (grip != null)
+            Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
             {
-                _titleBar = grip;
+                Close();
+            });
 
-                //grip.IsVisible = false;
+            //Observable.FromEventPattern(chrome.MinimiseButton, nameof(Button.Click)).Subscribe(o =>
+            //{
+            //    WindowState = WindowState.Minimized;
+            //});
 
-                //window.DataContext = grip.DataContext;
-            }
+            _titleBar = chrome.Grip;            
 
-            this.PseudoClasses.Set(":floating", true);
-        }
-
-        public void AttachGrip(ToolControl toolControl)
-        {
-            var grip = toolControl.FindControl<Grid>("PART_Grip");
-            var border = toolControl.FindControl<Border>("PART_Border");            
-
-            topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
-            bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
-            leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
-            rightVerticalGrip = this.Find<Grid>("rightVerticalGrip");
-
-            topLeftGrip = this.Find<Grid>("topLeftGrip");
-            bottomLeftGrip = this.Find<Grid>("bottomLeftGrip");
-            topRightGrip = this.Find<Grid>("topRightGrip");
-            bottomRightGrip = this.Find<Grid>("bottomRightGrip");
-
-            if (grip != null)
-            {
-                _titleBar = grip;
-
-                //grip.IsVisible = false;
-
-                //window.DataContext = grip.DataContext;
-            }
-
-            this.PseudoClasses.Set(":floating", true);
-        }
+            this.PseudoClasses.Set(":floating", true);            
+        }        
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {

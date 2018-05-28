@@ -1,4 +1,4 @@
-﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <UserControl x:Class="Dock.Avalonia.Controls.DockControl"
              xmlns="https://github.com/avaloniaui"
@@ -20,7 +20,9 @@
                 <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:ToolControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+                <idc:DockToolChrome>
+                    <idc:ToolControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+                </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">

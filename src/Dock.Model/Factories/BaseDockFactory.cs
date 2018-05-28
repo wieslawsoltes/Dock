@@ -1,4 +1,4 @@
-// Copyright (c) Wiesław Šoltés. All rights reserved.
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
@@ -96,7 +96,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void Remove(IDock dock)
+        public virtual void Remove(IDock dock)
         {
             if (dock.Parent != null)
             {
@@ -105,7 +105,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void Move(IDock dock, IDock parent)
+        public virtual void Move(IDock dock, IDock parent)
         {
             IDock orignalParent = dock.Parent;
             int index = orignalParent.Views.IndexOf(dock);
@@ -124,7 +124,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void Replace(IDock source, IDock destination)
+        public virtual void Replace(IDock source, IDock destination)
         {
             if (source.Parent is IDock parent)
             {
@@ -135,7 +135,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void Split(IDock dock, DockOperation operation)
+        public virtual void Split(IDock dock, DockOperation operation)
         {
             switch (operation)
             {
@@ -158,37 +158,37 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void SplitToFill(IDock dock)
+        public virtual void SplitToFill(IDock dock)
         {
             // TODO:
         }
 
         /// <inheritdoc/>
-        public void SplitToLeft(IDock dock)
+        public virtual void SplitToLeft(IDock dock)
         {
             Split(dock, DockOperation.Left);
         }
 
         /// <inheritdoc/>
-        public void SplitToRight(IDock dock)
+        public virtual void SplitToRight(IDock dock)
         {
             Split(dock, DockOperation.Left);
         }
 
         /// <inheritdoc/>
-        public void SplitToTop(IDock dock)
+        public virtual void SplitToTop(IDock dock)
         {
             Split(dock, DockOperation.Left);
         }
 
         /// <inheritdoc/>
-        public void SplitToBottom(IDock dock)
+        public virtual void SplitToBottom(IDock dock)
         {
             Split(dock, DockOperation.Left);
         }
 
         /// <inheritdoc/>
-        public void SplitToWindow(IDock dock)
+        public virtual void SplitToWindow(IDock dock)
         {
             // TODO:
         }
@@ -279,7 +279,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void AddRoot(IDock dock)
+        public virtual void AddRoot(IDock dock)
         {
             if (dock.Views == null)
             {
@@ -289,7 +289,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void AddSplitter(IDock dock)
+        public virtual void AddSplitter(IDock dock)
         {
             if (dock.Views == null)
             {
@@ -299,7 +299,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void AddStrip(IDock dock)
+        public virtual void AddStrip(IDock dock)
         {
             if (dock.Views == null)
             {
@@ -309,7 +309,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void AddView(IDock dock)
+        public virtual void AddView(IDock dock)
         {
             if (dock.Views == null)
             {
@@ -319,7 +319,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertLayoutBefore(IDock dock)
+        public virtual void InsertLayoutBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -329,7 +329,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertRootBefore(IDock dock)
+        public virtual void InsertRootBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -339,7 +339,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertSplitterBefore(IDock dock)
+        public virtual void InsertSplitterBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -349,7 +349,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertStripBefore(IDock dock)
+        public virtual void InsertStripBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -359,7 +359,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertViewBefore(IDock dock)
+        public virtual void InsertViewBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -369,7 +369,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertLayoutAfter(IDock dock)
+        public virtual void InsertLayoutAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -379,7 +379,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertRootAfter(IDock dock)
+        public virtual void InsertRootAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -389,7 +389,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertSplitterAfter(IDock dock)
+        public virtual void InsertSplitterAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -399,7 +399,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertStripAfter(IDock dock)
+        public virtual void InsertStripAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -409,7 +409,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void InsertViewAfter(IDock dock)
+        public virtual void InsertViewAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
@@ -447,7 +447,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void ConvertToLayout(IDock dock)
+        public virtual void ConvertToLayout(IDock dock)
         {
             var layout = new DockLayout();
             Copy(dock, layout, true, true);
@@ -456,7 +456,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void ConvertToRoot(IDock dock)
+        public virtual void ConvertToRoot(IDock dock)
         {
             var layout = new DockRoot();
             Copy(dock, layout, true, true);
@@ -465,7 +465,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void ConvertToSplitter(IDock dock)
+        public virtual void ConvertToSplitter(IDock dock)
         {
             var layout = new DockSplitter();
             Copy(dock, layout, false, false);
@@ -474,7 +474,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void ConvertToStrip(IDock dock)
+        public virtual void ConvertToStrip(IDock dock)
         {
             var layout = new DockStrip();
             Copy(dock, layout, true, false);
@@ -483,12 +483,46 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void ConvertToView(IDock dock)
+        public virtual void ConvertToView(IDock dock)
         {
             var layout = new DockView();
             Copy(dock, layout, false, true);
             Update(layout, dock.Context, dock.Parent);
             Replace(dock, layout);
+        }
+
+        /// <inheritdoc/>
+        public virtual IDockWindow CreateWindow(IDock target, IDock source, int sourceIndex, object context)
+        {
+            var view = source.Views[sourceIndex];
+
+            source.RemoveView(sourceIndex);
+
+            var dockStrip = new DockStrip
+            {
+                Id = nameof(DockStrip),
+                CurrentView = view,
+                Views = new ObservableCollection<IDock> { view }
+            };
+
+            var dockLayout = new DockLayout
+            {
+                Id = nameof(DockLayout),
+                CurrentView = dockStrip,
+                Views = new ObservableCollection<IDock> { dockStrip }
+            };
+
+            var window = new DockWindow()
+            {
+                Id = nameof(DockWindow),
+                Layout = dockLayout
+            };
+
+            target.AddWindow(window);
+
+            Update(window, context, target);
+
+            return window;
         }
 
         /// <inheritdoc/>

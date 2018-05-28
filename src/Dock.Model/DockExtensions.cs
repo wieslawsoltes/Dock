@@ -212,50 +212,6 @@ namespace Dock.Model
         }
 
         /// <summary>
-        /// Creates dock window from view.
-        /// </summary>
-        /// <param name="target">The target dock.</param>
-        /// <param name="source">The source dock.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="context">The context object.</param>
-        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        public static IDockWindow CreateWindow(this IDock target, IDock source, int sourceIndex, object context)
-        {
-            var view = source.Views[sourceIndex];
-
-            source.RemoveView(sourceIndex);
-
-            var dockStrip = new DockStrip
-            {
-                Id = nameof(DockStrip),
-                CurrentView = view,
-                Views = new ObservableCollection<IDock> { view }
-            };
-
-            var dockLayout = new DockLayout
-            {
-                Id = nameof(DockLayout),
-                CurrentView = dockStrip,
-                Views = new ObservableCollection<IDock> { dockStrip }
-            };
-
-            var window = new DockWindow()
-            {
-                Id = nameof(DockWindow),
-                Layout = dockLayout
-            };
-
-            target.AddWindow(window);
-
-            if (target.Factory is IDockFactory factory)
-            {
-                factory.Update(window, context, target);
-            }
-
-            return window;
-        }
-
-        /// <summary>
         /// Creates a new split layout.
         /// </summary>
         /// <param name="target">The target dock.</param>

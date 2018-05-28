@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System.Diagnostics;
+using System;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
@@ -138,7 +138,6 @@ namespace Dock.Avalonia
 
                 return false;
             }
-
             return false;
         }
 
@@ -175,22 +174,27 @@ namespace Dock.Avalonia
 
                                 if (container.FindRootLayout() is IDock rootLayout)
                                 {
-                                    var window = rootLayout.CurrentView.CreateWindow(container, itemIndex, sourceLayout.Context);
-                                    window.X = position.X;
-                                    window.Y = position.Y;
-                                    window.Width = 300;
-                                    window.Height = 400;
-                                    window.Id = "Dock";
-                                    window.Title = "Dock";
-                                    window.Layout.Title = "Dock";
-                                    window.Present(false);
+                                    if (rootLayout.Factory is IDockFactory factory)
+                                    {
+                                        var window = factory.CreateWindow(rootLayout.CurrentView, container, itemIndex, sourceLayout.Context);
 
-                                    return true;
+                                        window.X = position.X;
+                                        window.Y = position.Y;
+                                        window.Width = 300;
+                                        window.Height = 400;
+                                        window.Id = "Dock";
+                                        window.Title = "Dock";
+                                        window.Layout.Title = "Dock";
+                                        window.Present(false);
+
+                                        return true;
+                                    }
+                                    return false;
                                 }
                             }
                             return false;
                         default:
-                            System.Console.WriteLine($"DockSplit: {operation}");
+                            Console.WriteLine($"DockSplit: {operation}");
                             break;
                     }                        
                 }
@@ -204,7 +208,7 @@ namespace Dock.Avalonia
         {
             if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
             {
-                Debug.WriteLine($"Validate: {sourceLayout.Title} -> {targetLayout.Title}");
+                Console.WriteLine($"Validate: {sourceLayout.Title} -> {targetLayout.Title}");
                 return Validate(sourceLayout, targetLayout, sender, e,  operation, false);
             }
             return false;
@@ -214,7 +218,7 @@ namespace Dock.Avalonia
         {
             if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
             {
-                Debug.WriteLine($"Execute: {sourceLayout.Title} -> {targetLayout.Title}");
+                Console.WriteLine($"Execute: {sourceLayout.Title} -> {targetLayout.Title}");
                 return Validate(sourceLayout, targetLayout, sender, e, operation, true);
             }
             return false;

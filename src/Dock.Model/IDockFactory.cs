@@ -81,6 +81,13 @@ namespace Dock.Model
         void Move(IDock dock, IDock parent);
 
         /// <summary>
+        /// Swaps docks in parents <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The first dock.</param>
+        /// <param name="parent">The second dock.</param>
+        void Swap(IDock first, IDock second);
+
+        /// <summary>
         /// Replaces source dock with destination dock in source dock parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="source">The source dock.</param>

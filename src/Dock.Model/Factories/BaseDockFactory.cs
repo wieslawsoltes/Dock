@@ -119,8 +119,34 @@ namespace Dock.Model.Factories
             {
                 orignalParent.CurrentView = orignalParent.Views[index > 0 ? index - 1 : 0];
             }
+            else
+            {
+                orignalParent.CurrentView = null;
+            }
 
             parent.CurrentView = dock;
+        }
+
+        /// <inheritdoc/>
+        public virtual void Swap(IDock first, IDock second)
+        {
+            IDock firstParent = first.Parent;
+            int firstIndex = firstParent.Views.IndexOf(first);
+
+            IDock secondParent = second.Parent;
+            int secondIndex = secondParent.Views.IndexOf(second);
+
+            firstParent.Views.RemoveAt(first);
+            secondParent.Views.RemoveAt(second);
+
+            firstParent.Views.Insert(firstIndex, second);
+            secondParent.Views.Insert(secondIndex, first);
+
+            Update(first, first.Context, secondParent);
+            Update(second, second.Context, firstParent);
+
+            firstParent.CurrentView = second;
+            secondParent.CurrentView = first;
         }
 
         /// <inheritdoc/>

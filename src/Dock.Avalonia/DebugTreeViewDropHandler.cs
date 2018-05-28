@@ -35,7 +35,14 @@ namespace Dock.Avalonia
             }
             else if (e.DragEffects == DragDropEffects.Link)
             {
-                return false;
+                if (bExecute)
+                {
+                    if (sourceDock.Factory is IDockFactory factory)
+                    {
+                        factory.Swap(sourceDock, targetDock);
+                    }
+                }
+                return true;
             }
 
             return false;

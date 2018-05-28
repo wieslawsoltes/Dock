@@ -53,9 +53,9 @@
                     <TextBlock Text="DefaultView:" Grid.Row="8" Grid.Column="0"/>
                     <TextBox Text="{Binding DefaultView.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="8" Grid.Column="1"/>
                     <TextBlock Text="CanGoBack:" Grid.Row="9" Grid.Column="0"/>
-                    <CheckBox IsChecked="{Binding CanGoBack, Mode=OneWay}" IsReadOnly="True" Grid.Row="9" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding CanGoBack, Mode=OneWay}" IsEnabled="False" Grid.Row="9" Grid.Column="1"/>
                     <TextBlock Text="CanGoForward:" Grid.Row="10" Grid.Column="0"/>
-                    <CheckBox IsChecked="{Binding CanGoForward, Mode=OneWay}" IsReadOnly="True" Grid.Row="10" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding CanGoForward, Mode=OneWay}" IsEnabled="False" Grid.Row="10" Grid.Column="1"/>
                 </Grid>
             </ScrollViewer>
         </TabItem>

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.ObjectModel;
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
@@ -168,198 +169,208 @@ namespace Dock.Avalonia
         {
             Console.WriteLine($"ValidateMoveDockToWindow: {sourceDock.Title} -> {targetDock.Title}");
 
-            if (sourceDock != targetDock && sourceDock.Parent != targetDock)
+            switch (operation)
             {
-                if (bExecute)
-                {
-                    switch (operation)
+                case DockOperation.Fill:
                     {
-                        case DockOperation.Fill:
+                        var position = DropHelper.GetPositionScreen(sender, e);
+                        int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
+                        if (sourceDock != targetDock 
+                            && sourceDock.Parent != targetDock 
+                            && sourceIndex >= 0 
+                            && sourceDock.FindRootLayout() is IDock rootLayout 
+                            && rootLayout.CurrentView != null
+                            && rootLayout.Factory is IDockFactory factory)
+                        {
+                            if (bExecute)
                             {
-                                var position = DropHelper.GetPositionScreen(sender, e);
-                                int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
-                                if (sourceIndex >= 0 && sourceDock.FindRootLayout() is IDock rootLayout && rootLayout.CurrentView != null)
+                                sourceDock.Parent.RemoveView(sourceIndex);
+
+                                var window = factory.CreateWindowFrom(sourceDock);
+                                if (window != null)
                                 {
-                                    if (rootLayout.Factory is IDockFactory factory)
-                                    {
-                                        sourceDock.Parent.RemoveView(sourceIndex);
+                                    window.X = position.X;
+                                    window.Y = position.Y;
+                                    window.Width = 300;
+                                    window.Height = 400;
 
-                                        var window = factory.CreateWindowFrom(sourceDock);
-                                        if (window != null)
-                                        {
-                                            window.X = position.X;
-                                            window.Y = position.Y;
-                                            window.Width = 300;
-                                            window.Height = 400;
+                                    factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
 
-                                            factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
-
-                                            window.Present(false);
-
-                                            return true;
-                                        }
-                                    }
-                                    return false;
+                                    window.Present(false);
                                 }
                             }
-                            break;
+                            return true;
+                        }
+                        break;
                     }
-                }
-                return true;
             }
             return false;
         }
 
+        private bool ValidateRootDock(IRootDock sourceRoot, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        // TODO:
+                    }
+                    break;
+                case IViewDock targetView:
+                    {
+                        // TODO:
+                    }
+                    break;
+                case ILayoutDock targetLayout:
+                    {
+                        // TODO:
+                    }
+                    break;
+                case ITabDock targetTab:
+                    {
+                        // TODO:
+                    }
+                    break;
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IRootDock)} dock target: {sourceRoot} -> {targetDock}");
+                        return false;
+                    }
+            }
+            return false;
+        }
+
+        private bool ValidateViewDock(IViewDock sourceView, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        // TODO:
+                        return ValidateMoveDockToWindow(sourceView, targetDock, sender, e, bExecute, operation);
+                    }
+                case IViewDock targetView:
+                    {
+                        // TODO:
+                        return ValidateMoveViewsBetweenTabs(sourceView, targetView, e, bExecute, operation);
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case ITabDock targetTab:
+                    {
+                        // TODO:
+                        return ValidateMoveViewToTab(sourceView, targetTab, e, bExecute, operation);
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IViewDock)} dock target: {sourceView} -> {targetDock}");
+                        return false;
+                    }
+            } 
+        }
+
+        private bool ValidateLayoutDock(ILayoutDock sourceLayout, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case IViewDock targetView:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case ITabDock targetTab:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(ILayoutDock)} dock target: {sourceLayout} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
+        private bool ValidateTabDock(ITabDock sourceTab, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        // TODO:
+                        //return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
+                        return false;
+                    }
+                case IViewDock targetView:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                case ITabDock targetTab:
+                    {
+                        // TODO:
+                        return false;
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(ITabDock)} dock operation: {sourceTab} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
         {
-            var point = DropHelper.GetPosition(sender, e);
-
             switch (sourceDock)
             {
                 case IRootDock sourceRoot:
                     {
-                        switch (targetDock)
-                        {
-                            case IRootDock targetRoot:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case IViewDock targetView:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ILayoutDock targetLayout:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ITabDock targetTab:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            default:
-                                {
-                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
-                                }
-                                break;
-                        }
+                        return ValidateRootDock(sourceRoot, targetDock, sender, e, operation, bExecute);
                     }
-                    break;
                 case IViewDock sourceView:
                     {
-                        switch (targetDock)
-                        {
-                            case IRootDock targetRoot:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case IViewDock targetView:
-                                {
-                                    // TODO:
-                                    return ValidateMoveViewsBetweenTabs(sourceView, targetView, e, bExecute, operation);
-                                }
-                            case ILayoutDock targetLayout:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ITabDock targetTab:
-                                {
-                                    // TODO:
-                                    return ValidateMoveViewToTab(sourceView, targetTab, e, bExecute, operation);
-                                }
-                            default:
-                                {
-                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
-                                }
-                                break;
-                        }
-
-                        return ValidateMoveDockToWindow(sourceView, targetDock, sender, e, bExecute, operation);
+                        return ValidateViewDock(sourceView, targetDock, sender, e, operation, bExecute);
                     }
                 case ILayoutDock sourceLayout:
                     {
-                        switch (targetDock)
-                        {
-                            case IRootDock targetRoot:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case IViewDock targetView:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ILayoutDock targetLayout:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ITabDock targetTab:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            default:
-                                {
-                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
-                                }
-                                break;
-                        }
+                        return ValidateLayoutDock(sourceLayout, targetDock, sender, e, operation, bExecute);
                     }
-                    break;
                 case ITabDock sourceTab:
                     {
-                        switch (targetDock)
-                        {
-                            case IRootDock targetRoot:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case IViewDock targetView:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ILayoutDock targetLayout:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            case ITabDock targetTab:
-                                {
-                                    // TODO:
-                                }
-                                break;
-                            default:
-                                {
-                                    Console.WriteLine($"Not supported dock operation: {sourceDock} -> {targetDock}");
-                                }
-                                break;
-                        }
-
-                        return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
+                        return ValidateTabDock(sourceTab, targetDock, sender, e, operation, bExecute);
                     }
                 default:
                     {
                         Console.WriteLine($"Not supported dock source: {sourceDock}");
+                        return false;
                     }
-                    break;
             }
-            return false;
         }
 
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
+                Point point = DropHelper.GetPosition(sender, e);
+                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
                 return Validate(sourceDock, targetDock, sender, e,  operation, false);
             }
             return false;
@@ -369,7 +380,8 @@ namespace Dock.Avalonia
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
+                Point point = DropHelper.GetPosition(sender, e);
+                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
                 return Validate(sourceDock, targetDock, sender, e, operation, true);
             }
             return false;

@@ -4,9 +4,9 @@
 namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Document dock contract.
+    /// Tab dock contract.
     /// </summary>
-    public interface IDocumentDock : ITabDock
+    public interface ITabDock : IDock
     {
     }
 }

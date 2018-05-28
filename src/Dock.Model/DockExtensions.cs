@@ -142,6 +142,11 @@ namespace Dock.Model
         {
             var item = sourceDock.Views[sourceIndex];
             sourceDock.Views.RemoveAt(sourceIndex);
+
+            if (targetDock.Views == null)
+            {
+                targetDock.Views = new ObservableCollection<IDock>();
+            }
             targetDock.Views.Insert(targetIndex, item);
 
             if (sourceDock.Views.Count > 0)

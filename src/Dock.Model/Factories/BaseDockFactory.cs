@@ -98,7 +98,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void Remove(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock?.Parent is IDock parent)
             {
                 parent.Views?.Remove(dock);
             }
@@ -661,7 +661,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void RemoveWindow(IDockWindow window)
         {
-            if (window.Owner is IDock dock)
+            if (window?.Owner is IDock dock)
             {
                 window.Destroy();
                 dock.Windows?.Remove(window);

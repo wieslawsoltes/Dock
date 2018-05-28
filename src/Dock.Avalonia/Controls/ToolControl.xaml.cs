@@ -26,15 +26,5 @@ namespace Dock.Avalonia.Controls
         {
             AvaloniaXamlLoader.Load(this);
         }
-
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e);
-
-            if (e.Root is HostWindow window)
-            {
-                window.AttachGrip(this);
-            }
-        }
     }
 }

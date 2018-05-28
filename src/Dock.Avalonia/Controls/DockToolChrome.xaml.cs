@@ -30,6 +30,8 @@ namespace Dock.Avalonia.Controls
                 CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
 
                 window.AttachGrip(this);
+
+                this.PseudoClasses.Set(":floating", true);
             }            
         }
     }

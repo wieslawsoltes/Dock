@@ -5,7 +5,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
-                    <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1 1 1 0">
+                    <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1 1 1 0" Name="PART_Border">
                         <Grid Name="PART_Grip" Background="#EAEAF2">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="#EAEAF2" />

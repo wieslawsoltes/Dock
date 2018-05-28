@@ -68,35 +68,8 @@ namespace Dock.Avalonia.Controls
 
             _titleBar = chrome.Grip;            
 
-            this.PseudoClasses.Set(":floating", true);
-        }
-
-        public void AttachGrip(ToolControl toolControl)
-        {
-            var grip = toolControl.FindControl<Grid>("PART_Grip");
-            var border = toolControl.FindControl<Border>("PART_Border");            
-
-            topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
-            bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
-            leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
-            rightVerticalGrip = this.Find<Grid>("rightVerticalGrip");
-
-            topLeftGrip = this.Find<Grid>("topLeftGrip");
-            bottomLeftGrip = this.Find<Grid>("bottomLeftGrip");
-            topRightGrip = this.Find<Grid>("topRightGrip");
-            bottomRightGrip = this.Find<Grid>("bottomRightGrip");
-
-            if (grip != null)
-            {
-                _titleBar = grip;
-
-                //grip.IsVisible = false;
-
-                //window.DataContext = grip.DataContext;
-            }
-
-            this.PseudoClasses.Set(":floating", true);
-        }
+            this.PseudoClasses.Set(":floating", true);            
+        }        
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {

@@ -155,42 +155,43 @@ namespace Dock.Avalonia
         {
             Console.WriteLine($"ValidateMoveViewToWindow: {sourceView.Title} -> {targetDock.Title}");
 
-            if (sourceView.Parent is IDockStrip sourceStrip)
+            if (bExecute)
             {
-                if (bExecute)
+                switch(operation)
                 {
-                    switch(operation)
-                    {
-                        case DockOperation.Fill:
+                    case DockOperation.Fill:
+                        {
+                            int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
+                            var position = DropHelper.GetPositionScreen(sender, e);
+                            if (sourceView.Parent.FindRootLayout() is IDock rootLayout)
                             {
-                                int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
-                                var position = DropHelper.GetPositionScreen(sender, e);
-
-                                if (sourceStrip.FindRootLayout() is IDock rootLayout)
+                                if (rootLayout.Factory is IDockFactory factory)
                                 {
-                                    if (rootLayout.Factory is IDockFactory factory)
-                                    {
-                                        sourceStrip.RemoveView(sourceIndex);
+                                    sourceView.Parent.RemoveView(sourceIndex);
 
-                                        var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
-
-                                        window.X = position.X;
-                                        window.Y = position.Y;
-                                        window.Width = 300;
-                                        window.Height = 400;
-                                        window.Present(false);
-
-                                        return true;
-                                    }
+                                    var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
+                                    window.X = position.X;
+                                    window.Y = position.Y;
+                                    window.Width = 300;
+                                    window.Height = 400;
+                                    window.Present(false);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"ValidateMoveViewToWindow: Factory is null..");
                                     return false;
                                 }
                             }
-                            return false;
-                    }                        
+                            else
+                            {
+                                Console.WriteLine($"ValidateMoveViewToWindow: FindRootLayout failed.");
+                                return false;
+                            }
+                        }
+                        break;
                 }
-                return true;
             }
-            return false;
+            return true;
         }
 
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)

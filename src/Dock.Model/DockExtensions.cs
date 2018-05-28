@@ -110,10 +110,24 @@ namespace Dock.Model
         /// <param name="targetIndex">The target view index.</param>
         public static void MoveView(this IDock dock, int sourceIndex, int targetIndex)
         {
-            var item = dock.Views[sourceIndex];
-            dock.Views.RemoveAt(sourceIndex);
-            dock.Views.Insert(targetIndex, item);
-            dock.CurrentView = item;
+            if (sourceIndex < targetIndex)
+            {
+                var item = dock.Views[sourceIndex];
+                dock.Views.RemoveAt(sourceIndex);
+                dock.Views.Insert(targetIndex, item);
+                dock.CurrentView = item;
+            }
+            else
+            {
+                int removeIndex = sourceIndex;
+                if (dock.Views.Count > removeIndex)
+                {
+                    var item = dock.Views[sourceIndex];
+                    dock.Views.RemoveAt(removeIndex);
+                    dock.Views.Insert(targetIndex, item);
+                    dock.CurrentView = item;
+                }
+            }
         }
 
         /// <summary>

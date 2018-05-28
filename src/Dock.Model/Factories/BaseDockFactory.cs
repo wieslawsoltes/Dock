@@ -492,18 +492,14 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual IDockWindow CreateWindow(IDock target, IDock source, int sourceIndex, object context)
+        public virtual IDockWindow CreateWindow(IDock target, IDock dock, object context)
         {
-            var view = source.Views[sourceIndex];
-
-            source.RemoveView(sourceIndex);
-
             var strip = new DockStrip
             {
                 Id = nameof(DockStrip),
                 Title = nameof(DockStrip),
-                CurrentView = view,
-                Views = new ObservableCollection<IDock> { view }
+                CurrentView = dock,
+                Views = new ObservableCollection<IDock> { dock }
             };
 
             var root = new DockRoot

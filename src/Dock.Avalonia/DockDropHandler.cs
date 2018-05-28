@@ -11,15 +11,14 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DockDropHandler();
 
-        private bool ValidateDockStrip(IDock sourceDock, IDock targetDock, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewsBetweenStrips(IDockView sourceView, IDockView targetView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            if (sourceDock.Parent is IDockStrip sourceStrip 
-                && targetDock.Parent is IDockStrip targetStrip)
+            if (sourceView.Parent is IDockStrip sourceStrip && targetView.Parent is IDockStrip targetStrip)
             {
                 if (sourceStrip == targetStrip)
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
-                    int targetIndex = sourceStrip.Views.IndexOf(targetDock);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
+                    int targetIndex = sourceStrip.Views.IndexOf(targetView);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -52,8 +51,8 @@ namespace Dock.Avalonia
                 }
                 else
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
-                    int targetIndex = targetStrip.Views.IndexOf(targetDock);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
+                    int targetIndex = targetStrip.Views.IndexOf(targetView);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -88,14 +87,11 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateDockLayout(IDock sourceDock, IDock targetDock, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewToStrip(IDockView sourceView, IDockStrip targetStrip, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            if (sourceDock.Parent is IDockStrip sourceStrip 
-                && targetDock is IDockStrip targetStrip 
-                && sourceDock != targetDock 
-                && sourceStrip != targetStrip)
+            if (sourceView.Parent is IDockStrip sourceStrip && sourceStrip != targetStrip)
             {
-                int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
+                int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
                 int targetIndex = targetStrip.Views.Count;
 
                 if (sourceIndex >= 0 && targetIndex >= 0)
@@ -118,9 +114,19 @@ namespace Dock.Avalonia
                                     sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
                                     break;
                                 case DockOperation.Left:
-                                    // WIP: This is work in progress.
-                                    //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
-                                    //layout.ReplaceView(container, splitLayout);
+                                    // TODO:
+                                    break;
+                                case DockOperation.Bottom:
+                                    // TODO:
+                                    break;
+                                case DockOperation.Right:
+                                    // TODO:
+                                    break;
+                                case DockOperation.Top:
+                                    // TODO:
+                                    break;
+                                case DockOperation.Window:
+                                    // TODO:
                                     break;
                             }
                         }
@@ -141,23 +147,9 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        private bool ValidateMoveViewToWindow(IDockView sourceView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            var point = DropHelper.GetPosition(sender, e);
-
-            if (sourceDock.Parent is IDockStrip sourceStrip)
-            {
-                if (targetDock is IDockStrip targetStrip)
-                {
-                    return ValidateDockLayout(sourceDock, targetDock, e, bExecute, operation);
-                }
-                else
-                {
-                    return ValidateDockStrip(sourceDock, targetDock, e, bExecute, operation);
-                }
-            }
-
-            if (sourceDock is IDockView item && sourceDock.Parent is IDockStrip container)
+            if (sourceView.Parent is IDockStrip sourceStrip)
             {
                 if (bExecute)
                 {
@@ -165,18 +157,16 @@ namespace Dock.Avalonia
                     {
                         case DockOperation.Fill:
                             {
-                                int itemIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
+                                int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
                                 var position = DropHelper.GetPositionScreen(sender, e);
 
-                                // WIP: This is work in progress.
-                                //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
-                                //layout.ReplaceView(container, splitLayout);
-
-                                if (container.FindRootLayout() is IDock rootLayout)
+                                if (sourceStrip.FindRootLayout() is IDock rootLayout)
                                 {
                                     if (rootLayout.Factory is IDockFactory factory)
                                     {
-                                        var window = factory.CreateWindow(rootLayout.CurrentView, container, itemIndex, sourceDock.Context);
+                                        sourceStrip.RemoveView(sourceIndex);
+
+                                        var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
 
                                         window.X = position.X;
                                         window.Y = position.Y;
@@ -190,14 +180,157 @@ namespace Dock.Avalonia
                                 }
                             }
                             return false;
-                        default:
-                            Console.WriteLine($"DockSplit: {operation}");
-                            break;
                     }                        
                 }
                 return true;
             }
+            return false;
+        }
 
+        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        {
+            var point = DropHelper.GetPosition(sender, e);
+
+            switch (sourceDock)
+            {
+                case IDockRoot sourceRoot:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                case IDockView sourceView:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                    return ValidateMoveViewsBetweenStrips(sourceView, targetView, e, bExecute, operation);
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                    return ValidateMoveViewToStrip(sourceView, targetStrip, e, bExecute, operation);
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+
+                        return ValidateMoveViewToWindow(sourceView, e, bExecute, operation);
+                    }
+                    break;
+                case IDockLayout sourceLayout:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                case IDockStrip sourceStrip:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock operation: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        Console.WriteLine($"Not supported dock source: {sourceDock}");
+                    }
+                    break;
+            }
             return false;
         }
 

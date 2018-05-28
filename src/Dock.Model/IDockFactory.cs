@@ -251,14 +251,13 @@ namespace Dock.Model
         void ConvertToView(IDock dock);
 
         /// <summary>
-        /// Creates dock window from view.
+        /// Creates dock window from source view.
         /// </summary>
-        /// <param name="target">The target dock.</param>
-        /// <param name="source">The source dock.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="context">The context object.</param>
+        /// <param name="target">The parent dock for window.</param>
+        /// <param name="source">The source dock to embed into window.</param>
+        /// <param name="context">The context for dock window.</param>
         /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow CreateWindow(IDock target, IDock source, int sourceIndex, object context);
+        IDockWindow CreateWindow(IDock parent, IDock source, object context);
 
         /// <summary>
         /// Creates layout.

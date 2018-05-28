@@ -36,97 +36,53 @@
 
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>
-        <TabStrip Items="{Binding Views}" Margin="0" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Bottom">
-            <i:Interaction.Behaviors>
-                <id:DropBehavior Context="{Binding $parent[Window].DataContext.Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
-            </i:Interaction.Behaviors>
-            <TabStrip.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ClipToBounds="False"/>
-                </ItemsPanelTemplate>
-            </TabStrip.ItemsPanel>
-            <TabStrip.Styles>
-                <Style Selector="TabStrip">
-                    <Setter Property="ItemsPanel">
-                        <ItemsPanelTemplate>
-                            <WrapPanel ClipToBounds="False" />
-                        </ItemsPanelTemplate>
-                    </Setter>
-                    <Setter Property="MaxHeight" Value="22" />
-                </Style>
-                <Style Selector="TabStripItem">
-                    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLightBrush}" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="Padding" Value="4 1 4 0" />
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="IsVisible" Value="{Binding IsVisible}" />
-                    <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-                </Style>
-
-                <Style Selector="TabStripItem:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ThemeControlDarkBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrush}" />
-                </Style>
-
-                <Style Selector="TabStripItem:selected">
-                    <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushLight}" />
-                    <Setter Property="BorderThickness" Value="1 0 1 1" />
-                    <Setter Property="Margin" Value="0 -1 0 0" />
-                    <Setter Property="Padding" Value="4 2 4 0" />
-                </Style>
-
-                <Style Selector="TabStripItem:selected:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
-                </Style>
-            </TabStrip.Styles>
-            
-            <TabStrip.DataTemplates>
-                <DataTemplate DataType="Dock:IDockView">
-                    <StackPanel Orientation="Horizontal" Gap="2" Background="Transparent">
-                        <i:Interaction.Behaviors>
-                            <id:DragBehavior/>
-                        </i:Interaction.Behaviors>
-                        <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
-                    </StackPanel>
-                </DataTemplate>
-            </TabStrip.DataTemplates>
-        </TabStrip>
-        <Border Name="PART_Border" Classes="panel" ZIndex="-1" BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1" Margin="0" Padding="0">
-            <Grid RowDefinitions="25,*" DataContext="{Binding CurrentView}">
-                <Grid Background="LightGray" Name="PART_Grip" Classes="grip">
-                    <DockPanel LastChildFill="True" Margin="8 0">
-                        <TextBlock DockPanel.Dock="Left"  Text="{Binding Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" />
-                        <Button Classes="chromeButton" DockPanel.Dock="Right">
-                            <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
-                        </Button>
-                        <Button Classes="chromeButton" DockPanel.Dock="Right">
-                            <Image Source="resm:Dock.Avalonia.Assets.PinAutoHide_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
-                        </Button>
-                        <Button Classes="chromeButton" DockPanel.Dock="Right">
-                            <Image Source="resm:Dock.Avalonia.Assets.PinMenu_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
-                        </Button>
-                        <Grid Height="5"  Margin="0 0 10 0">
-                            <Grid.Background>
-                                <VisualBrush DestinationRect="0,0,4,5" TileMode="Tile" Stretch="UniformToFill">
-                                    <VisualBrush.Visual>
-                                        <Canvas Width="4" Height="5"  Background="Transparent">
-                                            <Rectangle Height="1" Width="1" Canvas.Left="2" Fill="#474747" />
-                                            <Rectangle Height="1" Width="1" Canvas.Top="2" Fill="#474747" />
-                                            <Rectangle Height="1" Width="1" Canvas.Left="2" Canvas.Top="4" Fill="#474747" />
-                                        </Canvas>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Grid.Background>
-                        </Grid>
-                    </DockPanel>
-                </Grid>
-                <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Padding="4" ZIndex="-1" />
-            </Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
+            <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1">
+                <i:Interaction.Behaviors>
+                    <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                </i:Interaction.Behaviors>
+                <TabStrip.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ClipToBounds="False"/>
+                    </ItemsPanelTemplate>
+                </TabStrip.ItemsPanel>
+                <TabStrip.Styles>
+                    <Style Selector="TabStripItem">
+                        <Setter Property="Margin" Value="0 0 0 0"/>
+                        <Setter Property="Padding" Value="4 1 4 1"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Setter Property="Height" Value="24"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                    <Style Selector="TabStripItem:pointerover">
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}"/>
+                    </Style>
+                    <Style Selector="TabStripItem:selected">
+                        <Setter Property="FontWeight" Value="Normal"/>
+                    </Style>
+                </TabStrip.Styles>
+                <TabStrip.DataTemplates>
+                    <DataTemplate DataType="Dock:IDockView">
+                        <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
+                            <i:Interaction.Behaviors>
+                                <id:DragBehavior Context="{Binding}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                            </i:Interaction.Behaviors>
+                            <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabStrip.DataTemplates>
+            </TabStrip>
+        </ScrollViewer>
+        <Border Classes="panel" ZIndex="-1">
+            <!--
+            <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            -->
+            <ContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </DockPanel>
 </UserControl>

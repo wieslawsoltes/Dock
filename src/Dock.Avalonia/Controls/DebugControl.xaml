@@ -17,81 +17,107 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
+        <Style Selector="TreeViewItem">
+            <Setter Property="IsExpanded" Value="True"/>
+        </Style>
     </UserControl.Styles>
-    <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="*">
-        <TreeView x:Name="root" Grid.Column="0" Grid.Row="0">
-            <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}">
-                <TreeViewItem.Styles>
-                    <Style Selector="TreeViewItem">
-                        <Setter Property="IsExpanded" Value="True"/>
-                    </Style>
-                </TreeViewItem.Styles>
-                <TreeViewItem.DataTemplates>
-                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
-                        <TextBlock Text="{Binding Title}" Classes="drag">
-                            <i:Interaction.Behaviors>
-                                <id:DragBehavior/>
-                            </i:Interaction.Behaviors>
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="_Split">
-                                        <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
-                                        <Separator/>
-                                        <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
-                                        <Separator/>
-                                        <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
-                                        <Separator/>
-                                        <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="_Add">
-                                        <MenuItem Header="Add _Layout" Command="{Binding Factory.AddLayout}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Add _Root" Command="{Binding Factory.AddRoot}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Add _Splitter" Command="{Binding Factory.AddSplitter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Add S_trip" Command="{Binding Factory.AddStrip}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Add _View" Command="{Binding Factory.AddView}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="Insert _Before">
-                                        <MenuItem Header="Insert _Layout Before" Command="{Binding Factory.InsertLayoutBefore}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _Root Before" Command="{Binding Factory.InsertRootBefore}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _Splitter Before" Command="{Binding Factory.InsertSplitterBefore}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert S_trip Before" Command="{Binding Factory.InsertStripBefore}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _View Before" Command="{Binding Factory.InsertViewBefore}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="Insert _After">
-                                        <MenuItem Header="Insert _Layout After" Command="{Binding Factory.InsertLayoutAfter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _Root After" Command="{Binding Factory.InsertRootAfter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _Splitter After" Command="{Binding Factory.InsertSplitterAfter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert S_trip After" Command="{Binding Factory.InsertStripAfter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Insert _View After" Command="{Binding Factory.InsertViewAfter}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="_Convert">
-                                        <MenuItem Header="Convert to _Layout" Command="{Binding Factory.ConvertToLayout}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Convert to _Root" Command="{Binding Factory.ConvertToRoot}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Convert to _Splitter" Command="{Binding Factory.ConvertToSplitter}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Convert to S_trip" Command="{Binding Factory.ConvertToStrip}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="Convert to _View" Command="{Binding Factory.ConvertToView}" CommandParameter="{Binding}"/>
-                                    </MenuItem>
-                                    <Separator/>
-                                    <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
-                    </TreeDataTemplate>
-                </TreeViewItem.DataTemplates>
-            </TreeViewItem>
+    <UserControl.DataTemplates>
+        <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
+            <TextBlock Text="{Binding Title}" Classes="drag">
+                <i:Interaction.Behaviors>
+                    <id:DragBehavior Context="{Binding}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockTreeViewDropHandler.Instance}"/>
+                </i:Interaction.Behaviors>
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="_Split">
+                            <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="_Add">
+                            <MenuItem Header="Add _Layout" Command="{Binding Factory.AddLayout}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Add _Root" Command="{Binding Factory.AddRoot}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Add _Splitter" Command="{Binding Factory.AddSplitter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Add S_trip" Command="{Binding Factory.AddStrip}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Add _View" Command="{Binding Factory.AddView}" CommandParameter="{Binding}"/>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Insert _Before">
+                            <MenuItem Header="Insert _Layout Before" Command="{Binding Factory.InsertLayoutBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _Root Before" Command="{Binding Factory.InsertRootBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _Splitter Before" Command="{Binding Factory.InsertSplitterBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert S_trip Before" Command="{Binding Factory.InsertStripBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _View Before" Command="{Binding Factory.InsertViewBefore}" CommandParameter="{Binding}"/>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="Insert _After">
+                            <MenuItem Header="Insert _Layout After" Command="{Binding Factory.InsertLayoutAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _Root After" Command="{Binding Factory.InsertRootAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _Splitter After" Command="{Binding Factory.InsertSplitterAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert S_trip After" Command="{Binding Factory.InsertStripAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Insert _View After" Command="{Binding Factory.InsertViewAfter}" CommandParameter="{Binding}"/>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="_Convert">
+                            <MenuItem Header="Convert to _Layout" Command="{Binding Factory.ConvertToLayout}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Convert to _Root" Command="{Binding Factory.ConvertToRoot}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Convert to _Splitter" Command="{Binding Factory.ConvertToSplitter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Convert to S_trip" Command="{Binding Factory.ConvertToStrip}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Convert to _View" Command="{Binding Factory.ConvertToView}" CommandParameter="{Binding}"/>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
+        </TreeDataTemplate>
+        <TreeDataTemplate DataType="Dock:IDockWindow" ItemsSource="{Binding Layout.Views}">
+            <TextBlock Text="{Binding Title}" Classes="drag">
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="_Remove" Command="{Binding Factory.RemoveWindow}" CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
+        </TreeDataTemplate>
+    </UserControl.DataTemplates>
+    <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="60*,Auto,40*">
+        <TreeView x:Name="views" Grid.Column="0" Grid.Row="0">
+            <TreeView.KeyBindings>
+                <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
+            </TreeView.KeyBindings>
+            <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}"/>
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
         <Grid Grid.Column="2" Grid.Row="0">
-            <ContentControl Content="{Binding #root.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
+            <ContentControl Content="{Binding #views.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
-                        <idc:PropertiesControl/>
+                        <idc:DockPropertiesControl/>
+                    </DataTemplate>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </Grid>
+        <GridSplitter Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Height="6"/>
+        <TreeView x:Name="windows" DataContext="{Binding #views.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}" Items="{Binding Windows}" Grid.Column="0" Grid.Row="2">
+        </TreeView>
+        <GridSplitter Grid.Column="1" Grid.Row="2" Width="6"/>
+        <Grid Grid.Column="2" Grid.Row="2">
+            <ContentControl Content="{Binding #windows.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
+                <ContentControl.DataTemplates>
+                    <DataTemplate DataType="Dock:IDock">
+                        <idc:DockPropertiesControl/>
+                    </DataTemplate>
+                    <DataTemplate DataType="Dock:IDockWindow">
+                        <idc:DockWindowPropertiesControl/>
                     </DataTemplate>
                 </ContentControl.DataTemplates>
             </ContentControl>

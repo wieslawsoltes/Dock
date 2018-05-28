@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using System;
+using System.Collections.ObjectModel;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Model;
 
 namespace Dock.Avalonia
@@ -11,19 +12,18 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DockDropHandler();
 
-        private bool ValidateTabStrip(IDock layout, DragEventArgs e, bool bExecute, DockOperation operation, TabStrip strip)
+        private bool ValidateMoveViewsBetweenStrips(IDockView sourceView, IDockView targetView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            var sourceItem = e.Data.Get(DragDataFormats.Parent);
-            var targetItem = (e.Source as IControl)?.Parent?.Parent;
+            Console.WriteLine($"ValidateMoveViewsBetweenStrips: {sourceView.Title} -> {targetView.Title}");
 
-            if (sourceItem is TabStripItem source && targetItem is TabStripItem target)
+            if (sourceView.Parent is IDockStrip sourceStrip && targetView.Parent is IDockStrip targetStrip)
             {
-                if (source.Parent == target.Parent)
+                if (sourceStrip == targetStrip)
                 {
-                    int sourceIndex = strip.ItemContainerGenerator.IndexFromContainer(source);
-                    int targetIndex = strip.ItemContainerGenerator.IndexFromContainer(target);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
+                    int targetIndex = sourceStrip.Views.IndexOf(targetView);
 
-                    if (strip.DataContext is IDock container)
+                    if (sourceIndex >= 0 && targetIndex >= 0)
                     {
                         if (e.DragEffects == DragDropEffects.Copy)
                         {
@@ -37,7 +37,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                container.MoveView(sourceIndex, targetIndex);
+                                sourceStrip.MoveView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -45,23 +45,62 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                container.SwapView(sourceIndex, targetIndex);
+                                sourceStrip.SwapView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
-                        return false;
                     }
-
                     return false;
                 }
-                else if (source.Parent is TabStrip sourceStrip
-                    && target.Parent is TabStrip targetStrip
-                    && sourceStrip.DataContext is IDock sourceLayout
-                    && targetStrip.DataContext is IDock targetLayout)
+                else
                 {
-                    int sourceIndex = sourceStrip.ItemContainerGenerator.IndexFromContainer(source);
-                    int targetIndex = targetStrip.ItemContainerGenerator.IndexFromContainer(target);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
+                    int targetIndex = targetStrip.Views.IndexOf(targetView);
 
+                    if (sourceIndex >= 0 && targetIndex >= 0)
+                    {
+                        if (e.DragEffects == DragDropEffects.Copy)
+                        {
+                            if (bExecute)
+                            {
+                                // TODO: Clone item.
+                            }
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Move)
+                        {
+                            if (bExecute)
+                            {
+                                sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
+                            }
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Link)
+                        {
+                            if (bExecute)
+                            {
+                                sourceStrip.SwapView(targetStrip, sourceIndex, targetIndex);
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        private bool ValidateMoveViewToStrip(IDockView sourceView, IDockStrip targetStrip, DragEventArgs e, bool bExecute, DockOperation operation)
+        {
+            Console.WriteLine($"ValidateMoveViewToStrip: {sourceView.Title} -> {targetStrip.Title}");
+
+            if (sourceView.Parent is IDockStrip sourceStrip && sourceStrip != targetStrip)
+            {
+                int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
+                int targetIndex = targetStrip.Views.Count;
+
+                if (sourceIndex >= 0 && targetIndex >= 0)
+                {
                     if (e.DragEffects == DragDropEffects.Copy)
                     {
                         if (bExecute)
@@ -72,158 +111,273 @@ namespace Dock.Avalonia
                     }
                     else if (e.DragEffects == DragDropEffects.Move)
                     {
-                        if (sourceLayout.Views.Count > 1)
+                        if (bExecute)
                         {
-                            if (bExecute)
+                            switch (operation)
                             {
-                                sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
+                                case DockOperation.Fill:
+                                    {
+                                        sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
+                                        return true;
+                                    }
+                                case DockOperation.Left:
+                                case DockOperation.Right:
+                                case DockOperation.Top:
+                                case DockOperation.Bottom:
+                                    {
+                                        if (targetStrip.Factory is IDockFactory factory)
+                                        {
+                                            factory.Remove(sourceView);
+
+                                            IDock strip = new DockStrip
+                                            {
+                                                Id = nameof(DockStrip),
+                                                Title = nameof(DockStrip),
+                                                CurrentView = sourceView,
+                                                Views = new ObservableCollection<IDock> { sourceView }
+                                            };
+
+                                            factory.Split(targetStrip, strip, operation);
+                                        }
+                                        return true;
+                                    }
+                                case DockOperation.Window:
+                                    // TODO:
+                                    break;
                             }
-                            return true;
                         }
-                        return false;
+                        return true;
                     }
                     else if (e.DragEffects == DragDropEffects.Link)
                     {
                         if (bExecute)
                         {
-                            sourceLayout.SwapView(targetLayout, sourceIndex, targetIndex);
+                            sourceStrip.SwapView(targetStrip, sourceIndex, targetIndex);
                         }
                         return true;
                     }
-
-                    return false;
                 }
 
                 return false;
             }
-
             return false;
         }
 
-        private bool ValidateDockPanel(IDock layout, DragEventArgs e, bool bExecute, DockOperation operation, DockPanel panel)
+        private bool ValidateMoveViewToWindow(IDockView sourceView, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            var sourceItem = e.Data.Get(DragDataFormats.Parent);
+            Console.WriteLine($"ValidateMoveViewToWindow: {sourceView.Title} -> {targetDock.Title}");
 
-            if (sourceItem is TabStripItem source
-                && source.Parent is TabStrip sourceStrip
-                && sourceStrip.DataContext is IDock sourceLayout
-                && panel.DataContext is IDock targetLayout
-                && sourceLayout != targetLayout)
+            if (bExecute)
             {
-                int sourceIndex = sourceStrip.ItemContainerGenerator.IndexFromContainer(source);
-                int targetIndex = targetLayout.Views.Count;
-
-                if (e.DragEffects == DragDropEffects.Copy)
+                switch(operation)
                 {
-                    if (bExecute)
-                    {
-                        // TODO: Clone item.
-                    }
-                    return true;
-                }
-                else if (e.DragEffects == DragDropEffects.Move)
-                {
-                    if (bExecute)
-                    {
-                        switch (operation)
+                    case DockOperation.Fill:
                         {
-                            case DockOperation.Fill:
-                                sourceLayout.MoveView(targetLayout, sourceIndex, targetIndex);
-                                break;
+                            var position = DropHelper.GetPositionScreen(sender, e);
+                            int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
+                            if (sourceIndex >= 0)
+                            {
+                                if (sourceView.FindRootLayout() is IDock rootLayout)
+                                {
+                                    if (rootLayout.Factory is IDockFactory factory)
+                                    {
+                                        sourceView.Parent.RemoveView(sourceIndex);
 
-                            case DockOperation.Left:
-                                //var newLayout = sourceLayout.SplitLayout(source.DataContext, operation);
+                                        var window = factory.CreateWindowFrom(sourceView);
+                                        window.X = position.X;
+                                        window.Y = position.Y;
+                                        window.Width = 300;
+                                        window.Height = 400;
 
-                                //sourceLayout.ReplaceView(sourceLayout, newLayout);
-                                break;
+                                        factory.AddWindow(rootLayout.CurrentView, window, sourceView.Context);
+
+                                        window.Present(false);
+
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        return false;
+                                    }
+                                }
+                                else
+                                {
+                                    return false;
+                                } 
+                            }
                         }
-                    }
-                    return true;
+                        break;
                 }
-                else if (e.DragEffects == DragDropEffects.Link)
-                {
-                    if (bExecute)
-                    {
-                        sourceLayout.SwapView(targetLayout, sourceIndex, targetIndex);
-                    }
-                    return true;
-                }
-
-                return false;
             }
-
-            return false;
+            return true;
         }
 
-        private bool Validate(IDock layout, object context, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
 
-            switch (sender)
+            switch (sourceDock)
             {
-                case TabStrip strip:
-                    return ValidateTabStrip(layout, e, bExecute, operation, strip);
-                case DockPanel panel:
-                    return ValidateDockPanel(layout, e, bExecute, operation, panel);
-            }
-
-            if (e.Data.Get(DragDataFormats.Parent) is TabStripItem item)
-            {
-                var strip = item.Parent as TabStrip;
-                if (strip.DataContext is IDock container)
-                {
-                    if (bExecute)
+                case IDockRoot sourceRoot:
                     {
-                        switch(operation)
+                        switch (targetDock)
                         {
-                            case DockOperation.Fill:
-                                int itemIndex = strip.ItemContainerGenerator.IndexFromContainer(item);
-                                var position = DropHelper.GetPositionScreen(sender, e);
-
-                                // WIP: This is work in progress.
-                                //var splitLayout = container.SplitLayout(context, SplitDirection.Left);
-                                //layout.ReplaceView(container, splitLayout);
-
-                                var window = layout.CurrentView.CreateWindow(container, itemIndex, context);
-                                window.X = position.X;
-                                window.Y = position.Y;
-                                window.Width = 300;
-                                window.Height = 400;
-                                window.Id = "Dock";
-                                window.Title = "Dock";
-                                window.Layout.Title = "Dock";
-                                window.Present(false);
-
-                                return true;
-
-                            default:
-                                System.Console.WriteLine($"DockSplit: {operation}");
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
                                 break;
-                        }                        
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
                     }
-                    return true;
-                }
-            }
+                    break;
+                case IDockView sourceView:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                    return ValidateMoveViewsBetweenStrips(sourceView, targetView, e, bExecute, operation);
+                                }
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                    return ValidateMoveViewToStrip(sourceView, targetStrip, e, bExecute, operation);
+                                }
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
 
+                        return ValidateMoveViewToWindow(sourceView, targetDock, sender, e, bExecute, operation);
+                    }
+                case IDockLayout sourceLayout:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                case IDockStrip sourceStrip:
+                    {
+                        switch (targetDock)
+                        {
+                            case IDockRoot targetRoot:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockView targetView:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockLayout targetLayout:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            case IDockStrip targetStrip:
+                                {
+                                    // TODO:
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine($"Not supported dock operation: {sourceDock} -> {targetDock}");
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        Console.WriteLine($"Not supported dock source: {sourceDock}");
+                    }
+                    break;
+            }
             return false;
         }
 
-        public bool Validate(object context, object sender, DockOperation operation, DragEventArgs e)
+        public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (context is IDock layout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                return Validate(layout, layout.Context, sender, e,  operation, false);
+                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
+                return Validate(sourceDock, targetDock, sender, e,  operation, false);
             }
             return false;
         }
 
-        public bool Execute(object context, object sender, DockOperation operation, DragEventArgs e)
+        public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (context is IDock layout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                return Validate(layout, layout.Context, sender, e, operation, true);
+                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
+                return Validate(sourceDock, targetDock, sender, e, operation, true);
             }
             return false;
+        }
+
+        public void Cancel(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

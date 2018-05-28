@@ -5,11 +5,6 @@ namespace Dock.Avalonia
 {
     public static class DragDataFormats
     {
-        public static string Source = nameof(Source);
-        public static string Sender = nameof(Sender);
-        public static string Object = nameof(Object);
-        public static string ObjectData = nameof(ObjectData);
-        public static string Parent = nameof(Parent);
-        public static string ParentData = nameof(ParentData);
+        public static string Context = nameof(Context);
     }
 }

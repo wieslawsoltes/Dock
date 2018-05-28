@@ -18,8 +18,17 @@ namespace Dock.Avalonia
         public static double MinimumHorizontalDragDistance = 4;
         public static double MinimumVerticalDragDistance = 4;
 
+        public static readonly AvaloniaProperty ContextProperty =
+            AvaloniaProperty.Register<DragBehavior, object>(nameof(Context));
+
         public static readonly AvaloniaProperty IsTunneledProperty =
             AvaloniaProperty.Register<DragBehavior, bool>(nameof(IsTunneled), true);
+
+        public object Context
+        {
+            get => (object)GetValue(ContextProperty);
+            set => SetValue(ContextProperty, value);
+        }
 
         public bool IsTunneled
         {
@@ -80,12 +89,7 @@ namespace Dock.Avalonia
 
                 var data = new DataObject();
 
-                data.Set(DragDataFormats.Source, e.Source);
-                data.Set(DragDataFormats.Sender, sender);
-                data.Set(DragDataFormats.Object, AssociatedObject);
-                data.Set(DragDataFormats.ObjectData, AssociatedObject.DataContext);
-                data.Set(DragDataFormats.Parent, AssociatedObject.Parent);
-                data.Set(DragDataFormats.ParentData, AssociatedObject.Parent.DataContext);
+                data.Set(DragDataFormats.Context, Context);
 
                 var effect = DragDropEffects.None;
 

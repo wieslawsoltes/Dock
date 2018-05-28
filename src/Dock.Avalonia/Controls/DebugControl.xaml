@@ -20,9 +20,9 @@
     </UserControl.Styles>
     <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="*">
         <TreeView x:Name="root" Grid.Column="0" Grid.Row="0">
-            <i:Interaction.Behaviors>
-                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DebugTreeViewDropHandler.Instance}"/>
-            </i:Interaction.Behaviors>
+            <TreeView.KeyBindings>
+                <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #root.SelectedItem}" Gesture="Delete"/>
+            </TreeView.KeyBindings>
             <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}">
                 <TreeViewItem.Styles>
                     <Style Selector="TreeViewItem">
@@ -33,7 +33,8 @@
                     <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior/>
+                                <id:DragBehavior Context="{Binding}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockTreeViewDropHandler.Instance}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

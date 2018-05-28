@@ -56,6 +56,20 @@ namespace Dock.Model
         }
 
         /// <summary>
+        /// Searches for root layout.
+        /// </summary>
+        /// <param name="dock">The dock to find root for.</param>
+        /// <returns>The root layout instance or null if root layout was not found.</returns>
+        public static IDock FindRootLayout(this IDock dock)
+        {
+            if (dock.Parent == null)
+            {
+                return dock;
+            }
+            return FindRootLayout(dock.Parent);
+        }
+
+        /// <summary>
         /// Remove view from the dock.
         /// </summary>
         /// <param name="dock">The views dock.</param>
@@ -67,6 +81,10 @@ namespace Dock.Model
             if (dock.Views.Count > 0)
             {
                 dock.CurrentView = dock.Views[index > 0 ? index - 1 : 0];
+            }
+            else
+            {
+                dock.CurrentView = null;
             }
         }
 
@@ -130,6 +148,10 @@ namespace Dock.Model
             {
                 sourceDock.CurrentView = sourceDock.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
             }
+            else
+            {
+                sourceDock.CurrentView = null;
+            }
 
             if (targetDock.Views.Count > 0)
             {
@@ -153,163 +175,6 @@ namespace Dock.Model
 
             sourceDock.CurrentView = item2;
             targetDock.CurrentView = item1;
-        }
-
-        /// <summary>
-        /// Adds window to dock windows list.
-        /// </summary>
-        /// <param name="dock">The views dock.</param>
-        /// <param name="window">The window to add.</param>
-        public static void AddWindow(this IDock dock, IDockWindow window)
-        {
-            if (dock.Windows == null)
-            {
-                dock.Windows = new ObservableCollection<IDockWindow>();
-            }
-            dock.Windows?.Add(window);
-        }
-
-        /// <summary>
-        /// Removes window from windows list.
-        /// </summary>
-        /// <param name="dock">The views dock.</param>
-        /// <param name="window">The window to remove.</param>
-        public static void RemoveWindow(this IDock dock, IDockWindow window)
-        {
-            dock.Windows?.Remove(window);
-        }
-
-        /// <summary>
-        /// Creates dock window from view.
-        /// </summary>
-        /// <param name="target">The target dock.</param>
-        /// <param name="source">The source dock.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="context">The context object.</param>
-        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        public static IDockWindow CreateWindow(this IDock target, IDock source, int sourceIndex, object context)
-        {
-            var view = source.Views[sourceIndex];
-
-            source.RemoveView(sourceIndex);
-
-            var dockStrip = new DockStrip
-            {
-                Id = nameof(DockStrip),
-                CurrentView = view,
-                Views = new ObservableCollection<IDock> { view }
-            };
-
-            var dockLayout = new DockLayout
-            {
-                Id = nameof(DockLayout),
-                CurrentView = dockStrip,
-                Views = new ObservableCollection<IDock> { dockStrip }
-            };
-
-            var window = new DockWindow()
-            {
-                Id = nameof(DockWindow),
-                Layout = dockLayout
-            };
-
-            target.AddWindow(window);
-            target.Factory?.Update(window, context, target);
-
-            return window;
-        }
-
-        /// <summary>
-        /// Creates a new split layout.
-        /// </summary>
-        /// <param name="target">The target dock.</param>
-        /// <param name="context">The context object.</param>
-        /// <param name="operation">The dock operation.</param>
-        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        public static IDock SplitLayout(this IDock target, object context, DockOperation operation)
-        {
-            double width = double.NaN;
-            double height = double.NaN;
-            string originalDock = target.Dock;
-            double originalWidth = target.Width;
-            double originalHeight = target.Height;
-
-            switch (operation)
-            {
-                case DockOperation.Left:
-                case DockOperation.Right:
-                    width = originalWidth == double.NaN ? double.NaN : originalWidth / 2.0;
-                    height = target.Height == double.NaN ? double.NaN : target.Height;
-                    break;
-                case DockOperation.Top:
-                case DockOperation.Bottom:
-                    width = originalWidth == double.NaN ? double.NaN : originalWidth;
-                    height = originalHeight == double.NaN ? double.NaN : originalHeight / 2.0;
-                    break;
-            }
-
-            IDock split = new DockLayout
-            {
-                Id = nameof(DockLayout),
-                Title = nameof(DockLayout),
-                Width = width,
-                Height = height,
-                CurrentView = null,
-                Views = null
-            };
-
-            switch (operation)
-            {
-                case DockOperation.Left:
-                    target.Dock = "Left";
-                    target.Width = width;
-                    split.Dock = "Right";
-                    split.Width = width;
-                    break;
-                case DockOperation.Right:
-                    target.Dock = "Right";
-                    target.Width = width;
-                    split.Dock = "Left";
-                    split.Width = width;
-                    break;
-                case DockOperation.Top:
-                    target.Dock = "Top";
-                    target.Height = height;
-                    split.Dock = "Bottom";
-                    split.Height = height;
-                    break;
-                case DockOperation.Bottom:
-                    target.Dock = "Bottom";
-                    target.Height = height;
-                    split.Dock = "Top";
-                    split.Height = height;
-                    break;
-            }
-
-            var layout = new DockLayout
-            {
-                Id = nameof(DockLayout),
-                Dock = originalDock,
-                Width = originalWidth,
-                Height = originalHeight,
-                Title = nameof(DockLayout),
-                CurrentView = null,
-                Views = new ObservableCollection<IDock>
-                {
-                    (target.Dock == "Left" || target.Dock == "Top") ? target : split,
-                    new DockSplitter()
-                    {
-                        Id = nameof(DockSplitter),
-                        Title = nameof(DockSplitter),
-                        Dock = (target.Dock == "Left" || target.Dock == "Right") ? "Left" : "Top",
-                        Width = double.NaN,
-                        Height = double.NaN,
-                    },
-                    (target.Dock == "Right" || target.Dock == "Bottom") ? target : split,
-                }
-            };
-
-            return layout;
         }
     }
 }

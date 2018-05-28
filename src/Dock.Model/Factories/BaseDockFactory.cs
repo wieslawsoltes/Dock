@@ -161,7 +161,101 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void Split(IDock dock, DockOperation operation)
+        public virtual IDock CreateSplitLayout(IDock dock, IDock view, object context, DockOperation operation)
+        {
+            double width = double.NaN;
+            double height = double.NaN;
+            string originalDock = dock.Dock;
+            double originalWidth = dock.Width;
+            double originalHeight = dock.Height;
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Right:
+                    width = originalWidth == double.NaN ? double.NaN : originalWidth / 2.0;
+                    height = dock.Height == double.NaN ? double.NaN : dock.Height;
+                    break;
+                case DockOperation.Top:
+                case DockOperation.Bottom:
+                    width = originalWidth == double.NaN ? double.NaN : originalWidth;
+                    height = originalHeight == double.NaN ? double.NaN : originalHeight / 2.0;
+                    break;
+            }
+
+            if (view != null)
+            {
+                view.Dock = "";
+                view.Width = double.NaN;
+                view.Height = double.NaN;
+            }
+
+            IDock split = new DockLayout
+            {
+                Id = nameof(DockLayout),
+                Title = nameof(DockLayout),
+                Width = width,
+                Height = height,
+                CurrentView = view ?? null,
+                Views = view == null ? null : new ObservableCollection<IDock> {  view }
+            };
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                    split.Dock = "Left";
+                    split.Width = width;
+                    dock.Dock = "Right";
+                    dock.Width = width;
+                    break;
+                case DockOperation.Right:
+                    split.Dock = "Right";
+                    split.Width = width;
+                    dock.Dock = "Left";
+                    dock.Width = width;
+                    break;
+                case DockOperation.Top:
+                    split.Dock = "Top";
+                    split.Height = height;
+                    dock.Dock = "Bottom";
+                    dock.Height = height;
+                    break;
+                case DockOperation.Bottom:
+                    split.Dock = "Bottom";
+                    split.Height = height;
+                    dock.Dock = "Top";
+                    dock.Height = height;
+                    break;
+            }
+
+            var layout = new DockLayout
+            {
+                Id = nameof(DockLayout),
+                Dock = originalDock,
+                Width = originalWidth,
+                Height = originalHeight,
+                Title = nameof(DockLayout),
+                CurrentView = null,
+                Views = new ObservableCollection<IDock>
+                {
+                    (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
+                    new DockSplitter()
+                    {
+                        Id = nameof(DockSplitter),
+                        Title = nameof(DockSplitter),
+                        Dock = (split.Dock == "Left" || split.Dock == "Right") ? "Left" : "Top",
+                        Width = double.NaN,
+                        Height = double.NaN,
+                    },
+                    (dock.Dock == "Right" || dock.Dock == "Bottom") ? split : dock,
+                }
+            };
+
+            return layout;
+        }
+
+        /// <inheritdoc/>
+        public virtual void Split(IDock dock, IDock view, DockOperation operation)
         {
             switch (operation)
             {
@@ -170,12 +264,15 @@ namespace Dock.Model.Factories
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        var layout = dock.SplitLayout(dock.Context, operation);
-                        if (layout != null)
+                        if (view != null)
                         {
-                            Replace(dock, layout);
-                            Update(layout, dock.Context, dock.Parent);
+                            Remove(view);
                         }
+
+                        var layout = CreateSplitLayout(dock, view, dock.Context, operation);
+
+                        Replace(dock, layout);
+                        Update(layout, dock.Context, dock.Parent);
                     }
                     break;
                 default:
@@ -192,25 +289,25 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void SplitToLeft(IDock dock)
         {
-            Split(dock, DockOperation.Left);
+            Split(dock, null, DockOperation.Left);
         }
 
         /// <inheritdoc/>
         public virtual void SplitToRight(IDock dock)
         {
-            Split(dock, DockOperation.Left);
+            Split(dock, null, DockOperation.Right);
         }
 
         /// <inheritdoc/>
         public virtual void SplitToTop(IDock dock)
         {
-            Split(dock, DockOperation.Left);
+            Split(dock, null, DockOperation.Top);
         }
 
         /// <inheritdoc/>
         public virtual void SplitToBottom(IDock dock)
         {
-            Split(dock, DockOperation.Left);
+            Split(dock, null, DockOperation.Bottom);
         }
 
         /// <inheritdoc/>

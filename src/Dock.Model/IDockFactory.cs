@@ -95,11 +95,22 @@ namespace Dock.Model
         void Replace(IDock source, IDock destination);
 
         /// <summary>
+        /// Creates a new split layout from source dock.
+        /// </summary>
+        /// <param name="dock">The dock to perform operation on.</param>
+        /// <param name="view">The optional view dock to add to splitted side.</param>
+        /// <param name="context">The context object.</param>
+        /// <param name="operation">The dock operation.</param>
+        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
+        IDock CreateSplitLayout(IDock dock, IDock view, object context, DockOperation operation);
+
+        /// <summary>
         /// Splits dock and updates parent layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
+        /// <param name="view">The optional view dock to add to splitted side.</param>
         /// <param name="operation"> The dock operation to perform.</param>
-        void Split(IDock dock, DockOperation operation);
+        void Split(IDock dock, IDock view, DockOperation operation);
 
         /// <summary>
         /// Splits dock to the <see cref="DockOperation.Fill"/> and updates <see cref="IDock.Parent"/> layout.

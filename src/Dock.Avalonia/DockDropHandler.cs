@@ -115,20 +115,42 @@ namespace Dock.Avalonia
                             switch (operation)
                             {
                                 case DockOperation.Fill:
-                                    sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
-                                    break;
+                                    {
+                                        sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
+                                        return true;
+                                    }
                                 case DockOperation.Left:
-                                    // TODO:
-                                    break;
-                                case DockOperation.Bottom:
-                                    // TODO:
-                                    break;
+                                    {
+                                        if (targetStrip.Factory is IDockFactory factory)
+                                        {
+                                            factory.Split(targetStrip, sourceView, DockOperation.Left);
+                                        }
+                                        return true;
+                                    }
                                 case DockOperation.Right:
-                                    // TODO:
-                                    break;
+                                    {
+                                        if (targetStrip.Factory is IDockFactory factory)
+                                        {
+                                            factory.Split(targetStrip, sourceView, DockOperation.Right);
+                                        }
+                                        return true;
+                                    }
                                 case DockOperation.Top:
-                                    // TODO:
-                                    break;
+                                    {
+                                        if (targetStrip.Factory is IDockFactory factory)
+                                        {
+                                            factory.Split(targetStrip, sourceView, DockOperation.Top);
+                                        }
+                                        return true;
+                                    }
+                                case DockOperation.Bottom:
+                                    {
+                                        if (targetStrip.Factory is IDockFactory factory)
+                                        {
+                                            factory.Split(targetStrip, sourceView, DockOperation.Bottom);
+                                        }
+                                        return true;
+                                    }
                                 case DockOperation.Window:
                                     // TODO:
                                     break;
@@ -180,16 +202,16 @@ namespace Dock.Avalonia
                                         factory.AddWindow(rootLayout.CurrentView, window, sourceView.Context);
 
                                         window.Present(false);
+
+                                        return true;
                                     }
                                     else
                                     {
-                                        Console.WriteLine($"ValidateMoveViewToWindow: Factory is null.");
                                         return false;
                                     }
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"ValidateMoveViewToWindow: FindRootLayout failed.");
                                     return false;
                                 } 
                             }

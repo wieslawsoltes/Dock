@@ -682,8 +682,6 @@ namespace Dock.Model.Factories
                         {
                             Id = nameof(ToolDock),
                             Title = nameof(ToolDock),
-                            Width = double.NaN,
-                            Height = double.NaN,
                             CurrentView = source,
                             Views = new ObservableCollection<IDock> { source }
                         };
@@ -692,6 +690,7 @@ namespace Dock.Model.Factories
                 case ILayoutDock targetLayout:
                     {
                         target = targetLayout;
+
                     }
                     break;
                 case ITabDock targetTab:
@@ -702,9 +701,13 @@ namespace Dock.Model.Factories
                 default:
                     {
                         Console.WriteLine($"Not supported window source: {source}");
+                        return null;
                     }
-                    break;
             }
+
+            target.Dock = "";
+            target.Width = double.NaN;
+            target.Height = double.NaN;
 
             var root = new RootDock
             {

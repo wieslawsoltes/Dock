@@ -105,7 +105,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void Move(IDock dock, IDock parent)
+        public virtual void MoveTo(IDock dock, IDock parent)
         {
             IDock orignalParent = dock.Parent;
             int index = orignalParent.Views.IndexOf(dock);

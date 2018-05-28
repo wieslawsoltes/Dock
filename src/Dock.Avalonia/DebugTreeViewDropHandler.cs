@@ -28,7 +28,7 @@ namespace Dock.Avalonia
                 {
                     if (sourceDock.Factory is IDockFactory factory)
                     {
-                        factory.Move(sourceDock, targetDock);
+                        factory.MoveTo(sourceDock, targetDock);
                     }
                 }
                 return true;

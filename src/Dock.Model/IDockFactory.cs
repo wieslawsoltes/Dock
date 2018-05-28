@@ -74,11 +74,11 @@ namespace Dock.Model
         void Remove(IDock dock);
 
         /// <summary>
-        /// Move dock to the destination parent <see cref="IDockNavigation.Views"/> collection.
+        /// Moves dock to the destination parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock to move.</param>
         /// <param name="parent">The destination parent.</param>
-        void Move(IDock dock, IDock parent);
+        void MoveTo(IDock dock, IDock parent);
 
         /// <summary>
         /// Swaps docks in parents <see cref="IDockNavigation.Views"/> collection.

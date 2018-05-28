@@ -98,9 +98,9 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void Remove(IDock dock)
         {
-            if (dock.Parent != null)
+            if (dock.Parent is IDock parent)
             {
-                dock.Parent.Views?.Remove(dock);
+                parent.Views?.Remove(dock);
             }
         }
 
@@ -518,7 +518,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual IDockWindow CreateWindow(IDock parent, IDock source, object context)
+        public virtual IDockWindow CreateWindowFrom(IDock source)
         {
             var strip = new DockStrip
             {
@@ -550,11 +550,30 @@ namespace Dock.Model.Factories
                 Layout = root
             };
 
-            parent.AddWindow(window);
+            return window;
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddWindow(IDock parent, IDockWindow window, object context)
+        {
+            if (parent.Windows == null)
+            {
+                parent.Windows = new ObservableCollection<IDockWindow>();
+            }
+
+            parent.Windows?.Add(window);
 
             Update(window, context, parent);
+        }
 
-            return window;
+        /// <inheritdoc/>
+        public virtual void RemoveWindow(IDockWindow window)
+        {
+            if (window.Owner is IDock dock)
+            {
+                window.Destroy();
+                dock.Windows?.Remove(window);
+            }
         }
 
         /// <inheritdoc/>

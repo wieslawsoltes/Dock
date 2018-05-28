@@ -178,30 +178,6 @@ namespace Dock.Model
         }
 
         /// <summary>
-        /// Adds window to dock windows list.
-        /// </summary>
-        /// <param name="dock">The views dock.</param>
-        /// <param name="window">The window to add.</param>
-        public static void AddWindow(this IDock dock, IDockWindow window)
-        {
-            if (dock.Windows == null)
-            {
-                dock.Windows = new ObservableCollection<IDockWindow>();
-            }
-            dock.Windows?.Add(window);
-        }
-
-        /// <summary>
-        /// Removes window from windows list.
-        /// </summary>
-        /// <param name="dock">The views dock.</param>
-        /// <param name="window">The window to remove.</param>
-        public static void RemoveWindow(this IDock dock, IDockWindow window)
-        {
-            dock.Windows?.Remove(window);
-        }
-
-        /// <summary>
         /// Creates a new split layout.
         /// </summary>
         /// <param name="target">The target dock.</param>

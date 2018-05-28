@@ -260,11 +260,23 @@ namespace Dock.Model
         /// <summary>
         /// Creates dock window from source view.
         /// </summary>
-        /// <param name="target">The parent dock for window.</param>
         /// <param name="source">The source dock to embed into window.</param>
-        /// <param name="context">The context for dock window.</param>
         /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow CreateWindow(IDock parent, IDock source, object context);
+        IDockWindow CreateWindowFrom(IDock source);
+
+        /// <summary>
+        /// Adds window to dock windows list.
+        /// </summary>
+        /// <param name="parent">The views dock.</param>
+        /// <param name="window">The window to add.</param>
+        /// <param name="context">The context for dock window.</param>
+        void AddWindow(IDock parent, IDockWindow window, object context);
+
+        /// <summary>
+        /// Removes window from owner windows list.
+        /// </summary>
+        /// <param name="window">The window to remove.</param>
+        void RemoveWindow(IDockWindow window);
 
         /// <summary>
         /// Creates layout.

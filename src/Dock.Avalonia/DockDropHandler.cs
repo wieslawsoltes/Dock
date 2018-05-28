@@ -171,11 +171,14 @@ namespace Dock.Avalonia
                                     {
                                         sourceView.Parent.RemoveView(sourceIndex);
 
-                                        var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
+                                        var window = factory.CreateWindowFrom(sourceView);
                                         window.X = position.X;
                                         window.Y = position.Y;
                                         window.Width = 300;
                                         window.Height = 400;
+
+                                        factory.AddWindow(rootLayout.CurrentView, window, sourceView.Context);
+
                                         window.Present(false);
                                     }
                                     else

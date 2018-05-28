@@ -15,13 +15,26 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
         <Style Selector="Border.panel">
-            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLightBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
+        <Style Selector="Button.chromeButton">
+            <Setter Property="Margin" Value="2 0 0 0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="TabStrip:singleitem">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="Grid.grip:floating">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
     </UserControl.Styles>
-    <DockPanel ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
+
+    <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
         </i:Interaction.Behaviors>

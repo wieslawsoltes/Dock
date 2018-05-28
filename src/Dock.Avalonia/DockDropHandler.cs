@@ -13,6 +13,8 @@ namespace Dock.Avalonia
 
         private bool ValidateMoveViewsBetweenStrips(IDockView sourceView, IDockView targetView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
+            Console.WriteLine($"ValidateMoveViewsBetweenStrips: {sourceView.Title} -> {targetView.Title}");
+
             if (sourceView.Parent is IDockStrip sourceStrip && targetView.Parent is IDockStrip targetStrip)
             {
                 if (sourceStrip == targetStrip)
@@ -89,6 +91,8 @@ namespace Dock.Avalonia
 
         private bool ValidateMoveViewToStrip(IDockView sourceView, IDockStrip targetStrip, DragEventArgs e, bool bExecute, DockOperation operation)
         {
+            Console.WriteLine($"ValidateMoveViewToStrip: {sourceView.Title} -> {targetStrip.Title}");
+
             if (sourceView.Parent is IDockStrip sourceStrip && sourceStrip != targetStrip)
             {
                 int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
@@ -147,8 +151,10 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateMoveViewToWindow(IDockView sourceView, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewToWindow(IDockView sourceView, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
         {
+            Console.WriteLine($"ValidateMoveViewToWindow: {sourceView.Title} -> {targetDock.Title}");
+
             if (sourceView.Parent is IDockStrip sourceStrip)
             {
                 if (bExecute)
@@ -256,7 +262,7 @@ namespace Dock.Avalonia
                                 break;
                         }
 
-                        return ValidateMoveViewToWindow(sourceView, sender, e, bExecute, operation);
+                        return ValidateMoveViewToWindow(sourceView, targetDock, sender, e, bExecute, operation);
                     }
                 case IDockLayout sourceLayout:
                     {

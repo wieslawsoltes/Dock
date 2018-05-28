@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Collections.ObjectModel;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
@@ -120,34 +121,23 @@ namespace Dock.Avalonia
                                         return true;
                                     }
                                 case DockOperation.Left:
-                                    {
-                                        if (targetStrip.Factory is IDockFactory factory)
-                                        {
-                                            factory.Split(targetStrip, sourceView, DockOperation.Left);
-                                        }
-                                        return true;
-                                    }
                                 case DockOperation.Right:
-                                    {
-                                        if (targetStrip.Factory is IDockFactory factory)
-                                        {
-                                            factory.Split(targetStrip, sourceView, DockOperation.Right);
-                                        }
-                                        return true;
-                                    }
                                 case DockOperation.Top:
-                                    {
-                                        if (targetStrip.Factory is IDockFactory factory)
-                                        {
-                                            factory.Split(targetStrip, sourceView, DockOperation.Top);
-                                        }
-                                        return true;
-                                    }
                                 case DockOperation.Bottom:
                                     {
                                         if (targetStrip.Factory is IDockFactory factory)
                                         {
-                                            factory.Split(targetStrip, sourceView, DockOperation.Bottom);
+                                            factory.Remove(sourceView);
+
+                                            IDock strip = new DockStrip
+                                            {
+                                                Id = nameof(DockStrip),
+                                                Title = nameof(DockStrip),
+                                                CurrentView = sourceView,
+                                                Views = new ObservableCollection<IDock> { sourceView }
+                                            };
+
+                                            factory.Split(targetStrip, sourceView, operation);
                                         }
                                         return true;
                                     }

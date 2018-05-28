@@ -238,7 +238,7 @@ namespace Dock.Model.Factories
                 CurrentView = null,
                 Views = new ObservableCollection<IDock>
                 {
-                    (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
+                    (dock.Dock == "Left" || dock.Dock == "Top") ? dock : split,
                     new DockSplitter()
                     {
                         Id = nameof(DockSplitter),
@@ -247,7 +247,7 @@ namespace Dock.Model.Factories
                         Width = double.NaN,
                         Height = double.NaN,
                     },
-                    (dock.Dock == "Right" || dock.Dock == "Bottom") ? split : dock,
+                    (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
                 }
             };
 
@@ -264,11 +264,6 @@ namespace Dock.Model.Factories
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        if (view != null)
-                        {
-                            Remove(view);
-                        }
-
                         var layout = CreateSplitLayout(dock, view, dock.Context, operation);
 
                         Replace(dock, layout);

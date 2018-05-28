@@ -147,7 +147,7 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateMoveViewToWindow(IDockView sourceView, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewToWindow(IDockView sourceView, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
         {
             if (sourceView.Parent is IDockStrip sourceStrip)
             {
@@ -239,7 +239,6 @@ namespace Dock.Avalonia
                                     // TODO:
                                     return ValidateMoveViewsBetweenStrips(sourceView, targetView, e, bExecute, operation);
                                 }
-                                break;
                             case IDockLayout targetLayout:
                                 {
                                     // TODO:
@@ -250,7 +249,6 @@ namespace Dock.Avalonia
                                     // TODO:
                                     return ValidateMoveViewToStrip(sourceView, targetStrip, e, bExecute, operation);
                                 }
-                                break;
                             default:
                                 {
                                     Console.WriteLine($"Not supported dock target: {sourceDock} -> {targetDock}");
@@ -258,9 +256,8 @@ namespace Dock.Avalonia
                                 break;
                         }
 
-                        return ValidateMoveViewToWindow(sourceView, e, bExecute, operation);
+                        return ValidateMoveViewToWindow(sourceView, sender, e, bExecute, operation);
                     }
-                    break;
                 case IDockLayout sourceLayout:
                     {
                         switch (targetDock)

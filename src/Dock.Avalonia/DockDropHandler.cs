@@ -335,7 +335,7 @@ namespace Dock.Avalonia
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title}");
+                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
                 return Validate(sourceDock, targetDock, sender, e,  operation, false);
             }
             return false;
@@ -345,7 +345,7 @@ namespace Dock.Avalonia
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title}");
+                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title} [{operation}]");
                 return Validate(sourceDock, targetDock, sender, e, operation, true);
             }
             return false;

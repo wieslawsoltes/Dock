@@ -63,7 +63,10 @@
             </ScrollViewer>
         </TabItem>
         <TabItem Header="Views">
-            <ListBox Items="{Binding Views}" Margin="4">
+            <ListBox x:Name="views" Items="{Binding Views}" Margin="4">
+                <ListBox.KeyBindings>
+                    <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
+                </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <TextBlock Text="{Binding Title}" Classes="drag">
@@ -82,7 +85,10 @@
             </ListBox>
         </TabItem>
         <TabItem Header="Windows">
-            <ListBox Items="{Binding Windows}" Margin="4">
+            <ListBox x:Name="windows" Items="{Binding Windows}" Margin="4">
+                <ListBox.KeyBindings>
+                    <KeyBinding Command="{Binding Factory.RemoveWindow}" CommandParameter="{Binding #windows.SelectedItem}" Gesture="Delete"/>
+                </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IDockWindow">
                         <TextBlock Text="{Binding Title}" Classes="drag">

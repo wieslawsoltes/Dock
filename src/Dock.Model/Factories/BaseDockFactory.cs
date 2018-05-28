@@ -667,15 +667,44 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual IDockWindow CreateWindowFrom(IDock source)
         {
-            var tool = new ToolDock
+            IDock target = null;
+
+            switch (source)
             {
-                Id = nameof(ToolDock),
-                Title = nameof(ToolDock),
-                Width = double.NaN,
-                Height = double.NaN,
-                CurrentView = source,
-                Views = new ObservableCollection<IDock> { source }
-            };
+                case IRootDock targetRoot:
+                    {
+                        target = targetRoot.CurrentView;
+                    }
+                    break;
+                case IViewDock targetView:
+                    {
+                        target = new ToolDock
+                        {
+                            Id = nameof(ToolDock),
+                            Title = nameof(ToolDock),
+                            Width = double.NaN,
+                            Height = double.NaN,
+                            CurrentView = source,
+                            Views = new ObservableCollection<IDock> { source }
+                        };
+                    }
+                    break;
+                case ILayoutDock targetLayout:
+                    {
+                        target = targetLayout;
+                    }
+                    break;
+                case ITabDock targetTab:
+                    {
+                        target = source;
+                    }
+                    break;
+                default:
+                    {
+                        Console.WriteLine($"Not supported window source: {source}");
+                    }
+                    break;
+            }
 
             var root = new RootDock
             {
@@ -683,9 +712,9 @@ namespace Dock.Model.Factories
                 Title = nameof(RootDock),
                 Width = double.NaN,
                 Height = double.NaN,
-                CurrentView = tool,
-                DefaultView = tool,
-                Views = new ObservableCollection<IDock> { tool  }
+                CurrentView = target,
+                DefaultView = target,
+                Views = new ObservableCollection<IDock> { target  }
             };
 
             var window = new DockWindow()

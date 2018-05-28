@@ -21,9 +21,9 @@
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
                 <idc:DockToolChrome>
-                    <i:Interaction.Behaviors>
+                    <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}"/>
-                    </i:Interaction.Behaviors>
+                    </i:Interaction.Behaviors>-->
                     <idc:ToolControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
                 </idc:DockToolChrome>
             </DataTemplate>

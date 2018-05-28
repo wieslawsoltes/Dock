@@ -136,8 +136,8 @@ namespace Dock.Model.Factories
             IDock secondParent = second.Parent;
             int secondIndex = secondParent.Views.IndexOf(second);
 
-            firstParent.Views.RemoveAt(first);
-            secondParent.Views.RemoveAt(second);
+            firstParent.Views.RemoveAt(firstIndex);
+            secondParent.Views.RemoveAt(secondIndex);
 
             firstParent.Views.Insert(firstIndex, second);
             secondParent.Views.Insert(secondIndex, first);

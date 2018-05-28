@@ -100,6 +100,10 @@ namespace Dock.Model
             {
                 dock.CurrentView = dock.Views[index > 0 ? index - 1 : 0];
             }
+            else
+            {
+                dock.CurrentView = null;
+            }
         }
 
         /// <summary>
@@ -161,6 +165,10 @@ namespace Dock.Model
             if (sourceDock.Views.Count > 0)
             {
                 sourceDock.CurrentView = sourceDock.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
+            }
+            else
+            {
+                sourceDock.CurrentView = null;
             }
 
             if (targetDock.Views.Count > 0)

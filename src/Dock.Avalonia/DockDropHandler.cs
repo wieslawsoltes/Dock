@@ -164,9 +164,9 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateMoveViewToWindow(IViewDock sourceView, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveDockToWindow(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            Console.WriteLine($"ValidateMoveViewToWindow: {sourceView.Title} -> {targetDock.Title}");
+            Console.WriteLine($"ValidateMoveDockToWindow: {sourceDock.Title} -> {targetDock.Title}");
 
             if (bExecute)
             {
@@ -175,22 +175,22 @@ namespace Dock.Avalonia
                     case DockOperation.Fill:
                         {
                             var position = DropHelper.GetPositionScreen(sender, e);
-                            int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
+                            int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
                             if (sourceIndex >= 0)
                             {
-                                if (sourceView.FindRootLayout() is IDock rootLayout)
+                                if (sourceDock.FindRootLayout() is IDock rootLayout && rootLayout.CurrentView != null)
                                 {
                                     if (rootLayout.Factory is IDockFactory factory)
                                     {
-                                        sourceView.Parent.RemoveView(sourceIndex);
+                                        sourceDock.Parent.RemoveView(sourceIndex);
 
-                                        var window = factory.CreateWindowFrom(sourceView);
+                                        var window = factory.CreateWindowFrom(sourceDock);
                                         window.X = position.X;
                                         window.Y = position.Y;
                                         window.Width = 300;
                                         window.Height = 400;
 
-                                        factory.AddWindow(rootLayout.CurrentView, window, sourceView.Context);
+                                        factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
 
                                         window.Present(false);
 
@@ -282,7 +282,7 @@ namespace Dock.Avalonia
                                 break;
                         }
 
-                        return ValidateMoveViewToWindow(sourceView, targetDock, sender, e, bExecute, operation);
+                        return ValidateMoveDockToWindow(sourceView, targetDock, sender, e, bExecute, operation);
                     }
                 case ILayoutDock sourceLayout:
                     {
@@ -346,8 +346,9 @@ namespace Dock.Avalonia
                                 }
                                 break;
                         }
+
+                        return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
                     }
-                    break;
                 default:
                     {
                         Console.WriteLine($"Not supported dock source: {sourceDock}");

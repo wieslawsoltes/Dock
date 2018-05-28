@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace Dock.Avalonia
 {
@@ -12,16 +13,16 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DockDropHandler();
 
-        private bool ValidateMoveViewsBetweenStrips(IDockView sourceView, IDockView targetView, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewsBetweenTabs(IViewDock sourceView, IViewDock targetView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            Console.WriteLine($"ValidateMoveViewsBetweenStrips: {sourceView.Title} -> {targetView.Title}");
+            Console.WriteLine($"ValidateMoveViewsBetweenTabs: {sourceView.Title} -> {targetView.Title}");
 
-            if (sourceView.Parent is IDockStrip sourceStrip && targetView.Parent is IDockStrip targetStrip)
+            if (sourceView.Parent is ITabDock sourceTab && targetView.Parent is ITabDock targetTab)
             {
-                if (sourceStrip == targetStrip)
+                if (sourceTab == targetTab)
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
-                    int targetIndex = sourceStrip.Views.IndexOf(targetView);
+                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
+                    int targetIndex = sourceTab.Views.IndexOf(targetView);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -37,7 +38,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceStrip.MoveView(sourceIndex, targetIndex);
+                                sourceTab.MoveView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -45,7 +46,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceStrip.SwapView(sourceIndex, targetIndex);
+                                sourceTab.SwapView(sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -54,8 +55,8 @@ namespace Dock.Avalonia
                 }
                 else
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
-                    int targetIndex = targetStrip.Views.IndexOf(targetView);
+                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
+                    int targetIndex = targetTab.Views.IndexOf(targetView);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -71,7 +72,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
+                                sourceTab.MoveView(targetTab, sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -79,7 +80,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceStrip.SwapView(targetStrip, sourceIndex, targetIndex);
+                                sourceTab.SwapView(targetTab, sourceIndex, targetIndex);
                             }
                             return true;
                         }
@@ -90,14 +91,14 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateMoveViewToStrip(IDockView sourceView, IDockStrip targetStrip, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewToTab(IViewDock sourceView, ITabDock targetTab, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            Console.WriteLine($"ValidateMoveViewToStrip: {sourceView.Title} -> {targetStrip.Title}");
+            Console.WriteLine($"ValidateMoveViewToTab: {sourceView.Title} -> {targetTab.Title}");
 
-            if (sourceView.Parent is IDockStrip sourceStrip && sourceStrip != targetStrip)
+            if (sourceView.Parent is ITabDock sourceTab && sourceTab != targetTab)
             {
-                int sourceIndex = sourceStrip.Views.IndexOf(sourceView);
-                int targetIndex = targetStrip.Views.Count;
+                int sourceIndex = sourceTab.Views.IndexOf(sourceView);
+                int targetIndex = targetTab.Views.Count;
 
                 if (sourceIndex >= 0 && targetIndex >= 0)
                 {
@@ -117,7 +118,7 @@ namespace Dock.Avalonia
                             {
                                 case DockOperation.Fill:
                                     {
-                                        sourceStrip.MoveView(targetStrip, sourceIndex, targetIndex);
+                                        sourceTab.MoveView(targetTab, sourceIndex, targetIndex);
                                         return true;
                                     }
                                 case DockOperation.Left:
@@ -125,19 +126,19 @@ namespace Dock.Avalonia
                                 case DockOperation.Top:
                                 case DockOperation.Bottom:
                                     {
-                                        if (targetStrip.Factory is IDockFactory factory)
+                                        if (targetTab.Factory is IDockFactory factory)
                                         {
                                             factory.Remove(sourceView);
 
-                                            IDock strip = new DockStrip
+                                            IDock tool = new ToolDock
                                             {
-                                                Id = nameof(DockStrip),
-                                                Title = nameof(DockStrip),
+                                                Id = nameof(ToolDock),
+                                                Title = nameof(ToolDock),
                                                 CurrentView = sourceView,
                                                 Views = new ObservableCollection<IDock> { sourceView }
                                             };
 
-                                            factory.Split(targetStrip, strip, operation);
+                                            factory.Split(targetTab, tool, operation);
                                         }
                                         return true;
                                     }
@@ -152,7 +153,7 @@ namespace Dock.Avalonia
                     {
                         if (bExecute)
                         {
-                            sourceStrip.SwapView(targetStrip, sourceIndex, targetIndex);
+                            sourceTab.SwapView(targetTab, sourceIndex, targetIndex);
                         }
                         return true;
                     }
@@ -163,7 +164,7 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateMoveViewToWindow(IDockView sourceView, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateMoveViewToWindow(IViewDock sourceView, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
         {
             Console.WriteLine($"ValidateMoveViewToWindow: {sourceView.Title} -> {targetDock.Title}");
 
@@ -218,26 +219,26 @@ namespace Dock.Avalonia
 
             switch (sourceDock)
             {
-                case IDockRoot sourceRoot:
+                case IRootDock sourceRoot:
                     {
                         switch (targetDock)
                         {
-                            case IDockRoot targetRoot:
+                            case IRootDock targetRoot:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockView targetView:
+                            case IViewDock targetView:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockLayout targetLayout:
+                            case ILayoutDock targetLayout:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockStrip targetStrip:
+                            case ITabDock targetTab:
                                 {
                                     // TODO:
                                 }
@@ -250,29 +251,29 @@ namespace Dock.Avalonia
                         }
                     }
                     break;
-                case IDockView sourceView:
+                case IViewDock sourceView:
                     {
                         switch (targetDock)
                         {
-                            case IDockRoot targetRoot:
+                            case IRootDock targetRoot:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockView targetView:
+                            case IViewDock targetView:
                                 {
                                     // TODO:
-                                    return ValidateMoveViewsBetweenStrips(sourceView, targetView, e, bExecute, operation);
+                                    return ValidateMoveViewsBetweenTabs(sourceView, targetView, e, bExecute, operation);
                                 }
-                            case IDockLayout targetLayout:
+                            case ILayoutDock targetLayout:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockStrip targetStrip:
+                            case ITabDock targetTab:
                                 {
                                     // TODO:
-                                    return ValidateMoveViewToStrip(sourceView, targetStrip, e, bExecute, operation);
+                                    return ValidateMoveViewToTab(sourceView, targetTab, e, bExecute, operation);
                                 }
                             default:
                                 {
@@ -283,26 +284,26 @@ namespace Dock.Avalonia
 
                         return ValidateMoveViewToWindow(sourceView, targetDock, sender, e, bExecute, operation);
                     }
-                case IDockLayout sourceLayout:
+                case ILayoutDock sourceLayout:
                     {
                         switch (targetDock)
                         {
-                            case IDockRoot targetRoot:
+                            case IRootDock targetRoot:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockView targetView:
+                            case IViewDock targetView:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockLayout targetLayout:
+                            case ILayoutDock targetLayout:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockStrip targetStrip:
+                            case ITabDock targetTab:
                                 {
                                     // TODO:
                                 }
@@ -315,26 +316,26 @@ namespace Dock.Avalonia
                         }
                     }
                     break;
-                case IDockStrip sourceStrip:
+                case ITabDock sourceTab:
                     {
                         switch (targetDock)
                         {
-                            case IDockRoot targetRoot:
+                            case IRootDock targetRoot:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockView targetView:
+                            case IViewDock targetView:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockLayout targetLayout:
+                            case ILayoutDock targetLayout:
                                 {
                                     // TODO:
                                 }
                                 break;
-                            case IDockStrip targetStrip:
+                            case ITabDock targetTab:
                                 {
                                     // TODO:
                                 }

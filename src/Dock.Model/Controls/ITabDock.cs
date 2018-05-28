@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Dock.Model
+namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Dock strip.
+    /// Tab dock contract.
     /// </summary>
-    public class DockStrip : DockBase, IDockStrip
+    public interface ITabDock : IDock
     {
     }
 }

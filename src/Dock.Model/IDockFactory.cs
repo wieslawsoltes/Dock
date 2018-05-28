@@ -149,121 +149,145 @@ namespace Dock.Model
         void SplitToWindow(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IDockLayout"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// Adds <see cref="Controls.ILayoutDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddLayout(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IDockRoot"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// Adds <see cref="Controls.IRootDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddRoot(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IDockSplitter"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// Adds <see cref="Controls.ISplitterDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddSplitter(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IDockStrip"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// Adds <see cref="Controls.IDocumentDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
-        void AddStrip(IDock dock);
+        void AddDocument(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IDockView"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// Adds <see cref="Controls.IToolDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddTool(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="Controls.IViewDock"/> to dock <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddView(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockLayout"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.ILayoutDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertLayoutBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockRoot"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IRootDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertRootBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockSplitter"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.ISplitterDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertSplitterBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockStrip"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
-        void InsertStripBefore(IDock dock);
+        void InsertDocumentBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockView"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IToolDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertToolBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="Controls.IViewDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertViewBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockLayout"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.ILayoutDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertLayoutAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockRoot"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IRootDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertRootAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockSplitter"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.ISplitterDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertSplitterAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockStrip"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
-        void InsertStripAfter(IDock dock);
+        void InsertDocumentAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IDockView"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// Insert <see cref="Controls.IToolDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertToolAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="Controls.IViewDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertViewAfter(IDock dock);
 
         /// <summary>
-        /// Converts dock to <see cref="IDockLayout"/> type.
+        /// Converts dock to <see cref="Controls.ILayoutDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
         void ConvertToLayout(IDock dock);
 
         /// <summary>
-        /// Converts dock to <see cref="IDockRoot"/> type.
+        /// Converts dock to <see cref="Controls.IRootDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
         void ConvertToRoot(IDock dock);
 
         /// <summary>
-        /// Converts dock to <see cref="IDockSplitter"/> type.
+        /// Converts dock to <see cref="Controls.ISplitterDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
         void ConvertToSplitter(IDock dock);
 
         /// <summary>
-        /// Converts dock to <see cref="IDockStrip"/> type.
+        /// Converts dock to <see cref="Controls.IDocumentDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
-        void ConvertToStrip(IDock dock);
+        void ConvertToDocument(IDock dock);
 
         /// <summary>
-        /// Converts dock to <see cref="IDockView"/> type.
+        /// Converts dock to <see cref="Controls.IToolDock"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToTool(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="Controls.IViewDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
         void ConvertToView(IDock dock);

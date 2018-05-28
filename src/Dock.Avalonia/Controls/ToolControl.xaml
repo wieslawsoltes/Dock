@@ -1,4 +1,4 @@
-<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <UserControl x:Class="Dock.Avalonia.Controls.StripControl"
              xmlns="https://github.com/avaloniaui"
@@ -89,7 +89,7 @@
                 </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
-                <DataTemplate DataType="Dock:IDockView">
+                <DataTemplate DataType="Dock:IDock">
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}"/>

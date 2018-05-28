@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dock.Model.Controls;
 
 namespace Dock.Model.Factories
 {
@@ -190,10 +191,10 @@ namespace Dock.Model.Factories
                 view.Height = double.NaN;
             }
 
-            IDock split = new DockLayout
+            IDock split = new LayoutDock
             {
-                Id = nameof(DockLayout),
-                Title = nameof(DockLayout),
+                Id = nameof(LayoutDock),
+                Title = nameof(LayoutDock),
                 Width = width,
                 Height = height,
                 CurrentView = view ?? null,
@@ -228,21 +229,21 @@ namespace Dock.Model.Factories
                     break;
             }
 
-            var layout = new DockLayout
+            var layout = new LayoutDock
             {
-                Id = nameof(DockLayout),
+                Id = nameof(LayoutDock),
                 Dock = originalDock,
                 Width = originalWidth,
                 Height = originalHeight,
-                Title = nameof(DockLayout),
+                Title = nameof(LayoutDock),
                 CurrentView = null,
                 Views = new ObservableCollection<IDock>
                 {
                     (dock.Dock == "Left" || dock.Dock == "Top") ? dock : split,
-                    new DockSplitter()
+                    new SplitterDock()
                     {
-                        Id = nameof(DockSplitter),
-                        Title = nameof(DockSplitter),
+                        Id = nameof(SplitterDock),
+                        Title = nameof(SplitterDock),
                         Dock = (split.Dock == "Left" || split.Dock == "Right") ? "Left" : "Top",
                         Width = double.NaN,
                         Height = double.NaN,
@@ -313,10 +314,10 @@ namespace Dock.Model.Factories
 
         private void InsertLayout(IDock dock, int index, object context)
         {
-            var layout = new DockLayout
+            var layout = new LayoutDock
             {
-                Id = nameof(DockLayout),
-                Title = nameof(DockLayout),
+                Id = nameof(LayoutDock),
+                Title = nameof(LayoutDock),
                 Width = double.NaN,
                 Height = double.NaN
             };
@@ -328,10 +329,10 @@ namespace Dock.Model.Factories
 
         private void InsertRoot(IDock dock, int index, object context)
         {
-            var root = new DockRoot
+            var root = new RootDock
             {
-                Id = nameof(DockRoot),
-                Title = nameof(DockRoot),
+                Id = nameof(RootDock),
+                Title = nameof(RootDock),
                 Width = double.NaN,
                 Height = double.NaN
             };
@@ -343,10 +344,10 @@ namespace Dock.Model.Factories
 
         private void InsertSplitter(IDock dock, int index, object context)
         {
-            var splitter = new DockSplitter
+            var splitter = new SplitterDock
             {
-                Id = nameof(DockSplitter),
-                Title = nameof(DockSplitter),
+                Id = nameof(SplitterDock),
+                Title = nameof(SplitterDock),
                 Width = double.NaN,
                 Height = double.NaN
             };
@@ -356,27 +357,42 @@ namespace Dock.Model.Factories
             dock.Views.Insert(index, splitter);
         }
 
-        private void InsertStrip(IDock dock, int index, object context)
+        private void InsertDocument(IDock dock, int index, object context)
         {
-            var strip = new DockStrip
+            var document = new DocumentDock
             {
-                Id = nameof(DockStrip),
-                Title = nameof(DockStrip),
+                Id = nameof(ToolDock),
+                Title = nameof(ToolDock),
                 Width = double.NaN,
                 Height = double.NaN
             };
 
-            Update(strip, context, dock);
+            Update(document, context, dock);
 
-            dock.Views.Insert(index, strip);
+            dock.Views.Insert(index, document);
+        }
+
+        private void InsertTool(IDock dock, int index, object context)
+        {
+            var tool = new ToolDock
+            {
+                Id = nameof(ToolDock),
+                Title = nameof(ToolDock),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(tool, context, dock);
+
+            dock.Views.Insert(index, tool);
         }
 
         private void InsertView(IDock dock, int index, object context)
         {
-            var view = new DockView
+            var view = new ViewDock
             {
-                Id = nameof(DockView),
-                Title = nameof(DockView),
+                Id = nameof(ViewDock),
+                Title = nameof(ViewDock),
                 Width = double.NaN,
                 Height = double.NaN
             };
@@ -417,13 +433,23 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void AddStrip(IDock dock)
+        public virtual void AddDocument(IDock dock)
         {
             if (dock.Views == null)
             {
                 dock.Views = new ObservableCollection<IDock>();
             }
-            InsertStrip(dock, dock.Views.Count, dock.Context);
+            InsertDocument(dock, dock.Views.Count, dock.Context);
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddTool(IDock dock)
+        {
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertTool(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
@@ -467,12 +493,22 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void InsertStripBefore(IDock dock)
+        public virtual void InsertDocumentBefore(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertStrip(parent, index, parent.Context);
+                InsertDocument(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertToolBefore(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertTool(parent, index, parent.Context);
             }
         }
 
@@ -517,12 +553,22 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void InsertStripAfter(IDock dock)
+        public virtual void InsertDocumentAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertStrip(parent, index, parent.Context);
+                InsertDocument(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertToolAfter(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertTool(parent, index, parent.Context);
             }
         }
 
@@ -567,7 +613,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToLayout(IDock dock)
         {
-            var layout = new DockLayout();
+            var layout = new LayoutDock();
             Copy(dock, layout, true, true);
             Update(layout, dock.Context, dock.Parent);
             Replace(dock, layout);
@@ -576,61 +622,70 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToRoot(IDock dock)
         {
-            var layout = new DockRoot();
-            Copy(dock, layout, true, true);
-            Update(layout, dock.Context, dock.Parent);
-            Replace(dock, layout);
+            var root = new RootDock();
+            Copy(dock, root, true, true);
+            Update(root, dock.Context, dock.Parent);
+            Replace(dock, root);
         }
 
         /// <inheritdoc/>
         public virtual void ConvertToSplitter(IDock dock)
         {
-            var layout = new DockSplitter();
-            Copy(dock, layout, false, false);
-            Update(layout, dock.Context, dock.Parent);
-            Replace(dock, layout);
+            var splitter = new SplitterDock();
+            Copy(dock, splitter, false, false);
+            Update(splitter, dock.Context, dock.Parent);
+            Replace(dock, splitter);
         }
 
         /// <inheritdoc/>
-        public virtual void ConvertToStrip(IDock dock)
+        public virtual void ConvertToDocument(IDock dock)
         {
-            var layout = new DockStrip();
-            Copy(dock, layout, true, false);
-            Update(layout, dock.Context, dock.Parent);
-            Replace(dock, layout);
+            var document = new DocumentDock();
+            Copy(dock, document, true, false);
+            Update(document, dock.Context, dock.Parent);
+            Replace(dock, document);
+        }
+
+        /// <inheritdoc/>
+        public virtual void ConvertToTool(IDock dock)
+        {
+            var tool = new ToolDock();
+            Copy(dock, tool, true, false);
+            Update(tool, dock.Context, dock.Parent);
+            Replace(dock, tool);
         }
 
         /// <inheritdoc/>
         public virtual void ConvertToView(IDock dock)
         {
-            var layout = new DockView();
-            Copy(dock, layout, false, true);
-            Update(layout, dock.Context, dock.Parent);
-            Replace(dock, layout);
+            var view = new ViewDock();
+            Copy(dock, view, false, true);
+            Update(view, dock.Context, dock.Parent);
+            Replace(dock, view);
         }
 
         /// <inheritdoc/>
         public virtual IDockWindow CreateWindowFrom(IDock source)
         {
-            var strip = new DockStrip
+            var tool = new ToolDock
             {
-                Id = nameof(DockStrip),
-                Title = nameof(DockStrip),
+                Id = nameof(ToolDock),
+                Title = nameof(ToolDock),
                 Width = double.NaN,
                 Height = double.NaN,
                 CurrentView = source,
                 Views = new ObservableCollection<IDock> { source }
             };
 
-            var root = new DockRoot
+            var root = new RootDock
             {
-                Id = nameof(DockRoot),
-                Title = nameof(DockRoot),
+                Id = nameof(RootDock),
+                Title = nameof(RootDock),
                 Width = double.NaN,
                 Height = double.NaN,
-                CurrentView = strip,
-                DefaultView = strip,
-                Views = new ObservableCollection<IDock> { strip  }
+                CurrentView = tool,
+                DefaultView = tool,
+                Views = new ObservableCollection<IDock> { tool  }
             };
 
             var window = new DockWindow()

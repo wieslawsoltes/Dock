@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Controls;
 using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
@@ -167,7 +168,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Left Pane
 
-            var leftPane = new DockLayout
+            var leftPane = new LayoutDock
             {
                 Id = "LeftPane",
                 Dock = "Left",
@@ -177,7 +178,7 @@ namespace AvaloniaDemo.ViewModels
                 CurrentView = null,
                 Views = new ObservableCollection<IDock>
                 {
-                    new DockStrip
+                    new ToolDock
                     {
                         Id = "LeftPaneTop",
                         Dock = "Top",
@@ -192,13 +193,13 @@ namespace AvaloniaDemo.ViewModels
                             leftTopView3
                         }
                     },
-                    new DockSplitter()
+                    new SplitterDock()
                     {
                         Id = "LeftPaneTopSplitter",
                         Dock = "Top",
                         Title = "LeftPaneTopSplitter"
                     },
-                    new DockStrip
+                    new DocumentDock
                     {
                         Id = "LeftPaneBottom",
                         Dock = "Bottom",
@@ -218,7 +219,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Right Pane
 
-            var rightPane = new DockLayout
+            var rightPane = new LayoutDock
             {
                 Id = "RightPane",
                 Dock = "Right",
@@ -228,7 +229,7 @@ namespace AvaloniaDemo.ViewModels
                 CurrentView = null,
                 Views = new ObservableCollection<IDock>
                 {
-                    new DockStrip
+                    new ToolDock
                     {
                         Id = "RightPaneTop",
                         Dock = "Top",
@@ -243,13 +244,13 @@ namespace AvaloniaDemo.ViewModels
                             rightTopView3
                         }
                     },
-                    new DockSplitter()
+                    new SplitterDock()
                     {
                         Id = "RightPaneTopSplitter",
                         Dock = "Top",
                         Title = "RightPaneTopSplitter"
                     },
-                    new DockStrip
+                    new ToolDock
                     {
                         Id = "RightPaneBottom",
                         Dock = "Bottom",
@@ -270,7 +271,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Main
 
-            var mainLayout = new DockLayout
+            var mainLayout = new LayoutDock
             {
                 Id = "MainLayout",
                 Dock = "",
@@ -281,14 +282,14 @@ namespace AvaloniaDemo.ViewModels
                 Views = new ObservableCollection<IDock>
                 {
                     leftPane,
-                    new DockSplitter()
+                    new SplitterDock()
                     {
                         Id = "LeftSplitter",
                         Dock = "Left",
                         Title = "LeftSplitter"
                     },
                     rightPane,
-                    new DockSplitter()
+                    new SplitterDock()
                     {
                         Id = "RightSplitter",
                         Dock = "Right",
@@ -314,7 +315,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Root
 
-            var layout = new DockRoot
+            var layout = new RootDock
             {
                 Id = "Root",
                 Dock = "",
@@ -338,9 +339,9 @@ namespace AvaloniaDemo.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(DockRoot)] = () => context,
-                [nameof(DockLayout)] = () => context,
-                [nameof(DockStrip)] = () => context,
+                [nameof(RootDock)] = () => context,
+                [nameof(LayoutDock)] = () => context,
+                [nameof(ToolDock)] = () => context,
                 [nameof(DockWindow)] = () => context,
                 ["Debug"] = () => layout,
                 ["Home"] = () => layout,

@@ -9,16 +9,20 @@
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
-            <DataTemplate DataType="Dock:IDockSplitter">
+            <DataTemplate DataType="Controls:ISplitterDock">
                 <ac:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}"/>
             </DataTemplate>
-            <DataTemplate DataType="Dock:IDockStrip">
-                <idc:StripControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+            <DataTemplate DataType="Controls:IDocumentDock">
+                <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
             </DataTemplate>
-            <DataTemplate DataType="Dock:IDockLayout">
+            <DataTemplate DataType="Controls:IToolDock">
+                <idc:ToolControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+            </DataTemplate>
+            <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
                     <ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
@@ -32,7 +36,7 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </DataTemplate>
-            <DataTemplate DataType="Dock:IDockRoot">
+            <DataTemplate DataType="Controls:IRootDock">
                 <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
             </DataTemplate>
         </ContentControl.DataTemplates>

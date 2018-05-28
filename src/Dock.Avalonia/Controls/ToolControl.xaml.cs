@@ -7,14 +7,14 @@ using Avalonia.Markup.Xaml;
 namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Interaction logic for <see cref="StripControl"/> xaml.
+    /// Interaction logic for <see cref="ToolControl"/> xaml.
     /// </summary>
-    public class StripControl : UserControl
+    public class ToolControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StripControl"/> class.
+        /// Initializes a new instance of the <see cref="ToolControl"/> class.
         /// </summary>
-        public StripControl()
+        public ToolControl()
         {
             this.InitializeComponent();
         }

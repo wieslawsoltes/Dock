@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Logging.Serilog;
 using AvaloniaDemo.ViewModels;
 using Dock.Model;
+using Dock.Model.Controls;
 using Dock.Serializer;
 
 namespace AvaloniaDemo
@@ -39,7 +40,7 @@ namespace AvaloniaDemo
                 string path = DockSerializer.GetBasePath("Layout.json");
                 if (DockSerializer.Exists(path))
                 {
-                    layout = DockSerializer.Load<DockRoot>(path);
+                    layout = DockSerializer.Load<RootDock>(path);
                 }
 
                 BuildAvaloniaApp().Start<MainWindow>(() =>

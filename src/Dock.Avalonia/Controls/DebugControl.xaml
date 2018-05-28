@@ -10,6 +10,7 @@
              xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
              xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">

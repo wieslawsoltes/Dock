@@ -1,12 +1,13 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Controls.StripControl"
+<UserControl x:Class="Dock.Avalonia.Controls.DocumentControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
@@ -33,7 +34,6 @@
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </UserControl.Styles>
-
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
@@ -66,7 +66,7 @@
                     </Style>
                 </TabStrip.Styles>
                 <TabStrip.DataTemplates>
-                    <DataTemplate DataType="Dock:IDockView">
+                    <DataTemplate DataType="Dock:IDock">
                         <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>

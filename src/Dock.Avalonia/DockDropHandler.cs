@@ -137,7 +137,7 @@ namespace Dock.Avalonia
                                                 Views = new ObservableCollection<IDock> { sourceView }
                                             };
 
-                                            factory.Split(targetStrip, sourceView, operation);
+                                            factory.Split(targetStrip, strip, operation);
                                         }
                                         return true;
                                     }

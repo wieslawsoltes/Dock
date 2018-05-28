@@ -1,4 +1,4 @@
-﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <UserControl x:Class="Dock.Avalonia.Controls.StripControl"
              xmlns="https://github.com/avaloniaui"
@@ -18,7 +18,7 @@
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="4"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLightBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="1 0 1 1"/>
         </Style>
         <Style Selector="Button.chromeButton">
             <Setter Property="Margin" Value="2 0 0 0"/>

@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using System.Reactive.Linq;
+using System;
 
 namespace Dock.Avalonia.Controls
 {
@@ -18,16 +20,9 @@ namespace Dock.Avalonia.Controls
 
         private Grid bottomHorizontalGrip;
         private Grid bottomLeftGrip;
-        private Grid bottomRightGrip;
-        private Button closeButton;
-        private Image icon;
+        private Grid bottomRightGrip;               
         private Grid leftVerticalGrip;
-        private Button minimiseButton;
-        
-        private Button restoreButton;
-        private Grid rightVerticalGrip;
-
-        private Grid titleBar;
+        private Grid rightVerticalGrip;        
         private Grid topHorizontalGrip;
         private Grid topLeftGrip;
         private Grid topRightGrip;
@@ -49,11 +44,8 @@ namespace Dock.Avalonia.Controls
             this.AttachDevTools();
         }
 
-        public void AttachGrip(StripControl stripControl)
-        {
-            var grip = stripControl.FindControl<Grid>("PART_Grip");
-            var border = stripControl.FindControl<Border>("PART_Border");            
-
+        public void AttachGrip(DockToolChrome chrome)
+        {            
             topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
             bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
             leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
@@ -64,14 +56,17 @@ namespace Dock.Avalonia.Controls
             topRightGrip = this.Find<Grid>("topRightGrip");
             bottomRightGrip = this.Find<Grid>("bottomRightGrip");
 
-            if (grip != null)
+            Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
             {
-                _titleBar = grip;
+                Close();
+            });
 
-                //grip.IsVisible = false;
+            //Observable.FromEventPattern(chrome.MinimiseButton, nameof(Button.Click)).Subscribe(o =>
+            //{
+            //    WindowState = WindowState.Minimized;
+            //});
 
-                //window.DataContext = grip.DataContext;
-            }
+            _titleBar = chrome.Grip;            
 
             this.PseudoClasses.Set(":floating", true);
         }

@@ -161,31 +161,34 @@ namespace Dock.Avalonia
                 {
                     case DockOperation.Fill:
                         {
-                            int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
                             var position = DropHelper.GetPositionScreen(sender, e);
-                            if (sourceView.FindRootLayout() is IDock rootLayout)
+                            int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
+                            if (sourceIndex >= 0)
                             {
-                                if (rootLayout.Factory is IDockFactory factory)
+                                if (sourceView.FindRootLayout() is IDock rootLayout)
                                 {
-                                    sourceView.Parent.RemoveView(sourceIndex);
+                                    if (rootLayout.Factory is IDockFactory factory)
+                                    {
+                                        sourceView.Parent.RemoveView(sourceIndex);
 
-                                    var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
-                                    window.X = position.X;
-                                    window.Y = position.Y;
-                                    window.Width = 300;
-                                    window.Height = 400;
-                                    window.Present(false);
+                                        var window = factory.CreateWindow(rootLayout.CurrentView, sourceView, sourceView.Context);
+                                        window.X = position.X;
+                                        window.Y = position.Y;
+                                        window.Width = 300;
+                                        window.Height = 400;
+                                        window.Present(false);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"ValidateMoveViewToWindow: Factory is null.");
+                                        return false;
+                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"ValidateMoveViewToWindow: Factory is null..");
+                                    Console.WriteLine($"ValidateMoveViewToWindow: FindRootLayout failed.");
                                     return false;
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine($"ValidateMoveViewToWindow: FindRootLayout failed.");
-                                return false;
+                                } 
                             }
                         }
                         break;

@@ -66,6 +66,7 @@
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockListBoxDropHandler.Instance}"/>
                             </i:Interaction.Behaviors>
                         </TextBlock>
                     </DataTemplate>

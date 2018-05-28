@@ -6,45 +6,41 @@ using Dock.Model;
 
 namespace Dock.Avalonia
 {
-    public class DebugTreeViewDropHandler : IDropHandler
+    public class DockTreeViewDropHandler : IDropHandler
     {
-        public static IDropHandler Instance = new DebugTreeViewDropHandler();
+        public static IDropHandler Instance = new DockTreeViewDropHandler();
 
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
 
-            if (e.DragEffects == DragDropEffects.Copy)
+            if (sourceDock != targetDock && sourceDock.Factory is IDockFactory factory)
             {
-                if (bExecute)
+                if (e.DragEffects == DragDropEffects.Copy)
                 {
-                    // TODO: Clone layout and insert into Views collection.
+                    if (bExecute)
+                    {
+                        // TODO: Clone layout and insert into Views collection.
+                    }
+                    return true;
                 }
-                return true;
-            }
-            else if (e.DragEffects == DragDropEffects.Move)
-            {
-                if (bExecute)
+                else if (e.DragEffects == DragDropEffects.Move)
                 {
-                    if (sourceDock.Factory is IDockFactory factory)
+                    if (bExecute)
                     {
                         factory.MoveTo(sourceDock, targetDock);
                     }
+                    return true;
                 }
-                return true;
-            }
-            else if (e.DragEffects == DragDropEffects.Link)
-            {
-                if (bExecute)
+                else if (e.DragEffects == DragDropEffects.Link)
                 {
-                    if (sourceDock.Factory is IDockFactory factory)
+                    if (bExecute)
                     {
                         factory.Swap(sourceDock, targetDock);
                     }
+                    return true;
                 }
-                return true;
             }
-
             return false;
         }
 

@@ -31,7 +31,7 @@
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>
-                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DebugTreeViewDropHandler.Instance}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockTreeViewDropHandler.Instance}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

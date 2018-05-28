@@ -30,6 +30,9 @@
             <Style Selector="TextBox">
                 <Setter Property="Margin" Value="2"/>
             </Style>
+            <Style Selector="CheckBox">
+                <Setter Property="Margin" Value="2"/>
+            </Style>
         </TabControl.Styles>
         <TabItem Header="Dock">
             <ScrollViewer>
@@ -68,6 +71,11 @@
                                 <id:DragBehavior Context="{Binding}"/>
                                 <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockListBoxDropHandler.Instance}"/>
                             </i:Interaction.Behaviors>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </DataTemplate>
                 </ListBox.DataTemplates>
@@ -81,6 +89,11 @@
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>
                             </i:Interaction.Behaviors>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="_Remove" Command="{Binding Factory.RemoveWindow}" CommandParameter="{Binding}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </DataTemplate>
                 </ListBox.DataTemplates>

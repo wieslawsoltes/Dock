@@ -113,7 +113,7 @@ namespace Dock.Avalonia
         {
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock sourceLayout;
+            bool isDock = sourceContext is IDock dock;
 
             if (isDock && sender is DockPanel panel)
             {
@@ -149,7 +149,7 @@ namespace Dock.Avalonia
         {
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock sourceLayout;
+            bool isDock = sourceContext is IDock dock;
 
             if (_adorner is DockTarget target)
             {
@@ -178,7 +178,7 @@ namespace Dock.Avalonia
             DockOperation operation = DockOperation.Fill;
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock sourceLayout;
+            bool isDock = sourceContext is IDock dock;
 
             if (_adorner is DockTarget target)
             {

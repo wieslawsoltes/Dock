@@ -11,15 +11,15 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DockDropHandler();
 
-        private bool ValidateDockStrip(IDock sourceLayout, IDock targetLayout, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateDockStrip(IDock sourceDock, IDock targetDock, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            if (sourceLayout.Parent is IDockStrip sourceStrip 
-                && targetLayout.Parent is IDockStrip targetStrip)
+            if (sourceDock.Parent is IDockStrip sourceStrip 
+                && targetDock.Parent is IDockStrip targetStrip)
             {
                 if (sourceStrip == targetStrip)
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceLayout);
-                    int targetIndex = sourceStrip.Views.IndexOf(targetLayout);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
+                    int targetIndex = sourceStrip.Views.IndexOf(targetDock);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -52,8 +52,8 @@ namespace Dock.Avalonia
                 }
                 else
                 {
-                    int sourceIndex = sourceStrip.Views.IndexOf(sourceLayout);
-                    int targetIndex = targetStrip.Views.IndexOf(targetLayout);
+                    int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
+                    int targetIndex = targetStrip.Views.IndexOf(targetDock);
 
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
@@ -88,14 +88,14 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool ValidateDockLayout(IDock sourceLayout, IDock targetLayout, DragEventArgs e, bool bExecute, DockOperation operation)
+        private bool ValidateDockLayout(IDock sourceDock, IDock targetDock, DragEventArgs e, bool bExecute, DockOperation operation)
         {
-            if (sourceLayout.Parent is IDockStrip sourceStrip 
-                && targetLayout is IDockStrip targetStrip 
-                && sourceLayout != targetLayout 
+            if (sourceDock.Parent is IDockStrip sourceStrip 
+                && targetDock is IDockStrip targetStrip 
+                && sourceDock != targetDock 
                 && sourceStrip != targetStrip)
             {
-                int sourceIndex = sourceStrip.Views.IndexOf(sourceLayout);
+                int sourceIndex = sourceStrip.Views.IndexOf(sourceDock);
                 int targetIndex = targetStrip.Views.Count;
 
                 if (sourceIndex >= 0 && targetIndex >= 0)
@@ -141,23 +141,23 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool Validate(IDock sourceLayout, IDock targetLayout, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
+        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
 
-            if (sourceLayout.Parent is IDockStrip sourceStrip)
+            if (sourceDock.Parent is IDockStrip sourceStrip)
             {
-                if (targetLayout is IDockStrip targetStrip)
+                if (targetDock is IDockStrip targetStrip)
                 {
-                    return ValidateDockLayout(sourceLayout, targetLayout, e, bExecute, operation);
+                    return ValidateDockLayout(sourceDock, targetDock, e, bExecute, operation);
                 }
                 else
                 {
-                    return ValidateDockStrip(sourceLayout, targetLayout, e, bExecute, operation);
+                    return ValidateDockStrip(sourceDock, targetDock, e, bExecute, operation);
                 }
             }
 
-            if (sourceLayout is IDockView item && sourceLayout.Parent is IDockStrip container)
+            if (sourceDock is IDockView item && sourceDock.Parent is IDockStrip container)
             {
                 if (bExecute)
                 {
@@ -165,7 +165,7 @@ namespace Dock.Avalonia
                     {
                         case DockOperation.Fill:
                             {
-                                int itemIndex = sourceLayout.Parent.Views.IndexOf(sourceLayout);
+                                int itemIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
                                 var position = DropHelper.GetPositionScreen(sender, e);
 
                                 // WIP: This is work in progress.
@@ -176,7 +176,7 @@ namespace Dock.Avalonia
                                 {
                                     if (rootLayout.Factory is IDockFactory factory)
                                     {
-                                        var window = factory.CreateWindow(rootLayout.CurrentView, container, itemIndex, sourceLayout.Context);
+                                        var window = factory.CreateWindow(rootLayout.CurrentView, container, itemIndex, sourceDock.Context);
 
                                         window.X = position.X;
                                         window.Y = position.Y;
@@ -206,20 +206,20 @@ namespace Dock.Avalonia
 
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Validate: {sourceLayout.Title} -> {targetLayout.Title}");
-                return Validate(sourceLayout, targetLayout, sender, e,  operation, false);
+                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title}");
+                return Validate(sourceDock, targetDock, sender, e,  operation, false);
             }
             return false;
         }
 
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Console.WriteLine($"Execute: {sourceLayout.Title} -> {targetLayout.Title}");
-                return Validate(sourceLayout, targetLayout, sender, e, operation, true);
+                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title}");
+                return Validate(sourceDock, targetDock, sender, e, operation, true);
             }
             return false;
         }

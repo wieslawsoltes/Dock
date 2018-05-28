@@ -10,7 +10,7 @@ namespace Dock.Avalonia
     {
         public static IDropHandler Instance = new DebugTreeViewDropHandler();
 
-        private bool Validate(IDock sourceLayout, IDock targetLayout, object sender, DragEventArgs e, bool bExecute)
+        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
 
@@ -26,9 +26,9 @@ namespace Dock.Avalonia
             {
                 if (bExecute)
                 {
-                    if (sourceLayout.Factory is IDockFactory factory)
+                    if (sourceDock.Factory is IDockFactory factory)
                     {
-                        factory.Move(sourceLayout, targetLayout);
+                        factory.Move(sourceDock, targetDock);
                     }
                 }
                 return true;
@@ -43,18 +43,18 @@ namespace Dock.Avalonia
 
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                return Validate(sourceLayout, targetLayout, sender, e, false);
+                return Validate(sourceDock, targetDock, sender, e, false);
             }
             return false;
         }
 
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceLayout && targetContext is IDock targetLayout)
+            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                return Validate(sourceLayout, targetLayout, sender, e, true);
+                return Validate(sourceDock, targetDock, sender, e, true);
             }
             return false;
         }

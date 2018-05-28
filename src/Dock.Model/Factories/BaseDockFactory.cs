@@ -524,6 +524,8 @@ namespace Dock.Model.Factories
             {
                 Id = nameof(DockStrip),
                 Title = nameof(DockStrip),
+                Width = double.NaN,
+                Height = double.NaN,
                 CurrentView = source,
                 Views = new ObservableCollection<IDock> { source }
             };
@@ -532,6 +534,8 @@ namespace Dock.Model.Factories
             {
                 Id = nameof(DockRoot),
                 Title = nameof(DockRoot),
+                Width = double.NaN,
+                Height = double.NaN,
                 CurrentView = strip,
                 DefaultView = strip,
                 Views = new ObservableCollection<IDock> { strip  }
@@ -541,6 +545,8 @@ namespace Dock.Model.Factories
             {
                 Id = nameof(DockWindow),
                 Title = nameof(DockWindow),
+                Width = double.NaN,
+                Height = double.NaN,
                 Layout = root
             };
 

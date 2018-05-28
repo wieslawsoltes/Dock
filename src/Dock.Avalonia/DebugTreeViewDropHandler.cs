@@ -26,7 +26,10 @@ namespace Dock.Avalonia
             {
                 if (bExecute)
                 {
-                    sourceLayout.Factory.Move(sourceLayout, targetLayout);
+                    if (sourceLayout.Factory is IDockFactory factory)
+                    {
+                        factory.Move(sourceLayout, targetLayout);
+                    }
                 }
                 return true;
             }

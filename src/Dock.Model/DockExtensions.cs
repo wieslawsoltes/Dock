@@ -246,7 +246,11 @@ namespace Dock.Model
             };
 
             target.AddWindow(window);
-            target.Factory?.Update(window, context, target);
+
+            if (target.Factory is IDockFactory factory)
+            {
+                factory.Update(window, context, target);
+            }
 
             return window;
         }

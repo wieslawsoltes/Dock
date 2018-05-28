@@ -66,25 +66,7 @@ namespace Dock.Model
             {
                 return dock;
             }
-
-            if (dock.Views != null)
-            {
-                foreach (var view in dock.Views)
-                {
-                    if (view.Parent == null)
-                    {
-                        return view;
-                    }
-
-                    var result = view.FindRootLayout();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
-            }
-
-            return null;
+            return FindRootLayout(dock.Parent);
         }
 
         /// <summary>

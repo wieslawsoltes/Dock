@@ -163,7 +163,7 @@ namespace Dock.Avalonia
                         {
                             int sourceIndex = sourceView.Parent.Views.IndexOf(sourceView);
                             var position = DropHelper.GetPositionScreen(sender, e);
-                            if (sourceView.Parent.FindRootLayout() is IDock rootLayout)
+                            if (sourceView.FindRootLayout() is IDock rootLayout)
                             {
                                 if (rootLayout.Factory is IDockFactory factory)
                                 {

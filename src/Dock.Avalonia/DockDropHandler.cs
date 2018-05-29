@@ -311,8 +311,7 @@ namespace Dock.Avalonia
                 case IRootDock targetRoot:
                     {
                         // TODO:
-                        //return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
-                        return false;
+                        return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
                     }
                 case IViewDock targetView:
                     {

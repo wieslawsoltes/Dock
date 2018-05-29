@@ -14,11 +14,18 @@
     <Window.Resources>
         <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
     </Window.Resources>
-    <Grid RowDefinitions="Auto,*" Background="Transparent">
+    <Grid RowDefinitions="Auto,Auto,*" Background="Transparent">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
         </i:Interaction.Behaviors>
-        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="0"/>
-        <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="FileOpen" Header="_Open..."/>
+                <Separator/>
+                <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>
+            </MenuItem>
+        </Menu>
+        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="2"/>
     </Grid>
 </Window>

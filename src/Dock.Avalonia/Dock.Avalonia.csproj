@@ -29,10 +29,4 @@
     <Folder Include="Assets\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Controls\EditorControl.xaml.cs">
-      <DependentUpon>EditorControl.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

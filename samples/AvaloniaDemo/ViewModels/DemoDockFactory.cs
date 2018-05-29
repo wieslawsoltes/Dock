@@ -44,7 +44,7 @@ namespace AvaloniaDemo.ViewModels
             var leftTopView1 = new LeftTopView1
             {
                 Id = "LeftTop1",
-                Dock = "LeftTop1",
+                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftTop1"
@@ -257,6 +257,22 @@ namespace AvaloniaDemo.ViewModels
                 }
             };
 
+            // Documents
+
+            var documentsPane = new DocumentDock
+            {
+                Id = "DocumentsPane",
+                Dock = "",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "DocumentsPane",
+                CurrentView = centerView,
+                Views = new ObservableCollection<IDock>
+                {
+                    centerView
+                }
+            };
+
             // Main
 
             var mainLayout = new LayoutDock
@@ -283,7 +299,7 @@ namespace AvaloniaDemo.ViewModels
                         Dock = "Right",
                         Title = "RightSplitter"
                     },
-                    centerView
+                    documentsPane
                 }
             };
 
@@ -356,6 +372,7 @@ namespace AvaloniaDemo.ViewModels
                 ["RightPaneTop"] = () => context,
                 ["RightPaneTopSplitter"] = () => context,
                 ["RightPaneBottom"] = () => context,
+                ["DocumentsPane"] = () => context,
                 ["MainLayout"] = () => context,
                 ["LeftSplitter"] = () => context,
                 ["RightSplitter"] = () => context,

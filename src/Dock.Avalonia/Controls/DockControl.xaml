@@ -24,7 +24,7 @@
                     <i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}"/>
                     </i:Interaction.Behaviors>
-                    <idc:ToolControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+                    <idc:ToolControl />
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">

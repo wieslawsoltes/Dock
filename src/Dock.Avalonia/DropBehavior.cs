@@ -115,14 +115,6 @@ namespace Dock.Avalonia
             object targetContext = Context;
             bool isDock = sourceContext is IDock dock;
 
-            if (isDock && sender is DockPanel panel)
-            {
-                if (sender is IVisual visual)
-                {
-                    AddAdorner(visual);
-                }
-            }
-
             if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
             {
                 if (!isDock)
@@ -133,6 +125,14 @@ namespace Dock.Avalonia
             }
             else
             {
+                if (isDock && sender is DockPanel panel)
+                {
+                    if (sender is IVisual visual)
+                    {
+                        AddAdorner(visual);
+                    }
+                }
+
                 e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
                 e.Handled = true;
             }

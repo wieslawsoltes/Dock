@@ -9,6 +9,11 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
+    <UserControl.Resources>
+        <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>
+        <id:DockDropHandler x:Key="DockDropHandler2" Id="2"/>
+        <id:DockDropHandler x:Key="DockDropHandler3" Id="3"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
             <Setter Property="Background" Value="Transparent"/>
@@ -36,12 +41,12 @@
     </UserControl.Styles>
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
         </i:Interaction.Behaviors>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
             <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1">
                 <i:Interaction.Behaviors>
-                    <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>
                 </i:Interaction.Behaviors>
                 <TabStrip.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -70,7 +75,7 @@
                         <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>
-                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
                         </StackPanel>

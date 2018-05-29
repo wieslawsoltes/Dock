@@ -11,9 +11,12 @@
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="Dock Avalonia Demo" Height="680" Width="1200">
+    <Window.Resources>
+        <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
+    </Window.Resources>
     <Grid RowDefinitions="Auto,*" Background="Transparent">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding Layout}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
         </i:Interaction.Behaviors>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="0"/>
         <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>

@@ -8,6 +8,11 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
+    <UserControl.Resources>
+        <id:DockDropHandler x:Key="DockDropHandler5" Id="5"/>
+        <id:DockDropHandler x:Key="DockDropHandler6" Id="6"/>
+        <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
             <Setter Property="Background" Value="Transparent"/>
@@ -35,11 +40,11 @@
     </UserControl.Styles>
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}"/>
         </i:Interaction.Behaviors>
         <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
             <i:Interaction.Behaviors>
-                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler6}"/>
             </i:Interaction.Behaviors>
             <TabStrip.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -92,7 +97,7 @@
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}"/>
-                            <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockDropHandler.Instance}"/>
+                            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler7}"/>
                         </i:Interaction.Behaviors>
                         <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
                     </StackPanel>

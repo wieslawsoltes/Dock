@@ -39,7 +39,10 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceTab.MoveView(sourceIndex, targetIndex);
+                                if (sourceTab.Factory is IDockFactory factory)
+                                {
+                                    factory.MoveView(sourceTab, sourceIndex, targetIndex);
+                                }
                             }
                             return true;
                         }
@@ -47,7 +50,10 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceTab.SwapView(sourceIndex, targetIndex);
+                                if (sourceTab.Factory is IDockFactory factory)
+                                {
+                                    factory.SwapView(sourceTab, sourceIndex, targetIndex);
+                                }
                             }
                             return true;
                         }
@@ -73,7 +79,10 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceTab.MoveView(targetTab, sourceIndex, targetIndex);
+                                if (sourceTab.Factory is IDockFactory factory)
+                                {
+                                    factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                }
                             }
                             return true;
                         }
@@ -81,7 +90,10 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                sourceTab.SwapView(targetTab, sourceIndex, targetIndex);
+                                if (sourceTab.Factory is IDockFactory factory)
+                                {
+                                    factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                }
                             }
                             return true;
                         }
@@ -119,7 +131,10 @@ namespace Dock.Avalonia
                             {
                                 case DockOperation.Fill:
                                     {
-                                        sourceTab.MoveView(targetTab, sourceIndex, targetIndex);
+                                        if (sourceTab.Factory is IDockFactory factory)
+                                        {
+                                            factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                        }
                                         return true;
                                     }
                                 case DockOperation.Left:
@@ -144,7 +159,9 @@ namespace Dock.Avalonia
                                         return true;
                                     }
                                 case DockOperation.Window:
-                                    // TODO:
+                                    {
+                                        // TODO:
+                                    }
                                     break;
                             }
                         }
@@ -154,7 +171,10 @@ namespace Dock.Avalonia
                     {
                         if (bExecute)
                         {
-                            sourceTab.SwapView(targetTab, sourceIndex, targetIndex);
+                            if (sourceTab.Factory is IDockFactory factory)
+                            {
+                                factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
+                            }
                         }
                         return true;
                     }
@@ -175,16 +195,16 @@ namespace Dock.Avalonia
                     {
                         var position = DropHelper.GetPositionScreen(sender, e);
                         int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
-                        if (sourceDock != targetDock 
+                        if (sourceDock.Factory is IDockFactory factory
+                            && sourceDock != targetDock 
                             && sourceDock.Parent != targetDock 
                             && sourceIndex >= 0 
-                            && sourceDock.FindRootLayout() is IDock rootLayout 
-                            && rootLayout.CurrentView != null
-                            && rootLayout.Factory is IDockFactory factory)
+                            && factory.FindRootLayout(sourceDock) is IDock rootLayout 
+                            && rootLayout.CurrentView != null)
                         {
                             if (bExecute)
                             {
-                                sourceDock.Parent.RemoveView(sourceIndex);
+                                factory.RemoveView(sourceDock.Parent, sourceIndex);
 
                                 var window = factory.CreateWindowFrom(sourceDock);
                                 if (window != null)

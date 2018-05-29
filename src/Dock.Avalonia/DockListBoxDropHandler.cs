@@ -14,7 +14,7 @@ namespace Dock.Avalonia
         {
             var point = DropHelper.GetPosition(sender, e);
 
-            if (sourceDock != targetDock && sourceDock.Factory is IDockFactory factory)
+            if (sourceDock != targetDock)
             {
                 if (sourceDock.Parent is IDock sourceParent && targetDock.Parent is IDock targetParent)
                 {
@@ -37,7 +37,10 @@ namespace Dock.Avalonia
                             {
                                 if (bExecute)
                                 {
-                                    sourceParent.MoveView(sourceIndex, targetIndex);
+                                    if (sourceParent.Factory is IDockFactory factory)
+                                    {
+                                        factory.MoveView(sourceParent, sourceIndex, targetIndex);
+                                    }
                                 }
                                 return true;
                             }
@@ -45,7 +48,10 @@ namespace Dock.Avalonia
                             {
                                 if (bExecute)
                                 {
-                                    sourceParent.SwapView(sourceIndex, targetIndex);
+                                    if (sourceParent.Factory is IDockFactory factory)
+                                    {
+                                        factory.SwapView(sourceParent, sourceIndex, targetIndex);
+                                    }
                                 }
                                 return true;
                             }
@@ -70,7 +76,10 @@ namespace Dock.Avalonia
                             {
                                 if (bExecute)
                                 {
-                                    sourceParent.MoveView(targetParent, sourceIndex, targetIndex);
+                                    if (sourceParent.Factory is IDockFactory factory)
+                                    {
+                                        factory.MoveView(sourceParent, targetParent, sourceIndex, targetIndex);
+                                    }
                                 }
                                 return true;
                             }
@@ -78,7 +87,10 @@ namespace Dock.Avalonia
                             {
                                 if (bExecute)
                                 {
-                                    sourceParent.SwapView(targetParent, sourceIndex, targetIndex);
+                                    if (sourceParent.Factory is IDockFactory factory)
+                                    {
+                                        factory.SwapView(sourceParent, targetParent, sourceIndex, targetIndex);
+                                    }
                                 }
                                 return true;
                             }

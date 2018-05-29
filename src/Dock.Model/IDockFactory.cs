@@ -68,10 +68,41 @@ namespace Dock.Model
         void Update(IList<IDock> views, object context, IDock parent);
 
         /// <summary>
+        /// Searches for root layout.
+        /// </summary>
+        /// <param name="dock">The dock to find root for.</param>
+        /// <returns>The root layout instance or null if root layout was not found.</returns>
+        IDock FindRootLayout(IDock dock);
+
+        /// <summary>
         /// Removes dock from parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock to remove.</param>
         void Remove(IDock dock);
+
+        /// <summary>
+        /// Removes view from the dock.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="index">The source view index.</param>
+        void RemoveView(IDock dock, int index);
+
+        /// <summary>
+        /// Moves view in the dock.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="sourceIndex">The source view index.</param>
+        /// <param name="targetIndex">The target view index.</param>
+        void MoveView(IDock dock, int sourceIndex, int targetIndex);
+
+        /// <summary>
+        /// Moves view into another dock.
+        /// </summary>
+        /// <param name="sourceDock">The source views dock.</param>
+        /// <param name="targetDock">The target views dock.</param>
+        /// <param name="sourceIndex">The source view index.</param>
+        /// <param name="targetIndex">The target view index.</param>
+        void MoveView(IDock sourceDock, IDock targetDock, int sourceIndex, int targetIndex);
 
         /// <summary>
         /// Moves dock to the destination parent <see cref="IDockNavigation.Views"/> collection.
@@ -86,6 +117,23 @@ namespace Dock.Model
         /// <param name="dock">The first dock.</param>
         /// <param name="parent">The second dock.</param>
         void Swap(IDock first, IDock second);
+
+        /// <summary>
+        /// Swaps view in the dock.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="sourceIndex">The source view index.</param>
+        /// <param name="targetIndex">The target view index.</param>
+        void SwapView(IDock dock, int sourceIndex, int targetIndex);
+
+        /// <summary>
+        /// Swaps view into another dock.
+        /// </summary>
+        /// <param name="sourceDock">The source views dock.</param>
+        /// <param name="targetDock">The target views dock.</param>
+        /// <param name="sourceIndex">The source view index.</param>
+        /// <param name="targetIndex">The target view index.</param>
+        void SwapView(IDock sourceDock, IDock targetDock, int sourceIndex, int targetIndex);
 
         /// <summary>
         /// Replaces source dock with destination dock in source dock parent <see cref="IDockNavigation.Views"/> collection.

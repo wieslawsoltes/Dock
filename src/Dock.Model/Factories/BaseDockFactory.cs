@@ -97,11 +97,91 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
+        public virtual IDock FindRootLayout(IDock dock)
+        {
+            if (dock.Parent == null)
+            {
+                return dock;
+            }
+            return FindRootLayout(dock.Parent);
+        }
+
+        /// <inheritdoc/>
         public virtual void Remove(IDock dock)
         {
             if (dock?.Parent is IDock parent)
             {
                 parent.Views?.Remove(dock);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void RemoveView(IDock dock, int index)
+        {
+            dock.Views.RemoveAt(index);
+
+            if (dock.Views.Count > 0)
+            {
+                dock.CurrentView = dock.Views[index > 0 ? index - 1 : 0];
+            }
+            else
+            {
+                dock.CurrentView = null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void MoveView(IDock dock, int sourceIndex, int targetIndex)
+        {
+            if (sourceIndex < targetIndex)
+            {
+                var item = dock.Views[sourceIndex];
+                dock.Views.RemoveAt(sourceIndex);
+                dock.Views.Insert(targetIndex, item);
+                dock.CurrentView = item;
+            }
+            else
+            {
+                int removeIndex = sourceIndex;
+                if (dock.Views.Count > removeIndex)
+                {
+                    var item = dock.Views[sourceIndex];
+                    dock.Views.RemoveAt(removeIndex);
+                    dock.Views.Insert(targetIndex, item);
+                    dock.CurrentView = item;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void MoveView(IDock sourceDock, IDock targetDock, int sourceIndex, int targetIndex)
+        {
+            var item = sourceDock.Views[sourceIndex];
+            sourceDock.Views.RemoveAt(sourceIndex);
+
+            if (targetDock.Views == null)
+            {
+                targetDock.Views = new ObservableCollection<IDock>();
+            }
+            targetDock.Views.Insert(targetIndex, item);
+
+            if (item.Factory is IDockFactory factory)
+            {
+                factory.Update(item, item.Context, targetDock);
+            }
+
+            if (sourceDock.Views.Count > 0)
+            {
+                sourceDock.CurrentView = sourceDock.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
+            }
+            else
+            {
+                sourceDock.CurrentView = null;
+            }
+
+            if (targetDock.Views.Count > 0)
+            {
+                targetDock.CurrentView = targetDock.Views[targetIndex];
             }
         }
 
@@ -148,6 +228,38 @@ namespace Dock.Model.Factories
 
             firstParent.CurrentView = second;
             secondParent.CurrentView = first;
+        }
+
+        /// <inheritdoc/>
+        public virtual void SwapView(IDock dock, int sourceIndex, int targetIndex)
+        {
+            var item1 = dock.Views[sourceIndex];
+            var item2 = dock.Views[targetIndex];
+            dock.Views[targetIndex] = item1;
+            dock.Views[sourceIndex] = item2;
+            dock.CurrentView = item2;
+        }
+
+        /// <inheritdoc/>
+        public virtual void SwapView(IDock sourceDock, IDock targetDock, int sourceIndex, int targetIndex)
+        {
+            var item1 = sourceDock.Views[sourceIndex];
+            var item2 = targetDock.Views[targetIndex];
+            sourceDock.Views[sourceIndex] = item2;
+            targetDock.Views[targetIndex] = item1;
+
+            if (item1.Factory is IDockFactory factory1)
+            {
+                factory1.Update(item1, item1.Context, targetDock);
+            }
+
+            if (item2.Factory is IDockFactory factory2)
+            {
+                factory2.Update(item2, item2.Context, sourceDock);
+            }
+
+            sourceDock.CurrentView = item2;
+            targetDock.CurrentView = item1;
         }
 
         /// <inheritdoc/>

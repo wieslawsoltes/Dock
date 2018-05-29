@@ -188,7 +188,7 @@ namespace AvaloniaDemo.ViewModels
                         Dock = "Top",
                         Title = "LeftPaneTopSplitter"
                     },
-                    new DocumentDock
+                    new ToolDock
                     {
                         Id = "LeftPaneBottom",
                         Dock = "Bottom",

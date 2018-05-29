@@ -147,6 +147,7 @@ namespace Dock.Avalonia
 
         private void DragOver(object sender, DragEventArgs e)
         {
+            DockOperation operation = DockOperation.Fill;
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
             bool isDock = sourceContext is IDock dock;
@@ -155,10 +156,10 @@ namespace Dock.Avalonia
             {
                 var position = DropHelper.GetPosition(sender, e);
 
-                target.GetDockOperation(e);
+                operation = target.GetDockOperation(e);
             }
 
-            if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
+            if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
             {
                 if (!isDock)
                 {

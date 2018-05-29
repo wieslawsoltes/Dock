@@ -212,31 +212,26 @@ namespace Dock.Avalonia
             {
                 case IRootDock targetRoot:
                     {
-                        // TODO:
+                        return false;
                     }
-                    break;
                 case IViewDock targetView:
                     {
-                        // TODO:
+                        return false;
                     }
-                    break;
                 case ILayoutDock targetLayout:
                     {
-                        // TODO:
+                        return false;
                     }
-                    break;
                 case ITabDock targetTab:
                     {
-                        // TODO:
+                        return false;
                     }
-                    break;
                 default:
                     {
                         Console.WriteLine($"Not supported {nameof(IRootDock)} dock target: {sourceRoot} -> {targetDock}");
                         return false;
                     }
             }
-            return false;
         }
 
         private bool ValidateViewDock(IViewDock sourceView, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
@@ -245,22 +240,18 @@ namespace Dock.Avalonia
             {
                 case IRootDock targetRoot:
                     {
-                        // TODO:
                         return ValidateMoveDockToWindow(sourceView, targetDock, sender, e, bExecute, operation);
                     }
                 case IViewDock targetView:
                     {
-                        // TODO:
                         return ValidateMoveViewsBetweenTabs(sourceView, targetView, e, bExecute, operation);
                     }
                 case ILayoutDock targetLayout:
                     {
-                        // TODO:
                         return false;
                     }
                 case ITabDock targetTab:
                     {
-                        // TODO:
                         return ValidateMoveViewToTab(sourceView, targetTab, e, bExecute, operation);
                     }
                 default:
@@ -277,22 +268,18 @@ namespace Dock.Avalonia
             {
                 case IRootDock targetRoot:
                     {
-                        // TODO:
                         return false;
                     }
                 case IViewDock targetView:
                     {
-                        // TODO:
                         return false;
                     }
                 case ILayoutDock targetLayout:
                     {
-                        // TODO:
                         return false;
                     }
                 case ITabDock targetTab:
                     {
-                        // TODO:
                         return false;
                     }
                 default:
@@ -309,22 +296,18 @@ namespace Dock.Avalonia
             {
                 case IRootDock targetRoot:
                     {
-                        // TODO:
                         return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
                     }
                 case IViewDock targetView:
                     {
-                        // TODO:
                         return false;
                     }
                 case ILayoutDock targetLayout:
                     {
-                        // TODO:
                         return false;
                     }
                 case ITabDock targetTab:
                     {
-                        // TODO:
                         return false;
                     }
                 default:

@@ -22,7 +22,7 @@ namespace Dock.Avalonia
             AvaloniaProperty.Register<DragBehavior, object>(nameof(Context));
 
         public static readonly AvaloniaProperty IsTunneledProperty =
-            AvaloniaProperty.Register<DragBehavior, bool>(nameof(IsTunneled), true);
+            AvaloniaProperty.Register<DragBehavior, bool>(nameof(IsTunneled), false);
 
         public object Context
         {

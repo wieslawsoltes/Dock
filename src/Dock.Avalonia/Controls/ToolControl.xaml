@@ -46,11 +46,6 @@
             <i:Interaction.Behaviors>
                 <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler6}"/>
             </i:Interaction.Behaviors>
-            <TabStrip.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ClipToBounds="False"/>
-                </ItemsPanelTemplate>
-            </TabStrip.ItemsPanel>
             <TabStrip.Styles>
                 <Style Selector="TabStrip">
                     <Setter Property="ItemsPanel">

@@ -12,7 +12,7 @@ namespace Dock.Avalonia
 {
     public class DockDropHandler : IDropHandler
     {
-        public static IDropHandler Instance = new DockDropHandler();
+        public int Id { get; set; }
 
         private bool ValidateMoveViewsBetweenTabs(IViewDock sourceView, IViewDock targetView, DragEventArgs e, bool bExecute, DockOperation operation)
         {
@@ -376,19 +376,29 @@ namespace Dock.Avalonia
             return false;
         }
 
+        private bool bExecuted = false;
+
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
+            if (bExecuted == false && sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
                 Point point = DropHelper.GetPosition(sender, e);
-                Console.WriteLine($"Execute: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
-                return Validate(sourceDock, targetDock, sender, e, operation, true);
+                Console.WriteLine($"Execute [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
+                bool bResult = Validate(sourceDock, targetDock, sender, e, operation, true);
+                if (bResult == true)
+                {
+                    Console.WriteLine($"Executed [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
+                    bExecuted = true;
+                    return true;
+                }
+                return false;
             }
             return false;
         }
 
         public void Cancel(object sender, RoutedEventArgs e)
         {
+            bExecuted = false;
         }
     }
 }

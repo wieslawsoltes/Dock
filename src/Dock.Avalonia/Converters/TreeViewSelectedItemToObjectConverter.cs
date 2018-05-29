@@ -4,7 +4,7 @@ using System;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup;
+using Avalonia.Data.Converters;
 
 namespace Dock.Avalonia.Converters
 {

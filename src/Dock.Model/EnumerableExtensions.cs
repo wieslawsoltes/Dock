@@ -8,7 +8,7 @@ namespace Dock.Model
 {
     internal static class EnumerableExtensions
     {
-        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T,IEnumerable<T>> f)
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
         {
             return e.SelectMany(c =>
             {

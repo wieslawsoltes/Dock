@@ -20,9 +20,9 @@ namespace Dock.Avalonia.Controls
 
         private Grid bottomHorizontalGrip;
         private Grid bottomLeftGrip;
-        private Grid bottomRightGrip;               
+        private Grid bottomRightGrip;
         private Grid leftVerticalGrip;
-        private Grid rightVerticalGrip;        
+        private Grid rightVerticalGrip;
         private Grid topHorizontalGrip;
         private Grid topLeftGrip;
         private Grid topRightGrip;
@@ -32,7 +32,7 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindow()
         {
-            this.InitializeComponent();            
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Dock.Avalonia.Controls
         }
 
         public void AttachGrip(DockToolChrome chrome)
-        {            
+        {
             topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
             bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
             leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
@@ -66,10 +66,10 @@ namespace Dock.Avalonia.Controls
             //    WindowState = WindowState.Minimized;
             //});
 
-            _titleBar = chrome.Grip;            
+            _titleBar = chrome.Grip;
 
-            this.PseudoClasses.Set(":floating", true);            
-        }        
+            this.PseudoClasses.Set(":floating", true);
+        }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {

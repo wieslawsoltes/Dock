@@ -104,7 +104,7 @@ namespace Dock.Serializer
             var json = ReadUtf8Text(path);
             return Serializer.Deserialize<T>(json);
         }
-        
+
         /// <summary>
         /// Save the object value to json and writes it to file path.
         /// </summary>

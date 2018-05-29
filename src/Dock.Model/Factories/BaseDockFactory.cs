@@ -310,7 +310,7 @@ namespace Dock.Model.Factories
                 Width = width,
                 Height = height,
                 CurrentView = view ?? null,
-                Views = view == null ? null : new ObservableCollection<IDock> {  view }
+                Views = view == null ? null : new ObservableCollection<IDock> { view }
             };
 
             switch (operation)
@@ -829,7 +829,7 @@ namespace Dock.Model.Factories
                 Height = double.NaN,
                 CurrentView = target,
                 DefaultView = target,
-                Views = new ObservableCollection<IDock> { target  }
+                Views = new ObservableCollection<IDock> { target }
             };
 
             var window = new DockWindow()

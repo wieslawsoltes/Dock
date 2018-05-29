@@ -196,10 +196,10 @@ namespace Dock.Avalonia
                         var position = DropHelper.GetPositionScreen(sender, e);
                         int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
                         if (sourceDock.Factory is IDockFactory factory
-                            && sourceDock != targetDock 
-                            && sourceDock.Parent != targetDock 
-                            && sourceIndex >= 0 
-                            && factory.FindRootLayout(sourceDock) is IDock rootLayout 
+                            && sourceDock != targetDock
+                            && sourceDock.Parent != targetDock
+                            && sourceIndex >= 0
+                            && factory.FindRootLayout(sourceDock) is IDock rootLayout
                             && rootLayout.CurrentView != null)
                         {
                             if (bExecute)
@@ -279,7 +279,7 @@ namespace Dock.Avalonia
                         Console.WriteLine($"Not supported {nameof(IViewDock)} dock target: {sourceView} -> {targetDock}");
                         return false;
                     }
-            } 
+            }
         }
 
         private bool ValidateLayoutDock(ILayoutDock sourceLayout, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)

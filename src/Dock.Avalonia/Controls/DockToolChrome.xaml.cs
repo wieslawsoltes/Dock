@@ -18,10 +18,10 @@ namespace Dock.Avalonia.Controls
         internal Control Grip { get; private set; }
 
         internal Button CloseButton { get; private set; }
-        
+
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);            
+            base.OnTemplateApplied(e);
 
             if (VisualRoot is HostWindow window)
             {
@@ -32,7 +32,7 @@ namespace Dock.Avalonia.Controls
                 window.AttachGrip(this);
 
                 this.PseudoClasses.Set(":floating", true);
-            }            
+            }
         }
     }
 }

@@ -149,6 +149,11 @@ namespace Dock.Model
             }
             targetDock.Views.Insert(targetIndex, item);
 
+            if (item.Factory is IDockFactory factory)
+            {
+                factory.Update(item, item.Context, targetDock);
+            }
+
             if (sourceDock.Views.Count > 0)
             {
                 sourceDock.CurrentView = sourceDock.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
@@ -177,6 +182,16 @@ namespace Dock.Model
             var item2 = targetDock.Views[targetIndex];
             sourceDock.Views[sourceIndex] = item2;
             targetDock.Views[targetIndex] = item1;
+
+            if (item1.Factory is IDockFactory factory1)
+            {
+                factory1.Update(item1, item1.Context, targetDock);
+            }
+
+            if (item2.Factory is IDockFactory factory2)
+            {
+                factory2.Update(item2, item2.Context, sourceDock);
+            }
 
             sourceDock.CurrentView = item2;
             targetDock.CurrentView = item1;

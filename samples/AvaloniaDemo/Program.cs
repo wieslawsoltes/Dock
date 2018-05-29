@@ -34,7 +34,7 @@ namespace AvaloniaDemo
             try
             {
                 var vm = new MainWindowViewModel();
-                var factory = new MainWindowDockFactory();
+                var factory = new DemoDockFactory();
                 IDock layout = null;
 
                 string path = DockSerializer.GetBasePath("Layout.json");

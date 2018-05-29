@@ -19,6 +19,17 @@ namespace AvaloniaDemo
             this.InitializeComponent();
             this.AttachDevTools();
 
+            this.FindControl<MenuItem>("FileNew").Click += (sender, e) =>
+            {
+                if (this.DataContext is MainWindowViewModel vm)
+                {
+                    vm.Layout.CurrentView?.HideWindows();
+                    vm.Factory = new EmptyDockFactory();
+                    vm.Layout = vm.Factory.CreateLayout();
+                    vm.Factory.InitLayout(vm.Layout, vm);
+                }
+            };
+
             this.FindControl<MenuItem>("FileOpen").Click += async (sender, e) =>
             {
                 var dlg = new OpenFileDialog();

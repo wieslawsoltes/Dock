@@ -12,7 +12,7 @@ using Dock.Model.Factories;
 namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
-    public class MainWindowDockFactory : BaseDockFactory
+    public class DemoDockFactory : BaseDockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
@@ -341,7 +341,9 @@ namespace AvaloniaDemo.ViewModels
             {
                 [nameof(RootDock)] = () => context,
                 [nameof(LayoutDock)] = () => context,
+                [nameof(DocumentDock)] = () => context,
                 [nameof(ToolDock)] = () => context,
+                [nameof(SplitterDock)] = () => context,
                 [nameof(DockWindow)] = () => context,
                 ["Debug"] = () => layout,
                 ["Home"] = () => layout,

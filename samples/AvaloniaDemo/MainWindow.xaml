@@ -20,6 +20,8 @@
         </i:Interaction.Behaviors>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
+                <MenuItem x:Name="FileNew" Header="_New"/>
+                <Separator/>
                 <MenuItem x:Name="FileOpen" Header="_Open..."/>
                 <Separator/>
                 <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>

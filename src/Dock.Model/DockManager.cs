@@ -12,7 +12,7 @@ namespace Dock.Model
 
         public DockPoint ScreenPosition { get; set; }
 
-        public bool MoveBetweenTabs(IViewDock sourceView, IViewDock targetView, DragAction action, bool bExecute, DockOperation operation)
+        public bool MoveBetweenTabs(IViewDock sourceView, IViewDock targetView, DragAction action, DockOperation operation, bool bExecute)
         {
             Console.WriteLine($"{nameof(MoveBetweenTabs)}: {sourceView.Title} -> {targetView.Title}");
 
@@ -107,7 +107,7 @@ namespace Dock.Model
             return false;
         }
 
-        public bool MoveIntoTab(IViewDock sourceView, ITabDock targetTab, DragAction action, bool bExecute, DockOperation operation)
+        public bool MoveIntoTab(IViewDock sourceView, ITabDock targetTab, DragAction action, DockOperation operation, bool bExecute)
         {
             Console.WriteLine($"{nameof(MoveIntoTab)}: {sourceView.Title} -> {targetTab.Title}");
 
@@ -191,7 +191,7 @@ namespace Dock.Model
             return false;
         }
 
-        public bool MoveIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, bool bExecute, DockOperation operation)
+        public bool MoveIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             Console.WriteLine($"{nameof(MoveIntoWindow)}: {sourceDock.Title} -> {targetDock.Title}");
 
@@ -263,11 +263,11 @@ namespace Dock.Model
             {
                 case IRootDock targetRoot:
                     {
-                        return MoveIntoWindow(sourceView, targetDock, action, bExecute, operation);
+                        return MoveIntoWindow(sourceView, targetDock, action, operation, bExecute);
                     }
                 case IViewDock targetView:
                     {
-                        return MoveBetweenTabs(sourceView, targetView, action, bExecute, operation);
+                        return MoveBetweenTabs(sourceView, targetView, action, operation, bExecute);
                     }
                 case ILayoutDock targetLayout:
                     {
@@ -275,7 +275,7 @@ namespace Dock.Model
                     }
                 case ITabDock targetTab:
                     {
-                        return MoveIntoTab(sourceView, targetTab, action, bExecute, operation);
+                        return MoveIntoTab(sourceView, targetTab, action, operation, bExecute);
                     }
                 default:
                     {
@@ -319,7 +319,7 @@ namespace Dock.Model
             {
                 case IRootDock targetRoot:
                     {
-                        return MoveIntoWindow(sourceTab, targetDock, action, bExecute, operation);
+                        return MoveIntoWindow(sourceTab, targetDock, action, operation, bExecute);
                     }
                 case IViewDock targetView:
                     {

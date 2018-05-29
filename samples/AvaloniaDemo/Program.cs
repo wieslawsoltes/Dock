@@ -52,6 +52,7 @@ namespace AvaloniaDemo
                     return vm;
                 });
 
+                vm.Layout.HideWindows();
                 vm.Layout.CurrentView.HideWindows();
                 DockSerializer.Save(path, vm.Layout);
             }

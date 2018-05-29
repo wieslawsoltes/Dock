@@ -23,6 +23,7 @@ namespace AvaloniaDemo
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
+                    vm.Layout.HideWindows();
                     vm.Layout.CurrentView?.HideWindows();
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
@@ -41,6 +42,7 @@ namespace AvaloniaDemo
                     if (this.DataContext is MainWindowViewModel vm)
                     {
                         IDock layout = DockSerializer.Load<RootDock>(result.FirstOrDefault());
+                        vm.Layout.HideWindows();
                         vm.Layout.CurrentView.HideWindows();
                         vm.Layout = layout;
                         vm.Factory.InitLayout(vm.Layout, vm);
@@ -61,6 +63,28 @@ namespace AvaloniaDemo
                     if (this.DataContext is MainWindowViewModel vm)
                     {
                         DockSerializer.Save(result, vm.Layout);
+                    }
+                }
+            };
+
+            this.FindControl<MenuItem>("ViewEditor").Click += (sender, e) =>
+            {
+                if (this.DataContext is MainWindowViewModel vm)
+                {
+                    var factory = new EditorDockFactory();
+                    var layout = factory.CreateLayout();
+                    factory.InitLayout(layout, vm.Layout);
+
+                    var window = factory.CreateWindowFrom(layout);
+                    if (window != null)
+                    {
+                        factory.AddWindow(vm.Layout, window, vm.Layout);
+
+                        window.X = 0;
+                        window.Y = 0;
+                        window.Width = 800;
+                        window.Height = 600;
+                        window.Present(false);
                     }
                 }
             };

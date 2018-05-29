@@ -4,7 +4,7 @@ using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels.Views
 {
-    public class DebugView : ViewDock
+    public class EditorView : ViewDock
     {
     }
 }

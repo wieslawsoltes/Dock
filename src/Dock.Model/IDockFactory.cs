@@ -300,12 +300,12 @@ namespace Dock.Model
         IDockWindow CreateWindowFrom(IDock source);
 
         /// <summary>
-        /// Adds window to dock windows list.
+        /// Adds window to owner windows list.
         /// </summary>
-        /// <param name="parent">The views dock.</param>
+        /// <param name="owner">The window owner.</param>
         /// <param name="window">The window to add.</param>
         /// <param name="context">The context for dock window.</param>
-        void AddWindow(IDock parent, IDockWindow window, object context);
+        void AddWindow(IDock owner, IDockWindow window, object context);
 
         /// <summary>
         /// Removes window from owner windows list.

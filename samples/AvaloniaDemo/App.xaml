@@ -11,8 +11,8 @@
         <StyleInclude Source="resm:Dock.Avalonia.Controls.DockToolChrome.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
     <Application.DataTemplates>
-        <DataTemplate DataType="Views:DebugView">
-            <idc:DebugControl DataContext="{Binding Context}"/>
+        <DataTemplate DataType="Views:EditorView">
+            <idc:EditorControl DataContext="{Binding Context}"/>
         </DataTemplate>
         <DataTemplate DataType="Views:HomeView">
             <Grid>

@@ -26,6 +26,15 @@
                 <Separator/>
                 <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>
             </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Windows">
+                    <MenuItem x:Name="ViewWindowsHide" Header="_Hide" Command="{Binding Layout.HideWindows}"/>
+                    <Separator/>
+                    <MenuItem x:Name="ViewWindowsShow" Header="_Show" Command="{Binding Layout.ShowWindows}"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="ViewEditor" Header="_Editor..."/>
+            </MenuItem>
         </Menu>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
         <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="2"/>

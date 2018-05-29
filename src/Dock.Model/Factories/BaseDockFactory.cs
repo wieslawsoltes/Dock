@@ -733,16 +733,16 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public virtual void AddWindow(IDock parent, IDockWindow window, object context)
+        public virtual void AddWindow(IDock owner, IDockWindow window, object context)
         {
-            if (parent.Windows == null)
+            if (owner.Windows == null)
             {
-                parent.Windows = new ObservableCollection<IDockWindow>();
+                owner.Windows = new ObservableCollection<IDockWindow>();
             }
 
-            parent.Windows?.Add(window);
+            owner.Windows?.Add(window);
 
-            Update(window, context, parent);
+            Update(window, context, owner);
         }
 
         /// <inheritdoc/>

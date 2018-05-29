@@ -189,13 +189,12 @@ namespace Dock.Avalonia
                                 var window = factory.CreateWindowFrom(sourceDock);
                                 if (window != null)
                                 {
+                                    factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
+
                                     window.X = position.X;
                                     window.Y = position.Y;
                                     window.Width = 300;
                                     window.Height = 400;
-
-                                    factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
-
                                     window.Present(false);
                                 }
                             }

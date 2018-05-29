@@ -17,17 +17,6 @@ namespace AvaloniaDemo.ViewModels
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            // Debug
-
-            var debugView = new DebugView
-            {
-                Id = "Debug",
-                Dock = "",
-                Width = double.NaN,
-                Height = double.NaN,
-                Title = "Debug"
-            };
-
             // Home
 
             var homeView = new HomeView
@@ -262,8 +251,7 @@ namespace AvaloniaDemo.ViewModels
                         {
                             rightBottomView1,
                             rightBottomView2,
-                            rightBottomView3,
-                            debugView
+                            rightBottomView3
                         }
                     }
                 }
@@ -345,7 +333,7 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(ToolDock)] = () => context,
                 [nameof(SplitterDock)] = () => context,
                 [nameof(DockWindow)] = () => context,
-                ["Debug"] = () => layout,
+                ["Editor"] = () => layout,
                 ["Home"] = () => layout,
                 ["Center"] = () => context,
                 ["LeftTop1"] = () => context,
@@ -377,11 +365,12 @@ namespace AvaloniaDemo.ViewModels
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(DockWindow)] = () => new HostWindow(),
-                ["Dock"] = () => new HostWindow()
+                [nameof(DockWindow)] = () => new HostWindow()
             };
 
             this.Update(layout, context, null);
+
+            layout.ShowWindows();
 
             layout.CurrentView = layout.DefaultView;
             layout.CurrentView.ShowWindows();

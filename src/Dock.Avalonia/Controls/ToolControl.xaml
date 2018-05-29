@@ -72,8 +72,7 @@
                 </Style>
 
                 <Style Selector="TabStripItem:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ThemeControlDarkBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLight}" />
                 </Style>
 
                 <Style Selector="TabStripItem:selected">

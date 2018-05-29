@@ -69,6 +69,9 @@
                     <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrush}"/>
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
+                <Style Selector="TabStripItem:selected Button">
+                    <Setter Property="Background" Value="Red"/>
+                </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
                 <DataTemplate DataType="Dock:IDock">
@@ -114,7 +117,7 @@
             </TabStrip.DataTemplates>
         </TabStrip>
 
-        <Grid Background="{DynamicResource ThemeBorderLightBrush}" Height="2" IsVisible="True" DockPanel.Dock="Top" />
+        <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" IsVisible="True" DockPanel.Dock="Top" />
 
         <ContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </DockPanel>

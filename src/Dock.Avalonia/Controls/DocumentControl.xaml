@@ -45,12 +45,15 @@
             <i:Interaction.Behaviors>
                 <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>
             </i:Interaction.Behaviors>
-            <TabStrip.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ClipToBounds="False"/>
-                </ItemsPanelTemplate>
-            </TabStrip.ItemsPanel>
             <TabStrip.Styles>
+                <Style Selector="TabStrip">
+                    <Setter Property="MaxHeight" Value="20" />
+                    <Setter Property="ItemsPanel">
+                        <ItemsPanelTemplate>
+                            <WrapPanel ClipToBounds="False" />
+                        </ItemsPanelTemplate>
+                    </Setter>
+                </Style>
                 <Style Selector="TabStripItem">
                     <Setter Property="Height" Value="20" />
                     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />

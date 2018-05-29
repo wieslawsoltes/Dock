@@ -371,7 +371,7 @@ namespace Dock.Avalonia
             {
                 Point point = DropHelper.GetPosition(sender, e);
                 Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
-                return Validate(sourceDock, targetDock, sender, e,  operation, false);
+                return Validate(sourceDock, targetDock, sender, e, operation, false);
             }
             return false;
         }

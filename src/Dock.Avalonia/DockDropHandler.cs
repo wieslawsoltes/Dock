@@ -1,395 +1,67 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
-using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
-using Dock.Model.Controls;
 
 namespace Dock.Avalonia
 {
     public class DockDropHandler : IDropHandler
     {
+        private DockManager _manager = new DockManager();
+
+        private bool _executed = false;
+
         public int Id { get; set; }
 
-        private bool ValidateMoveViewsBetweenTabs(IViewDock sourceView, IViewDock targetView, DragEventArgs e, bool bExecute, DockOperation operation)
+        private DragAction ToDragAction(DragEventArgs e)
         {
-            Console.WriteLine($"ValidateMoveViewsBetweenTabs: {sourceView.Title} -> {targetView.Title}");
-
-            if (sourceView.Parent is ITabDock sourceTab && targetView.Parent is ITabDock targetTab)
+            if (e.DragEffects == DragDropEffects.Copy)
             {
-                if (sourceTab == targetTab)
-                {
-                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                    int targetIndex = sourceTab.Views.IndexOf(targetView);
-
-                    if (sourceIndex >= 0 && targetIndex >= 0)
-                    {
-                        if (e.DragEffects == DragDropEffects.Copy)
-                        {
-                            if (bExecute)
-                            {
-                                // TODO: Clone item.
-                            }
-                            return true;
-                        }
-                        else if (e.DragEffects == DragDropEffects.Move)
-                        {
-                            if (bExecute)
-                            {
-                                if (sourceTab.Factory is IDockFactory factory)
-                                {
-                                    factory.MoveView(sourceTab, sourceIndex, targetIndex);
-                                }
-                            }
-                            return true;
-                        }
-                        else if (e.DragEffects == DragDropEffects.Link)
-                        {
-                            if (bExecute)
-                            {
-                                if (sourceTab.Factory is IDockFactory factory)
-                                {
-                                    factory.SwapView(sourceTab, sourceIndex, targetIndex);
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                else
-                {
-                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                    int targetIndex = targetTab.Views.IndexOf(targetView);
-
-                    if (sourceIndex >= 0 && targetIndex >= 0)
-                    {
-                        if (e.DragEffects == DragDropEffects.Copy)
-                        {
-                            if (bExecute)
-                            {
-                                // TODO: Clone item.
-                            }
-                            return true;
-                        }
-                        else if (e.DragEffects == DragDropEffects.Move)
-                        {
-                            if (bExecute)
-                            {
-                                if (sourceTab.Factory is IDockFactory factory)
-                                {
-                                    factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
-                                }
-                            }
-                            return true;
-                        }
-                        else if (e.DragEffects == DragDropEffects.Link)
-                        {
-                            if (bExecute)
-                            {
-                                if (sourceTab.Factory is IDockFactory factory)
-                                {
-                                    factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                    return false;
-                }
+                return DragAction.Copy;
             }
-            return false;
+            else if (e.DragEffects == DragDropEffects.Move)
+            {
+                return DragAction.Move;
+            }
+            else if (e.DragEffects == DragDropEffects.Link)
+            {
+                return DragAction.Link;
+            }
+            return DragAction.None;
         }
 
-        private bool ValidateMoveViewToTab(IViewDock sourceView, ITabDock targetTab, DragEventArgs e, bool bExecute, DockOperation operation)
+        private DockPoint ToDockPoint(Point point)
         {
-            Console.WriteLine($"ValidateMoveViewToTab: {sourceView.Title} -> {targetTab.Title}");
-
-            if (sourceView.Parent is ITabDock sourceTab && sourceTab != targetTab)
-            {
-                int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                int targetIndex = targetTab.Views.Count;
-
-                if (sourceIndex >= 0 && targetIndex >= 0)
-                {
-                    if (e.DragEffects == DragDropEffects.Copy)
-                    {
-                        if (bExecute)
-                        {
-                            // TODO: Clone item.
-                        }
-                        return true;
-                    }
-                    else if (e.DragEffects == DragDropEffects.Move)
-                    {
-                        if (bExecute)
-                        {
-                            switch (operation)
-                            {
-                                case DockOperation.Fill:
-                                    {
-                                        if (sourceTab.Factory is IDockFactory factory)
-                                        {
-                                            factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
-                                        }
-                                        return true;
-                                    }
-                                case DockOperation.Left:
-                                case DockOperation.Right:
-                                case DockOperation.Top:
-                                case DockOperation.Bottom:
-                                    {
-                                        if (targetTab.Factory is IDockFactory factory)
-                                        {
-                                            factory.Remove(sourceView);
-
-                                            IDock tool = new ToolDock
-                                            {
-                                                Id = nameof(ToolDock),
-                                                Title = nameof(ToolDock),
-                                                CurrentView = sourceView,
-                                                Views = new ObservableCollection<IDock> { sourceView }
-                                            };
-
-                                            factory.Split(targetTab, tool, operation);
-                                        }
-                                        return true;
-                                    }
-                                case DockOperation.Window:
-                                    {
-                                        // TODO:
-                                    }
-                                    break;
-                            }
-                        }
-                        return true;
-                    }
-                    else if (e.DragEffects == DragDropEffects.Link)
-                    {
-                        if (bExecute)
-                        {
-                            if (sourceTab.Factory is IDockFactory factory)
-                            {
-                                factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
-                            }
-                        }
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-            return false;
-        }
-
-        private bool ValidateMoveDockToWindow(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute, DockOperation operation)
-        {
-            Console.WriteLine($"ValidateMoveDockToWindow: {sourceDock.Title} -> {targetDock.Title}");
-
-            switch (operation)
-            {
-                case DockOperation.Fill:
-                    {
-                        var position = DropHelper.GetPositionScreen(sender, e);
-                        int sourceIndex = sourceDock.Parent.Views.IndexOf(sourceDock);
-                        if (sourceDock.Factory is IDockFactory factory
-                            && sourceDock != targetDock
-                            && sourceDock.Parent != targetDock
-                            && sourceIndex >= 0
-                            && factory.FindRootLayout(sourceDock) is IDock rootLayout
-                            && rootLayout.CurrentView != null)
-                        {
-                            if (bExecute)
-                            {
-                                factory.RemoveView(sourceDock.Parent, sourceIndex);
-
-                                var window = factory.CreateWindowFrom(sourceDock);
-                                if (window != null)
-                                {
-                                    factory.AddWindow(rootLayout.CurrentView, window, sourceDock.Context);
-
-                                    window.X = position.X;
-                                    window.Y = position.Y;
-                                    window.Width = 300;
-                                    window.Height = 400;
-                                    window.Present(false);
-                                }
-                            }
-                            return true;
-                        }
-                        break;
-                    }
-            }
-            return false;
-        }
-
-        private bool ValidateRootDock(IRootDock sourceRoot, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return false;
-                    }
-                case IViewDock targetView:
-                    {
-                        return false;
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case ITabDock targetTab:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(IRootDock)} dock target: {sourceRoot} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        private bool ValidateViewDock(IViewDock sourceView, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return ValidateMoveDockToWindow(sourceView, targetDock, sender, e, bExecute, operation);
-                    }
-                case IViewDock targetView:
-                    {
-                        return ValidateMoveViewsBetweenTabs(sourceView, targetView, e, bExecute, operation);
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case ITabDock targetTab:
-                    {
-                        return ValidateMoveViewToTab(sourceView, targetTab, e, bExecute, operation);
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(IViewDock)} dock target: {sourceView} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        private bool ValidateLayoutDock(ILayoutDock sourceLayout, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return false;
-                    }
-                case IViewDock targetView:
-                    {
-                        return false;
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case ITabDock targetTab:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(ILayoutDock)} dock target: {sourceLayout} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        private bool ValidateTabDock(ITabDock sourceTab, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return ValidateMoveDockToWindow(sourceTab, targetDock, sender, e, bExecute, operation);
-                    }
-                case IViewDock targetView:
-                    {
-                        return false;
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case ITabDock targetTab:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(ITabDock)} dock operation: {sourceTab} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, DockOperation operation, bool bExecute)
-        {
-            switch (sourceDock)
-            {
-                case IRootDock sourceRoot:
-                    {
-                        return ValidateRootDock(sourceRoot, targetDock, sender, e, operation, bExecute);
-                    }
-                case IViewDock sourceView:
-                    {
-                        return ValidateViewDock(sourceView, targetDock, sender, e, operation, bExecute);
-                    }
-                case ILayoutDock sourceLayout:
-                    {
-                        return ValidateLayoutDock(sourceLayout, targetDock, sender, e, operation, bExecute);
-                    }
-                case ITabDock sourceTab:
-                    {
-                        return ValidateTabDock(sourceTab, targetDock, sender, e, operation, bExecute);
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported dock source: {sourceDock}");
-                        return false;
-                    }
-            }
+            return new DockPoint(point.X, point.Y);
         }
 
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Point point = DropHelper.GetPosition(sender, e);
-                Console.WriteLine($"Validate [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
-                return Validate(sourceDock, targetDock, sender, e, operation, false);
+                _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
+                _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
+                Console.WriteLine($"Validate [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                return _manager.ValidateDock(sourceDock, targetDock, ToDragAction(e), operation, false);
             }
             return false;
         }
 
-        private bool bExecuted = false;
-
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (bExecuted == false && sourceContext is IDock sourceDock && targetContext is IDock targetDock)
+            if (_executed == false && sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
-                Point point = DropHelper.GetPosition(sender, e);
-                Console.WriteLine($"Execute [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
-                bool bResult = Validate(sourceDock, targetDock, sender, e, operation, true);
+                _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
+                _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
+                Console.WriteLine($"Execute [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                bool bResult = _manager.ValidateDock(sourceDock, targetDock, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
-                    Console.WriteLine($"Executed [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
-                    bExecuted = true;
+                    Console.WriteLine($"Executed [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                    _executed = true;
                     return true;
                 }
                 return false;
@@ -399,7 +71,7 @@ namespace Dock.Avalonia
 
         public void Cancel(object sender, RoutedEventArgs e)
         {
-            bExecuted = false;
+            _executed = false;
         }
     }
 }

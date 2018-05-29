@@ -1,0 +1,32 @@
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+namespace Dock.Model
+{
+    /// <summary>
+    /// Point structure.
+    /// </summary>
+    public struct DockPoint
+    {
+        /// <summary>
+        /// Gets X coordinate.
+        /// </summary>
+        public double X { get; }
+
+        /// <summary>
+        /// Gets Y coordinate.
+        /// </summary>
+        public double Y { get; }
+
+        /// <summary>
+        /// Initialize the new instance of the <see cref="DockPoint"/>.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        public DockPoint(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+}

@@ -41,7 +41,7 @@
             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
         </i:Interaction.Behaviors>
 
-        <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
+        <TabStrip Name="PART_TabStrip"  Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
             <i:Interaction.Behaviors>
                 <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>
             </i:Interaction.Behaviors>
@@ -53,6 +53,9 @@
                             <WrapPanel ClipToBounds="False" />
                         </ItemsPanelTemplate>
                     </Setter>
+                </Style>
+                <Style Selector="TabStrip:empty">
+                    <Setter Property="IsVisible" Value="False" />
                 </Style>
                 <Style Selector="TabStripItem">
                     <Setter Property="Height" Value="20" />
@@ -120,7 +123,7 @@
             </TabStrip.DataTemplates>
         </TabStrip>
 
-        <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" IsVisible="True" DockPanel.Dock="Top" />
+        <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
 
         <ContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </DockPanel>

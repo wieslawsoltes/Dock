@@ -370,7 +370,7 @@ namespace Dock.Avalonia
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
                 Point point = DropHelper.GetPosition(sender, e);
-                Console.WriteLine($"Validate: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
+                Console.WriteLine($"Validate [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{point}]");
                 return Validate(sourceDock, targetDock, sender, e, operation, false);
             }
             return false;

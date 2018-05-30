@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Globalization;
 
 namespace Dock.Model
 {
@@ -27,6 +28,15 @@ namespace Dock.Model
         {
             X = x;
             Y = y;
+        }
+
+        /// <summary>
+        /// Returns the string representation of the point.
+        /// </summary>
+        /// <returns>The string representation of the point.</returns>
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0}, {1}", X, Y);
         }
     }
 }

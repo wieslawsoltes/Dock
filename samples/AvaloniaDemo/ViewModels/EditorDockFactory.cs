@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AvaloniaDemo.ViewModels.Views;
+using AvaloniaDemo.ViewModels.Tools;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -17,7 +17,7 @@ namespace AvaloniaDemo.ViewModels
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            var editorView = new EditorView
+            var editorView = new EditorTool
             {
                 Id = "Editor",
                 Dock = "",

@@ -6,22 +6,22 @@ using Dock.Model.Controls;
 
 namespace Dock.Model
 {
-    public class DockManager
+    public class DockManager : IDockManager
     {
         public DockPoint Position { get; set; }
 
         public DockPoint ScreenPosition { get; set; }
 
-        public bool MoveBetweenTabs(IViewDock sourceView, IViewDock targetView, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoTab(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
         {
-            Console.WriteLine($"{nameof(MoveBetweenTabs)}: {sourceView.Title} -> {targetView.Title}");
+            Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
 
-            if (sourceView.Parent is ITabDock sourceTab && targetView.Parent is ITabDock targetTab)
+            if (sourceTab.Parent is ITabDock sourceTabParent && targetTab.Parent is ITabDock targetTabParent)
             {
-                if (sourceTab == targetTab)
+                if (sourceTabParent == targetTabParent)
                 {
-                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                    int targetIndex = sourceTab.Views.IndexOf(targetView);
+                    int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
+                    int targetIndex = sourceTabParent.Views.IndexOf(targetTab);
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
                         switch (action)
@@ -38,9 +38,9 @@ namespace Dock.Model
                                 {
                                     if (bExecute)
                                     {
-                                        if (sourceTab.Factory is IDockFactory factory)
+                                        if (sourceTabParent.Factory is IDockFactory factory)
                                         {
-                                            factory.MoveView(sourceTab, sourceIndex, targetIndex);
+                                            factory.MoveView(sourceTabParent, sourceIndex, targetIndex);
                                         }
                                     }
                                     return true;
@@ -49,9 +49,9 @@ namespace Dock.Model
                                 {
                                     if (bExecute)
                                     {
-                                        if (sourceTab.Factory is IDockFactory factory)
+                                        if (sourceTabParent.Factory is IDockFactory factory)
                                         {
-                                            factory.SwapView(sourceTab, sourceIndex, targetIndex);
+                                            factory.SwapView(sourceTabParent, sourceIndex, targetIndex);
                                         }
                                     }
                                     return true;
@@ -62,8 +62,8 @@ namespace Dock.Model
                 }
                 else
                 {
-                    int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                    int targetIndex = targetTab.Views.IndexOf(targetView);
+                    int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
+                    int targetIndex = targetTabParent.Views.IndexOf(targetTab);
                     if (sourceIndex >= 0 && targetIndex >= 0)
                     {
                         switch (action)
@@ -80,9 +80,9 @@ namespace Dock.Model
                                 {
                                     if (bExecute)
                                     {
-                                        if (sourceTab.Factory is IDockFactory factory)
+                                        if (sourceTabParent.Factory is IDockFactory factory)
                                         {
-                                            factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                            factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
                                         }
                                     }
                                     return true;
@@ -91,9 +91,9 @@ namespace Dock.Model
                                 {
                                     if (bExecute)
                                     {
-                                        if (sourceTab.Factory is IDockFactory factory)
+                                        if (sourceTabParent.Factory is IDockFactory factory)
                                         {
-                                            factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                            factory.SwapView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
                                         }
                                     }
                                     return true;
@@ -107,14 +107,16 @@ namespace Dock.Model
             return false;
         }
 
-        public bool MoveIntoTab(IViewDock sourceView, ITabDock targetTab, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoTab(ITab sourceTab, ITabDock targetTabParent, DragAction action, DockOperation operation, bool bExecute)
         {
-            Console.WriteLine($"{nameof(MoveIntoTab)}: {sourceView.Title} -> {targetTab.Title}");
+            Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
 
-            if (sourceView.Parent is ITabDock sourceTab && sourceTab != targetTab)
+            if (sourceTab.Parent is ITabDock sourceTabParent /* && sourceTabParent != targetTabParent */)
             {
-                int sourceIndex = sourceTab.Views.IndexOf(sourceView);
-                int targetIndex = targetTab.Views.Count;
+                bool isSameParent = sourceTabParent == targetTabParent;
+                int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
+                int targetIndex = isSameParent ? targetTabParent.Views.Count - 1 : targetTabParent.Views.Count;
+
                 if (sourceIndex >= 0 && targetIndex >= 0)
                 {
                     switch (action)
@@ -129,55 +131,91 @@ namespace Dock.Model
                             }
                         case DragAction.Move:
                             {
-                                if (bExecute)
+                                switch (operation)
                                 {
-                                    switch (operation)
-                                    {
-                                        case DockOperation.Fill:
+                                    case DockOperation.Fill:
+                                        {
+                                            if (!(isSameParent && sourceIndex == targetIndex))
                                             {
-                                                if (sourceTab.Factory is IDockFactory factory)
+                                                if (sourceTabParent.Factory is IDockFactory factory)
                                                 {
-                                                    factory.MoveView(sourceTab, targetTab, sourceIndex, targetIndex);
-                                                }
-                                                return true;
-                                            }
-                                        case DockOperation.Left:
-                                        case DockOperation.Right:
-                                        case DockOperation.Top:
-                                        case DockOperation.Bottom:
-                                            {
-                                                if (targetTab.Factory is IDockFactory factory)
-                                                {
-                                                    factory.Remove(sourceView);
-
-                                                    IDock tool = new ToolDock
+                                                    if (bExecute)
                                                     {
-                                                        Id = nameof(ToolDock),
-                                                        Title = nameof(ToolDock),
-                                                        CurrentView = sourceView,
-                                                        Views = new ObservableCollection<IDock> { sourceView }
-                                                    };
-
-                                                    factory.Split(targetTab, tool, operation);
+                                                        factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
+                                                    }
+                                                    return true;
                                                 }
-                                                return true;
                                             }
-                                        case DockOperation.Window:
+                                            return false;
+                                        }
+                                    case DockOperation.Left:
+                                    case DockOperation.Right:
+                                    case DockOperation.Top:
+                                    case DockOperation.Bottom:
+                                        {
+                                            switch (sourceTab)
                                             {
-                                                // TODO:
+                                                case IToolTab toolTab:
+                                                    {
+                                                        if (bExecute)
+                                                        {
+                                                            if (targetTabParent.Factory is IDockFactory factory)
+                                                            {
+                                                                factory.Remove(sourceTab);
+
+                                                                IDock tool = new ToolDock
+                                                                {
+                                                                    Id = nameof(ToolDock),
+                                                                    Title = nameof(ToolDock),
+                                                                    CurrentView = sourceTab,
+                                                                    Views = new ObservableCollection<IDock> { sourceTab }
+                                                                };
+                                                                factory.Split(targetTabParent, tool, operation);
+                                                            }
+                                                        }
+                                                        return true;
+                                                    }
+                                                case IDocumentTab documentTab:
+                                                    {
+                                                        if (bExecute)
+                                                        {
+                                                            if (targetTabParent.Factory is IDockFactory factory)
+                                                            {
+                                                                factory.Remove(sourceTab);
+
+                                                                IDock tool = new DocumentDock
+                                                                {
+                                                                    Id = nameof(DocumentDock),
+                                                                    Title = nameof(DocumentDock),
+                                                                    CurrentView = sourceTab,
+                                                                    Views = new ObservableCollection<IDock> { sourceTab }
+                                                                };
+                                                                factory.Split(targetTabParent, tool, operation);
+                                                            }
+                                                        }
+                                                        return true;
+                                                    }
+                                                default:
+                                                    {
+                                                        Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
+                                                        return false;
+                                                    }
                                             }
-                                            break;
-                                    }
+                                        }
+                                    case DockOperation.Window:
+                                        {
+                                            return false;
+                                        }
                                 }
-                                return true;
+                                return false;
                             }
                         case DragAction.Link:
                             {
                                 if (bExecute)
                                 {
-                                    if (sourceTab.Factory is IDockFactory factory)
+                                    if (sourceTabParent.Factory is IDockFactory factory)
                                     {
-                                        factory.SwapView(sourceTab, targetTab, sourceIndex, targetIndex);
+                                        factory.SwapView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
                                     }
                                 }
                                 return true;
@@ -191,9 +229,9 @@ namespace Dock.Model
             return false;
         }
 
-        public bool MoveIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            Console.WriteLine($"{nameof(MoveIntoWindow)}: {sourceDock.Title} -> {targetDock.Title}");
+            Console.WriteLine($"{nameof(DockIntoWindow)}: {sourceDock.Title} -> {targetDock.Title}");
 
             switch (operation)
             {
@@ -229,7 +267,87 @@ namespace Dock.Model
             return false;
         }
 
-        public bool ValidateRoot(IRootDock sourceRoot, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateToolTab(IToolTab toolTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        return DockIntoWindow(toolTab, targetDock, action, operation, bExecute);
+                    }
+                case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return DockIntoTab(toolTab, sourceToolTab, action, operation, bExecute);
+                    }
+                case IDocumentTab sourceDocumentTab:
+                    {
+                        return DockIntoTab(toolTab, sourceDocumentTab, action, operation, bExecute);
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        return false;
+                    }
+                case IToolDock targetTool:
+                    {
+                        return DockIntoTab(toolTab, targetTool, action, operation, bExecute);
+                    }
+                case IDocumentDock targetTab:
+                    {
+                        return DockIntoTab(toolTab, targetTab, action, operation, bExecute);
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IToolTab)} dock target: {toolTab} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateDocumentTab(IDocumentTab documentTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        return DockIntoWindow(documentTab, targetDock, action, operation, bExecute);
+                    }
+                case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab targetToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab targetDocumentTab:
+                    {
+                        return DockIntoTab(documentTab, targetDocumentTab, action, operation, bExecute);
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        return false;
+                    }
+                case IToolDock targetTool:
+                    {
+                        return false;
+                    }
+                case IDocumentDock targetTab:
+                    {
+                        return DockIntoTab(documentTab, targetTab, action, operation, bExecute);
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IDocumentTab)} dock target: {documentTab} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateRoot(IRootDock sourceRoot, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
@@ -238,6 +356,14 @@ namespace Dock.Model
                         return false;
                     }
                 case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab sourceDocumentTab:
                     {
                         return false;
                     }
@@ -257,17 +383,25 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateView(IViewDock sourceView, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateView(IViewDock sourceView, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
                 case IRootDock targetRoot:
                     {
-                        return MoveIntoWindow(sourceView, targetDock, action, operation, bExecute);
+                        return false;
                     }
                 case IViewDock targetView:
                     {
-                        return MoveBetweenTabs(sourceView, targetView, action, operation, bExecute);
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab sourceDocumentTab:
+                    {
+                        return false;
                     }
                 case ILayoutDock targetLayout:
                     {
@@ -275,7 +409,7 @@ namespace Dock.Model
                     }
                 case ITabDock targetTab:
                     {
-                        return MoveIntoTab(sourceView, targetTab, action, operation, bExecute);
+                        return false;
                     }
                 default:
                     {
@@ -285,7 +419,7 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateLayout(ILayoutDock sourceLayout, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateLayout(ILayoutDock sourceLayout, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
@@ -294,6 +428,14 @@ namespace Dock.Model
                         return false;
                     }
                 case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab sourceDocumentTab:
                     {
                         return false;
                     }
@@ -313,15 +455,23 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateTab(ITabDock sourceTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateTab(ITabDock sourceTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
                 case IRootDock targetRoot:
                     {
-                        return MoveIntoWindow(sourceTab, targetDock, action, operation, bExecute);
+                        return DockIntoWindow(sourceTab, targetDock, action, operation, bExecute);
                     }
                 case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab sourceDocumentTab:
                     {
                         return false;
                     }
@@ -341,7 +491,7 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        public bool Validate(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (sourceDock)
             {
@@ -352,6 +502,14 @@ namespace Dock.Model
                 case IViewDock sourceView:
                     {
                         return ValidateView(sourceView, targetDock, action, operation, bExecute);
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return ValidateToolTab(sourceToolTab, targetDock, action, operation, bExecute);
+                    }
+                case IDocumentTab sourceDocumentTab:
+                    {
+                        return ValidateDocumentTab(sourceDocumentTab, targetDock, action, operation, bExecute);
                     }
                 case ILayoutDock sourceLayout:
                     {

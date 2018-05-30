@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Dock.Model.Controls;
 
-namespace AvaloniaDemo.ViewModels.Views
+namespace Dock.Model.Controls
 {
-    public class CenterView : ViewDock
+    /// <summary>
+    /// Document tab.
+    /// </summary>
+    public class DocumentTab : DockBase, IDocumentTab
     {
     }
 }

@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AvaloniaDemo.ViewModels.Documents;
+using AvaloniaDemo.ViewModels.Tools;
 using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -17,31 +19,38 @@ namespace AvaloniaDemo.ViewModels
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            // Home
+            // Documents
 
-            var homeView = new HomeView
+            var document1 = new Document1
             {
-                Id = "Home",
+                Id = "Document1",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = "Home"
+                Title = "Document1"
             };
 
-            // Center
-
-            var centerView = new CenterView
+            var document2 = new Document2
             {
-                Id = "Center",
+                Id = "Document2",
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = "Center"
+                Title = "Document2"
+            };
+
+            var document3 = new Document3
+            {
+                Id = "Document3",
+                Dock = "",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "Document3"
             };
 
             // Left / Top
 
-            var leftTopView1 = new LeftTopView1
+            var leftTopTool1 = new LeftTopTool1
             {
                 Id = "LeftTop1",
                 Dock = "",
@@ -50,7 +59,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftTop1"
             };
 
-            var leftTopView2 = new LeftTopView2
+            var leftTopTool2 = new LeftTopTool2
             {
                 Id = "LeftTop2",
                 Dock = "",
@@ -59,7 +68,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftTop2"
             };
 
-            var leftTopView3 = new LeftTopView3
+            var leftTopTool3 = new LeftTopTool3
             {
                 Id = "LeftTop3",
                 Dock = "",
@@ -70,7 +79,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Left / Bottom
 
-            var leftBottomView1 = new LeftBottomView1
+            var leftBottomTool1 = new LeftBottomTool1
             {
                 Id = "LeftBottom1",
                 Dock = "",
@@ -79,7 +88,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftBottom1"
             };
 
-            var leftBottomView2 = new LeftBottomView2
+            var leftBottomTool2 = new LeftBottomTool2
             {
                 Id = "LeftBottom2",
                 Dock = "",
@@ -88,7 +97,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftBottom2"
             };
 
-            var leftBottomView3 = new LeftBottomView3
+            var leftBottomTool3 = new LeftBottomTool3
             {
                 Id = "LeftBottom3",
                 Dock = "",
@@ -99,7 +108,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Right / Top
 
-            var rightTopView1 = new RightTopView1
+            var rightTopTool1 = new RightTopTool1
             {
                 Id = "RightTop1",
                 Dock = "",
@@ -108,7 +117,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightTop1"
             };
 
-            var rightTopView2 = new RightTopView2
+            var rightTopTool2 = new RightTopTool2
             {
                 Id = "RightTop2",
                 Dock = "",
@@ -117,7 +126,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightTop2"
             };
 
-            var rightTopView3 = new RightTopView3
+            var rightTopTool3 = new RightTopTool3
             {
                 Id = "RightTop3",
                 Dock = "",
@@ -128,7 +137,7 @@ namespace AvaloniaDemo.ViewModels
 
             // Right / Bottom
 
-            var rightBottomView1 = new RightBottomView1
+            var rightBottomTool1 = new RightBottomTool1
             {
                 Id = "RightBottom1",
                 Dock = "",
@@ -137,7 +146,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightBottom1"
             };
 
-            var rightBottomView2 = new RightBottomView2
+            var rightBottomTool2 = new RightBottomTool2
             {
                 Id = "RightBottom2",
                 Dock = "",
@@ -146,7 +155,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightBottom2"
             };
 
-            var rightBottomView3 = new RightBottomView3
+            var rightBottomTool3 = new RightBottomTool3
             {
                 Id = "RightBottom3",
                 Dock = "",
@@ -174,12 +183,12 @@ namespace AvaloniaDemo.ViewModels
                         Width = double.NaN,
                         Height = 340,
                         Title = "LeftPaneTop",
-                        CurrentView = leftTopView1,
+                        CurrentView = leftTopTool1,
                         Views = new ObservableCollection<IDock>
                         {
-                            leftTopView1,
-                            leftTopView2,
-                            leftTopView3
+                            leftTopTool1,
+                            leftTopTool2,
+                            leftTopTool3
                         }
                     },
                     new SplitterDock()
@@ -195,12 +204,12 @@ namespace AvaloniaDemo.ViewModels
                         Width = double.NaN,
                         Height = double.NaN,
                         Title = "LeftPaneBottom",
-                        CurrentView = leftBottomView1,
+                        CurrentView = leftBottomTool1,
                         Views = new ObservableCollection<IDock>
                         {
-                            leftBottomView1,
-                            leftBottomView2,
-                            leftBottomView3
+                            leftBottomTool1,
+                            leftBottomTool2,
+                            leftBottomTool3
                         }
                     }
                 }
@@ -225,12 +234,12 @@ namespace AvaloniaDemo.ViewModels
                         Width = double.NaN,
                         Height = 340,
                         Title = "RightPaneTop",
-                        CurrentView = rightTopView1,
+                        CurrentView = rightTopTool1,
                         Views = new ObservableCollection<IDock>
                         {
-                            rightTopView1,
-                            rightTopView2,
-                            rightTopView3
+                            rightTopTool1,
+                            rightTopTool2,
+                            rightTopTool3
                         }
                     },
                     new SplitterDock()
@@ -246,12 +255,12 @@ namespace AvaloniaDemo.ViewModels
                         Width = double.NaN,
                         Height = double.NaN,
                         Title = "RightPaneBottom",
-                        CurrentView = rightBottomView1,
+                        CurrentView = rightBottomTool1,
                         Views = new ObservableCollection<IDock>
                         {
-                            rightBottomView1,
-                            rightBottomView2,
-                            rightBottomView3
+                            rightBottomTool1,
+                            rightBottomTool2,
+                            rightBottomTool3
                         }
                     }
                 }
@@ -266,10 +275,12 @@ namespace AvaloniaDemo.ViewModels
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "DocumentsPane",
-                CurrentView = centerView,
+                CurrentView = document1,
                 Views = new ObservableCollection<IDock>
                 {
-                    centerView
+                    document1,
+                    document2,
+                    document3
                 }
             };
 
@@ -317,9 +328,20 @@ namespace AvaloniaDemo.ViewModels
                 }
             };
 
+            // Home
+
+            var homeView = new HomeView
+            {
+                Id = "Home",
+                Dock = "",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "Home"
+            };
+
             // Root
 
-            var layout = new RootDock
+            var root = new RootDock
             {
                 Id = "Root",
                 Dock = "",
@@ -335,7 +357,7 @@ namespace AvaloniaDemo.ViewModels
                 }
             };
 
-            return layout;
+            return root;
         }
 
         /// <inheritdoc/>
@@ -343,15 +365,19 @@ namespace AvaloniaDemo.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
+                // Defaults
                 [nameof(RootDock)] = () => context,
                 [nameof(LayoutDock)] = () => context,
                 [nameof(DocumentDock)] = () => context,
                 [nameof(ToolDock)] = () => context,
                 [nameof(SplitterDock)] = () => context,
                 [nameof(DockWindow)] = () => context,
+                // Documents
+                ["Document1"] = () => context,
+                ["Document2"] = () => context,
+                ["Document3"] = () => context,
+                // Tools
                 ["Editor"] = () => layout,
-                ["Home"] = () => layout,
-                ["Center"] = () => context,
                 ["LeftTop1"] = () => context,
                 ["LeftTop2"] = () => context,
                 ["LeftTop3"] = () => context,
@@ -376,7 +402,10 @@ namespace AvaloniaDemo.ViewModels
                 ["MainLayout"] = () => context,
                 ["LeftSplitter"] = () => context,
                 ["RightSplitter"] = () => context,
+                // Layouts
                 ["MainLayout"] = () => context,
+                // Views
+                ["Home"] = () => layout,
                 ["Main"] = () => context
             };
 

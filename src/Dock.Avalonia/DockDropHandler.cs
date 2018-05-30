@@ -10,7 +10,7 @@ namespace Dock.Avalonia
 {
     public class DockDropHandler : IDropHandler
     {
-        private DockManager _manager = new DockManager();
+        private IDockManager _manager = new DockManager();
 
         private bool _executed = false;
 
@@ -45,7 +45,7 @@ namespace Dock.Avalonia
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
                 Console.WriteLine($"Validate [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                return _manager.ValidateDock(sourceDock, targetDock, ToDragAction(e), operation, false);
+                return _manager.Validate(sourceDock, targetDock, ToDragAction(e), operation, false);
             }
             return false;
         }
@@ -57,7 +57,7 @@ namespace Dock.Avalonia
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
                 Console.WriteLine($"Execute [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                bool bResult = _manager.ValidateDock(sourceDock, targetDock, ToDragAction(e), operation, true);
+                bool bResult = _manager.Validate(sourceDock, targetDock, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
                     Console.WriteLine($"Executed [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");

@@ -805,7 +805,12 @@ namespace Dock.Model.Factories
 
                     }
                     break;
-                case ITabDock targetTab:
+                case IToolDock targetTool:
+                    {
+                        target = source;
+                    }
+                    break;
+                case IDocumentDock targetDocument:
                     {
                         target = source;
                     }

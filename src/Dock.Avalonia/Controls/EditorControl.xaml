@@ -32,51 +32,63 @@
                 <TextBlock.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="_Split">
-                            <MenuItem Header="Split to _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Fill" Command="{Binding Factory.SplitToFill}" CommandParameter="{Binding}"/>
                             <Separator/>
-                            <MenuItem Header="Split to _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Split to _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Left" Command="{Binding Factory.SplitToLeft}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Right" Command="{Binding Factory.SplitToRight}" CommandParameter="{Binding}"/>
                             <Separator/>
-                            <MenuItem Header="Split to _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Split to _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Top" Command="{Binding Factory.SplitToTop}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Bottom" Command="{Binding Factory.SplitToBottom}" CommandParameter="{Binding}"/>
                             <Separator/>
-                            <MenuItem Header="Split to _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Window" Command="{Binding Factory.SplitToWindow}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
                         <MenuItem Header="_Add">
-                            <MenuItem Header="Add _Layout" Command="{Binding Factory.AddLayout}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Add _Root" Command="{Binding Factory.AddRoot}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Add _Splitter" Command="{Binding Factory.AddSplitter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Add _Document" Command="{Binding Factory.AddDocument}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Add _Tool" Command="{Binding Factory.AddTool}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Add _View" Command="{Binding Factory.AddView}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Layout" Command="{Binding Factory.AddLayout}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Root" Command="{Binding Factory.AddRoot}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Splitter" Command="{Binding Factory.AddSplitter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Document" Command="{Binding Factory.AddDocument}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Tool" Command="{Binding Factory.AddTool}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_View" Command="{Binding Factory.AddView}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Tool Ta_b" Command="{Binding Factory.AddToolTab}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Do_cument Tab" Command="{Binding Factory.AddDocumentTab}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
                         <MenuItem Header="Insert _Before">
-                            <MenuItem Header="Insert _Layout Before" Command="{Binding Factory.InsertLayoutBefore}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Root Before" Command="{Binding Factory.InsertRootBefore}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Splitter Before" Command="{Binding Factory.InsertSplitterBefore}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Document Before" Command="{Binding Factory.InsertDocumentBefore}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Tool Before" Command="{Binding Factory.InsertToolBefore}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _View Before" Command="{Binding Factory.InsertViewBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Layout" Command="{Binding Factory.InsertLayoutBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Root" Command="{Binding Factory.InsertRootBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Splitter" Command="{Binding Factory.InsertSplitterBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Document" Command="{Binding Factory.InsertDocumentBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Tool" Command="{Binding Factory.InsertToolBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_View" Command="{Binding Factory.InsertViewBefore}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Tool Ta_b" Command="{Binding Factory.InsertToolTabBefore}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Do_cument Tab" Command="{Binding Factory.InsertDocumentTabBefore}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
                         <MenuItem Header="Insert _After">
-                            <MenuItem Header="Insert _Layout After" Command="{Binding Factory.InsertLayoutAfter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Root After" Command="{Binding Factory.InsertRootAfter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Splitter After" Command="{Binding Factory.InsertSplitterAfter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Document After" Command="{Binding Factory.InsertDocumentAfter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _Tool After" Command="{Binding Factory.InsertToolAfter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Insert _View After" Command="{Binding Factory.InsertViewAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Layout" Command="{Binding Factory.InsertLayoutAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Root" Command="{Binding Factory.InsertRootAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Splitter" Command="{Binding Factory.InsertSplitterAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Document" Command="{Binding Factory.InsertDocumentAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_Tool" Command="{Binding Factory.InsertToolAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="_View" Command="{Binding Factory.InsertViewAfter}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="Tool Ta_b" Command="{Binding Factory.InsertToolTabAfter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="Do_cument Tab" Command="{Binding Factory.InsertDocumentTabAfter}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
                         <MenuItem Header="_Convert">
-                            <MenuItem Header="Convert to _Layout" Command="{Binding Factory.ConvertToLayout}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Convert to _Root" Command="{Binding Factory.ConvertToRoot}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Convert to _Splitter" Command="{Binding Factory.ConvertToSplitter}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Convert to _Document" Command="{Binding Factory.ConvertToDocument}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Convert to _Tool" Command="{Binding Factory.ConvertToTool}" CommandParameter="{Binding}"/>
-                            <MenuItem Header="Convert to _View" Command="{Binding Factory.ConvertToView}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Layout" Command="{Binding Factory.ConvertToLayout}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Root" Command="{Binding Factory.ConvertToRoot}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Splitter" Command="{Binding Factory.ConvertToSplitter}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Document" Command="{Binding Factory.ConvertToDocument}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _Tool" Command="{Binding Factory.ConvertToTool}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To _View" Command="{Binding Factory.ConvertToView}" CommandParameter="{Binding}"/>
+                            <Separator/>
+                            <MenuItem Header="To Tool Ta_b" Command="{Binding Factory.ConvertToToolTab}" CommandParameter="{Binding}"/>
+                            <MenuItem Header="To Do_cument Tab" Command="{Binding Factory.ConvertToDocumentTab}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
                         <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>

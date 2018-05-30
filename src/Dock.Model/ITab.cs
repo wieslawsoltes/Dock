@@ -6,7 +6,7 @@ namespace Dock.Model
     /// <summary>
     /// Tab contract.
     /// </summary>
-    public interface ITab: IDock
+    public interface ITab : IView
     {
     }
 }

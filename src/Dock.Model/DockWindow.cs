@@ -15,7 +15,7 @@ namespace Dock.Model
         private double _height;
         private string _title;
         private object _context;
-        private IDock _owner;
+        private IView _owner;
         private IDockFactory _factory;
         private IDock _layout;
         private IDockHost _host;
@@ -70,7 +70,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public IDock Owner
+        public IView Owner
         {
             get => _owner;
             set => Update(ref _owner, value);

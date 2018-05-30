@@ -113,11 +113,11 @@ namespace Dock.Avalonia
         {
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock dock;
+            bool isView = sourceContext is IView view;
 
             if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
             {
-                if (!isDock)
+                if (!isView)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
@@ -125,7 +125,7 @@ namespace Dock.Avalonia
             }
             else
             {
-                if (isDock && sender is DockPanel panel)
+                if (isView && sender is DockPanel panel)
                 {
                     if (sender is IVisual visual)
                     {
@@ -150,7 +150,7 @@ namespace Dock.Avalonia
             DockOperation operation = DockOperation.Fill;
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock dock;
+            bool isView = sourceContext is IView view;
 
             if (_adorner is DockTarget target)
             {
@@ -161,7 +161,7 @@ namespace Dock.Avalonia
 
             if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
             {
-                if (!isDock)
+                if (!isView)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
@@ -179,21 +179,21 @@ namespace Dock.Avalonia
             DockOperation operation = DockOperation.Fill;
             object sourceContext = e.Data.Get(DragDataFormats.Context);
             object targetContext = Context;
-            bool isDock = sourceContext is IDock dock;
+            bool isView = sourceContext is IView view;
 
             if (_adorner is DockTarget target)
             {
                 operation = target.GetDockOperation(e);
             }
 
-            if (isDock && sender is DockPanel panel)
+            if (isView && sender is DockPanel panel)
             {
                 RemoveAdorner(sender as IVisual);
             }
 
             if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
             {
-                if (!isDock)
+                if (!isView)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;

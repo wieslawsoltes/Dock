@@ -87,7 +87,7 @@
                 </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
-                <DataTemplate DataType="Dock:IDock">
+                <DataTemplate DataType="Dock:IView">
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}"/>

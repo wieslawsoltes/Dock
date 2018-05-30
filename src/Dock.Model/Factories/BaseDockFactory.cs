@@ -515,7 +515,7 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
-        public void AddLayout(IDock dock)
+        public virtual void AddLayout(IDock dock)
         {
             if (dock.Views == null)
             {

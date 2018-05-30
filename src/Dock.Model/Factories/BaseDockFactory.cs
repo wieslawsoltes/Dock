@@ -514,6 +514,36 @@ namespace Dock.Model.Factories
             dock.Views.Insert(index, view);
         }
 
+        private void InsertToolTab(IDock dock, int index, object context)
+        {
+            var toolTab = new ToolTab
+            {
+                Id = nameof(ToolTab),
+                Title = nameof(ToolTab),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(toolTab, context, dock);
+
+            dock.Views.Insert(index, toolTab);
+        }
+
+        private void InsertDocumentTab(IDock dock, int index, object context)
+        {
+            var documentTab = new DocumentTab
+            {
+                Id = nameof(DocumentTab),
+                Title = nameof(DocumentTab),
+                Width = double.NaN,
+                Height = double.NaN
+            };
+
+            Update(documentTab, context, dock);
+
+            dock.Views.Insert(index, documentTab);
+        }
+
         /// <inheritdoc/>
         public virtual void AddLayout(IDock dock)
         {
@@ -572,6 +602,26 @@ namespace Dock.Model.Factories
                 dock.Views = new ObservableCollection<IDock>();
             }
             InsertView(dock, dock.Views.Count, dock.Context);
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddToolTab(IDock dock)
+        {
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertToolTab(dock, dock.Views.Count, dock.Context);
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddDocumentTab(IDock dock)
+        {
+            if (dock.Views == null)
+            {
+                dock.Views = new ObservableCollection<IDock>();
+            }
+            InsertDocumentTab(dock, dock.Views.Count, dock.Context);
         }
 
         /// <inheritdoc/>
@@ -635,6 +685,26 @@ namespace Dock.Model.Factories
         }
 
         /// <inheritdoc/>
+        public virtual void InsertToolTabBefore(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertToolTab(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertDocumentTabBefore(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock);
+                InsertDocumentTab(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
         public virtual void InsertLayoutAfter(IDock dock)
         {
             if (dock.Parent is IDock parent)
@@ -691,6 +761,26 @@ namespace Dock.Model.Factories
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertView(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertToolTabAfter(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertToolTab(parent, index, parent.Context);
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertDocumentTabAfter(IDock dock)
+        {
+            if (dock.Parent is IDock parent)
+            {
+                int index = parent.Views.IndexOf(dock) + 1;
+                InsertDocumentTab(parent, index, parent.Context);
             }
         }
 
@@ -774,6 +864,24 @@ namespace Dock.Model.Factories
             Copy(dock, view, false, true);
             Update(view, dock.Context, dock.Parent);
             Replace(dock, view);
+        }
+
+        /// <inheritdoc/>
+        public virtual void ConvertToToolTab(IDock dock)
+        {
+            var toolTab = new ToolTab();
+            Copy(dock, toolTab, false, true);
+            Update(toolTab, dock.Context, dock.Parent);
+            Replace(dock, toolTab);
+        }
+
+        /// <inheritdoc/>
+        public virtual void ConvertToDocumentTab(IDock dock)
+        {
+            var documentTab = new DocumentTab();
+            Copy(dock, documentTab, false, true);
+            Update(documentTab, dock.Context, dock.Parent);
+            Replace(dock, documentTab);
         }
 
         /// <inheritdoc/>

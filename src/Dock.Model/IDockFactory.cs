@@ -233,6 +233,18 @@ namespace Dock.Model
         void AddView(IDock dock);
 
         /// <summary>
+        /// Adds <see cref="Controls.IToolTab"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddToolTab(IDock dock);
+
+        /// <summary>
+        /// Adds <see cref="Controls.IDocumentTab"/> to dock <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void AddDocumentTab(IDock dock);
+
+        /// <summary>
         /// Insert <see cref="Controls.ILayoutDock"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
@@ -267,6 +279,18 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertViewBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="Controls.IToolTab"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertToolTabBefore(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="Controls.IDocumentTab"/> before dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertDocumentTabBefore(IDock dock);
 
         /// <summary>
         /// Insert <see cref="Controls.ILayoutDock"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
@@ -305,6 +329,18 @@ namespace Dock.Model
         void InsertViewAfter(IDock dock);
 
         /// <summary>
+        /// Insert <see cref="Controls.IToolTab"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertToolTabAfter(IDock dock);
+
+        /// <summary>
+        /// Insert <see cref="Controls.IDocumentTab"/> after dock in parent <see cref="IDockNavigation.Views"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock object.</param>
+        void InsertDocumentTabAfter(IDock dock);
+
+        /// <summary>
         /// Converts dock to <see cref="Controls.ILayoutDock"/> type.
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
@@ -339,6 +375,18 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dock">The dock to convert.</param>
         void ConvertToView(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="Controls.IToolTab"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToToolTab(IDock dock);
+
+        /// <summary>
+        /// Converts dock to <see cref="Controls.IDocumentTab"/> type.
+        /// </summary>
+        /// <param name="dock">The dock to convert.</param>
+        void ConvertToDocumentTab(IDock dock);
 
         /// <summary>
         /// Creates dock window from source view.

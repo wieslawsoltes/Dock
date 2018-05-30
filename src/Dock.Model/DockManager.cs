@@ -6,15 +6,15 @@ using Dock.Model.Controls;
 
 namespace Dock.Model
 {
-    public class DockManager
+    public class DockManager : IDockManager
     {
         public DockPoint Position { get; set; }
 
         public DockPoint ScreenPosition { get; set; }
 
-        public bool DockBetweenTabs(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoTab(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
         {
-            Console.WriteLine($"{nameof(DockBetweenTabs)}: {sourceTab.Title} -> {targetTab.Title}");
+            Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
 
             if (sourceTab.Parent is ITabDock sourceTabParent && targetTab.Parent is ITabDock targetTabParent)
             {
@@ -107,7 +107,7 @@ namespace Dock.Model
             return false;
         }
 
-        public bool DockIntoTab(ITab sourceTab, ITabDock targetTabParent, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoTab(ITab sourceTab, ITabDock targetTabParent, DragAction action, DockOperation operation, bool bExecute)
         {
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
 
@@ -220,9 +220,9 @@ namespace Dock.Model
             return false;
         }
 
-        public bool MoveIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockIntoWindow(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            Console.WriteLine($"{nameof(MoveIntoWindow)}: {sourceDock.Title} -> {targetDock.Title}");
+            Console.WriteLine($"{nameof(DockIntoWindow)}: {sourceDock.Title} -> {targetDock.Title}");
 
             switch (operation)
             {
@@ -258,7 +258,87 @@ namespace Dock.Model
             return false;
         }
 
-        public bool ValidateRoot(IRootDock sourceRoot, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateToolTab(IToolTab toolTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        return DockIntoWindow(toolTab, targetDock, action, operation, bExecute);
+                    }
+                case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab sourceToolTab:
+                    {
+                        return DockIntoTab(toolTab, sourceToolTab, action, operation, bExecute);
+                    }
+                case IDocumentTab sourceDocumentTab:
+                    {
+                        return DockIntoTab(toolTab, sourceDocumentTab, action, operation, bExecute);
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        return false;
+                    }
+                case IToolDock targetTool:
+                    {
+                        return DockIntoTab(toolTab, targetTool, action, operation, bExecute);
+                    }
+                case IDocumentDock targetTab:
+                    {
+                        return DockIntoTab(toolTab, targetTab, action, operation, bExecute);
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IToolTab)} dock target: {toolTab} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateDocumentTab(IDocumentTab documentTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            switch (targetDock)
+            {
+                case IRootDock targetRoot:
+                    {
+                        return DockIntoWindow(documentTab, targetDock, action, operation, bExecute);
+                    }
+                case IViewDock targetView:
+                    {
+                        return false;
+                    }
+                case IToolTab targetToolTab:
+                    {
+                        return false;
+                    }
+                case IDocumentTab targetDocumentTab:
+                    {
+                        return DockIntoTab(documentTab, targetDocumentTab, action, operation, bExecute);
+                    }
+                case ILayoutDock targetLayout:
+                    {
+                        return false;
+                    }
+                case IToolDock targetTool:
+                    {
+                        return false;
+                    }
+                case IDocumentDock targetTab:
+                    {
+                        return DockIntoTab(documentTab, targetTab, action, operation, bExecute);
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Not supported {nameof(IDocumentTab)} dock target: {documentTab} -> {targetDock}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateRoot(IRootDock sourceRoot, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
@@ -294,87 +374,7 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateToolTab(IToolTab toolTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return MoveIntoWindow(toolTab, targetDock, action, operation, bExecute);
-                    }
-                case IViewDock targetView:
-                    {
-                        return false;
-                    }
-                case IToolTab sourceToolTab:
-                    {
-                        return DockBetweenTabs(toolTab, sourceToolTab, action, operation, bExecute);
-                    }
-                case IDocumentTab sourceDocumentTab:
-                    {
-                        return DockBetweenTabs(toolTab, sourceDocumentTab, action, operation, bExecute);
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case IToolDock targetTool:
-                    {
-                        return DockIntoTab(toolTab, targetTool, action, operation, bExecute);
-                    }
-                case IDocumentDock targetTab:
-                    {
-                        return DockIntoTab(toolTab, targetTab, action, operation, bExecute);
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(IToolTab)} dock target: {toolTab} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        public bool ValidateDocumentTab(IDocumentTab documentTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDock)
-            {
-                case IRootDock targetRoot:
-                    {
-                        return MoveIntoWindow(documentTab, targetDock, action, operation, bExecute);
-                    }
-                case IViewDock targetView:
-                    {
-                        return false;
-                    }
-                case IToolTab targetToolTab:
-                    {
-                        return false;
-                    }
-                case IDocumentTab targetDocumentTab:
-                    {
-                        return DockBetweenTabs(documentTab, targetDocumentTab, action, operation, bExecute);
-                    }
-                case ILayoutDock targetLayout:
-                    {
-                        return false;
-                    }
-                case IToolDock targetTool:
-                    {
-                        return false;
-                    }
-                case IDocumentDock targetTab:
-                    {
-                        return DockIntoTab(documentTab, targetTab, action, operation, bExecute);
-                    }
-                default:
-                    {
-                        Console.WriteLine($"Not supported {nameof(IDocumentTab)} dock target: {documentTab} -> {targetDock}");
-                        return false;
-                    }
-            }
-        }
-
-        public bool ValidateView(IViewDock sourceView, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateView(IViewDock sourceView, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
@@ -410,7 +410,7 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateLayout(ILayoutDock sourceLayout, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateLayout(ILayoutDock sourceLayout, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
@@ -446,13 +446,13 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateTab(ITabDock sourceTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateTab(ITabDock sourceTab, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDock)
             {
                 case IRootDock targetRoot:
                     {
-                        return MoveIntoWindow(sourceTab, targetDock, action, operation, bExecute);
+                        return DockIntoWindow(sourceTab, targetDock, action, operation, bExecute);
                     }
                 case IViewDock targetView:
                     {
@@ -482,7 +482,7 @@ namespace Dock.Model
             }
         }
 
-        public bool ValidateDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        public bool Validate(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (sourceDock)
             {

@@ -131,34 +131,38 @@ namespace Dock.Model
                             }
                         case DragAction.Move:
                             {
-                                if (bExecute)
+                                switch (operation)
                                 {
-                                    switch (operation)
-                                    {
-                                        case DockOperation.Fill:
+                                    case DockOperation.Fill:
+                                        {
+                                            if (!(isSameParent && sourceIndex == targetIndex))
                                             {
-                                                if (!(isSameParent && sourceIndex == targetIndex))
+                                                if (sourceTabParent.Factory is IDockFactory factory)
                                                 {
-                                                    if (sourceTabParent.Factory is IDockFactory factory)
+                                                    if (bExecute)
                                                     {
                                                         factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
                                                     }
+                                                    return true;
                                                 }
-                                                return true;
                                             }
-                                        case DockOperation.Left:
-                                        case DockOperation.Right:
-                                        case DockOperation.Top:
-                                        case DockOperation.Bottom:
+                                            return false;
+                                        }
+                                    case DockOperation.Left:
+                                    case DockOperation.Right:
+                                    case DockOperation.Top:
+                                    case DockOperation.Bottom:
+                                        {
+                                            switch (sourceTab)
                                             {
-                                                if (targetTabParent.Factory is IDockFactory factory)
-                                                {
-                                                    factory.Remove(sourceTab);
-
-                                                    switch (sourceTab)
+                                                case IToolTab toolTab:
                                                     {
-                                                        case IToolTab toolTab:
+                                                        if (bExecute)
+                                                        {
+                                                            if (targetTabParent.Factory is IDockFactory factory)
                                                             {
+                                                                factory.Remove(sourceTab);
+
                                                                 IDock tool = new ToolDock
                                                                 {
                                                                     Id = nameof(ToolDock),
@@ -167,11 +171,18 @@ namespace Dock.Model
                                                                     Views = new ObservableCollection<IDock> { sourceTab }
                                                                 };
                                                                 factory.Split(targetTabParent, tool, operation);
-                                                                return true;
                                                             }
-
-                                                        case IDocumentTab documentTab:
+                                                        }
+                                                        return true;
+                                                    }
+                                                case IDocumentTab documentTab:
+                                                    {
+                                                        if (bExecute)
+                                                        {
+                                                            if (targetTabParent.Factory is IDockFactory factory)
                                                             {
+                                                                factory.Remove(sourceTab);
+
                                                                 IDock tool = new DocumentDock
                                                                 {
                                                                     Id = nameof(DocumentDock),
@@ -180,25 +191,23 @@ namespace Dock.Model
                                                                     Views = new ObservableCollection<IDock> { sourceTab }
                                                                 };
                                                                 factory.Split(targetTabParent, tool, operation);
-                                                                return true;
                                                             }
-                                                        default:
-                                                            {
-                                                                Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
-                                                                return false;
-                                                            }
+                                                        }
+                                                        return true;
                                                     }
-                                                }
-                                                return false;
+                                                default:
+                                                    {
+                                                        Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
+                                                        return false;
+                                                    }
                                             }
-                                        case DockOperation.Window:
-                                            {
-                                                // TODO:
-                                            }
-                                            break;
-                                    }
+                                        }
+                                    case DockOperation.Window:
+                                        {
+                                            return false;
+                                        }
                                 }
-                                return true;
+                                return false;
                             }
                         case DragAction.Link:
                             {

@@ -1,8 +1,8 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<Window x:Class="Dock.Avalonia.Controls.HostWindow"
+<idc:MetroWindow x:Class="Dock.Avalonia.Controls.HostWindow"
         xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
@@ -11,42 +11,10 @@
         Width="300" Height="400"
         UseLayoutRounding="True"
         WindowState="Normal"
-        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}" HasSystemDecorations="False">
-    <Window.Resources>
+        FontFamily="Segoe UI, Arial" HideChrome="False" BorderThickness="1 0 1 0" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
+        Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}">
+    <idc:MetroWindow.Resources>
         <id:DockDropHandler x:Key="DockDropHandler4" Id="4"/>
-    </Window.Resources>
-    <AdornerDecorator>
-        <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
-            <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4 0" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
-                <Grid Grid.Row="1" Margin="0 -4" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
-                    <Grid Margin="0" RowDefinitions="Auto, *">
-                        <Grid Grid.Row="1">
-                            <Grid Background="Transparent">
-                                <i:Interaction.Behaviors>
-                                    <id:DropBehavior Context="{Binding #dock.DataContext}" Handler="{StaticResource DockDropHandler4}"/>
-                                </i:Interaction.Behaviors>
-                                <idc:DockControl x:Name="dock" Margin="0"/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                <Grid Background="Transparent" Width="10" Height="4" />
-                <Grid Background="Transparent" Grid.Column="1" Height="4" Grid.ColumnSpan="2" Cursor="SizeNorthSouth" Name="topHorizontalGrip" />
-                <Grid Background="Transparent" Width="10" Height="4" Grid.Column="4" />
-
-                <Grid Background="Transparent" Width="10" Height="4" Grid.Row="2" />
-                <Grid Background="Transparent" Grid.Column="1" Height="4" Grid.ColumnSpan="2" Grid.Row="2" Cursor="SizeNorthSouth" Name="bottomHorizontalGrip" />
-                <Grid Background="Transparent" Width="10" Height="4" Grid.Column="4" Grid.Row="2" />
-            </Grid>
-
-            <Grid Background="Transparent" Width="4" Height="10" Name="topLeftGrip" Cursor="TopLeftCorner" />
-            <Grid Background="Transparent" Width="4" Grid.Row="1" Grid.RowSpan="2" Cursor="SizeWestEast" Name="leftVerticalGrip" />
-            <Grid Background="Transparent" Width="4" Height="10" Grid.Row="4" Name="bottomLeftGrip" Cursor="BottomLeftCorner" />
-
-            <Grid Background="Transparent" Width="4" Height="10" Grid.Column="2" Name="topRightGrip" Cursor="TopRightCorner" />
-            <Grid Background="Transparent" Width="4" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Cursor="SizeWestEast" Name="rightVerticalGrip" />
-            <Grid Background="Transparent" Width="4" Height="10" Grid.Row="4" Grid.Column="2" Name="bottomRightGrip" Cursor="BottomRightCorner" />
-        </Grid>
-    </AdornerDecorator>
-</Window>
+    </idc:MetroWindow.Resources>
+    <idc:DockControl x:Name="dock" Margin="0" />
+</idc:MetroWindow>

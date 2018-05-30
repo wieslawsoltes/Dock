@@ -9,7 +9,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Host window base class.
     /// </summary>
-    public abstract class HostWindowBase : Window, IDockHost
+    public abstract class HostWindowBase : MetroWindow, IDockHost
     {
         /// <inheritdoc/>
         public void Present(bool isDialog)

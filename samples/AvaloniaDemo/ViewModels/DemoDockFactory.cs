@@ -24,7 +24,6 @@ namespace AvaloniaDemo.ViewModels
             var document1 = new Document1
             {
                 Id = "Document1",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Document1"
@@ -33,7 +32,6 @@ namespace AvaloniaDemo.ViewModels
             var document2 = new Document2
             {
                 Id = "Document2",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Document2"
@@ -42,7 +40,6 @@ namespace AvaloniaDemo.ViewModels
             var document3 = new Document3
             {
                 Id = "Document3",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Document3"
@@ -53,7 +50,6 @@ namespace AvaloniaDemo.ViewModels
             var leftTopTool1 = new LeftTopTool1
             {
                 Id = "LeftTop1",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftTop1"
@@ -62,7 +58,6 @@ namespace AvaloniaDemo.ViewModels
             var leftTopTool2 = new LeftTopTool2
             {
                 Id = "LeftTop2",
-                Dock = "",
                 Width = 200,
                 Height = 200,
                 Title = "LeftTop2"
@@ -71,7 +66,6 @@ namespace AvaloniaDemo.ViewModels
             var leftTopTool3 = new LeftTopTool3
             {
                 Id = "LeftTop3",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftTop3"
@@ -82,7 +76,6 @@ namespace AvaloniaDemo.ViewModels
             var leftBottomTool1 = new LeftBottomTool1
             {
                 Id = "LeftBottom1",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftBottom1"
@@ -91,7 +84,6 @@ namespace AvaloniaDemo.ViewModels
             var leftBottomTool2 = new LeftBottomTool2
             {
                 Id = "LeftBottom2",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftBottom2"
@@ -100,7 +92,6 @@ namespace AvaloniaDemo.ViewModels
             var leftBottomTool3 = new LeftBottomTool3
             {
                 Id = "LeftBottom3",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftBottom3"
@@ -111,7 +102,6 @@ namespace AvaloniaDemo.ViewModels
             var rightTopTool1 = new RightTopTool1
             {
                 Id = "RightTop1",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightTop1"
@@ -120,7 +110,6 @@ namespace AvaloniaDemo.ViewModels
             var rightTopTool2 = new RightTopTool2
             {
                 Id = "RightTop2",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightTop2"
@@ -129,7 +118,6 @@ namespace AvaloniaDemo.ViewModels
             var rightTopTool3 = new RightTopTool3
             {
                 Id = "RightTop3",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightTop3"
@@ -140,7 +128,6 @@ namespace AvaloniaDemo.ViewModels
             var rightBottomTool1 = new RightBottomTool1
             {
                 Id = "RightBottom1",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightBottom1"
@@ -149,7 +136,6 @@ namespace AvaloniaDemo.ViewModels
             var rightBottomTool2 = new RightBottomTool2
             {
                 Id = "RightBottom2",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightBottom2"
@@ -158,7 +144,6 @@ namespace AvaloniaDemo.ViewModels
             var rightBottomTool3 = new RightBottomTool3
             {
                 Id = "RightBottom3",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightBottom3"
@@ -174,7 +159,7 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "LeftPane",
                 CurrentView = null,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     new ToolDock
                     {
@@ -184,7 +169,7 @@ namespace AvaloniaDemo.ViewModels
                         Height = 340,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
-                        Views = new ObservableCollection<IDock>
+                        Views = new ObservableCollection<IView>
                         {
                             leftTopTool1,
                             leftTopTool2,
@@ -205,7 +190,7 @@ namespace AvaloniaDemo.ViewModels
                         Height = double.NaN,
                         Title = "LeftPaneBottom",
                         CurrentView = leftBottomTool1,
-                        Views = new ObservableCollection<IDock>
+                        Views = new ObservableCollection<IView>
                         {
                             leftBottomTool1,
                             leftBottomTool2,
@@ -225,7 +210,7 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "RightPane",
                 CurrentView = null,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     new ToolDock
                     {
@@ -235,7 +220,7 @@ namespace AvaloniaDemo.ViewModels
                         Height = 340,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
-                        Views = new ObservableCollection<IDock>
+                        Views = new ObservableCollection<IView>
                         {
                             rightTopTool1,
                             rightTopTool2,
@@ -256,7 +241,7 @@ namespace AvaloniaDemo.ViewModels
                         Height = double.NaN,
                         Title = "RightPaneBottom",
                         CurrentView = rightBottomTool1,
-                        Views = new ObservableCollection<IDock>
+                        Views = new ObservableCollection<IView>
                         {
                             rightBottomTool1,
                             rightBottomTool2,
@@ -276,7 +261,7 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "DocumentsPane",
                 CurrentView = document1,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     document1,
                     document2,
@@ -294,7 +279,7 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "MainLayout",
                 CurrentView = null,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     leftPane,
                     new SplitterDock()
@@ -317,12 +302,11 @@ namespace AvaloniaDemo.ViewModels
             var mainView = new MainView
             {
                 Id = "Main",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Main",
                 CurrentView = mainLayout,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                    mainLayout
                 }
@@ -333,7 +317,6 @@ namespace AvaloniaDemo.ViewModels
             var homeView = new HomeView
             {
                 Id = "Home",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Home"
@@ -344,13 +327,12 @@ namespace AvaloniaDemo.ViewModels
             var root = new RootDock
             {
                 Id = "Root",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Root",
                 CurrentView = homeView,
                 DefaultView = homeView,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     homeView,
                     mainView,
@@ -361,7 +343,7 @@ namespace AvaloniaDemo.ViewModels
         }
 
         /// <inheritdoc/>
-        public override void InitLayout(IDock layout, object context)
+        public override void InitLayout(IView layout, object context)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
@@ -416,10 +398,18 @@ namespace AvaloniaDemo.ViewModels
 
             this.Update(layout, context, null);
 
-            layout.ShowWindows();
-
-            layout.CurrentView = layout.DefaultView;
-            layout.CurrentView.ShowWindows();
+            if (layout is IWindowsHost layoutWindowsHost)
+            {
+                layoutWindowsHost.ShowWindows();
+                if (layout is IViewsHost layoutViewsHost)
+                {
+                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
+                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                    {
+                        currentViewWindowsHost.ShowWindows();
+                    }
+                }
+            }
         }
     }
 }

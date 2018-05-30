@@ -20,7 +20,6 @@ namespace AvaloniaDemo.ViewModels
             var editorView = new EditorTool
             {
                 Id = "Editor",
-                Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
                 Title = "Editor"
@@ -35,7 +34,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = nameof(RootDock),
                 CurrentView = editorView,
                 DefaultView = editorView,
-                Views = new ObservableCollection<IDock>
+                Views = new ObservableCollection<IView>
                 {
                     editorView
                 }
@@ -45,7 +44,7 @@ namespace AvaloniaDemo.ViewModels
         }
 
         /// <inheritdoc/>
-        public override void InitLayout(IDock layout, object context)
+        public override void InitLayout(IView layout, object context)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
@@ -65,10 +64,18 @@ namespace AvaloniaDemo.ViewModels
 
             this.Update(layout, context, null);
 
-            layout.ShowWindows();
-
-            layout.CurrentView = layout.DefaultView;
-            layout.CurrentView.ShowWindows();
+            if (layout is IWindowsHost layoutWindowsHost)
+            {
+                layoutWindowsHost.ShowWindows();
+                if (layout is IViewsHost layoutViewsHost)
+                {
+                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
+                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                    {
+                        currentViewWindowsHost.ShowWindows();
+                    }
+                }
+            }
         }
     }
 }

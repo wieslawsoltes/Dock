@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Dock.Model.Controls
+namespace Dock.Model.Controls.Editor
 {
     /// <summary>
-    /// View dock contract.
+    /// Document tab.
     /// </summary>
-    public interface IViewDock : IDock
+    public class DocumentTab : ViewBase, IDocumentTab
     {
     }
 }

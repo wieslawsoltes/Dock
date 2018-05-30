@@ -40,27 +40,27 @@ namespace Dock.Avalonia
 
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
+            if (sourceContext is IView sourceView && targetContext is IView targetView)
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Console.WriteLine($"Validate [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                return _manager.Validate(sourceDock, targetDock, ToDragAction(e), operation, false);
+                Console.WriteLine($"Validate [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                return _manager.Validate(sourceView, targetView, ToDragAction(e), operation, false);
             }
             return false;
         }
 
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
-            if (_executed == false && sourceContext is IDock sourceDock && targetContext is IDock targetDock)
+            if (_executed == false && sourceContext is IView sourceView && targetContext is IView targetView)
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Console.WriteLine($"Execute [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                bool bResult = _manager.Validate(sourceDock, targetDock, ToDragAction(e), operation, true);
+                Console.WriteLine($"Execute [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                bool bResult = _manager.Validate(sourceView, targetView, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
-                    Console.WriteLine($"Executed [{Id}]: {sourceDock.Title} -> {targetDock.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                    Console.WriteLine($"Executed [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
                     _executed = true;
                     return true;
                 }

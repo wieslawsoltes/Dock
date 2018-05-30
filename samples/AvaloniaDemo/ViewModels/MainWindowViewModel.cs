@@ -7,7 +7,7 @@ namespace AvaloniaDemo.ViewModels
     public class MainWindowViewModel : ObservableObject
     {
         private IDockFactory _factory;
-        private IDock _layout;
+        private IView _layout;
 
         public IDockFactory Factory
         {
@@ -15,7 +15,7 @@ namespace AvaloniaDemo.ViewModels
             set => Update(ref _factory, value);
         }
 
-        public IDock Layout
+        public IView Layout
         {
             get => _layout;
             set => Update(ref _layout, value);

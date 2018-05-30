@@ -5,24 +5,61 @@ using System.Collections.Generic;
 namespace Dock.Model
 {
     /// <summary>
-    /// Navigation contract.
+    /// View contract.
     /// </summary>
-    public interface IDockNavigation
+    public interface IView
+    {
+        /// <summary>
+        /// Gets or sets view id.
+        /// </summary>
+        string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets view title.
+        /// </summary>
+        string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets view context.
+        /// </summary>
+        object Context { get; set; }
+
+        /// <summary>
+        /// Gets or sets view width.
+        /// </summary>
+        double Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets view height.
+        /// </summary>
+        double Height { get; set; }
+
+        /// <summary>
+        /// Gets or sets view parent.
+        /// </summary>
+        /// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
+        IView Parent { get; set; }
+    }
+
+    /// <summary>
+    /// Views host contract.
+    /// </summary>
+    public interface IViewsHost
     {
         /// <summary>
         /// Gets or sets views.
         /// </summary>
-        IList<IDock> Views { get; set; }
+        IList<IView> Views { get; set; }
 
         /// <summary>
         /// Gets or sets current view.
         /// </summary>
-        IDock CurrentView { get; set; }
+        IView CurrentView { get; set; }
 
         /// <summary>
         /// Gets or sets default view.
         /// </summary>
-        IDock DefaultView { get; set; }
+        IView DefaultView { get; set; }
 
         /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
@@ -52,9 +89,9 @@ namespace Dock.Model
     }
 
     /// <summary>
-    /// Windows contract.
+    /// Windows host contract.
     /// </summary>
-    public interface IDockWindows
+    public interface IWindowsHost
     {
         /// <summary>
         /// Gets or sets windows.
@@ -75,43 +112,12 @@ namespace Dock.Model
     /// <summary>
     /// Dock contract.
     /// </summary>
-    public interface IDock : IDockNavigation, IDockWindows
+    public interface IDock : IView, IViewsHost, IWindowsHost
     {
-        /// <summary>
-        /// Gets or sets dock id.
-        /// </summary>
-        string Id { get; set; }
-
         /// <summary>
         /// Gets or sets dock position.
         /// </summary>
         string Dock { get; set; }
-
-        /// <summary>
-        /// Gets or sets dock width.
-        /// </summary>
-        double Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets dock height.
-        /// </summary>
-        double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets dock title.
-        /// </summary>
-        string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets dock context.
-        /// </summary>
-        object Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets dock parent.
-        /// </summary>
-        /// <remarks>If parrent is <see cref="null"/> than dock is root.</remarks>
-        IDock Parent { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.

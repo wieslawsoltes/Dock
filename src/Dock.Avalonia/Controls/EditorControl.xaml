@@ -23,7 +23,7 @@
         </Style>
     </UserControl.Styles>
     <UserControl.DataTemplates>
-        <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
+        <TreeDataTemplate DataType="Dock:IView" ItemsSource="{Binding Views}">
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <i:Interaction.Behaviors>
                     <id:DragBehavior Context="{Binding}"/>

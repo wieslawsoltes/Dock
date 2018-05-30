@@ -70,7 +70,7 @@
                     <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
                 </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
-                    <DataTemplate DataType="Dock:IDock">
+                    <DataTemplate DataType="Dock:IView">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>

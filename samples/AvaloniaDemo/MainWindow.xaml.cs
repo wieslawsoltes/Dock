@@ -23,8 +23,14 @@ namespace AvaloniaDemo
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
-                    vm.Layout.HideWindows();
-                    vm.Layout.CurrentView?.HideWindows();
+                    if (vm.Layout is IViewsHost layoutViewsHost)
+                    {
+                        if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                        {
+                            currentViewWindowsHost.HideWindows();
+                        }
+                    }
+
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
                     vm.Factory.InitLayout(vm.Layout, vm);
@@ -42,8 +48,19 @@ namespace AvaloniaDemo
                     if (this.DataContext is MainWindowViewModel vm)
                     {
                         IDock layout = DockSerializer.Load<RootDock>(result.FirstOrDefault());
-                        vm.Layout.HideWindows();
-                        vm.Layout.CurrentView.HideWindows();
+
+                        if (vm.Layout is IWindowsHost layoutWindowsHost)
+                        {
+                            layoutWindowsHost.HideWindows();
+                            if (layout is IViewsHost layoutViewsHost)
+                            {
+                                if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                                {
+                                    currentViewWindowsHost.ShowWindows();
+                                }
+                            }
+                        }
+
                         vm.Layout = layout;
                         vm.Factory.InitLayout(vm.Layout, vm);
                     }
@@ -78,7 +95,10 @@ namespace AvaloniaDemo
                     var window = factory.CreateWindowFrom(layout);
                     if (window != null)
                     {
-                        factory.AddWindow(vm.Layout, window, vm.Layout);
+                        if (vm.Layout is IWindowsHost layoutWindowsHost)
+                        {
+                            factory.AddWindow(layoutWindowsHost, window, vm.Layout);
+                        }
 
                         window.X = 0;
                         window.Y = 0;

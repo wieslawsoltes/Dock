@@ -7,6 +7,6 @@ namespace Dock.Model
     {
         DockPoint Position { get; set; }
         DockPoint ScreenPosition { get; set; }
-        bool Validate(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute);
+        bool Validate(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute);
     }
 }

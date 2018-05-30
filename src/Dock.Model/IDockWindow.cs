@@ -44,9 +44,9 @@ namespace Dock.Model
         object Context { get; set; }
 
         /// <summary>
-        /// Gets or sets window owner dock.
+        /// Gets or sets window owner view.
         /// </summary>
-        IDock Owner { get; set; }
+        IView Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.

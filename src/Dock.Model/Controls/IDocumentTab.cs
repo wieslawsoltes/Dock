@@ -6,7 +6,7 @@ namespace Dock.Model.Controls
     /// <summary>
     /// Document tab contract.
     /// </summary>
-    public interface IDocumentTab : IDock
+    public interface IDocumentTab : ITab
     {
     }
 }

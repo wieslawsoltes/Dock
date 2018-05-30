@@ -898,10 +898,32 @@ namespace Dock.Model.Factories
                     break;
                 case IViewDock targetView:
                     {
+                        target = new LayoutDock
+                        {
+                            Id = nameof(LayoutDock),
+                            Title = nameof(LayoutDock),
+                            CurrentView = source,
+                            Views = new ObservableCollection<IDock> { source }
+                        };
+                    }
+                    break;
+                case IToolTab targetToolTab:
+                    {
                         target = new ToolDock
                         {
                             Id = nameof(ToolDock),
                             Title = nameof(ToolDock),
+                            CurrentView = source,
+                            Views = new ObservableCollection<IDock> { source }
+                        };
+                    }
+                    break;
+                case IDocumentTab targetDocumentTab:
+                    {
+                        target = new DocumentDock
+                        {
+                            Id = nameof(DocumentDock),
+                            Title = nameof(DocumentDock),
                             CurrentView = source,
                             Views = new ObservableCollection<IDock> { source }
                         };

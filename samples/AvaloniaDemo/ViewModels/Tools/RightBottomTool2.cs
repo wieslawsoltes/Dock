@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.ViewModels.Views
+namespace AvaloniaDemo.ViewModels.Tools
 {
-    public class LeftBottomView3 : ViewDock
+    public class RightBottomTool2 : ToolTab
     {
     }
 }

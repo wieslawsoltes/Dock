@@ -43,7 +43,7 @@ build_script:
 
     dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
-    dotnet publish src/Dock.Model.IReactiveUINPC/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+    dotnet publish src/Dock.Model.ReactiveUINPC/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet publish src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 

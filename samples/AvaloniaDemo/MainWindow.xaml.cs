@@ -84,6 +84,23 @@ namespace AvaloniaDemo
                 }
             };
 
+            this.FindControl<MenuItem>("FileGenerateCode").Click += async (sender, e) =>
+            {
+                var dlg = new SaveFileDialog();
+                dlg.Filters.Add(new FileDialogFilter() { Name = "C#", Extensions = { "cs" } });
+                dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
+                dlg.InitialFileName = "ViewModel";
+                dlg.DefaultExtension = "cs";
+                var result = await dlg.ShowAsync(this);
+                if (result != null)
+                {
+                    if (this.DataContext is MainWindowViewModel vm)
+                    {
+                        new CodeGen().Generate(vm.Layout, result);
+                    }
+                }
+            };
+
             this.FindControl<MenuItem>("ViewEditor").Click += (sender, e) =>
             {
                 if (this.DataContext is MainWindowViewModel vm)

@@ -72,6 +72,7 @@ and install the package like this:
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
+* [Dock.Serializer](https://www.nuget.org/packages/Dock.Serializer/) - Docking model serializer.
 
 ### Package Dependencies
 

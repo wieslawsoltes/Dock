@@ -97,7 +97,6 @@ namespace Dock.Model
             set => Update(ref _host, value);
         }
 
-
         /// <inheritdoc/>
         public void Present(bool isDialog)
         {

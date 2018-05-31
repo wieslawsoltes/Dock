@@ -52,7 +52,7 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        public void GetPosition(ref double x, ref double y)
+        public void GetPosition(out double x, out double y)
         {
             x = this.Position.X;
             y = this.Position.Y;
@@ -73,7 +73,7 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        public void GetSize(ref double width, ref double height)
+        public void GetSize(out double width, out double height)
         {
             width = this.Width;
             height = this.Height;

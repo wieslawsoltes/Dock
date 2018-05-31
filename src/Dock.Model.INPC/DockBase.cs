@@ -6,15 +6,18 @@ using System.Linq;
 namespace Dock.Model
 {
     /// <summary>
-    /// Views host base class.
+    /// Dock base class.
     /// </summary>
-    public abstract class ViewsHostBase : ViewBase, IViewsHost
+    public abstract class DockBase : ViewBase, IDock
     {
         private readonly Stack<IView> _back = new Stack<IView>();
         private readonly Stack<IView> _forward = new Stack<IView>();
         private IList<IView> _views;
         private IView _currentView;
         private IView _defaultView;
+        private IList<IDockWindow> _windows;
+        private string _dock;
+        private IDockFactory _factory;
 
         /// <inheritdoc/>
         public IList<IView> Views
@@ -50,14 +53,36 @@ namespace Dock.Model
         public bool CanGoForward => _forward.Count > 0;
 
         /// <inheritdoc/>
+        public IList<IDockWindow> Windows
+        {
+            get => _windows;
+            set => Update(ref _windows, value);
+        }
+
+        /// <inheritdoc/>
+        public string Dock
+        {
+            get => _dock;
+            set => Update(ref _dock, value);
+        }
+
+        /// <inheritdoc/>
+        public IDockFactory Factory
+        {
+            get => _factory;
+            set => Update(ref _factory, value);
+        }
+
+
+        /// <inheritdoc/>
         public void GoBack()
         {
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (_currentView != null)
+                if (CurrentView != null)
                 {
-                    _forward.Push(_currentView);
+                    _forward.Push(CurrentView);
                 }
                 NavigateImpl(root, false);
             }
@@ -69,9 +94,9 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (_currentView != null)
+                if (CurrentView != null)
                 {
-                    _back.Push(_currentView);
+                    _back.Push(CurrentView);
                 }
                 NavigateImpl(root, false);
             }
@@ -111,55 +136,58 @@ namespace Dock.Model
         /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
         public void NavigateImpl(object root, bool bSnapshot)
         {
-            if (_currentView is IWindowsHost windows)
+            if (root == null)
             {
-                if (root == null)
+                if (CurrentView is IWindowsHost currentViewWindows)
                 {
-                    windows.HideWindows();
+                    currentViewWindows.HideWindows();
                     CurrentView = null;
                     ResetNavigation();
                 }
-                else if (root is IDock dock)
+            }
+            else if (root is IDock dock)
+            {
+                if (CurrentView is IWindowsHost currentViewWindows)
                 {
-                    if (dock != null && dock != _currentView)
-                    {
-                        windows.HideWindows();
-                    }
-
-                    if (dock != null && _currentView != dock)
-                    {
-                        if (_currentView != null && bSnapshot == true)
-                        {
-                            MakeSnapshot(_currentView);
-                        }
-
-                        CurrentView = dock;
-                    }
-
-                    windows.ShowWindows();
+                    currentViewWindows.HideWindows();
                 }
-                else if (root is string id)
+
+                if (dock != null && CurrentView != dock)
                 {
-                    var result1 = _views.FirstOrDefault(v => v.Id == id);
-                    if (result1 != null)
+                    if (CurrentView != null && bSnapshot == true)
                     {
-                        NavigateImpl(result1, bSnapshot);
+                        MakeSnapshot(CurrentView);
                     }
-                    else
+
+                    CurrentView = dock;
+                }
+
+                if (dock is IWindowsHost dockWindows)
+                {
+                    dockWindows.ShowWindows();
+                }
+            }
+            else if (root is string id)
+            {
+                var result1 = Views.FirstOrDefault(v => v.Id == id);
+                if (result1 != null)
+                {
+                    NavigateImpl(result1, bSnapshot);
+                }
+                else
+                {
+                    var views = Views.Flatten(v =>
                     {
-                        var views = _views.Flatten(v =>
+                        if (v is IViewsHost n)
                         {
-                            if (v is IViewsHost n)
-                            {
-                                return n.Views;
-                            }
-                            return null;
-                        });
-                        var result2 = views.FirstOrDefault(v => v.Id == id);
-                        if (result2 != null)
-                        {
-                            NavigateImpl(result2, bSnapshot);
+                            return n.Views;
                         }
+                        return null;
+                    });
+                    var result2 = views.FirstOrDefault(v => v.Id == id);
+                    if (result2 != null)
+                    {
+                        NavigateImpl(result2, bSnapshot);
                     }
                 }
             }
@@ -171,23 +199,47 @@ namespace Dock.Model
             NavigateImpl(root, true);
         }
 
+        /// <inheritdoc/>
+        public virtual void ShowWindows()
+        {
+            if (Windows != null)
+            {
+                foreach (var window in Windows)
+                {
+                    window.Present(false);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void HideWindows()
+        {
+            if (Windows != null)
+            {
+                foreach (var window in Windows)
+                {
+                    window.Destroy();
+                }
+            }
+        }
+
         /// <summary>
         /// Check whether the <see cref="Views"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeViews() => _views != null;
+        public virtual bool ShouldSerializeViews() => Views != null;
 
         /// <summary>
         /// Check whether the <see cref="CurrentView"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeCurrentView() => _currentView != null;
+        public virtual bool ShouldSerializeCurrentView() => CurrentView != null;
 
         /// <summary>
         /// Check whether the <see cref="DefaultView"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeDefaultView() => _defaultView != null;
+        public virtual bool ShouldSerializeDefaultView() => DefaultView != null;
 
         /// <summary>
         /// Check whether the <see cref="CanGoBack"/> property has changed from its default value.
@@ -200,5 +252,23 @@ namespace Dock.Model
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
         public virtual bool ShouldSerializeCanGoForward() => false;
+
+        /// <summary>
+        /// Check whether the <see cref="Windows"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeWindows() => Windows != null;
+
+        /// <summary>
+        /// Check whether the <see cref="Dock"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeDock() => !string.IsNullOrEmpty(Dock);
+
+        /// <summary>
+        /// Check whether the <see cref="Factory"/> property has changed from its default value.
+        /// </summary>
+        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
+        public virtual bool ShouldSerializeFactory() => false;
     }
 }

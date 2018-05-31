@@ -120,6 +120,9 @@
                     <DataTemplate DataType="Dock:IDock">
                         <idc:DockPropertiesControl/>
                     </DataTemplate>
+                    <DataTemplate DataType="Dock:IView">
+                        <idc:ViewPropertiesControl/>
+                    </DataTemplate>
                 </ContentControl.DataTemplates>
             </ContentControl>
         </Grid>
@@ -132,6 +135,9 @@
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <idc:DockPropertiesControl/>
+                    </DataTemplate>
+                    <DataTemplate DataType="Dock:IView">
+                        <idc:ViewPropertiesControl/>
                     </DataTemplate>
                     <DataTemplate DataType="Dock:IDockWindow">
                         <idc:DockWindowPropertiesControl/>

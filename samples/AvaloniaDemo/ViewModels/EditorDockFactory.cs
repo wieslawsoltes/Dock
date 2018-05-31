@@ -7,12 +7,11 @@ using AvaloniaDemo.ViewModels.Tools;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
-    public class EditorDockFactory : BaseDockFactory
+    public class EditorDockFactory : DockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
@@ -27,11 +26,11 @@ namespace AvaloniaDemo.ViewModels
 
             var layout = new ToolDock
             {
-                Id = nameof(ToolDock),
+                Id = nameof(IToolDock),
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = nameof(RootDock),
+                Title = nameof(IToolDock),
                 CurrentView = editorView,
                 DefaultView = editorView,
                 Views = new ObservableCollection<IView>
@@ -48,18 +47,18 @@ namespace AvaloniaDemo.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(RootDock)] = () => context,
-                [nameof(LayoutDock)] = () => context,
-                [nameof(DocumentDock)] = () => context,
-                [nameof(ToolDock)] = () => context,
-                [nameof(SplitterDock)] = () => context,
-                [nameof(DockWindow)] = () => context,
+                [nameof(IRootDock)] = () => context,
+                [nameof(ILayoutDock)] = () => context,
+                [nameof(IDocumentDock)] = () => context,
+                [nameof(IToolDock)] = () => context,
+                [nameof(ISplitterDock)] = () => context,
+                [nameof(IDockWindow)] = () => context,
                 ["Editor"] = () => context
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(DockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             this.Update(layout, context, null);

@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 namespace Dock.Model
 {
     /// <summary>
-    /// Observable object base class.
+    /// Notifies clients that a property value has changed.
     /// </summary>
-    public abstract class ObservableObject : INotifyPropertyChanged
+    public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when a property value changes.

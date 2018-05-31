@@ -71,6 +71,7 @@ and install the package like this:
 ### NuGet Packages
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
+* [Dock.Model.INPC](https://www.nuget.org/packages/Dock.Model.INPC/) - Core docking library implementation using INPC interface.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
 * [Dock.Serializer](https://www.nuget.org/packages/Dock.Serializer/) - Docking model serializer.
 

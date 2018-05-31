@@ -12,6 +12,9 @@ script:
   - dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet build src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f netstandard2.0
+  - dotnet publish src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f netstandard2.0
+  - dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.0
   - dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.0

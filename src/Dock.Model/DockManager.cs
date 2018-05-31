@@ -163,13 +163,12 @@ namespace Dock.Model
                                                             {
                                                                 factory.Remove(sourceTab);
 
-                                                                IDock tool = new ToolDock
-                                                                {
-                                                                    Id = nameof(ToolDock),
-                                                                    Title = nameof(ToolDock),
-                                                                    CurrentView = sourceTab,
-                                                                    Views = new ObservableCollection<IView> { sourceTab }
-                                                                };
+                                                                IDock tool = factory.CreateToolDock();
+                                                                tool.Id = nameof(IToolDock);
+                                                                tool.Title = nameof(IToolDock);
+                                                                tool.CurrentView = sourceTab;
+                                                                tool.Views = new ObservableCollection<IView> { sourceTab };
+
                                                                 factory.Split(targetTabParent, tool, operation);
                                                             }
                                                         }
@@ -183,14 +182,13 @@ namespace Dock.Model
                                                             {
                                                                 factory.Remove(sourceTab);
 
-                                                                IDock tool = new DocumentDock
-                                                                {
-                                                                    Id = nameof(DocumentDock),
-                                                                    Title = nameof(DocumentDock),
-                                                                    CurrentView = sourceTab,
-                                                                    Views = new ObservableCollection<IView> { sourceTab }
-                                                                };
-                                                                factory.Split(targetTabParent, tool, operation);
+                                                                IDock document = factory.CreateDocumentDock();
+                                                                document.Id = nameof(IDocumentDock);
+                                                                document.Title = nameof(IDocumentDock);
+                                                                document.CurrentView = sourceTab;
+                                                                document.Views = new ObservableCollection<IView> { sourceTab };
+
+                                                                factory.Split(targetTabParent, document, operation);
                                                             }
                                                         }
                                                         return true;

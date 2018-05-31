@@ -4,9 +4,9 @@
 namespace Dock.Model.Controls.Editor
 {
     /// <summary>
-    /// View host.
+    /// Dock stub.
     /// </summary>
-    public class ViewHost : ViewBase
+    public class DockStub : DockBase
     {
     }
 }

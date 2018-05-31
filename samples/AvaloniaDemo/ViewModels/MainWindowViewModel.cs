@@ -4,7 +4,7 @@ using Dock.Model;
 
 namespace AvaloniaDemo.ViewModels
 {
-    public class MainWindowViewModel : ObservableObject
+    public class MainWindowViewModel : NotifyPropertyChanged
     {
         private IDockFactory _factory;
         private IView _layout;

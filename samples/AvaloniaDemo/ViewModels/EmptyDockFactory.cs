@@ -7,31 +7,30 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
-using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
-    public class EmptyDockFactory : BaseDockFactory
+    public class EmptyDockFactory : DockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            var view = new ViewHost
+            var view = new ViewStub
             {
-                Id = nameof(ViewHost),
+                Id = nameof(IView),
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = nameof(ViewHost)
+                Title = nameof(IView)
             };
 
             return new RootDock
             {
-                Id = nameof(RootDock),
+                Id = nameof(IRootDock),
                 Dock = "",
                 Width = double.NaN,
                 Height = double.NaN,
-                Title = nameof(RootDock),
+                Title = nameof(IRootDock),
                 CurrentView = view,
                 DefaultView = view,
                 Views = new ObservableCollection<IView>
@@ -46,17 +45,17 @@ namespace AvaloniaDemo.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(RootDock)] = () => context,
-                [nameof(LayoutDock)] = () => context,
-                [nameof(DocumentDock)] = () => context,
-                [nameof(ToolDock)] = () => context,
-                [nameof(SplitterDock)] = () => context,
-                [nameof(DockWindow)] = () => context
+                [nameof(IRootDock)] = () => context,
+                [nameof(ILayoutDock)] = () => context,
+                [nameof(IDocumentDock)] = () => context,
+                [nameof(IToolDock)] = () => context,
+                [nameof(ISplitterDock)] = () => context,
+                [nameof(IDockWindow)] = () => context
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(DockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             this.Update(layout, context, null);

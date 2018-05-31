@@ -6,7 +6,7 @@ namespace Dock.Model
     /// <summary>
     /// Dock window.
     /// </summary>
-    public class DockWindow : ObservableObject, IDockWindow
+    public class DockWindow : NotifyPropertyChanged, IDockWindow
     {
         private string _id;
         private double _x;
@@ -97,33 +97,41 @@ namespace Dock.Model
             set => Update(ref _host, value);
         }
 
+
         /// <inheritdoc/>
         public void Present(bool isDialog)
         {
-            if (_host == null)
+            if (Host == null)
             {
-                _host = _factory?.GetHost(_id);
+                Host = Factory?.GetHost(Id);
             }
 
-            if (_host != null)
+            if (Host != null)
             {
-                _host.SetPosition(_x, _y);
-                _host.SetSize(_width, _height);
-                _host.SetTitle(_title);
-                _host.SetContext(_context);
-                _host.SetLayout(_layout);
-                _host.Present(isDialog);
+                Host.SetPosition(X, Y);
+                Host.SetSize(Width, Height);
+                Host.SetTitle(Title);
+                Host.SetContext(Context);
+                Host.SetLayout(Layout);
+                Host.Present(isDialog);
             }
         }
 
         /// <inheritdoc/>
         public void Destroy()
         {
-            if (_host != null)
+            if (Host != null)
             {
-                _host.GetPosition(ref _x, ref _y);
-                _host.GetSize(ref _width, ref _height);
-                _host.Destroy();
+                Host.GetPosition(out double x, out double y);
+                X = x;
+                Y = y;
+
+                //double width = double.NaN;
+                Host.GetSize(out double width, out double height);
+                Width = width;
+                Height = height;
+
+                Host.Destroy();
             }
         }
 
@@ -131,7 +139,7 @@ namespace Dock.Model
         /// Check whether the <see cref="Id"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(_id);
+        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(Id);
 
         /// <summary>
         /// Check whether the <see cref="X"/> property has changed from its default value.
@@ -161,7 +169,7 @@ namespace Dock.Model
         /// Check whether the <see cref="Title"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeTitle() => _title != null;
+        public virtual bool ShouldSerializeTitle() => Title != null;
 
         /// <summary>
         /// Check whether the <see cref="Context"/> property has changed from its default value.
@@ -185,7 +193,7 @@ namespace Dock.Model
         /// Check whether the <see cref="Layout"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeLayout() => _layout != null;
+        public virtual bool ShouldSerializeLayout() => Layout != null;
 
         /// <summary>
         /// Check whether the <see cref="Host"/> property has changed from its default value.

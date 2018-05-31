@@ -53,6 +53,8 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IToolDock)] = () => context,
                 [nameof(ISplitterDock)] = () => context,
                 [nameof(IDockWindow)] = () => context,
+                [nameof(IDocumentTab)] = () => context,
+                [nameof(IToolTab)] = () => context,
                 ["Editor"] = () => context
             };
 

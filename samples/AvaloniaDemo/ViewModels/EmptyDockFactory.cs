@@ -50,7 +50,9 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDocumentDock)] = () => context,
                 [nameof(IToolDock)] = () => context,
                 [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context
+                [nameof(IDockWindow)] = () => context,
+                [nameof(IDocumentTab)] = () => context,
+                [nameof(IToolTab)] = () => context,
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using ReactiveUI;
 
 namespace Dock.Model
 {
@@ -26,6 +28,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired=false, EmitDefaultValue=false)]
         public IList<IView> Views
         {
             get => _views;
@@ -33,6 +36,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IView CurrentView
         {
             get => _currentView;
@@ -45,6 +49,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IView DefaultView
         {
             get => _defaultView;
@@ -52,12 +57,15 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public bool CanGoBack => _navigate.CanGoBack;
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public bool CanGoForward => _navigate.CanGoForward;
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IDockWindow> Windows
         {
             get => _windows;
@@ -65,6 +73,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Dock
         {
             get => _dock;
@@ -72,6 +81,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public IDockFactory Factory
         {
             get => _factory;
@@ -119,53 +129,5 @@ namespace Dock.Model
                 }
             }
         }
-
-        /// <summary>
-        /// Check whether the <see cref="Views"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeViews() => Views != null;
-
-        /// <summary>
-        /// Check whether the <see cref="CurrentView"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeCurrentView() => CurrentView != null;
-
-        /// <summary>
-        /// Check whether the <see cref="DefaultView"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeDefaultView() => DefaultView != null;
-
-        /// <summary>
-        /// Check whether the <see cref="CanGoBack"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeCanGoBack() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Factory"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeCanGoForward() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Windows"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeWindows() => Windows != null;
-
-        /// <summary>
-        /// Check whether the <see cref="Dock"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeDock() => !string.IsNullOrEmpty(Dock);
-
-        /// <summary>
-        /// Check whether the <see cref="Factory"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeFactory() => false;
     }
 }

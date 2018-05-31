@@ -6,7 +6,7 @@ namespace Dock.Model
     /// <summary>
     /// View base class.
     /// </summary>
-    public abstract class ViewBase : NotifyPropertyChanged, IView
+    public abstract class ViewBase : ReactiveObject, IView
     {
         private string _id;
         private string _title;
@@ -19,42 +19,42 @@ namespace Dock.Model
         public string Id
         {
             get => _id;
-            set => Update(ref _id, value);
+            set => this.RaiseAndSetIfChanged(ref _id, value);
         }
 
         /// <inheritdoc/>
         public string Title
         {
             get => _title;
-            set => Update(ref _title, value);
+            set => this.RaiseAndSetIfChanged(ref _title, value);
         }
 
         /// <inheritdoc/>
         public object Context
         {
             get => _context;
-            set => Update(ref _context, value);
+            set => this.RaiseAndSetIfChanged(ref _context, value);
         }
 
         /// <inheritdoc/>
         public double Width
         {
             get => _width;
-            set => Update(ref _width, value);
+            set => this.RaiseAndSetIfChanged(ref _width, value);
         }
 
         /// <inheritdoc/>
         public double Height
         {
             get => _height;
-            set => Update(ref _height, value);
+            set => this.RaiseAndSetIfChanged(ref _height, value);
         }
 
         /// <inheritdoc/>
         public IView Parent
         {
             get => _parent;
-            set => Update(ref _parent, value);
+            set => this.RaiseAndSetIfChanged(ref _parent, value);
         }
 
         /// <summary>

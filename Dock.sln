@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\EmbedXaml.props = build\EmbedXaml.props
 		build\NETCore.props = build\NETCore.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
+		build\ReactiveUI.props = build\ReactiveUI.props
 		build\Rx.props = build\Rx.props
 		build\SharpDX.props = build\SharpDX.props
 		build\SkiaSharp.props = build\SkiaSharp.props
@@ -48,6 +49,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.INPC", "src\Dock.Model.INPC\Dock.Model.INPC.csproj", "{5CBD444C-EFA3-47B8-88A0-F5BCD99E171E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.INPC.UnitTests", "tests\Dock.Model.INPC.UnitTests\Dock.Model.INPC.UnitTests.csproj", "{C8442732-C248-4F42-8A3A-9E7C46D00F91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI", "src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{3920BA8E-AED3-425C-8F3A-BEC14E30673A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +96,14 @@ Global
 		{C8442732-C248-4F42-8A3A-9E7C46D00F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8442732-C248-4F42-8A3A-9E7C46D00F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8442732-C248-4F42-8A3A-9E7C46D00F91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3920BA8E-AED3-425C-8F3A-BEC14E30673A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3920BA8E-AED3-425C-8F3A-BEC14E30673A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3920BA8E-AED3-425C-8F3A-BEC14E30673A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3920BA8E-AED3-425C-8F3A-BEC14E30673A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +120,8 @@ Global
 		{5AC27AAC-847F-44BC-93FB-DFF32F6D2137} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{5CBD444C-EFA3-47B8-88A0-F5BCD99E171E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{C8442732-C248-4F42-8A3A-9E7C46D00F91} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{3920BA8E-AED3-425C-8F3A-BEC14E30673A} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

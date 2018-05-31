@@ -22,10 +22,12 @@
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\SkiaSharp.props" />
   <Import Project="..\..\build\SharpDX.props" />
+  <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
+    <!--<ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />-->
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>

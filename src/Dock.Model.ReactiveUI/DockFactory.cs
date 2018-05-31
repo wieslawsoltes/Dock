@@ -1,0 +1,43 @@
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Dock.Model.Controls;
+using Dock.Model.Controls.Editor;
+
+namespace Dock.Model
+{
+    /// <summary>
+    /// Dock factory.
+    /// </summary>
+    public abstract class DockFactory : DockFactoryBase
+    {
+        /// <inheritdoc/>
+        public override IRootDock CreateRootDock() => new RootDock();
+
+        /// <inheritdoc/>
+        public override ILayoutDock CreateLayoutDock() => new LayoutDock();
+
+        /// <inheritdoc/>
+        public override ISplitterDock CreateSplitterDock() => new SplitterDock();
+
+        /// <inheritdoc/>
+        public override IToolDock CreateToolDock() => new ToolDock();
+
+        /// <inheritdoc/>
+        public override IDocumentDock CreateDocumentDock() => new DocumentDock();
+
+        /// <inheritdoc/>
+        public override IDockWindow CreateDockWindow() => new DockWindow();
+
+        /// <inheritdoc/>
+        public override IToolTab CreateToolTab() => new ToolTab();
+
+        /// <inheritdoc/>
+        public override IDocumentTab CreateDocumentTab() => new DocumentTab();
+
+        /// <inheritdoc/>
+        public override IView CreateView() => new ViewStub();
+
+        /// <inheritdoc/>
+        public override IDock CreateDock() => new DockStub();
+    }
+}

@@ -39,6 +39,20 @@ build_script:
 
     dotnet pack src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Model.IReactiveUINPC/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f net461
+
+    dotnet pack src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -87,12 +101,15 @@ build_script:
 
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model.INPC\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 
+    IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Model.ReactiveUI\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
+
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 
     IF [%MYGET_API_KEY%] NEQ [] dotnet nuget push src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg -s %MYGET_API_URL% -k %MYGET_API_KEY%
 artifacts:
   - path: src\Dock.Model\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Model.INPC\bin\AnyCPU\Release\*.nupkg
+  - path: src\Dock.Model.ReactiveUI\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish

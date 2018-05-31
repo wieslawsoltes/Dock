@@ -71,13 +71,15 @@ and install the package like this:
 ### NuGet Packages
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
-* [Dock.Model.INPC](https://www.nuget.org/packages/Dock.Model.INPC/) - Core docking library implementation using INPC interface.
+* [Dock.Model.INPC](https://www.nuget.org/packages/Dock.Model.INPC/) - Core docking library implementation using INPC.
+* [Dock.Model.ReactiveUI](https://www.nuget.org/packages/Dock.Model.ReactiveUI/) - Core docking library implementation using ReactiveUI.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
 * [Dock.Serializer](https://www.nuget.org/packages/Dock.Serializer/) - Docking model serializer.
 
 ### Package Dependencies
 
 * [Avalonia](https://www.nuget.org/packages/Avalonia/)
+* [ReactiveUI](https://www.nuget.org/packages/ReactiveUI/)
 * [System.Reactive](https://www.nuget.org/packages/System.Reactive/)
 * [System.Reactive.Core](https://www.nuget.org/packages/System.Reactive.Core/)
 * [System.Reactive.Interfaces](https://www.nuget.org/packages/System.Reactive.Interfaces/)

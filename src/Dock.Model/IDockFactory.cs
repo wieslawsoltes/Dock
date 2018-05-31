@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
+using Dock.Model.Controls;
 
 namespace Dock.Model
 {
@@ -19,6 +20,79 @@ namespace Dock.Model
         /// Gets or sets <see cref="IDockHost"/> locator registry.
         /// </summary>
         IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
+
+        /// <summary>
+        /// Creates <see cref="IRootDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IRootDock"/> class.</returns>
+        IRootDock CreateRootDock();
+
+        /// <summary>
+        /// Creates <see cref="ILayoutDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="ILayoutDock"/> class.</returns>
+        ILayoutDock CreateLayoutDock();
+
+        /// <summary>
+        /// Creates <see cref="ISplitterDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="ISplitterDock"/> class.</returns>
+        ISplitterDock CreateSplitterDock();
+
+        /// <summary>
+        /// Creates <see cref="IToolDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IToolDock"/> class.</returns>
+        IToolDock CreateToolDock();
+
+        /// <summary>
+        /// Creates <see cref="IDocumentDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDocumentDock"/> class.</returns>
+        IDocumentDock CreateDocumentDock();
+
+        /// <summary>
+        /// Creates <see cref="IDockWindow"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+        IDockWindow CreateDockWindow();
+
+        /// <summary>
+        /// Creates <see cref="IToolTab"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IToolTab"/> class.</returns>
+        IToolTab CreateToolTab();
+
+        /// <summary>
+        /// Creates <see cref="IDocumentTab"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDocumentTab"/> class.</returns>
+        IDocumentTab CreateDocumentTab();
+
+        /// <summary>
+        /// Creates <see cref="IView"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IView"/> class.</returns>
+        IView CreateView();
+
+        /// <summary>
+        /// Creates <see cref="IDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
+        IDock CreateDock();
+
+        /// <summary>
+        /// Creates layout.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
+        IDock CreateLayout();
+
+        /// <summary>
+        /// Initialize layout.
+        /// </summary>
+        /// <param name="layout">The layout to initialize.</param>
+        /// <param name="context">The context object.</param>
+        void InitLayout(IView layout, object context);
 
         /// <summary>
         /// Gets context.
@@ -392,18 +466,5 @@ namespace Dock.Model
         /// </summary>
         /// <param name="window">The window to remove.</param>
         void RemoveWindow(IDockWindow window);
-
-        /// <summary>
-        /// Creates layout.
-        /// </summary>
-        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock CreateLayout();
-
-        /// <summary>
-        /// Initialize layout.
-        /// </summary>
-        /// <param name="layout">The layout to initialize.</param>
-        /// <param name="context">The context object.</param>
-        void InitLayout(IView layout, object context);
     }
 }

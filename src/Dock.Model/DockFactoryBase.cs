@@ -4,20 +4,55 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dock.Model.Controls;
-using Dock.Model.Controls.Editor;
 
-namespace Dock.Model.Factories
+namespace Dock.Model
 {
     /// <summary>
-    /// Dock factory base.
+    /// Dock factory base class.
     /// </summary>
-    public abstract class BaseDockFactory : IDockFactory
+    public abstract class DockFactoryBase : IDockFactory
     {
         /// <inheritdoc/>
         public virtual IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <inheritdoc/>
         public virtual IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
+
+        /// <inheritdoc/>
+        public abstract IRootDock CreateRootDock();
+
+        /// <inheritdoc/>
+        public abstract ILayoutDock CreateLayoutDock();
+
+        /// <inheritdoc/>
+        public abstract ISplitterDock CreateSplitterDock();
+
+        /// <inheritdoc/>
+        public abstract IToolDock CreateToolDock();
+
+        /// <inheritdoc/>
+        public abstract IDocumentDock CreateDocumentDock();
+
+        /// <inheritdoc/>
+        public abstract IDockWindow CreateDockWindow();
+
+        /// <inheritdoc/>
+        public abstract IToolTab CreateToolTab();
+
+        /// <inheritdoc/>
+        public abstract IDocumentTab CreateDocumentTab();
+
+        /// <inheritdoc/>
+        public abstract IView CreateView();
+
+        /// <inheritdoc/>
+        public abstract IDock CreateDock();
+
+        /// <inheritdoc/>
+        public abstract void InitLayout(IView layout, object context);
+
+        /// <inheritdoc/>
+        public abstract IDock CreateLayout();
 
         /// <inheritdoc/>
         public virtual object GetContext(string id, object context)
@@ -319,16 +354,15 @@ namespace Dock.Model.Factories
                 view.Height = double.NaN;
             }
 
-            IDock split = new LayoutDock
-            {
-                Id = nameof(LayoutDock),
-                Title = nameof(LayoutDock),
-                Width = width,
-                Height = height,
-                CurrentView = view ?? null,
-                Views = view == null ? null : new ObservableCollection<IView> { view }
-            };
+            IDock split = CreateLayoutDock();
 
+            split.Id = nameof(ILayoutDock);
+            split.Title = nameof(ILayoutDock);
+            split.Width = width;
+            split.Height = height;
+            split.CurrentView = view ?? null;
+            split.Views = view == null ? null : new ObservableCollection<IView> { view };
+ 
             switch (operation)
             {
                 case DockOperation.Left:
@@ -357,27 +391,26 @@ namespace Dock.Model.Factories
                     break;
             }
 
-            var layout = new LayoutDock
+            var layout = CreateLayoutDock();
+            layout.Id = nameof(ILayoutDock);
+            layout.Dock = originalDock;
+            layout.Width = originalWidth;
+            layout.Height = originalHeight;
+            layout.Title = nameof(ILayoutDock);
+            layout.CurrentView = null;
+
+            var splitter = CreateSplitterDock();
+            splitter.Id = nameof(ISplitterDock);
+            splitter.Title = nameof(ISplitterDock);
+            splitter.Dock = (split.Dock == "Left" || split.Dock == "Right") ? "Left" : "Top";
+            splitter.Width = double.NaN;
+            splitter.Height = double.NaN;
+
+            layout.Views = new ObservableCollection<IView>
             {
-                Id = nameof(LayoutDock),
-                Dock = originalDock,
-                Width = originalWidth,
-                Height = originalHeight,
-                Title = nameof(LayoutDock),
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
-                    (dock.Dock == "Left" || dock.Dock == "Top") ? dock : split,
-                    new SplitterDock()
-                    {
-                        Id = nameof(SplitterDock),
-                        Title = nameof(SplitterDock),
-                        Dock = (split.Dock == "Left" || split.Dock == "Right") ? "Left" : "Top",
-                        Width = double.NaN,
-                        Height = double.NaN,
-                    },
-                    (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
-                }
+                (dock.Dock == "Left" || dock.Dock == "Top") ? dock : split,
+                splitter,
+                (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
             };
 
             return layout;
@@ -442,13 +475,11 @@ namespace Dock.Model.Factories
 
         private void InsertLayout(IViewsHost host, int index, object context)
         {
-            var layout = new LayoutDock
-            {
-                Id = nameof(LayoutDock),
-                Title = nameof(LayoutDock),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var layout = CreateLayoutDock();
+            layout.Id = nameof(ILayoutDock);
+            layout.Title = nameof(ILayoutDock);
+            layout.Width = double.NaN;
+            layout.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -460,13 +491,11 @@ namespace Dock.Model.Factories
 
         private void InsertRoot(IViewsHost host, int index, object context)
         {
-            var root = new RootDock
-            {
-                Id = nameof(RootDock),
-                Title = nameof(RootDock),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var root = CreateRootDock();
+            root.Id = nameof(IRootDock);
+            root.Title = nameof(IRootDock);
+            root.Width = double.NaN;
+            root.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -478,13 +507,11 @@ namespace Dock.Model.Factories
 
         private void InsertSplitter(IViewsHost host, int index, object context)
         {
-            var splitter = new SplitterDock
-            {
-                Id = nameof(SplitterDock),
-                Title = nameof(SplitterDock),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var splitter = CreateSplitterDock();
+            splitter.Id = nameof(ISplitterDock);
+            splitter.Title = nameof(ISplitterDock);
+            splitter.Width = double.NaN;
+            splitter.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -496,13 +523,11 @@ namespace Dock.Model.Factories
 
         private void InsertDocument(IViewsHost host, int index, object context)
         {
-            var document = new DocumentDock
-            {
-                Id = nameof(ToolDock),
-                Title = nameof(ToolDock),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var document = CreateDocumentDock();
+            document.Id = nameof(IDocumentDock);
+            document.Title = nameof(IDocumentDock);
+            document.Width = double.NaN;
+            document.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -514,13 +539,11 @@ namespace Dock.Model.Factories
 
         private void InsertTool(IViewsHost host, int index, object context)
         {
-            var tool = new ToolDock
-            {
-                Id = nameof(ToolDock),
-                Title = nameof(ToolDock),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var tool = CreateToolDock();
+            tool.Id = nameof(IToolDock);
+            tool.Title = nameof(IToolDock);
+            tool.Width = double.NaN;
+            tool.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -532,13 +555,11 @@ namespace Dock.Model.Factories
 
         private void InsertView(IViewsHost host, int index, object context)
         {
-            var view = new ViewHost
-            {
-                Id = nameof(ViewHost),
-                Title = nameof(ViewHost),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var view = CreateView();
+            view.Id = nameof(IView);
+            view.Title = nameof(IView);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -550,13 +571,11 @@ namespace Dock.Model.Factories
 
         private void InsertToolTab(IViewsHost host, int index, object context)
         {
-            var toolTab = new ToolTab
-            {
-                Id = nameof(ToolTab),
-                Title = nameof(ToolTab),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var toolTab = CreateToolTab();
+            toolTab.Id = nameof(IToolTab);
+            toolTab.Title = nameof(IToolTab);
+            toolTab.Width = double.NaN;
+            toolTab.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -568,13 +587,11 @@ namespace Dock.Model.Factories
 
         private void InsertDocumentTab(IViewsHost host, int index, object context)
         {
-            var documentTab = new DocumentTab
-            {
-                Id = nameof(DocumentTab),
-                Title = nameof(DocumentTab),
-                Width = double.NaN,
-                Height = double.NaN
-            };
+            var documentTab = CreateDocumentTab();
+            documentTab.Id = nameof(IDocumentTab);
+            documentTab.Title = nameof(IDocumentTab);
+            documentTab.Width = double.NaN;
+            documentTab.Height = double.NaN;
 
             if (host is IView hostView)
             {
@@ -865,7 +882,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToLayout(IDock dock)
         {
-            var layout = new LayoutDock();
+            var layout = CreateLayoutDock();
             Copy(dock, layout, true, true);
             Update(layout, dock.Context, dock.Parent);
             Replace(dock, layout);
@@ -874,7 +891,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToRoot(IDock dock)
         {
-            var root = new RootDock();
+            var root = CreateRootDock();
             Copy(dock, root, true, true);
             Update(root, dock.Context, dock.Parent);
             Replace(dock, root);
@@ -883,7 +900,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToSplitter(IDock dock)
         {
-            var splitter = new SplitterDock();
+            var splitter = CreateSplitterDock();
             Copy(dock, splitter, false, false);
             Update(splitter, dock.Context, dock.Parent);
             Replace(dock, splitter);
@@ -892,7 +909,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToDocument(IDock dock)
         {
-            var document = new DocumentDock();
+            var document = CreateDocumentDock();
             Copy(dock, document, true, false);
             Update(document, dock.Context, dock.Parent);
             Replace(dock, document);
@@ -901,7 +918,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToTool(IDock dock)
         {
-            var tool = new ToolDock();
+            var tool = CreateToolDock();
             Copy(dock, tool, true, false);
             Update(tool, dock.Context, dock.Parent);
             Replace(dock, tool);
@@ -910,7 +927,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToView(IDock dock)
         {
-            var view = new ViewHost();
+            var view = CreateView();
             Copy(dock, view, false, true);
             Update(view, dock.Context, dock.Parent);
             Replace(dock, view);
@@ -919,7 +936,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToToolTab(IDock dock)
         {
-            var toolTab = new ToolTab();
+            var toolTab = CreateToolTab();
             Copy(dock, toolTab, false, true);
             Update(toolTab, dock.Context, dock.Parent);
             Replace(dock, toolTab);
@@ -928,7 +945,7 @@ namespace Dock.Model.Factories
         /// <inheritdoc/>
         public virtual void ConvertToDocumentTab(IDock dock)
         {
-            var documentTab = new DocumentTab();
+            var documentTab = CreateDocumentTab();
             Copy(dock, documentTab, false, true);
             Update(documentTab, dock.Context, dock.Parent);
             Replace(dock, documentTab);
@@ -951,24 +968,29 @@ namespace Dock.Model.Factories
                     break;
                 case IToolTab targetToolTab:
                     {
-                        target = new ToolDock
+                        target = CreateToolDock();
+                        target.Id = nameof(IToolDock);
+                        target.Title = nameof(IToolDock);
+
+                        if (target is IViewsHost targetViewsHost)
                         {
-                            Id = nameof(ToolDock),
-                            Title = nameof(ToolDock),
-                            CurrentView = view,
-                            Views = new ObservableCollection<IView> { view }
-                        };
+                            targetViewsHost.CurrentView = view;
+                            targetViewsHost.Views = new ObservableCollection<IView> { view };
+                        }
                     }
                     break;
                 case IDocumentTab targetDocumentTab:
                     {
-                        target = new DocumentDock
+                        target = CreateDocumentDock();
+
+                        target.Id = nameof(IDocumentDock);
+                        target.Title = nameof(IDocumentDock);
+
+                        if (target is IViewsHost targetViewsHost)
                         {
-                            Id = nameof(DocumentDock),
-                            Title = nameof(DocumentDock),
-                            CurrentView = view,
-                            Views = new ObservableCollection<IView> { view }
-                        };
+                            targetViewsHost.CurrentView = view;
+                            targetViewsHost.Views = new ObservableCollection<IView> { view };
+                        }
                     }
                     break;
                 case ILayoutDock targetLayout:
@@ -1002,25 +1024,21 @@ namespace Dock.Model.Factories
             target.Width = double.NaN;
             target.Height = double.NaN;
 
-            var root = new RootDock
-            {
-                Id = nameof(RootDock),
-                Title = nameof(RootDock),
-                Width = double.NaN,
-                Height = double.NaN,
-                CurrentView = target,
-                DefaultView = target,
-                Views = new ObservableCollection<IView> { target }
-            };
+            var root = CreateRootDock();
+            root.Id = nameof(IRootDock);
+            root.Title = nameof(IRootDock);
+            root.Width = double.NaN;
+            root.Height = double.NaN;
+            root.CurrentView = target;
+            root.DefaultView = target;
+            root.Views = new ObservableCollection<IView> { target };
 
-            var window = new DockWindow()
-            {
-                Id = nameof(DockWindow),
-                Title = nameof(DockWindow),
-                Width = double.NaN,
-                Height = double.NaN,
-                Layout = root
-            };
+            var window = CreateDockWindow();
+            window.Id = nameof(IDockWindow);
+            window.Title = nameof(IDockWindow);
+            window.Width = double.NaN;
+            window.Height = double.NaN;
+            window.Layout = root;
 
             return window;
         }
@@ -1050,11 +1068,5 @@ namespace Dock.Model.Factories
                 dock.Windows?.Remove(window);
             }
         }
-
-        /// <inheritdoc/>
-        public abstract IDock CreateLayout();
-
-        /// <inheritdoc/>
-        public abstract void InitLayout(IView layout, object context);
     }
 }

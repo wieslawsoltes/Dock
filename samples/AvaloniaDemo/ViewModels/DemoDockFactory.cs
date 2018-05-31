@@ -9,12 +9,11 @@ using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
-    public class DemoDockFactory : BaseDockFactory
+    public class DemoDockFactory : DockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
@@ -348,12 +347,12 @@ namespace AvaloniaDemo.ViewModels
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 // Defaults
-                [nameof(RootDock)] = () => context,
-                [nameof(LayoutDock)] = () => context,
-                [nameof(DocumentDock)] = () => context,
-                [nameof(ToolDock)] = () => context,
-                [nameof(SplitterDock)] = () => context,
-                [nameof(DockWindow)] = () => context,
+                [nameof(IRootDock)] = () => context,
+                [nameof(ILayoutDock)] = () => context,
+                [nameof(IDocumentDock)] = () => context,
+                [nameof(IToolDock)] = () => context,
+                [nameof(ISplitterDock)] = () => context,
+                [nameof(IDockWindow)] = () => context,
                 // Documents
                 ["Document1"] = () => context,
                 ["Document2"] = () => context,
@@ -393,7 +392,7 @@ namespace AvaloniaDemo.ViewModels
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(DockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             this.Update(layout, context, null);

@@ -36,7 +36,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="x">The X coordinate of host.</param>
         /// <param name="y">The Y coordinate of host.</param>
-        void GetPosition(ref double x, ref double y);
+        void GetPosition(out double x, out double y);
 
         /// <summary>
         /// Sets host size.
@@ -50,7 +50,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="x">The host width.</param>
         /// <param name="y">The host height.</param>
-        void GetSize(ref double width, ref double height);
+        void GetSize(out double width, out double height);
 
         /// <summary>
         /// Sets host title.

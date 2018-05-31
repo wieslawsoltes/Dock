@@ -6,7 +6,7 @@ namespace Dock.Model
     /// <summary>
     /// View base class.
     /// </summary>
-    public abstract class ViewBase : ObservableObject, IView
+    public abstract class ViewBase : NotifyPropertyChanged, IView
     {
         private string _id;
         private string _title;
@@ -61,13 +61,13 @@ namespace Dock.Model
         /// Check whether the <see cref="Id"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(_id);
+        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(Id);
 
         /// <summary>
         /// Check whether the <see cref="Title"/> property has changed from its default value.
         /// </summary>
         /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeTitle() => !string.IsNullOrEmpty(_title);
+        public virtual bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
 
         /// <summary>
         /// Check whether the <see cref="Context"/> property has changed from its default value.

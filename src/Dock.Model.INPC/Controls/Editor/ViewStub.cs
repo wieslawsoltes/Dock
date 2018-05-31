@@ -4,9 +4,9 @@
 namespace Dock.Model.Controls.Editor
 {
     /// <summary>
-    /// Tool tab.
+    /// View stub stub.
     /// </summary>
-    public class ToolTab : ViewBase, IToolTab, IDocumentTab
+    public class ViewStub : ViewBase
     {
     }
 }

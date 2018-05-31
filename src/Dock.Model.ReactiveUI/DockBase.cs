@@ -9,6 +9,7 @@ namespace Dock.Model
     /// <summary>
     /// Dock base class.
     /// </summary>
+    [DataContract(IsReference = true)]
     public abstract class DockBase : ViewBase, IDock
     {
         private NavigateAdapter _navigate;

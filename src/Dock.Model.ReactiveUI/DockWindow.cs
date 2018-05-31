@@ -8,6 +8,7 @@ namespace Dock.Model
     /// <summary>
     /// Dock window.
     /// </summary>
+    [DataContract(IsReference = true)]
     public class DockWindow : ReactiveObject, IDockWindow
     {
         private string _id;

@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Runtime.Serialization;
 
 namespace Dock.Model
 {
     /// <summary>
     /// View base class.
     /// </summary>
+    [DataContract(IsReference = true)]
     public abstract class ViewBase : ReactiveObject, IView
     {
         private string _id;
@@ -16,6 +18,7 @@ namespace Dock.Model
         private IView _parent;
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Id
         {
             get => _id;
@@ -23,6 +26,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Title
         {
             get => _title;
@@ -30,6 +34,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public object Context
         {
             get => _context;
@@ -37,6 +42,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double Width
         {
             get => _width;
@@ -44,6 +50,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double Height
         {
             get => _height;
@@ -51,46 +58,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public IView Parent
         {
             get => _parent;
             set => this.RaiseAndSetIfChanged(ref _parent, value);
         }
-
-        /// <summary>
-        /// Check whether the <see cref="Id"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(Id);
-
-        /// <summary>
-        /// Check whether the <see cref="Title"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeTitle() => !string.IsNullOrEmpty(Title);
-
-        /// <summary>
-        /// Check whether the <see cref="Context"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeContext() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Width"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeWidth() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Height"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeHeight() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Parent"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeParent() => false;
     }
 }

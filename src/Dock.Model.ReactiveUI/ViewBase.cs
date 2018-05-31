@@ -8,6 +8,7 @@ namespace Dock.Model
     /// <summary>
     /// View base class.
     /// </summary>
+    [DataContract(IsReference = true)]
     public abstract class ViewBase : ReactiveObject, IView
     {
         private string _id;

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Runtime.Serialization;
 
 namespace Dock.Model
 {
@@ -21,6 +22,7 @@ namespace Dock.Model
         private IDockHost _host;
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Id
         {
             get => _id;
@@ -28,6 +30,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double X
         {
             get => _x;
@@ -35,6 +38,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double Y
         {
             get => _y;
@@ -42,6 +46,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double Width
         {
             get => _width;
@@ -49,6 +54,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = true, EmitDefaultValue = true)]
         public double Height
         {
             get => _height;
@@ -56,6 +62,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Title
         {
             get => _title;
@@ -63,6 +70,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public object Context
         {
             get => _context;
@@ -70,6 +78,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public IView Owner
         {
             get => _owner;
@@ -77,6 +86,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public IDockFactory Factory
         {
             get => _factory;
@@ -84,6 +94,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IDock Layout
         {
             get => _layout;
@@ -91,6 +102,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public IDockHost Host
         {
             get => _host;
@@ -133,71 +145,5 @@ namespace Dock.Model
                 Host.Destroy();
             }
         }
-
-        /// <summary>
-        /// Check whether the <see cref="Id"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeId() => !string.IsNullOrEmpty(Id);
-
-        /// <summary>
-        /// Check whether the <see cref="X"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeX() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Y"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeY() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Width"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeWidth() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Height"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeHeight() => true;
-
-        /// <summary>
-        /// Check whether the <see cref="Title"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeTitle() => Title != null;
-
-        /// <summary>
-        /// Check whether the <see cref="Context"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeContext() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Owner"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeOwner() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Factory"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeFactory() => false;
-
-        /// <summary>
-        /// Check whether the <see cref="Layout"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeLayout() => Layout != null;
-
-        /// <summary>
-        /// Check whether the <see cref="Host"/> property has changed from its default value.
-        /// </summary>
-        /// <returns>Returns true if the property has changed; otherwise, returns false.</returns>
-        public virtual bool ShouldSerializeHost() => false;
     }
 }

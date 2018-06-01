@@ -139,6 +139,14 @@ namespace Dock.Model
             }
         }
 
+        public virtual void Select (IView view)
+        {
+            if (view.Parent is IViewsHost host)
+            {
+                host.CurrentView = view;
+            }
+        }
+
         /// <inheritdoc/>
         public virtual IView FindRoot(IView view)
         {
@@ -163,6 +171,7 @@ namespace Dock.Model
         {
             host.Views.RemoveAt(index);
 
+            // This code may not be needed now since carousel is fixed.
             if (host.Views.Count > 0)
             {
                 host.CurrentView = host.Views[index > 0 ? index - 1 : 0];
@@ -171,6 +180,7 @@ namespace Dock.Model
             {
                 host.CurrentView = null;
             }
+            // to here
         }
 
         /// <inheritdoc/>

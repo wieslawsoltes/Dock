@@ -126,6 +126,13 @@ namespace Dock.Model
         void Update(IView view, object context, IView parent);
 
         /// <summary>
+        /// Selects a view. If the view is contained inside an IViewHost it
+        /// will become the selected tab.
+        /// </summary>
+        /// <param name="view">The view to select.</param>
+        void Select(IView view);
+
+        /// <summary>
         /// Searches for root view.
         /// </summary>
         /// <param name="view">The view to find root for.</param>

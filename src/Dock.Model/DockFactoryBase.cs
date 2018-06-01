@@ -139,6 +139,14 @@ namespace Dock.Model
             }
         }
 
+        public virtual void Select (IView view)
+        {
+            if (view.Parent is IViewsHost host)
+            {
+                host.CurrentView = view;
+            }
+        }
+
         /// <inheritdoc/>
         public virtual IView FindRoot(IView view)
         {

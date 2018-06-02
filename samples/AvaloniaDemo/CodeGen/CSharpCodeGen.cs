@@ -36,6 +36,15 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
+        private string FormatDouble(double value)
+        {
+            if (double.IsNaN(value))
+            {
+                return "double.NaN";
+            }
+            return $"{value}";
+        }
+
         private void WriteWindow(IDockWindow window, string indent = "")
         {
             _windowCount++;
@@ -49,10 +58,10 @@ namespace AvaloniaDemo.CodeGen
             Output($"{indent}var {id} = new {window.GetType().Name}()");
             Output($"{indent}{{");
             Output($"{indent}    Id = \"{window.Id}\",");
-            Output($"{indent}    X = \"{window.X}\",");
-            Output($"{indent}    Y = \"{window.Y}\",");
-            Output($"{indent}    Width = \"{window.Width}\",");
-            Output($"{indent}    Height = \"{window.Height}\",");
+            Output($"{indent}    X = {FormatDouble(window.X)},");
+            Output($"{indent}    Y = {FormatDouble(window.Y)},");
+            Output($"{indent}    Width = {FormatDouble(window.Width)},");
+            Output($"{indent}    Height = {FormatDouble(window.Height)},");
             Output($"{indent}    Title = \"{window.Title}\",");
 
             Output($"{indent}}};");
@@ -80,8 +89,8 @@ namespace AvaloniaDemo.CodeGen
                 Output($"{indent}    Dock = \"{viewDock.Dock}\",");
             }
 
-            Output($"{indent}    Width = \"{view.Width}\",");
-            Output($"{indent}    Height = \"{view.Height}\",");
+            Output($"{indent}    Width = {FormatDouble(view.Width)},");
+            Output($"{indent}    Height = {FormatDouble(view.Height)},");
             Output($"{indent}    Title = \"{view.Title}\",");
 
             Output($"{indent}}};");

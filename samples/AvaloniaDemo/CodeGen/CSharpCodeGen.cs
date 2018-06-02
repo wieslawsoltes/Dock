@@ -47,9 +47,9 @@ namespace AvaloniaDemo.CodeGen
 
         private void WriteWindow(IDockWindow window, string indent = "")
         {
+            string id = $"window{_windowCount}";
             _windowCount++;
 
-            string id = $"window{_windowCount}";
             if (!_idWindows.ContainsKey(window))
             {
                 _idWindows[window] = id;
@@ -66,48 +66,48 @@ namespace AvaloniaDemo.CodeGen
 
             Output($"{indent}}};");
 
-            WriteView(window.Layout, indent);
+            WriteObjects(window.Layout, indent);
         }
 
-        private void WriteView(IView view, string indent = "")
+        private void WriteObjects(IView root, string indent = "")
         {
+            string id = $"view{_viewCount}";
             _viewCount++;
 
-            string id = $"view{_viewCount}";
-            if (!_idViews.ContainsKey(view))
+            if (!_idViews.ContainsKey(root))
             {
-                _idViews[view] = id;
+                _idViews[root] = id;
             }
 
-            Output($"{indent}var {id} = new {view.GetType().Name}()");
+            Output($"{indent}var {id} = new {root.GetType().Name}()");
             Output($"{indent}{{");
 
-            Output($"{indent}    Id = \"{view.Id}\",");
+            Output($"{indent}    Id = \"{root.Id}\",");
 
-            if (view is IDock viewDock)
+            if (root is IDock viewDock)
             {
                 Output($"{indent}    Dock = \"{viewDock.Dock}\",");
             }
 
-            Output($"{indent}    Width = {FormatDouble(view.Width)},");
-            Output($"{indent}    Height = {FormatDouble(view.Height)},");
-            Output($"{indent}    Title = \"{view.Title}\",");
+            Output($"{indent}    Width = {FormatDouble(root.Width)},");
+            Output($"{indent}    Height = {FormatDouble(root.Height)},");
+            Output($"{indent}    Title = \"{root.Title}\",");
 
             Output($"{indent}}};");
 
-            if (view is IViewsHost viewViewsHost)
+            if (root is IViewsHost viewViewsHost)
             {
                 if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
                 {
                     for (int i = 0; i < viewViewsHost.Views.Count; i++)
                     {
                         var child = viewViewsHost.Views[i];
-                        WriteView(child, indent);
+                        WriteObjects(child, indent);
                     }
                 }
             }
 
-            if (view is IWindowsHost viewWindowsHost)
+            if (root is IWindowsHost viewWindowsHost)
             {
                 if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
                 {
@@ -120,7 +120,7 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
-        private void WriteLists(string indent = "")
+        private void WriteLists(IView root, string indent = "")
         {
             foreach (var kvp in _idViews)
             {
@@ -170,7 +170,9 @@ namespace AvaloniaDemo.CodeGen
                         Output($"{indent}}};");
                     }
                 }
-            };
+            }
+
+            Output($"{indent}return {_idViews[root]};");
         }
 
         private void WriterHeader()
@@ -178,10 +180,13 @@ namespace AvaloniaDemo.CodeGen
             Output(@"using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using AvaloniaDemo.ViewModels.Documents;
+using AvaloniaDemo.ViewModels.Tools;
+using AvaloniaDemo.ViewModels.Views;
 using Dock.Model; 
 using Dock.Model.Controls; 
 
-namespace ViewModels
+namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
     public class DemoDockFactory : DockFactory
@@ -247,8 +252,8 @@ namespace ViewModels
 
             WriterHeader();
 
-            WriteView(view, indent);
-            WriteLists(indent);
+            WriteObjects(view, indent);
+            WriteLists(view, indent);
 
             WriteFooter();
 

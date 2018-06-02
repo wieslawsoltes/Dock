@@ -120,6 +120,60 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
+        private void WriteViewsHost(string indent, string valueId, IViewsHost viewViewsHost)
+        {
+            if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
+            {
+                if (viewViewsHost.CurrentView != null)
+                {
+                    Output($"{indent}{valueId}.CurrentView = {_idViews[viewViewsHost.CurrentView]};");
+                }
+
+                if (viewViewsHost.DefaultView != null)
+                {
+                    Output($"{indent}{valueId}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
+                }
+
+                Output($"{indent}{valueId}.Views = new ObservableCollection<IView>");
+                Output($"{indent}{{");
+
+                for (int i = 0; i < viewViewsHost.Views.Count; i++)
+                {
+                    var child = viewViewsHost.Views[i];
+                    Output($"{indent}    {_idViews[child]},");
+                }
+
+                Output($"{indent}}};");
+            }
+        }
+
+        private void WriteWindowsHost(string indent, string valueId, IWindowsHost viewWindowsHost)
+        {
+            if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
+            {
+                Output($"{indent}{valueId}.Windows = new ObservableCollection<IDockWindow>");
+                Output($"{indent}{{");
+
+                for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
+                {
+                    var window = viewWindowsHost.Windows[i];
+                    Output($"{indent}    {_idWindows[window]},");
+                }
+
+                Output($"{indent}}};");
+
+                for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
+                {
+                    var window = viewWindowsHost.Windows[i];
+                    if (window.Layout != null)
+                    {
+                        string windowId = _idWindows[window];
+                        Output($"{indent}{windowId}.Layout = {_idViews[window.Layout]};");
+                    }
+                }
+            }
+        }
+
         private void WriteLists(IView root, string indent = "")
         {
             foreach (var kvp in _idViews)
@@ -129,56 +183,12 @@ namespace AvaloniaDemo.CodeGen
 
                 if (keyView is IViewsHost viewViewsHost)
                 {
-                    if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
-                    {
-                        if (viewViewsHost.CurrentView != null)
-                        {
-                            Output($"{indent}{valueId}.CurrentView = {_idViews[viewViewsHost.CurrentView]};");
-                        }
-
-                        if (viewViewsHost.DefaultView != null)
-                        {
-                            Output($"{indent}{valueId}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
-                        }
-
-                        Output($"{indent}{valueId}.Views = new ObservableCollection<IView>");
-                        Output($"{indent}{{");
-
-                        for (int i = 0; i < viewViewsHost.Views.Count; i++)
-                        {
-                            var child = viewViewsHost.Views[i];
-                            Output($"{indent}    {_idViews[child]},");
-                        }
-
-                        Output($"{indent}}};");
-                    }
+                    WriteViewsHost(indent, valueId, viewViewsHost);
                 }
 
                 if (keyView is IWindowsHost viewWindowsHost)
                 {
-                    if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
-                    {
-                        Output($"{indent}{valueId}.Windows = new ObservableCollection<IDockWindow>");
-                        Output($"{indent}{{");
-
-                        for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
-                        {
-                            var window = viewWindowsHost.Windows[i];
-                            Output($"{indent}    {_idWindows[window]},");
-                        }
-
-                        Output($"{indent}}};");
-
-                        for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
-                        {
-                            var window = viewWindowsHost.Windows[i];
-                            if (window.Layout != null)
-                            {
-                                string windowId = _idWindows[window];
-                                Output($"{indent}{windowId}.Layout = {_idViews[window.Layout]};");
-                            }
-                        }
-                    }
+                    WriteWindowsHost(indent, valueId, viewWindowsHost);
                 }
             }
 

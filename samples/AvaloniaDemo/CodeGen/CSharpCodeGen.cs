@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using System.Text;
 using Dock.Model;
 
-namespace AvaloniaDemo
+namespace AvaloniaDemo.CodeGen
 {
-    public class CodeGen
+    /// <summary>
+    /// CSharp code generator.
+    /// </summary>
+    public class CSharpCodeGen : ICodeGen
     {
         private StringBuilder _sb;
         private IDictionary<IView, string> _idViews;
         private IDictionary<IDockWindow, string> _idWindows;
+        private int _viewCount;
+        private int _windowCount;
 
         private void Write(string path, string text)
         {
@@ -25,14 +30,17 @@ namespace AvaloniaDemo
 
         private void Output(string text)
         {
-            _sb.AppendLine(text);
+            if (_sb != null)
+            {
+                _sb.AppendLine(text);
+            }
         }
 
-        private void GenerateWindows(IDockWindow window, ref int count, string indent = "")
+        private void WriteWindow(IDockWindow window, string indent = "")
         {
-            count++;
+            _windowCount++;
 
-            string id = $"window{count}";
+            string id = $"window{_windowCount}";
             if (!_idWindows.ContainsKey(window))
             {
                 _idWindows[window] = id;
@@ -50,14 +58,14 @@ namespace AvaloniaDemo
             Output($"{indent}}};");
             Output($"{indent}");
 
-            GenerateObjects(window.Layout, ref count, indent);
+            WriteView(window.Layout, indent);
         }
 
-        private void GenerateObjects(IView view, ref int count, string indent = "")
+        private void WriteView(IView view, string indent = "")
         {
-            count++;
+            _viewCount++;
 
-            string id = $"view{count}";
+            string id = $"view{_viewCount}";
             if (!_idViews.ContainsKey(view))
             {
                 _idViews[view] = id;
@@ -87,7 +95,7 @@ namespace AvaloniaDemo
                     for (int i = 0; i < viewViewsHost.Views.Count; i++)
                     {
                         var child = viewViewsHost.Views[i];
-                        GenerateObjects(child, ref count, indent);
+                        WriteView(child, indent);
                     }
                 }
             }
@@ -99,13 +107,13 @@ namespace AvaloniaDemo
                     for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
                     {
                         var child = viewWindowsHost.Windows[i];
-                        GenerateWindows(child, ref count, indent);
+                        WriteWindow(child, indent);
                     }
                 }
             }
         }
 
-        private void GenerateReferences(string indent = "")
+        private void WriteReferences(string indent = "")
         {
             foreach (var kvp in _idViews)
             {
@@ -136,6 +144,7 @@ namespace AvaloniaDemo
                         }
 
                         Output($"{indent}}};");
+                        Output($"");
                     }
                 }
 
@@ -153,79 +162,88 @@ namespace AvaloniaDemo
                         }
 
                         Output($"{indent}}};");
+                        Output($"");
                     }
                 }
-
-                Output($"{indent}");
             };
         }
 
-        public void Generate(IView root, string path)
+        private void WriterHeader()
+        {
+            Output(@"using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Dock.Model; 
+using Dock.Model.Controls; 
+
+namespace ViewModels
+{
+    /// <inheritdoc/>
+    public class EmptyDockFactory : DockFactory
+    {
+        /// <inheritdoc/>
+        public override IDock CreateLayout()
+        {");
+        }
+
+        private void WriteFooter()
+        {
+            Output(@"        }
+
+        /// <inheritdoc/>
+        public override void InitLayout(IView layout, object context)
+        {
+            this.ContextLocator = new Dictionary<string, Func<object>>
+            {
+                [nameof(IRootDock)] = () => context,
+                [nameof(ILayoutDock)] = () => context,
+                [nameof(IDocumentDock)] = () => context,
+                [nameof(IToolDock)] = () => context,
+                [nameof(ISplitterDock)] = () => context,
+                [nameof(IDockWindow)] = () => context
+            };
+
+            this.HostLocator = new Dictionary<string, Func<IDockHost>>
+            {
+                [nameof(IDockWindow)] = () => new HostWindow()
+            };
+
+            this.Update(layout, context, null);
+
+            if (layout is IWindowsHost layoutWindowsHost)
+            {
+                layoutWindowsHost.ShowWindows();
+                if (layout is IViewsHost layoutViewsHost)
+                {
+                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
+                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                    {
+                        currentViewWindowsHost.ShowWindows();
+                    }
+                }
+            }
+        }
+    }
+}");
+        }
+
+        /// <inheritdoc/>
+        public void Generate(IView view, string path)
         {
             _sb = new StringBuilder();
             _idViews = new Dictionary<IView, string>();
             _idWindows = new Dictionary<IDockWindow, string>();
+            _viewCount = 0;
+            _windowCount = 0;
 
-            Output($"using System;");
-            Output($"using System.Collections.Generic;");
-            Output($"using System.Collections.ObjectModel;");
-            Output($"using Dock.Model; ");
-            Output($"using Dock.Model.Controls; ");
-            Output($"");
-            Output($"namespace ViewModels");
-            Output($"{{");
+            string indent = "            ";
 
-            Output($"    /// <inheritdoc/>");
-            Output($"    public class EmptyDockFactory : DockFactory");
-            Output($"    {{");
-            Output($"        /// <inheritdoc/>");
-            Output($"        public override IDock CreateLayout()");
-            Output($"        {{");
+            WriterHeader();
 
-            int count = 0;
+            WriteView(view, indent);
+            WriteReferences(indent);
 
-            GenerateObjects(root, ref count, "            ");
-            GenerateReferences("            ");
-
-            Output($"        }}");
-            Output($"");
-            Output($"        /// <inheritdoc/>");
-            Output($"        public override void InitLayout(IView layout, object context)");
-            Output($"        {{");
-            Output($"            this.ContextLocator = new Dictionary<string, Func<object>>");
-            Output($"            {{");
-            Output($"                [nameof(IRootDock)] = () => context,");
-            Output($"                [nameof(ILayoutDock)] = () => context,");
-            Output($"                [nameof(IDocumentDock)] = () => context,");
-            Output($"                [nameof(IToolDock)] = () => context,");
-            Output($"                [nameof(ISplitterDock)] = () => context,");
-            Output($"                [nameof(IDockWindow)] = () => context");
-            Output($"            }};");
-            Output($"");
-            Output($"            this.HostLocator = new Dictionary<string, Func<IDockHost>>");
-            Output($"            {{");
-            Output($"                [nameof(IDockWindow)] = () => new HostWindow()");
-            Output($"            }};");
-            Output($"");
-            Output($"            this.Update(layout, context, null);");
-            Output($"");
-            Output($"            if (layout is IWindowsHost layoutWindowsHost)");
-            Output($"            {{");
-            Output($"                layoutWindowsHost.ShowWindows();");
-            Output($"                if (layout is IViewsHost layoutViewsHost)");
-            Output($"                {{");
-            Output($"                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;");
-            Output($"                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)");
-            Output($"                    {{");
-            Output($"                        currentViewWindowsHost.ShowWindows();");
-            Output($"                    }}");
-            Output($"                }}");
-            Output($"            }}");
-            Output($"        }}");
-            Output($"    }}");
-
-            Output($"}}");
-            Output($"");
+            WriteFooter();
 
             var text = _sb.ToString();
 

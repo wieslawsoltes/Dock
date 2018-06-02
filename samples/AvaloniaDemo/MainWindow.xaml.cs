@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.CodeGen;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -96,7 +97,8 @@ namespace AvaloniaDemo
                 {
                     if (this.DataContext is MainWindowViewModel vm)
                     {
-                        new CodeGen().Generate(vm.Layout, result);
+                        ICodeGen codeGeb = new CSharpCodeGen();
+                        codeGeb.Generate(vm.Layout, result);
                     }
                 }
             };

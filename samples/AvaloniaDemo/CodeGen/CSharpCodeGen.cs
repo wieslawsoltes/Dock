@@ -183,6 +183,7 @@ using System.Collections.ObjectModel;
 using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
 using AvaloniaDemo.ViewModels.Views;
+using Dock.Avalonia.Controls;
 using Dock.Model; 
 using Dock.Model.Controls; 
 

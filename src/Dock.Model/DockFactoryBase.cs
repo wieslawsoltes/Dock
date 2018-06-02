@@ -139,7 +139,7 @@ namespace Dock.Model
             }
         }
 
-        public virtual void Select (IView view)
+        public virtual void Select(IView view)
         {
             if (view.Parent is IViewsHost host)
             {
@@ -372,7 +372,7 @@ namespace Dock.Model
             split.Height = height;
             split.CurrentView = view ?? null;
             split.Views = view == null ? null : new ObservableCollection<IView> { view };
- 
+
             switch (operation)
             {
                 case DockOperation.Left:
@@ -525,7 +525,7 @@ namespace Dock.Model
 
             if (host is IView hostView)
             {
-                Update(splitter, context, hostView); 
+                Update(splitter, context, hostView);
             }
 
             host.Views.Insert(index, splitter);

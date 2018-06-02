@@ -56,7 +56,6 @@ namespace AvaloniaDemo.CodeGen
             Output($"{indent}    Title = \"{window.Title}\",");
 
             Output($"{indent}}};");
-            Output($"{indent}");
 
             WriteView(window.Layout, indent);
         }
@@ -86,7 +85,6 @@ namespace AvaloniaDemo.CodeGen
             Output($"{indent}    Title = \"{view.Title}\",");
 
             Output($"{indent}}};");
-            Output($"{indent}");
 
             if (view is IViewsHost viewViewsHost)
             {
@@ -113,7 +111,7 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
-        private void WriteReferences(string indent = "")
+        private void WriteLists(string indent = "")
         {
             foreach (var kvp in _idViews)
             {
@@ -144,7 +142,6 @@ namespace AvaloniaDemo.CodeGen
                         }
 
                         Output($"{indent}}};");
-                        Output($"");
                     }
                 }
 
@@ -162,7 +159,6 @@ namespace AvaloniaDemo.CodeGen
                         }
 
                         Output($"{indent}}};");
-                        Output($"");
                     }
                 }
             };
@@ -179,7 +175,7 @@ using Dock.Model.Controls;
 namespace ViewModels
 {
     /// <inheritdoc/>
-    public class EmptyDockFactory : DockFactory
+    public class DemoDockFactory : DockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
@@ -200,7 +196,9 @@ namespace ViewModels
                 [nameof(IDocumentDock)] = () => context,
                 [nameof(IToolDock)] = () => context,
                 [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context
+                [nameof(IDockWindow)] = () => context,
+                [nameof(IDocumentTab)] = () => context,
+                [nameof(IToolTab)] = () => context
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
@@ -241,7 +239,7 @@ namespace ViewModels
             WriterHeader();
 
             WriteView(view, indent);
-            WriteReferences(indent);
+            WriteLists(indent);
 
             WriteFooter();
 

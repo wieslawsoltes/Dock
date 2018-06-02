@@ -138,7 +138,7 @@ namespace AvaloniaDemo.CodeGen
 
                         if (viewViewsHost.DefaultView != null)
                         {
-                            Output($"{indent}{id}.CurrentView = {_idViews[viewViewsHost.DefaultView]};");
+                            Output($"{indent}{id}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
                         }
 
                         Output($"{indent}{id}.Views = new ObservableCollection<IView>");

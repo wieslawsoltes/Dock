@@ -101,8 +101,8 @@ namespace AvaloniaDemo.CodeGen
                 {
                     for (int i = 0; i < viewViewsHost.Views.Count; i++)
                     {
-                        var child = viewViewsHost.Views[i];
-                        WriteObjects(child, indent);
+                        var view = viewViewsHost.Views[i];
+                        WriteObjects(view, indent);
                     }
                 }
             }
@@ -113,8 +113,8 @@ namespace AvaloniaDemo.CodeGen
                 {
                     for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
                     {
-                        var child = viewWindowsHost.Windows[i];
-                        WriteWindow(child, indent);
+                        var window = viewWindowsHost.Windows[i];
+                        WriteWindow(window, indent);
                     }
                 }
             }
@@ -124,24 +124,24 @@ namespace AvaloniaDemo.CodeGen
         {
             foreach (var kvp in _idViews)
             {
-                IView view = kvp.Key;
-                string id = kvp.Value;
+                IView keyView = kvp.Key;
+                string valueId = kvp.Value;
 
-                if (view is IViewsHost viewViewsHost)
+                if (keyView is IViewsHost viewViewsHost)
                 {
                     if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
                     {
                         if (viewViewsHost.CurrentView != null)
                         {
-                            Output($"{indent}{id}.CurrentView = {_idViews[viewViewsHost.CurrentView]};");
+                            Output($"{indent}{valueId}.CurrentView = {_idViews[viewViewsHost.CurrentView]};");
                         }
 
                         if (viewViewsHost.DefaultView != null)
                         {
-                            Output($"{indent}{id}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
+                            Output($"{indent}{valueId}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
                         }
 
-                        Output($"{indent}{id}.Views = new ObservableCollection<IView>");
+                        Output($"{indent}{valueId}.Views = new ObservableCollection<IView>");
                         Output($"{indent}{{");
 
                         for (int i = 0; i < viewViewsHost.Views.Count; i++)
@@ -154,20 +154,30 @@ namespace AvaloniaDemo.CodeGen
                     }
                 }
 
-                if (view is IWindowsHost viewWindowsHost)
+                if (keyView is IWindowsHost viewWindowsHost)
                 {
                     if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
                     {
-                        Output($"{indent}{id}.Windows = new ObservableCollection<IDockWindow>");
+                        Output($"{indent}{valueId}.Windows = new ObservableCollection<IDockWindow>");
                         Output($"{indent}{{");
 
                         for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
                         {
-                            var child = viewWindowsHost.Windows[i];
-                            Output($"{indent}    {_idWindows[child]},");
+                            var window = viewWindowsHost.Windows[i];
+                            Output($"{indent}    {_idWindows[window]},");
                         }
 
                         Output($"{indent}}};");
+
+                        for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
+                        {
+                            var window = viewWindowsHost.Windows[i];
+                            if (window.Layout != null)
+                            {
+                                string windowId = _idWindows[window];
+                                Output($"{indent}{windowId}.Layout = {_idViews[window.Layout]};");
+                            }
+                        }
                     }
                 }
             }

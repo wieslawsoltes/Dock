@@ -25,6 +25,8 @@
                 <MenuItem x:Name="FileOpen" Header="_Open..."/>
                 <Separator/>
                 <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>
+                <Separator/>
+                <MenuItem x:Name="FileGenerateCode" Header="_Generate Code..."/>
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Windows">

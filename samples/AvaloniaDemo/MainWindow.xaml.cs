@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.CodeGen;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -80,6 +81,24 @@ namespace AvaloniaDemo
                     if (this.DataContext is MainWindowViewModel vm)
                     {
                         DockSerializer.Save(result, vm.Layout);
+                    }
+                }
+            };
+
+            this.FindControl<MenuItem>("FileGenerateCode").Click += async (sender, e) =>
+            {
+                var dlg = new SaveFileDialog();
+                dlg.Filters.Add(new FileDialogFilter() { Name = "C#", Extensions = { "cs" } });
+                dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
+                dlg.InitialFileName = "ViewModel";
+                dlg.DefaultExtension = "cs";
+                var result = await dlg.ShowAsync(this);
+                if (result != null)
+                {
+                    if (this.DataContext is MainWindowViewModel vm)
+                    {
+                        ICodeGen codeGeb = new CSharpCodeGen();
+                        codeGeb.Generate(vm.Layout, result);
                     }
                 }
             };

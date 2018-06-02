@@ -1,6 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 using Dock.Model;
 
@@ -9,7 +9,6 @@ namespace AvaloniaDemo
     public class CodeGen
     {
         private StringBuilder _sb;
-
         private IDictionary<IView, string> _idViews;
         private IDictionary<IDockWindow, string> _idWindows;
 

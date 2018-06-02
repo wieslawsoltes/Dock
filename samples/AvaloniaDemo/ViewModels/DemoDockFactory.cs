@@ -360,7 +360,6 @@ namespace AvaloniaDemo.ViewModels
                 ["Document2"] = () => context,
                 ["Document3"] = () => context,
                 // Tools
-                ["Editor"] = () => layout,
                 ["LeftTop1"] = () => context,
                 ["LeftTop2"] = () => context,
                 ["LeftTop3"] = () => context,
@@ -388,7 +387,7 @@ namespace AvaloniaDemo.ViewModels
                 // Layouts
                 ["MainLayout"] = () => context,
                 // Views
-                ["Home"] = () => layout,
+                ["Home"] = () => context,
                 ["Main"] = () => context
             };
 

@@ -135,16 +135,13 @@ namespace Dock.Model
                                 {
                                     case DockOperation.Fill:
                                         {
-                                            if (!(isSameParent && sourceIndex == targetIndex))
+                                            if (sourceTabParent.Factory is IDockFactory factory)
                                             {
-                                                if (sourceTabParent.Factory is IDockFactory factory)
+                                                if (bExecute)
                                                 {
-                                                    if (bExecute)
-                                                    {
-                                                        factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
-                                                    }
-                                                    return true;
+                                                    factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
                                                 }
+                                                return true;
                                             }
                                             return false;
                                         }

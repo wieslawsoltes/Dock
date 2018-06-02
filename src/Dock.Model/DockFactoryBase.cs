@@ -139,6 +139,14 @@ namespace Dock.Model
             }
         }
 
+        public virtual void Select(IView view)
+        {
+            if (view.Parent is IViewsHost host)
+            {
+                host.CurrentView = view;
+            }
+        }
+
         /// <inheritdoc/>
         public virtual IView FindRoot(IView view)
         {
@@ -163,6 +171,7 @@ namespace Dock.Model
         {
             host.Views.RemoveAt(index);
 
+            // This code may not be needed now since carousel is fixed.
             if (host.Views.Count > 0)
             {
                 host.CurrentView = host.Views[index > 0 ? index - 1 : 0];
@@ -171,6 +180,7 @@ namespace Dock.Model
             {
                 host.CurrentView = null;
             }
+            // to here
         }
 
         /// <inheritdoc/>
@@ -362,7 +372,7 @@ namespace Dock.Model
             split.Height = height;
             split.CurrentView = view ?? null;
             split.Views = view == null ? null : new ObservableCollection<IView> { view };
- 
+
             switch (operation)
             {
                 case DockOperation.Left:
@@ -515,7 +525,7 @@ namespace Dock.Model
 
             if (host is IView hostView)
             {
-                Update(splitter, context, hostView); 
+                Update(splitter, context, hostView);
             }
 
             host.Views.Insert(index, splitter);

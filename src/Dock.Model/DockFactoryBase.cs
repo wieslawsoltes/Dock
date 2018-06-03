@@ -70,6 +70,23 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public virtual void CloseLayout(IView layout)
+        {
+            if (layout is IWindowsHost layoutWindowsHost)
+            {
+                layoutWindowsHost.HideWindows();
+
+                if (layout is IViewsHost layoutViewsHost)
+                {
+                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                    {
+                        currentViewWindowsHost.HideWindows();
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>

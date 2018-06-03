@@ -95,6 +95,12 @@ namespace Dock.Model
         void InitLayout(IView layout, object context);
 
         /// <summary>
+        /// Closes layout.
+        /// </summary>
+        /// <param name="layout">The layout to close.</param>
+        void CloseLayout(IView layout);
+
+        /// <summary>
         /// Gets context.
         /// </summary>
         /// <param name="id">The object id.</param>

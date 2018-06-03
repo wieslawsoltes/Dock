@@ -174,6 +174,7 @@ namespace Dock.Model
             }
         }
 
+        /// <inheritdoc/>
         public virtual void Select(IView view)
         {
             if (view.Parent is IViewsHost host)

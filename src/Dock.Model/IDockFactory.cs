@@ -12,7 +12,7 @@ namespace Dock.Model
     public interface IDockFactory
     {
         /// <summary>
-        /// Gets or sets <see cref="IDock.Context"/> locator registry.
+        /// Gets or sets <see cref="IView.Context"/> locator registry.
         /// </summary>
         IDictionary<string, Func<object>> ContextLocator { get; set; }
 
@@ -186,7 +186,7 @@ namespace Dock.Model
         /// Swaps view in parents <see cref="IViewsHost.Views"/> collection.
         /// </summary>
         /// <param name="first">The first view.</param>
-        /// <param name="parent">The second view.</param>
+        /// <param name="second">The second view.</param>
         void Swap(IView first, IView second);
 
         /// <summary>
@@ -232,37 +232,37 @@ namespace Dock.Model
         void Split(IDock dock, IView view, DockOperation operation);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Fill"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Fill"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToFill(IDock dock);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Left"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Left"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToLeft(IDock dock);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Right"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Right"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToRight(IDock dock);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Top"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Top"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToTop(IDock dock);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Bottom"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Bottom"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToBottom(IDock dock);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDock.Parent"/> layout.
+        /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IView.Parent"/> layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         void SplitToWindow(IDock dock);

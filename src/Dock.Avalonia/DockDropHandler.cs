@@ -8,12 +8,18 @@ using Dock.Model;
 
 namespace Dock.Avalonia
 {
+    /// <summary>
+    /// Dock drop handler.
+    /// </summary>
     public class DockDropHandler : IDropHandler
     {
         private IDockManager _manager = new DockManager();
 
         private bool _executed = false;
 
+        /// <summary>
+        /// Gets or sets handler id.
+        /// </summary>
         public int Id { get; set; }
 
         private DragAction ToDragAction(DragEventArgs e)
@@ -38,6 +44,7 @@ namespace Dock.Avalonia
             return new DockPoint(point.X, point.Y);
         }
 
+        /// <inheritdoc/>
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (sourceContext is IView sourceView && targetContext is IView targetView)
@@ -50,6 +57,7 @@ namespace Dock.Avalonia
             return false;
         }
 
+        /// <inheritdoc/>
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (_executed == false && sourceContext is IView sourceView && targetContext is IView targetView)
@@ -69,6 +77,7 @@ namespace Dock.Avalonia
             return false;
         }
 
+        /// <inheritdoc/>
         public void Cancel(object sender, RoutedEventArgs e)
         {
             _executed = false;

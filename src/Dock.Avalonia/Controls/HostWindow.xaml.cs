@@ -44,6 +44,10 @@ namespace Dock.Avalonia.Controls
             this.AttachDevTools();
         }
 
+        /// <summary>
+        /// Attaches grip to chrome.
+        /// </summary>
+        /// <param name="chrome">The chrome control.</param>
         public void AttachGrip(DockToolChrome chrome)
         {
             topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
@@ -71,6 +75,7 @@ namespace Dock.Avalonia.Controls
             this.PseudoClasses.Set(":floating", true);
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (topHorizontalGrip.IsPointerOver)
@@ -121,12 +126,14 @@ namespace Dock.Avalonia.Controls
             base.OnPointerPressed(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             mouseDown = false;
             base.OnPointerReleased(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             if (_titleBar != null)

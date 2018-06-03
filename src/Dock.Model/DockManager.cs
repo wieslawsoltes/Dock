@@ -6,10 +6,15 @@ using Dock.Model.Controls;
 
 namespace Dock.Model
 {
+    /// <summary>
+    /// Docking manager.
+    /// </summary>
     public class DockManager : IDockManager
     {
+        /// <inheritdoc/>
         public DockPoint Position { get; set; }
 
+        /// <inheritdoc/>
         public DockPoint ScreenPosition { get; set; }
 
         internal bool DockIntoTab(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
@@ -469,6 +474,7 @@ namespace Dock.Model
             }
         }
 
+        /// <inheritdoc/>
         public bool Validate(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (sourceView)

@@ -51,6 +51,7 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
             var dock = GetDock(this);
@@ -64,6 +65,7 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);

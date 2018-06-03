@@ -36,7 +36,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets view parent.
         /// </summary>
-        /// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
+        /// <remarks>If parrent is null than view is root.</remarks>
         IView Parent { get; set; }
     }
 }

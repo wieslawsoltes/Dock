@@ -9,6 +9,9 @@ environment:
   MYGET_API_URL: https://www.myget.org/F/dock-nightly/api/v2/package
 test: off
 deploy: off
+install:
+  - if not exist dotnet-sdk-2.1.300-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-win-x64.exe -FileName "dotnet-sdk-2.1.300-win-x64.exe"
+  - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
 build_script:
 - cmd: >-
     dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -20,6 +23,8 @@ build_script:
     dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.1
 
     dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f net461
 
@@ -35,6 +40,8 @@ build_script:
 
     dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.0
 
+    dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.1
+
     dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f net461
 
     dotnet pack src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -48,6 +55,8 @@ build_script:
     dotnet publish src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.0
+
+    dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.1
 
     dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f net461
 
@@ -63,6 +72,8 @@ build_script:
 
     dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.0
 
+    dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.1
+
     dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f net461
 
     dotnet pack src/Dock.Serializer/Dock.Serializer.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -77,21 +88,33 @@ build_script:
 
     dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
 
+    dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.1
+
     dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f net461
 
     dotnet pack src/Dock.Avalonia/Dock.Avalonia.csproj -c Release --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f net461 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r win7-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r win7-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r ubuntu.14.04-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r ubuntu.14.04-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r debian.8-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r debian.8-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
     dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r osx.10.12-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
+
+    dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r osx.10.12-x64 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
 
     copy "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT\msvcp140.dll" samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
 
@@ -113,16 +136,26 @@ artifacts:
   - path: src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg
   - path: src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
-    name: AvaloniaDemo-win7-x64
+    name: AvaloniaDemo-netcoreapp2.0-win7-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\win7-x64\publish
+    name: AvaloniaDemo-netcoreapp2.1-win7-x64
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\ubuntu.14.04-x64\publish
-    name: AvaloniaDemo-ubuntu.14.04-x64
+    name: AvaloniaDemo-netcoreapp2.0--ubuntu.14.04-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\ubuntu.14.04-x64\publish
+    name: AvaloniaDemo-netcoreapp2.1--ubuntu.14.04-x64
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\debian.8-x64\publish
-    name: AvaloniaDemo-debian.8-x64
+    name: AvaloniaDemo-netcoreapp2.0--debian.8-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\debian.8-x64\publish
+    name: AvaloniaDemo-netcoreapp2.1--debian.8-x64
   - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\osx.10.12-x64\publish
-    name: AvaloniaDemo-osx.10.12-x64
+    name: AvaloniaDemo-netcoreapp2.0--osx.10.12-x64
+  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\osx.10.12-x64\publish
+    name: AvaloniaDemo-netcoreapp2.1--osx.10.12-x64
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/b8334e4ccc2876427242
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
+cache:
+  - dotnet-sdk-2.1.300-win-x64.exe

@@ -7,24 +7,30 @@ env:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
     - DOTNET_CLI_TELEMETRY_OPTOUT=1
 mono: latest
-dotnet: 2.0.0
+dotnet: 2.1.300
 script:
   - dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.1
   - dotnet build src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.1
   - dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.1
   - dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.1
   - dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
   - dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0
+  - dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.1
   - dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0
+  - dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1
 notifications:
   webhooks:
     urls:

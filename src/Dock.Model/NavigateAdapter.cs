@@ -126,24 +126,24 @@ namespace Dock.Model
                     ResetNavigation();
                 }
             }
-            else if (root is IDock dock)
+            else if (root is IView view)
             {
                 if (_dock.CurrentView is IWindowsHost currentViewWindows)
                 {
                     currentViewWindows.HideWindows();
                 }
 
-                if (dock != null && _dock.CurrentView != dock)
+                if (view != null && _dock.CurrentView != view)
                 {
                     if (_dock.CurrentView != null && bSnapshot == true)
                     {
                         MakeSnapshot(_dock.CurrentView);
                     }
 
-                    _dock.CurrentView = dock;
+                    _dock.CurrentView = view;
                 }
 
-                if (dock is IWindowsHost dockWindows)
+                if (view is IWindowsHost dockWindows)
                 {
                     dockWindows.ShowWindows();
                 }

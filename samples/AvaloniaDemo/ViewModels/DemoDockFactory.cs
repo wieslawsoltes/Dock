@@ -388,7 +388,9 @@ namespace AvaloniaDemo.ViewModels
                 ["MainLayout"] = () => context,
                 // Views
                 ["Home"] = () => context,
-                ["Main"] = () => context
+                ["Main"] = () => context,
+                // Editor
+                ["Editor"] = () => layout
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>

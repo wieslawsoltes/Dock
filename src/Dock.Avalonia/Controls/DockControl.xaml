@@ -42,10 +42,7 @@
                 </ItemsControl>
             </DataTemplate>
             <DataTemplate DataType="Controls:IRootDock">
-                <!--
                 <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
-                -->
-                <ContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </DataTemplate>
         </ContentControl.DataTemplates>
     </ContentControl>

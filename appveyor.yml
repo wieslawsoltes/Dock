@@ -9,6 +9,9 @@ environment:
   MYGET_API_URL: https://www.myget.org/F/dock-nightly/api/v2/package
 test: off
 deploy: off
+install:
+  - if not exist dotnet-sdk-2.1.300-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-win-x64.exe -FileName "dotnet-sdk-2.1.300-win-x64.exe"
+  - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
 build_script:
 - cmd: >-
     dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix "-build%APPVEYOR_BUILD_VERSION%"
@@ -126,3 +129,5 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
+cache:
+  - dotnet-sdk-2.1.300-win-x64.exe

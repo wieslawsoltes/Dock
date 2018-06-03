@@ -101,8 +101,7 @@
         <Border Classes="panel" ZIndex="-1">
             
             <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            
-            <!--<ContentControl Content="{Binding CurrentView}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+
         </Border>
     </DockPanel>
 </UserControl>

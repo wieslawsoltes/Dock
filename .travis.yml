@@ -7,7 +7,7 @@ env:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
     - DOTNET_CLI_TELEMETRY_OPTOUT=1
 mono: latest
-dotnet: 2.0.0
+dotnet: 2.1.300
 script:
   - dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0
   - dotnet publish src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0

@@ -1,0 +1,5 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PackageReference Include="NSubsys" Version="0.7.0-build20180603-2030" />
+  </ItemGroup>
+</Project>

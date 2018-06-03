@@ -8,8 +8,6 @@ namespace Dock.Avalonia
 {
     public class DockListBoxDropHandler : IDropHandler
     {
-        public static IDropHandler Instance = new DockListBoxDropHandler();
-
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);

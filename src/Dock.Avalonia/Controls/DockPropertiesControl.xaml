@@ -11,6 +11,9 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
+    <UserControl.Resources>
+        <id:DockListBoxDropHandler x:Key="DockListBoxDropHandler"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
             <Setter Property="Background" Value="Transparent"/>
@@ -74,7 +77,7 @@
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}"/>
-                                <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockListBoxDropHandler.Instance}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockListBoxDropHandler}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

@@ -12,6 +12,10 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
+    <UserControl.Resources>
+        <id:DockTreeViewDropHandler x:Key="DockTreeViewDropHandler"/>
+        <converters:TreeViewSelectedItemToObjectConverter x:Key="TreeViewSelectedItemToObjectConverter"/>
+    </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
             <Setter Property="Background" Value="Transparent"/>
@@ -27,7 +31,7 @@
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <i:Interaction.Behaviors>
                     <id:DragBehavior Context="{Binding}"/>
-                    <id:DropBehavior Context="{Binding}" Handler="{x:Static id:DockTreeViewDropHandler.Instance}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockTreeViewDropHandler}"/>
                 </i:Interaction.Behaviors>
                 <TextBlock.ContextMenu>
                     <ContextMenu>
@@ -115,7 +119,7 @@
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
         <Grid Grid.Column="2" Grid.Row="0">
-            <ContentControl Content="{Binding #views.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
+            <ContentControl Content="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <idc:DockPropertiesControl/>
@@ -127,11 +131,11 @@
             </ContentControl>
         </Grid>
         <GridSplitter Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Height="6"/>
-        <TreeView x:Name="windows" DataContext="{Binding #views.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}" Items="{Binding Windows}" Grid.Column="0" Grid.Row="2">
+        <TreeView x:Name="windows" DataContext="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}" Items="{Binding Windows}" Grid.Column="0" Grid.Row="2">
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="2" Width="6"/>
         <Grid Grid.Column="2" Grid.Row="2">
-            <ContentControl Content="{Binding #windows.SelectedItem, Converter={x:Static converters:TreeViewSelectedItemToObjectConverter.Instance}}">
+            <ContentControl Content="{Binding #windows.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
                         <idc:DockPropertiesControl/>

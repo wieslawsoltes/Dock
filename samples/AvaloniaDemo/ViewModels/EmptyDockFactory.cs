@@ -60,20 +60,7 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.Update(layout, context, null);
-
-            if (layout is IWindowsHost layoutWindowsHost)
-            {
-                layoutWindowsHost.ShowWindows();
-                if (layout is IViewsHost layoutViewsHost)
-                {
-                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
-                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
-                    {
-                        currentViewWindowsHost.ShowWindows();
-                    }
-                }
-            }
+            base.InitLayout(layout, context);
         }
     }
 }

@@ -49,7 +49,25 @@ namespace Dock.Model
         public abstract IDock CreateDock();
 
         /// <inheritdoc/>
-        public abstract void InitLayout(IView layout, object context);
+        public virtual void InitLayout(IView layout, object context)
+        {
+            Update(layout, context, null);
+
+            if (layout is IWindowsHost layoutWindowsHost)
+            {
+                layoutWindowsHost.ShowWindows();
+
+                if (layout is IViewsHost layoutViewsHost)
+                {
+                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
+
+                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                    {
+                        currentViewWindowsHost.ShowWindows();
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc/>
         public abstract IDock CreateLayout();

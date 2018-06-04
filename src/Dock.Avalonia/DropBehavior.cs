@@ -13,37 +13,59 @@ using Dock.Model;
 
 namespace Dock.Avalonia
 {
+    /// <summary>
+    /// Drop behavior.
+    /// </summary>
     public sealed class DropBehavior : Behavior<Control>
     {
         private Control _adorner;
 
+        /// <summary>
+        /// Define <see cref="Context"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty ContextProperty =
             AvaloniaProperty.Register<DropBehavior, object>(nameof(Context));
 
+        /// <summary>
+        /// Define <see cref="Handler"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty HandlerProperty =
             AvaloniaProperty.Register<DropBehavior, IDropHandler>(nameof(Handler));
 
+        /// <summary>
+        /// Define <see cref="IsTunneled"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty IsTunneledProperty =
             AvaloniaProperty.Register<DropBehavior, bool>(nameof(IsTunneled), false);
 
+        /// <summary>
+        /// Gets or sets drag behavior context.
+        /// </summary>
         public object Context
         {
             get => (object)GetValue(ContextProperty);
             set => SetValue(ContextProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets drop handler.
+        /// </summary>
         public IDropHandler Handler
         {
             get => (IDropHandler)GetValue(HandlerProperty);
             set => SetValue(HandlerProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets tunneled event flag.
+        /// </summary>
         public bool IsTunneled
         {
             get => (bool)GetValue(IsTunneledProperty);
             set => SetValue(IsTunneledProperty, value);
         }
 
+        /// <inheritdoc/>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -61,6 +83,7 @@ namespace Dock.Avalonia
             AssociatedObject.AddHandler(DragDrop.DropEvent, Drop, routes);
         }
 
+        /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();

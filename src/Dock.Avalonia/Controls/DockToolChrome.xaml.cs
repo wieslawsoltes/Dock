@@ -4,11 +4,20 @@ using Avalonia.Controls.Primitives;
 
 namespace Dock.Avalonia.Controls
 {
+    /// <summary>
+    /// Dock tool chrome content control.
+    /// </summary>
     public class DockToolChrome : ContentControl
     {
+        /// <summary>
+        /// Define <see cref="Title"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty<string> TitleProprty =
             AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
 
+        /// <summary>
+        /// Gets or sets chrome tool title.
+        /// </summary>
         public string Title
         {
             get { return GetValue(TitleProprty); }
@@ -19,6 +28,7 @@ namespace Dock.Avalonia.Controls
 
         internal Button CloseButton { get; private set; }
 
+        /// <inheritdoc/>
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
             base.OnTemplateApplied(e);

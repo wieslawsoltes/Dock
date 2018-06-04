@@ -9,33 +9,56 @@ using Avalonia.Xaml.Interactivity;
 
 namespace Dock.Avalonia
 {
+    /// <summary>
+    /// Drag behavior.
+    /// </summary>
     public sealed class DragBehavior : Behavior<Control>
     {
         private Point _dragStartPoint;
         private bool _pointerPressed;
         private bool _doDragDrop;
 
+        /// <summary>
+        /// Minimum horizontal drag distance to initiate drag operation.
+        /// </summary>
         public static double MinimumHorizontalDragDistance = 4;
+
+        /// <summary>
+        /// Minimum vertical drag distance to initiate drag operation.
+        /// </summary>
         public static double MinimumVerticalDragDistance = 4;
 
+        /// <summary>
+        /// Define <see cref="Context"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty ContextProperty =
             AvaloniaProperty.Register<DragBehavior, object>(nameof(Context));
 
+        /// <summary>
+        /// Define <see cref="IsTunneled"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty IsTunneledProperty =
             AvaloniaProperty.Register<DragBehavior, bool>(nameof(IsTunneled), false);
 
+        /// <summary>
+        /// Gets or sets drag behavior context.
+        /// </summary>
         public object Context
         {
             get => (object)GetValue(ContextProperty);
             set => SetValue(ContextProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets tunneled event flag.
+        /// </summary>
         public bool IsTunneled
         {
             get => (bool)GetValue(IsTunneledProperty);
             set => SetValue(IsTunneledProperty, value);
         }
 
+        /// <inheritdoc/>
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -51,6 +74,7 @@ namespace Dock.Avalonia
             AssociatedObject.AddHandler(InputElement.PointerMovedEvent, PointerMoved, routes);
         }
 
+        /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();
@@ -103,6 +127,9 @@ namespace Dock.Avalonia
                     effect |= DragDropEffects.Move;
 
                 var result = await DragDrop.DoDragDrop(data, effect);
+
+                _pointerPressed = false;
+                _doDragDrop = false;
             }
         }
     }

@@ -36,26 +36,26 @@ namespace Dock.Model
         /// </summary>
         /// <param name="x">The X coordinate of host.</param>
         /// <param name="y">The Y coordinate of host.</param>
-        void GetPosition(ref double x, ref double y);
+        void GetPosition(out double x, out double y);
 
         /// <summary>
         /// Sets host size.
         /// </summary>
-        /// <param name="x">The host width.</param>
-        /// <param name="y">The host height.</param>
+        /// <param name="width">The host width.</param>
+        /// <param name="height">The host height.</param>
         void SetSize(double width, double height);
 
         /// <summary>
         /// Gets host size.
         /// </summary>
-        /// <param name="x">The host width.</param>
-        /// <param name="y">The host height.</param>
-        void GetSize(ref double width, ref double height);
+        /// <param name="width">The host width.</param>
+        /// <param name="height">The host height.</param>
+        void GetSize(out double width, out double height);
 
         /// <summary>
         /// Sets host title.
         /// </summary>
-        /// <param name="context">The host title.</param>
+        /// <param name="title">The host title.</param>
         void SetTitle(string title);
 
         /// <summary>

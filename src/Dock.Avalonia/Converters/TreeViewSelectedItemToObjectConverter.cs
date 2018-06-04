@@ -14,11 +14,6 @@ namespace Dock.Avalonia.Converters
     public class TreeViewSelectedItemToObjectConverter : IValueConverter
     {
         /// <summary>
-        /// Gets an instance of a <see cref="TreeViewSelectedItemToObjectConverter"/>.
-        /// </summary>
-        public static readonly TreeViewSelectedItemToObjectConverter Instance = new TreeViewSelectedItemToObjectConverter();
-
-        /// <summary>
         /// Converts a value.
         /// </summary>
         /// <param name="value">The value to convert.</param>

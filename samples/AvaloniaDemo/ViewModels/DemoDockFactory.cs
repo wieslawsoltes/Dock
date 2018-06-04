@@ -9,12 +9,11 @@ using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Model.Factories;
 
 namespace AvaloniaDemo.ViewModels
 {
     /// <inheritdoc/>
-    public class DemoDockFactory : BaseDockFactory
+    public class DemoDockFactory : DockFactory
     {
         /// <inheritdoc/>
         public override IDock CreateLayout()
@@ -348,18 +347,19 @@ namespace AvaloniaDemo.ViewModels
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 // Defaults
-                [nameof(RootDock)] = () => context,
-                [nameof(LayoutDock)] = () => context,
-                [nameof(DocumentDock)] = () => context,
-                [nameof(ToolDock)] = () => context,
-                [nameof(SplitterDock)] = () => context,
-                [nameof(DockWindow)] = () => context,
+                [nameof(IRootDock)] = () => context,
+                [nameof(ILayoutDock)] = () => context,
+                [nameof(IDocumentDock)] = () => context,
+                [nameof(IToolDock)] = () => context,
+                [nameof(ISplitterDock)] = () => context,
+                [nameof(IDockWindow)] = () => context,
+                [nameof(IDocumentTab)] = () => context,
+                [nameof(IToolTab)] = () => context,
                 // Documents
                 ["Document1"] = () => context,
                 ["Document2"] = () => context,
                 ["Document3"] = () => context,
                 // Tools
-                ["Editor"] = () => layout,
                 ["LeftTop1"] = () => context,
                 ["LeftTop2"] = () => context,
                 ["LeftTop3"] = () => context,
@@ -387,29 +387,18 @@ namespace AvaloniaDemo.ViewModels
                 // Layouts
                 ["MainLayout"] = () => context,
                 // Views
-                ["Home"] = () => layout,
-                ["Main"] = () => context
+                ["Home"] = () => context,
+                ["Main"] = () => context,
+                // Editor
+                ["Editor"] = () => layout
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(DockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.Update(layout, context, null);
-
-            if (layout is IWindowsHost layoutWindowsHost)
-            {
-                layoutWindowsHost.ShowWindows();
-                if (layout is IViewsHost layoutViewsHost)
-                {
-                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
-                    if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
-                    {
-                        currentViewWindowsHost.ShowWindows();
-                    }
-                }
-            }
+            base.InitLayout(layout, context);
         }
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1;net461</TargetFrameworks>
     <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
@@ -17,14 +17,18 @@
 
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\NETCore.props" />
+  <Import Project="..\..\build\NSubsys.props" />
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\SkiaSharp.props" />
   <Import Project="..\..\build\SharpDX.props" />
+  <!--<Import Project="..\..\build\ReactiveUI.props" />-->
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
+    <!--<ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />-->
     <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>

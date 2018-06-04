@@ -52,17 +52,7 @@ namespace AvaloniaDemo
                     return vm;
                 });
 
-                if (vm.Layout is IWindowsHost layoutWindowsHost)
-                {
-                    layoutWindowsHost.HideWindows();
-                    if (layout is IViewsHost layoutViewsHost)
-                    {
-                        if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
-                        {
-                            currentViewWindowsHost.ShowWindows();
-                        }
-                    }
-                }
+                vm.Factory.CloseLayout(vm.Layout);
 
                 DockSerializer.Save(path, vm.Layout);
             }

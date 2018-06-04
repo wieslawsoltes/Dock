@@ -6,10 +6,11 @@ using Dock.Model;
 
 namespace Dock.Avalonia
 {
+    /// <summary>
+    /// List box drop handler.
+    /// </summary>
     public class DockListBoxDropHandler : IDropHandler
     {
-        public static IDropHandler Instance = new DockListBoxDropHandler();
-
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {
             var point = DropHelper.GetPosition(sender, e);
@@ -102,6 +103,7 @@ namespace Dock.Avalonia
             return false;
         }
 
+        /// <inheritdoc/>
         public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
@@ -111,6 +113,7 @@ namespace Dock.Avalonia
             return false;
         }
 
+        /// <inheritdoc/>
         public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
@@ -120,6 +123,7 @@ namespace Dock.Avalonia
             return false;
         }
 
+        /// <inheritdoc/>
         public void Cancel(object sender, RoutedEventArgs e)
         {
         }

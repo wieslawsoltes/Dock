@@ -1,6 +1,6 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR" Version="2.0.0" />
-    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.0.0" />
+    <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR" Version="2.0.7" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.1.0" />
   </ItemGroup>
 </Project>

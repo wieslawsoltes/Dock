@@ -27,6 +27,7 @@ namespace Dock.Avalonia.Controls
         private Control _rightSelector;
         private Control _centerSelector;
 
+        /// <inheritdoc/>
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
             base.OnTemplateApplied(e);

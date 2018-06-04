@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Dock.Model.Controls.Editor
+namespace Dock.Model.Controls
 {
     /// <summary>
-    /// View host.
+    /// Tool dock.
     /// </summary>
-    public class ViewHost : ViewBase
+    public class ToolDock : DockBase, IToolDock
     {
     }
 }

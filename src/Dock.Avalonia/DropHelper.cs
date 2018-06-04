@@ -7,6 +7,9 @@ using Avalonia.VisualTree;
 
 namespace Dock.Avalonia
 {
+    /// <summary>
+    /// Drop helper.
+    /// </summary>
     public static class DropHelper
     {
         private static Point TransformPoint(Matrix matrix, Point point)
@@ -22,6 +25,12 @@ namespace Dock.Avalonia
             return matrix != null ? TransformPoint(matrix.Value.Invert(), point) : point;
         }
 
+        /// <summary>
+        /// Calculates fixed drag position relative to event source.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        /// <returns>The fixed drag position relative to event source.</returns>
         public static Point GetPosition(object sender, DragEventArgs e)
         {
             var relativeTo = e.Source as IControl;
@@ -29,6 +38,12 @@ namespace Dock.Avalonia
             return FixInvalidPosition(relativeTo, point);
         }
 
+        /// <summary>
+        /// Calculates fixed drag position relative to event source and translated to screen coordinates.
+        /// </summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        /// <returns>The fixed drag position relative to event source and translated to screen coordinates.</returns>
         public static Point GetPositionScreen(object sender, DragEventArgs e)
         {
             var relativeTo = e.Source as IControl;

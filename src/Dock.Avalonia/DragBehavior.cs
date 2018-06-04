@@ -70,7 +70,6 @@ namespace Dock.Avalonia
             }
 
             AssociatedObject.AddHandler(InputElement.PointerPressedEvent, PointerPressed, routes);
-            AssociatedObject.AddHandler(InputElement.PointerReleasedEvent, PointerReleased, routes);
             AssociatedObject.AddHandler(InputElement.PointerMovedEvent, PointerMoved, routes);
         }
 
@@ -79,7 +78,6 @@ namespace Dock.Avalonia
         {
             base.OnDetaching();
             AssociatedObject.RemoveHandler(InputElement.PointerPressedEvent, PointerPressed);
-            AssociatedObject.RemoveHandler(InputElement.PointerReleasedEvent, PointerReleased);
             AssociatedObject.RemoveHandler(InputElement.PointerMovedEvent, PointerMoved);
         }
 
@@ -91,16 +89,7 @@ namespace Dock.Avalonia
                 _pointerPressed = true;
                 _doDragDrop = false;
             }
-        }
-
-        private void PointerReleased(object sender, PointerReleasedEventArgs e)
-        {
-            if (e.MouseButton == MouseButton.Left)
-            {
-                _pointerPressed = false;
-                _doDragDrop = false;
-            }
-        }
+        }        
 
         private async void PointerMoved(object sender, PointerEventArgs e)
         {

@@ -127,6 +127,9 @@ namespace Dock.Avalonia
                     effect |= DragDropEffects.Move;
 
                 var result = await DragDrop.DoDragDrop(data, effect);
+
+                _pointerPressed = false;
+                _doDragDrop = false;
             }
         }
     }

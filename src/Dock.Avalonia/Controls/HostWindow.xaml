@@ -11,10 +11,25 @@
         Width="300" Height="400"
         UseLayoutRounding="True"
         WindowState="Normal"
-        FontFamily="Segoe UI, Arial" HideChrome="False" BorderThickness="1 0 1 0" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
+        FontFamily="Segoe UI, Arial" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
         Title="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}">
     <idc:MetroWindow.Resources>
         <id:DockDropHandler x:Key="DockDropHandler4" Id="4"/>
     </idc:MetroWindow.Resources>
+    <idc:MetroWindow.Styles>
+        <Style Selector="idc|MetroWindow">
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="idc|MetroWindow:toolwindow">
+            <Setter Property="HideChrome" Value="True" />
+            <Setter Property="BorderThickness" Value="1 1 1 1" />
+        </Style>
+        <Style Selector="idc|MetroWindow /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style Selector="idc|MetroWindow:toolwindow /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </idc:MetroWindow.Styles>
     <idc:DockControl x:Name="dock" Margin="0" />
 </idc:MetroWindow>

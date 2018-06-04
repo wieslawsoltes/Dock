@@ -53,7 +53,8 @@ namespace Dock.Avalonia.Controls
 
             _titleBar = chrome.Grip;
 
-            this.PseudoClasses.Set(":floating", true);
+            ((IPseudoClasses)chrome.Classes).Add(":floating");
+            this.PseudoClasses.Set(":toolwindow", true);
         }
 
         /// <inheritdoc/>

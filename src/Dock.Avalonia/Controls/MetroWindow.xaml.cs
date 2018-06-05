@@ -26,7 +26,7 @@ namespace Dock.Avalonia.Controls
         private Button minimiseButton;
         private Button restoreButton;
 
-        private Image icon;               
+        private Image icon;
 
         private bool mouseDown;
         private Point mouseDownPosition;

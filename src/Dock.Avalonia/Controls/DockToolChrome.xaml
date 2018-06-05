@@ -5,7 +5,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
-                    <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" BorderThickness="1 1 1 0" Name="PART_Border">
+                    <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" Name="PART_Border">
                         <Grid Name="PART_Grip" Background="#EAEAF2">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="#EAEAF2" />
@@ -50,5 +50,11 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="local|DockToolChrome /template/ Border#PART_Border">
+        <Setter Property="BorderThickness" Value="1 1 1 0" />
+    </Style>
+    <Style Selector="local|DockToolChrome:floating /template/ Border#PART_Border">
+        <Setter Property="BorderThickness" Value="0" />
     </Style>
 </Styles>

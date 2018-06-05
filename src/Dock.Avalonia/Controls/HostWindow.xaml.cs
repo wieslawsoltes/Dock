@@ -16,16 +16,7 @@ namespace Dock.Avalonia.Controls
     {
         private Control _titleBar;
         private bool mouseDown;
-        private Point mouseDownPosition;
-
-        private Grid bottomHorizontalGrip;
-        private Grid bottomLeftGrip;
-        private Grid bottomRightGrip;
-        private Grid leftVerticalGrip;
-        private Grid rightVerticalGrip;
-        private Grid topHorizontalGrip;
-        private Grid topLeftGrip;
-        private Grid topRightGrip;
+        private Point mouseDownPosition;        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostWindow"/> class.
@@ -50,16 +41,6 @@ namespace Dock.Avalonia.Controls
         /// <param name="chrome">The chrome control.</param>
         public void AttachGrip(DockToolChrome chrome)
         {
-            topHorizontalGrip = this.Find<Grid>("topHorizontalGrip");
-            bottomHorizontalGrip = this.Find<Grid>("bottomHorizontalGrip");
-            leftVerticalGrip = this.Find<Grid>("leftVerticalGrip");
-            rightVerticalGrip = this.Find<Grid>("rightVerticalGrip");
-
-            topLeftGrip = this.Find<Grid>("topLeftGrip");
-            bottomLeftGrip = this.Find<Grid>("bottomLeftGrip");
-            topRightGrip = this.Find<Grid>("topRightGrip");
-            bottomRightGrip = this.Find<Grid>("bottomRightGrip");
-
             Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
             {
                 Close();
@@ -72,45 +53,14 @@ namespace Dock.Avalonia.Controls
 
             _titleBar = chrome.Grip;
 
-            this.PseudoClasses.Set(":floating", true);
+            ((IPseudoClasses)chrome.Classes).Add(":floating");
+            this.PseudoClasses.Set(":toolwindow", true);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            if (topHorizontalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.North);
-            }
-            else if (bottomHorizontalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.South);
-            }
-            else if (leftVerticalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.West);
-            }
-            else if (rightVerticalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.East);
-            }
-            else if (topLeftGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.NorthWest);
-            }
-            else if (bottomLeftGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.SouthWest);
-            }
-            else if (topRightGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.NorthEast);
-            }
-            else if (bottomRightGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.SouthEast);
-            }
-            else if (_titleBar != null)
+            if (_titleBar != null)
             {
                 if (_titleBar.IsPointerOver)
                 {

@@ -23,6 +23,10 @@
   <Import Project="..\..\build\EmbedXaml.props" />
 
   <ItemGroup>
+    <None Remove="Controls\MetroWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
   </ItemGroup>
 

@@ -34,13 +34,13 @@
                             </DockPanel>
                         </Grid>
                     </Border>
-
-                    <ContentPresenter  Grid.Row="1" Name="PART_ContentPresenter"
-                         Background="{DynamicResource ThemeControlBackgroundBrush}"
-                         BorderBrush="{TemplateBinding BorderBrush}"
-                         BorderThickness="{TemplateBinding BorderThickness}"
-                         Content="{TemplateBinding Content}"
-                         Padding="{TemplateBinding Padding}"/>
+                    <ContentPresenter Grid.Row="1" 
+                                      Name="PART_ContentPresenter"
+                                      Background="{DynamicResource ThemeControlBackgroundBrush}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"/>
                 </Grid>
             </ControlTemplate>
         </Setter>

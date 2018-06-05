@@ -81,13 +81,15 @@
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
                 <DataTemplate DataType="Dock:IView">
-                    <!--<StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
+                    <!--
+                    <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
                         </i:Interaction.Behaviors>
                         <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
-                    </StackPanel>-->
+                    </StackPanel>
+                    -->
                     <StackPanel Orientation="Horizontal" Gap="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}"/>
@@ -107,7 +109,6 @@
                             </Button.Styles>
                             <Path Margin="2" Stretch="Uniform" UseLayoutRounding="False" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="#525456" />
                         </Button>
-
                         <Button Height="14" Width="14" Background="Transparent">
                             <Button.Styles>
                                 <Style Selector="Button">
@@ -122,11 +123,9 @@
                 </DataTemplate>
             </TabStrip.DataTemplates>
         </TabStrip>
-
         <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
-
         <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}">
-        <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </DockPanel>
 </UserControl>

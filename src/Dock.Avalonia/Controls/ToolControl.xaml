@@ -65,11 +65,9 @@
                     <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                     <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
                 </Style>
-
                 <Style Selector="TabStripItem:pointerover">
                     <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLight}" />
                 </Style>
-
                 <Style Selector="TabStripItem:selected">
                     <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushLight}" />
@@ -77,11 +75,9 @@
                     <Setter Property="Margin" Value="0 -1 0 0" />
                     <Setter Property="Padding" Value="4 2 4 0" />
                 </Style>
-
                 <Style Selector="TabStripItem:selected:pointerover">
                     <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
                 </Style>
-
                 <Style Selector="TabStrip:singleitem">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
@@ -99,9 +95,7 @@
             </TabStrip.DataTemplates>
         </TabStrip>
         <Border Classes="panel" ZIndex="-1">
-            
             <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
         </Border>
     </DockPanel>
 </UserControl>

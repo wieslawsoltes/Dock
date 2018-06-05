@@ -9,6 +9,9 @@ using System;
 
 namespace Dock.Avalonia.Controls
 {
+    /// <summary>
+    /// Interaction logic for <see cref="MetroWindow"/> xaml.
+    /// </summary>
     public class MetroWindow : Window, IStyleable
     {
         private Grid titleBar;
@@ -31,9 +34,15 @@ namespace Dock.Avalonia.Controls
         private bool mouseDown;
         private Point mouseDownPosition;
 
+        /// <summary>
+        /// Defines the <see cref="HideChrome"/> property.
+        /// </summary>
         public static readonly AvaloniaProperty<bool> HideChromeProperty =
             AvaloniaProperty.Register<MetroWindow, bool>(nameof(HideChrome));
 
+        /// <summary>
+        ///  Gets or sets the flag indicating whether to hide chrome.
+        /// </summary>
         public bool HideChrome
         {
             get => GetValue(HideChromeProperty);
@@ -56,6 +65,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             if (topHorizontalGrip.IsPointerOver)
@@ -103,12 +113,14 @@ namespace Dock.Avalonia.Controls
             base.OnPointerPressed(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             mouseDown = false;
             base.OnPointerReleased(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             if (titleBar.IsPointerOver && mouseDown)
@@ -121,6 +133,7 @@ namespace Dock.Avalonia.Controls
             base.OnPointerMoved(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
             base.OnTemplateApplied(e);

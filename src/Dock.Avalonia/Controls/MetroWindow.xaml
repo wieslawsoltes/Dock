@@ -1,4 +1,6 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Styles xmlns="https://github.com/avaloniaui"
         xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Style Selector="local|MetroWindow">

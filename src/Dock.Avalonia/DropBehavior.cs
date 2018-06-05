@@ -3,6 +3,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -39,6 +40,12 @@ namespace Dock.Avalonia
             AvaloniaProperty.Register<DropBehavior, bool>(nameof(IsTunneled), false);
 
         /// <summary>
+        /// Define IsEnabled attached property.
+        /// </summary>
+        public static readonly AvaloniaProperty IsEnabledProperty =
+            AvaloniaProperty.RegisterAttached<Control, bool>("IsEnabled", typeof(DropBehavior), true, true, BindingMode.TwoWay);
+
+        /// <summary>
         /// Gets or sets drag behavior context.
         /// </summary>
         public object Context
@@ -63,6 +70,26 @@ namespace Dock.Avalonia
         {
             get => (bool)GetValue(IsTunneledProperty);
             set => SetValue(IsTunneledProperty, value);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the given control has drop operation enabled.
+        /// </summary>
+        /// <param name="control">The control object.</param>
+        /// <returns>True if drag operation is enabled.</returns>
+        public static bool GetIsEnabled(Control control)
+        {
+            return (bool)control.GetValue(IsEnabledProperty);
+        }
+
+        /// <summary>
+        /// Sets IsEnabled attached property.
+        /// </summary>
+        /// <param name="control">The control object.</param>
+        /// <param name="value">The drop operation flag.</param>
+        public static void SetIsEnabled(Control control, bool value)
+        {
+            control.SetValue(IsEnabledProperty, value);
         }
 
         /// <inheritdoc/>
@@ -134,98 +161,110 @@ namespace Dock.Avalonia
 
         private void DragEnter(object sender, DragEventArgs e)
         {
-            object sourceContext = e.Data.Get(DragDataFormats.Context);
-            object targetContext = Context;
-            bool isView = sourceContext is IView view;
+            if (GetIsEnabled(AssociatedObject))
+            {
+                object sourceContext = e.Data.Get(DragDataFormats.Context);
+                object targetContext = Context;
+                bool isView = sourceContext is IView view;
 
-            if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
-            {
-                if (!isView)
+                if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
                 {
-                    e.DragEffects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-            else
-            {
-                if (isView && sender is DockPanel panel)
-                {
-                    if (sender is IVisual visual)
+                    if (!isView)
                     {
-                        AddAdorner(visual);
+                        e.DragEffects = DragDropEffects.None;
+                        e.Handled = true;
                     }
                 }
+                else
+                {
+                    if (isView && sender is DockPanel panel)
+                    {
+                        if (sender is IVisual visual)
+                        {
+                            AddAdorner(visual);
+                        }
+                    }
 
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
+                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
+                    e.Handled = true;
+                }
             }
         }
 
         private void DragLeave(object sender, RoutedEventArgs e)
         {
-            RemoveAdorner(sender as IVisual);
+            if (GetIsEnabled(AssociatedObject))
+            {
+                RemoveAdorner(sender as IVisual);
 
-            Handler?.Cancel(sender, e);
+                Handler?.Cancel(sender, e);
+            }
         }
 
         private void DragOver(object sender, DragEventArgs e)
         {
-            DockOperation operation = DockOperation.Fill;
-            object sourceContext = e.Data.Get(DragDataFormats.Context);
-            object targetContext = Context;
-            bool isView = sourceContext is IView view;
-
-            if (_adorner is DockTarget target)
+            if (GetIsEnabled(AssociatedObject))
             {
-                var position = DropHelper.GetPosition(sender, e);
+                DockOperation operation = DockOperation.Fill;
+                object sourceContext = e.Data.Get(DragDataFormats.Context);
+                object targetContext = Context;
+                bool isView = sourceContext is IView view;
 
-                operation = target.GetDockOperation(e);
-            }
-
-            if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
-            {
-                if (!isView)
+                if (_adorner is DockTarget target)
                 {
-                    e.DragEffects = DragDropEffects.None;
+                    var position = DropHelper.GetPosition(sender, e);
+
+                    operation = target.GetDockOperation(e);
+                }
+
+                if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
+                {
+                    if (!isView)
+                    {
+                        e.DragEffects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
                     e.Handled = true;
                 }
-            }
-            else
-            {
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
             }
         }
 
         private void Drop(object sender, DragEventArgs e)
         {
-            DockOperation operation = DockOperation.Fill;
-            object sourceContext = e.Data.Get(DragDataFormats.Context);
-            object targetContext = Context;
-            bool isView = sourceContext is IView view;
-
-            if (_adorner is DockTarget target)
+            if (GetIsEnabled(AssociatedObject))
             {
-                operation = target.GetDockOperation(e);
-            }
+                DockOperation operation = DockOperation.Fill;
+                object sourceContext = e.Data.Get(DragDataFormats.Context);
+                object targetContext = Context;
+                bool isView = sourceContext is IView view;
 
-            if (isView && sender is DockPanel panel)
-            {
-                RemoveAdorner(sender as IVisual);
-            }
-
-            if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
-            {
-                if (!isView)
+                if (_adorner is DockTarget target)
                 {
-                    e.DragEffects = DragDropEffects.None;
+                    operation = target.GetDockOperation(e);
+                }
+
+                if (isView && sender is DockPanel panel)
+                {
+                    RemoveAdorner(sender as IVisual);
+                }
+
+                if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
+                {
+                    if (!isView)
+                    {
+                        e.DragEffects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                }
+                else
+                {
+                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
                     e.Handled = true;
                 }
-            }
-            else
-            {
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
             }
         }
     }

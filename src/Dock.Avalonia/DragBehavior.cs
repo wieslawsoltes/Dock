@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
+using Dock.Model;
 
 namespace Dock.Avalonia
 {
@@ -115,6 +116,11 @@ namespace Dock.Avalonia
 
                 data.Set(DragDataFormats.Context, Context);
 
+                if (Context is IView view)
+                {
+                    ShowWindows(view);
+                }
+
                 var effect = DragDropEffects.None;
 
                 if (e.InputModifiers.HasFlag(InputModifiers.Alt))
@@ -130,6 +136,17 @@ namespace Dock.Avalonia
 
                 _pointerPressed = false;
                 _doDragDrop = false;
+            }
+        }
+
+        private void ShowWindows(IView view)
+        {
+            if (view.Parent is IDock dock
+                && dock.Factory is IDockFactory factory 
+                && factory.FindRoot(dock) is IDock root 
+                && root.CurrentView is IWindowsHost windowsHost)
+            {
+                    windowsHost.ShowWindows();
             }
         }
     }

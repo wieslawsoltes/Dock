@@ -11,7 +11,8 @@
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
-        Title="Dock Avalonia Demo" Height="680" Width="1200">
+        Title="Dock Avalonia Demo" Height="680" Width="1200"
+        id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
     <idc:MetroWindow.Resources>
         <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
     </idc:MetroWindow.Resources>
@@ -37,6 +38,19 @@
                 </MenuItem>
                 <Separator/>
                 <MenuItem x:Name="ViewEditor" Header="_Editor..."/>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="Drag Behaviors Enabled">
+                    <!--<MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}"/>
+                    </MenuItem.Icon>-->
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Drop Behaviors Enabled">
+                    <!--<MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}"/>
+                    </MenuItem.Icon>-->
+                </MenuItem>
             </MenuItem>
         </Menu>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>

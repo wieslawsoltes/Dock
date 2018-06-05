@@ -87,6 +87,8 @@ $NuGetCommands = @(
     "dotnet nuget push src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey"
 )
 
-if ($MyGetApiKey -And $MyGetApiUrl) {
-    ForEach ($cmd in $NuGetCommands) { Execute $cmd }
+if($env:APPVEYOR_REPO_BRANCH -eq 'master') {
+    if ($MyGetApiKey -And $MyGetApiUrl) {
+        ForEach ($cmd in $NuGetCommands) { Execute $cmd }
+    }
 }

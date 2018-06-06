@@ -221,9 +221,9 @@ if($PublishSamples) {
     Invoke-PublishSamples
 }
 
-if($CopyRedist) {
-    Invoke-CopyRedist
-}
+#if($CopyRedist) {
+#    Invoke-CopyRedist
+#}
 
 if($PushNuGet) {
     Invoke-PushNuGet

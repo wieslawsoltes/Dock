@@ -171,10 +171,11 @@ function Invoke-PublishSamples
 
 function Invoke-CopyRedist
 {
-    $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\"
+    $RedistVersion = "14.14.26429"
+    $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\"
     $RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\$Configuration"
     $RedistRuntime = "win7-x64"
-    Write-Host "CopyRedist: $RedistDest, $RedistRuntime"
+    Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
     Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
     Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
     Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"

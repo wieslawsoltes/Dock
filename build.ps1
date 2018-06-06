@@ -20,13 +20,15 @@ $VersionSuffixParam = $null
 if (-Not $Artifacts) {
     $Artifacts = "$pwd\artifacts"
 } else {
-    Remove-Item "$Artifacts\*.zip"
-    Remove-Item "$Artifacts\*.nupkg"
+    Remove-Item "$Artifacts\*.zip" -ErrorAction SilentlyContinue
+    Remove-Item "$Artifacts\*.nupkg" -ErrorAction SilentlyContinue
 }
 
 if (-Not (Test-Path $Artifacts)) {
     New-Item -ItemType directory -Path $Artifacts
 }
+
+Write-Host "Artifacts: $Artifacts"
 
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {

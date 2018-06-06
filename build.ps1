@@ -17,6 +17,9 @@ if ($VersionSuffix -eq $null) {
     if ($env:APPVEYOR_BUILD_VERSION) {
         $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
     }
+    else {
+        $VersionSuffix = ""
+    }
 }
 
 if ($PushNuGet -eq $false)

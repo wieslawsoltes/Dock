@@ -16,4 +16,4 @@ jobs:
       - run: sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
       - run: apt-get update
       - run: apt-get install -y powershell
-      - run: pwsh -File build.ps1 -BuildCore -TestCore -PackCore -BuildSamples
+      - run: pwsh -File build.ps1 -BuildCore -TestCore -BuildSamples -DisabledFrameworks net461

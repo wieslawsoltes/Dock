@@ -1,6 +1,7 @@
 [CmdletBinding()]
 Param(
     [string]$Configuration = "Release",
+    [string[]]$DisabledFrameworks,
     [string]$VersionSuffix = $null,
     [switch]$BuildCore,
     [switch]$TestCore,
@@ -119,9 +120,11 @@ function Invoke-BuildCore
 {
     ForEach ($project in $CoreProjects) {
         ForEach ($framework in $CoreFrameworks) {
-            Write-Host "Build: $project, $Configuration, $framework"
-            $cmd = "dotnet build src/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
-            Execute $cmd
+            if (-Not $DisabledFrameworks -match $framework) {
+                Write-Host "Build: $project, $Configuration, $framework"
+                $cmd = "dotnet build src/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                Execute $cmd
+            }
         }
     }
 }
@@ -130,9 +133,11 @@ function Invoke-TestCore
 {
     ForEach ($project in $TestProjects) {
         ForEach ($framework in $TestFrameworks) {
-            Write-Host "Test: $project, $Configuration, $framework"
-            $cmd = "dotnet test tests/$project/$project.csproj -c $Configuration -f $framework"
-            Execute $cmd
+            if (-Not $DisabledFrameworks -match $framework) {
+                Write-Host "Test: $project, $Configuration, $framework"
+                $cmd = "dotnet test tests/$project/$project.csproj -c $Configuration -f $framework"
+                Execute $cmd
+            }
         }
     }
 }
@@ -149,9 +154,11 @@ function Invoke-BuildSamples
 {
     ForEach ($project in $SamplesProjects) {
         ForEach ($framework in $SamplesFrameworks) {
-            Write-Host "Build: $project, $Configuration, $framework"
-            $cmd = "dotnet build samples/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
-            Execute $cmd
+            if (-Not $DisabledFrameworks -match $framework) {
+                Write-Host "Build: $project, $Configuration, $framework"
+                $cmd = "dotnet build samples/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                Execute $cmd
+            }
         }
     }
 }
@@ -161,9 +168,11 @@ function Invoke-PublishSamples
     ForEach ($project in $SamplesProjects) {
         ForEach ($framework in $SamplesFrameworks) {
             ForEach ($runtime in $SamplesRuntimes) {
-                Write-Host "Publish: $project, $Configuration, $framework, $runtime"
-                $cmd = "dotnet publish samples/$project/$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
-                Execute $cmd
+                if (-Not $DisabledFrameworks -match $framework) {
+                    Write-Host "Publish: $project, $Configuration, $framework, $runtime"
+                    $cmd = "dotnet publish samples/$project/$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
+                    Execute $cmd
+                }
             }
         }
     }

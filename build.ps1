@@ -180,7 +180,7 @@ function Invoke-PublishSamples
 
 function Invoke-CopyRedist
 {
-    $RedistVersion = "14.14.26429"
+    $RedistVersion = "14.14.26405"
     $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\"
     $RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\$Configuration"
     $RedistRuntime = "win7-x64"
@@ -218,10 +218,6 @@ if($TestCoree) {
     Invoke-TestCore
 }
 
-if($PackCore) {
-    Invoke-PackCore
-}
-
 if($BuildSamples) {
     Invoke-BuildSamples
 }
@@ -230,9 +226,13 @@ if($PublishSamples) {
     Invoke-PublishSamples
 }
 
-#if($CopyRedist) {
-#    Invoke-CopyRedist
-#}
+if($CopyRedist) {
+    Invoke-CopyRedist
+}
+
+if($PackCore) {
+    Invoke-PackCore
+}
 
 if($PushNuGet) {
     Invoke-PushNuGet

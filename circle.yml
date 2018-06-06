@@ -10,10 +10,10 @@ jobs:
     steps:
       - checkout
       - run: dotnet --info
-      - run: sudo apt-get update
-      - run: sudo apt-get install curl gnupg apt-transport-https
-      - run: curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-      - run: sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
-      - run: sudo apt-get update
-      - run: sudo apt-get install -y powershell
+      - run: apt-get update
+      - run: apt-get install curl gnupg apt-transport-https
+      - run: curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+      - run: sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+      - run: apt-get update
+      - run: apt-get install -y powershell
       - run: pwsh -File build.ps1 -BuildCore -TestCore -PackCore -BuildSamples

@@ -7,9 +7,9 @@ Param(
     [switch]$PackCore,
     [switch]$BuildSamples,
     [switch]$PublishSamples,
+    [switch]$CopyRedist,
     [switch]$PushNuGet,
-    [switch]$IsNugetRelease,
-    [switch]$CopyRedist
+    [switch]$IsNugetRelease
 )
 
 $VersionSuffixParam = $null
@@ -46,11 +46,23 @@ if (-Not ($CopyRedist)) {
     }
 }
 
+if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
+    $PushNuGet = $false
+    $IsNugetRelease = $false
+    $PublishSamples = $false
+    $CopyRedist = $false
+    Write-Host "Pull Request #" + $env:APPVEYOR_PULL_REQUEST_NUMBER
+    Write-Host "AppVeyor override PushNuGet: $PushNuGet"
+    Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease"
+    Write-Host "AppVeyor override PublishSamples: $PublishSamples"
+    Write-Host "AppVeyor override CopyRedist: $CopyRedist"
+}
+
 $CoreProjects = @(
     "Dock.Model",
     "Dock.Model.INPC",
     "Dock.Model.ReactiveUI",
-    "Dock.Model.Serializer",
+    "Dock.Serializer",
     "Dock.Avalonia"
 )
 

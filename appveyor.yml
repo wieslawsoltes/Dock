@@ -14,29 +14,10 @@ install:
   - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
   - cmd: dotnet --info
 build_script:
-- ps: .\build.ps1 -BuildCore -TestCore -PackCore -BuildSamples -PublishSamples
+- ps: .\build.ps1 -BuildCore -TestCore -PackCore -BuildSamples -PublishSamples -CopyRedist -ZipSamples
 artifacts:
-  - path: src\Dock.Model\bin\AnyCPU\Release\*.nupkg
-  - path: src\Dock.Model.INPC\bin\AnyCPU\Release\*.nupkg
-  - path: src\Dock.Model.ReactiveUI\bin\AnyCPU\Release\*.nupkg
-  - path: src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg
-  - path: src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\win7-x64\publish
-    name: AvaloniaDemo-netcoreapp2.0-win7-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\win7-x64\publish
-    name: AvaloniaDemo-netcoreapp2.1-win7-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\ubuntu.14.04-x64\publish
-    name: AvaloniaDemo-netcoreapp2.0--ubuntu.14.04-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\ubuntu.14.04-x64\publish
-    name: AvaloniaDemo-netcoreapp2.1--ubuntu.14.04-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\debian.8-x64\publish
-    name: AvaloniaDemo-netcoreapp2.0--debian.8-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\debian.8-x64\publish
-    name: AvaloniaDemo-netcoreapp2.1--debian.8-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.0\osx.10.12-x64\publish
-    name: AvaloniaDemo-netcoreapp2.0--osx.10.12-x64
-  - path: samples\AvaloniaDemo\bin\AnyCPU\Release\netcoreapp2.1\osx.10.12-x64\publish
-    name: AvaloniaDemo-netcoreapp2.1--osx.10.12-x64
+  - path: artifacts\*.nupkg
+  - path: artifacts\*.zip
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/b8334e4ccc2876427242

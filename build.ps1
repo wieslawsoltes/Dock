@@ -8,12 +8,25 @@ Param(
     [switch]$PackCore,
     [switch]$BuildSamples,
     [switch]$PublishSamples,
+    [switch]$ZipSamples,
     [switch]$CopyRedist,
     [switch]$PushNuGet,
-    [switch]$IsNugetRelease
+    [switch]$IsNugetRelease,
+    [String]$Artifacts
 )
 
 $VersionSuffixParam = $null
+
+if (-Not $Artifacts) {
+    $Artifacts = "$pwd\artifacts"
+} else {
+    Remove-Item "$Artifacts\*.zip"
+    Remove-Item "$Artifacts\*.nupkg"
+}
+
+if (-Not (Test-Path $Artifacts)) {
+    New-Item -ItemType directory -Path $Artifacts
+}
 
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
@@ -41,23 +54,18 @@ if (-Not ($IsNugetRelease)) {
     }
 }
 
-if (-Not ($CopyRedist)) {
-    if ($env:APPVEYOR -eq 'True') {
-        $CopyRedist = $true
-        Write-Host "AppVeyor override CopyRedist: $CopyRedist"
-    }
-}
-
 if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
     $PushNuGet = $false
     $IsNugetRelease = $false
     $PublishSamples = $false
     $CopyRedist = $false
+    $ZipSamples = $false
     Write-Host "Pull Request #" + $env:APPVEYOR_PULL_REQUEST_NUMBER
     Write-Host "AppVeyor override PushNuGet: $PushNuGet"
     Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease"
     Write-Host "AppVeyor override PublishSamples: $PublishSamples"
     Write-Host "AppVeyor override CopyRedist: $CopyRedist"
+    Write-Host "AppVeyor override ZipSamples: $ZipSamples"
 }
 
 $CoreProjects = @(
@@ -116,6 +124,13 @@ function Execute($cmd)
     }
 }
 
+function Zip($source, $destination)
+{
+    if(Test-Path $destination) { Remove-item $destination }
+    Add-Type -assembly "System.IO.Compression.FileSystem"
+    [IO.Compression.ZipFile]::CreateFromDirectory($source, $destination)
+}
+
 function Invoke-BuildCore
 {
     ForEach ($project in $CoreProjects) {
@@ -147,6 +162,13 @@ function Invoke-PackCore
     ForEach ($project in $CoreProjects) {
         $cmd = "dotnet pack src\$project\$project.csproj -c $Configuration $VersionSuffixParam"
         Execute $cmd
+        if (Test-Path $Artifacts) {
+            $files = Get-Item "$pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg"
+            ForEach ($file in $files) {
+                Write-Host "Copy: $file"
+                Copy-Item $file.FullName -Destination $Artifacts
+            }
+        }
     }
 }
 
@@ -201,6 +223,23 @@ function Invoke-CopyRedist
     }
 }
 
+function Invoke-ZipSamples
+{
+    ForEach ($project in $SamplesProjects) {
+        ForEach ($framework in $SamplesFrameworks) {
+            ForEach ($runtime in $SamplesRuntimes) {
+                if (-Not ($DisabledFrameworks -match $framework)) {
+                    Write-Host "Zip: $project, $Configuration, $framework, $runtime"
+                    $source = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
+                    $destination = "$Artifacts\$project-$framework-$runtime.zip"
+                    Zip $source $destination
+                    Write-Host "Zip: $destination"
+                }
+            }
+        }
+    }
+}
+
 function Invoke-PushNuGet
 {
     ForEach ($project in $CoreProjects) {
@@ -238,6 +277,10 @@ if($PublishSamples) {
 
 if($CopyRedist) {
     Invoke-CopyRedist
+}
+
+if($ZipSamples) {
+    Invoke-ZipSamples
 }
 
 if($PackCore) {

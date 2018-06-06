@@ -8,7 +8,11 @@ env:
     - DOTNET_CLI_TELEMETRY_OPTOUT=1
 mono: latest
 dotnet: 2.1.300
-script: ./build.sh
+before_install:
+  - wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/powershell_6.0.2-1.ubuntu.14.04_amd64.deb
+  - sudo dpkg -i powershell_6.0.2-1.ubuntu.14.04_amd64.deb
+  - sudo apt-get install -f
+script: pwsh -File build.ps1 -BuildCore -TestCore -PackCore -BuildSamples
 notifications:
   webhooks:
     urls:

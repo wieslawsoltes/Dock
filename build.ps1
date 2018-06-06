@@ -122,7 +122,7 @@ function Invoke-BuildCore
         ForEach ($framework in $CoreFrameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $project, $Configuration, $framework"
-                $cmd = "dotnet build src/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                $cmd = "dotnet build src\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
         }
@@ -135,7 +135,7 @@ function Invoke-TestCore
         ForEach ($framework in $TestFrameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Test: $project, $Configuration, $framework"
-                $cmd = "dotnet test tests/$project/$project.csproj -c $Configuration -f $framework"
+                $cmd = "dotnet test tests\$project\$project.csproj -c $Configuration -f $framework"
                 Execute $cmd
             }
         }
@@ -145,7 +145,7 @@ function Invoke-TestCore
 function Invoke-PackCore
 {
     ForEach ($project in $CoreProjects) {
-        $cmd = "dotnet pack src/$project/$project.csproj -c $Configuration $VersionSuffixParam"
+        $cmd = "dotnet pack src\$project\$project.csproj -c $Configuration $VersionSuffixParam"
         Execute $cmd
     }
 }
@@ -156,7 +156,7 @@ function Invoke-BuildSamples
         ForEach ($framework in $SamplesFrameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $project, $Configuration, $framework"
-                $cmd = "dotnet build samples/$project/$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                $cmd = "dotnet build samples\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
         }
@@ -170,7 +170,7 @@ function Invoke-PublishSamples
             ForEach ($runtime in $SamplesRuntimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Publish: $project, $Configuration, $framework, $runtime"
-                    $cmd = "dotnet publish samples/$project/$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
+                    $cmd = "dotnet publish samples\$project\$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
                     Execute $cmd
                 }
             }
@@ -181,14 +181,24 @@ function Invoke-PublishSamples
 function Invoke-CopyRedist
 {
     $RedistVersion = "14.14.26405"
-    $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\"
-    $RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\$Configuration"
+    $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\Microsoft.VC141.CRT\"
     $RedistRuntime = "win7-x64"
-    Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
-    Copy-Item "$RedistPath\msvcp140.dll" -Destination "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\vcruntime140.dll" -Destination "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\msvcp140.dll" -Destination "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\vcruntime140.dll" -Destination "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
+    ForEach ($project in $SamplesProjects) {
+        ForEach ($framework in $SamplesFrameworks) {
+            ForEach ($runtime in $SamplesRuntimes) {
+                if ($runtime -eq $RedistRuntime) {
+                    $RedistDest = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
+                    if(Test-Path -Path $RedistDest) {
+                        Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
+                        Copy-Item "$RedistPath\msvcp140.dll" -Destination $RedistDest
+                        Copy-Item "$RedistPath\vcruntime140.dll" -Destination $RedistDest
+                    } else {
+                        Write-Host "CopyRedist: Path does not exists: $RedistDest"
+                    }
+                }
+            }
+        }
+    }
 }
 
 function Invoke-PushNuGet
@@ -197,13 +207,13 @@ function Invoke-PushNuGet
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
                 Write-Host "Push NuGet: $project, $Configuration"
-                $cmd = "dotnet nuget push src/$project/bin/AnyCPU/$Configuration/*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
+                $cmd = "dotnet nuget push $pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
                 Execute $cmd
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
                 Write-Host "Push MyGet: $project, $Configuration"
-                $cmd = "dotnet nuget push src/$project/bin/AnyCPU/$Configuration/*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
+                $cmd = "dotnet nuget push $pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
                 Execute $cmd
             }
         }

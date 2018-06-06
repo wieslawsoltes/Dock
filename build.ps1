@@ -1,94 +1,153 @@
+[CmdletBinding()]
+Param(
+    [string]$Configuration = "Release",
+    [string]$VersionSuffix = $null,
+    [string]$ApiKey = $null,
+    [string]$ApiUrl = $null,
+    [switch]$BuildCore,
+    [switch]$TestCore,
+    [switch]$PackCore,
+    [switch]$BuildSamples,
+    [switch]$PublishSamples,
+    [switch]$PushNuGet,
+    [switch]$CopyRedist
+)
 
-$VersionSuffix = $env:APPVEYOR_BUILD_VERSION
-$MyGetApiKey = $env:MYGET_API_KEY
-$MyGetApiUrl = $env:MYGET_API_URL
+if ($VersionSuffix -eq $null) {
+    if ($env:APPVEYOR_BUILD_VERSION) {
+        $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
+    }
+}
 
-function Execute ($cmd) 
+if ($PushNuGet -eq $false)
+{
+    if($env:APPVEYOR_REPO_NAME -eq 'wieslawsoltes/Dock' -And $env:APPVEYOR_REPO_BRANCH -eq 'master') {
+        if($env:APPVEYOR_REPO_TAG -eq 'True' -And $env:APPVEYOR_REPO_TAG_NAME) {
+            $ApiKey = $env:NUGET_API_KEY
+            $ApiUrl = $env:NUGET_API_URL
+        }
+        else {
+            $ApiKey = $env:MYGET_API_KEY
+            $ApiUrl = $env:MYGET_API_URL
+        }
+        $PushNuGet = $true
+    }
+}
+
+if ($CopyRedist -eq $false) {
+    if ($env:APPVEYOR -eq 'True') {
+        $CopyRedist = $true
+    }
+}
+
+$CoreProjects = @(
+    "Dock.Model",
+    "Dock.Model.INPC",
+    "Dock.Model.ReactiveUI",
+    "Dock.Model.Serializer",
+    "Dock.Avalonia"
+)
+
+$CoreFrameworks = @(
+    "netstandard2.0",
+    "net461"
+)
+
+$TestProjects = @(
+    "Dock.Model.UnitTests",
+    "Dock.Model.INPC.UnitTests",
+    "Dock.Model.ReactiveUI.UnitTests",
+    "Dock.Serializer.UnitTests",
+    "Dock.Avalonia.UnitTests"
+)
+
+$TestFrameworks = @(
+    "netcoreapp2.0",
+    "netcoreapp2.1",
+    "net461"
+)
+
+$SamplesProjects = @(
+    "AvaloniaDemo"
+)
+
+$SamplesFrameworks = @(
+    "netcoreapp2.0",
+    "netcoreapp2.1",
+    "net461"
+)
+
+$SamplesRuntimes = @(
+    "win7-x64",
+    "ubuntu.14.04-x64",
+    "debian.8-x64",
+    "osx.10.12-x64"
+)
+
+function Execute($cmd) 
 { 
     Invoke-Expression $cmd
     if ($LastExitCode -ne 0) { Exit 1 } 
 }
 
-$BuildCoreCommands = @(
-    "dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f netstandard2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Model/Dock.Model.csproj -c Release -f net461 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f netstandard2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release -f net461 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f netstandard2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release -f net461 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f netstandard2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Serializer/Dock.Serializer.csproj -c Release -f net461 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f net461 --version-suffix -build$VersionSuffix"
-)
+if ($BuildCore -eq $true) {
+    ForEach ($project in $CoreProjects) {
+        ForEach ($framework in $CoreFrameworks) {
+            $cmd = "dotnet build src/$project/$project.csproj -c $Configuration -f $framework --version-suffix $VersionSuffix"
+            Execute $cmd
+        }
+    }
+}
 
-$BuildSamplesCommands = @(
-    "dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 --version-suffix -build$VersionSuffix",
-    "dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 --version-suffix -build$VersionSuffix",
-    "dotnet build samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f net461 --version-suffix -build$VersionSuffix"
-)
+if ($TestCore -eq $true) {
+    ForEach ($project in $TestProjects) {
+        ForEach ($framework in $TestFrameworks) {
+            $cmd = "dotnet test tests/$project/$project.csproj -c $Configuration -f $framework"
+            Execute $cmd
+        }
+    }
+}
 
-$PackCommands = @(
-    "dotnet pack src/Dock.Model/Dock.Model.csproj -c Release --version-suffix -build$VersionSuffix",
-    "dotnet pack src/Dock.Model.INPC/Dock.Model.INPC.csproj -c Release --version-suffix -build$VersionSuffix",
-    "dotnet pack src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj -c Release --version-suffix -build$VersionSuffix",
-    "dotnet pack src/Dock.Serializer/Dock.Serializer.csproj -c Release --version-suffix -build$VersionSuffix",
-    "dotnet pack src/Dock.Avalonia/Dock.Avalonia.csproj -c Release --version-suffix -build$VersionSuffix"
-)
+if ($PackCore -eq $true) {
+    ForEach ($project in $CoreProjects) {
+        $cmd = "dotnet pack src/$project/$project.csproj -c $Configuration --version-suffix $VersionSuffix"
+        Execute $cmd
+    }
+}
 
-$TestCommands = @(
-    "dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.0",
-    "dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f netcoreapp2.1",
-    "dotnet test tests/Dock.Model.INPC.UnitTests/Dock.Model.INPC.UnitTests.csproj -c Release -f net461",
-    "dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.0",
-    "dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f netcoreapp2.1",
-    "dotnet test tests/Dock.Model.UnitTests/Dock.Model.UnitTests.csproj -c Release -f net461",
-    "dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.0",
-    "dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f netcoreapp2.1",
-    "dotnet test tests/Dock.Model.ReactiveUI.UnitTests/Dock.Model.ReactiveUI.UnitTests.csproj -c Release -f net461",
-    "dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.0",
-    "dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f netcoreapp2.1",
-    "dotnet test tests/Dock.Serializer.UnitTests/Dock.Serializer.UnitTests.csproj -c Release -f net461",
-    "dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.0",
-    "dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f netcoreapp2.1",
-    "dotnet test tests/Dock.Avalonia.UnitTests/Dock.Avalonia.UnitTests.csproj -c Release -f net461"
-)
+if ($BuildSamples -eq $true) {
+    ForEach ($project in $SamplesProjects) {
+        ForEach ($framework in $SamplesFrameworks) {
+            $cmd = "dotnet build samples/$project/$project.csproj -c $Configuration -f $framework --version-suffix $VersionSuffix"
+            Execute $cmd
+        }
+    }
+}
 
-$PublishCommands = @(
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r win7-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r win7-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r ubuntu.14.04-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r ubuntu.14.04-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r debian.8-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r debian.8-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.0 -r osx.10.12-x64 --version-suffix -build$VersionSuffix",
-    "dotnet publish samples/AvaloniaDemo/AvaloniaDemo.csproj -c Release -f netcoreapp2.1 -r osx.10.12-x64 --version-suffix -build$VersionSuffix"
-)
+if ($PublishSamples -eq $true) {
+    ForEach ($project in $SamplesProjects) {
+        ForEach ($framework in $SamplesFrameworks) {
+            ForEach ($runtime in $SamplesRuntimes) {
+                $cmd = "dotnet publish samples/$project/$project.csproj -c $Configuration -f $framework -r $runtime --version-suffix $VersionSuffix"
+                Execute $cmd
+            }
+        }
+    }
+}
 
-ForEach ($cmd in $BuildCoreCommands) { Execute $cmd }
-ForEach ($cmd in $BuildSamplesCommands) { Execute $cmd }
-ForEach ($cmd in $PackCommands) { Execute $cmd }
-ForEach ($cmd in $TestCommands) { Execute $cmd }
-ForEach ($cmd in $PublishCommands) { Execute $cmd }
+if($CopyRedist -eq $true) {
+    $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT"
+    $RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\Release"
+    $RedistRuntime = "win7-x64"
+    Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
+}
 
-$RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\x64\Microsoft.VC141.CRT"
-$RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\Release"
-$RedistRuntime = "win7-x64"
-Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
-Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
-
-$NuGetCommands = @(
-    "dotnet nuget push src\Dock.Model\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey",
-    "dotnet nuget push src\Dock.Model.INPC\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey",
-    "dotnet nuget push src\Dock.Model.ReactiveUI\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey",
-    "dotnet nuget push src\Dock.Serializer\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey",
-    "dotnet nuget push src\Dock.Avalonia\bin\AnyCPU\Release\*.nupkg -s $MyGetApiUrl -k $MyGetApiKey"
-)
-
-if($env:APPVEYOR_REPO_BRANCH -eq 'master') {
-    if ($MyGetApiKey -And $MyGetApiUrl) {
-        ForEach ($cmd in $NuGetCommands) { Execute $cmd }
+if($PushNuGet -eq $true -And $ApiKey -ne $null -And $ApiUrl -ne $null) {
+    ForEach ($project in $CoreProjects) {
+        $cmd = "dotnet nuget push src\$project\bin\AnyCPU\$Configuration\*.nupkg -s $ApiUrl -k $ApiKey"
+        Execute $cmd
     }
 }

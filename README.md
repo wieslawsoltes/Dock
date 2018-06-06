@@ -19,7 +19,7 @@ A docking layout system.
 
 | Version               | Framework      | Download                                                                                                                                                                                             |
 |-----------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Debian 8 x64          | net461         | [AvaloniaDemo-net461-debian.8-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo-net461-debian.8-x64..zip?branch=master)                  |
+| Debian 8 x64          | net461         | [AvaloniaDemo-net461-debian.8-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo-net461-debian.8-x64.zip?branch=master)                  |
 | MacOSX 10.12 x64      | net461         | [AvaloniaDemo-net461-osx.10.12-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo-net461-osx.10.12-x64.zip?branch=master)                  |
 | Ubuntu 14.04+ x64     | net461         | [AvaloniaDemo-net461-ubuntu.14.04-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo-net461-ubuntu.14.04-x64.zip?branch=master)                  |
 | Windows 7 8.1 10 x64  | net461         | [AvaloniaDemo-net461-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo-net461-win7-x64.zip?branch=master)                  |

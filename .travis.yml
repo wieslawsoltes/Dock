@@ -9,9 +9,10 @@ env:
 mono: latest
 dotnet: 2.1.300
 before_install:
-  - wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.2/powershell_6.0.2-1.ubuntu.14.04_amd64.deb
-  - sudo dpkg -i powershell_6.0.2-1.ubuntu.14.04_amd64.deb
-  - sudo apt-get install -f
+  - curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+  - curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+  - sudo apt-get update
+  - sudo apt-get install -y powershell
 script: pwsh -File build.ps1 -BuildCore -TestCore -PackCore -BuildSamples
 notifications:
   webhooks:

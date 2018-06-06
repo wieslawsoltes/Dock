@@ -16,7 +16,8 @@ $VersionSuffixParam = $null
 
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
-        $VersionSuffixParam = "--version-suffix -build" + $env:APPVEYOR_BUILD_VERSION
+        $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
+        $VersionSuffixParam = "--version-suffix " + $VersionSuffix
         Write-Host "AppVeyor override VersionSuffix: $VersionSuffix"
     }
 } else {

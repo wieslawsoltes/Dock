@@ -9,6 +9,7 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
       - checkout
+      - run: dotnet --info
       - run: sudo apt-get update
       - run: sudo apt-get install curl gnupg apt-transport-https
       - run: curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -

@@ -8,5 +8,6 @@ namespace Dock.Model.Controls
     /// </summary>
     public class LayoutDock : DockBase, ILayoutDock
     {
+        public IView FocusedView { get; set; }
     }
 }

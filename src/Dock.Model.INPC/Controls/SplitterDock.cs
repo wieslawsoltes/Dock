@@ -8,5 +8,6 @@ namespace Dock.Model.Controls
     /// </summary>
     public class SplitterDock : DockBase, ISplitterDock
     {
+        public IView FocusedView { get; set; }
     }
 }

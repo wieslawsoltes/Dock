@@ -8,5 +8,6 @@ namespace Dock.Model.Controls
     /// </summary>
     public class ToolDock : DockBase, IToolDock
     {
+        public IView FocusedView { get; set; }
     }
 }

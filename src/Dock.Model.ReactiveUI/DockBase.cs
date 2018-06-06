@@ -46,8 +46,15 @@ namespace Dock.Model
                 this.RaiseAndSetIfChanged(ref _currentView, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
+
+                if (Factory != null && Factory.FindRoot(this) is IViewsHost viewsHost)
+                {
+                    viewsHost.FocusedView = value;
+                }
             }
         }
+
+        public IView FocusedView { get; set; }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]

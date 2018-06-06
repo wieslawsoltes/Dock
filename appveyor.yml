@@ -12,6 +12,7 @@ deploy: off
 install:
   - if not exist dotnet-sdk-2.1.300-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-win-x64.exe -FileName "dotnet-sdk-2.1.300-win-x64.exe"
   - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
+  - cmd: dotnet --info
 build_script:
 - ps: .\build.ps1 -BuildCore -TestCore -PackCore -BuildSamples -PublishSamples
 artifacts:

@@ -176,10 +176,10 @@ function Invoke-CopyRedist
     $RedistDest = "$pwd\samples\AvaloniaDemo\bin\AnyCPU\$Configuration"
     $RedistRuntime = "win7-x64"
     Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
-    Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\msvcp140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
-    Copy-Item "$RedistPath\vcruntime140.dll" "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\msvcp140.dll" -Destination "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\vcruntime140.dll" -Destination "$RedistDest\netcoreapp2.0\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\msvcp140.dll" -Destination "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
+    Copy-Item "$RedistPath\vcruntime140.dll" -Destination "$RedistDest\netcoreapp2.1\$RedistRuntime\publish"
 }
 
 function Invoke-PushNuGet

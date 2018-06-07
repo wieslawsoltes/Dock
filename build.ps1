@@ -74,6 +74,21 @@ if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
     Write-Host "AppVeyor override ZipApps: $ZipApps"
 }
 
+Write-Host "ConfigFileName: $ConfigFileName" -ForegroundColor White
+Write-Host "Configuration: $Configuration" -ForegroundColor White
+Write-Host "DisabledFrameworks: $DisabledFrameworks" -ForegroundColor White
+Write-Host "VersionSuffix: $VersionSuffix" -ForegroundColor White
+Write-Host "BuildSources: $BuildSources" -ForegroundColor White
+Write-Host "TestSources: $TestSources" -ForegroundColor White
+Write-Host "PackSources: $PackSources" -ForegroundColor White
+Write-Host "BuildApps: $BuildApps" -ForegroundColor White
+Write-Host "PublishApps: $PublishApps" -ForegroundColor White
+Write-Host "ZipApps: $ZipApps" -ForegroundColor White
+Write-Host "CopyRedist: $CopyRedist" -ForegroundColor White
+Write-Host "PushNuGet: $PushNuGet" -ForegroundColor White
+Write-Host "IsNugetRelease: $IsNugetRelease" -ForegroundColor White
+Write-Host "Artifacts: $Artifacts" -ForegroundColor White
+
 function Execute($cmd) 
 {
     Try {

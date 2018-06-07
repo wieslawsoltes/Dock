@@ -77,7 +77,7 @@ if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
 function Execute($cmd) 
 {
     Try {
-        Invoke-Expression $cmd
+        Invoke-Expression -Command $cmd
         if ($LastExitCode -ne 0) { Exit 1 }
     }
     Catch {

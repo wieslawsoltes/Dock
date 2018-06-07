@@ -9,6 +9,11 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockToolChrome : ContentControl
     {
+        static DockToolChrome()
+        {
+            PseudoClass(IsActiveProperty, ":active");
+        }
+
         /// <summary>
         /// Define <see cref="Title"/> property.
         /// </summary>
@@ -22,6 +27,21 @@ namespace Dock.Avalonia.Controls
         {
             get { return GetValue(TitleProprty); }
             set { SetValue(TitleProprty, value); }
+        }
+
+        /// <summary>
+        /// Define the <see cref="IsActive"/> property.
+        /// </summary>
+        public static readonly AvaloniaProperty<bool> IsActiveProperty =
+            AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
+
+        /// <summary>
+        /// Gets or sets if this is the currently active Tool.
+        /// </summary>
+        public bool IsActive
+        {
+            get => GetValue(IsActiveProperty);
+            set => SetValue(IsActiveProperty, value);
         }
 
         internal Control Grip { get; private set; }

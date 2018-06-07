@@ -15,14 +15,21 @@ namespace Dock.Avalonia.Behaviors
             base.OnAttached();
 
             _disposable = AssociatedObject.AddHandler(Control.PointerPressedEvent, (sender, e) =>
-            {   
+            {
                 if (AssociatedObject.DataContext is IViewsHost host)
                 {
                     var root = FindRoot(host.CurrentView);
 
                     if (root is IViewsHost rootHost)
                     {
+                        if (rootHost.FocusedView.Parent is IViewsHost parentRootHost)
+                        {
+                            parentRootHost.IsActive = false;
+                        }
+
                         rootHost.FocusedView = host.CurrentView;
+
+                        host.IsActive = true;
                     }
                 }
             }, global::Avalonia.Interactivity.RoutingStrategies.Tunnel);

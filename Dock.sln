@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		_config.yml = _config.yml
+		build.ps1 = build.ps1
+		build.xml = build.xml
+		config.ps1 = config.ps1
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50-CC9F-4DDC-9524-55D56E63A840}"
 	ProjectSection(SolutionItems) = preProject
@@ -53,6 +60,25 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI", "src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{3920BA8E-AED3-425C-8F3A-BEC14E30673A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{F8F9350B-0321-4C8A-A0EB-BF5F2283994E}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		circle.yml = circle.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.TXT = LICENSE.TXT
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E58CB250-1197-4D0F-BBC1-F9733B1B48DC}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +148,8 @@ Global
 		{C8442732-C248-4F42-8A3A-9E7C46D00F91} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{3920BA8E-AED3-425C-8F3A-BEC14E30673A} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{F8F9350B-0321-4C8A-A0EB-BF5F2283994E} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+		{E58CB250-1197-4D0F-BBC1-F9733B1B48DC} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

@@ -32,8 +32,6 @@ if (-Not (Test-Path $Artifacts)) {
     New-Item -ItemType directory -Path $Artifacts
 }
 
-Write-Host "Artifacts: $Artifacts"
-
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
         $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION

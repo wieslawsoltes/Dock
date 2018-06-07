@@ -9,4 +9,11 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
       - checkout
-      - run: ./build.sh
+      - run: dotnet --info
+      - run: apt-get update
+      - run: apt-get install -y curl gnupg apt-transport-https
+      - run: curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+      - run: sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/microsoft.list'
+      - run: apt-get update
+      - run: apt-get install -y powershell
+      - run: pwsh -File build.ps1 -BuildSources -TestSources -BuildApps -DisabledFrameworks net461

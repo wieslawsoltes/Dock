@@ -115,7 +115,7 @@ function Invoke-BuildSources
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Blue
+                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
                 $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
@@ -132,7 +132,7 @@ function Invoke-TestSources
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Test: $Name, $Configuration, $framework" -ForegroundColor Blue
+                Write-Host "Test: $Name, $Configuration, $framework" -ForegroundColor Cyan
                 $cmd = "dotnet test $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework"
                 Execute $cmd
             }
@@ -151,7 +151,7 @@ function Invoke-PackSources
         if (Test-Path $Artifacts) {
             $files = Get-Item "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg"
             ForEach ($file in $files) {
-                Write-Host "Copy: $file" -ForegroundColor Blue
+                Write-Host "Copy: $file" -ForegroundColor Cyan
                 Copy-Item $file.FullName -Destination $Artifacts
             }
         }
@@ -167,7 +167,7 @@ function Invoke-BuildApps
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Blue
+                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
                 $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
@@ -186,7 +186,7 @@ function Invoke-PublishApps
         ForEach ($framework in $Frameworks) {
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Blue
+                    Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Cyan
                     $cmd = "dotnet publish $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
                     Execute $cmd
                 }
@@ -211,7 +211,7 @@ function Invoke-CopyRedist
                 if ($runtime -eq $RedistRuntime) {
                     $RedistDest = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
                     if(Test-Path -Path $RedistDest) {
-                        Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion" -ForegroundColor Blue
+                        Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion" -ForegroundColor Cyan
                         Copy-Item "$RedistPath\msvcp140.dll" -Destination $RedistDest
                         Copy-Item "$RedistPath\vcruntime140.dll" -Destination $RedistDest
                     } else {
@@ -234,11 +234,11 @@ function Invoke-ZipApps
         ForEach ($framework in $Frameworks) {
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Zip: $Name, $Configuration, $framework, $runtime" -ForegroundColor Blue
+                    Write-Host "Zip: $Name, $Configuration, $framework, $runtime" -ForegroundColor Cyan
                     $source = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
                     $destination = "$Artifacts\$Name-$framework-$runtime.zip"
                     Zip $source $destination
-                    Write-Host "Zip: $destination" -ForegroundColor Blue
+                    Write-Host "Zip: $destination" -ForegroundColor Cyan
                 }
             }
         }
@@ -253,13 +253,13 @@ function Invoke-PushNuGet
         $Path = $project.Path
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
-                Write-Host "Push NuGet: $Name, $Configuration" -ForegroundColor Blue
+                Write-Host "Push NuGet: $Name, $Configuration" -ForegroundColor Cyan
                 $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
                 Execute $cmd
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
-                Write-Host "Push MyGet: $Name, $Configuration" -ForegroundColor Blue
+                Write-Host "Push MyGet: $Name, $Configuration" -ForegroundColor Cyan
                 $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
                 Execute $cmd
             }

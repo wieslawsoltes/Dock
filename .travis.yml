@@ -14,7 +14,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install -y powershell
   - dotnet --info
-script: pwsh -File build.ps1 -BuildCore -TestCore -BuildSamples
+script: pwsh -File build.ps1 -BuildSources -TestSources -BuildSamples
 notifications:
   webhooks:
     urls:

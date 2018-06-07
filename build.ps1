@@ -3,9 +3,9 @@ Param(
     [string]$Configuration = "Release",
     [string[]]$DisabledFrameworks,
     [string]$VersionSuffix = $null,
-    [switch]$BuildCore,
-    [switch]$TestCore,
-    [switch]$PackCore,
+    [switch]$BuildSources,
+    [switch]$TestSources,
+    [switch]$PackSources,
     [switch]$BuildSamples,
     [switch]$PublishSamples,
     [switch]$ZipSamples,
@@ -70,7 +70,7 @@ if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
     Write-Host "AppVeyor override ZipSamples: $ZipSamples"
 }
 
-$CoreProjects = @(
+$SourceProjects = @(
     "Dock.Model",
     "Dock.Model.INPC",
     "Dock.Model.ReactiveUI",
@@ -78,7 +78,7 @@ $CoreProjects = @(
     "Dock.Avalonia"
 )
 
-$CoreFrameworks = @(
+$SourceFrameworks = @(
     "netstandard2.0",
     "net461"
 )
@@ -101,13 +101,13 @@ $SamplesProjects = @(
     "AvaloniaDemo"
 )
 
-$SamplesFrameworks = @(
+$SampleFrameworks = @(
     "netcoreapp2.0",
     "netcoreapp2.1",
     "net461"
 )
 
-$SamplesRuntimes = @(
+$SampleRuntimes = @(
     "win7-x64",
     "ubuntu.14.04-x64",
     "debian.8-x64",
@@ -133,10 +133,10 @@ function Zip($source, $destination)
     [IO.Compression.ZipFile]::CreateFromDirectory($source, $destination)
 }
 
-function Invoke-BuildCore
+function Invoke-BuildSources
 {
-    ForEach ($project in $CoreProjects) {
-        ForEach ($framework in $CoreFrameworks) {
+    ForEach ($project in $SourceProjects) {
+        ForEach ($framework in $SourceFrameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $project, $Configuration, $framework"
                 $cmd = "dotnet build src\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
@@ -146,7 +146,7 @@ function Invoke-BuildCore
     }
 }
 
-function Invoke-TestCore
+function Invoke-TestSources
 {
     ForEach ($project in $TestProjects) {
         ForEach ($framework in $TestFrameworks) {
@@ -159,9 +159,9 @@ function Invoke-TestCore
     }
 }
 
-function Invoke-PackCore
+function Invoke-PackSources
 {
-    ForEach ($project in $CoreProjects) {
+    ForEach ($project in $SourceProjects) {
         $cmd = "dotnet pack src\$project\$project.csproj -c $Configuration $VersionSuffixParam"
         Execute $cmd
         if (Test-Path $Artifacts) {
@@ -177,7 +177,7 @@ function Invoke-PackCore
 function Invoke-BuildSamples
 {
     ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SamplesFrameworks) {
+        ForEach ($framework in $SampleFrameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $project, $Configuration, $framework"
                 $cmd = "dotnet build samples\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
@@ -190,8 +190,8 @@ function Invoke-BuildSamples
 function Invoke-PublishSamples
 {
     ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SamplesFrameworks) {
-            ForEach ($runtime in $SamplesRuntimes) {
+        ForEach ($framework in $SampleFrameworks) {
+            ForEach ($runtime in $SampleRuntimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Publish: $project, $Configuration, $framework, $runtime"
                     $cmd = "dotnet publish samples\$project\$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
@@ -208,8 +208,8 @@ function Invoke-CopyRedist
     $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\Microsoft.VC141.CRT\"
     $RedistRuntime = "win7-x64"
     ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SamplesFrameworks) {
-            ForEach ($runtime in $SamplesRuntimes) {
+        ForEach ($framework in $SampleFrameworks) {
+            ForEach ($runtime in $SampleRuntimes) {
                 if ($runtime -eq $RedistRuntime) {
                     $RedistDest = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
                     if(Test-Path -Path $RedistDest) {
@@ -228,8 +228,8 @@ function Invoke-CopyRedist
 function Invoke-ZipSamples
 {
     ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SamplesFrameworks) {
-            ForEach ($runtime in $SamplesRuntimes) {
+        ForEach ($framework in $SampleFrameworks) {
+            ForEach ($runtime in $SampleRuntimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Zip: $project, $Configuration, $framework, $runtime"
                     $source = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
@@ -244,7 +244,7 @@ function Invoke-ZipSamples
 
 function Invoke-PushNuGet
 {
-    ForEach ($project in $CoreProjects) {
+    ForEach ($project in $SourceProjects) {
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
                 Write-Host "Push NuGet: $project, $Configuration"
@@ -261,12 +261,12 @@ function Invoke-PushNuGet
     }
 }
 
-if($BuildCore) {
-    Invoke-BuildCore
+if($BuildSources) {
+    Invoke-BuildSources
 }
 
 if($TestCoree) {
-    Invoke-TestCore
+    Invoke-TestSources
 }
 
 if($BuildSamples) {
@@ -285,8 +285,8 @@ if($ZipSamples) {
     Invoke-ZipSamples
 }
 
-if($PackCore) {
-    Invoke-PackCore
+if($PackSources) {
+    Invoke-PackSources
 }
 
 if($PushNuGet) {

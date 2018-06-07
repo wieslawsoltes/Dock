@@ -36,25 +36,25 @@ if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
         $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
         $VersionSuffixParam = "--version-suffix " + $VersionSuffix
-        Write-Host "AppVeyor override VersionSuffix: $VersionSuffix"
+        Write-Host "AppVeyor override VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
     }
 } else {
     $VersionSuffixParam = "--version-suffix $VersionSuffix"
-    Write-Host "VersionSuffix: $VersionSuffix"
+    Write-Host "VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
 }
 
 if (-Not ($PushNuGet))
 {
     if($env:APPVEYOR_REPO_NAME -eq 'wieslawsoltes/Dock' -And $env:APPVEYOR_REPO_BRANCH -eq 'master') {
         $PushNuGet = $true
-        Write-Host "AppVeyor override PushNuGet: $PushNuGet"
+        Write-Host "AppVeyor override PushNuGet: $PushNuGet" -ForegroundColor Yellow
     }
 }
 
 if (-Not ($IsNugetRelease)) {
     if ($env:APPVEYOR_REPO_TAG -eq 'True' -And $env:APPVEYOR_REPO_TAG_NAME) {
         $IsNugetRelease = $true
-        Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease"
+        Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease" -ForegroundColor Yellow
     }
 }
 
@@ -65,11 +65,11 @@ if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
     $CopyRedist = $false
     $ZipApps = $false
     Write-Host "Pull Request #" + $env:APPVEYOR_PULL_REQUEST_NUMBER
-    Write-Host "AppVeyor override PushNuGet: $PushNuGet"
-    Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease"
-    Write-Host "AppVeyor override PublishApps: $PublishApps"
-    Write-Host "AppVeyor override CopyRedist: $CopyRedist"
-    Write-Host "AppVeyor override ZipApps: $ZipApps"
+    Write-Host "AppVeyor override PushNuGet: $PushNuGet" -ForegroundColor Yellow
+    Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease" -ForegroundColor Yellow
+    Write-Host "AppVeyor override PublishApps: $PublishApps" -ForegroundColor Yellow
+    Write-Host "AppVeyor override CopyRedist: $CopyRedist" -ForegroundColor Yellow
+    Write-Host "AppVeyor override ZipApps: $ZipApps" -ForegroundColor Yellow
 }
 
 Write-Host "ConfigFileName: $ConfigFileName" -ForegroundColor White
@@ -115,7 +115,7 @@ function Invoke-BuildSources
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $Name, $Configuration, $framework"
+                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Blue
                 $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
@@ -132,7 +132,7 @@ function Invoke-TestSources
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Test: $Name, $Configuration, $framework"
+                Write-Host "Test: $Name, $Configuration, $framework" -ForegroundColor Blue
                 $cmd = "dotnet test $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework"
                 Execute $cmd
             }
@@ -151,7 +151,7 @@ function Invoke-PackSources
         if (Test-Path $Artifacts) {
             $files = Get-Item "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg"
             ForEach ($file in $files) {
-                Write-Host "Copy: $file"
+                Write-Host "Copy: $file" -ForegroundColor Blue
                 Copy-Item $file.FullName -Destination $Artifacts
             }
         }
@@ -167,7 +167,7 @@ function Invoke-BuildApps
         $Frameworks = $project.Frameworks.Framework
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $Name, $Configuration, $framework"
+                Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Blue
                 $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
@@ -186,7 +186,7 @@ function Invoke-PublishApps
         ForEach ($framework in $Frameworks) {
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Publish: $Name, $Configuration, $framework, $runtime"
+                    Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Blue
                     $cmd = "dotnet publish $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
                     Execute $cmd
                 }
@@ -211,11 +211,11 @@ function Invoke-CopyRedist
                 if ($runtime -eq $RedistRuntime) {
                     $RedistDest = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
                     if(Test-Path -Path $RedistDest) {
-                        Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
+                        Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion" -ForegroundColor Blue
                         Copy-Item "$RedistPath\msvcp140.dll" -Destination $RedistDest
                         Copy-Item "$RedistPath\vcruntime140.dll" -Destination $RedistDest
                     } else {
-                        Write-Host "CopyRedist: Path does not exists: $RedistDest"
+                        Write-Host "CopyRedist: Path does not exists: $RedistDest" -ForegroundColor Red
                     }
                 }
             }
@@ -234,11 +234,11 @@ function Invoke-ZipApps
         ForEach ($framework in $Frameworks) {
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Zip: $Name, $Configuration, $framework, $runtime"
+                    Write-Host "Zip: $Name, $Configuration, $framework, $runtime" -ForegroundColor Blue
                     $source = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
                     $destination = "$Artifacts\$Name-$framework-$runtime.zip"
                     Zip $source $destination
-                    Write-Host "Zip: $destination"
+                    Write-Host "Zip: $destination" -ForegroundColor Blue
                 }
             }
         }
@@ -253,13 +253,13 @@ function Invoke-PushNuGet
         $Path = $project.Path
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
-                Write-Host "Push NuGet: $Name, $Configuration"
+                Write-Host "Push NuGet: $Name, $Configuration" -ForegroundColor Blue
                 $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
                 Execute $cmd
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
-                Write-Host "Push MyGet: $Name, $Configuration"
+                Write-Host "Push MyGet: $Name, $Configuration" -ForegroundColor Blue
                 $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
                 Execute $cmd
             }

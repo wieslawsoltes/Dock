@@ -8,6 +8,5 @@ namespace Dock.Model.Controls
     /// </summary>
     public class RootDock : DockBase, IRootDock
     {
-        public IView FocusedView { get; set; }
     }
 }

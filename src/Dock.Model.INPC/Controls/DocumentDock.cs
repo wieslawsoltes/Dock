@@ -8,6 +8,5 @@ namespace Dock.Model.Controls
     /// </summary>
     public class DocumentDock : DockBase, IDocumentDock
     {
-        public IView FocusedView { get; set; }
     }
 }

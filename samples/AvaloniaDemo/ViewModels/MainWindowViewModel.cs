@@ -9,6 +9,7 @@ namespace AvaloniaDemo.ViewModels
     {
         private IDockFactory _factory;
         private IView _layout;
+        private string _currentView;
 
         public IDockFactory Factory
         {
@@ -20,6 +21,12 @@ namespace AvaloniaDemo.ViewModels
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
+        }
+
+        public string CurrentView
+        {
+            get => _currentView;
+            set => this.RaiseAndSetIfChanged(ref _currentView, value);
         }
     }
 }

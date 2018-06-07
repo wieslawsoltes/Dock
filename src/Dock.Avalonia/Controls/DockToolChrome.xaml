@@ -6,9 +6,9 @@
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" Name="PART_Border">
-                        <Grid Name="PART_Grip" Background="#EAEAF2">
+                        <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="#EAEAF2" />
+                                <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton">
                                     <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
                                 </Button>
@@ -56,5 +56,12 @@
     </Style>
     <Style Selector="local|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="local|DockToolChrome /template/ Grid#PART_Grip">
+        <Setter Property="Background" Value="#EAEAF2" />
+    </Style>
+    <Style Selector="local|DockToolChrome:active /template/ Grid#PART_Grip">
+        <Setter Property="Background" Value="#007ACC" />
+        <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
     </Style>
 </Styles>

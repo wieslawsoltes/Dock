@@ -1,11 +1,12 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Xaml.Interactivity;
 using Dock.Model;
 using System;
 
 namespace Dock.Avalonia.Behaviors
 {
-    class SetRootFocusedViewOnFocusBehavior : Behavior<Control>
+    class SetRootFocusedViewOnPointerPressedBehavior : Behavior<Control>
     {
         private IDisposable _disposable;
 
@@ -13,8 +14,8 @@ namespace Dock.Avalonia.Behaviors
         {
             base.OnAttached();
 
-            _disposable = AssociatedObject.AddHandler(Control.GotFocusEvent, (sender, e) =>
-            {
+            _disposable = AssociatedObject.AddHandler(Control.PointerPressedEvent, (sender, e) =>
+            {   
                 if (AssociatedObject.DataContext is IViewsHost host)
                 {
                     var root = FindRoot(host.CurrentView);
@@ -24,7 +25,7 @@ namespace Dock.Avalonia.Behaviors
                         rootHost.FocusedView = host.CurrentView;
                     }
                 }
-            });
+            }, global::Avalonia.Interactivity.RoutingStrategies.Tunnel);
         }
 
         private IView FindRoot(IView view)

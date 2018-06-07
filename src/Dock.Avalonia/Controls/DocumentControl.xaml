@@ -38,7 +38,7 @@
         </Style>
     </UserControl.Styles>
     <i:Interaction.Behaviors>
-        <b:SetRootFocusedViewOnFocusBehavior />
+        <b:SetRootFocusedViewOnPointerPressedBehavior />
     </i:Interaction.Behaviors>
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
         <i:Interaction.Behaviors>

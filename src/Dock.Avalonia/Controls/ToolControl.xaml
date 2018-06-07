@@ -15,7 +15,7 @@
         <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
     </UserControl.Resources>
     <i:Interaction.Behaviors>
-        <b:SetRootFocusedViewOnFocusBehavior />
+        <b:SetRootFocusedViewOnPointerPressedBehavior />
     </i:Interaction.Behaviors>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">

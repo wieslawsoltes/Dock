@@ -1,19 +1,23 @@
 [CmdletBinding()]
 Param(
+    [string]$ConfigFileName = "$pwd\build.xml",
     [string]$Configuration = "Release",
     [string[]]$DisabledFrameworks,
     [string]$VersionSuffix = $null,
     [switch]$BuildSources,
     [switch]$TestSources,
     [switch]$PackSources,
-    [switch]$BuildSamples,
-    [switch]$PublishSamples,
-    [switch]$ZipSamples,
+    [switch]$BuildApps,
+    [switch]$PublishApps,
+    [switch]$ZipApps,
     [switch]$CopyRedist,
     [switch]$PushNuGet,
     [switch]$IsNugetRelease,
     [String]$Artifacts
 )
+
+$ConfigFileItem = Get-ChildItem $ConfigFileName
+[xml]$Config = Get-Content -Path $ConfigFileItem.FullName
 
 $VersionSuffixParam = $null
 
@@ -59,60 +63,16 @@ if (-Not ($IsNugetRelease)) {
 if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
     $PushNuGet = $false
     $IsNugetRelease = $false
-    $PublishSamples = $false
+    $PublishApps = $false
     $CopyRedist = $false
-    $ZipSamples = $false
+    $ZipApps = $false
     Write-Host "Pull Request #" + $env:APPVEYOR_PULL_REQUEST_NUMBER
     Write-Host "AppVeyor override PushNuGet: $PushNuGet"
     Write-Host "AppVeyor override IsNugetRelease: $IsNugetRelease"
-    Write-Host "AppVeyor override PublishSamples: $PublishSamples"
+    Write-Host "AppVeyor override PublishApps: $PublishApps"
     Write-Host "AppVeyor override CopyRedist: $CopyRedist"
-    Write-Host "AppVeyor override ZipSamples: $ZipSamples"
+    Write-Host "AppVeyor override ZipApps: $ZipApps"
 }
-
-$SourceProjects = @(
-    "Dock.Model",
-    "Dock.Model.INPC",
-    "Dock.Model.ReactiveUI",
-    "Dock.Serializer",
-    "Dock.Avalonia"
-)
-
-$SourceFrameworks = @(
-    "netstandard2.0",
-    "net461"
-)
-
-$TestProjects = @(
-    "Dock.Model.UnitTests",
-    "Dock.Model.INPC.UnitTests",
-    "Dock.Model.ReactiveUI.UnitTests",
-    "Dock.Serializer.UnitTests",
-    "Dock.Avalonia.UnitTests"
-)
-
-$TestFrameworks = @(
-    "netcoreapp2.0",
-    "netcoreapp2.1",
-    "net461"
-)
-
-$SamplesProjects = @(
-    "AvaloniaDemo"
-)
-
-$SampleFrameworks = @(
-    "netcoreapp2.0",
-    "netcoreapp2.1",
-    "net461"
-)
-
-$SampleRuntimes = @(
-    "win7-x64",
-    "ubuntu.14.04-x64",
-    "debian.8-x64",
-    "osx.10.12-x64"
-)
 
 function Execute($cmd) 
 {
@@ -135,11 +95,15 @@ function Zip($source, $destination)
 
 function Invoke-BuildSources
 {
-    ForEach ($project in $SourceProjects) {
-        ForEach ($framework in $SourceFrameworks) {
+    $Projects = $Config.Build.Sources.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $project, $Configuration, $framework"
-                $cmd = "dotnet build src\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                Write-Host "Build: $Name, $Configuration, $framework"
+                $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
         }
@@ -148,11 +112,15 @@ function Invoke-BuildSources
 
 function Invoke-TestSources
 {
-    ForEach ($project in $TestProjects) {
-        ForEach ($framework in $TestFrameworks) {
+    $Projects = $Config.Build.Tests.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Test: $project, $Configuration, $framework"
-                $cmd = "dotnet test tests\$project\$project.csproj -c $Configuration -f $framework"
+                Write-Host "Test: $Name, $Configuration, $framework"
+                $cmd = "dotnet test $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework"
                 Execute $cmd
             }
         }
@@ -161,11 +129,14 @@ function Invoke-TestSources
 
 function Invoke-PackSources
 {
-    ForEach ($project in $SourceProjects) {
-        $cmd = "dotnet pack src\$project\$project.csproj -c $Configuration $VersionSuffixParam"
+    $Projects = $Config.Build.Sources.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $cmd = "dotnet pack $pwd\$Path\$Name\$Name.csproj -c $Configuration $VersionSuffixParam"
         Execute $cmd
         if (Test-Path $Artifacts) {
-            $files = Get-Item "$pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg"
+            $files = Get-Item "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg"
             ForEach ($file in $files) {
                 Write-Host "Copy: $file"
                 Copy-Item $file.FullName -Destination $Artifacts
@@ -174,27 +145,36 @@ function Invoke-PackSources
     }
 }
 
-function Invoke-BuildSamples
+function Invoke-BuildApps
 {
-    ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SampleFrameworks) {
+    $Projects = $Config.Build.Apps.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
-                Write-Host "Build: $project, $Configuration, $framework"
-                $cmd = "dotnet build samples\$project\$project.csproj -c $Configuration -f $framework $VersionSuffixParam"
+                Write-Host "Build: $Name, $Configuration, $framework"
+                $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
                 Execute $cmd
             }
         }
     }
 }
 
-function Invoke-PublishSamples
+function Invoke-PublishApps
 {
-    ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SampleFrameworks) {
-            ForEach ($runtime in $SampleRuntimes) {
+    $Projects = $Config.Build.Apps.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        $Runtimes = $project.Runtimes.Runtime
+        ForEach ($framework in $Frameworks) {
+            ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Publish: $project, $Configuration, $framework, $runtime"
-                    $cmd = "dotnet publish samples\$project\$project.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
+                    Write-Host "Publish: $Name, $Configuration, $framework, $runtime"
+                    $cmd = "dotnet publish $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
                     Execute $cmd
                 }
             }
@@ -207,11 +187,16 @@ function Invoke-CopyRedist
     $RedistVersion = "14.14.26405"
     $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\Microsoft.VC141.CRT\"
     $RedistRuntime = "win7-x64"
-    ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SampleFrameworks) {
-            ForEach ($runtime in $SampleRuntimes) {
+    $Projects = $Config.Build.Apps.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        $Runtimes = $project.Runtimes.Runtime
+        ForEach ($framework in $Frameworks) {
+            ForEach ($runtime in $Runtimes) {
                 if ($runtime -eq $RedistRuntime) {
-                    $RedistDest = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
+                    $RedistDest = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$RedistRuntime\publish"
                     if(Test-Path -Path $RedistDest) {
                         Write-Host "CopyRedist: $RedistDest, runtime: $RedistRuntime, version: $RedistVersion"
                         Copy-Item "$RedistPath\msvcp140.dll" -Destination $RedistDest
@@ -225,15 +210,20 @@ function Invoke-CopyRedist
     }
 }
 
-function Invoke-ZipSamples
+function Invoke-ZipApps
 {
-    ForEach ($project in $SamplesProjects) {
-        ForEach ($framework in $SampleFrameworks) {
-            ForEach ($runtime in $SampleRuntimes) {
+    $Projects = $Config.Build.Apps.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
+        $Frameworks = $project.Frameworks.Framework
+        $Runtimes = $project.Runtimes.Runtime
+        ForEach ($framework in $Frameworks) {
+            ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
-                    Write-Host "Zip: $project, $Configuration, $framework, $runtime"
-                    $source = "$pwd\samples\$project\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
-                    $destination = "$Artifacts\$project-$framework-$runtime.zip"
+                    Write-Host "Zip: $Name, $Configuration, $framework, $runtime"
+                    $source = "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\$framework\$runtime\publish\"
+                    $destination = "$Artifacts\$Name-$framework-$runtime.zip"
                     Zip $source $destination
                     Write-Host "Zip: $destination"
                 }
@@ -244,17 +234,20 @@ function Invoke-ZipSamples
 
 function Invoke-PushNuGet
 {
-    ForEach ($project in $SourceProjects) {
+    $Projects = $Config.Build.Sources.Project
+    ForEach ($project in $Projects) {
+        $Name = $project.Name
+        $Path = $project.Path
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
-                Write-Host "Push NuGet: $project, $Configuration"
-                $cmd = "dotnet nuget push $pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
+                Write-Host "Push NuGet: $Name, $Configuration"
+                $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
                 Execute $cmd
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
-                Write-Host "Push MyGet: $project, $Configuration"
-                $cmd = "dotnet nuget push $pwd\src\$project\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
+                Write-Host "Push MyGet: $Name, $Configuration"
+                $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
                 Execute $cmd
             }
         }
@@ -265,24 +258,24 @@ if($BuildSources) {
     Invoke-BuildSources
 }
 
-if($TestCoree) {
+if($TestSources) {
     Invoke-TestSources
 }
 
-if($BuildSamples) {
-    Invoke-BuildSamples
+if($BuildApps) {
+    Invoke-BuildApps
 }
 
-if($PublishSamples) {
-    Invoke-PublishSamples
+if($PublishApps) {
+    Invoke-PublishApps
 }
 
 if($CopyRedist) {
     Invoke-CopyRedist
 }
 
-if($ZipSamples) {
-    Invoke-ZipSamples
+if($ZipApps) {
+    Invoke-ZipApps
 }
 
 if($PackSources) {

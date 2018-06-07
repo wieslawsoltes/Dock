@@ -14,7 +14,7 @@ install:
   - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
   - cmd: dotnet --info
 build_script:
-- ps: .\build.ps1 -BuildSources -TestSources -PackSources -BuildApps -PublishApps -CopyRedist -ZipApps
+- ps: .\build.ps1 -BuildSources -PackSources -BuildApps -PublishApps -CopyRedist -ZipApps
 artifacts:
   - path: artifacts\*.nupkg
   - path: artifacts\*.zip

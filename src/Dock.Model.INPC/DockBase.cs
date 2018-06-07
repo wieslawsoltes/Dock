@@ -16,9 +16,10 @@ namespace Dock.Model
         private IView _currentView;
         private IView _defaultView;
         private IView _focusedView;
+        private bool _isActive;
         private IList<IDockWindow> _windows;
         private string _dock;
-        private IDockFactory _factory;
+        private IDockFactory _factory;        
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -47,6 +48,16 @@ namespace Dock.Model
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
                 this.SetFocusedView(value);
+            }
+        }
+        
+        /// <inheritdoc />
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isActive, value);
             }
         }
 

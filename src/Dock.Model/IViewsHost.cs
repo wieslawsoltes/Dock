@@ -30,6 +30,11 @@ namespace Dock.Model
         IView FocusedView { get; set; }
 
         /// <summary>
+        /// Gets or sets if the Host is the currently active host.
+        /// </summary>
+        bool IsActive { get; set; }
+
+        /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
         /// </summary>
         bool CanGoBack { get; }

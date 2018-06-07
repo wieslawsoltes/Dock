@@ -6,11 +6,5 @@ namespace Dock.Avalonia.UnitTests
 {
     public class DropBehaviorTests
     {
-        [Fact]
-        public void DropBehavior_Ctor()
-        {
-            var actual = new DropBehavior();
-            Assert.NotNull(actual);
-        }
     }
 }

@@ -6,11 +6,5 @@ namespace Dock.Avalonia.UnitTests
 {
     public class DragBehaviorTests
     {
-        [Fact]
-        public void DragBehavior_Ctor()
-        {
-            var actual = new DragBehavior();
-            Assert.NotNull(actual);
-        }
     }
 }

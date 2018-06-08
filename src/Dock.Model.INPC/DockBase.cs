@@ -15,6 +15,8 @@ namespace Dock.Model
         private IList<IView> _views;
         private IView _currentView;
         private IView _defaultView;
+        private IView _focusedView;
+        private bool _isActive;
         private IList<IDockWindow> _windows;
         private string _dock;
         private IDockFactory _factory;
@@ -45,7 +47,15 @@ namespace Dock.Model
                 this.RaiseAndSetIfChanged(ref _currentView, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
+                this.SetFocusedView(value);
             }
+        }
+
+        /// <inheritdoc/>
+        public bool IsActive
+        {
+            get => _isActive;
+            set => this.RaiseAndSetIfChanged(ref _isActive, value);
         }
 
         /// <inheritdoc/>
@@ -54,6 +64,14 @@ namespace Dock.Model
         {
             get => _defaultView;
             set => this.RaiseAndSetIfChanged(ref _defaultView, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IView FocusedView
+        {
+            get => _focusedView;
+            set => this.RaiseAndSetIfChanged(ref _focusedView, value);
         }
 
         /// <inheritdoc/>
@@ -86,6 +104,14 @@ namespace Dock.Model
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
+        }
+
+        private void SetFocusedView(IView view)
+        {
+            if (_factory != null && _factory.FindRoot(this) is IViewsHost viewsHost)
+            {
+                viewsHost.FocusedView = view;
+            }
         }
 
         /// <inheritdoc/>

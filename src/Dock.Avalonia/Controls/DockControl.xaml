@@ -20,10 +20,10 @@
                 <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:DockToolChrome Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
-                    <i:Interaction.Behaviors>
+                <idc:DockToolChrome Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}" IsActive="{Binding IsActive}">
+                    <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}"/>
-                    </i:Interaction.Behaviors>
+                    </i:Interaction.Behaviors>-->
                     <idc:ToolControl />
                 </idc:DockToolChrome>
             </DataTemplate>

@@ -13,6 +13,9 @@
         <id:DockDropHandler x:Key="DockDropHandler6" Id="6"/>
         <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
     </UserControl.Resources>
+    <i:Interaction.Behaviors>
+        <id:SetRootFocusedViewOnPointerPressedBehavior/>
+    </i:Interaction.Behaviors>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
             <Setter Property="Background" Value="Transparent"/>

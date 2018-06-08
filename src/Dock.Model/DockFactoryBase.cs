@@ -127,7 +127,7 @@ namespace Dock.Model
 
             if (window.Layout != null)
             {
-                Update(window.Layout, context, null);
+                Update(window.Layout, context, window.Layout.Parent);
             }
         }
 
@@ -1078,6 +1078,7 @@ namespace Dock.Model
             root.CurrentView = target;
             root.DefaultView = target;
             root.Views = new ObservableCollection<IView> { target };
+            root.Parent = FindRoot(view);
 
             var window = CreateDockWindow();
             window.Id = nameof(IDockWindow);
@@ -1112,6 +1113,38 @@ namespace Dock.Model
             {
                 window.Destroy();
                 dock.Windows?.Remove(window);
+            }
+        }
+
+        /// <summary>
+        /// Sets the IsActive flag.
+        /// </summary>
+        /// <param name="view">the view to try and set IsActive on.</param>
+        /// <param name="active">value to set</param>
+        private void SetIsActive(IView view, bool active)
+        {
+            if (view is IViewsHost host)
+            {
+                host.IsActive = active;
+            }
+        }
+
+        /// <inheritdoc />
+        public void SetFocusedView(IViewsHost host, IView view)
+        {
+            if (host.CurrentView != null && FindRoot(host.CurrentView) is IViewsHost viewsHost)
+            {
+                if (viewsHost.FocusedView != null)
+                {
+                    SetIsActive(viewsHost.FocusedView.Parent, false);
+                }
+
+                viewsHost.FocusedView = view;
+
+                if (viewsHost.FocusedView != null)
+                {
+                    SetIsActive(viewsHost.FocusedView.Parent, true);
+                }
             }
         }
     }

@@ -15,6 +15,8 @@ namespace Dock.Model.UnitTests
         public IList<IView> Views { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public IView CurrentView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public IView DefaultView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public IView FocusedView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public bool IsActive { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public bool CanGoBack => throw new System.NotImplementedException();
         public bool CanGoForward => throw new System.NotImplementedException();
         public IList<IDockWindow> Windows { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

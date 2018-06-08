@@ -139,6 +139,13 @@ namespace Dock.Model
         void Select(IView view);
 
         /// <summary>
+        /// Sets the currently focused view updating IsActive flags.
+        /// </summary>
+        /// <param name="host">The host to set the focused view on.</param>
+        /// <param name="view">The view to set.</param>
+        void SetFocusedView(IViewsHost host, IView view);
+
+        /// <summary>
         /// Searches for root view.
         /// </summary>
         /// <param name="view">The view to find root for.</param>

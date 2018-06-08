@@ -35,12 +35,7 @@ namespace Dock.Avalonia
                 {
                     if (factory.FindRoot(host.CurrentView) is IViewsHost rootHost)
                     {
-                        if (rootHost.FocusedView.Parent is IViewsHost parentRootHost)
-                        {
-                            parentRootHost.IsActive = false;
-                        }
-                        rootHost.FocusedView = host.CurrentView;
-                        host.IsActive = true;
+                        factory.SetFocusedView(rootHost, host.CurrentView);
                     }
                 }
             }, global::Avalonia.Interactivity.RoutingStrategies.Tunnel);

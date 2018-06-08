@@ -72,9 +72,7 @@
   <Apps>
     <Project Name="AvaloniaDemo" Path="samples">
       <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
-        <Framework>net461</Framework>
       </Frameworks>
       <Runtimes>
         <Runtime>win7-x64</Runtime>

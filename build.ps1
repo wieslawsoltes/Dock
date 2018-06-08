@@ -35,12 +35,13 @@ if (-Not (Test-Path $Artifacts)) {
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
         $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
-        $VersionSuffixParam = "--version-suffix " + $VersionSuffix
+        $VersionSuffixParam = "\`"$VersionSuffix\`""
         Write-Host "AppVeyor override VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
+    } else {
+        $VersionSuffixParam = "\`"\`""
     }
 } else {
-    $VersionSuffixParam = "--version-suffix $VersionSuffix"
-    Write-Host "VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
+    $VersionSuffixParam = "\`"$VersionSuffix\`""
 }
 
 if (-Not ($PushNuGet))
@@ -87,20 +88,15 @@ Write-Host "PushNuGet: $PushNuGet" -ForegroundColor White
 Write-Host "IsNugetRelease: $IsNugetRelease" -ForegroundColor White
 Write-Host "Artifacts: $Artifacts" -ForegroundColor White
 
-function Execute($cmd) 
+function Validate
 {
-    Try {
-        Invoke-Expression -Command $cmd
-        if ($LastExitCode -ne 0) { Exit 1 }
-    }
-    Catch {
-        Write-Host "Invoke Expression failed." -ForegroundColor Red
-        Exit 1
-    }
+    param()
+    if ($LastExitCode -ne 0) { Exit 1 }
 }
 
-function Zip($source, $destination)
+function Zip
 {
+    param($source, $destination)
     if(Test-Path $destination) { Remove-item $destination }
     Add-Type -assembly "System.IO.Compression.FileSystem"
     [IO.Compression.ZipFile]::CreateFromDirectory($source, $destination)
@@ -108,6 +104,7 @@ function Zip($source, $destination)
 
 function Invoke-BuildSources
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -116,8 +113,9 @@ function Invoke-BuildSources
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
-                Execute $cmd
+                $args = @('build', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '-f', $framework, '--version-suffix', $VersionSuffixParam)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -125,6 +123,7 @@ function Invoke-BuildSources
 
 function Invoke-TestSources
 {
+    param()
     $Projects = $Config.Build.Tests.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -133,8 +132,9 @@ function Invoke-TestSources
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Test: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet test $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework"
-                Execute $cmd
+                $args = @('test', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '-f', $framework)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -142,12 +142,14 @@ function Invoke-TestSources
 
 function Invoke-PackSources
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
         $Path = $project.Path
-        $cmd = "dotnet pack $pwd\$Path\$Name\$Name.csproj -c $Configuration $VersionSuffixParam"
-        Execute $cmd
+        $args = @('pack', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '--version-suffix', $VersionSuffixParam)
+        & dotnet $args
+        Validate
         if (Test-Path $Artifacts) {
             $files = Get-Item "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg"
             ForEach ($file in $files) {
@@ -160,6 +162,7 @@ function Invoke-PackSources
 
 function Invoke-BuildApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -168,8 +171,9 @@ function Invoke-BuildApps
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet build $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework $VersionSuffixParam"
-                Execute $cmd
+                $args = @('build', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '-f', $framework, '--version-suffix', $VersionSuffixParam)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -177,6 +181,7 @@ function Invoke-BuildApps
 
 function Invoke-PublishApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -187,8 +192,9 @@ function Invoke-PublishApps
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Cyan
-                    $cmd = "dotnet publish $pwd\$Path\$Name\$Name.csproj -c $Configuration -f $framework -r $runtime $VersionSuffixParam"
-                    Execute $cmd
+                    $args = @('publish', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '-f', $framework, '-r', $runtime, '--version-suffix', $VersionSuffixParam)
+                    & dotnet $args
+                    Validate
                 }
             }
         }
@@ -197,6 +203,7 @@ function Invoke-PublishApps
 
 function Invoke-CopyRedist
 {
+    param()
     $RedistVersion = "14.14.26405"
     $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\Microsoft.VC141.CRT\"
     $RedistRuntime = "win7-x64"
@@ -225,6 +232,7 @@ function Invoke-CopyRedist
 
 function Invoke-ZipApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -247,6 +255,7 @@ function Invoke-ZipApps
 
 function Invoke-PushNuGet
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -254,14 +263,16 @@ function Invoke-PushNuGet
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
                 Write-Host "Push NuGet: $Name, $Configuration" -ForegroundColor Cyan
-                $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:NUGET_API_URL -k $env:NUGET_API_KEY"
-                Execute $cmd
+                $args = @('nuget', 'push', "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg", '-s', $env:NUGET_API_URL, '-k', $env:NUGET_API_KEY)
+                & dotnet $args
+                Validate
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
                 Write-Host "Push MyGet: $Name, $Configuration" -ForegroundColor Cyan
-                $cmd = "dotnet nuget push $pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg -s $env:MYGET_API_URL -k $env:MYGET_API_KEY"
-                Execute $cmd
+                $args = @('nuget', 'push', "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg", '-s', $env:MYGET_API_URL, '-k', $env:MYGET_API_KEY)
+                & dotnet $args
+                Validate
             }
         }
     }

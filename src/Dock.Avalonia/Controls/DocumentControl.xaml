@@ -43,7 +43,6 @@
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
         </i:Interaction.Behaviors>
-
         <TabStrip Name="PART_TabStrip"  Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
             <i:Interaction.Behaviors>
                 <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>

@@ -87,10 +87,11 @@ Write-Host "PushNuGet: $PushNuGet" -ForegroundColor White
 Write-Host "IsNugetRelease: $IsNugetRelease" -ForegroundColor White
 Write-Host "Artifacts: $Artifacts" -ForegroundColor White
 
-function Execute($cmd, $args)
+function Execute()
 {
+    param([string]$cmd, [string[]]$args)
     Try {
-        & $cmd + $args
+        & $cmd $args
         if ($LastExitCode -ne 0) { Exit 1 }
     }
     Catch {
@@ -99,8 +100,9 @@ function Execute($cmd, $args)
     }
 }
 
-function Zip($source, $destination)
+function Zip()
 {
+    param($source, $destination)
     if(Test-Path $destination) { Remove-item $destination }
     Add-Type -assembly "System.IO.Compression.FileSystem"
     [IO.Compression.ZipFile]::CreateFromDirectory($source, $destination)
@@ -108,6 +110,7 @@ function Zip($source, $destination)
 
 function Invoke-BuildSources
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -126,6 +129,7 @@ function Invoke-BuildSources
 
 function Invoke-TestSources
 {
+    param()
     $Projects = $Config.Build.Tests.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -144,6 +148,7 @@ function Invoke-TestSources
 
 function Invoke-PackSources
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -163,6 +168,7 @@ function Invoke-PackSources
 
 function Invoke-BuildApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -181,6 +187,7 @@ function Invoke-BuildApps
 
 function Invoke-PublishApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -202,6 +209,7 @@ function Invoke-PublishApps
 
 function Invoke-CopyRedist
 {
+    param()
     $RedistVersion = "14.14.26405"
     $RedistPath = "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\$RedistVersion\x64\Microsoft.VC141.CRT\"
     $RedistRuntime = "win7-x64"
@@ -230,6 +238,7 @@ function Invoke-CopyRedist
 
 function Invoke-ZipApps
 {
+    param()
     $Projects = $Config.Build.Apps.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name
@@ -252,6 +261,7 @@ function Invoke-ZipApps
 
 function Invoke-PushNuGet
 {
+    param()
     $Projects = $Config.Build.Sources.Project
     ForEach ($project in $Projects) {
         $Name = $project.Name

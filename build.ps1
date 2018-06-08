@@ -94,7 +94,7 @@ function Execute
         $command = Get-Command -commandType Application $cmd
         Write-Host $cmd -ForegroundColor Red
         Write-Host $command
-        & $command $args
+        & $command.Source $args
         if ($LastExitCode -ne 0) { Exit 1 }
     }
     Catch {

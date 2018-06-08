@@ -41,15 +41,15 @@
             </MenuItem>
             <MenuItem Header="_Options">
                 <MenuItem Header="Drag Behaviors Enabled">
-                    <!--<MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}"/>
-                    </MenuItem.Icon>-->
+                    <MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $self.(DragBehavior.IsEnabled)}"/>
+                    </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Drop Behaviors Enabled">
-                    <!--<MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}"/>
-                    </MenuItem.Icon>-->
+                    <MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $self.(DropBehavior.IsEnabled)}"/>
+                    </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
         </Menu>

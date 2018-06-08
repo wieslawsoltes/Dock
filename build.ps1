@@ -87,11 +87,13 @@ Write-Host "PushNuGet: $PushNuGet" -ForegroundColor White
 Write-Host "IsNugetRelease: $IsNugetRelease" -ForegroundColor White
 Write-Host "Artifacts: $Artifacts" -ForegroundColor White
 
-function Execute()
+function Execute
 {
     param([string]$cmd, [string[]]$args)
     Try {
         $command = Get-Command -commandType Application $cmd
+        Write-Host $cmd -ForegroundColor Red
+        Write-Host $command
         & $command $args
         if ($LastExitCode -ne 0) { Exit 1 }
     }
@@ -101,7 +103,7 @@ function Execute()
     }
 }
 
-function Zip()
+function Zip
 {
     param($source, $destination)
     if(Test-Path $destination) { Remove-item $destination }

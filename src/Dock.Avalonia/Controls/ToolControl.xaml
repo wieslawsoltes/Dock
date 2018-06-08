@@ -6,7 +6,6 @@
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-             xmlns:b="clr-namespace:Dock.Avalonia.Behaviors;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
@@ -15,7 +14,7 @@
         <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
     </UserControl.Resources>
     <i:Interaction.Behaviors>
-        <b:SetRootFocusedViewOnPointerPressedBehavior />
+        <id:SetRootFocusedViewOnPointerPressedBehavior/>
     </i:Interaction.Behaviors>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">

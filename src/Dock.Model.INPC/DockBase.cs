@@ -19,7 +19,7 @@ namespace Dock.Model
         private bool _isActive;
         private IList<IDockWindow> _windows;
         private string _dock;
-        private IDockFactory _factory;        
+        private IDockFactory _factory;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -50,23 +50,12 @@ namespace Dock.Model
                 this.SetFocusedView(value);
             }
         }
-        
-        /// <inheritdoc />
+
+        /// <inheritdoc/>
         public bool IsActive
         {
             get => _isActive;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _isActive, value);
-            }
-        }
-
-        private void SetFocusedView(IView view)
-        {
-            if (_factory != null && _factory.FindRoot(this) is IViewsHost viewsHost)
-            {
-                viewsHost.FocusedView = view;
-            }
+            set => this.RaiseAndSetIfChanged(ref _isActive, value);
         }
 
         /// <inheritdoc/>
@@ -115,6 +104,14 @@ namespace Dock.Model
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
+        }
+
+        private void SetFocusedView(IView view)
+        {
+            if (_factory != null && _factory.FindRoot(this) is IViewsHost viewsHost)
+            {
+                viewsHost.FocusedView = view;
+            }
         }
 
         /// <inheritdoc/>

@@ -87,17 +87,10 @@ Write-Host "PushNuGet: $PushNuGet" -ForegroundColor White
 Write-Host "IsNugetRelease: $IsNugetRelease" -ForegroundColor White
 Write-Host "Artifacts: $Artifacts" -ForegroundColor White
 
-function Execute
+function Validate
 {
-    param([string]$cmd, [string[]]$args)
-    Try {
-        & $cmd $args
-        if ($LastExitCode -ne 0) { Exit 1 }
-    }
-    Catch {
-        Write-Host "Execute command failed." -ForegroundColor Red
-        Exit 1
-    }
+    param()
+    if ($LastExitCode -ne 0) { Exit 1 }
 }
 
 function Zip
@@ -119,9 +112,9 @@ function Invoke-BuildSources
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet-build"
-                $args = @('$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, $VersionSuffixParam)
-                Execute $cmd $args
+                $args = @('build', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, $VersionSuffixParam)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -138,9 +131,9 @@ function Invoke-TestSources
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Test: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet-test"
-                $args = @('$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework)
-                Execute $cmd $args
+                $args = @('test', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -153,9 +146,9 @@ function Invoke-PackSources
     ForEach ($project in $Projects) {
         $Name = $project.Name
         $Path = $project.Path
-        $cmd = "dotnet"
         $args = @('pack', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, $VersionSuffixParam)
-        Execute $cmd $args
+        & dotnet $args
+        Validate
         if (Test-Path $Artifacts) {
             $files = Get-Item "$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg"
             ForEach ($file in $files) {
@@ -177,9 +170,9 @@ function Invoke-BuildApps
         ForEach ($framework in $Frameworks) {
             if (-Not ($DisabledFrameworks -match $framework)) {
                 Write-Host "Build: $Name, $Configuration, $framework" -ForegroundColor Cyan
-                $cmd = "dotnet-build"
-                $args = @('$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, $VersionSuffixParam)
-                Execute $cmd $args
+                $args = @('build', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, $VersionSuffixParam)
+                & dotnet $args
+                Validate
             }
         }
     }
@@ -198,9 +191,9 @@ function Invoke-PublishApps
             ForEach ($runtime in $Runtimes) {
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Cyan
-                    $cmd = "dotnet-publish"
-                    $args = @('$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, '-r', $runtime, $VersionSuffixParam)
-                    Execute $cmd $args
+                    $args = @('publish', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, '-r', $runtime, $VersionSuffixParam)
+                    & dotnet $args
+                    Validate
                 }
             }
         }
@@ -269,16 +262,16 @@ function Invoke-PushNuGet
         if($IsNugetRelease) {
             if ($env:NUGET_API_URL -And $env:NUGET_API_KEY) {
                 Write-Host "Push NuGet: $Name, $Configuration" -ForegroundColor Cyan
-                $cmd = "dotnet-nuget-push"
-                $args = @('$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg', '-s', $env:NUGET_API_URL, '-k', $env:NUGET_API_KEY)
-                Execute $cmd $args
+                $args = @('nuget', 'push', '$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg', '-s', $env:NUGET_API_URL, '-k', $env:NUGET_API_KEY)
+                & dotnet $args
+                Validate
             }
         } else {
             if ($env:MYGET_API_URL -And $env:MYGET_API_KEY) {
                 Write-Host "Push MyGet: $Name, $Configuration" -ForegroundColor Cyan
-                $cmd = "dotnet-nuget-push"
-                $args = @('$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg', '-s', $env:MYGET_API_URL, '-k', $env:MYGET_API_KEY)
-                Execute $cmd $args
+                $args = @('nuget', 'push', '$pwd\$Path\$Name\bin\AnyCPU\$Configuration\*.nupkg', '-s', $env:MYGET_API_URL, '-k', $env:MYGET_API_KEY)
+                & dotnet $args
+                Validate
             }
         }
     }

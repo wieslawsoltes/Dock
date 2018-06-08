@@ -61,13 +61,13 @@
         <Framework>net461</Framework>
       </Frameworks>
     </Project>
-    <Project Name="Dock.Avalonia.UnitTests" Path="tests">
+    <!--<Project Name="Dock.Avalonia.UnitTests" Path="tests">
       <Frameworks>
         <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
         <Framework>net461</Framework>
       </Frameworks>
-    </Project>
+    </Project>-->
   </Tests>
   <Apps>
     <Project Name="AvaloniaDemo" Path="samples">

@@ -91,7 +91,8 @@ function Execute()
 {
     param([string]$cmd, [string[]]$args)
     Try {
-        & $cmd $args
+        $command = Get-Command -commandType Application $cmd
+        & $command $args
         if ($LastExitCode -ne 0) { Exit 1 }
     }
     Catch {

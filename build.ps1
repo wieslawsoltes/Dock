@@ -192,7 +192,7 @@ function Invoke-PublishApps
                 if (-Not ($DisabledFrameworks -match $framework)) {
                     Write-Host "Publish: $Name, $Configuration, $framework, $runtime" -ForegroundColor Cyan
                     $cmd = dotnet
-                    $args = @('publish', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, '-r', $runtime $VersionSuffixParam)
+                    $args = @('publish', '$pwd\$Path\$Name\$Name.csproj', '-c', $Configuration, '-f', $framework, '-r', $runtime, $VersionSuffixParam)
                     Execute $cmd $args
                 }
             }

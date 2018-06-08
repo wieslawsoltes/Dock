@@ -1132,7 +1132,7 @@ namespace Dock.Model
         /// <inheritdoc />
         public void SetFocusedView(IViewsHost host, IView view)
         {
-            if (FindRoot(host.CurrentView) is IViewsHost viewsHost)
+            if (host.CurrentView != null && FindRoot(host.CurrentView) is IViewsHost viewsHost)
             {
                 if (viewsHost.FocusedView != null)
                 {

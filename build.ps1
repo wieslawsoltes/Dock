@@ -35,11 +35,11 @@ if (-Not (Test-Path $Artifacts)) {
 if (-Not ($VersionSuffix)) {
     if ($env:APPVEYOR_BUILD_VERSION) {
         $VersionSuffix = "-build" + $env:APPVEYOR_BUILD_VERSION
-        $VersionSuffixParam = "--version-suffix" + " `"$VersionSuffix"`""
+        $VersionSuffixParam = "--version-suffix" + " `"$VersionSuffix`""
         Write-Host "AppVeyor override VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
     }
 } else {
-    $VersionSuffixParam = "--version-suffix" + " `"$VersionSuffix"`""
+    $VersionSuffixParam = "--version-suffix" + " `"$VersionSuffix`""
     Write-Host "VersionSuffix: $VersionSuffix" -ForegroundColor Yellow
 }
 

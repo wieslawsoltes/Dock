@@ -72,7 +72,7 @@
         <TabItem Header="Views">
             <ListBox x:Name="views" Items="{Binding Views}" Margin="4">
                 <ListBox.KeyBindings>
-                    <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
+                    <KeyBinding Command="{Binding Factory.RemoveView}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
                 </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IView">
@@ -83,7 +83,7 @@
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="_Remove" Command="{Binding Factory.RemoveView}" CommandParameter="{Binding}"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>

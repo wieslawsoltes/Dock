@@ -95,7 +95,7 @@
                             <MenuItem Header="To Do_cument Tab" Command="{Binding Factory.ConvertToDocumentTab}" CommandParameter="{Binding}"/>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="_Remove" Command="{Binding Factory.Remove}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="_Remove" Command="{Binding Factory.RemoveView}" CommandParameter="{Binding}"/>
                     </ContextMenu>
                 </TextBlock.ContextMenu>
             </TextBlock>
@@ -113,7 +113,7 @@
     <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="60*,Auto,40*">
         <TreeView x:Name="views" Grid.Column="0" Grid.Row="0">
             <TreeView.KeyBindings>
-                <KeyBinding Command="{Binding Factory.Remove}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
+                <KeyBinding Command="{Binding Factory.RemoveView}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
             </TreeView.KeyBindings>
             <TreeViewItem Header="{Binding Title}" DataContext="{Binding}" Items="{Binding Views}"/>
         </TreeView>

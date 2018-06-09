@@ -194,7 +194,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void Remove(IView view)
+        public virtual void RemoveView(IView view)
         {
             if (view?.Parent is IViewsHost viewHost && viewHost.Views != null)
             {
@@ -206,8 +206,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void MoveView(IViewsHost host, int sourceIndex, int targetIndex)
+        public virtual void MoveView(IViewsHost host, IView sourceView, IView targetView)
         {
+            int sourceIndex = host.Views.IndexOf(sourceView);
+            int targetIndex = host.Views.IndexOf(targetView);
+
             if (sourceIndex < targetIndex)
             {
                 var item = host.Views[sourceIndex];
@@ -229,8 +232,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex)
+        public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
+            int sourceIndex = sourceHost.Views.IndexOf(sourceView);
+            int targetIndex = targetHost.Views.IndexOf(targetView);
+
             var item = sourceHost.Views[sourceIndex];
             sourceHost.Views.RemoveAt(sourceIndex);
 
@@ -315,8 +321,10 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SwapView(IViewsHost host, int sourceIndex, int targetIndex)
+        public virtual void SwapView(IViewsHost host, IView sourceView, IView targetView)
         {
+            int sourceIndex = host.Views.IndexOf(sourceView);
+            int targetIndex = host.Views.IndexOf(targetView);
             var item1 = host.Views[sourceIndex];
             var item2 = host.Views[targetIndex];
             host.Views[targetIndex] = item1;
@@ -325,8 +333,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SwapView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex)
+        public virtual void SwapView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
+            int sourceIndex = sourceHost.Views.IndexOf(sourceView);
+            int targetIndex = targetHost.Views.IndexOf(targetView);
+
             var item1 = sourceHost.Views[sourceIndex];
             var item2 = targetHost.Views[targetIndex];
             sourceHost.Views[sourceIndex] = item2;

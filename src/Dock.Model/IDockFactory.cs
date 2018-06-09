@@ -156,24 +156,24 @@ namespace Dock.Model
         /// Removes view from parent <see cref="IViewsHost.Views"/> collection.
         /// </summary>
         /// <param name="view">The view to remove.</param>
-        void Remove(IView view);
+        void RemoveView(IView view);
 
         /// <summary>
         /// Moves view inside <see cref="IViewsHost.Views"/> collection.
         /// </summary>
         /// <param name="host">The views host.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="targetIndex">The target view index.</param>
-        void MoveView(IViewsHost host, int sourceIndex, int targetIndex);
+        /// <param name="sourceView">The source view.</param>
+        /// <param name="targetView">The target view.</param>
+        void MoveView(IViewsHost host, IView sourceView, IView targetView);
 
         /// <summary>
         /// Moves view into another <see cref="IViewsHost.Views"/> collection.
         /// </summary>
         /// <param name="sourceHost">The source views dock.</param>
         /// <param name="targetHost">The target views dock.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="targetIndex">The target view index.</param>
-        void MoveView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex);
+        /// <param name="sourceView">The source view.</param>
+        /// <param name="targetView">The target view.</param>
+        void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView);
 
         /// <summary>
         /// Moves view into another <see cref="IViewsHost.Views"/> collection.
@@ -193,18 +193,18 @@ namespace Dock.Model
         /// Swaps view in inside <see cref="IViewsHost.Views"/> collections.
         /// </summary>
         /// <param name="host">The views host.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="targetIndex">The target view index.</param>
-        void SwapView(IViewsHost host, int sourceIndex, int targetIndex);
+        /// <param name="sourceView">The source view.</param>
+        /// <param name="targetView">The target view.</param>
+        void SwapView(IViewsHost host, IView sourceView, IView targetView);
 
         /// <summary>
         /// Swaps view into between <see cref="IViewsHost.Views"/> collections.
         /// </summary>
         /// <param name="sourceHost">The source views host.</param>
         /// <param name="targetHost">The target views host.</param>
-        /// <param name="sourceIndex">The source view index.</param>
-        /// <param name="targetIndex">The target view index.</param>
-        void SwapView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex);
+        /// <param name="sourceView">The source view.</param>
+        /// <param name="targetView">The target view.</param>
+        void SwapView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView);
 
         /// <summary>
         /// Replaces source view with destination view in source view parent <see cref="IViewsHost.Views"/> collection.

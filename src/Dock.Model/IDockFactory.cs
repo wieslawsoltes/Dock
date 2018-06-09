@@ -159,13 +159,6 @@ namespace Dock.Model
         void Remove(IView view);
 
         /// <summary>
-        /// Removes view from the <see cref="IViewsHost.Views"/> collection.
-        /// </summary>
-        /// <param name="host">The views host.</param>
-        /// <param name="index">The source view index.</param>
-        void RemoveView(IViewsHost host, int index);
-
-        /// <summary>
         /// Moves view inside <see cref="IViewsHost.Views"/> collection.
         /// </summary>
         /// <param name="host">The views host.</param>

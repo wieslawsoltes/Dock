@@ -239,16 +239,14 @@ namespace Dock.Model
                     {
                         if (sourceView.Parent is IViewsHost sourceViewParentHost)
                         {
-                            int sourceIndex = sourceViewParentHost.Views.IndexOf(sourceView);
-                            if (sourceIndex >= 0
-                                && sourceView != targetView && sourceView.Parent != targetView
+                            if (sourceView != targetView && sourceView.Parent != targetView
                                 && sourceView.Parent is IDock sourceViewParentDock
                                 && sourceViewParentDock.Factory is IDockFactory factory
                                 && factory.FindRoot(sourceView) is IDock rootLayout && rootLayout.CurrentView != null)
                             {
                                 if (bExecute)
                                 {
-                                    factory.RemoveView(sourceViewParentHost, sourceIndex);
+                                    factory.Remove(sourceView);
 
                                     var window = factory.CreateWindowFrom(sourceView);
                                     if (window != null)

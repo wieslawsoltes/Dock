@@ -196,27 +196,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void Remove(IView view)
         {
-            if (view?.Parent is IViewsHost viewHost)
+            if (view?.Parent is IViewsHost viewHost && viewHost.Views != null)
             {
-                viewHost.Views?.Remove(view);
-            }
-        }
+                int index = viewHost.Views.IndexOf(view);
 
-        /// <inheritdoc/>
-        public virtual void RemoveView(IViewsHost host, int index)
-        {
-            host.Views.RemoveAt(index);
-
-            // This code may not be needed now since carousel is fixed.
-            if (host.Views.Count > 0)
-            {
-                host.CurrentView = host.Views[index > 0 ? index - 1 : 0];
+                viewHost.Views.Remove(view);
+                viewHost.CurrentView = viewHost.Views.Count > 0 ? viewHost.Views[index > 0 ? index - 1 : 0] : null;
             }
-            else
-            {
-                host.CurrentView = null;
-            }
-            // to here
         }
 
         /// <inheritdoc/>

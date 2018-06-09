@@ -178,9 +178,9 @@ namespace Dock.Model
         /// <summary>
         /// Moves view into another <see cref="IViewsHost.Views"/> collection.
         /// </summary>
-        /// <param name="view">The view to move.</param>
-        /// <param name="targetHost">The target host.</param>
-        void MoveTo(IView view, IViewsHost targetHost);
+        /// <param name="first">The first view.</param>
+        /// <param name="second">The second view.</param>
+        void Move(IView first, IView second);
 
         /// <summary>
         /// Swaps view in parents <see cref="IViewsHost.Views"/> collection.

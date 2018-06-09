@@ -29,7 +29,7 @@ namespace Dock.Avalonia
                 {
                     if (bExecute)
                     {
-                        factory.MoveTo(sourceDock, targetDock);
+                        factory.Move(sourceDock, targetDock);
                     }
                     return true;
                 }

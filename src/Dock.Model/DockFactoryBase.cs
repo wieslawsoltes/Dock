@@ -218,15 +218,15 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
-            int sourceIndex = sourceHost.Views.IndexOf(sourceView);
-            int targetIndex = targetHost.Views.IndexOf(targetView);
-
             RemoveView(sourceView);
+
+            int targetIndex = targetHost.Views.IndexOf(targetView);
 
             if (targetHost.Views == null)
             {
                 targetHost.Views = new ObservableCollection<IView>();
             }
+
             targetHost.Views.Insert(targetIndex, sourceView);
 
             if (targetHost is IView tagretView)
@@ -241,19 +241,21 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void MoveTo(IView view, IViewsHost targetHost)
+        public virtual void Move(IView first, IView second)
         {
-            RemoveView(view);
-
-            targetHost.Views.Add(view);
-
-            if (targetHost is IView tagretView)
+            if (first.Parent is IViewsHost sourceHost && second.Parent is IViewsHost targetHost)
             {
-                Update(view, view.Context, tagretView);
+                RemoveView(first);
+
+                targetHost.Views.Add(first);
+
+                if (second is IView tagretView)
+                {
+                    Update(first, first.Context, tagretView);
+                }
+
+                targetHost.CurrentView = first;
             }
-
-            targetHost.CurrentView = view;
-
         }
 
         /// <inheritdoc/>

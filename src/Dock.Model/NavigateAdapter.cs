@@ -84,8 +84,38 @@ namespace Dock.Model
         }
 
         /// <summary>
-        /// Resets navigation history.
+        /// Implementation of the <see cref="IViewsHost.Navigate(object)"/> method.
         /// </summary>
+        /// <param name="root">An object that contains the content to navigate to.</param>
+        /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
+        public void Navigate(object root, bool bSnapshot)
+        {
+            switch (root)
+            {
+                case null:
+                    ResetCurrentView();
+                    ResetNavigation();
+                    break;
+                case IView view:
+                    NavigateToView(view, bSnapshot);
+                    break;
+                case string id:
+                    NavigateToView(id, bSnapshot);
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid root object type: {root.GetType()}");
+            }
+        }
+
+        private void ResetCurrentView()
+        {
+            if (_dock.CurrentView is IWindowsHost currentViewWindows)
+            {
+                currentViewWindows.HideWindows();
+                _dock.CurrentView = null;
+            }
+        }
+
         private void ResetNavigation()
         {
             if (_back.Count > 0)
@@ -99,10 +129,6 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Makes snapshot of most recent dock.
-        /// </summary>
-        /// <param name="view">The view to make snapshot from.</param>
         private void MakeSnapshot(IView view)
         {
             if (_forward.Count > 0)
@@ -110,66 +136,50 @@ namespace Dock.Model
             _back.Push(view);
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="IViewsHost.Navigate(object)"/> method.
-        /// </summary>
-        /// <param name="root">An object that contains the content to navigate to.</param>
-        /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
-        public void Navigate(object root, bool bSnapshot)
+        private void NavigateToView(IView view, bool bSnapshot)
         {
-            if (root == null)
+            if (_dock.CurrentView is IWindowsHost currentViewWindows)
             {
-                if (_dock.CurrentView is IWindowsHost currentViewWindows)
-                {
-                    currentViewWindows.HideWindows();
-                    _dock.CurrentView = null;
-                    ResetNavigation();
-                }
+                currentViewWindows.HideWindows();
             }
-            else if (root is IView view)
+
+            if (view != null && _dock.CurrentView != view)
             {
-                if (_dock.CurrentView is IWindowsHost currentViewWindows)
+                if (_dock.CurrentView != null && bSnapshot == true)
                 {
-                    currentViewWindows.HideWindows();
+                    MakeSnapshot(_dock.CurrentView);
                 }
 
-                if (view != null && _dock.CurrentView != view)
-                {
-                    if (_dock.CurrentView != null && bSnapshot == true)
-                    {
-                        MakeSnapshot(_dock.CurrentView);
-                    }
-
-                    _dock.CurrentView = view;
-                }
-
-                if (view is IWindowsHost dockWindows)
-                {
-                    dockWindows.ShowWindows();
-                }
+                _dock.CurrentView = view;
             }
-            else if (root is string id)
+
+            if (view is IWindowsHost dockWindows)
             {
-                var result1 = _dock.Views.FirstOrDefault(v => v.Id == id);
-                if (result1 != null)
+                dockWindows.ShowWindows();
+            }
+        }
+
+        private void NavigateToView(string id, bool bSnapshot)
+        {
+            var result1 = _dock.Views.FirstOrDefault(v => v.Id == id);
+            if (result1 != null)
+            {
+                Navigate(result1, bSnapshot);
+            }
+            else
+            {
+                var views = _dock.Views.Flatten(v =>
                 {
-                    Navigate(result1, bSnapshot);
-                }
-                else
-                {
-                    var views = _dock.Views.Flatten(v =>
+                    if (v is IViewsHost n)
                     {
-                        if (v is IViewsHost n)
-                        {
-                            return n.Views;
-                        }
-                        return null;
-                    });
-                    var result2 = views.FirstOrDefault(v => v.Id == id);
-                    if (result2 != null)
-                    {
-                        Navigate(result2, bSnapshot);
+                        return n.Views;
                     }
+                    return null;
+                });
+                var result2 = views.FirstOrDefault(v => v.Id == id);
+                if (result2 != null)
+                {
+                    Navigate(result2, bSnapshot);
                 }
             }
         }

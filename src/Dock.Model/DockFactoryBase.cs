@@ -210,54 +210,29 @@ namespace Dock.Model
         {
             int sourceIndex = host.Views.IndexOf(sourceView);
             int targetIndex = host.Views.IndexOf(targetView);
-
-            if (sourceIndex < targetIndex)
-            {
-                var item = host.Views[sourceIndex];
-                host.Views.RemoveAt(sourceIndex);
-                host.Views.Insert(targetIndex, item);
-                host.CurrentView = item;
-            }
-            else
-            {
-                int removeIndex = sourceIndex;
-                if (host.Views.Count > removeIndex)
-                {
-                    var item = host.Views[sourceIndex];
-                    host.Views.RemoveAt(removeIndex);
-                    host.Views.Insert(targetIndex, item);
-                    host.CurrentView = item;
-                }
-            }
+            host.Views.RemoveAt(sourceIndex);
+            host.Views.Insert(targetIndex, sourceView);
+            host.CurrentView = sourceView;
         }
 
         /// <inheritdoc/>
         public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
+            Console.WriteLine("MoveView");
             int sourceIndex = sourceHost.Views.IndexOf(sourceView);
             int targetIndex = targetHost.Views.IndexOf(targetView);
 
-            var item = sourceHost.Views[sourceIndex];
-            sourceHost.Views.RemoveAt(sourceIndex);
+            RemoveView(sourceView);
 
             if (targetHost.Views == null)
             {
                 targetHost.Views = new ObservableCollection<IView>();
             }
-            targetHost.Views.Insert(targetIndex, item);
+            targetHost.Views.Insert(targetIndex, sourceView);
 
             if (targetHost is IView tagretView)
             {
-                Update(item, item.Context, tagretView);
-            }
-
-            if (sourceHost.Views.Count > 0)
-            {
-                sourceHost.CurrentView = sourceHost.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
-            }
-            else
-            {
-                sourceHost.CurrentView = null;
+                Update(sourceView, sourceView.Context, tagretView);
             }
 
             if (targetHost.Views.Count > 0)
@@ -269,20 +244,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveTo(IView view, IViewsHost targetHost)
         {
-            if (view.Parent is IViewsHost sourceHost)
-            {
-                int index = sourceHost.Views.IndexOf(view);
-                sourceHost.Views.Remove(view);
-
-                if (sourceHost.Views.Count > 0)
-                {
-                    sourceHost.CurrentView = sourceHost.Views[index > 0 ? index - 1 : 0];
-                }
-                else
-                {
-                    sourceHost.CurrentView = null;
-                }
-            }
+            RemoveView(view);
 
             targetHost.Views.Add(view);
 

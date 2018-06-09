@@ -21,80 +21,68 @@ namespace Dock.Avalonia
                 {
                     if (sourceParent == targetParent)
                     {
-                        int sourceIndex = sourceParent.Views.IndexOf(sourceDock);
-                        int targetIndex = sourceParent.Views.IndexOf(targetDock);
-
-                        if (sourceIndex >= 0 && targetIndex >= 0)
+                        if (e.DragEffects == DragDropEffects.Copy)
                         {
-                            if (e.DragEffects == DragDropEffects.Copy)
+                            if (bExecute)
                             {
-                                if (bExecute)
-                                {
-                                    // TODO: Clone layout and insert into Views collection.
-                                }
-                                return true;
+                                // TODO: Clone layout and insert into Views collection.
                             }
-                            else if (e.DragEffects == DragDropEffects.Move)
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Move)
+                        {
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                if (sourceParent.Factory is IDockFactory factory)
                                 {
-                                    if (sourceParent.Factory is IDockFactory factory)
-                                    {
-                                        factory.MoveView(sourceParent, sourceIndex, targetIndex);
-                                    }
+                                    factory.MoveView(sourceParent, sourceDock, targetDock);
                                 }
-                                return true;
                             }
-                            else if (e.DragEffects == DragDropEffects.Link)
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Link)
+                        {
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                if (sourceParent.Factory is IDockFactory factory)
                                 {
-                                    if (sourceParent.Factory is IDockFactory factory)
-                                    {
-                                        factory.SwapView(sourceParent, sourceIndex, targetIndex);
-                                    }
+                                    factory.SwapView(sourceParent, sourceDock, targetDock);
                                 }
-                                return true;
                             }
+                            return true;
                         }
                     }
                     else
                     {
-                        int sourceIndex = sourceParent.Views.IndexOf(sourceDock);
-                        int targetIndex = targetParent.Views.IndexOf(targetDock);
-
-                        if (sourceIndex >= 0 && targetIndex >= 0)
+                        if (e.DragEffects == DragDropEffects.Copy)
                         {
-                            if (e.DragEffects == DragDropEffects.Copy)
+                            if (bExecute)
                             {
-                                if (bExecute)
-                                {
-                                    // TODO: Clone layout and insert into Views collection.
-                                }
-                                return true;
+                                // TODO: Clone layout and insert into Views collection.
                             }
-                            else if (e.DragEffects == DragDropEffects.Move)
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Move)
+                        {
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                if (sourceParent.Factory is IDockFactory factory)
                                 {
-                                    if (sourceParent.Factory is IDockFactory factory)
-                                    {
-                                        factory.MoveView(sourceParent, targetParent, sourceIndex, targetIndex);
-                                    }
+                                    factory.MoveView(sourceParent, targetParent, sourceDock, targetDock);
                                 }
-                                return true;
                             }
-                            else if (e.DragEffects == DragDropEffects.Link)
+                            return true;
+                        }
+                        else if (e.DragEffects == DragDropEffects.Link)
+                        {
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                if (sourceParent.Factory is IDockFactory factory)
                                 {
-                                    if (sourceParent.Factory is IDockFactory factory)
-                                    {
-                                        factory.SwapView(sourceParent, targetParent, sourceIndex, targetIndex);
-                                    }
+                                    factory.SwapView(sourceParent, targetParent, sourceDock, targetDock);
                                 }
-                                return true;
                             }
+                            return true;
                         }
                     }
                 }

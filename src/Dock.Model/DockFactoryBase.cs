@@ -194,78 +194,44 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void Remove(IView view)
+        public virtual void RemoveView(IView view)
         {
-            if (view?.Parent is IViewsHost viewHost)
+            if (view?.Parent is IViewsHost viewHost && viewHost.Views != null)
             {
-                viewHost.Views?.Remove(view);
+                int index = viewHost.Views.IndexOf(view);
+
+                viewHost.Views.Remove(view);
+                viewHost.CurrentView = viewHost.Views.Count > 0 ? viewHost.Views[index > 0 ? index - 1 : 0] : null;
             }
         }
 
         /// <inheritdoc/>
-        public virtual void RemoveView(IViewsHost host, int index)
+        public virtual void MoveView(IViewsHost host, IView sourceView, IView targetView)
         {
-            host.Views.RemoveAt(index);
-
-            // This code may not be needed now since carousel is fixed.
-            if (host.Views.Count > 0)
-            {
-                host.CurrentView = host.Views[index > 0 ? index - 1 : 0];
-            }
-            else
-            {
-                host.CurrentView = null;
-            }
-            // to here
+            int sourceIndex = host.Views.IndexOf(sourceView);
+            int targetIndex = host.Views.IndexOf(targetView);
+            host.Views.RemoveAt(sourceIndex);
+            host.Views.Insert(targetIndex, sourceView);
+            host.CurrentView = sourceView;
         }
 
         /// <inheritdoc/>
-        public virtual void MoveView(IViewsHost host, int sourceIndex, int targetIndex)
+        public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
-            if (sourceIndex < targetIndex)
-            {
-                var item = host.Views[sourceIndex];
-                host.Views.RemoveAt(sourceIndex);
-                host.Views.Insert(targetIndex, item);
-                host.CurrentView = item;
-            }
-            else
-            {
-                int removeIndex = sourceIndex;
-                if (host.Views.Count > removeIndex)
-                {
-                    var item = host.Views[sourceIndex];
-                    host.Views.RemoveAt(removeIndex);
-                    host.Views.Insert(targetIndex, item);
-                    host.CurrentView = item;
-                }
-            }
-        }
+            RemoveView(sourceView);
 
-        /// <inheritdoc/>
-        public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex)
-        {
-            var item = sourceHost.Views[sourceIndex];
-            sourceHost.Views.RemoveAt(sourceIndex);
+            int targetIndex = targetHost.Views.IndexOf(targetView);
 
             if (targetHost.Views == null)
             {
                 targetHost.Views = new ObservableCollection<IView>();
             }
-            targetHost.Views.Insert(targetIndex, item);
+
+            targetHost.Views.Insert(targetIndex, sourceView);
 
             if (targetHost is IView tagretView)
             {
-                Update(item, item.Context, tagretView);
-            }
-
-            if (sourceHost.Views.Count > 0)
-            {
-                sourceHost.CurrentView = sourceHost.Views[sourceIndex > 0 ? sourceIndex - 1 : 0];
-            }
-            else
-            {
-                sourceHost.CurrentView = null;
+                Update(sourceView, sourceView.Context, tagretView);
             }
 
             if (targetHost.Views.Count > 0)
@@ -275,32 +241,21 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void MoveTo(IView view, IViewsHost targetHost)
+        public virtual void Move(IView first, IView second)
         {
-            if (view.Parent is IViewsHost sourceHost)
+            if (first.Parent is IViewsHost sourceHost && second.Parent is IViewsHost targetHost)
             {
-                int index = sourceHost.Views.IndexOf(view);
-                sourceHost.Views.Remove(view);
+                RemoveView(first);
 
-                if (sourceHost.Views.Count > 0)
+                targetHost.Views.Add(first);
+
+                if (second is IView tagretView)
                 {
-                    sourceHost.CurrentView = sourceHost.Views[index > 0 ? index - 1 : 0];
+                    Update(first, first.Context, tagretView);
                 }
-                else
-                {
-                    sourceHost.CurrentView = null;
-                }
+
+                targetHost.CurrentView = first;
             }
-
-            targetHost.Views.Add(view);
-
-            if (targetHost is IView tagretView)
-            {
-                Update(view, view.Context, tagretView);
-            }
-
-            targetHost.CurrentView = view;
-
         }
 
         /// <inheritdoc/>
@@ -329,8 +284,10 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SwapView(IViewsHost host, int sourceIndex, int targetIndex)
+        public virtual void SwapView(IViewsHost host, IView sourceView, IView targetView)
         {
+            int sourceIndex = host.Views.IndexOf(sourceView);
+            int targetIndex = host.Views.IndexOf(targetView);
             var item1 = host.Views[sourceIndex];
             var item2 = host.Views[targetIndex];
             host.Views[targetIndex] = item1;
@@ -339,8 +296,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SwapView(IViewsHost sourceHost, IViewsHost targetHost, int sourceIndex, int targetIndex)
+        public virtual void SwapView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
+            int sourceIndex = sourceHost.Views.IndexOf(sourceView);
+            int targetIndex = targetHost.Views.IndexOf(targetView);
+
             var item1 = sourceHost.Views[sourceIndex];
             var item2 = targetHost.Views[targetIndex];
             sourceHost.Views[sourceIndex] = item2;

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -25,85 +26,75 @@ namespace Dock.Model
             {
                 if (sourceTabParent == targetTabParent)
                 {
-                    int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
-                    int targetIndex = sourceTabParent.Views.IndexOf(targetTab);
-                    if (sourceIndex >= 0 && targetIndex >= 0)
+                    switch (action)
                     {
-                        switch (action)
-                        {
-                            case DragAction.Copy:
+                        case DragAction.Copy:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
-                                    {
-                                        // TODO: Clone item.
-                                    }
-                                    return true;
+                                    // TODO: Clone item.
                                 }
-                            case DragAction.Move:
+                                return true;
+                            }
+                        case DragAction.Move:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
+                                    if (sourceTabParent.Factory is IDockFactory factory)
                                     {
-                                        if (sourceTabParent.Factory is IDockFactory factory)
-                                        {
-                                            factory.MoveView(sourceTabParent, sourceIndex, targetIndex);
-                                        }
+                                        factory.MoveView(sourceTabParent, sourceTab, targetTab);
                                     }
-                                    return true;
                                 }
-                            case DragAction.Link:
+                                return true;
+                            }
+                        case DragAction.Link:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
+                                    if (sourceTabParent.Factory is IDockFactory factory)
                                     {
-                                        if (sourceTabParent.Factory is IDockFactory factory)
-                                        {
-                                            factory.SwapView(sourceTabParent, sourceIndex, targetIndex);
-                                        }
+                                        factory.SwapView(sourceTabParent, sourceTab, targetTab);
                                     }
-                                    return true;
                                 }
-                        }
+                                return true;
+                            }
                     }
                     return false;
                 }
                 else
                 {
-                    int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
-                    int targetIndex = targetTabParent.Views.IndexOf(targetTab);
-                    if (sourceIndex >= 0 && targetIndex >= 0)
+                    switch (action)
                     {
-                        switch (action)
-                        {
-                            case DragAction.Copy:
+                        case DragAction.Copy:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
-                                    {
-                                        // TODO: Clone item.
-                                    }
-                                    return true;
+                                    // TODO: Clone item.
                                 }
-                            case DragAction.Move:
+                                return true;
+                            }
+                        case DragAction.Move:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
+                                    if (sourceTabParent.Factory is IDockFactory factory)
                                     {
-                                        if (sourceTabParent.Factory is IDockFactory factory)
-                                        {
-                                            factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
-                                        }
+                                        factory.MoveView(sourceTabParent, targetTabParent, sourceTab, targetTab);
                                     }
-                                    return true;
                                 }
-                            case DragAction.Link:
+                                return true;
+                            }
+                        case DragAction.Link:
+                            {
+                                if (bExecute)
                                 {
-                                    if (bExecute)
+                                    if (sourceTabParent.Factory is IDockFactory factory)
                                     {
-                                        if (sourceTabParent.Factory is IDockFactory factory)
-                                        {
-                                            factory.SwapView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
-                                        }
+                                        factory.SwapView(sourceTabParent, targetTabParent, sourceTab, targetTab);
                                     }
-                                    return true;
                                 }
-                        }
+                                return true;
+                            }
                     }
                     return false;
                 }
@@ -118,111 +109,105 @@ namespace Dock.Model
 
             if (sourceTab.Parent is ITabDock sourceTabParent /* && sourceTabParent != targetTabParent */)
             {
-                bool isSameParent = sourceTabParent == targetTabParent;
-                int sourceIndex = sourceTabParent.Views.IndexOf(sourceTab);
-                int targetIndex = isSameParent ? targetTabParent.Views.Count - 1 : targetTabParent.Views.Count;
+                IView targetTab = targetTabParent.Views.LastOrDefault();
 
-                if (sourceIndex >= 0 && targetIndex >= 0)
+                switch (action)
                 {
-                    switch (action)
-                    {
-                        case DragAction.Copy:
+                    case DragAction.Copy:
+                        {
+                            if (bExecute)
                             {
-                                if (bExecute)
-                                {
-                                    // TODO: Clone item.
-                                }
-                                return true;
+                                // TODO: Clone item.
                             }
-                        case DragAction.Move:
+                            return true;
+                        }
+                    case DragAction.Move:
+                        {
+                            switch (operation)
                             {
-                                switch (operation)
-                                {
-                                    case DockOperation.Fill:
-                                        {
-                                            if (sourceTabParent.Factory is IDockFactory factory)
-                                            {
-                                                if (bExecute)
-                                                {
-                                                    factory.MoveView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
-                                                }
-                                                return true;
-                                            }
-                                            return false;
-                                        }
-                                    case DockOperation.Left:
-                                    case DockOperation.Right:
-                                    case DockOperation.Top:
-                                    case DockOperation.Bottom:
-                                        {
-                                            switch (sourceTab)
-                                            {
-                                                case IToolTab toolTab:
-                                                    {
-                                                        if (bExecute)
-                                                        {
-                                                            if (targetTabParent.Factory is IDockFactory factory)
-                                                            {
-                                                                factory.Remove(sourceTab);
-
-                                                                IDock tool = factory.CreateToolDock();
-                                                                tool.Id = nameof(IToolDock);
-                                                                tool.Title = nameof(IToolDock);
-                                                                tool.CurrentView = sourceTab;
-                                                                tool.Views = new ObservableCollection<IView> { sourceTab };
-
-                                                                factory.Split(targetTabParent, tool, operation);
-                                                            }
-                                                        }
-                                                        return true;
-                                                    }
-                                                case IDocumentTab documentTab:
-                                                    {
-                                                        if (bExecute)
-                                                        {
-                                                            if (targetTabParent.Factory is IDockFactory factory)
-                                                            {
-                                                                factory.Remove(sourceTab);
-
-                                                                IDock document = factory.CreateDocumentDock();
-                                                                document.Id = nameof(IDocumentDock);
-                                                                document.Title = nameof(IDocumentDock);
-                                                                document.CurrentView = sourceTab;
-                                                                document.Views = new ObservableCollection<IView> { sourceTab };
-
-                                                                factory.Split(targetTabParent, document, operation);
-                                                            }
-                                                        }
-                                                        return true;
-                                                    }
-                                                default:
-                                                    {
-                                                        Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
-                                                        return false;
-                                                    }
-                                            }
-                                        }
-                                    case DockOperation.Window:
-                                        {
-                                            return false;
-                                        }
-                                }
-                                return false;
-                            }
-                        case DragAction.Link:
-                            {
-                                if (bExecute)
-                                {
-                                    if (sourceTabParent.Factory is IDockFactory factory)
+                                case DockOperation.Fill:
                                     {
-                                        factory.SwapView(sourceTabParent, targetTabParent, sourceIndex, targetIndex);
+                                        if (sourceTabParent.Factory is IDockFactory factory)
+                                        {
+                                            if (bExecute)
+                                            {
+                                                factory.MoveView(sourceTabParent, targetTabParent, sourceTab, targetTab);
+                                            }
+                                            return true;
+                                        }
+                                        return false;
                                     }
-                                }
-                                return true;
-                            }
-                    }
-                }
+                                case DockOperation.Left:
+                                case DockOperation.Right:
+                                case DockOperation.Top:
+                                case DockOperation.Bottom:
+                                    {
+                                        switch (sourceTab)
+                                        {
+                                            case IToolTab toolTab:
+                                                {
+                                                    if (bExecute)
+                                                    {
+                                                        if (targetTabParent.Factory is IDockFactory factory)
+                                                        {
+                                                            factory.RemoveView(sourceTab);
 
+                                                            IDock tool = factory.CreateToolDock();
+                                                            tool.Id = nameof(IToolDock);
+                                                            tool.Title = nameof(IToolDock);
+                                                            tool.CurrentView = sourceTab;
+                                                            tool.Views = new ObservableCollection<IView> { sourceTab };
+
+                                                            factory.Split(targetTabParent, tool, operation);
+                                                        }
+                                                    }
+                                                    return true;
+                                                }
+                                            case IDocumentTab documentTab:
+                                                {
+                                                    if (bExecute)
+                                                    {
+                                                        if (targetTabParent.Factory is IDockFactory factory)
+                                                        {
+                                                            factory.RemoveView(sourceTab);
+
+                                                            IDock document = factory.CreateDocumentDock();
+                                                            document.Id = nameof(IDocumentDock);
+                                                            document.Title = nameof(IDocumentDock);
+                                                            document.CurrentView = sourceTab;
+                                                            document.Views = new ObservableCollection<IView> { sourceTab };
+
+                                                            factory.Split(targetTabParent, document, operation);
+                                                        }
+                                                    }
+                                                    return true;
+                                                }
+                                            default:
+                                                {
+                                                    Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
+                                                    return false;
+                                                }
+                                        }
+                                    }
+                                case DockOperation.Window:
+                                    {
+                                        return false;
+                                    }
+                            }
+                            return false;
+                        }
+                    case DragAction.Link:
+                        {
+                            if (bExecute)
+                            {
+                                if (sourceTabParent.Factory is IDockFactory factory)
+                                {
+                                    factory.SwapView(sourceTabParent, targetTabParent, sourceTab, targetTab);
+                                }
+                            }
+                            return true;
+                        }
+                }
                 return false;
             }
 
@@ -239,16 +224,14 @@ namespace Dock.Model
                     {
                         if (sourceView.Parent is IViewsHost sourceViewParentHost)
                         {
-                            int sourceIndex = sourceViewParentHost.Views.IndexOf(sourceView);
-                            if (sourceIndex >= 0
-                                && sourceView != targetView && sourceView.Parent != targetView
+                            if (sourceView != targetView && sourceView.Parent != targetView
                                 && sourceView.Parent is IDock sourceViewParentDock
                                 && sourceViewParentDock.Factory is IDockFactory factory
                                 && factory.FindRoot(sourceView) is IDock rootLayout && rootLayout.CurrentView != null)
                             {
                                 if (bExecute)
                                 {
-                                    factory.RemoveView(sourceViewParentHost, sourceIndex);
+                                    factory.RemoveView(sourceView);
 
                                     var window = factory.CreateWindowFrom(sourceView);
                                     if (window != null)

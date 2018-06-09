@@ -94,13 +94,13 @@ namespace Dock.Model
             {
                 case null:
                     ResetCurrentView();
-                    ResetNavigation();
+                    ResetBack();
                     break;
                 case IView view:
-                    NavigateToView(view, bSnapshot);
+                    NavigateTo(view, bSnapshot);
                     break;
                 case string id:
-                    NavigateToView(id, bSnapshot);
+                    NavigateToUseViews(id, bSnapshot);
                     break;
                 default:
                     throw new ArgumentException($"Invalid root object type: {root.GetType()}");
@@ -116,7 +116,7 @@ namespace Dock.Model
             }
         }
 
-        private void ResetNavigation()
+        private void ResetBack()
         {
             if (_back.Count > 0)
             {
@@ -129,14 +129,14 @@ namespace Dock.Model
             }
         }
 
-        private void MakeSnapshot(IView view)
+        private void PushBack(IView view)
         {
             if (_forward.Count > 0)
                 _forward.Clear();
             _back.Push(view);
         }
 
-        private void NavigateToView(IView view, bool bSnapshot)
+        private void NavigateTo(IView view, bool bSnapshot)
         {
             if (_dock.CurrentView is IWindowsHost currentViewWindows)
             {
@@ -147,7 +147,7 @@ namespace Dock.Model
             {
                 if (_dock.CurrentView != null && bSnapshot == true)
                 {
-                    MakeSnapshot(_dock.CurrentView);
+                    PushBack(_dock.CurrentView);
                 }
 
                 _dock.CurrentView = view;
@@ -159,28 +159,33 @@ namespace Dock.Model
             }
         }
 
-        private void NavigateToView(string id, bool bSnapshot)
+        private void NavigateToUseViews(string id, bool bSnapshot)
         {
-            var result1 = _dock.Views.FirstOrDefault(v => v.Id == id);
-            if (result1 != null)
+            var result = _dock.Views.FirstOrDefault(v => v.Id == id);
+            if (result != null)
             {
-                Navigate(result1, bSnapshot);
+                Navigate(result, bSnapshot);
             }
             else
             {
-                var views = _dock.Views.Flatten(v =>
+                NavigateToUseAllViews(id, bSnapshot);
+            }
+        }
+
+        private void NavigateToUseAllViews(string id, bool bSnapshot)
+        {
+            var views = _dock.Views.Flatten(v =>
+            {
+                if (v is IViewsHost n)
                 {
-                    if (v is IViewsHost n)
-                    {
-                        return n.Views;
-                    }
-                    return null;
-                });
-                var result2 = views.FirstOrDefault(v => v.Id == id);
-                if (result2 != null)
-                {
-                    Navigate(result2, bSnapshot);
+                    return n.Views;
                 }
+                return null;
+            });
+            var result = views.FirstOrDefault(v => v.Id == id);
+            if (result != null)
+            {
+                Navigate(result, bSnapshot);
             }
         }
     }

@@ -218,7 +218,6 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView)
         {
-            Console.WriteLine("MoveView");
             int sourceIndex = sourceHost.Views.IndexOf(sourceView);
             int targetIndex = targetHost.Views.IndexOf(targetView);
 

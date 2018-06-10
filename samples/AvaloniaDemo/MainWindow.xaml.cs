@@ -5,11 +5,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.CodeGen;
+using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
 
 namespace AvaloniaDemo
 {
@@ -48,7 +48,7 @@ namespace AvaloniaDemo
                 {
                     if (this.DataContext is MainWindowViewModel vm)
                     {
-                        IDock layout = DockSerializer.Load<RootDock>(result.FirstOrDefault());
+                        IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
                         {
                             root.HideWindows();
@@ -75,7 +75,7 @@ namespace AvaloniaDemo
                 {
                     if (this.DataContext is MainWindowViewModel vm)
                     {
-                        DockSerializer.Save(result, vm.Layout);
+                        ModelSerializer.Save(result, vm.Layout);
                     }
                 }
             };

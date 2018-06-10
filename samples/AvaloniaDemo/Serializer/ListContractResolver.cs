@@ -6,22 +6,30 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Dock.Serializer
+namespace AvaloniaDemo.Serializer
 {
     /// <inheritdoc/>
     public class ListContractResolver : DefaultContractResolver
     {
+        private readonly Type _type;
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="ListContractResolver"/> class.
+        /// </summary>
+        /// <param name="type">The resolved list type.</param>
+        public ListContractResolver(Type type)
+        {
+            _type = type;
+        }
+
         /// <inheritdoc/>
         public override JsonContract ResolveContract(Type type)
         {
             if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
             {
-                return base
-                    .ResolveContract(typeof(ObservableCollection<>)
-                    .MakeGenericType(type.GenericTypeArguments[0]));
+                return base.ResolveContract(_type.MakeGenericType(type.GenericTypeArguments[0]));
             }
             return base.ResolveContract(type);
         }

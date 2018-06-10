@@ -19,12 +19,6 @@
         <Framework>net461</Framework>
       </Frameworks>
     </Project>
-    <Project Name="Dock.Serializer" Path="src">
-      <Frameworks>
-        <Framework>netstandard2.0</Framework>
-        <Framework>net461</Framework>
-      </Frameworks>
-    </Project>
     <Project Name="Dock.Avalonia" Path="src">
       <Frameworks>
         <Framework>netstandard2.0</Framework>
@@ -54,13 +48,6 @@
         <Framework>net461</Framework>
       </Frameworks>
     </Project>-->
-    <Project Name="Dock.Serializer.UnitTests" Path="tests">
-      <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
-        <Framework>netcoreapp2.1</Framework>
-        <Framework>net461</Framework>
-      </Frameworks>
-    </Project>
     <!--<Project Name="Dock.Avalonia.UnitTests" Path="tests">
       <Frameworks>
         <Framework>netcoreapp2.0</Framework>

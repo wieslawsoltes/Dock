@@ -58,10 +58,7 @@ namespace Dock.Model
         public bool IsActive
         {
             get => _isActive;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _isActive, value);
-            }
+            set => this.RaiseAndSetIfChanged(ref _isActive, value);
         }
 
         /// <inheritdoc/>

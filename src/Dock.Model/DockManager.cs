@@ -107,7 +107,7 @@ namespace Dock.Model
         {
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
 
-            if (sourceTab.Parent is ITabDock sourceTabParent /* && sourceTabParent != targetTabParent */)
+            if (sourceTab.Parent is ITabDock sourceTabParent )
             {
                 IView targetTab = targetTabParent.Views.LastOrDefault();
 

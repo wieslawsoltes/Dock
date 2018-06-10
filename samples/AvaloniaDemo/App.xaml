@@ -3,6 +3,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:controls="clr-namespace:AvaloniaDemo.Controls;assembly=AvaloniaDemo"
              xmlns:Documents="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
              xmlns:Tools="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
              xmlns:Views="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo">
@@ -158,7 +159,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="Tools:EditorTool">
-            <idc:EditorControl DataContext="{Binding Context}"/>
+            <controls:EditorControl DataContext="{Binding Context}"/>
         </DataTemplate>
         <!-- Views -->
         <DataTemplate DataType="Views:HomeView">

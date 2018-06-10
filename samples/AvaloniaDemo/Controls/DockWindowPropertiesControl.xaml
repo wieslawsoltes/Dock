@@ -1,8 +1,9 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Controls.DockWindowPropertiesControl"
+<UserControl x:Class="AvaloniaDemo.Controls.DockWindowPropertiesControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AvaloniaDemo.Controls;assembly=AvaloniaDemo"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
@@ -60,7 +61,7 @@
             </ScrollViewer>
         </TabItem>
         <TabItem Header="Layout">
-            <idc:DockPropertiesControl DataContext="{Binding Layout}"/>
+            <local:DockPropertiesControl DataContext="{Binding Layout}"/>
         </TabItem>
     </TabControl>
 </UserControl>

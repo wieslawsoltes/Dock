@@ -3,7 +3,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.Controls
+namespace AvaloniaDemo.Controls
 {
     /// <summary>
     /// Interaction logic for <see cref="ViewPropertiesControl"/> xaml.

@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using AvaloniaDemo.CodeGen;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
+using AvaloniaDemo.ViewModels.Tools;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -102,16 +103,37 @@ namespace AvaloniaDemo
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
-                    var factory = new EditorDockFactory();
-                    var layout = factory.CreateLayout();
-                    factory.InitLayout(layout, vm.Layout);
+                    var editorView = new EditorTool
+                    {
+                        Id = "Editor",
+                        Width = double.NaN,
+                        Height = double.NaN,
+                        Title = "Editor"
+                    };
 
-                    var window = factory.CreateWindowFrom(layout);
+                    var layout = new ToolDock
+                    {
+                        Id = nameof(IToolDock),
+                        Dock = "",
+                        Width = double.NaN,
+                        Height = double.NaN,
+                        Title = nameof(IToolDock),
+                        CurrentView = editorView,
+                        DefaultView = editorView,
+                        Views = vm.Factory.CreateList<IView>
+                        (
+                            editorView
+                        )
+                    };
+
+                    vm.Factory.Update(layout, null, vm.Layout);
+
+                    var window = vm.Factory.CreateWindowFrom(layout);
                     if (window != null)
                     {
                         if (vm.Layout is IDock root)
                         {
-                            factory.AddWindow(root, window, vm.Layout);
+                            vm.Factory.AddWindow(root, window, null);
                         }
                         window.X = 0;
                         window.Y = 0;

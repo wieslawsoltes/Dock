@@ -3,17 +3,17 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.Controls
+namespace AvaloniaDemo.Controls
 {
     /// <summary>
-    /// Interaction logic for <see cref="DockWindowPropertiesControl"/> xaml.
+    /// Interaction logic for <see cref="DockPropertiesControl"/> xaml.
     /// </summary>
-    public class DockWindowPropertiesControl : UserControl
+    public class DockPropertiesControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DockWindowPropertiesControl"/> class.
+        /// Initializes a new instance of the <see cref="DockPropertiesControl"/> class.
         /// </summary>
-        public DockWindowPropertiesControl()
+        public DockPropertiesControl()
         {
             this.InitializeComponent();
         }

@@ -22,13 +22,13 @@ namespace Dock.Avalonia
 
             _disposable = AssociatedObject.AddHandler(Control.PointerPressedEvent, (sender, e) =>
             {
-                if (AssociatedObject.DataContext is IDock host && host.Factory is IDockFactory factory)
+                if (AssociatedObject.DataContext is IDock dock && dock.Factory is IDockFactory factory)
                 {
-                    if (host.CurrentView != null)
+                    if (dock.CurrentView != null)
                     {
-                        if (factory.FindRoot(host.CurrentView) is IDock rootHost)
+                        if (factory.FindRoot(dock.CurrentView) is IDock root)
                         {
-                            factory.SetFocusedView(rootHost, host.CurrentView);
+                            factory.SetFocusedView(root, dock.CurrentView);
                         }
                     }
                 }

@@ -6,14 +6,14 @@ using Avalonia.Markup.Xaml;
 namespace AvaloniaDemo.Controls
 {
     /// <summary>
-    /// Interaction logic for <see cref="EditorControl"/> xaml.
+    /// Interaction logic for <see cref="LayoutEditorControl"/> xaml.
     /// </summary>
-    public class EditorControl : UserControl
+    public class LayoutEditorControl : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EditorControl"/> class.
+        /// Initializes a new instance of the <see cref="LayoutEditorControl"/> class.
         /// </summary>
-        public EditorControl()
+        public LayoutEditorControl()
         {
             this.InitializeComponent();
         }

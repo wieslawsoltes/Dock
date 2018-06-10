@@ -159,7 +159,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="Tools:EditorTool">
-            <controls:EditorControl DataContext="{Binding Context}"/>
+            <controls:LayoutEditorControl DataContext="{Binding Context}"/>
         </DataTemplate>
         <!-- Views -->
         <DataTemplate DataType="Views:HomeView">

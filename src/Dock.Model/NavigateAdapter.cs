@@ -188,5 +188,33 @@ namespace Dock.Model
                 Navigate(result, bSnapshot);
             }
         }
+
+        /// <summary>
+        /// Implementation of the <see cref="IDock.ShowWindows()"/> method.
+        /// </summary>
+        public void ShowWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Present(false);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Implementation of the <see cref="IDock.HideWindows()"/> method.
+        /// </summary>
+        public void HideWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Destroy();
+                }
+            }
+        }
     }
 }

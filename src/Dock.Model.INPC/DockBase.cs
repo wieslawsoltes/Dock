@@ -128,25 +128,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void ShowWindows()
         {
-            if (Windows != null)
-            {
-                foreach (var window in Windows)
-                {
-                    window.Present(false);
-                }
-            }
+            _navigate.ShowWindows();
         }
 
         /// <inheritdoc/>
         public virtual void HideWindows()
         {
-            if (Windows != null)
-            {
-                foreach (var window in Windows)
-                {
-                    window.Destroy();
-                }
-            }
+            _navigate.HideWindows();
         }
     }
 }

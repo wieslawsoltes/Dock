@@ -31,7 +31,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired=false, EmitDefaultValue=false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IView> Views
         {
             get => _views;

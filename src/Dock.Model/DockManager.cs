@@ -222,34 +222,30 @@ namespace Dock.Model
             {
                 case DockOperation.Fill:
                     {
-                        if (sourceView.Parent is IDock sourceViewParentHost)
+                        if (sourceView != targetView 
+                            && sourceView.Parent != targetView
+                            && sourceView.Parent is IDock sourceViewParent
+                            && sourceViewParent.Factory is IDockFactory factory
+                            && factory.FindRoot(sourceView) is IDock root 
+                            && root.CurrentView is IDock currentViewRoot)
                         {
-                            if (sourceView != targetView && sourceView.Parent != targetView
-                                && sourceView.Parent is IDock sourceViewParentDock
-                                && sourceViewParentDock.Factory is IDockFactory factory
-                                && factory.FindRoot(sourceView) is IDock rootLayout && rootLayout.CurrentView != null)
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                factory.RemoveView(sourceView);
+
+                                var window = factory.CreateWindowFrom(sourceView);
+                                if (window != null)
                                 {
-                                    factory.RemoveView(sourceView);
+                                    factory.AddWindow(currentViewRoot, window, sourceView.Context);
 
-                                    var window = factory.CreateWindowFrom(sourceView);
-                                    if (window != null)
-                                    {
-                                        if (rootLayout.CurrentView is IDock host)
-                                        {
-                                            factory.AddWindow(host, window, sourceView.Context);
-                                        }
-
-                                        window.X = ScreenPosition.X;
-                                        window.Y = ScreenPosition.Y;
-                                        window.Width = 300;
-                                        window.Height = 400;
-                                        window.Present(false);
-                                    }
+                                    window.X = ScreenPosition.X;
+                                    window.Y = ScreenPosition.Y;
+                                    window.Width = 300;
+                                    window.Height = 400;
+                                    window.Present(false);
                                 }
-                                return true;
                             }
+                            return true;
                         }
                         break;
                     }

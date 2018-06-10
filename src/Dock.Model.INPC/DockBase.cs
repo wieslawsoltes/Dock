@@ -11,7 +11,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockBase : ViewBase, IDock
     {
-        private NavigateAdapter _navigate;
+        private INavigateAdapter _navigate;
         private IList<IView> _views;
         private IView _currentView;
         private IView _defaultView;

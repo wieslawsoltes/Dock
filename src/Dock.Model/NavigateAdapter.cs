@@ -24,7 +24,7 @@ namespace Dock.Model
     /// <summary>
     /// Navigate adapter for the <see cref="IDock"/>.
     /// </summary>
-    public class NavigateAdapter
+    public class NavigateAdapter : INavigateAdapter
     {
         private readonly Stack<IView> _back;
         private readonly Stack<IView> _forward;
@@ -41,19 +41,13 @@ namespace Dock.Model
             _dock = dock;
         }
 
-        /// <summary>
-        /// Gets a value that indicates whether there is at least one entry in back navigation history.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanGoBack => _back.Count > 0;
 
-        /// <summary>
-        /// Gets a value that indicates whether there is at least one entry in forward navigation history.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanGoForward => _forward.Count > 0;
 
-        /// <summary>
-        /// Navigates to the most recent entry in back navigation history, if there is one.
-        /// </summary>
+        /// <inheritdoc/>
         public void GoBack()
         {
             if (_back.Count > 0)
@@ -67,9 +61,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Navigate to the most recent entry in forward navigation history, if there is one.
-        /// </summary>
+        /// <inheritdoc/>
         public void GoForward()
         {
             if (_forward.Count > 0)
@@ -83,11 +75,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="IDock.Navigate(object)"/> method.
-        /// </summary>
-        /// <param name="root">An object that contains the content to navigate to.</param>
-        /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
+        /// <inheritdoc/>
         public void Navigate(object root, bool bSnapshot)
         {
             switch (root)
@@ -189,9 +177,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="IDock.ShowWindows()"/> method.
-        /// </summary>
+        /// <inheritdoc/>
         public void ShowWindows()
         {
             if (_dock.Windows != null)
@@ -203,9 +189,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="IDock.HideWindows()"/> method.
-        /// </summary>
+        /// <inheritdoc/>
         public void HideWindows()
         {
             if (_dock.Windows != null)

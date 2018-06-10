@@ -226,6 +226,7 @@ namespace Dock.Model
         {
             int sourceIndex = dock.Views.IndexOf(sourceView);
             int targetIndex = dock.Views.IndexOf(targetView);
+
             dock.Views.RemoveAt(sourceIndex);
             dock.Views.Insert(targetIndex, sourceView);
             dock.CurrentView = sourceView;
@@ -236,24 +237,20 @@ namespace Dock.Model
         {
             RemoveView(sourceView);
 
-            int targetIndex = targetDock.Views.IndexOf(targetView);
-
             if (targetDock.Views == null)
             {
                 targetDock.Views = new ObservableCollection<IView>();
             }
 
+            int targetIndex = targetDock.Views.IndexOf(targetView);
+            if (targetIndex < 0)
+                targetIndex = 0;
+            else
+                targetIndex += 1;
+
             targetDock.Views.Insert(targetIndex, sourceView);
-
-            if (targetDock is IView tagretView)
-            {
-                Update(sourceView, sourceView.Context, tagretView);
-            }
-
-            if (targetDock.Views.Count > 0)
-            {
-                targetDock.CurrentView = targetDock.Views[targetIndex];
-            }
+            Update(sourceView, sourceView.Context, targetDock);
+            targetDock.CurrentView = sourceView;
         }
 
         /// <inheritdoc/>
@@ -264,12 +261,7 @@ namespace Dock.Model
                 RemoveView(first);
 
                 targetDock.Views.Add(first);
-
-                if (second is IView tagretView)
-                {
-                    Update(first, first.Context, tagretView);
-                }
-
+                Update(first, first.Context, second);
                 targetDock.CurrentView = first;
             }
         }
@@ -304,11 +296,13 @@ namespace Dock.Model
         {
             int sourceIndex = dock.Views.IndexOf(sourceView);
             int targetIndex = dock.Views.IndexOf(targetView);
-            var item1 = dock.Views[sourceIndex];
-            var item2 = dock.Views[targetIndex];
-            dock.Views[targetIndex] = item1;
-            dock.Views[sourceIndex] = item2;
-            dock.CurrentView = item2;
+
+            var originalSourceView = dock.Views[sourceIndex];
+            var originalTargetView = dock.Views[targetIndex];
+
+            dock.Views[targetIndex] = originalSourceView;
+            dock.Views[sourceIndex] = originalTargetView;
+            dock.CurrentView = originalTargetView;
         }
 
         /// <inheritdoc/>
@@ -317,23 +311,16 @@ namespace Dock.Model
             int sourceIndex = sourceDock.Views.IndexOf(sourceView);
             int targetIndex = targetDock.Views.IndexOf(targetView);
 
-            var item1 = sourceDock.Views[sourceIndex];
-            var item2 = targetDock.Views[targetIndex];
-            sourceDock.Views[sourceIndex] = item2;
-            targetDock.Views[targetIndex] = item1;
+            var originalSourceView = sourceDock.Views[sourceIndex];
+            var originalTargetView = targetDock.Views[targetIndex];
+            sourceDock.Views[sourceIndex] = originalTargetView;
+            targetDock.Views[targetIndex] = originalSourceView;
 
-            if (targetDock is IView targetDockView)
-            {
-                Update(item1, item1.Context, targetDockView);
-            }
+            Update(originalSourceView, originalSourceView.Context, targetDock);
+            Update(originalTargetView, originalTargetView.Context, sourceDock);
 
-            if (sourceDock is IView sourceDockView)
-            {
-                Update(item2, item2.Context, sourceDockView);
-            }
-
-            sourceDock.CurrentView = item2;
-            targetDock.CurrentView = item1;
+            sourceDock.CurrentView = originalTargetView;
+            targetDock.CurrentView = originalSourceView;
         }
 
         /// <inheritdoc/>

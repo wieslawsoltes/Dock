@@ -132,18 +132,18 @@ namespace Dock.Model
         void Update(IView view, object context, IView parent);
 
         /// <summary>
-        /// Selects a view. If the view is contained inside an IViewHost it
+        /// Sets a currently selected view. If the view is contained inside an dock it
         /// will become the selected tab.
         /// </summary>
         /// <param name="view">The view to select.</param>
-        void Select(IView view);
+        void SetCurrentView(IView view);
 
         /// <summary>
         /// Sets the currently focused view updating IsActive flags.
         /// </summary>
-        /// <param name="host">The host to set the focused view on.</param>
+        /// <param name="dock">The dock to set the focused view on.</param>
         /// <param name="view">The view to set.</param>
-        void SetFocusedView(IDock host, IView view);
+        void SetFocusedView(IDock dock, IView view);
 
         /// <summary>
         /// Searches for root view.
@@ -161,19 +161,19 @@ namespace Dock.Model
         /// <summary>
         /// Moves view inside <see cref="IDock.Views"/> collection.
         /// </summary>
-        /// <param name="host">The views host.</param>
+        /// <param name="dock">The views dock.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void MoveView(IDock host, IView sourceView, IView targetView);
+        void MoveView(IDock dock, IView sourceView, IView targetView);
 
         /// <summary>
         /// Moves view into another <see cref="IDock.Views"/> collection.
         /// </summary>
-        /// <param name="sourceHost">The source views dock.</param>
-        /// <param name="targetHost">The target views dock.</param>
+        /// <param name="sourceDock">The source views dock.</param>
+        /// <param name="targetDock">The target views dock.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void MoveView(IDock sourceHost, IDock targetHost, IView sourceView, IView targetView);
+        void MoveView(IDock sourceDock, IDock targetDock, IView sourceView, IView targetView);
 
         /// <summary>
         /// Moves view into another <see cref="IDock.Views"/> collection.
@@ -192,19 +192,19 @@ namespace Dock.Model
         /// <summary>
         /// Swaps view in inside <see cref="IDock.Views"/> collections.
         /// </summary>
-        /// <param name="host">The views host.</param>
+        /// <param name="dock">The views dock.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void SwapView(IDock host, IView sourceView, IView targetView);
+        void SwapView(IDock dock, IView sourceView, IView targetView);
 
         /// <summary>
         /// Swaps view into between <see cref="IDock.Views"/> collections.
         /// </summary>
-        /// <param name="sourceHost">The source views host.</param>
-        /// <param name="targetHost">The target views host.</param>
+        /// <param name="sourceDock">The source views dock.</param>
+        /// <param name="targetDock">The target views dock.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void SwapView(IDock sourceHost, IDock targetHost, IView sourceView, IView targetView);
+        void SwapView(IDock sourceDock, IDock targetDock, IView sourceView, IView targetView);
 
         /// <summary>
         /// Replaces source view with destination view in source view parent <see cref="IDock.Views"/> collection.
@@ -467,12 +467,12 @@ namespace Dock.Model
         IDockWindow CreateWindowFrom(IView view);
 
         /// <summary>
-        /// Adds window to host windows list.
+        /// Adds window to dock windows list.
         /// </summary>
-        /// <param name="host">The window host.</param>
+        /// <param name="dock">The window dock.</param>
         /// <param name="window">The window to add.</param>
         /// <param name="context">The context for dock window.</param>
-        void AddWindow(IDock host, IDockWindow window, object context);
+        void AddWindow(IDock dock, IDockWindow window, object context);
 
         /// <summary>
         /// Removes window from owner windows list.

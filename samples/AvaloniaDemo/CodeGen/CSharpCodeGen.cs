@@ -66,10 +66,17 @@ namespace AvaloniaDemo.CodeGen
 
             Output($"{indent}}};");
 
-            WriteObjects(window.Layout, indent);
+            if (window.Layout is IDock dock)
+            {
+                WriteDock(dock, indent);
+            }
+            else
+            {
+                WriteDock(window.Layout, indent);
+            }
         }
 
-        private void WriteObjects(IView root, string indent = "")
+        private void WriteView(IView root, string indent = "")
         {
             string id = $"view{_viewCount}";
             _viewCount++;
@@ -81,94 +88,97 @@ namespace AvaloniaDemo.CodeGen
 
             Output($"{indent}var {id} = new {root.GetType().Name}()");
             Output($"{indent}{{");
-
             Output($"{indent}    Id = \"{root.Id}\",");
-
-            if (root is IDock viewDock)
-            {
-                Output($"{indent}    Dock = \"{viewDock.Dock}\",");
-            }
-
             Output($"{indent}    Width = {FormatDouble(root.Width)},");
             Output($"{indent}    Height = {FormatDouble(root.Height)},");
             Output($"{indent}    Title = \"{root.Title}\",");
+            Output($"{indent}}};");
+        }
 
+        private void WriteDock(IDock root, string indent = "")
+        {
+            string id = $"view{_viewCount}";
+            _viewCount++;
+
+            if (!_idViews.ContainsKey(root))
+            {
+                _idViews[root] = id;
+            }
+
+            Output($"{indent}var {id} = new {root.GetType().Name}()");
+            Output($"{indent}{{");
+            Output($"{indent}    Id = \"{root.Id}\",");
+            Output($"{indent}    Width = {FormatDouble(root.Width)},");
+            Output($"{indent}    Height = {FormatDouble(root.Height)},");
+            Output($"{indent}    Title = \"{root.Title}\",");
+            Output($"{indent}    Dock = \"{root.Dock}\",");
             Output($"{indent}}};");
 
-            if (root is IDock viewViewsHost)
+            if (root.Views != null)
             {
-                if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
+                foreach (var view in root.Views)
                 {
-                    for (int i = 0; i < viewViewsHost.Views.Count; i++)
+                    if (view is IDock dock)
                     {
-                        var view = viewViewsHost.Views[i];
-                        WriteObjects(view, indent);
+                        WriteDock(dock, indent);
+                    }
+                    else
+                    {
+                        WriteView(view, indent);
                     }
                 }
             }
 
-            if (root is IDock viewWindowsHost)
+            if (root.Windows != null)
             {
-                if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
+                foreach (var window in root.Windows)
                 {
-                    for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
-                    {
-                        var window = viewWindowsHost.Windows[i];
-                        WriteWindow(window, indent);
-                    }
+                    WriteWindow(window, indent);
                 }
             }
         }
 
-        private void WriteViewsHost(string indent, string valueId, IDock viewViewsHost)
+        private void WriteViews(string indent, string valueId, IDock dock)
         {
-            if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
+            if (dock.Views != null && dock.Views.Count > 0)
             {
-                if (viewViewsHost.CurrentView != null)
+                if (dock.CurrentView != null)
                 {
-                    Output($"{indent}{valueId}.CurrentView = {_idViews[viewViewsHost.CurrentView]};");
+                    Output($"{indent}{valueId}.CurrentView = {_idViews[dock.CurrentView]};");
                 }
 
-                if (viewViewsHost.DefaultView != null)
+                if (dock.DefaultView != null)
                 {
-                    Output($"{indent}{valueId}.DefaultView = {_idViews[viewViewsHost.DefaultView]};");
+                    Output($"{indent}{valueId}.DefaultView = {_idViews[dock.DefaultView]};");
                 }
 
                 Output($"{indent}{valueId}.Views = new ObservableCollection<IView>");
                 Output($"{indent}{{");
-
-                for (int i = 0; i < viewViewsHost.Views.Count; i++)
+                foreach (var view in dock.Views)
                 {
-                    var child = viewViewsHost.Views[i];
-                    Output($"{indent}    {_idViews[child]},");
+                    Output($"{indent}    {_idViews[view]},");
                 }
-
                 Output($"{indent}}};");
             }
         }
 
-        private void WriteWindowsHost(string indent, string valueId, IDock viewWindowsHost)
+        private void WriteWindows(string indent, string valueId, IDock dock)
         {
-            if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
+            if (dock.Windows != null && dock.Windows.Count > 0)
             {
                 Output($"{indent}{valueId}.Windows = new ObservableCollection<IDockWindow>");
                 Output($"{indent}{{");
-
-                for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
+                foreach (var window in dock.Windows)
                 {
-                    var window = viewWindowsHost.Windows[i];
                     Output($"{indent}    {_idWindows[window]},");
                 }
-
                 Output($"{indent}}};");
 
-                for (int i = 0; i < viewWindowsHost.Windows.Count; i++)
+                foreach (var window in dock.Windows)
                 {
-                    var window = viewWindowsHost.Windows[i];
                     if (window.Layout != null)
                     {
-                        string windowId = _idWindows[window];
-                        Output($"{indent}{windowId}.Layout = {_idViews[window.Layout]};");
+                        Output($"{indent}{_idWindows[window]}.Layout = {_idViews[window.Layout]};");
                     }
                 }
             }
@@ -178,20 +188,12 @@ namespace AvaloniaDemo.CodeGen
         {
             foreach (var kvp in _idViews)
             {
-                IView keyView = kvp.Key;
-                string valueId = kvp.Value;
-
-                if (keyView is IDock viewViewsHost)
+                if (kvp.Key is IDock dock)
                 {
-                    WriteViewsHost(indent, valueId, viewViewsHost);
-                }
-
-                if (keyView is IDock viewWindowsHost)
-                {
-                    WriteWindowsHost(indent, valueId, viewWindowsHost);
+                    WriteViews(indent, kvp.Value, dock);
+                    WriteWindows(indent, kvp.Value, dock);
                 }
             }
-
             Output($"{indent}return {_idViews[root]};");
         }
 
@@ -260,7 +262,15 @@ namespace AvaloniaDemo.ViewModels
 
             WriterHeader();
 
-            WriteObjects(view, indent);
+            if (view is IDock dock)
+            {
+                WriteDock(dock, indent);
+            }
+            else
+            {
+                WriteView(view, indent);
+            }
+
             WriteLists(view, indent);
 
             WriteFooter();

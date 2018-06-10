@@ -72,7 +72,7 @@
         <TabItem Header="Views">
             <ListBox x:Name="views" Items="{Binding Views}" Margin="4">
                 <ListBox.KeyBindings>
-                    <KeyBinding Command="{Binding Factory.RemoveView}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
+                    <KeyBinding Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
                 </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IView">
@@ -83,7 +83,7 @@
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="_Remove" Command="{Binding Factory.RemoveView}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="_Remove" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding}"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>
@@ -94,7 +94,7 @@
         <TabItem Header="Windows">
             <ListBox x:Name="windows" Items="{Binding Windows}" Margin="4">
                 <ListBox.KeyBindings>
-                    <KeyBinding Command="{Binding Factory.RemoveWindow}" CommandParameter="{Binding #windows.SelectedItem}" Gesture="Delete"/>
+                    <KeyBinding Command="{Binding Parent.Factory.RemoveWindow}" CommandParameter="{Binding #windows.SelectedItem}" Gesture="Delete"/>
                 </ListBox.KeyBindings>
                 <ListBox.DataTemplates>
                     <DataTemplate DataType="Dock:IDockWindow">
@@ -104,7 +104,7 @@
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="_Remove" Command="{Binding Factory.RemoveWindow}" CommandParameter="{Binding}"/>
+                                    <MenuItem Header="_Remove" Command="{Binding Parent.Factory.RemoveWindow}" CommandParameter="{Binding}"/>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>

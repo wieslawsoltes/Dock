@@ -95,7 +95,7 @@ namespace AvaloniaDemo.CodeGen
 
             Output($"{indent}}};");
 
-            if (root is IViewsHost viewViewsHost)
+            if (root is IDock viewViewsHost)
             {
                 if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
                 {
@@ -107,7 +107,7 @@ namespace AvaloniaDemo.CodeGen
                 }
             }
 
-            if (root is IWindowsHost viewWindowsHost)
+            if (root is IDock viewWindowsHost)
             {
                 if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
                 {
@@ -120,7 +120,7 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
-        private void WriteViewsHost(string indent, string valueId, IViewsHost viewViewsHost)
+        private void WriteViewsHost(string indent, string valueId, IDock viewViewsHost)
         {
             if (viewViewsHost.Views != null && viewViewsHost.Views.Count > 0)
             {
@@ -147,7 +147,7 @@ namespace AvaloniaDemo.CodeGen
             }
         }
 
-        private void WriteWindowsHost(string indent, string valueId, IWindowsHost viewWindowsHost)
+        private void WriteWindowsHost(string indent, string valueId, IDock viewWindowsHost)
         {
             if (viewWindowsHost.Windows != null && viewWindowsHost.Windows.Count > 0)
             {
@@ -181,12 +181,12 @@ namespace AvaloniaDemo.CodeGen
                 IView keyView = kvp.Key;
                 string valueId = kvp.Value;
 
-                if (keyView is IViewsHost viewViewsHost)
+                if (keyView is IDock viewViewsHost)
                 {
                     WriteViewsHost(indent, valueId, viewViewsHost);
                 }
 
-                if (keyView is IWindowsHost viewWindowsHost)
+                if (keyView is IDock viewWindowsHost)
                 {
                     WriteWindowsHost(indent, valueId, viewWindowsHost);
                 }

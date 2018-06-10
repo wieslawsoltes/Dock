@@ -109,7 +109,7 @@ namespace Dock.Model
 
         private void SetFocusedView(IView view)
         {
-            if (_factory != null && _factory.FindRoot(this) is IViewsHost viewsHost)
+            if (_factory != null && _factory.FindRoot(this) is IDock viewsHost)
             {
                 viewsHost.FocusedView = view;
             }

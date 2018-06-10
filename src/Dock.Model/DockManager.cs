@@ -222,7 +222,7 @@ namespace Dock.Model
             {
                 case DockOperation.Fill:
                     {
-                        if (sourceView.Parent is IViewsHost sourceViewParentHost)
+                        if (sourceView.Parent is IDock sourceViewParentHost)
                         {
                             if (sourceView != targetView && sourceView.Parent != targetView
                                 && sourceView.Parent is IDock sourceViewParentDock
@@ -236,7 +236,7 @@ namespace Dock.Model
                                     var window = factory.CreateWindowFrom(sourceView);
                                     if (window != null)
                                     {
-                                        if (rootLayout.CurrentView is IWindowsHost host)
+                                        if (rootLayout.CurrentView is IDock host)
                                         {
                                             factory.AddWindow(host, window, sourceView.Context);
                                         }

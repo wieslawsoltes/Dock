@@ -26,7 +26,7 @@ namespace Dock.Avalonia
                 {
                     if (host.CurrentView != null)
                     {
-                        if (factory.FindRoot(host.CurrentView) is IViewsHost rootHost)
+                        if (factory.FindRoot(host.CurrentView) is IDock rootHost)
                         {
                             factory.SetFocusedView(rootHost, host.CurrentView);
                         }

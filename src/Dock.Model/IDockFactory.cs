@@ -143,7 +143,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="host">The host to set the focused view on.</param>
         /// <param name="view">The view to set.</param>
-        void SetFocusedView(IViewsHost host, IView view);
+        void SetFocusedView(IDock host, IView view);
 
         /// <summary>
         /// Searches for root view.
@@ -153,61 +153,61 @@ namespace Dock.Model
         IView FindRoot(IView view);
 
         /// <summary>
-        /// Removes view from parent <see cref="IViewsHost.Views"/> collection.
+        /// Removes view from parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="view">The view to remove.</param>
         void RemoveView(IView view);
 
         /// <summary>
-        /// Moves view inside <see cref="IViewsHost.Views"/> collection.
+        /// Moves view inside <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="host">The views host.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void MoveView(IViewsHost host, IView sourceView, IView targetView);
+        void MoveView(IDock host, IView sourceView, IView targetView);
 
         /// <summary>
-        /// Moves view into another <see cref="IViewsHost.Views"/> collection.
+        /// Moves view into another <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="sourceHost">The source views dock.</param>
         /// <param name="targetHost">The target views dock.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void MoveView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView);
+        void MoveView(IDock sourceHost, IDock targetHost, IView sourceView, IView targetView);
 
         /// <summary>
-        /// Moves view into another <see cref="IViewsHost.Views"/> collection.
+        /// Moves view into another <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="first">The first view.</param>
         /// <param name="second">The second view.</param>
         void Move(IView first, IView second);
 
         /// <summary>
-        /// Swaps view in parents <see cref="IViewsHost.Views"/> collection.
+        /// Swaps view in parents <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="first">The first view.</param>
         /// <param name="second">The second view.</param>
         void Swap(IView first, IView second);
 
         /// <summary>
-        /// Swaps view in inside <see cref="IViewsHost.Views"/> collections.
+        /// Swaps view in inside <see cref="IDock.Views"/> collections.
         /// </summary>
         /// <param name="host">The views host.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void SwapView(IViewsHost host, IView sourceView, IView targetView);
+        void SwapView(IDock host, IView sourceView, IView targetView);
 
         /// <summary>
-        /// Swaps view into between <see cref="IViewsHost.Views"/> collections.
+        /// Swaps view into between <see cref="IDock.Views"/> collections.
         /// </summary>
         /// <param name="sourceHost">The source views host.</param>
         /// <param name="targetHost">The target views host.</param>
         /// <param name="sourceView">The source view.</param>
         /// <param name="targetView">The target view.</param>
-        void SwapView(IViewsHost sourceHost, IViewsHost targetHost, IView sourceView, IView targetView);
+        void SwapView(IDock sourceHost, IDock targetHost, IView sourceView, IView targetView);
 
         /// <summary>
-        /// Replaces source view with destination view in source view parent <see cref="IViewsHost.Views"/> collection.
+        /// Replaces source view with destination view in source view parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="source">The source view.</param>
         /// <param name="destination">The destination view.</param>
@@ -268,145 +268,145 @@ namespace Dock.Model
         void SplitToWindow(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.ILayoutDock"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.ILayoutDock"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddLayout(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IRootDock"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.IRootDock"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddRoot(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.ISplitterDock"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.ISplitterDock"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddSplitter(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IDocumentDock"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.IDocumentDock"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddDocument(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IToolDock"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.IToolDock"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddTool(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IView"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="IView"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddView(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IToolTab"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.IToolTab"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddToolTab(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IDocumentTab"/> to dock <see cref="IViewsHost.Views"/> collection.
+        /// Adds <see cref="Controls.IDocumentTab"/> to dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddDocumentTab(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.ILayoutDock"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.ILayoutDock"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertLayoutBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IRootDock"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IRootDock"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertRootBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.ISplitterDock"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.ISplitterDock"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertSplitterBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IDocumentDock"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentDock"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertDocumentBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IToolDock"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IToolDock"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertToolBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IView"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="IView"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertViewBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IToolTab"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IToolTab"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertToolTabBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IDocumentTab"/> before dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentTab"/> before dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertDocumentTabBefore(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.ILayoutDock"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.ILayoutDock"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertLayoutAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IRootDock"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IRootDock"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertRootAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.ISplitterDock"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.ISplitterDock"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertSplitterAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IDocumentDock"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentDock"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertDocumentAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IToolDock"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IToolDock"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertToolAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="IView"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="IView"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertViewAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IToolTab"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IToolTab"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertToolTabAfter(IDock dock);
 
         /// <summary>
-        /// Insert <see cref="Controls.IDocumentTab"/> after dock in parent <see cref="IViewsHost.Views"/> collection.
+        /// Insert <see cref="Controls.IDocumentTab"/> after dock in parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void InsertDocumentTabAfter(IDock dock);
@@ -472,7 +472,7 @@ namespace Dock.Model
         /// <param name="host">The window host.</param>
         /// <param name="window">The window to add.</param>
         /// <param name="context">The context for dock window.</param>
-        void AddWindow(IWindowsHost host, IDockWindow window, object context);
+        void AddWindow(IDock host, IDockWindow window, object context);
 
         /// <summary>
         /// Removes window from owner windows list.

@@ -180,7 +180,7 @@ namespace Dock.Avalonia
             if (view.Parent is IDock dock
                 && dock.Factory is IDockFactory factory 
                 && factory.FindRoot(dock) is IDock root 
-                && root.CurrentView is IWindowsHost windowsHost)
+                && root.CurrentView is IDock windowsHost)
             {
                     windowsHost.ShowWindows();
             }

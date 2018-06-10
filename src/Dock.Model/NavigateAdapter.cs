@@ -84,7 +84,7 @@ namespace Dock.Model
         }
 
         /// <summary>
-        /// Implementation of the <see cref="IViewsHost.Navigate(object)"/> method.
+        /// Implementation of the <see cref="IDock.Navigate(object)"/> method.
         /// </summary>
         /// <param name="root">An object that contains the content to navigate to.</param>
         /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
@@ -109,7 +109,7 @@ namespace Dock.Model
 
         private void ResetCurrentView()
         {
-            if (_dock.CurrentView is IWindowsHost currentViewWindows)
+            if (_dock.CurrentView is IDock currentViewWindows)
             {
                 currentViewWindows.HideWindows();
                 _dock.CurrentView = null;
@@ -138,7 +138,7 @@ namespace Dock.Model
 
         private void NavigateTo(IView view, bool bSnapshot)
         {
-            if (_dock.CurrentView is IWindowsHost currentViewWindows)
+            if (_dock.CurrentView is IDock currentViewWindows)
             {
                 currentViewWindows.HideWindows();
             }
@@ -153,7 +153,7 @@ namespace Dock.Model
                 _dock.CurrentView = view;
             }
 
-            if (view is IWindowsHost dockWindows)
+            if (view is IDock dockWindows)
             {
                 dockWindows.ShowWindows();
             }
@@ -176,7 +176,7 @@ namespace Dock.Model
         {
             var views = _dock.Views.Flatten(v =>
             {
-                if (v is IViewsHost n)
+                if (v is IDock n)
                 {
                     return n.Views;
                 }

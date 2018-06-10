@@ -24,9 +24,9 @@ namespace AvaloniaDemo
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
-                    if (vm.Layout is IViewsHost layoutViewsHost)
+                    if (vm.Layout is IDock layoutViewsHost)
                     {
-                        if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                        if (layoutViewsHost.CurrentView is IDock currentViewWindowsHost)
                         {
                             currentViewWindowsHost.HideWindows();
                         }
@@ -50,12 +50,12 @@ namespace AvaloniaDemo
                     {
                         IDock layout = DockSerializer.Load<RootDock>(result.FirstOrDefault());
 
-                        if (vm.Layout is IWindowsHost layoutWindowsHost)
+                        if (vm.Layout is IDock layoutWindowsHost)
                         {
                             layoutWindowsHost.HideWindows();
-                            if (layout is IViewsHost layoutViewsHost)
+                            if (layout is IDock layoutViewsHost)
                             {
-                                if (layoutViewsHost.CurrentView is IWindowsHost currentViewWindowsHost)
+                                if (layoutViewsHost.CurrentView is IDock currentViewWindowsHost)
                                 {
                                     currentViewWindowsHost.ShowWindows();
                                 }
@@ -114,7 +114,7 @@ namespace AvaloniaDemo
                     var window = factory.CreateWindowFrom(layout);
                     if (window != null)
                     {
-                        if (vm.Layout is IWindowsHost layoutWindowsHost)
+                        if (vm.Layout is IDock layoutWindowsHost)
                         {
                             factory.AddWindow(layoutWindowsHost, window, vm.Layout);
                         }

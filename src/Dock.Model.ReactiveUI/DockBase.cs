@@ -48,7 +48,6 @@ namespace Dock.Model
                 this.RaiseAndSetIfChanged(ref _currentView, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
-
                 _factory?.SetFocusedView(this, value);
             }
         }

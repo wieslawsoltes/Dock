@@ -6,22 +6,22 @@ namespace Dock.Model.UnitTests
 {
     public class TestDock : IDock
     {
-        public string Id { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string Title { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public object Context { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public double Width { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public double Height { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IView Parent { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IList<IView> Views { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IView CurrentView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IView DefaultView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IView FocusedView { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public bool IsActive { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public bool CanGoBack => throw new System.NotImplementedException();
-        public bool CanGoForward => throw new System.NotImplementedException();
-        public IList<IDockWindow> Windows { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public string Dock { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public IDockFactory Factory { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public object Context { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public IView Parent { get; set; }
+        public IList<IView> Views { get; set; }
+        public IView CurrentView { get; set; }
+        public IView DefaultView { get; set; }
+        public IView FocusedView { get; set; }
+        public bool IsActive { get; set; }
+        public bool CanGoBack => false;
+        public bool CanGoForward => false;
+        public IList<IDockWindow> Windows { get; set; }
+        public string Dock { get; set; }
+        public IDockFactory Factory { get; set; }
 
         public void GoBack()
         {

@@ -22,6 +22,14 @@ namespace Dock.Model
         IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <summary>
+        /// Creates list of type <see cref="IList{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The list item type.</typeparam>
+        /// <param name="items">The initial list items.</param>
+        /// <returns>The new instance of <see cref="IList{T}"/>.</returns>
+        IList<T> CreateList<T>(params T[] items);
+
+        /// <summary>
         /// Creates <see cref="IRootDock"/>.
         /// </summary>
         /// <returns>The new instance of the <see cref="IRootDock"/> class.</returns>

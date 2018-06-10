@@ -33,10 +33,10 @@ namespace AvaloniaDemo.ViewModels
                 Title = nameof(IRootDock),
                 CurrentView = view,
                 DefaultView = view,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     view
-                }
+                )
             };
         }
 

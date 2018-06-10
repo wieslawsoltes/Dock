@@ -19,6 +19,9 @@ namespace Dock.Model
         public virtual IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <inheritdoc/>
+        public abstract IList<T> CreateList<T>(params T[] items);
+
+        /// <inheritdoc/>
         public abstract IRootDock CreateRootDock();
 
         /// <inheritdoc/>
@@ -239,7 +242,7 @@ namespace Dock.Model
 
             if (targetDock.Views == null)
             {
-                targetDock.Views = new ObservableCollection<IView>();
+                targetDock.Views = CreateList<IView>();
             }
 
             int targetIndex = targetDock.Views.IndexOf(targetView);
@@ -369,8 +372,13 @@ namespace Dock.Model
             split.Title = nameof(ILayoutDock);
             split.Width = width;
             split.Height = height;
-            split.CurrentView = view ?? null;
-            split.Views = view == null ? null : new ObservableCollection<IView> { view };
+
+            if (view != null)
+            {
+                split.CurrentView = view;
+                split.Views = CreateList<IView>();
+                split.Views.Add(view);
+            }
 
             switch (operation)
             {
@@ -415,12 +423,10 @@ namespace Dock.Model
             splitter.Width = double.NaN;
             splitter.Height = double.NaN;
 
-            layout.Views = new ObservableCollection<IView>
-            {
-                (dock.Dock == "Left" || dock.Dock == "Top") ? dock : split,
-                splitter,
-                (dock.Dock == "Left" || dock.Dock == "Top") ? split : dock,
-            };
+            layout.Views = CreateList<IView>();
+            layout.Views.Add((dock.Dock == "Left" || dock.Dock == "Top") ? dock : split);
+            layout.Views.Add(splitter);
+            layout.Views.Add((dock.Dock == "Left" || dock.Dock == "Top") ? split : dock);
 
             return layout;
         }
@@ -598,7 +604,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertLayout(dock, dock.Views.Count, dock.Context);
         }
@@ -608,7 +614,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertRoot(dock, dock.Views.Count, dock.Context);
         }
@@ -618,7 +624,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertSplitter(dock, dock.Views.Count, dock.Context);
         }
@@ -628,7 +634,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertDocument(dock, dock.Views.Count, dock.Context);
         }
@@ -638,7 +644,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertTool(dock, dock.Views.Count, dock.Context);
         }
@@ -648,7 +654,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertView(dock, dock.Views.Count, dock.Context);
         }
@@ -658,7 +664,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertToolTab(dock, dock.Views.Count, dock.Context);
         }
@@ -668,7 +674,7 @@ namespace Dock.Model
         {
             if (dock.Views == null)
             {
-                dock.Views = new ObservableCollection<IView>();
+                dock.Views = CreateList<IView>();
             }
             InsertDocumentTab(dock, dock.Views.Count, dock.Context);
         }
@@ -958,7 +964,8 @@ namespace Dock.Model
                         if (target is IDock dock)
                         {
                             dock.CurrentView = view;
-                            dock.Views = new ObservableCollection<IView> { view };
+                            dock.Views = CreateList<IView>();
+                            dock.Views.Add(view);
                         }
                     }
                     break;
@@ -971,7 +978,8 @@ namespace Dock.Model
                         if (target is IDock dock)
                         {
                             dock.CurrentView = view;
-                            dock.Views = new ObservableCollection<IView> { view };
+                            dock.Views = CreateList<IView>();
+                            dock.Views.Add(view);
                         }
                     }
                     break;
@@ -1012,7 +1020,8 @@ namespace Dock.Model
             root.Height = double.NaN;
             root.CurrentView = target;
             root.DefaultView = target;
-            root.Views = new ObservableCollection<IView> { target };
+            root.Views = CreateList<IView>();
+            root.Views.Add(target);
             root.Parent = FindRoot(view);
 
             var window = CreateDockWindow();
@@ -1030,7 +1039,7 @@ namespace Dock.Model
         {
             if (dock.Windows == null)
             {
-                dock.Windows = new ObservableCollection<IDockWindow>();
+                dock.Windows = CreateList<IDockWindow>();
             }
             dock.Windows.Add(window);
             Update(window, context, dock);

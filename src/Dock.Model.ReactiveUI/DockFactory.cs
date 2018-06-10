@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
+using ReactiveUI;
 
 namespace Dock.Model
 {
@@ -10,6 +13,13 @@ namespace Dock.Model
     /// </summary>
     public abstract class DockFactory : DockFactoryBase
     {
+        /// <inheritdoc/>
+        public override IList<T> CreateList<T>(params T[] items)
+        {
+            var type = typeof(ReactiveList<>).MakeGenericType(typeof(T));
+            return (IList<T>)Activator.CreateInstance(type, items);
+        }
+
         /// <inheritdoc/>
         public override IRootDock CreateRootDock() => new RootDock();
 

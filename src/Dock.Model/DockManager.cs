@@ -156,7 +156,8 @@ namespace Dock.Model
                                                             tool.Id = nameof(IToolDock);
                                                             tool.Title = nameof(IToolDock);
                                                             tool.CurrentView = sourceTab;
-                                                            tool.Views = new ObservableCollection<IView> { sourceTab };
+                                                            tool.Views = factory.CreateList<IView>();
+                                                            tool.Views.Add(sourceTab);
 
                                                             factory.Split(targetTabParent, tool, operation);
                                                         }
@@ -175,7 +176,8 @@ namespace Dock.Model
                                                             document.Id = nameof(IDocumentDock);
                                                             document.Title = nameof(IDocumentDock);
                                                             document.CurrentView = sourceTab;
-                                                            document.Views = new ObservableCollection<IView> { sourceTab };
+                                                            document.Views = factory.CreateList<IView>();
+                                                            document.Views.Add(sourceTab);
 
                                                             factory.Split(targetTabParent, document, operation);
                                                         }

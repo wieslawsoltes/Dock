@@ -33,10 +33,10 @@ namespace AvaloniaDemo.ViewModels
                 Title = nameof(IToolDock),
                 CurrentView = editorView,
                 DefaultView = editorView,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     editorView
-                }
+                )
             };
 
             return layout;

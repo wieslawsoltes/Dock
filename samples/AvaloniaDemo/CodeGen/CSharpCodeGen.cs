@@ -152,13 +152,11 @@ namespace AvaloniaDemo.CodeGen
                     Output($"{indent}{valueId}.DefaultView = {_idViews[dock.DefaultView]};");
                 }
 
-                Output($"{indent}{valueId}.Views = new ObservableCollection<IView>");
-                Output($"{indent}{{");
+                Output($"{indent}{valueId}.Views = CreateList<IView>();");
                 foreach (var view in dock.Views)
                 {
-                    Output($"{indent}    {_idViews[view]},");
+                    Output($"{indent}{valueId}.Views.Add({_idViews[view]});");
                 }
-                Output($"{indent}}};");
             }
         }
 
@@ -166,13 +164,11 @@ namespace AvaloniaDemo.CodeGen
         {
             if (dock.Windows != null && dock.Windows.Count > 0)
             {
-                Output($"{indent}{valueId}.Windows = new ObservableCollection<IDockWindow>");
-                Output($"{indent}{{");
+                Output($"{indent}{valueId}.Windows = CreateList<IDockWindow>();");
                 foreach (var window in dock.Windows)
                 {
-                    Output($"{indent}    {_idWindows[window]},");
+                    Output($"{indent}{valueId}.Windows.Add({_idWindows[window]});");
                 }
-                Output($"{indent}}};");
 
                 foreach (var window in dock.Windows)
                 {

@@ -158,8 +158,8 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "LeftPane",
                 CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     new ToolDock
                     {
                         Id = "LeftPaneTop",
@@ -168,12 +168,12 @@ namespace AvaloniaDemo.ViewModels
                         Height = 340,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
-                        Views = new ObservableCollection<IView>
-                        {
+                        Views = CreateList<IView>
+                        (
                             leftTopTool1,
                             leftTopTool2,
                             leftTopTool3
-                        }
+                        )
                     },
                     new SplitterDock()
                     {
@@ -189,14 +189,14 @@ namespace AvaloniaDemo.ViewModels
                         Height = double.NaN,
                         Title = "LeftPaneBottom",
                         CurrentView = leftBottomTool1,
-                        Views = new ObservableCollection<IView>
-                        {
+                        Views = CreateList<IView>
+                        (
                             leftBottomTool1,
                             leftBottomTool2,
                             leftBottomTool3
-                        }
+                        )
                     }
-                }
+                )
             };
 
             // Right Pane
@@ -209,8 +209,8 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "RightPane",
                 CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     new ToolDock
                     {
                         Id = "RightPaneTop",
@@ -219,12 +219,12 @@ namespace AvaloniaDemo.ViewModels
                         Height = 340,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
-                        Views = new ObservableCollection<IView>
-                        {
+                        Views = CreateList<IView>
+                        (
                             rightTopTool1,
                             rightTopTool2,
                             rightTopTool3
-                        }
+                        )
                     },
                     new SplitterDock()
                     {
@@ -240,14 +240,14 @@ namespace AvaloniaDemo.ViewModels
                         Height = double.NaN,
                         Title = "RightPaneBottom",
                         CurrentView = rightBottomTool1,
-                        Views = new ObservableCollection<IView>
-                        {
+                        Views = CreateList<IView>
+                        (
                             rightBottomTool1,
                             rightBottomTool2,
                             rightBottomTool3
-                        }
+                        )
                     }
-                }
+                )
             };
 
             // Documents
@@ -260,12 +260,12 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "DocumentsPane",
                 CurrentView = document1,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     document1,
                     document2,
                     document3
-                }
+                )
             };
 
             // Main
@@ -278,8 +278,8 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "MainLayout",
                 CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     leftPane,
                     new SplitterDock()
                     {
@@ -295,7 +295,7 @@ namespace AvaloniaDemo.ViewModels
                         Title = "RightSplitter"
                     },
                     documentsPane
-                }
+                )
             };
 
             var mainView = new MainView
@@ -305,10 +305,10 @@ namespace AvaloniaDemo.ViewModels
                 Height = double.NaN,
                 Title = "Main",
                 CurrentView = mainLayout,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                    mainLayout
-                }
+                )
             };
 
             // Home
@@ -331,11 +331,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = "Root",
                 CurrentView = homeView,
                 DefaultView = homeView,
-                Views = new ObservableCollection<IView>
-                {
-                    homeView,
-                    mainView,
-                }
+                Views = CreateList<IView>(homeView, mainView)
             };
 
             return root;

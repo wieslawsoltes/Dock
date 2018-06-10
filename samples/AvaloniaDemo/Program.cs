@@ -4,10 +4,10 @@ using System;
 using System.Threading;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
 
 namespace AvaloniaDemo
 {
@@ -37,10 +37,10 @@ namespace AvaloniaDemo
                 var factory = new DemoDockFactory();
                 IDock layout = null;
 
-                string path = DockSerializer.GetBasePath("Layout.json");
-                if (DockSerializer.Exists(path))
+                string path = ModelSerializer.GetBasePath("Layout.json");
+                if (ModelSerializer.Exists(path))
                 {
-                    layout = DockSerializer.Load<RootDock>(path);
+                    layout = ModelSerializer.Load<RootDock>(path);
                 }
 
                 BuildAvaloniaApp().Start<MainWindow>(() =>
@@ -54,7 +54,7 @@ namespace AvaloniaDemo
 
                 vm.Factory.CloseLayout(vm.Layout);
 
-                DockSerializer.Save(path, vm.Layout);
+                ModelSerializer.Save(path, vm.Layout);
             }
             catch (Exception ex)
             {

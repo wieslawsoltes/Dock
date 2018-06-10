@@ -1,39 +1,13 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System.Collections.Generic;
 
 namespace Dock.Model
 {
     /// <summary>
-    /// Views host contract.
+    /// Navigate adapter contract for the <see cref="IDock"/>.
     /// </summary>
-    public interface IViewsHost
+    public interface INavigateAdapter
     {
-        /// <summary>
-        /// Gets or sets views.
-        /// </summary>
-        IList<IView> Views { get; set; }
-
-        /// <summary>
-        /// Gets or sets current view.
-        /// </summary>
-        IView CurrentView { get; set; }
-
-        /// <summary>
-        /// Gets or sets default view.
-        /// </summary>
-        IView DefaultView { get; set; }
-
-        /// <summary>
-        /// Gets or sets the focused view.
-        /// </summary>
-        IView FocusedView { get; set; }
-
-        /// <summary>
-        /// Gets or sets if the Host is the currently active host.
-        /// </summary>
-        bool IsActive { get; set; }
-
         /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
         /// </summary>
@@ -55,9 +29,20 @@ namespace Dock.Model
         void GoForward();
 
         /// <summary>
-        /// Navigate to content that is contained by an object.
+        /// Implementation of the <see cref="IDock.Navigate(object)"/> method.
         /// </summary>
         /// <param name="root">An object that contains the content to navigate to.</param>
-        void Navigate(object root);
+        /// <param name="bSnapshot">The flag indicating whether to make snapshot.</param>
+        void Navigate(object root, bool bSnapshot);
+
+        /// <summary>
+        /// Implementation of the <see cref="IDock.ShowWindows()"/> method.
+        /// </summary>
+        void ShowWindows();
+
+        /// <summary>
+        /// Implementation of the <see cref="IDock.HideWindows()"/> method.
+        /// </summary>
+        void HideWindows();
     }
 }

@@ -1,16 +1,19 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Collections.ObjectModel;
 using System.Text;
+//using ReactiveUI;
 
-namespace Dock.Serializer
+namespace AvaloniaDemo.Serializer
 {
     /// <summary>
-    /// Dock serializer.
+    /// Model serializer.
     /// </summary>
-    public static class DockSerializer
+    public static class ModelSerializer
     {
-        private static NewtonsoftJsonSerializer Serializer = new NewtonsoftJsonSerializer();
+        private static NewtonsoftJsonSerializer Serializer = new NewtonsoftJsonSerializer(typeof(ObservableCollection<>));
+        //private static NewtonsoftJsonSerializer Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));
 
         /// <summary>
         /// Gets the base directory path.

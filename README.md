@@ -74,7 +74,6 @@ and install the package like this:
 * [Dock.Model.INPC](https://www.nuget.org/packages/Dock.Model.INPC/) - Core docking library implementation using INPC.
 * [Dock.Model.ReactiveUI](https://www.nuget.org/packages/Dock.Model.ReactiveUI/) - Core docking library implementation using ReactiveUI.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
-* [Dock.Serializer](https://www.nuget.org/packages/Dock.Serializer/) - Docking model serializer.
 
 ### Package Dependencies
 
@@ -86,7 +85,6 @@ and install the package like this:
 * [System.Reactive.Linq](https://www.nuget.org/packages/System.Reactive.Linq/)
 * [System.Reactive.PlatformServices](https://www.nuget.org/packages/System.Reactive.PlatformServices/)
 * [Serilog](https://www.nuget.org/packages/Serilog/)
-* [Splat](https://www.nuget.org/packages/Splat/)
 * [Sprache](https://www.nuget.org/packages/Sprache/)
 
 ### Package Sources

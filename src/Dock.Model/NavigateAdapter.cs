@@ -24,7 +24,7 @@ namespace Dock.Model
     /// <summary>
     /// Navigate adapter for the <see cref="IDock"/>.
     /// </summary>
-    public class NavigateAdapter
+    public class NavigateAdapter : INavigateAdapter
     {
         private readonly Stack<IView> _back;
         private readonly Stack<IView> _forward;
@@ -41,19 +41,13 @@ namespace Dock.Model
             _dock = dock;
         }
 
-        /// <summary>
-        /// Gets a value that indicates whether there is at least one entry in back navigation history.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanGoBack => _back.Count > 0;
 
-        /// <summary>
-        /// Gets a value that indicates whether there is at least one entry in forward navigation history.
-        /// </summary>
+        /// <inheritdoc/>
         public bool CanGoForward => _forward.Count > 0;
 
-        /// <summary>
-        /// Navigates to the most recent entry in back navigation history, if there is one.
-        /// </summary>
+        /// <inheritdoc/>
         public void GoBack()
         {
             if (_back.Count > 0)
@@ -67,9 +61,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Navigate to the most recent entry in forward navigation history, if there is one.
-        /// </summary>
+        /// <inheritdoc/>
         public void GoForward()
         {
             if (_forward.Count > 0)
@@ -83,11 +75,7 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Implementation of the <see cref="IViewsHost.Navigate(object)"/> method.
-        /// </summary>
-        /// <param name="root">An object that contains the content to navigate to.</param>
-        /// <param name="bSnapshot">The lag indicating whether to make snapshot.</param>
+        /// <inheritdoc/>
         public void Navigate(object root, bool bSnapshot)
         {
             switch (root)
@@ -109,7 +97,7 @@ namespace Dock.Model
 
         private void ResetCurrentView()
         {
-            if (_dock.CurrentView is IWindowsHost currentViewWindows)
+            if (_dock.CurrentView is IDock currentViewWindows)
             {
                 currentViewWindows.HideWindows();
                 _dock.CurrentView = null;
@@ -138,7 +126,7 @@ namespace Dock.Model
 
         private void NavigateTo(IView view, bool bSnapshot)
         {
-            if (_dock.CurrentView is IWindowsHost currentViewWindows)
+            if (_dock.CurrentView is IDock currentViewWindows)
             {
                 currentViewWindows.HideWindows();
             }
@@ -153,7 +141,7 @@ namespace Dock.Model
                 _dock.CurrentView = view;
             }
 
-            if (view is IWindowsHost dockWindows)
+            if (view is IDock dockWindows)
             {
                 dockWindows.ShowWindows();
             }
@@ -176,7 +164,7 @@ namespace Dock.Model
         {
             var views = _dock.Views.Flatten(v =>
             {
-                if (v is IViewsHost n)
+                if (v is IDock n)
                 {
                     return n.Views;
                 }
@@ -186,6 +174,30 @@ namespace Dock.Model
             if (result != null)
             {
                 Navigate(result, bSnapshot);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void ShowWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Present(false);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void HideWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Destroy();
+                }
             }
         }
     }

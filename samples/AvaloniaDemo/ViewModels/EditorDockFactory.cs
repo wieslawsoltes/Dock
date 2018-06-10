@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using AvaloniaDemo.ViewModels.Tools;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -33,10 +32,10 @@ namespace AvaloniaDemo.ViewModels
                 Title = nameof(IToolDock),
                 CurrentView = editorView,
                 DefaultView = editorView,
-                Views = new ObservableCollection<IView>
-                {
+                Views = CreateList<IView>
+                (
                     editorView
-                }
+                )
             };
 
             return layout;

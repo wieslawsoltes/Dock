@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Dock.Model.Controls;
 
@@ -107,7 +106,7 @@ namespace Dock.Model
         {
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
 
-            if (sourceTab.Parent is ITabDock sourceTabParent /* && sourceTabParent != targetTabParent */)
+            if (sourceTab.Parent is ITabDock sourceTabParent )
             {
                 IView targetTab = targetTabParent.Views.LastOrDefault();
 
@@ -156,7 +155,8 @@ namespace Dock.Model
                                                             tool.Id = nameof(IToolDock);
                                                             tool.Title = nameof(IToolDock);
                                                             tool.CurrentView = sourceTab;
-                                                            tool.Views = new ObservableCollection<IView> { sourceTab };
+                                                            tool.Views = factory.CreateList<IView>();
+                                                            tool.Views.Add(sourceTab);
 
                                                             factory.Split(targetTabParent, tool, operation);
                                                         }
@@ -175,7 +175,8 @@ namespace Dock.Model
                                                             document.Id = nameof(IDocumentDock);
                                                             document.Title = nameof(IDocumentDock);
                                                             document.CurrentView = sourceTab;
-                                                            document.Views = new ObservableCollection<IView> { sourceTab };
+                                                            document.Views = factory.CreateList<IView>();
+                                                            document.Views.Add(sourceTab);
 
                                                             factory.Split(targetTabParent, document, operation);
                                                         }
@@ -222,34 +223,30 @@ namespace Dock.Model
             {
                 case DockOperation.Fill:
                     {
-                        if (sourceView.Parent is IViewsHost sourceViewParentHost)
+                        if (sourceView != targetView 
+                            && sourceView.Parent != targetView
+                            && sourceView.Parent is IDock sourceViewParent
+                            && sourceViewParent.Factory is IDockFactory factory
+                            && factory.FindRoot(sourceView) is IDock root 
+                            && root.CurrentView is IDock currentViewRoot)
                         {
-                            if (sourceView != targetView && sourceView.Parent != targetView
-                                && sourceView.Parent is IDock sourceViewParentDock
-                                && sourceViewParentDock.Factory is IDockFactory factory
-                                && factory.FindRoot(sourceView) is IDock rootLayout && rootLayout.CurrentView != null)
+                            if (bExecute)
                             {
-                                if (bExecute)
+                                factory.RemoveView(sourceView);
+
+                                var window = factory.CreateWindowFrom(sourceView);
+                                if (window != null)
                                 {
-                                    factory.RemoveView(sourceView);
+                                    factory.AddWindow(currentViewRoot, window, sourceView.Context);
 
-                                    var window = factory.CreateWindowFrom(sourceView);
-                                    if (window != null)
-                                    {
-                                        if (rootLayout.CurrentView is IWindowsHost host)
-                                        {
-                                            factory.AddWindow(host, window, sourceView.Context);
-                                        }
-
-                                        window.X = ScreenPosition.X;
-                                        window.Y = ScreenPosition.Y;
-                                        window.Width = 300;
-                                        window.Height = 400;
-                                        window.Present(false);
-                                    }
+                                    window.X = ScreenPosition.X;
+                                    window.Y = ScreenPosition.Y;
+                                    window.Width = 300;
+                                    window.Height = 400;
+                                    window.Present(false);
                                 }
-                                return true;
                             }
+                            return true;
                         }
                         break;
                     }

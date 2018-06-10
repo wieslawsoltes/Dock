@@ -53,14 +53,6 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public bool IsActive
-        {
-            get => _isActive;
-            set => this.RaiseAndSetIfChanged(ref _isActive, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IView DefaultView
         {
             get => _defaultView;
@@ -73,6 +65,14 @@ namespace Dock.Model
         {
             get => _focusedView;
             set => this.RaiseAndSetIfChanged(ref _focusedView, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool IsActive
+        {
+            get => _isActive;
+            set => this.RaiseAndSetIfChanged(ref _isActive, value);
         }
 
         /// <inheritdoc/>

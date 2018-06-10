@@ -54,7 +54,6 @@ namespace Dock.Model
         public virtual void InitLayout(IView layout, object context)
         {
             Update(layout, context, null);
-
             if (layout is IDock root)
             {
                 root.ShowWindows();
@@ -125,15 +124,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void Update(IList<IDockWindow> windows, object context, IView owner)
-        {
-            foreach (var window in windows)
-            {
-                Update(window, context, owner);
-            }
-        }
-
-        /// <inheritdoc/>
         public virtual void Update(IView view, object context, IView parent)
         {
             view.Context = GetContext(view.Id, context);
@@ -158,6 +148,49 @@ namespace Dock.Model
                         Update(child, context, view);
                     }
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddView(IDock dock, IView view, object context)
+        {
+            Update(view, context, dock);
+            if (dock.Views == null)
+            {
+                dock.Views = CreateList<IView>();
+            }
+            dock.Views.Add(view);
+        }
+
+        /// <inheritdoc/>
+        public virtual void InsertView(IDock dock, IView view, int index, object context)
+        {
+            Update(view, context, dock);
+            if (dock.Views == null)
+            {
+                dock.Views = CreateList<IView>();
+            }
+            dock.Views.Insert(index, view);
+        }
+
+        /// <inheritdoc/>
+        public virtual void AddWindow(IDock dock, IDockWindow window, object context)
+        {
+            if (dock.Windows == null)
+            {
+                dock.Windows = CreateList<IDockWindow>();
+            }
+            dock.Windows.Add(window);
+            Update(window, context, dock);
+        }
+
+        /// <inheritdoc/>
+        public virtual void RemoveWindow(IDockWindow window)
+        {
+            if (window?.Owner is IDock dock)
+            {
+                window.Destroy();
+                dock.Windows?.Remove(window);
             }
         }
 
@@ -441,7 +474,6 @@ namespace Dock.Model
                 case DockOperation.Bottom:
                     {
                         var layout = CreateSplitLayout(dock, view, dock.Context, operation);
-
                         Replace(dock, layout);
                         Update(layout, dock.Context, dock.Parent);
                     }
@@ -454,7 +486,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SplitToFill(IDock dock)
         {
-            // TODO:
+            // TODO: Split to fill.
         }
 
         /// <inheritdoc/>
@@ -504,62 +536,52 @@ namespace Dock.Model
 
         private void InsertLayout(IDock dock, int index, object context)
         {
-            var layout = CreateLayoutDock();
-            layout.Id = nameof(ILayoutDock);
-            layout.Title = nameof(ILayoutDock);
-            layout.Width = double.NaN;
-            layout.Height = double.NaN;
-
-            Update(layout, context, dock);
-            dock.Views.Insert(index, layout);
+            var view = CreateLayoutDock();
+            view.Id = nameof(ILayoutDock);
+            view.Title = nameof(ILayoutDock);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertRoot(IDock dock, int index, object context)
         {
-            var root = CreateRootDock();
-            root.Id = nameof(IRootDock);
-            root.Title = nameof(IRootDock);
-            root.Width = double.NaN;
-            root.Height = double.NaN;
-
-            Update(root, context, dock);
-            dock.Views.Insert(index, root);
+            var view = CreateRootDock();
+            view.Id = nameof(IRootDock);
+            view.Title = nameof(IRootDock);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertSplitter(IDock dock, int index, object context)
         {
-            var splitter = CreateSplitterDock();
-            splitter.Id = nameof(ISplitterDock);
-            splitter.Title = nameof(ISplitterDock);
-            splitter.Width = double.NaN;
-            splitter.Height = double.NaN;
-
-            Update(splitter, context, dock);
-            dock.Views.Insert(index, splitter);
+            var view = CreateSplitterDock();
+            view.Id = nameof(ISplitterDock);
+            view.Title = nameof(ISplitterDock);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertDocument(IDock dock, int index, object context)
         {
-            var document = CreateDocumentDock();
-            document.Id = nameof(IDocumentDock);
-            document.Title = nameof(IDocumentDock);
-            document.Width = double.NaN;
-            document.Height = double.NaN;
-
-            Update(document, context, dock);
-            dock.Views.Insert(index, document);
+            var view = CreateDocumentDock();
+            view.Id = nameof(IDocumentDock);
+            view.Title = nameof(IDocumentDock);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertTool(IDock dock, int index, object context)
         {
-            var tool = CreateToolDock();
-            tool.Id = nameof(IToolDock);
-            tool.Title = nameof(IToolDock);
-            tool.Width = double.NaN;
-            tool.Height = double.NaN;
-
-            Update(tool, context, dock);
-            dock.Views.Insert(index, tool);
+            var view = CreateToolDock();
+            view.Id = nameof(IToolDock);
+            view.Title = nameof(IToolDock);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertView(IDock dock, int index, object context)
@@ -569,119 +591,81 @@ namespace Dock.Model
             view.Title = nameof(IView);
             view.Width = double.NaN;
             view.Height = double.NaN;
-
-            Update(view, context, dock);
-            dock.Views.Insert(index, view);
+            InsertView(dock, view, index, context);
         }
 
         private void InsertToolTab(IDock dock, int index, object context)
         {
-            var toolTab = CreateToolTab();
-            toolTab.Id = nameof(IToolTab);
-            toolTab.Title = nameof(IToolTab);
-            toolTab.Width = double.NaN;
-            toolTab.Height = double.NaN;
-
-            Update(toolTab, context, dock);
-            dock.Views.Insert(index, toolTab);
+            var view = CreateToolTab();
+            view.Id = nameof(IToolTab);
+            view.Title = nameof(IToolTab);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         private void InsertDocumentTab(IDock dock, int index, object context)
         {
-            var documentTab = CreateDocumentTab();
-            documentTab.Id = nameof(IDocumentTab);
-            documentTab.Title = nameof(IDocumentTab);
-            documentTab.Width = double.NaN;
-            documentTab.Height = double.NaN;
-
-            Update(documentTab, context, dock);
-            dock.Views.Insert(index, documentTab);
+            var view = CreateDocumentTab();
+            view.Id = nameof(IDocumentTab);
+            view.Title = nameof(IDocumentTab);
+            view.Width = double.NaN;
+            view.Height = double.NaN;
+            InsertView(dock, view, index, context);
         }
 
         /// <inheritdoc/>
         public virtual void AddLayout(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertLayout(dock, dock.Views.Count, dock.Context);
+            InsertLayout(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddRoot(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertRoot(dock, dock.Views.Count, dock.Context);
+            InsertRoot(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddSplitter(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertSplitter(dock, dock.Views.Count, dock.Context);
+            InsertSplitter(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddDocument(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertDocument(dock, dock.Views.Count, dock.Context);
+            InsertDocument(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddTool(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertTool(dock, dock.Views.Count, dock.Context);
+            InsertTool(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddView(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertView(dock, dock.Views.Count, dock.Context);
+            InsertView(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddToolTab(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertToolTab(dock, dock.Views.Count, dock.Context);
+            InsertToolTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void AddDocumentTab(IDock dock)
         {
-            if (dock.Views == null)
-            {
-                dock.Views = CreateList<IView>();
-            }
-            InsertDocumentTab(dock, dock.Views.Count, dock.Context);
+            InsertDocumentTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
         /// <inheritdoc/>
         public virtual void InsertLayoutBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertLayout(parent, index, parent.Context);
@@ -691,7 +675,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertRootBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertRoot(parent, index, parent.Context);
@@ -701,7 +685,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertSplitterBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertSplitter(parent, index, parent.Context);
@@ -711,7 +695,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertDocumentBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertDocument(parent, index, parent.Context);
@@ -721,7 +705,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertToolBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertTool(parent, index, parent.Context);
@@ -731,7 +715,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertViewBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertView(parent, index, parent.Context);
@@ -741,7 +725,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertToolTabBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertToolTab(parent, index, parent.Context);
@@ -751,7 +735,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertDocumentTabBefore(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
                 InsertDocumentTab(parent, index, parent.Context);
@@ -761,7 +745,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertLayoutAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertLayout(parent, index, parent.Context);
@@ -771,7 +755,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertRootAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertRoot(parent, index, parent.Context);
@@ -781,7 +765,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertSplitterAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertSplitter(parent, index, parent.Context);
@@ -791,7 +775,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertDocumentAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertDocument(parent, index, parent.Context);
@@ -801,7 +785,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertToolAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertTool(parent, index, parent.Context);
@@ -811,7 +795,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertViewAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertView(parent, index, parent.Context);
@@ -821,7 +805,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertToolTabAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertToolTab(parent, index, parent.Context);
@@ -831,7 +815,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertDocumentTabAfter(IDock dock)
         {
-            if (dock.Parent is IDock parent)
+            if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertDocumentTab(parent, index, parent.Context);
@@ -848,9 +832,9 @@ namespace Dock.Model
         private void Copy(IView source, IView destination, bool bCopyViews, bool bCopyWindows)
         {
             destination.Id = source.Id;
+            destination.Title = source.Title;
             destination.Width = source.Width;
             destination.Height = source.Height;
-            destination.Title = source.Title;
 
             if (source is IDock sourceDock && destination is IDock destinationDock)
             {
@@ -861,6 +845,8 @@ namespace Dock.Model
                     destinationDock.Views = sourceDock.Views;
                     destinationDock.CurrentView = sourceDock.CurrentView;
                     destinationDock.DefaultView = sourceDock.DefaultView;
+                    destinationDock.FocusedView = sourceDock.FocusedView;
+                    destinationDock.IsActive = sourceDock.IsActive;
                 }
 
                 if (bCopyWindows)
@@ -1031,27 +1017,6 @@ namespace Dock.Model
             window.Layout = root;
 
             return window;
-        }
-
-        /// <inheritdoc/>
-        public virtual void AddWindow(IDock dock, IDockWindow window, object context)
-        {
-            if (dock.Windows == null)
-            {
-                dock.Windows = CreateList<IDockWindow>();
-            }
-            dock.Windows.Add(window);
-            Update(window, context, dock);
-        }
-
-        /// <inheritdoc/>
-        public virtual void RemoveWindow(IDockWindow window)
-        {
-            if (window?.Owner is IDock dock)
-            {
-                window.Destroy();
-                dock.Windows?.Remove(window);
-            }
         }
     }
 }

@@ -140,6 +140,37 @@ namespace Dock.Model
         void Update(IView view, object context, IView parent);
 
         /// <summary>
+        /// Adds <see cref="IView"/> into dock <see cref="IDock.Views"/> collection. 
+        /// </summary>
+        /// <param name="dock">The parent dock.</param>
+        /// <param name="view">The view to add.</param>
+        /// <param name="context">The view context.</param>
+        void AddView(IDock dock, IView view, object context);
+
+        /// <summary>
+        /// Inserts <see cref="IView"/> into dock <see cref="IDock.Views"/> collection. 
+        /// </summary>
+        /// <param name="dock">The parent dock.</param>
+        /// <param name="view">The view to add.</param>
+        /// <param name="index">The view index.</param>
+        /// <param name="context">The view context.</param>
+        void InsertView(IDock dock, IView view, int index, object context);
+
+        /// <summary>
+        /// Adds window into dock windows list.
+        /// </summary>
+        /// <param name="dock">The window dock.</param>
+        /// <param name="window">The window to add.</param>
+        /// <param name="context">The context for dock window.</param>
+        void AddWindow(IDock dock, IDockWindow window, object context);
+
+        /// <summary>
+        /// Removes window from owner windows list.
+        /// </summary>
+        /// <param name="window">The window to remove.</param>
+        void RemoveWindow(IDockWindow window);
+
+        /// <summary>
         /// Sets a currently selected view. If the view is contained inside an dock it
         /// will become the selected tab.
         /// </summary>
@@ -276,49 +307,49 @@ namespace Dock.Model
         void SplitToWindow(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.ILayoutDock"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.ILayoutDock"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddLayout(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IRootDock"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.IRootDock"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddRoot(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.ISplitterDock"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.ISplitterDock"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddSplitter(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IDocumentDock"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.IDocumentDock"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddDocument(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IToolDock"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.IToolDock"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddTool(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="IView"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="IView"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddView(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IToolTab"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.IToolTab"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddToolTab(IDock dock);
 
         /// <summary>
-        /// Adds <see cref="Controls.IDocumentTab"/> to dock <see cref="IDock.Views"/> collection.
+        /// Adds <see cref="Controls.IDocumentTab"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The dock object.</param>
         void AddDocumentTab(IDock dock);
@@ -473,19 +504,5 @@ namespace Dock.Model
         /// <param name="view">The view to embed into window.</param>
         /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
         IDockWindow CreateWindowFrom(IView view);
-
-        /// <summary>
-        /// Adds window to dock windows list.
-        /// </summary>
-        /// <param name="dock">The window dock.</param>
-        /// <param name="window">The window to add.</param>
-        /// <param name="context">The context for dock window.</param>
-        void AddWindow(IDock dock, IDockWindow window, object context);
-
-        /// <summary>
-        /// Removes window from owner windows list.
-        /// </summary>
-        /// <param name="window">The window to remove.</param>
-        void RemoveWindow(IDockWindow window);
     }
 }

@@ -52,6 +52,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool IsActive
         {
             get => _isActive;

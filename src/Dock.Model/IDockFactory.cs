@@ -22,6 +22,11 @@ namespace Dock.Model
         IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <summary>
+        /// Gets or sets <see cref="IView"/> locator registry.
+        /// </summary>
+        IDictionary<string, Func<IView>> ViewLocator { get; set; }
+
+        /// <summary>
         /// Creates list of type <see cref="IList{T}"/>.
         /// </summary>
         /// <typeparam name="T">The list item type.</typeparam>
@@ -140,7 +145,7 @@ namespace Dock.Model
         void Update(IView view, object context, IView parent);
 
         /// <summary>
-        /// Adds <see cref="IView"/> into dock <see cref="IDock.Views"/> collection. 
+        /// Adds <see cref="IView"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The parent dock.</param>
         /// <param name="view">The view to add.</param>
@@ -148,7 +153,7 @@ namespace Dock.Model
         void AddView(IDock dock, IView view, object context);
 
         /// <summary>
-        /// Inserts <see cref="IView"/> into dock <see cref="IDock.Views"/> collection. 
+        /// Inserts <see cref="IView"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The parent dock.</param>
         /// <param name="view">The view to add.</param>

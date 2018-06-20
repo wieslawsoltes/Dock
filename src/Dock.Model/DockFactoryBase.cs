@@ -18,6 +18,9 @@ namespace Dock.Model
         public virtual IDictionary<string, Func<IDockHost>> HostLocator { get; set; }
 
         /// <inheritdoc/>
+        public virtual IDictionary<string, Func<IView>> ViewLocator { get; set; }
+
+        /// <inheritdoc/>
         public abstract IList<T> CreateList<T>(params T[] items);
 
         /// <inheritdoc/>

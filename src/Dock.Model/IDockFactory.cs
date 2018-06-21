@@ -197,6 +197,14 @@ namespace Dock.Model
         IView FindRoot(IView view);
 
         /// <summary>
+        /// Searches dock for view.
+        /// </summary>
+        /// <param name="dock">The views dock.</param>
+        /// <param name="predicate">The predicate to filter views.</param>
+        /// <returns>The view instance or null if view was not found.</returns>
+        IView FindView(IDock dock, Func<IView, bool> predicate);
+
+        /// <summary>
         /// Removes view from parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="view">The view to remove.</param>

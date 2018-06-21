@@ -249,6 +249,57 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public virtual IView FindView(IDock dock, Func<IView, bool> predicate)
+        {
+            if (predicate(dock) == true)
+            {
+                return dock;
+            }
+
+            if (dock.Views != null)
+            {
+                foreach (var view in dock.Views)
+                {
+                    if (predicate(view) == true)
+                    {
+                        return view;
+                    }
+
+                    if (view is IDock childDock)
+                    {
+                        var result = FindView(childDock, predicate);
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            if (dock.Windows != null)
+            {
+                foreach (var window in dock.Windows)
+                {
+                    if (window.Layout != null)
+                    {
+                        if (predicate(window.Layout) == true)
+                        {
+                            return window.Layout;
+                        }
+
+                        var result = FindView(window.Layout, predicate);
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public virtual void RemoveView(IView view)
         {
             if (view?.Parent is IDock dock && dock.Views != null)

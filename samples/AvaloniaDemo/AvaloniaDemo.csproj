@@ -21,8 +21,6 @@
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
-  <Import Project="..\..\build\SkiaSharp.props" />
-  <Import Project="..\..\build\SharpDX.props" />
   <Import Project="..\..\build\Newtonsoft.Json.props" />
   <!--<Import Project="..\..\build\ReactiveUI.props" />-->
 

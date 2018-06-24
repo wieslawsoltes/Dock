@@ -446,20 +446,30 @@ namespace Dock.Model
                     break;
             }
 
-            IDock split = CreateLayoutDock();
-            split.Id = nameof(ILayoutDock);
-            split.Title = nameof(ILayoutDock);
-            split.Width = width;
-            split.Height = height;
-
-            if (view != null)
+            IDock split = null;
+            if (view is IDock viewDock)
             {
-                view.Width = double.NaN;
-                view.Height = double.NaN;
+                split = viewDock;
+                split.Width = width;
+                split.Height = height;
+            }
+            else
+            {
+                split = CreateLayoutDock();
+                split.Id = nameof(ILayoutDock);
+                split.Title = nameof(ILayoutDock);
+                split.Width = width;
+                split.Height = height;
 
-                split.CurrentView = view;
-                split.Views = CreateList<IView>();
-                split.Views.Add(view);
+                if (view != null)
+                {
+                    view.Width = double.NaN;
+                    view.Height = double.NaN;
+
+                    split.CurrentView = view;
+                    split.Views = CreateList<IView>();
+                    split.Views.Add(view);
+                }
             }
 
             switch (operation)

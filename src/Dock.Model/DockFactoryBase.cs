@@ -426,11 +426,11 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
-            double width = double.NaN;
-            double height = double.NaN;
             string originalDock = dock.Dock;
             double originalWidth = dock.Width;
             double originalHeight = dock.Height;
+            double width = double.NaN;
+            double height = double.NaN;
 
             switch (operation)
             {
@@ -446,12 +446,6 @@ namespace Dock.Model
                     break;
             }
 
-            if (view != null)
-            {
-                view.Width = double.NaN;
-                view.Height = double.NaN;
-            }
-
             IDock split = CreateLayoutDock();
             split.Id = nameof(ILayoutDock);
             split.Title = nameof(ILayoutDock);
@@ -460,6 +454,9 @@ namespace Dock.Model
 
             if (view != null)
             {
+                view.Width = double.NaN;
+                view.Height = double.NaN;
+
                 split.CurrentView = view;
                 split.Views = CreateList<IView>();
                 split.Views.Add(view);

@@ -7,7 +7,7 @@ using Dock.Model;
 namespace Dock.Avalonia
 {
     /// <summary>
-    /// Dock drop handler contract.
+    /// Drop handler contract.
     /// </summary>
     public interface IDropHandler
     {

@@ -14,12 +14,55 @@ using Dock.Model;
 
 namespace Dock.Avalonia
 {
+    internal class DropBehaviorHelper
+    {
+        internal Control Adorner { get; set; }
+
+        internal void AddAdorner(IVisual visual)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(visual);
+
+            if (layer != null)
+            {
+                if (Adorner?.Parent is Panel panel)
+                {
+                    layer.Children.Remove(Adorner);
+                    Adorner = null;
+                }
+
+                Adorner = new DockTarget
+                {
+                    [AdornerLayer.AdornedElementProperty] = visual,
+                };
+
+                ((ISetLogicalParent)Adorner).SetParent(visual as ILogical);
+
+                layer.Children.Add(Adorner);
+            }
+        }
+
+        internal void RemoveAdorner(IVisual visual)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(visual);
+
+            if (layer != null)
+            {
+                if (Adorner?.Parent is Panel panel)
+                {
+                    layer.Children.Remove(Adorner);
+                    ((ISetLogicalParent)Adorner).SetParent(null);
+                    Adorner = null;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Drop behavior.
     /// </summary>
     public sealed class DropBehavior : Behavior<Control>
     {
-        private Control _adorner;
+        private DropBehaviorHelper _helper = new DropBehaviorHelper();
 
         /// <summary>
         /// Define <see cref="Context"/> property.
@@ -121,44 +164,6 @@ namespace Dock.Avalonia
             AssociatedObject.RemoveHandler(DragDrop.DropEvent, Drop);
         }
 
-        private void AddAdorner(IVisual visual)
-        {
-            var layer = AdornerLayer.GetAdornerLayer(visual);
-
-            if (layer != null)
-            {
-                if (_adorner?.Parent is Panel panel)
-                {
-                    layer.Children.Remove(_adorner);
-                    _adorner = null;
-                }
-
-                _adorner = new DockTarget
-                {
-                    [AdornerLayer.AdornedElementProperty] = visual,
-                };
-
-                ((ISetLogicalParent)_adorner).SetParent(visual as ILogical);
-
-                layer.Children.Add(_adorner);
-            }
-        }
-
-        private void RemoveAdorner(IVisual visual)
-        {
-            var layer = AdornerLayer.GetAdornerLayer(visual);
-
-            if (layer != null)
-            {
-                if (_adorner?.Parent is Panel panel)
-                {
-                    layer.Children.Remove(_adorner);
-                    ((ISetLogicalParent)_adorner).SetParent(null);
-                    _adorner = null;
-                }
-            }
-        }
-
         private void DragEnter(object sender, DragEventArgs e)
         {
             if (GetIsEnabled(AssociatedObject))
@@ -181,7 +186,7 @@ namespace Dock.Avalonia
                     {
                         if (sender is IVisual visual)
                         {
-                            AddAdorner(visual);
+                            _helper.AddAdorner(visual);
                         }
                     }
 
@@ -195,7 +200,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                RemoveAdorner(sender as IVisual);
+                _helper.RemoveAdorner(sender as IVisual);
 
                 Handler?.Cancel(sender, e);
             }
@@ -210,7 +215,7 @@ namespace Dock.Avalonia
                 object targetContext = Context;
                 bool isView = sourceContext is IView view;
 
-                if (_adorner is DockTarget target)
+                if (_helper.Adorner is DockTarget target)
                 {
                     var position = DropHelper.GetPosition(sender, e);
 
@@ -242,14 +247,14 @@ namespace Dock.Avalonia
                 object targetContext = Context;
                 bool isView = sourceContext is IView view;
 
-                if (_adorner is DockTarget target)
+                if (_helper.Adorner is DockTarget target)
                 {
                     operation = target.GetDockOperation(e);
                 }
 
                 if (isView && sender is DockPanel panel)
                 {
-                    RemoveAdorner(sender as IVisual);
+                    _helper.RemoveAdorner(sender as IVisual);
                 }
 
                 if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)

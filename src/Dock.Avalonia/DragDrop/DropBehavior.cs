@@ -206,7 +206,7 @@ namespace Dock.Avalonia
             DockOperation operation = DockOperation.Fill;
             bool isView = sourceContext is IView view;
 
-            if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
+            if (Handler?.Validate(sender, e, sourceContext, targetContext, operation) == false)
             {
                 if (!isView)
                 {
@@ -239,7 +239,7 @@ namespace Dock.Avalonia
                 operation = target.GetDockOperation(e);
             }
 
-            if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
+            if (Handler?.Validate(sender, e, sourceContext, targetContext, operation) == false)
             {
                 if (!isView)
                 {
@@ -269,7 +269,7 @@ namespace Dock.Avalonia
                 _adornerHelper.RemoveAdorner(sender as IVisual);
             }
 
-            if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
+            if (Handler?.Execute(sender, e, targetContext, sourceContext, operation) == false)
             {
                 if (!isView)
                 {

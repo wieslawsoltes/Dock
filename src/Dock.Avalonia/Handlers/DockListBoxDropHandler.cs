@@ -92,7 +92,7 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
+        public bool Validate(object sender, DragEventArgs e, object sourceContext, object targetContext, DockOperation operation)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
@@ -102,7 +102,7 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
+        public bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, DockOperation operation)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {

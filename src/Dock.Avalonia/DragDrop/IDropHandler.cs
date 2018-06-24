@@ -36,8 +36,8 @@ namespace Dock.Avalonia
         /// <summary>
         /// Cancel drag operation.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The routed event arguments.</param>
         void Cancel(object sender, RoutedEventArgs e);
     }
 }

@@ -154,7 +154,7 @@ namespace Dock.Avalonia
             {
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                Execute(sender, e, sourceContext, targetContext);
+                Drop(sender, e, sourceContext, targetContext);
             }
         }
 
@@ -254,7 +254,7 @@ namespace Dock.Avalonia
             }
         }
 
-        private void Execute(object sender, DragEventArgs e, object sourceContext, object targetContext)
+        private void Drop(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
             DockOperation operation = DockOperation.Fill;
             bool isView = sourceContext is IView view;

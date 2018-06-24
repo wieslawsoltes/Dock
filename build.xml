@@ -29,28 +29,24 @@
   <Tests>
     <Project Name="Dock.Model.UnitTests" Path="tests">
       <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
         <Framework>net461</Framework>
       </Frameworks>
     </Project>
     <!--<Project Name="Dock.Model.INPC.UnitTests" Path="tests">
       <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
         <Framework>net461</Framework>
       </Frameworks>
     </Project>-->
     <!--<Project Name="Dock.Model.ReactiveUI.UnitTests" Path="tests">
       <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
         <Framework>net461</Framework>
       </Frameworks>
     </Project>-->
     <!--<Project Name="Dock.Avalonia.UnitTests" Path="tests">
       <Frameworks>
-        <Framework>netcoreapp2.0</Framework>
         <Framework>netcoreapp2.1</Framework>
         <Framework>net461</Framework>
       </Frameworks>
@@ -63,9 +59,6 @@
       </Frameworks>
       <Runtimes>
         <Runtime>win7-x64</Runtime>
-        <Runtime>ubuntu.14.04-x64</Runtime>
-        <Runtime>debian.8-x64</Runtime>
-        <Runtime>osx.10.12-x64</Runtime>
       </Runtimes>
     </Project>
   </Apps>

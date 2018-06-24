@@ -2,15 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactivity;
-using Dock.Avalonia.Controls;
-using Dock.Model;
 
 namespace Dock.Avalonia
 {
@@ -125,8 +120,7 @@ namespace Dock.Avalonia
             {
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-
-                Enter(sender, e, sourceContext, targetContext);
+                Handler?.Enter(sender, e, sourceContext, targetContext);
             }
         }
 
@@ -134,7 +128,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                Leave(sender, e);
+                Handler?.Leave(sender, e);
             }
         }
 
@@ -144,7 +138,7 @@ namespace Dock.Avalonia
             {
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                Over(sender, e, sourceContext, targetContext);
+                Handler?.Over(sender, e, sourceContext, targetContext);
             }
         }
 
@@ -154,141 +148,8 @@ namespace Dock.Avalonia
             {
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                Drop(sender, e, sourceContext, targetContext);
+                Handler?.Drop(sender, e, sourceContext, targetContext);
             }
-        }
-
-        private class AdornerHelper
-        {
-            public Control Adorner;
-
-            public void AddAdorner(IVisual visual)
-            {
-                var layer = AdornerLayer.GetAdornerLayer(visual);
-                if (layer != null)
-                {
-                    if (Adorner?.Parent is Panel panel)
-                    {
-                        layer.Children.Remove(Adorner);
-                        Adorner = null;
-                    }
-
-                    Adorner = new DockTarget
-                    {
-                        [AdornerLayer.AdornedElementProperty] = visual,
-                    };
-
-                    ((ISetLogicalParent)Adorner).SetParent(visual as ILogical);
-
-                    layer.Children.Add(Adorner);
-                }
-            }
-
-            public void RemoveAdorner(IVisual visual)
-            {
-                var layer = AdornerLayer.GetAdornerLayer(visual);
-                if (layer != null)
-                {
-                    if (Adorner?.Parent is Panel panel)
-                    {
-                        layer.Children.Remove(Adorner);
-                        ((ISetLogicalParent)Adorner).SetParent(null);
-                        Adorner = null;
-                    }
-                }
-            }
-        }
-
-        private AdornerHelper _adornerHelper = new AdornerHelper();
-
-        private void Enter(object sender, DragEventArgs e, object sourceContext, object targetContext)
-        {
-            DockOperation operation = DockOperation.Fill;
-            bool isView = sourceContext is IView view;
-
-            if (Handler?.Validate(sender, e, sourceContext, targetContext, operation) == false)
-            {
-                if (!isView)
-                {
-                    e.DragEffects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-            else
-            {
-                if (isView && sender is DockPanel panel)
-                {
-                    if (sender is IVisual visual)
-                    {
-                        _adornerHelper.AddAdorner(visual);
-                    }
-                }
-
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
-            }
-        }
-
-        private void Over(object sender, DragEventArgs e, object sourceContext, object targetContext)
-        {
-            bool isView = sourceContext is IView view;
-            DockOperation operation = DockOperation.Fill;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(e);
-            }
-
-            if (Handler?.Validate(sender, e, sourceContext, targetContext, operation) == false)
-            {
-                if (!isView)
-                {
-                    e.DragEffects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-            else
-            {
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
-            }
-        }
-
-        private void Drop(object sender, DragEventArgs e, object sourceContext, object targetContext)
-        {
-            DockOperation operation = DockOperation.Fill;
-            bool isView = sourceContext is IView view;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(e);
-            }
-
-            if (isView && sender is DockPanel panel)
-            {
-                _adornerHelper.RemoveAdorner(sender as IVisual);
-            }
-
-            if (Handler?.Execute(sender, e, targetContext, sourceContext, operation) == false)
-            {
-                if (!isView)
-                {
-                    e.DragEffects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-            }
-            else
-            {
-                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                e.Handled = true;
-            }
-        }
-
-        private void Leave(object sender, RoutedEventArgs e)
-        {
-            _adornerHelper.RemoveAdorner(sender as IVisual);
-
-            Handler?.Cancel(sender, e);
         }
     }
 }

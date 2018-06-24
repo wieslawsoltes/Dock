@@ -453,7 +453,6 @@ namespace Dock.Model
             }
 
             IDock split = CreateLayoutDock();
-
             split.Id = nameof(ILayoutDock);
             split.Title = nameof(ILayoutDock);
             split.Width = width;

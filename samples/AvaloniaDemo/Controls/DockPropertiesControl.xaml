@@ -13,7 +13,7 @@
              Design.Width="600" Design.Height="540">
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
-        <id:DockListBoxDropHandler x:Key="DockListBoxDropHandler"/>
+        <id:ListBoxDropHandler x:Key="ListBoxDropHandler"/>
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
@@ -80,7 +80,7 @@
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
                                 <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockListBoxDropHandler}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource ListBoxDropHandler}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

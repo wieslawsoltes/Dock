@@ -8,7 +8,7 @@ namespace Dock.Avalonia
     /// <summary>
     /// List box drop handler.
     /// </summary>
-    public class DockListBoxDropHandler : DefaultDropHandler
+    public class ListBoxDropHandler : DefaultDropHandler
     {
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {

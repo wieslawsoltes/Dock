@@ -4,12 +4,12 @@ using Xunit;
 
 namespace Dock.Avalonia.UnitTests
 {
-    public class DockTreeViewDropHandlerTests
+    public class ListBoxDropHandlerTests
     {
         [Fact]
-        public void DockTreeViewDropHandler_Ctor()
+        public void ListBoxDropHandler_Ctor()
         {
-            var actual = new DockTreeViewDropHandler();
+            var actual = new ListBoxDropHandler();
             Assert.NotNull(actual);
         }
     }

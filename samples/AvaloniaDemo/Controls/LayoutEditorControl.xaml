@@ -14,7 +14,7 @@
              Design.Width="600" Design.Height="540">
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
-        <id:DockTreeViewDropHandler x:Key="DockTreeViewDropHandler"/>
+        <id:TreeViewDropHandler x:Key="TreeViewDropHandler"/>
         <converters:TreeViewSelectedItemToObjectConverter x:Key="TreeViewSelectedItemToObjectConverter"/>
     </UserControl.Resources>
     <UserControl.Styles>
@@ -32,7 +32,7 @@
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <i:Interaction.Behaviors>
                     <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockTreeViewDropHandler}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource TreeViewDropHandler}"/>
                 </i:Interaction.Behaviors>
                 <TextBlock.ContextMenu>
                     <ContextMenu>

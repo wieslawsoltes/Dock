@@ -8,7 +8,7 @@ namespace Dock.Avalonia
     /// <summary>
     /// Tree view drop handler.
     /// </summary>
-    public class DockTreeViewDropHandler : DefaultDropHandler
+    public class TreeViewDropHandler : DefaultDropHandler
     {
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {

@@ -147,6 +147,7 @@ function Invoke-PackSources
     ForEach ($project in $Projects) {
         $Name = $project.Name
         $Path = $project.Path
+        Write-Host "Pack: $Name, $Configuration" -ForegroundColor Cyan
         $args = @('pack', "$pwd\$Path\$Name\$Name.csproj", '-c', $Configuration, '--version-suffix', $VersionSuffixParam)
         & dotnet $args
         Validate

@@ -19,8 +19,9 @@ namespace Dock.Model
 
         internal bool DockIntoTab(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
         {
+#if DEBUG
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
-
+#endif
             if (sourceTab.Parent is ITabDock sourceTabParent && targetTab.Parent is ITabDock targetTabParent)
             {
                 if (sourceTabParent == targetTabParent)
@@ -104,8 +105,9 @@ namespace Dock.Model
 
         internal bool DockIntoTab(ITab sourceTab, ITabDock targetTabParent, DragAction action, DockOperation operation, bool bExecute)
         {
+#if DEBUG
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
-
+#endif
             if (sourceTab.Parent is ITabDock sourceTabParent )
             {
                 IView targetTab = targetTabParent.Views.LastOrDefault();
@@ -185,7 +187,9 @@ namespace Dock.Model
                                                 }
                                             default:
                                                 {
+#if DEBUG
                                                     Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
+#endif
                                                     return false;
                                                 }
                                         }
@@ -217,8 +221,9 @@ namespace Dock.Model
 
         internal bool DockIntoWindow(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+#if DEBUG
             Console.WriteLine($"{nameof(DockIntoWindow)}: {sourceView.Title} -> {targetView.Title}");
-
+#endif
             switch (operation)
             {
                 case DockOperation.Fill:
@@ -284,7 +289,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {toolTab} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -320,7 +327,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {documentTab} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -352,7 +361,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceRoot} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -384,7 +395,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceView} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -416,7 +429,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceLayout} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -448,7 +463,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceTab} -> {targetView}");
+#endif
                         return false;
                     }
             }
@@ -481,7 +498,9 @@ namespace Dock.Model
                     }
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported type {sourceView.GetType()}: {sourceView} -> {targetView}");
+#endif
                         return false;
                     }
             }

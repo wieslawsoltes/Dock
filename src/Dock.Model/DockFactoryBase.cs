@@ -651,7 +651,9 @@ namespace Dock.Model
                     break;
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported window source: {view}");
+#endif
                         return null;
                     }
             }

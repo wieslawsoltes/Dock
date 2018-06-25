@@ -7,7 +7,6 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
-using Dock.Model;
 
 namespace Dock.Avalonia
 {
@@ -37,6 +36,12 @@ namespace Dock.Avalonia
             AvaloniaProperty.Register<DragBehavior, object>(nameof(Context));
 
         /// <summary>
+        /// Define <see cref="Handler"/> property.
+        /// </summary>
+        public static readonly AvaloniaProperty HandlerProperty =
+            AvaloniaProperty.Register<DragBehavior, IDragHandler>(nameof(Handler));
+
+        /// <summary>
         /// Define <see cref="IsTunneled"/> property.
         /// </summary>
         public static readonly AvaloniaProperty IsTunneledProperty =
@@ -55,6 +60,15 @@ namespace Dock.Avalonia
         {
             get => (object)GetValue(ContextProperty);
             set => SetValue(ContextProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets drag handler.
+        /// </summary>
+        public IDragHandler Handler
+        {
+            get => (IDragHandler)GetValue(HandlerProperty);
+            set => SetValue(HandlerProperty, value);
         }
 
         /// <summary>
@@ -147,14 +161,10 @@ namespace Dock.Avalonia
                 {
                     _doDragDrop = true;
 
+                    Handler?.BeforeDragDrop(sender, e, Context);
+
                     var data = new DataObject();
-
                     data.Set(DragDataFormats.Context, Context);
-
-                    if (Context is IView view)
-                    {
-                        ShowWindows(view);
-                    }
 
                     var effect = DragDropEffects.None;
 
@@ -169,20 +179,11 @@ namespace Dock.Avalonia
 
                     var result = await DragDrop.DoDragDrop(data, effect);
 
+                    Handler?.AfterDragDrop(sender, e, Context);
+
                     _pointerPressed = false;
                     _doDragDrop = false;
                 }
-            }
-        }
-
-        private void ShowWindows(IView view)
-        {
-            if (view.Parent is IDock dock
-                && dock.Factory is IDockFactory factory 
-                && factory.FindRoot(dock) is IDock root 
-                && root.CurrentView is IDock currentViewRoot)
-            {
-                    currentViewRoot.ShowWindows();
             }
         }
     }

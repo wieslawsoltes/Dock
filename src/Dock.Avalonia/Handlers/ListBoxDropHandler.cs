@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Dock.Model;
 
 namespace Dock.Avalonia
@@ -9,7 +8,7 @@ namespace Dock.Avalonia
     /// <summary>
     /// List box drop handler.
     /// </summary>
-    public class DockListBoxDropHandler : IDropHandler
+    public class ListBoxDropHandler : DefaultDropHandler
     {
         private bool Validate(IDock sourceDock, IDock targetDock, object sender, DragEventArgs e, bool bExecute)
         {
@@ -92,7 +91,7 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public bool Validate(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
+        public override bool Validate(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
@@ -102,18 +101,13 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public bool Execute(object sourceContext, object targetContext, object sender, DockOperation operation, DragEventArgs e)
+        public override bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, object state)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {
                 return Validate(sourceDock, targetDock, sender, e, true);
             }
             return false;
-        }
-
-        /// <inheritdoc/>
-        public void Cancel(object sender, RoutedEventArgs e)
-        {
         }
     }
 }

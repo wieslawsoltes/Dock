@@ -12,7 +12,8 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <UserControl.Resources>
-        <id:DockListBoxDropHandler x:Key="DockListBoxDropHandler"/>
+        <id:DockDragHandler x:Key="DockDragHandler"/>
+        <id:ListBoxDropHandler x:Key="ListBoxDropHandler"/>
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
@@ -78,8 +79,8 @@
                     <DataTemplate DataType="Dock:IView">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior Context="{Binding}"/>
-                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockListBoxDropHandler}"/>
+                                <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
+                                <id:DropBehavior Context="{Binding}" Handler="{StaticResource ListBoxDropHandler}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>
@@ -100,7 +101,7 @@
                     <DataTemplate DataType="Dock:IDockWindow">
                         <TextBlock Text="{Binding Title}" Classes="drag">
                             <i:Interaction.Behaviors>
-                                <id:DragBehavior Context="{Binding}"/>
+                                <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             </i:Interaction.Behaviors>
                             <TextBlock.ContextMenu>
                                 <ContextMenu>

@@ -9,6 +9,7 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
+        <id:DockDragHandler x:Key="DockDragHandler"/>
         <id:DockDropHandler x:Key="DockDropHandler5" Id="5"/>
         <id:DockDropHandler x:Key="DockDropHandler6" Id="6"/>
         <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
@@ -56,7 +57,7 @@
                             <WrapPanel ClipToBounds="False" />
                         </ItemsPanelTemplate>
                     </Setter>
-                    <Setter Property="MaxHeight" Value="22" />
+                    <Setter Property="MaxHeight" Value="24" />
                 </Style>
                 <Style Selector="TabStripItem">
                     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
@@ -89,7 +90,7 @@
                 <DataTemplate DataType="Dock:IView">
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
-                            <id:DragBehavior Context="{Binding}"/>
+                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler7}"/>
                         </i:Interaction.Behaviors>
                         <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>

@@ -13,7 +13,8 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <UserControl.Resources>
-        <id:DockTreeViewDropHandler x:Key="DockTreeViewDropHandler"/>
+        <id:DockDragHandler x:Key="DockDragHandler"/>
+        <id:TreeViewDropHandler x:Key="TreeViewDropHandler"/>
         <converters:TreeViewSelectedItemToObjectConverter x:Key="TreeViewSelectedItemToObjectConverter"/>
     </UserControl.Resources>
     <UserControl.Styles>
@@ -30,8 +31,8 @@
         <TreeDataTemplate DataType="Dock:IView" ItemsSource="{Binding Views}">
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <i:Interaction.Behaviors>
-                    <id:DragBehavior Context="{Binding}"/>
-                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockTreeViewDropHandler}"/>
+                    <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource TreeViewDropHandler}"/>
                 </i:Interaction.Behaviors>
                 <TextBlock.ContextMenu>
                     <ContextMenu>

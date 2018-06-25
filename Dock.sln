@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\ReactiveUI.props = build\ReactiveUI.props
 		build\Rx.props = build\Rx.props
-		build\SharpDX.props = build\SharpDX.props
-		build\SkiaSharp.props = build\SkiaSharp.props
 		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject

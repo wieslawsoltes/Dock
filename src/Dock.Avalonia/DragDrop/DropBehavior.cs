@@ -2,15 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactivity;
-using Dock.Avalonia.Controls;
-using Dock.Model;
 
 namespace Dock.Avalonia
 {
@@ -19,8 +14,6 @@ namespace Dock.Avalonia
     /// </summary>
     public sealed class DropBehavior : Behavior<Control>
     {
-        private Control _adorner;
-
         /// <summary>
         /// Define <see cref="Context"/> property.
         /// </summary>
@@ -121,73 +114,13 @@ namespace Dock.Avalonia
             AssociatedObject.RemoveHandler(DragDrop.DropEvent, Drop);
         }
 
-        private void AddAdorner(IVisual visual)
-        {
-            var layer = AdornerLayer.GetAdornerLayer(visual);
-
-            if (layer != null)
-            {
-                if (_adorner?.Parent is Panel panel)
-                {
-                    layer.Children.Remove(_adorner);
-                    _adorner = null;
-                }
-
-                _adorner = new DockTarget
-                {
-                    [AdornerLayer.AdornedElementProperty] = visual,
-                };
-
-                ((ISetLogicalParent)_adorner).SetParent(visual as ILogical);
-
-                layer.Children.Add(_adorner);
-            }
-        }
-
-        private void RemoveAdorner(IVisual visual)
-        {
-            var layer = AdornerLayer.GetAdornerLayer(visual);
-
-            if (layer != null)
-            {
-                if (_adorner?.Parent is Panel panel)
-                {
-                    layer.Children.Remove(_adorner);
-                    ((ISetLogicalParent)_adorner).SetParent(null);
-                    _adorner = null;
-                }
-            }
-        }
-
         private void DragEnter(object sender, DragEventArgs e)
         {
             if (GetIsEnabled(AssociatedObject))
             {
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                bool isView = sourceContext is IView view;
-
-                if (Handler?.Validate(sourceContext, targetContext, sender, DockOperation.Fill, e) == false)
-                {
-                    if (!isView)
-                    {
-                        e.DragEffects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
-                else
-                {
-                    if (isView && sender is DockPanel panel)
-                    {
-                        if (sender is IVisual visual)
-                        {
-                            AddAdorner(visual);
-                        }
-                    }
-
-                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                    e.Handled = true;
-                }
+                Handler?.Enter(sender, e, sourceContext, targetContext);
             }
         }
 
@@ -195,9 +128,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                RemoveAdorner(sender as IVisual);
-
-                Handler?.Cancel(sender, e);
+                Handler?.Leave(sender, e);
             }
         }
 
@@ -205,31 +136,9 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                DockOperation operation = DockOperation.Fill;
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                bool isView = sourceContext is IView view;
-
-                if (_adorner is DockTarget target)
-                {
-                    var position = DropHelper.GetPosition(sender, e);
-
-                    operation = target.GetDockOperation(e);
-                }
-
-                if (Handler?.Validate(sourceContext, targetContext, sender, operation, e) == false)
-                {
-                    if (!isView)
-                    {
-                        e.DragEffects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
-                else
-                {
-                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                    e.Handled = true;
-                }
+                Handler?.Over(sender, e, sourceContext, targetContext);
             }
         }
 
@@ -237,34 +146,9 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                DockOperation operation = DockOperation.Fill;
                 object sourceContext = e.Data.Get(DragDataFormats.Context);
                 object targetContext = Context;
-                bool isView = sourceContext is IView view;
-
-                if (_adorner is DockTarget target)
-                {
-                    operation = target.GetDockOperation(e);
-                }
-
-                if (isView && sender is DockPanel panel)
-                {
-                    RemoveAdorner(sender as IVisual);
-                }
-
-                if (Handler?.Execute(sourceContext, targetContext, sender, operation, e) == false)
-                {
-                    if (!isView)
-                    {
-                        e.DragEffects = DragDropEffects.None;
-                        e.Handled = true;
-                    }
-                }
-                else
-                {
-                    e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
-                    e.Handled = true;
-                }
+                Handler?.Drop(sender, e, sourceContext, targetContext);
             }
         }
     }

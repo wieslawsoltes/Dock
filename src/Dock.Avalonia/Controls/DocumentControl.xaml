@@ -10,6 +10,7 @@
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
+        <id:DockDragHandler x:Key="DockDragHandler"/>
         <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>
         <id:DockDropHandler x:Key="DockDropHandler2" Id="2"/>
         <id:DockDropHandler x:Key="DockDropHandler3" Id="3"/>
@@ -49,7 +50,7 @@
             </i:Interaction.Behaviors>
             <TabStrip.Styles>
                 <Style Selector="TabStrip">
-                    <Setter Property="MaxHeight" Value="20" />
+                    <Setter Property="MaxHeight" Value="24" />
                     <Setter Property="ItemsPanel">
                         <ItemsPanelTemplate>
                             <WrapPanel ClipToBounds="False" />
@@ -86,7 +87,7 @@
                     <!--
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
-                            <id:DragBehavior Context="{Binding}"/>
+                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
                         </i:Interaction.Behaviors>
                         <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
@@ -94,7 +95,7 @@
                     -->
                     <StackPanel Orientation="Horizontal" Gap="2">
                         <i:Interaction.Behaviors>
-                            <id:DragBehavior Context="{Binding}"/>
+                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
                         </i:Interaction.Behaviors>
                         <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">

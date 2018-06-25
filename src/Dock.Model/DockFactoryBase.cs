@@ -249,6 +249,57 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public virtual IView FindView(IDock dock, Func<IView, bool> predicate)
+        {
+            if (predicate(dock) == true)
+            {
+                return dock;
+            }
+
+            if (dock.Views != null)
+            {
+                foreach (var view in dock.Views)
+                {
+                    if (predicate(view) == true)
+                    {
+                        return view;
+                    }
+
+                    if (view is IDock childDock)
+                    {
+                        var result = FindView(childDock, predicate);
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            if (dock.Windows != null)
+            {
+                foreach (var window in dock.Windows)
+                {
+                    if (window.Layout != null)
+                    {
+                        if (predicate(window.Layout) == true)
+                        {
+                            return window.Layout;
+                        }
+
+                        var result = FindView(window.Layout, predicate);
+                        if (result != null)
+                        {
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         public virtual void RemoveView(IView view)
         {
             if (view?.Parent is IDock dock && dock.Views != null)
@@ -375,11 +426,11 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
-            double width = double.NaN;
-            double height = double.NaN;
             string originalDock = dock.Dock;
             double originalWidth = dock.Width;
             double originalHeight = dock.Height;
+            double width = double.NaN;
+            double height = double.NaN;
 
             switch (operation)
             {
@@ -395,24 +446,30 @@ namespace Dock.Model
                     break;
             }
 
-            if (view != null)
+            IDock split = null;
+            if (view is IDock viewDock)
             {
-                view.Width = double.NaN;
-                view.Height = double.NaN;
+                split = viewDock;
+                split.Width = width;
+                split.Height = height;
             }
-
-            IDock split = CreateLayoutDock();
-
-            split.Id = nameof(ILayoutDock);
-            split.Title = nameof(ILayoutDock);
-            split.Width = width;
-            split.Height = height;
-
-            if (view != null)
+            else
             {
-                split.CurrentView = view;
-                split.Views = CreateList<IView>();
-                split.Views.Add(view);
+                split = CreateLayoutDock();
+                split.Id = nameof(ILayoutDock);
+                split.Title = nameof(ILayoutDock);
+                split.Width = width;
+                split.Height = height;
+
+                if (view != null)
+                {
+                    view.Width = double.NaN;
+                    view.Height = double.NaN;
+
+                    split.CurrentView = view;
+                    split.Views = CreateList<IView>();
+                    split.Views.Add(view);
+                }
             }
 
             switch (operation)
@@ -594,7 +651,9 @@ namespace Dock.Model
                     break;
                 default:
                     {
+#if DEBUG
                         Console.WriteLine($"Not supported window source: {view}");
+#endif
                         return null;
                     }
             }

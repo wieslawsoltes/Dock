@@ -5,7 +5,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
-                    <Border BorderBrush="{DynamicResource ThemeBorderLightBrush}" Name="PART_Border">
+                    <Border BorderBrush="{DynamicResource ThemeBorderDarkBrush}" Name="PART_Border">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
@@ -58,10 +58,10 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="local|DockToolChrome /template/ Grid#PART_Grip">
-        <Setter Property="Background" Value="#EAEAF2" />
+        <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>
     <Style Selector="local|DockToolChrome:active /template/ Grid#PART_Grip">
-        <Setter Property="Background" Value="#007ACC" />
+        <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />
         <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
     </Style>
 </Styles>

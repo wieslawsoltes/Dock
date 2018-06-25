@@ -50,7 +50,7 @@
             </i:Interaction.Behaviors>
             <TabStrip.Styles>
                 <Style Selector="TabStrip">
-                    <Setter Property="MaxHeight" Value="20" />
+                    <Setter Property="MaxHeight" Value="24" />
                     <Setter Property="ItemsPanel">
                         <ItemsPanelTemplate>
                             <WrapPanel ClipToBounds="False" />

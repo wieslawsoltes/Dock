@@ -25,7 +25,7 @@
         <Style Selector="Border.panel">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="4"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLightBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderDarkBrush}"/>
             <Setter Property="BorderThickness" Value="1 0 1 1"/>
         </Style>
         <Style Selector="Button.chromeButton">
@@ -60,7 +60,7 @@
                 </Style>
                 <Style Selector="TabStripItem">
                     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLightBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderDarkBrush}" />
                     <Setter Property="BorderThickness" Value="0" />
                     <Setter Property="Margin" Value="0" />
                     <Setter Property="Padding" Value="4 1 4 0" />

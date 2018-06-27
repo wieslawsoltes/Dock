@@ -15,7 +15,7 @@
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
                                 <Grid RowDefinitions="Auto, *">
-                                    <Grid ColumnDefinitions="Auto,*,Auto" Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{TemplateBinding !HideChrome}">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{TemplateBinding IsChromeVisible}">
                                         <Grid>
                                             <StackPanel Orientation="Horizontal" Gap="10">
                                                 <Rectangle Height="20" Width="20" Fill="Blue" />

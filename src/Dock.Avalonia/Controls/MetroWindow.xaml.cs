@@ -35,10 +35,10 @@ namespace Dock.Avalonia.Controls
         private Point mouseDownPosition;
 
         /// <summary>
-        /// Defines the <see cref="HideChrome"/> property.
+        /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> HideChromeProperty =
-            AvaloniaProperty.Register<MetroWindow, bool>(nameof(HideChrome));
+        public static readonly AvaloniaProperty<bool> IsChromeVisibleProperty =
+            AvaloniaProperty.Register<MetroWindow, bool>(nameof(IsChromeVisible), true);
 
         /// <summary>
         /// Defines the <see cref="TitleBarContent"/> property.
@@ -47,12 +47,12 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
         /// <summary>
-        ///  Gets or sets the flag indicating whether to hide chrome.
+        ///  Gets or sets the flag indicating whether chrome is visible.
         /// </summary>
-        public bool HideChrome
+        public bool IsChromeVisible
         {
-            get => GetValue(HideChromeProperty);
-            set => SetValue(HideChromeProperty, value);
+            get => GetValue(IsChromeVisibleProperty);
+            set => SetValue(IsChromeVisibleProperty, value);
         }
 
         /// <summary>

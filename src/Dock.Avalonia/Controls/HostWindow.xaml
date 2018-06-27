@@ -21,7 +21,7 @@
             <Setter Property="BorderThickness" Value="1" />
         </Style>
         <Style Selector="idc|MetroWindow:toolwindow">
-            <Setter Property="HideChrome" Value="True" />
+            <Setter Property="IsChromeVisible" Value="False" />
             <Setter Property="BorderThickness" Value="1 1 1 1" />
         </Style>
         <Style Selector="idc|MetroWindow /template/ ContentPresenter#PART_ContentPresenter">

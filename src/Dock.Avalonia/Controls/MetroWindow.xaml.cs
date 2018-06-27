@@ -41,12 +41,27 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<MetroWindow, bool>(nameof(HideChrome));
 
         /// <summary>
+        /// Defines the <see cref="TitleBarContent"/> property.
+        /// </summary>
+        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+            AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
+
+        /// <summary>
         ///  Gets or sets the flag indicating whether to hide chrome.
         /// </summary>
         public bool HideChrome
         {
             get => GetValue(HideChromeProperty);
             set => SetValue(HideChromeProperty, value);
+        }
+
+        /// <summary>
+        ///  Gets or sets the title bar content control.
+        /// </summary>
+        public Control TitleBarContent
+        {
+            get => GetValue(TitleBarContentProperty);
+            set => SetValue(TitleBarContentProperty, value);
         }
 
         Type IStyleable.StyleKey => typeof(MetroWindow);

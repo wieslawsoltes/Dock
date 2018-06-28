@@ -7,8 +7,6 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\..\build\Base.props" />
-
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
   </ItemGroup>

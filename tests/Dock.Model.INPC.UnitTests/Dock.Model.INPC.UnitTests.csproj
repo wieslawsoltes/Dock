@@ -6,9 +6,6 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <Import Project="..\..\build\Base.props" />
-  <Import Project="..\..\build\XUnit.props" />
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />

@@ -7,7 +7,6 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>

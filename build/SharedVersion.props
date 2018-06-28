@@ -10,6 +10,9 @@
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
+     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>

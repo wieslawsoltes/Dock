@@ -80,6 +80,8 @@ if ($env:APPVEYOR_PULL_REQUEST_TITLE) {
 Write-Host "ConfigFileName: $ConfigFileName" -ForegroundColor White
 Write-Host "Configuration: $Configuration" -ForegroundColor White
 Write-Host "DisabledFrameworks: $DisabledFrameworks" -ForegroundColor White
+Write-Host "NuGetPushBranch: $NuGetPushBranch" -ForegroundColor White
+Write-Host "NuGetPushRepoName: $NuGetPushRepoName" -ForegroundColor White
 Write-Host "VersionSuffix: $VersionSuffix" -ForegroundColor White
 Write-Host "BuildSources: $BuildSources" -ForegroundColor White
 Write-Host "TestSources: $TestSources" -ForegroundColor White

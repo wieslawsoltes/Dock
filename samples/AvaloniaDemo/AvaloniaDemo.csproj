@@ -9,6 +9,13 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\EmbedXaml.props" />
+
+  <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\NETCore.props" />
   <Import Project="..\..\build\NSubsys.props" />
   <Import Project="..\..\build\Rx.props" />
@@ -16,12 +23,6 @@
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\Newtonsoft.Json.props" />
   <!--<Import Project="..\..\build\ReactiveUI.props" />-->
-
-  <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="obj\**" />
-  </ItemGroup>
-
-  <Import Project="..\..\build\EmbedXaml.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

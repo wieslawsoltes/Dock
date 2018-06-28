@@ -21,18 +21,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 	ProjectSection(SolutionItems) = preProject
 		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
 		build\Avalonia.props = build\Avalonia.props
+		build\Base.props = build\Base.props
 		build\CsvHelper.props = build\CsvHelper.props
-		src\Directory.Build.props = src\Directory.Build.props
-		samples\Directory.Build.props = samples\Directory.Build.props
-		tests\Directory.Build.props = tests\Directory.Build.props
 		build\EmbedXaml.props = build\EmbedXaml.props
 		build\NETCore.props = build\NETCore.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
-		build\NSubsys.props = build\NSubsys.props
 		build\ReactiveUI.props = build\ReactiveUI.props
 		build\Rx.props = build\Rx.props
-		build\SharedVersion.props = build\SharedVersion.props
-		build\SourceLink.props = build\SourceLink.props
 		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject

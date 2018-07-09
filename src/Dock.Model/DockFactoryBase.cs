@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -307,6 +308,21 @@ namespace Dock.Model
                 int index = dock.Views.IndexOf(view);
                 dock.Views.Remove(view);
                 dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
+
+                if (dock.Views.Count == 0)
+                {
+                    RemoveView(dock);
+
+                    if (dock.Parent is IDock parentDock)
+                    {
+                        var toRemove = parentDock.Views.OfType<ISplitterDock>();
+
+                        foreach (var splitter in toRemove)
+                        {
+                            RemoveView(splitter);
+                        }
+                    }
+                }
             }
         }
 

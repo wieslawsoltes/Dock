@@ -153,7 +153,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "LeftPane",
                 Dock = "Left",
-                Width = 200,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftPane",
                 CurrentView = null,
@@ -204,7 +204,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "RightPane",
                 Dock = "Right",
-                Width = 240,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightPane",
                 CurrentView = null,

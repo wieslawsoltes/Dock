@@ -8,5 +8,6 @@ namespace Dock.Model.Controls
     /// </summary>
     public class RootDock : DockBase, IRootDock
     {
+        public IDockWindow Window { get; set; }
     }
 }

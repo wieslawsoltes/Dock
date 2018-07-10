@@ -335,7 +335,14 @@ namespace Dock.Model
                         }
                     }
 
-                    RemoveView(dock);
+                    if (dock is IRootDock rootDock && rootDock.Window != null)
+                    {
+                        rootDock.Window.Destroy();
+                    }
+                    else
+                    {
+                        RemoveView(dock);
+                    }
                 }
             }
         }
@@ -713,6 +720,8 @@ namespace Dock.Model
             window.Width = double.NaN;
             window.Height = double.NaN;
             window.Layout = root;
+
+            root.Window = window;
 
             return window;
         }

@@ -8,5 +8,6 @@ namespace Dock.Model.Controls
     /// </summary>
     public interface IRootDock : IDock
     {
+        IDockWindow Window { get; set; }
     }
 }

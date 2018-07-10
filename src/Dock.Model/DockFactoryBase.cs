@@ -311,17 +311,31 @@ namespace Dock.Model
 
                 if (dock.Views.Count == 0)
                 {
-                    RemoveView(dock);
-
                     if (dock.Parent is IDock parentDock)
                     {
-                        var toRemove = parentDock.Views.OfType<ISplitterDock>();
+                        var toRemove = new List<IView>();
 
-                        foreach (var splitter in toRemove)
+                        var dockSide = dock.Dock;
+
+                        var dockIndex = parentDock.Views.IndexOf(dock);
+
+                        if(dockIndex > 0 && parentDock.Views[dockIndex-1] is ISplitterDock splitter && splitter.Dock == dockSide)
                         {
-                            RemoveView(splitter);
+                            toRemove.Add(parentDock.Views[dockIndex - 1]);
+                        }
+
+                        if(dockIndex < parentDock.Views.Count -1 && parentDock.Views[dockIndex + 1] is ISplitterDock splitter1 && splitter1.Dock == dockSide)
+                        {
+                            toRemove.Add(parentDock.Views[dockIndex + 1]);
+                        }
+
+                        foreach (var removeView in toRemove)
+                        {
+                            RemoveView(removeView);
                         }
                     }
+
+                    RemoveView(dock);
                 }
             }
         }

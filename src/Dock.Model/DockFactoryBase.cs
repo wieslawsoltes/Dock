@@ -360,8 +360,8 @@ namespace Dock.Model
         {
             if (first.Parent is IDock sourceDock && second.Parent is IDock targetDock)
             {
-                IView firstParent = first.Parent;
-                IView secondParent = second.Parent;
+                var firstParent = first.Parent;
+                var secondParent = second.Parent;
 
                 int firstIndex = sourceDock.Views.IndexOf(first);
                 int secondIndex = targetDock.Views.IndexOf(second);

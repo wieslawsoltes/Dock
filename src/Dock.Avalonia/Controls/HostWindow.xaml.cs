@@ -15,8 +15,8 @@ namespace Dock.Avalonia.Controls
     public class HostWindow : HostWindowBase
     {
         private Control _titleBar;
-        private bool mouseDown;
-        private Point mouseDownPosition;        
+        private bool _mouseDown;
+        private Point _mouseDownPosition;        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostWindow"/> class.
@@ -64,12 +64,12 @@ namespace Dock.Avalonia.Controls
             {
                 if (_titleBar.IsPointerOver)
                 {
-                    mouseDown = true;
-                    mouseDownPosition = e.GetPosition(this);
+                    _mouseDown = true;
+                    _mouseDownPosition = e.GetPosition(this);
                 }
                 else
                 {
-                    mouseDown = false;
+                    _mouseDown = false;
                 }
             }
 
@@ -79,7 +79,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            mouseDown = false;
+            _mouseDown = false;
             base.OnPointerReleased(e);
         }
 
@@ -88,13 +88,13 @@ namespace Dock.Avalonia.Controls
         {
             if (_titleBar != null)
             {
-                if (_titleBar.IsPointerOver && mouseDown)
+                if (_titleBar.IsPointerOver && _mouseDown)
                 {
                     //if (mouseDownPosition.DistanceTo(e.GetPosition(this)) > 12)
                     {
                         WindowState = WindowState.Normal;
                         BeginMoveDrag();
-                        mouseDown = false;
+                        _mouseDown = false;
                     }
                 }
             }

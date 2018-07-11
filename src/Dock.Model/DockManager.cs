@@ -110,7 +110,7 @@ namespace Dock.Model
 #endif
             if (sourceTab.Parent is ITabDock sourceTabParent )
             {
-                IView targetTab = targetTabParent.Views.LastOrDefault();
+                var targetTab = targetTabParent.Views.LastOrDefault();
 
                 switch (action)
                 {

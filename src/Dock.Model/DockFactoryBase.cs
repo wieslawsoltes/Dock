@@ -300,6 +300,47 @@ namespace Dock.Model
             return null;
         }
 
+        private void Collapse(IDock dock)
+        {
+            if (dock.Views.Count == 0)
+            {
+                if (dock.Parent is IDock parentDock)
+                {
+                    var toRemove = new List<IView>();
+                    var dockSide = dock.Dock;
+                    var dockIndex = parentDock.Views.IndexOf(dock);
+
+                    if(dockIndex > 0
+                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious
+                        && splitterPrevious.Dock == dockSide)
+                    {
+                        toRemove.Add(splitterPrevious);
+                    }
+
+                    if(dockIndex < parentDock.Views.Count -1
+                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext
+                        && splitterNext.Dock == dockSide)
+                    {
+                        toRemove.Add(splitterNext);
+                    }
+
+                    foreach (var removeView in toRemove)
+                    {
+                        RemoveView(removeView);
+                    }
+                }
+
+                if (dock is IRootDock rootDock && rootDock.Window != null)
+                {
+                    rootDock.Window.Destroy();
+                }
+                else
+                {
+                    RemoveView(dock);
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public virtual void RemoveView(IView view)
         {
@@ -308,42 +349,7 @@ namespace Dock.Model
                 int index = dock.Views.IndexOf(view);
                 dock.Views.Remove(view);
                 dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
-
-                if (dock.Views.Count == 0)
-                {
-                    if (dock.Parent is IDock parentDock)
-                    {
-                        var toRemove = new List<IView>();
-
-                        var dockSide = dock.Dock;
-
-                        var dockIndex = parentDock.Views.IndexOf(dock);
-
-                        if(dockIndex > 0 && parentDock.Views[dockIndex-1] is ISplitterDock splitter && splitter.Dock == dockSide)
-                        {
-                            toRemove.Add(parentDock.Views[dockIndex - 1]);
-                        }
-
-                        if(dockIndex < parentDock.Views.Count -1 && parentDock.Views[dockIndex + 1] is ISplitterDock splitter1 && splitter1.Dock == dockSide)
-                        {
-                            toRemove.Add(parentDock.Views[dockIndex + 1]);
-                        }
-
-                        foreach (var removeView in toRemove)
-                        {
-                            RemoveView(removeView);
-                        }
-                    }
-
-                    if (dock is IRootDock rootDock && rootDock.Window != null)
-                    {
-                        rootDock.Window.Destroy();
-                    }
-                    else
-                    {
-                        RemoveView(dock);
-                    }
-                }
+                Collapse(dock);
             }
         }
 

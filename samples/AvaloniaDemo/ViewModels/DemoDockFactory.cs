@@ -69,6 +69,32 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftTop3"
             };
 
+            // Left / Bottom
+
+            var leftBottomTool1 = new LeftBottomTool1
+            {
+                Id = "LeftBottom1",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "LeftBottom1"
+            };
+
+            var leftBottomTool2 = new LeftBottomTool2
+            {
+                Id = "LeftBottom2",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "LeftBottom2"
+            };
+
+            var leftBottomTool3 = new LeftBottomTool3
+            {
+                Id = "LeftBottom3",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "LeftBottom3"
+            };
+
             // Right / Top
 
             var rightTopTool1 = new RightTopTool1
@@ -97,6 +123,29 @@ namespace AvaloniaDemo.ViewModels
 
             // Right / Bottom
 
+            var rightBottomTool1 = new RightBottomTool1
+            {
+                Id = "RightBottom1",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "RightBottom1"
+            };
+
+            var rightBottomTool2 = new RightBottomTool2
+            {
+                Id = "RightBottom2",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "RightBottom2"
+            };
+
+            var rightBottomTool3 = new RightBottomTool3
+            {
+                Id = "RightBottom3",
+                Width = double.NaN,
+                Height = double.NaN,
+                Title = "RightBottom3"
+            };
 
             // Left Pane
 
@@ -124,8 +173,28 @@ namespace AvaloniaDemo.ViewModels
                             leftTopTool2,
                             leftTopTool3
                         )
+                    },
+                    new SplitterDock()
+                    {
+                        Id = "LeftPaneTopSplitter",
+                        Dock = "Top",
+                        Title = "LeftPaneTopSplitter"
+                    },
+                    new ToolDock
+                    {
+                        Id = "LeftPaneBottom",
+                        Dock = "Bottom",
+                        Width = double.NaN,
+                        Height = double.NaN,
+                        Title = "LeftPaneBottom",
+                        CurrentView = leftBottomTool1,
+                        Views = CreateList<IView>
+                        (
+                            leftBottomTool1,
+                            leftBottomTool2,
+                            leftBottomTool3
+                        )
                     }
-
                 )
             };
 
@@ -154,6 +223,27 @@ namespace AvaloniaDemo.ViewModels
                             rightTopTool1,
                             rightTopTool2,
                             rightTopTool3
+                        )
+                    },
+                    new SplitterDock()
+                    {
+                        Id = "RightPaneTopSplitter",
+                        Dock = "Top",
+                        Title = "RightPaneTopSplitter"
+                    },
+                    new ToolDock
+                    {
+                        Id = "RightPaneBottom",
+                        Dock = "Bottom",
+                        Width = double.NaN,
+                        Height = double.NaN,
+                        Title = "RightPaneBottom",
+                        CurrentView = rightBottomTool1,
+                        Views = CreateList<IView>
+                        (
+                            rightBottomTool1,
+                            rightBottomTool2,
+                            rightBottomTool3
                         )
                     }
                 )

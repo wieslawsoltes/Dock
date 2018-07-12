@@ -164,7 +164,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = double.NaN,
+                        Height = 250,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
                         Views = CreateList<IView>
@@ -185,7 +185,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
-                        Height = double.NaN,
+                        Height = 250,
                         Title = "LeftPaneBottom",
                         CurrentView = leftBottomTool1,
                         Views = CreateList<IView>
@@ -215,7 +215,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "RightPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = double.NaN,
+                        Height = 250,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
                         Views = CreateList<IView>
@@ -236,7 +236,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "RightPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
-                        Height = double.NaN,
+                        Height = 250,
                         Title = "RightPaneBottom",
                         CurrentView = rightBottomTool1,
                         Views = CreateList<IView>

@@ -90,5 +90,10 @@ namespace Dock.Model
         /// Exit windows.
         /// </summary>
         void ExitWindows();
+
+        /// <summary>
+        /// Cloe layout.
+        /// </summary>
+        void Close();
     }
 }

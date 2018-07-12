@@ -99,7 +99,7 @@ namespace Dock.Model
         {
             if (_dock.CurrentView is IDock currentViewWindows)
             {
-                currentViewWindows.HideWindows();
+                currentViewWindows.Close();
                 _dock.CurrentView = null;
             }
         }
@@ -128,7 +128,7 @@ namespace Dock.Model
         {
             if (_dock.CurrentView is IDock currentViewWindows)
             {
-                currentViewWindows.HideWindows();
+                currentViewWindows.Close();
             }
 
             if (view != null && _dock.CurrentView != view)
@@ -212,6 +212,16 @@ namespace Dock.Model
                     window.Save();
                     window.Exit();
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Close()
+        {
+            _dock.ExitWindows();
+            if (_dock.CurrentView is IDock currentViewWindows)
+            {
+                currentViewWindows.ExitWindows();
             }
         }
     }

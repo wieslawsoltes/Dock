@@ -52,7 +52,10 @@ namespace AvaloniaDemo
                     return vm;
                 });
 
-                vm.Factory.CloseLayout(vm.Layout);
+                if (vm.Layout is IDock dock)
+                {
+                    dock.Close();
+                }
 
                 ModelSerializer.Save(path, vm.Layout);
             }

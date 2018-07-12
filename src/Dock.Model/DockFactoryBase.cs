@@ -70,19 +70,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void CloseLayout(IView layout)
-        {
-            if (layout is IDock root)
-            {
-                root.ExitWindows();
-                if (root.CurrentView is IDock dock)
-                {
-                    dock.ExitWindows();
-                }
-            }
-        }
-
-        /// <inheritdoc/>
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>

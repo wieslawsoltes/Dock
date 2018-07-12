@@ -39,11 +39,7 @@ namespace Dock.Avalonia.Controls
 
                 if (Window.Layout is IDock root)
                 {
-                    root.ExitWindows();
-                    if (root.CurrentView is IDock dock)
-                    {
-                        dock.ExitWindows();
-                    }
+                    root.Close();
                 }
             }
         }

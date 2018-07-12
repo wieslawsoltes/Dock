@@ -142,5 +142,11 @@ namespace Dock.Model
         {
             _navigateAdapter.ExitWindows();
         }
+
+        /// <inheritdoc/>
+        public virtual void Close()
+        {
+            _navigateAdapter.Close();
+        }
     }
 }

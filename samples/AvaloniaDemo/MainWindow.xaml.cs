@@ -27,7 +27,7 @@ namespace AvaloniaDemo
                 {
                     if (vm.Layout is IDock dock)
                     {
-                        vm.Factory.CloseLayout(vm.Layout);
+                        dock.Close();
                     }
                 };
             };
@@ -38,11 +38,7 @@ namespace AvaloniaDemo
                 {
                     if (vm.Layout is IDock root)
                     {
-                        root.HideWindows();
-                        if (root.CurrentView is IDock dock)
-                        {
-                            dock.HideWindows();
-                        }
+                        root.Close();
                     }
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
@@ -63,11 +59,7 @@ namespace AvaloniaDemo
                         IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
                         {
-                            root.HideWindows();
-                            if (root.CurrentView is IDock dock)
-                            {
-                                dock.HideWindows();
-                            }
+                            root.Close();
                         }
                         vm.Layout = layout;
                         vm.Factory.InitLayout(vm.Layout, vm);

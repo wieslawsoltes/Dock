@@ -109,12 +109,9 @@ namespace Dock.Model
             set => this.RaiseAndSetIfChanged(ref _host, value);
         }
 
-        private volatile bool _isLoading = false;
-
         /// <inheritdoc/>
         public void Load()
         {
-            System.Diagnostics.Debug.WriteLine($"Load: {Title}");
             if (Host != null)
             {
                 Host.SetPosition(X, Y);
@@ -125,7 +122,6 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Save()
         {
-            System.Diagnostics.Debug.WriteLine($"Save: {Title}");
             if (Host != null)
             {
                 Host.GetPosition(out double x, out double y);

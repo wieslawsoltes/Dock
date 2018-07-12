@@ -66,7 +66,6 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Destroy()
         {
-
             if (_window.Host != null)
             {
                 Save();

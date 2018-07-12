@@ -143,6 +143,7 @@ namespace Dock.Model
                 Height = height;
 
                 Host.Destroy();
+                Host.Exit();
             }
         }
     }

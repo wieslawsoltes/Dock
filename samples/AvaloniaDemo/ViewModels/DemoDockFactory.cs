@@ -56,8 +56,8 @@ namespace AvaloniaDemo.ViewModels
             var leftTopTool2 = new LeftTopTool2
             {
                 Id = "LeftTop2",
-                Width = 200,
-                Height = 200,
+                Width = double.NaN,
+                Height = double.NaN,
                 Title = "LeftTop2"
             };
 
@@ -153,7 +153,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "LeftPane",
                 Dock = "Left",
-                Width = 200,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftPane",
                 CurrentView = null,
@@ -164,7 +164,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = 340,
+                        Height = double.NaN,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
                         Views = CreateList<IView>
@@ -204,7 +204,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "RightPane",
                 Dock = "Right",
-                Width = 240,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightPane",
                 CurrentView = null,
@@ -215,7 +215,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "RightPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = 340,
+                        Height = double.NaN,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
                         Views = CreateList<IView>

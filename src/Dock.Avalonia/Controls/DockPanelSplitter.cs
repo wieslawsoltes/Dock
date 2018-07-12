@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace Avalonia.Controls
@@ -20,7 +21,23 @@ namespace Avalonia.Controls
         /// Defines the <see cref="Thickness"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
-            AvaloniaProperty.Register<DockPanel, double>(nameof(Thickness), 4.0);
+            AvaloniaProperty.Register<DockPanelSplitter, double>(nameof(Thickness), 4.0);
+
+        /// <summary>
+        /// Defines the <see cref="ProportionalResize"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> ProportionalResizeProperty =
+            AvaloniaProperty.Register<DockPanelSplitter, bool>(nameof(ProportionalResize), true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to resize elements proportionally.
+        /// </summary>
+        /// <remarks>Set to <c>false</c> if you don't want the element to be resized when the parent is resized.</remarks>
+        public bool ProportionalResize
+        {
+            get => GetValue(ProportionalResizeProperty);
+            set => SetValue(ProportionalResizeProperty, value);
+        }
 
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
@@ -67,6 +84,7 @@ namespace Avalonia.Controls
 
         private DockPanel _panel;
         private Size _previousParentSize;
+        private bool _initialised;
 
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -79,20 +97,14 @@ namespace Avalonia.Controls
 
             _panel.LayoutUpdated += (sender, ee) =>
             {
-                // if (!this.ProportionalResize)
-                // {
-                //     return;
-                // }
-
-                //var dp = this.Parent as DockPanel;
-                //if (dp == null)
-                //{
-                //    return;
-                //}
-
-                if (_element.IsArrangeValid && _element.IsMeasureValid)
+                if (!this.ProportionalResize)
                 {
-                    var dSize = new Size(_panel.Bounds.Width / _previousParentSize.Width, _panel.Bounds.Height / _previousParentSize.Height);
+                    return;
+                }
+
+                if (_initialised && _element.IsArrangeValid && _element.IsMeasureValid)
+                {
+                    var dSize = new Size(_panel.Bounds.Size.Width / _previousParentSize.Width, _panel.Bounds.Size.Height / _previousParentSize.Height);
 
                     if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
                     {
@@ -103,11 +115,10 @@ namespace Avalonia.Controls
                     {
                         this.SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height);
                     }
-
-                    _previousParentSize = _panel.Bounds.Size;
                 }
 
-
+                _previousParentSize = _panel.Bounds.Size;
+                _initialised = true;
             };
 
             UpdateHeightOrWidth();
@@ -134,7 +145,7 @@ namespace Avalonia.Controls
 
         private void SetTargetHeight(double dy)
         {
-            double height = _element.DesiredSize.Height + dy;
+            double height = _element.Height + dy;
 
             if (height < _element.MinHeight)
             {
@@ -158,7 +169,7 @@ namespace Avalonia.Controls
 
         private void SetTargetWidth(double dx)
         {
-            double width = _element.DesiredSize.Width + dx;
+            double width = _element.Width + dx;
 
             if (width < _element.MinWidth)
             {

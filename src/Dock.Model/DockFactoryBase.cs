@@ -332,7 +332,7 @@ namespace Dock.Model
 
                 if (dock is IRootDock rootDock && rootDock.Window != null)
                 {
-                    rootDock.Window.Destroy();
+                    rootDock.Window.Exit();
                 }
                 else
                 {

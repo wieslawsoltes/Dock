@@ -73,5 +73,10 @@ namespace Dock.Model
         /// Destroys window.
         /// </summary>
         void Destroy();
+
+        /// <summary>
+        /// Exits window.
+        /// </summary>
+        void Exit();
     }
 }

@@ -65,10 +65,50 @@ namespace Avalonia.Controls
             }
         }
 
+        private DockPanel _panel;
+        private Size _previousParentSize;
+
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
+
+            _panel = e.Parent as DockPanel;
+
+            _previousParentSize = _panel.Bounds.Size;
+
+            _panel.LayoutUpdated += (sender, ee) =>
+            {
+                // if (!this.ProportionalResize)
+                // {
+                //     return;
+                // }
+
+                //var dp = this.Parent as DockPanel;
+                //if (dp == null)
+                //{
+                //    return;
+                //}
+
+                if (_element.IsArrangeValid && _element.IsMeasureValid)
+                {
+                    var dSize = new Size(_panel.Bounds.Width / _previousParentSize.Width, _panel.Bounds.Height / _previousParentSize.Height);
+
+                    if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
+                    {
+                        this.SetTargetWidth(_element.DesiredSize.Width - (_element.DesiredSize.Width * dSize.Width));
+                    }
+
+                    if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
+                    {
+                        this.SetTargetHeight(_element.DesiredSize.Height - (_element.DesiredSize.Height * dSize.Height));
+                    }
+
+                    _previousParentSize = _panel.Bounds.Size;
+                }
+
+
+            };
 
             UpdateHeightOrWidth();
             UpdateTargetElement();
@@ -184,7 +224,7 @@ namespace Avalonia.Controls
                 }
             }
 
-            return null;
+            return _panel;
         }
 
         private void UpdateTargetElement()

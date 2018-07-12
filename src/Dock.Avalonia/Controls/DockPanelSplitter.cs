@@ -73,7 +73,7 @@ namespace Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            _panel = e.Parent as DockPanel;
+            _panel = Parent as DockPanel;
 
             _previousParentSize = _panel.Bounds.Size;
 

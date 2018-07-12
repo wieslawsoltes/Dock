@@ -96,12 +96,12 @@ namespace Avalonia.Controls
 
                     if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
                     {
-                        this.SetTargetWidth(_element.DesiredSize.Width - (_element.DesiredSize.Width * dSize.Width));
+                        this.SetTargetWidth((_element.DesiredSize.Width * dSize.Width) - _element.DesiredSize.Width);
                     }
 
                     if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
                     {
-                        this.SetTargetHeight(_element.DesiredSize.Height - (_element.DesiredSize.Height * dSize.Height));
+                        this.SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height);
                     }
 
                     _previousParentSize = _panel.Bounds.Size;

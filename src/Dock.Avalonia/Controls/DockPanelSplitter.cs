@@ -16,6 +16,8 @@ namespace Avalonia.Controls
     public class DockPanelSplitter : Thumb
     {
         private Control _element;
+        private Size _previousParentSize;
+        private bool _initialised;
 
         /// <summary>
         /// Defines the <see cref="Thickness"/> property.
@@ -82,20 +84,16 @@ namespace Avalonia.Controls
             }
         }
 
-        private DockPanel _panel;
-        private Size _previousParentSize;
-        private bool _initialised;
-
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
 
-            _panel = Parent as DockPanel;
+            var panel = GetPanel();
 
-            _previousParentSize = _panel.Bounds.Size;
+            _previousParentSize = panel.Bounds.Size;
 
-            _panel.LayoutUpdated += (sender, ee) =>
+            panel.LayoutUpdated += (sender, ee) =>
             {
                 if (!this.ProportionalResize)
                 {
@@ -104,7 +102,7 @@ namespace Avalonia.Controls
 
                 if (_initialised && _element.IsArrangeValid && _element.IsMeasureValid)
                 {
-                    var dSize = new Size(_panel.Bounds.Size.Width / _previousParentSize.Width, _panel.Bounds.Size.Height / _previousParentSize.Height);
+                    var dSize = new Size(panel.Bounds.Size.Width / _previousParentSize.Width, panel.Bounds.Size.Height / _previousParentSize.Height);
 
                     if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
                     {
@@ -117,7 +115,7 @@ namespace Avalonia.Controls
                     }
                 }
 
-                _previousParentSize = _panel.Bounds.Size;
+                _previousParentSize = panel.Bounds.Size;
                 _initialised = true;
             };
 
@@ -235,7 +233,7 @@ namespace Avalonia.Controls
                 }
             }
 
-            return _panel;
+            return null;
         }
 
         private void UpdateTargetElement()

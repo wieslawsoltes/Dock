@@ -42,13 +42,13 @@
             <MenuItem Header="_Options">
                 <MenuItem Header="Drag Behaviors Enabled">
                     <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(DragBehavior.IsEnabled)}"/>
+                        <CheckBox IsChecked="{Binding Path=(id:DragBehavior.IsEnabled), Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Drop Behaviors Enabled">
                     <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(DropBehavior.IsEnabled)}"/>
+                        <CheckBox IsChecked="{Binding Path=(id:DropBehavior.IsEnabled), Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>

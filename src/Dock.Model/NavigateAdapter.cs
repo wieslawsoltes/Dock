@@ -12,7 +12,7 @@ namespace Dock.Model
         {
             return e.SelectMany(c =>
             {
-                IEnumerable<T> r = f(c);
+                var r = f(c);
                 if (r == null)
                     return Enumerable.Empty<T>();
                 else

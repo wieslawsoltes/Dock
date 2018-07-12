@@ -21,6 +21,17 @@ namespace AvaloniaDemo
             this.InitializeComponent();
             this.AttachDevTools();
 
+            this.Closing += (sender, e) =>
+            {
+                if (this.DataContext is MainWindowViewModel vm)
+                {
+                    if (vm.Layout is IDock dock)
+                    {
+                        vm.Factory.CloseLayout(vm.Layout);
+                    }
+                };
+            };
+
             this.FindControl<MenuItem>("FileNew").Click += (sender, e) =>
             {
                 if (this.DataContext is MainWindowViewModel vm)

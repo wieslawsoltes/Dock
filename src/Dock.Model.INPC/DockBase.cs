@@ -136,5 +136,11 @@ namespace Dock.Model
         {
             _navigate.HideWindows();
         }
+
+        /// <inheritdoc/>
+        public virtual void ExitWindows()
+        {
+            _navigate.ExitWindows();
+        }
     }
 }

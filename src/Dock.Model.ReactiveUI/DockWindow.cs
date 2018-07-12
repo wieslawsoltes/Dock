@@ -111,20 +111,18 @@ namespace Dock.Model
             set => this.RaiseAndSetIfChanged(ref _host, value);
         }
 
-        private void Load(bool isDialog)
+        /// <inheritdoc/>
+        public void Load()
         {
             if (Host != null)
             {
                 Host.SetPosition(X, Y);
                 Host.SetSize(Width, Height);
-                Host.SetTitle(Title);
-                Host.SetContext(Context);
-                Host.SetLayout(Layout);
-                Host.Present(isDialog);
             }
         }
 
-        private void Save()
+        /// <inheritdoc/>
+        public void Save()
         {
             if (Host != null)
             {
@@ -132,7 +130,6 @@ namespace Dock.Model
                 X = x;
                 Y = y;
 
-                //double width = double.NaN;
                 Host.GetSize(out double width, out double height);
                 Width = width;
                 Height = height;
@@ -145,9 +142,17 @@ namespace Dock.Model
             if (Host == null)
             {
                 Host = Factory?.GetHost(Id);
+                Host.Window = this;
             }
 
-            Load(isDialog);
+            if (Host != null)
+            {
+                Load();
+                Host.Present(isDialog);
+                Host.SetTitle(Title);
+                Host.SetContext(Context);
+                Host.SetLayout(Layout);
+            }
         }
 
         /// <inheritdoc/>

@@ -12,6 +12,43 @@ namespace Dock.Avalonia.Controls
     public abstract class HostWindowBase : MetroWindow, IDockHost
     {
         /// <inheritdoc/>
+        public IDockWindow Window { get; set; }
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="HostWindowBase"/> class.
+        /// </summary>
+        public HostWindowBase()
+        {
+            PositionChanged += HostWindowBase_PositionChanged;
+            Closing += HostWindowBase_Closing;
+        }
+
+        private void HostWindowBase_PositionChanged(object sender, PointEventArgs e)
+        {
+            if (Window != null)
+            {
+                Window.Save();
+            }
+        }
+
+        private void HostWindowBase_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Window != null)
+            {
+                Window.Save();
+
+                if (Window.Layout is IDock root)
+                {
+                    root.ExitWindows();
+                    if (root.CurrentView is IDock dock)
+                    {
+                        dock.ExitWindows();
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public void Present(bool isDialog)
         {
             if (isDialog)

@@ -196,7 +196,21 @@ namespace Dock.Model
             {
                 foreach (var window in _dock.Windows)
                 {
+                    window.Save();
                     window.Destroy();
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void ExitWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Save();
+                    window.Exit();
                 }
             }
         }

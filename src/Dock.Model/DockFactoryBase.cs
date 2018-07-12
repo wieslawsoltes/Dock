@@ -74,10 +74,10 @@ namespace Dock.Model
         {
             if (layout is IDock root)
             {
-                root.HideWindows();
+                root.ExitWindows();
                 if (root.CurrentView is IDock dock)
                 {
-                    dock.HideWindows();
+                    dock.ExitWindows();
                 }
             }
         }
@@ -117,6 +117,7 @@ namespace Dock.Model
         public virtual void Update(IDockWindow window, object context, IView owner)
         {
             window.Host = GetHost(window.Id);
+            window.Host.Window = window;
             window.Context = GetContext(window.Id, context);
             window.Owner = owner;
             window.Factory = this;

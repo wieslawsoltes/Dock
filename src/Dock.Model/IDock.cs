@@ -85,5 +85,10 @@ namespace Dock.Model
         /// Hide windows.
         /// </summary>
         void HideWindows();
+
+        /// <summary>
+        /// Exit windows.
+        /// </summary>
+        void ExitWindows();
     }
 }

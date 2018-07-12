@@ -80,6 +80,7 @@ namespace Dock.Model
             {
                 Save();
                 _window.Host.Exit();
+                _window.Host = null;
             }
         }
     }

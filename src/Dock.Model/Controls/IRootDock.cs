@@ -8,6 +8,9 @@ namespace Dock.Model.Controls
     /// </summary>
     public interface IRootDock : IDock
     {
+        /// <summary>
+        /// Gets or sets owner window.
+        /// </summary>
         IDockWindow Window { get; set; }
     }
 }

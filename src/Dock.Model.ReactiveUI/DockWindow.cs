@@ -11,6 +11,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public class DockWindow : ReactiveObject, IDockWindow
     {
+        private IHostAdapter _hostAdapter;
         private string _id;
         private double _x;
         private double _y;
@@ -22,6 +23,14 @@ namespace Dock.Model
         private IDockFactory _factory;
         private IDock _layout;
         private IDockHost _host;
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="DockWindow"/> class.
+        /// </summary>
+        public DockWindow()
+        {
+            _hostAdapter = new HostAdapter(this);
+        }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -114,65 +123,31 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Load()
         {
-            if (Host != null)
-            {
-                Host.SetPosition(X, Y);
-                Host.SetSize(Width, Height);
-            }
+            _hostAdapter.Load();
         }
 
         /// <inheritdoc/>
         public void Save()
         {
-            if (Host != null)
-            {
-                Host.GetPosition(out double x, out double y);
-                X = x;
-                Y = y;
-
-                Host.GetSize(out double width, out double height);
-                Width = width;
-                Height = height;
-            }
+            _hostAdapter.Save();
         }
 
         /// <inheritdoc/>
         public void Present(bool isDialog)
         {
-            if (Host == null)
-            {
-                Host = Factory?.GetHost(Id);
-                Host.Window = this;
-            }
-
-            if (Host != null)
-            {
-                Load();
-                Host.Present(isDialog);
-                Host.SetTitle(Title);
-                Host.SetContext(Context);
-                Host.SetLayout(Layout);
-            }
+            _hostAdapter.Present(isDialog);
         }
 
         /// <inheritdoc/>
         public void Destroy()
         {
-            if (Host != null)
-            {
-                Save();
-                Host.Destroy();
-            }
+            _hostAdapter.Destroy();
         }
 
         /// <inheritdoc/>
         public void Exit()
         {
-            if (Host != null)
-            {
-                Save();
-                Host.Exit();
-            }
+            _hostAdapter.Exit();
         }
     }
 }

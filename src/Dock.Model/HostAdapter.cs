@@ -1,0 +1,87 @@
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+namespace Dock.Model
+{
+    /// <summary>
+    /// Host adapter for the <see cref="IDockWindow"/>.
+    /// </summary>
+    public class HostAdapter : IHostAdapter
+    {
+        private readonly IDockWindow _window;
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="HostAdapter"/> class.
+        /// </summary>
+        /// <param name="window">The window instance.</param>
+        public HostAdapter(IDockWindow window)
+        {
+            _window = window;
+        }
+
+        /// <inheritdoc/>
+        public void Load()
+        {
+            if (_window.Host != null)
+            {
+                _window.Host.SetPosition(_window.X, _window.Y);
+                _window.Host.SetSize(_window.Width, _window.Height);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Save()
+        {
+            if (_window.Host != null)
+            {
+                _window.Host.GetPosition(out double x, out double y);
+                _window.X = x;
+                _window.Y = y;
+
+                _window.Host.GetSize(out double width, out double height);
+                _window.Width = width;
+                _window.Height = height;
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Present(bool isDialog)
+        {
+            if (_window.Host == null)
+            {
+                _window.Host = _window.Factory?.GetHost(_window.Id);
+                _window.Host.Window = this._window;
+            }
+
+            if (_window.Host != null)
+            {
+                Load();
+                _window.Host.Present(isDialog);
+                _window.Host.SetTitle(_window.Title);
+                _window.Host.SetContext(_window.Context);
+                _window.Host.SetLayout(_window.Layout);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Destroy()
+        {
+
+            if (_window.Host != null)
+            {
+                Save();
+                _window.Host.Destroy();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Exit()
+        {
+            if (_window.Host != null)
+            {
+                Save();
+                _window.Host.Exit();
+            }
+        }
+    }
+}

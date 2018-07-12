@@ -19,29 +19,34 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindowBase()
         {
-            PositionChanged += HostWindowBase_PositionChanged;
-            Closing += HostWindowBase_Closing;
-        }
-
-        private void HostWindowBase_PositionChanged(object sender, PointEventArgs e)
-        {
-            if (Window != null)
+            PositionChanged += (sender, e) =>
             {
-                Window.Save();
-            }
-        }
-
-        private void HostWindowBase_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (Window != null)
-            {
-                Window.Save();
-
-                if (Window.Layout is IDock root)
+                if (Window != null)
                 {
-                    root.Close();
+                    Window.Save();
                 }
-            }
+            };
+
+            LayoutUpdated += (sender, e) =>
+            {
+                if (Window != null)
+                {
+                    Window.Save();
+                }
+            };
+
+            Closing += (sender, e) =>
+            {
+                if (Window != null)
+                {
+                    Window.Save();
+
+                    if (Window.Layout is IDock root)
+                    {
+                        root.Close();
+                    }
+                }
+            };
         }
 
         /// <inheritdoc/>

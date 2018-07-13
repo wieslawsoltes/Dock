@@ -17,13 +17,13 @@
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Controls:ISplitterDock">
-                <ac:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}"/>
+                <ac:ProportionalStackPanelSplitter Background="Red" />
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
-                <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+                <idc:DocumentControl />
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:DockToolChrome Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}" IsActive="{Binding IsActive}">
+                <idc:DockToolChrome  IsActive="{Binding IsActive}">
                     <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>-->
@@ -31,7 +31,7 @@
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
-                <ItemsControl Items="{Binding Views}" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
+                <ItemsControl Items="{Binding Views}">
                     <ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
                             <Setter Property="DockPanel.Dock" Value="{Binding Dock, Mode=OneWay}"/>
@@ -39,7 +39,7 @@
                     </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <DockPanel LastChildFill="True"/>
+                            <idc:ProportionalStackPanel />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

@@ -12,52 +12,62 @@
     <Grid>
         <Grid.Styles>
             <Style Selector="idc|ProportionalStackPanelSplitter">
-                <Setter Property="Thickness" Value="6" />
                 <Setter Property="Background" Value="LightGray" />
             </Style>
         </Grid.Styles>
-        <idcm:ProportionalStackPanel Orientation="Horizontal">
-            <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+
+        <ItemsControl>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <idcm:ProportionalStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Items>
+                <Rectangle Fill="Green" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <idcm:ProportionalStackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <Rectangle Fill="Green" />
+                        <idc:ProportionalStackPanelSplitter />
+                        <Rectangle Fill="Blue" />
+                        <idc:ProportionalStackPanelSplitter />
+                        <Rectangle Fill="Red" />
+                    </ItemsControl.Items>
+                </ItemsControl>
+            </ItemsControl.Items>
+        </ItemsControl>
+
+        <!--<idcm:ProportionalStackPanel Orientation="Horizontal">
+            <idcm:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
+                <idc:ProportionalStackPanelSplitter />
+                <Rectangle Fill="Green" />
+                <idc:ProportionalStackPanelSplitter />
+                <Rectangle Fill="Blue" />
             </idcm:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+                <Rectangle Fill="Red" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Green" />
             </idcm:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Green" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
             </idcm:ProportionalStackPanel>
-        </idcm:ProportionalStackPanel>
+        </idcm:ProportionalStackPanel>-->
     </Grid>
 </idcm:MetroWindow>

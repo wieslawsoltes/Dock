@@ -74,6 +74,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E58CB250-119
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProportionalStackPanelDemo", "samples\ProportionalStackPanelDemo\ProportionalStackPanelDemo.csproj", "{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,10 @@ Global
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +140,7 @@ Global
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{F8F9350B-0321-4C8A-A0EB-BF5F2283994E} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 		{E58CB250-1197-4D0F-BBC1-F9733B1B48DC} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

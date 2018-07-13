@@ -185,41 +185,15 @@ namespace Avalonia.Controls
 
             SetProportion(_element, proportion);
 
-            int numberOfOtherElements = 0;
-
             int index = panel.Children.IndexOf(this) + 1;
 
-            int i = index;
+            var child = panel.Children[index];
 
-            while(i < panel.Children.Count)
-            {
-                var child = panel.Children[i];
+            var currentProportion = GetProportion(child);
 
-                if (!(child is DockPanelSplitter))
-                {
-                    numberOfOtherElements++;
-                }
+            currentProportion -= dProportion;
 
-                i++;
-            }
-
-            i = index;
-
-            while (i < panel.Children.Count)
-            {
-                var child = panel.Children[i];
-
-                if (!(child is DockPanelSplitter))
-                {
-                    var currentProportion = GetProportion(child);
-
-                    currentProportion -= dProportion / numberOfOtherElements;
-
-                    SetProportion(child, currentProportion);
-                }
-
-                i++;
-            }
+            SetProportion(child, currentProportion);
 
             panel.InvalidateMeasure();
             panel.InvalidateArrange();

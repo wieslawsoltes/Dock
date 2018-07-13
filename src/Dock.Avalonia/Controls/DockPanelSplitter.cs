@@ -20,6 +20,33 @@ namespace Avalonia.Controls
         private bool _initialised;
 
         /// <summary>
+        /// Defines the Proportion attached property.
+        /// </summary>
+        public static readonly AttachedProperty<double> ProportionProperty =
+            AvaloniaProperty.RegisterAttached<DockPanel, IControl, double>("Proportion", double.NaN);
+
+        /// <summary>
+        /// Gets the value of the Proportion attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The Proportion attached property.</returns>
+        public static double GetProportion(IControl control)
+        {
+            return control.GetValue(ProportionProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the Proportion attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The value of the Dock property.</param>
+        public static void SetProportion(IControl control, double value)
+        {
+            control.SetValue(ProportionProperty, value);
+        }
+
+
+        /// <summary>
         /// Defines the <see cref="Thickness"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
@@ -100,6 +127,8 @@ namespace Avalonia.Controls
                     return;
                 }
 
+                var proportion = GetProportion(_element);
+
                 if (_initialised && _element.IsArrangeValid && _element.IsMeasureValid)
                 {
                     var dSize = new Size(panel.Bounds.Size.Width / _previousParentSize.Width, panel.Bounds.Size.Height / _previousParentSize.Height);
@@ -129,7 +158,10 @@ namespace Avalonia.Controls
             {
                 dy = -dy;
             }
-            SetTargetHeight(dy);
+
+            SetTargetProportion(dy);
+           // SetTargetHeight(dy);
+
         }
 
         private void AdjustWidth(double dx, Dock dock)
@@ -139,6 +171,58 @@ namespace Avalonia.Controls
                 dx = -dx;
             }
             SetTargetWidth(dx);
+        }
+
+        private void SetTargetProportion (double dy)
+        {
+            var proportion = GetProportion(_element);
+
+            var panel = GetPanel();
+
+            var dProportion = dy / panel.Bounds.Height;
+
+            proportion += dProportion;
+
+            SetProportion(_element, proportion);
+
+            int numberOfOtherElements = 0;
+
+            int index = panel.Children.IndexOf(this) + 1;
+
+            int i = index;
+
+            while(i < panel.Children.Count)
+            {
+                var child = panel.Children[i];
+
+                if (!(child is DockPanelSplitter))
+                {
+                    numberOfOtherElements++;
+                }
+
+                i++;
+            }
+
+            i = index;
+
+            while (i < panel.Children.Count)
+            {
+                var child = panel.Children[i];
+
+                if (!(child is DockPanelSplitter))
+                {
+                    var currentProportion = GetProportion(child);
+
+                    currentProportion -= dProportion / numberOfOtherElements;
+
+                    SetProportion(child, currentProportion);
+                }
+
+                i++;
+            }
+
+            panel.InvalidateMeasure();
+            panel.InvalidateArrange();
         }
 
         private void SetTargetHeight(double dy)

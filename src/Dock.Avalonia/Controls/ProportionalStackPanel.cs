@@ -7,7 +7,7 @@ using Avalonia.Controls;
 
 namespace Dock.Avalonia.Controls
 {
-    public class ProportionalStackPanel : DockPanel
+    public class ProportionalStackPanel : StackPanel
     {
         private void AssignProportions()
         {
@@ -73,14 +73,13 @@ namespace Dock.Avalonia.Controls
 
                 if (!(element is DockPanelSplitter))
                 { 
-                    switch (GetDock(element))
+                    switch (Orientation)
                     {
-                        case global::Avalonia.Controls.Dock.Left:
-                        case global::Avalonia.Controls.Dock.Right:
+                        case Orientation.Horizontal:
                             element.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterThickness) * proportion)));
                             break;
-                        case global::Avalonia.Controls.Dock.Top:
-                        case global::Avalonia.Controls.Dock.Bottom:
+
+                        case Orientation.Vertical:
                             element.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterThickness) * proportion)));
                             break;
                     }
@@ -93,9 +92,9 @@ namespace Dock.Avalonia.Controls
                 Size desiredSize = element.DesiredSize;
 
                 // Decrease the remaining space for the rest of the children
-                switch (GetDock(element))
+                switch (Orientation)
                 {
-                    case global::Avalonia.Controls.Dock.Left:
+                    case Orientation.Horizontal:
                         maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
 
                         if (element is DockPanelSplitter)
@@ -107,7 +106,7 @@ namespace Dock.Avalonia.Controls
                             usedWidth += Math.Max(0, (constraint.Width - splitterThickness) * proportion);
                         }
                         break;
-                    case global::Avalonia.Controls.Dock.Top:
+                    case Orientation.Vertical:
                         maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
 
                         if (element is DockPanelSplitter)
@@ -139,7 +138,6 @@ namespace Dock.Avalonia.Controls
 
             // Arrange each of the Children
             var children = Children;
-            int dockedCount = children.Count - (LastChildFill ? 1 : 0);
             int index = 0;
 
             foreach (Control element in children)
@@ -154,14 +152,14 @@ namespace Dock.Avalonia.Controls
                 // Trim the remaining Rect to the docked size of the element
                 // (unless the element should fill the remaining space because
                 // of LastChildFill)
-                if (index < dockedCount)
+                if (index < children.Count)
                 {
                     var desiredSize = element.DesiredSize;
                     var proportion = DockPanelSplitter.GetProportion(element);
 
-                    switch (GetDock(element))
+                    switch (Orientation)
                     {
-                        case global::Avalonia.Controls.Dock.Left:
+                        case Orientation.Horizontal:
                             if (element is DockPanelSplitter)
                             {
                                 left += desiredSize.Width;
@@ -173,7 +171,7 @@ namespace Dock.Avalonia.Controls
                                 left += Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
                             }
                             break;
-                        case global::Avalonia.Controls.Dock.Top:
+                        case Orientation.Vertical:
                             if (element is DockPanelSplitter)
                             {
                                 top += desiredSize.Height;

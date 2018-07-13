@@ -17,7 +17,7 @@
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Controls:ISplitterDock">
-                <ac:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}"/>
+                <ac:ProportionalStackPanelSplitter Background="Red" />
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
                 <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
@@ -39,7 +39,7 @@
                     </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <DockPanel LastChildFill="True"/>
+                            <idc:ProportionalStackPanel />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

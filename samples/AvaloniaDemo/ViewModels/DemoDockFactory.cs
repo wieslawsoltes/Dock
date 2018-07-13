@@ -153,7 +153,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "LeftPane",
                 Dock = "Left",
-                Width = 250,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "LeftPane",
                 CurrentView = null,
@@ -164,7 +164,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = 250,
+                        Height = double.NaN,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
                         Views = CreateList<IView>
@@ -185,7 +185,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
-                        Height = 250,
+                        Height = double.NaN,
                         Title = "LeftPaneBottom",
                         CurrentView = leftBottomTool1,
                         Views = CreateList<IView>
@@ -204,7 +204,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "RightPane",
                 Dock = "Right",
-                Width = 300,
+                Width = double.NaN,
                 Height = double.NaN,
                 Title = "RightPane",
                 CurrentView = null,
@@ -215,7 +215,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "RightPaneTop",
                         Dock = "Top",
                         Width = double.NaN,
-                        Height = 250,
+                        Height = double.NaN,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
                         Views = CreateList<IView>
@@ -236,7 +236,7 @@ namespace AvaloniaDemo.ViewModels
                         Id = "RightPaneBottom",
                         Dock = "Bottom",
                         Width = double.NaN,
-                        Height = 250,
+                        Height = double.NaN,
                         Title = "RightPaneBottom",
                         CurrentView = rightBottomTool1,
                         Views = CreateList<IView>

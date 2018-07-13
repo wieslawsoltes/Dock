@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 
 namespace Avalonia.Controls
 {
@@ -85,29 +86,16 @@ namespace Avalonia.Controls
         {
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this splitter is horizontal.
-        /// </summary>
-        public bool IsHorizontal
-        {
-            get
-            {
-                var dock = GetDock(this);
-                return dock == Dock.Top || dock == Dock.Bottom;
-            }
-        }
-
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            var dock = GetDock(this);
-            if (IsHorizontal)
+            if(GetPanel().Orientation == Orientation.Vertical)
             {
-                AdjustHeight(e.Vector.Y, dock);
+                SetTargetProportion(e.Vector.Y);
             }
             else
             {
-                AdjustWidth(e.Vector.X, dock);
+                SetTargetProportion(e.Vector.X);
             }
         }
 
@@ -152,26 +140,6 @@ namespace Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void AdjustHeight(double dy, Dock dock)
-        {
-            if (dock == Dock.Bottom)
-            {
-                dy = -dy;
-            }
-
-            SetTargetProportion(dy);
-        }
-
-        private void AdjustWidth(double dx, Dock dock)
-        {
-            if (dock == Dock.Right)
-            {
-                dx = -dx;
-            }
-
-            SetTargetProportion(dx);
-        }
-
         private void SetTargetProportion (double dy)
         {
             var proportion = GetProportion(_element);
@@ -213,8 +181,7 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = GetDock(this);
-            if (dock == Dock.Top && height > panel.DesiredSize.Height - Thickness)
+            if (panel.Orientation == Orientation.Vertical && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
             }
@@ -237,8 +204,7 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = GetDock(this);
-            if (dock == Dock.Left && width > panel.DesiredSize.Width - Thickness)
+            if (panel.Orientation == Orientation.Horizontal && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;
             }
@@ -248,7 +214,7 @@ namespace Avalonia.Controls
 
         private void UpdateHeightOrWidth()
         {
-            if (IsHorizontal)
+            if (GetPanel().Orientation == Orientation.Vertical)
             {
                 Height = Thickness;
                 Width = double.NaN;
@@ -264,27 +230,18 @@ namespace Avalonia.Controls
             }
         }
 
-        private Dock GetDock(Control control)
+        private ProportionalStackPanel GetPanel()
         {
             if (this.Parent is ContentPresenter presenter)
             {
-                return DockPanel.GetDock(presenter);
-            }
-            return DockPanel.GetDock(control);
-        }
-
-        private Panel GetPanel()
-        {
-            if (this.Parent is ContentPresenter presenter)
-            {
-                if (presenter.GetVisualParent() is Panel panel)
+                if (presenter.GetVisualParent() is ProportionalStackPanel panel)
                 {
                     return panel;
                 }
             }
             else
             {
-                if (this.Parent is Panel panel)
+                if (this.Parent is ProportionalStackPanel panel)
                 {
                     return panel;
                 }

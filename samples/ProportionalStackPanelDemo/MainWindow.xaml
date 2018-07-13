@@ -12,51 +12,32 @@
     <Grid>
         <Grid.Styles>
             <Style Selector="idc|ProportionalStackPanelSplitter">
-                <Setter Property="Thickness" Value="6" />
                 <Setter Property="Background" Value="LightGray" />
             </Style>
         </Grid.Styles>
         <idcm:ProportionalStackPanel Orientation="Horizontal">
-            <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+            <idcm:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Green" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <Rectangle Fill="Blue" />
             </idcm:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+                <Rectangle Fill="Red" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Green" />
             </idcm:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
-                <Grid>
-                    <Rectangle Fill="Green" />
-                </Grid>
+                <Rectangle Fill="Green" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Blue" />
-                </Grid>
+                <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
-                <Grid>
-                    <Rectangle Fill="Red" />
-                </Grid>
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
             </idcm:ProportionalStackPanel>
         </idcm:ProportionalStackPanel>
     </Grid>

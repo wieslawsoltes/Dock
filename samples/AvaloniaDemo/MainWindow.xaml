@@ -19,21 +19,21 @@
         <id:DockDropHandler x:Key="DockDropHandler0" Id="0" />
     </idc:MetroWindow.Resources>
     <Grid>
-        <idcm:ProportionalStackPanel Orientation="Vertical">
-            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
-                <Grid DockPanel.Dock="Top">
+        <idcm:ProportionalStackPanel Orientation="Horizontal">
+            <idcm:ProportionalStackPanel>
+                <Grid>
                     <Rectangle Fill="Yellow" />
                 </Grid>
             </idcm:ProportionalStackPanel>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"  />
-            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
-                <Grid DockPanel.Dock="Top">
+            <idc:DockPanelSplitter Background="LightGray" Thickness="6"  />
+            <idcm:ProportionalStackPanel>
+                <Grid>
                     <Rectangle Fill="Green" />
                 </Grid>
             </idcm:ProportionalStackPanel>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"  />
-            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
-                <Grid DockPanel.Dock="Top">
+            <idc:DockPanelSplitter Background="LightGray" Thickness="6"  />
+            <idcm:ProportionalStackPanel>
+                <Grid>
                     <Rectangle Fill="Red" />
                 </Grid>
             </idcm:ProportionalStackPanel>

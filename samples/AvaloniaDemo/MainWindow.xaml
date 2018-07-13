@@ -19,49 +19,24 @@
         <id:DockDropHandler x:Key="DockDropHandler0" Id="0" />
     </idc:MetroWindow.Resources>
     <Grid>
-        <Grid DockPanel.Dock="Right">
-            <idcm:ExtendedDockPanel>
-                <Grid DockPanel.Dock="Top" idc:DockPanelSplitter.Proportion="0.5">
-                    <Rectangle Fill="LightGreen"/>
-                </Grid>
-                <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"  />
-                <Grid DockPanel.Dock="Top">
-                    <Rectangle Fill="LightPink" />
-                </Grid>
-                <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"  />
+        <idcm:ProportionalStackPanel>
+            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
                 <Grid DockPanel.Dock="Top">
                     <Rectangle Fill="Yellow" />
                 </Grid>
-            </idcm:ExtendedDockPanel>
-        </Grid>
-        <!--<DockPanel>
-            <Grid DockPanel.Dock="Left" Width="200" MinWidth="40">
-                <Rectangle Fill="LightBlue"/>
-            </Grid>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Left"/>
-            <Grid DockPanel.Dock="Right" Width="80">
-                <DockPanel>
-                    <Grid DockPanel.Dock="Top" idc:DockPanelSplitter="0.5">
-                        <Rectangle Fill="LightGreen"/>
-                    </Grid>
-                    <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"  />
-                    <Grid DockPanel.Dock="Bottom" idc:DockPanelSplitter="0.5">
-                        <Rectangle Fill="LightPink" />
-                    </Grid>
-                </DockPanel>
-            </Grid>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Right"/>
-            <Grid DockPanel.Dock="Top" Height="80" MinHeight="20">
-                <Rectangle Fill="LightGreen"/>
-            </Grid>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Top"/>
-            <Grid DockPanel.Dock="Bottom" Height="70">
-                <Rectangle Fill="LightPink"/>
-            </Grid>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Bottom"/>
-            <Grid Background="Coral" >
-                <Rectangle Fill="Coral"/>
-            </Grid>
-        </DockPanel>-->
+            </idcm:ProportionalStackPanel>
+            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Left"  />
+            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
+                <Grid DockPanel.Dock="Top">
+                    <Rectangle Fill="Green" />
+                </Grid>
+            </idcm:ProportionalStackPanel>
+            <idc:DockPanelSplitter Background="LightGray" Thickness="6" DockPanel.Dock="Left"  />
+            <idcm:ProportionalStackPanel DockPanel.Dock="Left">
+                <Grid DockPanel.Dock="Top">
+                    <Rectangle Fill="Red" />
+                </Grid>
+            </idcm:ProportionalStackPanel>
+        </idcm:ProportionalStackPanel>
     </Grid>
 </idcm:MetroWindow>

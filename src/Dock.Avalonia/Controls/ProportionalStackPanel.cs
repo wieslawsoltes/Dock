@@ -7,7 +7,7 @@ using Avalonia.Controls;
 
 namespace Dock.Avalonia.Controls
 {
-    public class ExtendedDockPanel : DockPanel
+    public class ProportionalStackPanel : DockPanel
     {
         private void AssignProportions()
         {
@@ -43,16 +43,9 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private double GetTotalSplitterWidth ()
+        private double GetTotalSplitterThickness ()
         {
-            var result = Children.OfType<DockPanelSplitter>().Sum(c => c.Width);
-
-            return double.IsNaN(result) ? 0 : result;
-        }
-
-        private double GetTotalSplitterHeight ()
-        {
-            var result = Children.OfType<DockPanelSplitter>().Sum(c => c.Height);
+            var result = Children.OfType<DockPanelSplitter>().Sum(c => c.Thickness);
 
             return double.IsNaN(result) ? 0 : result;
         }
@@ -64,8 +57,7 @@ namespace Dock.Avalonia.Controls
             double maximumWidth = 0.0;
             double maximumHeight = 0.0;
 
-            var splitterHeight = GetTotalSplitterHeight();
-            var splitterWidth = GetTotalSplitterWidth();
+            var splitterThickness = GetTotalSplitterThickness();
 
             AssignProportions();
 
@@ -74,8 +66,8 @@ namespace Dock.Avalonia.Controls
             {
                 // Get the child's desired size
                 Size remainingSize = new Size(
-                    Math.Max(0.0, constraint.Width - usedWidth - splitterWidth),
-                    Math.Max(0.0, constraint.Height - usedHeight - splitterHeight));
+                    Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
+                    Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
 
                 var proportion = DockPanelSplitter.GetProportion(element);
 
@@ -85,11 +77,11 @@ namespace Dock.Avalonia.Controls
                     {
                         case global::Avalonia.Controls.Dock.Left:
                         case global::Avalonia.Controls.Dock.Right:
-                            element.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterWidth) * proportion)));
+                            element.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterThickness) * proportion)));
                             break;
                         case global::Avalonia.Controls.Dock.Top:
                         case global::Avalonia.Controls.Dock.Bottom:
-                            element.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterHeight) * proportion)));
+                            element.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterThickness) * proportion)));
                             break;
                     }
                 }
@@ -104,7 +96,6 @@ namespace Dock.Avalonia.Controls
                 switch (GetDock(element))
                 {
                     case global::Avalonia.Controls.Dock.Left:
-                    case global::Avalonia.Controls.Dock.Right:
                         maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
 
                         if (element is DockPanelSplitter)
@@ -113,11 +104,10 @@ namespace Dock.Avalonia.Controls
                         }
                         else
                         {
-                            usedWidth += Math.Max(0, (constraint.Width - splitterWidth) * proportion);
+                            usedWidth += Math.Max(0, (constraint.Width - splitterThickness) * proportion);
                         }
                         break;
                     case global::Avalonia.Controls.Dock.Top:
-                    case global::Avalonia.Controls.Dock.Bottom:
                         maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
 
                         if (element is DockPanelSplitter)
@@ -126,7 +116,7 @@ namespace Dock.Avalonia.Controls
                         }
                         else
                         {
-                            usedHeight += Math.Max(0, (constraint.Height - splitterHeight) * proportion);
+                            usedHeight += Math.Max(0, (constraint.Height - splitterThickness) * proportion);
                         }
                         break;
                 }
@@ -145,8 +135,7 @@ namespace Dock.Avalonia.Controls
             double right = 0.0;
             double bottom = 0.0;
 
-            var splitterHeight = GetTotalSplitterHeight();
-            var splitterWidth = GetTotalSplitterWidth();
+            var splitterThickness = GetTotalSplitterThickness();
 
             // Arrange each of the Children
             var children = Children;
@@ -173,8 +162,16 @@ namespace Dock.Avalonia.Controls
                     switch (GetDock(element))
                     {
                         case global::Avalonia.Controls.Dock.Left:
-                            left += desiredSize.Width;
-                            remainingRect = remainingRect.WithWidth(desiredSize.Width);
+                            if (element is DockPanelSplitter)
+                            {
+                                left += desiredSize.Width;
+                                remainingRect = remainingRect.WithWidth(desiredSize.Width);
+                            }
+                            else
+                            {
+                                remainingRect = remainingRect.WithWidth(Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion));
+                                left += Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
+                            }
                             break;
                         case global::Avalonia.Controls.Dock.Top:
                             if (element is DockPanelSplitter)
@@ -184,25 +181,9 @@ namespace Dock.Avalonia.Controls
                             }
                             else
                             {
-                                remainingRect = remainingRect.WithHeight(Math.Max(0, (arrangeSize.Height - splitterHeight) * proportion));
-                                top += Math.Max(0, (arrangeSize.Height - splitterHeight) * proportion);
+                                remainingRect = remainingRect.WithHeight(Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion));
+                                top += Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion);
                             }
-                            break;
-                        case global::Avalonia.Controls.Dock.Right:
-                            right += desiredSize.Width;
-                            remainingRect = new Rect(
-                                Math.Max(0.0, arrangeSize.Width - right),
-                                remainingRect.Y,
-                                desiredSize.Width,
-                                remainingRect.Height);
-                            break;
-                        case global::Avalonia.Controls.Dock.Bottom:
-                            bottom += desiredSize.Height;
-                            remainingRect = new Rect(
-                                remainingRect.X,
-                                Math.Max(0.0, arrangeSize.Height - bottom),
-                                remainingRect.Width,
-                                desiredSize.Height);
                             break;
                     }
                 }

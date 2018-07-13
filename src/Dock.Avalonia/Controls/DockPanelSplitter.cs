@@ -160,8 +160,6 @@ namespace Avalonia.Controls
             }
 
             SetTargetProportion(dy);
-           // SetTargetHeight(dy);
-
         }
 
         private void AdjustWidth(double dx, Dock dock)
@@ -170,7 +168,8 @@ namespace Avalonia.Controls
             {
                 dx = -dx;
             }
-            SetTargetWidth(dx);
+
+            SetTargetProportion(dx);
         }
 
         private void SetTargetProportion (double dy)

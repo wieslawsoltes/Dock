@@ -16,9 +16,9 @@ namespace Dock.Avalonia.Controls
 
             foreach (Control element in Children)
             {
-                if (!(element is DockPanelSplitter))
+                if (!(element is ProportionalStackPanelSplitter))
                 {
-                    var proportion = DockPanelSplitter.GetProportion(element);
+                    var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
                     if (double.IsNaN(proportion))
                     {
@@ -33,11 +33,11 @@ namespace Dock.Avalonia.Controls
 
             if (unassignedProportions > 0)
             {
-                foreach (Control element in Children.Where(c => double.IsNaN(DockPanelSplitter.GetProportion(c))))
+                foreach (Control element in Children.Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
                 {
-                    if (!(element is DockPanelSplitter))
+                    if (!(element is ProportionalStackPanelSplitter))
                     {
-                        DockPanelSplitter.SetProportion(element, (1.0 - assignedProportion) / unassignedProportions);
+                        ProportionalStackPanelSplitter.SetProportion(element, (1.0 - assignedProportion) / unassignedProportions);
                     }
                 }
             }
@@ -45,7 +45,7 @@ namespace Dock.Avalonia.Controls
 
         private double GetTotalSplitterThickness ()
         {
-            var result = Children.OfType<DockPanelSplitter>().Sum(c => c.Thickness);
+            var result = Children.OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
 
             return double.IsNaN(result) ? 0 : result;
         }
@@ -69,9 +69,9 @@ namespace Dock.Avalonia.Controls
                     Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
                     Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
 
-                var proportion = DockPanelSplitter.GetProportion(element);
+                var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
-                if (!(element is DockPanelSplitter))
+                if (!(element is ProportionalStackPanelSplitter))
                 { 
                     switch (Orientation)
                     {
@@ -97,7 +97,7 @@ namespace Dock.Avalonia.Controls
                     case Orientation.Horizontal:
                         maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
 
-                        if (element is DockPanelSplitter)
+                        if (element is ProportionalStackPanelSplitter)
                         {
                             usedWidth += desiredSize.Width;
                         }
@@ -109,7 +109,7 @@ namespace Dock.Avalonia.Controls
                     case Orientation.Vertical:
                         maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
 
-                        if (element is DockPanelSplitter)
+                        if (element is ProportionalStackPanelSplitter)
                         {    
                             usedHeight += desiredSize.Height;
                         }
@@ -155,12 +155,12 @@ namespace Dock.Avalonia.Controls
                 if (index < children.Count)
                 {
                     var desiredSize = element.DesiredSize;
-                    var proportion = DockPanelSplitter.GetProportion(element);
+                    var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
                     switch (Orientation)
                     {
                         case Orientation.Horizontal:
-                            if (element is DockPanelSplitter)
+                            if (element is ProportionalStackPanelSplitter)
                             {
                                 left += desiredSize.Width;
                                 remainingRect = remainingRect.WithWidth(desiredSize.Width);
@@ -172,7 +172,7 @@ namespace Dock.Avalonia.Controls
                             }
                             break;
                         case Orientation.Vertical:
-                            if (element is DockPanelSplitter)
+                            if (element is ProportionalStackPanelSplitter)
                             {
                                 top += desiredSize.Height;
                                 remainingRect = remainingRect.WithHeight(desiredSize.Height);

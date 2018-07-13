@@ -5,9 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
-using Dock.Avalonia.Controls;
 
 namespace Avalonia.Controls
 {
@@ -17,57 +15,12 @@ namespace Avalonia.Controls
     public class DockPanelSplitter : Thumb
     {
         private Control _element;
-        private Size _previousParentSize;
-        private bool _initialised;
-
-        /// <summary>
-        /// Defines the Proportion attached property.
-        /// </summary>
-        public static readonly AttachedProperty<double> ProportionProperty =
-            AvaloniaProperty.RegisterAttached<DockPanel, IControl, double>("Proportion", double.NaN);
-
-        /// <summary>
-        /// Gets the value of the Proportion attached property on the specified control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <returns>The Proportion attached property.</returns>
-        public static double GetProportion(IControl control)
-        {
-            return control.GetValue(ProportionProperty);
-        }
-
-        /// <summary>
-        /// Sets the value of the Proportion attached property on the specified control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="value">The value of the Dock property.</param>
-        public static void SetProportion(IControl control, double value)
-        {
-            control.SetValue(ProportionProperty, value);
-        }
-
 
         /// <summary>
         /// Defines the <see cref="Thickness"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
-            AvaloniaProperty.Register<DockPanelSplitter, double>(nameof(Thickness), 4.0);
-
-        /// <summary>
-        /// Defines the <see cref="ProportionalResize"/> property.
-        /// </summary>
-        public static readonly StyledProperty<bool> ProportionalResizeProperty =
-            AvaloniaProperty.Register<DockPanelSplitter, bool>(nameof(ProportionalResize), true);
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to resize elements proportionally.
-        /// </summary>
-        /// <remarks>Set to <c>false</c> if you don't want the element to be resized when the parent is resized.</remarks>
-        public bool ProportionalResize
-        {
-            get => GetValue(ProportionalResizeProperty);
-            set => SetValue(ProportionalResizeProperty, value);
-        }
+            AvaloniaProperty.Register<DockPanel, double>(nameof(Thickness), 4.0);
 
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
@@ -86,16 +39,29 @@ namespace Avalonia.Controls
         {
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this splitter is horizontal.
+        /// </summary>
+        public bool IsHorizontal
+        {
+            get
+            {
+                var dock = GetDock(this);
+                return dock == Dock.Top || dock == Dock.Bottom;
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            if(GetPanel().Orientation == Orientation.Vertical)
+            var dock = GetDock(this);
+            if (IsHorizontal)
             {
-                SetTargetProportion(e.Vector.Y);
+                AdjustHeight(e.Vector.Y, dock);
             }
             else
             {
-                SetTargetProportion(e.Vector.X);
+                AdjustWidth(e.Vector.X, dock);
             }
         }
 
@@ -104,71 +70,31 @@ namespace Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            var panel = GetPanel();
-
-            _previousParentSize = panel.Bounds.Size;
-
-            panel.LayoutUpdated += (sender, ee) =>
-            {
-                if (!this.ProportionalResize)
-                {
-                    return;
-                }
-
-                var proportion = GetProportion(_element);
-
-                if (_initialised && _element.IsArrangeValid && _element.IsMeasureValid)
-                {
-                    var dSize = new Size(panel.Bounds.Size.Width / _previousParentSize.Width, panel.Bounds.Size.Height / _previousParentSize.Height);
-
-                    if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
-                    {
-                        this.SetTargetWidth((_element.DesiredSize.Width * dSize.Width) - _element.DesiredSize.Width);
-                    }
-
-                    if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
-                    {
-                        this.SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height);
-                    }
-                }
-
-                _previousParentSize = panel.Bounds.Size;
-                _initialised = true;
-            };
-
             UpdateHeightOrWidth();
             UpdateTargetElement();
         }
 
-        private void SetTargetProportion (double dy)
+        private void AdjustHeight(double dy, Dock dock)
         {
-            var proportion = GetProportion(_element);
+            if (dock == Dock.Bottom)
+            {
+                dy = -dy;
+            }
+            SetTargetHeight(dy);
+        }
 
-            var panel = GetPanel();
-
-            var dProportion = dy / panel.Bounds.Height;
-
-            proportion += dProportion;
-
-            SetProportion(_element, proportion);
-
-            int index = panel.Children.IndexOf(this) + 1;
-
-            var child = panel.Children[index];
-
-            var currentProportion = GetProportion(child);
-
-            currentProportion -= dProportion;
-
-            SetProportion(child, currentProportion);
-
-            panel.InvalidateMeasure();
-            panel.InvalidateArrange();
+        private void AdjustWidth(double dx, Dock dock)
+        {
+            if (dock == Dock.Right)
+            {
+                dx = -dx;
+            }
+            SetTargetWidth(dx);
         }
 
         private void SetTargetHeight(double dy)
         {
-            double height = _element.Height + dy;
+            double height = _element.DesiredSize.Height + dy;
 
             if (height < _element.MinHeight)
             {
@@ -181,7 +107,8 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            if (panel.Orientation == Orientation.Vertical && height > panel.DesiredSize.Height - Thickness)
+            var dock = GetDock(this);
+            if (dock == Dock.Top && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
             }
@@ -191,7 +118,7 @@ namespace Avalonia.Controls
 
         private void SetTargetWidth(double dx)
         {
-            double width = _element.Width + dx;
+            double width = _element.DesiredSize.Width + dx;
 
             if (width < _element.MinWidth)
             {
@@ -204,7 +131,8 @@ namespace Avalonia.Controls
             }
 
             var panel = GetPanel();
-            if (panel.Orientation == Orientation.Horizontal && width > panel.DesiredSize.Width - Thickness)
+            var dock = GetDock(this);
+            if (dock == Dock.Left && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;
             }
@@ -214,7 +142,7 @@ namespace Avalonia.Controls
 
         private void UpdateHeightOrWidth()
         {
-            if (GetPanel().Orientation == Orientation.Vertical)
+            if (IsHorizontal)
             {
                 Height = Thickness;
                 Width = double.NaN;
@@ -230,18 +158,27 @@ namespace Avalonia.Controls
             }
         }
 
-        private ProportionalStackPanel GetPanel()
+        private Dock GetDock(Control control)
         {
             if (this.Parent is ContentPresenter presenter)
             {
-                if (presenter.GetVisualParent() is ProportionalStackPanel panel)
+                return DockPanel.GetDock(presenter);
+            }
+            return DockPanel.GetDock(control);
+        }
+
+        private Panel GetPanel()
+        {
+            if (this.Parent is ContentPresenter presenter)
+            {
+                if (presenter.GetVisualParent() is Panel panel)
                 {
                     return panel;
                 }
             }
             else
             {
-                if (this.Parent is ProportionalStackPanel panel)
+                if (this.Parent is Panel panel)
                 {
                     return panel;
                 }

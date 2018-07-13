@@ -25,13 +25,13 @@
                     <Rectangle Fill="Yellow" />
                 </Grid>
             </idcm:ProportionalStackPanel>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6"  />
+            <idc:ProportionalStackPanelSplitter Background="LightGray" Thickness="6"  />
             <idcm:ProportionalStackPanel>
                 <Grid>
                     <Rectangle Fill="Green" />
                 </Grid>
             </idcm:ProportionalStackPanel>
-            <idc:DockPanelSplitter Background="LightGray" Thickness="6"  />
+            <idc:ProportionalStackPanelSplitter Background="LightGray" Thickness="6"  />
             <idcm:ProportionalStackPanel>
                 <Grid>
                     <Rectangle Fill="Red" />

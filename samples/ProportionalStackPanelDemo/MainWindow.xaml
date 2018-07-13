@@ -1,0 +1,63 @@
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<idcm:MetroWindow x:Class="AvaloniaDemo.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:idcm="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        UseLayoutRounding="True"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
+        Title="Dock Avalonia Demo" Height="680" Width="1200" >
+    <Grid>
+        <Grid.Styles>
+            <Style Selector="idc|ProportionalStackPanelSplitter">
+                <Setter Property="Thickness" Value="6" />
+                <Setter Property="Background" Value="LightGray" />
+            </Style>
+        </Grid.Styles>
+        <idcm:ProportionalStackPanel Orientation="Horizontal">
+            <idcm:ProportionalStackPanel>
+                <Grid>
+                    <Rectangle Fill="Red" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Green" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Blue" />
+                </Grid>
+            </idcm:ProportionalStackPanel>
+            <idc:ProportionalStackPanelSplitter />
+            <idcm:ProportionalStackPanel>
+                <Grid>
+                    <Rectangle Fill="Blue" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Red" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Green" />
+                </Grid>
+            </idcm:ProportionalStackPanel>
+            <idc:ProportionalStackPanelSplitter />
+            <idcm:ProportionalStackPanel>
+                <Grid>
+                    <Rectangle Fill="Green" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Blue" />
+                </Grid>
+                <idc:ProportionalStackPanelSplitter />
+                <Grid>
+                    <Rectangle Fill="Red" />
+                </Grid>
+            </idcm:ProportionalStackPanel>
+        </idcm:ProportionalStackPanel>
+    </Grid>
+</idcm:MetroWindow>

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\NETCore.props" />
+  <Import Project="..\..\build\NSubsys.props" />
+  <Import Project="..\..\build\Rx.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Newtonsoft.Json.props" />
+  <!--<Import Project="..\..\build\ReactiveUI.props" />-->
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\EmbedXaml.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
+    <!--<ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />-->
+    <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
+  </ItemGroup>
+
+</Project>

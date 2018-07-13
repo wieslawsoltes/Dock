@@ -46,9 +46,9 @@ namespace AvaloniaDemo
                 BuildAvaloniaApp().Start<MainWindow>(() =>
                 {
                     // NOTE: Initialize layout after main window was created so child windows can be created.
-                    vm.Factory = factory;
-                    vm.Layout = layout ?? vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    //vm.Factory = factory;
+                    //vm.Layout = layout ?? vm.Factory.CreateLayout();
+                    //vm.Factory.InitLayout(vm.Layout, vm);
                     return vm;
                 });
 

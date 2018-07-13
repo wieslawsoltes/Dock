@@ -15,7 +15,36 @@
                 <Setter Property="Background" Value="LightGray" />
             </Style>
         </Grid.Styles>
-        <idcm:ProportionalStackPanel Orientation="Horizontal">
+
+        <ItemsControl>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <idcm:ProportionalStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Items>
+                <Rectangle Fill="Green" />
+                <idc:ProportionalStackPanelSplitter />
+                <Rectangle Fill="Blue" />
+                <idc:ProportionalStackPanelSplitter />
+                <ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <idcm:ProportionalStackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Items>
+                        <Rectangle Fill="Green" />
+                        <idc:ProportionalStackPanelSplitter />
+                        <Rectangle Fill="Blue" />
+                        <idc:ProportionalStackPanelSplitter />
+                        <Rectangle Fill="Red" />
+                    </ItemsControl.Items>
+                </ItemsControl>
+            </ItemsControl.Items>
+        </ItemsControl>
+
+        <!--<idcm:ProportionalStackPanel Orientation="Horizontal">
             <idcm:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
                 <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
                 <idc:ProportionalStackPanelSplitter />
@@ -39,6 +68,6 @@
                 <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
             </idcm:ProportionalStackPanel>
-        </idcm:ProportionalStackPanel>
+        </idcm:ProportionalStackPanel>-->
     </Grid>
 </idcm:MetroWindow>

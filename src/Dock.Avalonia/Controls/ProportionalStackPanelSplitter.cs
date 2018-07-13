@@ -235,12 +235,9 @@ namespace Avalonia.Controls
                     return panel;
                 }
             }
-            else
+            else if (this.GetVisualParent() is ProportionalStackPanel psp)
             {
-                if (Parent is ProportionalStackPanel panel)
-                {
-                    return panel;
-                }
+                return psp;
             }
 
             return null;
@@ -255,7 +252,7 @@ namespace Avalonia.Controls
                     return;
                 }
 
-                int index = panel.Children.IndexOf(this.Parent);
+                int index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
                     _element = (panel.Children[index - 1] as ContentPresenter).Child as Control;
@@ -263,10 +260,7 @@ namespace Avalonia.Controls
             }
             else
             {
-                if (!(Parent is Panel panel))
-                {
-                    return;
-                }
+                var panel = GetPanel();
 
                 int index = panel.Children.IndexOf(this);
                 if (index > 0 && panel.Children.Count > 0)

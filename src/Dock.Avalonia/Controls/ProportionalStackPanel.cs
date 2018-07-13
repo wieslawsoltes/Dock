@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 
 namespace Dock.Avalonia.Controls
 {
@@ -25,12 +27,27 @@ namespace Dock.Avalonia.Controls
             set { SetValue(OrientationProperty, value); }
         }
 
+        internal IList<IControl> GetChildren ()
+        {
+            return Children.Select(c =>
+            {
+                if(c is ContentPresenter cp)
+                {
+                    return cp.Child;
+                }
+                else
+                {
+                    return c;
+                }
+            }).ToList();
+        }
+
         private void AssignProportions()
         {
             double assignedProportion = 0;
             int unassignedProportions = 0;
 
-            foreach (Control element in Children)
+            foreach (Control element in GetChildren())
             {
                 if (!(element is ProportionalStackPanelSplitter))
                 {
@@ -49,7 +66,7 @@ namespace Dock.Avalonia.Controls
 
             if (unassignedProportions > 0)
             {
-                foreach (Control element in Children.Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
+                foreach (Control element in GetChildren().Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
                 {
                     if (!(element is ProportionalStackPanelSplitter))
                     {
@@ -61,7 +78,7 @@ namespace Dock.Avalonia.Controls
 
         private double GetTotalSplitterThickness ()
         {
-            var result = Children.OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
+            var result = GetChildren().OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
 
             return double.IsNaN(result) ? 0 : result;
         }
@@ -83,7 +100,7 @@ namespace Dock.Avalonia.Controls
             AssignProportions();
 
             // Measure each of the Children
-            foreach (Control element in Children)
+            foreach (Control element in GetChildren())
             {
                 // Get the child's desired size
                 Size remainingSize = new Size(
@@ -158,10 +175,10 @@ namespace Dock.Avalonia.Controls
             var splitterThickness = GetTotalSplitterThickness();
 
             // Arrange each of the Children
-            var children = Children;
+            var children = GetChildren();
             int index = 0;
 
-            foreach (Control element in children)
+            foreach (var element in children)
             {
                 // Determine the remaining space left to arrange the element
                 Rect remainingRect = new Rect(
@@ -173,7 +190,7 @@ namespace Dock.Avalonia.Controls
                 // Trim the remaining Rect to the docked size of the element
                 // (unless the element should fill the remaining space because
                 // of LastChildFill)
-                if (index < children.Count)
+                if (index < children.Count())
                 {
                     var desiredSize = element.DesiredSize;
                     var proportion = ProportionalStackPanelSplitter.GetProportion(element);

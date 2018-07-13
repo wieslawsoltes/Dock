@@ -148,9 +148,11 @@ namespace Avalonia.Controls
 
             SetProportion(_element, proportion);
 
-            int index = panel.Children.IndexOf(this) + 1;
+            var children = panel.GetChildren();
 
-            var child = panel.Children[index];
+            int index = children.IndexOf(this) + 1;
+
+            var child = children[index];
 
             var currentProportion = GetProportion(child);
 

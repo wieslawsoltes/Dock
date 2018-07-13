@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 
 namespace Dock.Avalonia.Controls
 {
+    /// <summary>
+    /// A Panel that stacks controls either horizontally or verically, with proportional resizing.
+    /// </summary>
     public class ProportionalStackPanel : Panel
     {
         /// <summary>
@@ -104,7 +105,7 @@ namespace Dock.Avalonia.Controls
                     element.Measure(remainingSize);
                 }
                 
-                Size desiredSize = element.DesiredSize;
+                var desiredSize = element.DesiredSize;
 
                 // Decrease the remaining space for the rest of the children
                 switch (Orientation)

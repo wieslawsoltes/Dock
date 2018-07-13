@@ -3,21 +3,12 @@
 <idcm:MetroWindow x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
-
         xmlns:idcm="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
-        Title="Dock Avalonia Demo" Height="680" Width="1200"
-        id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
-    <idc:MetroWindow.Resources>
-        <id:DockDropHandler x:Key="DockDropHandler0" Id="0" />
-    </idc:MetroWindow.Resources>
+        Title="Dock Avalonia Demo" Height="680" Width="1200" >
     <Grid>
         <Grid.Styles>
             <Style Selector="idc|ProportionalStackPanelSplitter">

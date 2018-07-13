@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 
 namespace Avalonia.Controls
 {
     /// <summary>
-    /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
+    /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
     /// </summary>
     public class ProportionalStackPanelSplitter : Thumb
     {
@@ -45,7 +42,6 @@ namespace Avalonia.Controls
         {
             control.SetValue(ProportionProperty, value);
         }
-
 
         /// <summary>
         /// Defines the <see cref="Thickness"/> property.
@@ -232,7 +228,7 @@ namespace Avalonia.Controls
 
         private ProportionalStackPanel GetPanel()
         {
-            if (this.Parent is ContentPresenter presenter)
+            if (Parent is ContentPresenter presenter)
             {
                 if (presenter.GetVisualParent() is ProportionalStackPanel panel)
                 {
@@ -241,7 +237,7 @@ namespace Avalonia.Controls
             }
             else
             {
-                if (this.Parent is ProportionalStackPanel panel)
+                if (Parent is ProportionalStackPanel panel)
                 {
                     return panel;
                 }
@@ -252,7 +248,7 @@ namespace Avalonia.Controls
 
         private void UpdateTargetElement()
         {
-            if (this.Parent is ContentPresenter presenter)
+            if (Parent is ContentPresenter presenter)
             {
                 if (!(presenter.GetVisualParent() is Panel panel))
                 {
@@ -267,7 +263,7 @@ namespace Avalonia.Controls
             }
             else
             {
-                if (!(this.Parent is Panel panel))
+                if (!(Parent is Panel panel))
                 {
                     return;
                 }

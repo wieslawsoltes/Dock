@@ -7,8 +7,23 @@ using Avalonia.Controls;
 
 namespace Dock.Avalonia.Controls
 {
-    public class ProportionalStackPanel : StackPanel
+    public class ProportionalStackPanel : Panel
     {
+        /// <summary>
+        /// Defines the <see cref="Orientation"/> property.
+        /// </summary>
+        public static readonly StyledProperty<Orientation> OrientationProperty =
+            AvaloniaProperty.Register<ProportionalStackPanel, Orientation>(nameof(Orientation), Orientation.Vertical);
+
+        /// <summary>
+        /// Gets or sets the orientation in which child controls will be layed out.
+        /// </summary>
+        public Orientation Orientation
+        {
+            get { return GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
         private void AssignProportions()
         {
             double assignedProportion = 0;

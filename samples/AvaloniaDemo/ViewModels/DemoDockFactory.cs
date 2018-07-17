@@ -240,13 +240,15 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftSplitter",
                         Title = "LeftSplitter"
                     },
+                    new SplitterDock(),
+                    documentsPane,
+                    new SplitterDock(),
                     rightPane,
                     new SplitterDock()
                     {
                         Id = "RightSplitter",
                         Title = "RightSplitter"
-                    },
-                    documentsPane
+                    }
                 )
             };
 

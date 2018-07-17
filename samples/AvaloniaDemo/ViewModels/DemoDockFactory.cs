@@ -123,7 +123,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "LeftPane",
                 Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Vertical,
                 Title = "LeftPane",
                 CurrentView = null,
                 Views = CreateList<IView>
@@ -168,7 +168,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 Id = "RightPane",
                 Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Vertical,
                 Title = "RightPane",
                 CurrentView = null,
                 Views = CreateList<IView>
@@ -240,15 +240,13 @@ namespace AvaloniaDemo.ViewModels
                         Id = "LeftSplitter",
                         Title = "LeftSplitter"
                     },
-                    new SplitterDock(),
                     documentsPane,
-                    new SplitterDock(),
-                    rightPane,
                     new SplitterDock()
                     {
                         Id = "RightSplitter",
                         Title = "RightSplitter"
-                    }
+                    },
+                    rightPane
                 )
             };
 

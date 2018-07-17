@@ -22,26 +22,28 @@
                 <ac:ProportionalStackPanelSplitter Background="Red" />
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
-                <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                <idc:DocumentControl ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
                 <idc:DockToolChrome IsActive="{Binding IsActive}">
                     <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>-->
-                    <idc:ToolControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                    <idc:ToolControl ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
-                <ItemsControl Items="{Binding Views}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                    <ItemsControl.Styles>
+                <ItemsControl Items="{Binding Views}">
+                    <!-- TODO: Remove Dock binding. -->
+                    <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
                             <Setter Property="DockPanel.Dock" Value="{Binding Dock, Mode=OneWay}"/>
                         </Style>
-                    </ItemsControl.Styles>
+                    </ItemsControl.Styles>-->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
+                            <idc:ProportionalStackPanel ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}" 
+                                                        Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

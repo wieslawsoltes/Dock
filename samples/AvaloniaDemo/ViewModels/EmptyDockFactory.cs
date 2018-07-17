@@ -18,17 +18,12 @@ namespace AvaloniaDemo.ViewModels
             var view = new ViewStub
             {
                 Id = nameof(IView),
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = nameof(IView)
             };
 
             return new RootDock
             {
                 Id = nameof(IRootDock),
-                Dock = "",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = nameof(IRootDock),
                 CurrentView = view,
                 DefaultView = view,

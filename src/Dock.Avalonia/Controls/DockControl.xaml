@@ -8,7 +8,6 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
-             xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
@@ -19,7 +18,7 @@
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Controls:ISplitterDock">
-                <ac:ProportionalStackPanelSplitter Background="Transparent"/>
+                <idc:ProportionalStackPanelSplitter Background="Transparent"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
                 <idc:DocumentControl/>
@@ -35,11 +34,11 @@
             <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}">
                     <!-- FIXME: Binding to attached Proportion property does not work. -->
-                    <!--<ItemsControl.Styles>
+                    <ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
-                            <Setter Property="ac:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
+                            <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
                         </Style>
-                    </ItemsControl.Styles>-->
+                    </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>

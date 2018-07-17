@@ -7,7 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
-namespace Avalonia.Controls
+namespace Dock.Avalonia.Controls
 {
     /// <summary>
     /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
@@ -47,7 +47,7 @@ namespace Avalonia.Controls
             get
             {
                 var dock = GetDock(this);
-                return dock == Dock.Top || dock == Dock.Bottom;
+                return dock == global::Avalonia.Controls.Dock.Top || dock == global::Avalonia.Controls.Dock.Bottom;
             }
         }
 
@@ -74,18 +74,18 @@ namespace Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void AdjustHeight(double dy, Dock dock)
+        private void AdjustHeight(double dy, global::Avalonia.Controls.Dock dock)
         {
-            if (dock == Dock.Bottom)
+            if (dock == global::Avalonia.Controls.Dock.Bottom)
             {
                 dy = -dy;
             }
             SetTargetHeight(dy);
         }
 
-        private void AdjustWidth(double dx, Dock dock)
+        private void AdjustWidth(double dx, global::Avalonia.Controls.Dock dock)
         {
-            if (dock == Dock.Right)
+            if (dock == global::Avalonia.Controls.Dock.Right)
             {
                 dx = -dx;
             }
@@ -108,7 +108,7 @@ namespace Avalonia.Controls
 
             var panel = GetPanel();
             var dock = GetDock(this);
-            if (dock == Dock.Top && height > panel.DesiredSize.Height - Thickness)
+            if (dock == global::Avalonia.Controls.Dock.Top && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
             }
@@ -132,7 +132,7 @@ namespace Avalonia.Controls
 
             var panel = GetPanel();
             var dock = GetDock(this);
-            if (dock == Dock.Left && width > panel.DesiredSize.Width - Thickness)
+            if (dock == global::Avalonia.Controls.Dock.Left && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;
             }
@@ -158,7 +158,7 @@ namespace Avalonia.Controls
             }
         }
 
-        private Dock GetDock(Control control)
+        private global::Avalonia.Controls.Dock GetDock(Control control)
         {
             if (this.Parent is ContentPresenter presenter)
             {

@@ -1,17 +1,16 @@
 ﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<idcm:MetroWindow x:Class="AvaloniaDemo.MainWindow"
+<idc:MetroWindow x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:idcm="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
         Title="Dock Avalonia Demo" Height="680" Width="1200" >
     <Grid>
         <Grid.Styles>
-            <Style Selector="ac|ProportionalStackPanelSplitter">
+            <Style Selector="idc|ProportionalStackPanelSplitter">
                 <Setter Property="Background" Value="LightGray" />
             </Style>
         </Grid.Styles>
@@ -19,55 +18,55 @@
         <ItemsControl>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <idcm:ProportionalStackPanel Orientation="Horizontal" />
+                    <idc:ProportionalStackPanel Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.Items>
                 <Rectangle Fill="Green" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <ItemsControl>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <idcm:ProportionalStackPanel Orientation="Vertical" />
+                            <idc:ProportionalStackPanel Orientation="Vertical" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.Items>
                         <Rectangle Fill="Green" />
-                        <ac:ProportionalStackPanelSplitter />
+                        <idc:ProportionalStackPanelSplitter />
                         <Rectangle Fill="Blue" />
-                        <ac:ProportionalStackPanelSplitter />
+                        <idc:ProportionalStackPanelSplitter />
                         <Rectangle Fill="Red" />
                     </ItemsControl.Items>
                 </ItemsControl>
             </ItemsControl.Items>
         </ItemsControl>
 
-        <!--<idcm:ProportionalStackPanel Orientation="Horizontal">
-            <idcm:ProportionalStackPanel ac:ProportionalStackPanelSplitter.Proportion="0.5">
-                <Rectangle Fill="Red" ac:ProportionalStackPanelSplitter.Proportion="0.5" />
-                <ac:ProportionalStackPanelSplitter />
+        <!--<idc:ProportionalStackPanel Orientation="Horizontal">
+            <idc:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Green" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-            </idcm:ProportionalStackPanel>
-            <ac:ProportionalStackPanelSplitter />
+            </idc:ProportionalStackPanel>
+            <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
                 <Rectangle Fill="Blue" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Green" />
-            </idcm:ProportionalStackPanel>
-            <ac:ProportionalStackPanelSplitter />
+            </idc:ProportionalStackPanel>
+            <idc:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
                 <Rectangle Fill="Green" />
-                <ac:ProportionalStackPanelSplitter />
+                <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-                <ac:ProportionalStackPanelSplitter />
-                <Rectangle Fill="Red" ac:ProportionalStackPanelSplitter.Proportion="0.5" />
-            </idcm:ProportionalStackPanel>
-        </idcm:ProportionalStackPanel>-->
+                <idc:ProportionalStackPanelSplitter />
+                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
+            </idc:ProportionalStackPanel>
+        </idc:ProportionalStackPanel>-->
     </Grid>
-</idcm:MetroWindow>
+</idc:MetroWindow>

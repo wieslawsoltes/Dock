@@ -27,11 +27,11 @@ namespace Dock.Avalonia.Controls
             set { SetValue(OrientationProperty, value); }
         }
 
-        internal IList<IControl> GetChildren ()
+        internal IList<IControl> GetChildren()
         {
             return Children.Select(c =>
             {
-                if(c is ContentPresenter cp)
+                if (c is ContentPresenter cp)
                 {
                     return cp.Child;
                 }
@@ -76,7 +76,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private double GetTotalSplitterThickness ()
+        private double GetTotalSplitterThickness()
         {
             var result = GetChildren().OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
 
@@ -86,7 +86,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
-            if(constraint == Size.Infinity)
+            if (constraint == Size.Infinity)
             {
                 throw new Exception("Proportional StackPanel cannot be inside a component of unlimited size (like scrollviewer or listbox)");
             }
@@ -111,7 +111,7 @@ namespace Dock.Avalonia.Controls
                 var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
                 if (!(element is ProportionalStackPanelSplitter))
-                { 
+                {
                     switch (Orientation)
                     {
                         case Orientation.Horizontal:
@@ -127,7 +127,7 @@ namespace Dock.Avalonia.Controls
                 {
                     element.Measure(remainingSize);
                 }
-                
+
                 var desiredSize = element.DesiredSize;
 
                 // Decrease the remaining space for the rest of the children
@@ -149,7 +149,7 @@ namespace Dock.Avalonia.Controls
                         maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
 
                         if (element is ProportionalStackPanelSplitter)
-                        {    
+                        {
                             usedHeight += desiredSize.Height;
                         }
                         else

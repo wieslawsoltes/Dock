@@ -21,7 +21,7 @@ namespace Avalonia.Controls
         /// Defines the Proportion attached property.
         /// </summary>
         public static readonly AttachedProperty<double> ProportionProperty =
-            AvaloniaProperty.RegisterAttached<DockPanel, IControl, double>("Proportion", double.NaN);
+            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("Proportion", double.NaN);
 
         /// <summary>
         /// Gets the value of the Proportion attached property on the specified control.
@@ -85,7 +85,7 @@ namespace Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            if(GetPanel().Orientation == Orientation.Vertical)
+            if (GetPanel().Orientation == Orientation.Vertical)
             {
                 SetTargetProportion(e.Vector.Y);
             }
@@ -136,7 +136,7 @@ namespace Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void SetTargetProportion (double dy)
+        private void SetTargetProportion(double dy)
         {
             var proportion = GetProportion(_element);
 

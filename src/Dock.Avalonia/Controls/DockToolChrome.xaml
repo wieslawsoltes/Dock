@@ -8,7 +8,7 @@
                     <Border BorderBrush="{DynamicResource ThemeBorderDarkBrush}" Name="PART_Border">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left"  Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton">
                                     <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
                                 </Button>

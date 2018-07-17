@@ -295,19 +295,16 @@ namespace Dock.Model
                 if (dock.Parent is IDock parentDock)
                 {
                     var toRemove = new List<IView>();
-                    var dockSide = dock.Dock;
                     var dockIndex = parentDock.Views.IndexOf(dock);
 
-                    if(dockIndex > 0
-                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious
-                        && splitterPrevious.Dock == dockSide)
+                    if (dockIndex > 0
+                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious)
                     {
                         toRemove.Add(splitterPrevious);
                     }
 
-                    if(dockIndex < parentDock.Views.Count -1
-                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext
-                        && splitterNext.Dock == dockSide)
+                    if (dockIndex < parentDock.Views.Count - 1
+                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext)
                     {
                         toRemove.Add(splitterNext);
                     }
@@ -457,99 +454,73 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
-            string originalDock = dock.Dock;
-            double originalWidth = dock.Width;
-            double originalHeight = dock.Height;
-            double width = double.NaN;
-            double height = double.NaN;
-
-            switch (operation)
-            {
-                case DockOperation.Left:
-                case DockOperation.Right:
-                    width = originalWidth == double.NaN ? double.NaN : originalWidth / 2.0;
-                    height = dock.Height == double.NaN ? double.NaN : dock.Height;
-                    break;
-                case DockOperation.Top:
-                case DockOperation.Bottom:
-                    width = originalWidth == double.NaN ? double.NaN : originalWidth;
-                    height = originalHeight == double.NaN ? double.NaN : originalHeight / 2.0;
-                    break;
-            }
-
             IDock split = null;
             if (view is IDock viewDock)
             {
                 split = viewDock;
-                split.Width = width;
-                split.Height = height;
             }
             else
             {
                 split = CreateLayoutDock();
                 split.Id = nameof(ILayoutDock);
                 split.Title = nameof(ILayoutDock);
-                split.Width = width;
-                split.Height = height;
 
                 if (view != null)
                 {
-                    view.Width = double.NaN;
-                    view.Height = double.NaN;
-
                     split.CurrentView = view;
                     split.Views = CreateList<IView>();
                     split.Views.Add(view);
                 }
             }
 
-            switch (operation)
-            {
-                case DockOperation.Left:
-                    split.Dock = "Left";
-                    split.Width = width;
-                    dock.Dock = "Right";
-                    dock.Width = width;
-                    break;
-                case DockOperation.Right:
-                    split.Dock = "Right";
-                    split.Width = width;
-                    dock.Dock = "Left";
-                    dock.Width = width;
-                    break;
-                case DockOperation.Top:
-                    split.Dock = "Top";
-                    split.Height = height;
-                    dock.Dock = "Bottom";
-                    dock.Height = height;
-                    break;
-                case DockOperation.Bottom:
-                    split.Dock = "Bottom";
-                    split.Height = height;
-                    dock.Dock = "Top";
-                    dock.Height = height;
-                    break;
-            }
-
             var layout = CreateLayoutDock();
             layout.Id = nameof(ILayoutDock);
-            layout.Dock = originalDock;
-            layout.Width = originalWidth;
-            layout.Height = originalHeight;
             layout.Title = nameof(ILayoutDock);
             layout.CurrentView = null;
 
             var splitter = CreateSplitterDock();
             splitter.Id = nameof(ISplitterDock);
             splitter.Title = nameof(ISplitterDock);
-            splitter.Dock = (split.Dock == "Left" || split.Dock == "Right") ? "Left" : "Top";
-            splitter.Width = double.NaN;
-            splitter.Height = double.NaN;
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Right:
+                    layout.Orientation = Orientation.Horizontal;
+                    break;
+                case DockOperation.Top:
+                case DockOperation.Bottom:
+                    layout.Orientation = Orientation.Vertical;
+                    break;
+            }
 
             layout.Views = CreateList<IView>();
-            layout.Views.Add((dock.Dock == "Left" || dock.Dock == "Top") ? dock : split);
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Top:
+                    layout.Views.Add(split);
+                    break;
+                case DockOperation.Right:
+                case DockOperation.Bottom:
+                    layout.Views.Add(dock);
+                    break;
+            }
+
             layout.Views.Add(splitter);
-            layout.Views.Add((dock.Dock == "Left" || dock.Dock == "Top") ? split : dock);
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Top:
+                    layout.Views.Add(dock);
+                    break;
+                case DockOperation.Right:
+                case DockOperation.Bottom:
+                    layout.Views.Add(split);
+                    break;
+            }
 
             return layout;
         }
@@ -689,19 +660,9 @@ namespace Dock.Model
                     }
             }
 
-            if (target is IDock targetDock)
-            {
-                targetDock.Dock = "";
-            }
-
-            target.Width = double.NaN;
-            target.Height = double.NaN;
-
             var root = CreateRootDock();
             root.Id = nameof(IRootDock);
             root.Title = nameof(IRootDock);
-            root.Width = double.NaN;
-            root.Height = double.NaN;
             root.CurrentView = target;
             root.DefaultView = target;
             root.Views = CreateList<IView>();

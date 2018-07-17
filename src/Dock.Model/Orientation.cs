@@ -1,21 +1,21 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-namespace Dock.Model.Controls
+namespace Dock.Model
 {
     /// <summary>
-    /// Layout dock contract.
+    /// Defines vertical or horizontal orientation.
     /// </summary>
-    public interface ILayoutDock : IDock
+    public enum Orientation
     {
         /// <summary>
-        /// Gets or sets splitter proportion.
+        /// Horizontal orientation.
         /// </summary>
-        double Proportion { get; set; }
+        Horizontal = 0,
 
         /// <summary>
-        /// Gets or sets layout orientation.
+        /// Vertical orientation.
         /// </summary>
-        Orientation Orientation { get; set; }
+        Vertical = 1
     }
 }

@@ -22,24 +22,18 @@ namespace AvaloniaDemo.ViewModels
             var document1 = new Document1
             {
                 Id = "Document1",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Document1"
             };
 
             var document2 = new Document2
             {
                 Id = "Document2",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Document2"
             };
 
             var document3 = new Document3
             {
                 Id = "Document3",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Document3"
             };
 
@@ -48,24 +42,18 @@ namespace AvaloniaDemo.ViewModels
             var leftTopTool1 = new LeftTopTool1
             {
                 Id = "LeftTop1",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftTop1"
             };
 
             var leftTopTool2 = new LeftTopTool2
             {
                 Id = "LeftTop2",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftTop2"
             };
 
             var leftTopTool3 = new LeftTopTool3
             {
                 Id = "LeftTop3",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftTop3"
             };
 
@@ -74,24 +62,18 @@ namespace AvaloniaDemo.ViewModels
             var leftBottomTool1 = new LeftBottomTool1
             {
                 Id = "LeftBottom1",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftBottom1"
             };
 
             var leftBottomTool2 = new LeftBottomTool2
             {
                 Id = "LeftBottom2",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftBottom2"
             };
 
             var leftBottomTool3 = new LeftBottomTool3
             {
                 Id = "LeftBottom3",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "LeftBottom3"
             };
 
@@ -100,24 +82,18 @@ namespace AvaloniaDemo.ViewModels
             var rightTopTool1 = new RightTopTool1
             {
                 Id = "RightTop1",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightTop1"
             };
 
             var rightTopTool2 = new RightTopTool2
             {
                 Id = "RightTop2",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightTop2"
             };
 
             var rightTopTool3 = new RightTopTool3
             {
                 Id = "RightTop3",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightTop3"
             };
 
@@ -126,24 +102,18 @@ namespace AvaloniaDemo.ViewModels
             var rightBottomTool1 = new RightBottomTool1
             {
                 Id = "RightBottom1",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightBottom1"
             };
 
             var rightBottomTool2 = new RightBottomTool2
             {
                 Id = "RightBottom2",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightBottom2"
             };
 
             var rightBottomTool3 = new RightBottomTool3
             {
                 Id = "RightBottom3",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "RightBottom3"
             };
 
@@ -152,9 +122,8 @@ namespace AvaloniaDemo.ViewModels
             var leftPane = new LayoutDock
             {
                 Id = "LeftPane",
-                Dock = "Left",
-                Width = double.NaN,
-                Height = double.NaN,
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
                 Title = "LeftPane",
                 CurrentView = null,
                 Views = CreateList<IView>
@@ -162,9 +131,7 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         Id = "LeftPaneTop",
-                        Dock = "Top",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = "LeftPaneTop",
                         CurrentView = leftTopTool1,
                         Views = CreateList<IView>
@@ -177,15 +144,12 @@ namespace AvaloniaDemo.ViewModels
                     new SplitterDock()
                     {
                         Id = "LeftPaneTopSplitter",
-                        Dock = "Top",
                         Title = "LeftPaneTopSplitter"
                     },
                     new ToolDock
                     {
                         Id = "LeftPaneBottom",
-                        Dock = "Bottom",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = "LeftPaneBottom",
                         CurrentView = leftBottomTool1,
                         Views = CreateList<IView>
@@ -203,9 +167,8 @@ namespace AvaloniaDemo.ViewModels
             var rightPane = new LayoutDock
             {
                 Id = "RightPane",
-                Dock = "Right",
-                Width = double.NaN,
-                Height = double.NaN,
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
                 Title = "RightPane",
                 CurrentView = null,
                 Views = CreateList<IView>
@@ -213,9 +176,7 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         Id = "RightPaneTop",
-                        Dock = "Top",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = "RightPaneTop",
                         CurrentView = rightTopTool1,
                         Views = CreateList<IView>
@@ -228,15 +189,12 @@ namespace AvaloniaDemo.ViewModels
                     new SplitterDock()
                     {
                         Id = "RightPaneTopSplitter",
-                        Dock = "Top",
                         Title = "RightPaneTopSplitter"
                     },
                     new ToolDock
                     {
                         Id = "RightPaneBottom",
-                        Dock = "Bottom",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = "RightPaneBottom",
                         CurrentView = rightBottomTool1,
                         Views = CreateList<IView>
@@ -254,9 +212,7 @@ namespace AvaloniaDemo.ViewModels
             var documentsPane = new DocumentDock
             {
                 Id = "DocumentsPane",
-                Dock = "",
-                Width = double.NaN,
-                Height = double.NaN,
+                Proportion = double.NaN,
                 Title = "DocumentsPane",
                 CurrentView = document1,
                 Views = CreateList<IView>
@@ -272,9 +228,8 @@ namespace AvaloniaDemo.ViewModels
             var mainLayout = new LayoutDock
             {
                 Id = "MainLayout",
-                Dock = "",
-                Width = double.NaN,
-                Height = double.NaN,
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
                 Title = "MainLayout",
                 CurrentView = null,
                 Views = CreateList<IView>
@@ -283,25 +238,21 @@ namespace AvaloniaDemo.ViewModels
                     new SplitterDock()
                     {
                         Id = "LeftSplitter",
-                        Dock = "Left",
                         Title = "LeftSplitter"
                     },
-                    rightPane,
+                    documentsPane,
                     new SplitterDock()
                     {
                         Id = "RightSplitter",
-                        Dock = "Right",
                         Title = "RightSplitter"
                     },
-                    documentsPane
+                    rightPane
                 )
             };
 
             var mainView = new MainView
             {
                 Id = "Main",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Main",
                 CurrentView = mainLayout,
                 Views = CreateList<IView>
@@ -315,8 +266,6 @@ namespace AvaloniaDemo.ViewModels
             var homeView = new HomeView
             {
                 Id = "Home",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Home"
             };
 
@@ -325,8 +274,6 @@ namespace AvaloniaDemo.ViewModels
             var root = new RootDock
             {
                 Id = "Root",
-                Width = double.NaN,
-                Height = double.NaN,
                 Title = "Root",
                 CurrentView = homeView,
                 DefaultView = homeView,

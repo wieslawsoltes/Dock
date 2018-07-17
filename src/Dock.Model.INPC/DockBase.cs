@@ -18,7 +18,6 @@ namespace Dock.Model
         private IView _focusedView;
         private bool _isActive;
         private IList<IDockWindow> _windows;
-        private string _dock;
         private IDockFactory _factory;
 
         /// <summary>
@@ -89,14 +88,6 @@ namespace Dock.Model
         {
             get => _windows;
             set => this.RaiseAndSetIfChanged(ref _windows, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string Dock
-        {
-            get => _dock;
-            set => this.RaiseAndSetIfChanged(ref _dock, value);
         }
 
         /// <inheritdoc/>

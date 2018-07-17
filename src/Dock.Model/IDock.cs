@@ -51,11 +51,6 @@ namespace Dock.Model
         IList<IDockWindow> Windows { get; set; }
 
         /// <summary>
-        /// Gets or sets dock position.
-        /// </summary>
-        string Dock { get; set; }
-
-        /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
         IDockFactory Factory { get; set; }

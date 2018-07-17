@@ -295,19 +295,19 @@ namespace Dock.Model
                 if (dock.Parent is IDock parentDock)
                 {
                     var toRemove = new List<IView>();
-                    var dockSide = dock.Dock;
+                    // HACK: var dockSide = dock.Dock;
                     var dockIndex = parentDock.Views.IndexOf(dock);
 
                     if(dockIndex > 0
                         && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious
-                        && splitterPrevious.Dock == dockSide)
+                        /* HACK: && splitterPrevious.Dock == dockSide*/)
                     {
                         toRemove.Add(splitterPrevious);
                     }
 
                     if(dockIndex < parentDock.Views.Count -1
                         && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext
-                        && splitterNext.Dock == dockSide)
+                        /* HACK: && splitterNext.Dock == dockSide*/)
                     {
                         toRemove.Add(splitterNext);
                     }
@@ -457,6 +457,8 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
+            // HACK:
+            /*
             string originalDock = dock.Dock;
             double originalWidth = dock.Width;
             double originalHeight = dock.Height;
@@ -552,6 +554,9 @@ namespace Dock.Model
             layout.Views.Add((dock.Dock == "Left" || dock.Dock == "Top") ? split : dock);
 
             return layout;
+            */
+            // HACK:
+            return null;
         }
 
         /// <inheritdoc/>
@@ -689,19 +694,9 @@ namespace Dock.Model
                     }
             }
 
-            if (target is IDock targetDock)
-            {
-                targetDock.Dock = "";
-            }
-
-            target.Width = double.NaN;
-            target.Height = double.NaN;
-
             var root = CreateRootDock();
             root.Id = nameof(IRootDock);
             root.Title = nameof(IRootDock);
-            root.Width = double.NaN;
-            root.Height = double.NaN;
             root.CurrentView = target;
             root.DefaultView = target;
             root.Views = CreateList<IView>();

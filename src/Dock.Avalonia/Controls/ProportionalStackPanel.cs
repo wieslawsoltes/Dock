@@ -83,6 +83,7 @@ namespace Dock.Avalonia.Controls
             return double.IsNaN(result) ? 0 : result;
         }
 
+        /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
             if(constraint == Size.Infinity)
@@ -165,6 +166,7 @@ namespace Dock.Avalonia.Controls
 
         }
 
+        /// <inheritdoc/>
         protected override Size ArrangeOverride(Size arrangeSize)
         {
             double left = 0.0;

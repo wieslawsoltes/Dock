@@ -19,7 +19,7 @@
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Controls:ISplitterDock">
-                <ac:ProportionalStackPanelSplitter Background="Red" />
+                <ac:ProportionalStackPanelSplitter Background="Transparent"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
                 <idc:DocumentControl/>

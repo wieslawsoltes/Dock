@@ -34,11 +34,11 @@
             <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}">
                     <!-- FIXME: Binding to attached Proportion property does not work. -->
-                    <ItemsControl.Styles>
+                    <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
                             <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
                         </Style>
-                    </ItemsControl.Styles>
+                    </ItemsControl.Styles>-->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>

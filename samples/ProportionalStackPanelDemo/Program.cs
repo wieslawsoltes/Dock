@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
-using System.Threading;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 
@@ -19,14 +18,9 @@ namespace ProportionalStackPanelDemo
             }
         }
 
-#if NET461
-       [STAThread]
-#endif
+        [STAThread]
         static void Main(string[] args)
         {
-#if !NET461
-            Thread.CurrentThread.TrySetApartmentState(ApartmentState.STA);
-#endif
             try
             {
                 BuildAvaloniaApp().Start<MainWindow>();

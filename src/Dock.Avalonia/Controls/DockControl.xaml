@@ -34,10 +34,9 @@
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}">
-                    <!-- TODO: Remove Dock binding. -->
                     <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
-                            <Setter Property="DockPanel.Dock" Value="{Binding Dock, Mode=OneWay}"/>
+                            <Setter Property="ac:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
                         </Style>
                     </ItemsControl.Styles>-->
                     <ItemsControl.ItemsPanel>

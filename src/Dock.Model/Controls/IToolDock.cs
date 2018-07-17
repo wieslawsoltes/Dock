@@ -8,5 +8,9 @@ namespace Dock.Model.Controls
     /// </summary>
     public interface IToolDock : ITabDock
     {
+        /// <summary>
+        /// Gets or sets splitter proportion.
+        /// </summary>
+        double Proportion { get; set; }
     }
 }

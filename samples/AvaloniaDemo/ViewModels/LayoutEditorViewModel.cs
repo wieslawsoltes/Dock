@@ -27,8 +27,8 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateLayoutDock();
             view.Id = nameof(ILayoutDock);
             view.Title = nameof(ILayoutDock);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
+            view.Proportion = double.NaN;
+            view.Orientation = Orientation.Horizontal;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -37,8 +37,6 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateRootDock();
             view.Id = nameof(IRootDock);
             view.Title = nameof(IRootDock);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -47,8 +45,6 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateSplitterDock();
             view.Id = nameof(ISplitterDock);
             view.Title = nameof(ISplitterDock);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -57,8 +53,7 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateDocumentDock();
             view.Id = nameof(IDocumentDock);
             view.Title = nameof(IDocumentDock);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
+            view.Proportion = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -67,8 +62,7 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateToolDock();
             view.Id = nameof(IToolDock);
             view.Title = nameof(IToolDock);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
+            view.Proportion = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -77,8 +71,6 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateView();
             view.Id = nameof(IView);
             view.Title = nameof(IView);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -87,8 +79,6 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateToolTab();
             view.Id = nameof(IToolTab);
             view.Title = nameof(IToolTab);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -97,8 +87,6 @@ namespace AvaloniaDemo.ViewModels
             var view = _factory.CreateDocumentTab();
             view.Id = nameof(IDocumentTab);
             view.Title = nameof(IDocumentTab);
-            view.Width = double.NaN;
-            view.Height = double.NaN;
             _factory.InsertView(dock, view, index, context);
         }
 
@@ -321,13 +309,20 @@ namespace AvaloniaDemo.ViewModels
         {
             destination.Id = source.Id;
             destination.Title = source.Title;
-            destination.Width = source.Width;
-            destination.Height = source.Height;
+
+            if (source is ILayoutDock sourceLayoutDock && destination is ILayoutDock destinationLayoutDock)
+            {
+                destinationLayoutDock.Proportion = sourceLayoutDock.Proportion;
+                destinationLayoutDock.Orientation = sourceLayoutDock.Orientation;
+            }
+
+            if (source is ITabDock sourceTabDock && destination is ITabDock destinationTabDock)
+            {
+                destinationTabDock.Proportion = sourceTabDock.Proportion;
+            }
 
             if (source is IDock sourceDock && destination is IDock destinationDock)
             {
-                destinationDock.Dock = sourceDock.Dock;
-
                 if (bCopyViews)
                 {
                     destinationDock.Views = sourceDock.Views;

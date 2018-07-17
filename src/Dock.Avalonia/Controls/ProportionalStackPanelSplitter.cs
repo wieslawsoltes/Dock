@@ -21,7 +21,7 @@ namespace Avalonia.Controls
         /// Defines the Proportion attached property.
         /// </summary>
         public static readonly AttachedProperty<double> ProportionProperty =
-            AvaloniaProperty.RegisterAttached<DockPanel, IControl, double>("Proportion", double.NaN);
+            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("Proportion", double.NaN);
 
         /// <summary>
         /// Gets the value of the Proportion attached property on the specified control.

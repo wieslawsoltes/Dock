@@ -297,13 +297,13 @@ namespace Dock.Model
                     var toRemove = new List<IView>();
                     var dockIndex = parentDock.Views.IndexOf(dock);
 
-                    if(dockIndex > 0
+                    if (dockIndex > 0
                         && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious)
                     {
                         toRemove.Add(splitterPrevious);
                     }
 
-                    if(dockIndex < parentDock.Views.Count -1
+                    if (dockIndex < parentDock.Views.Count - 1
                         && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext)
                     {
                         toRemove.Add(splitterNext);

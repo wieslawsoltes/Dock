@@ -85,7 +85,7 @@ namespace Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            if(GetPanel().Orientation == Orientation.Vertical)
+            if (GetPanel().Orientation == Orientation.Vertical)
             {
                 SetTargetProportion(e.Vector.Y);
             }
@@ -136,7 +136,7 @@ namespace Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void SetTargetProportion (double dy)
+        private void SetTargetProportion(double dy)
         {
             var proportion = GetProportion(_element);
 

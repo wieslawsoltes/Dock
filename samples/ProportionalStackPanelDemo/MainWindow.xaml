@@ -3,7 +3,7 @@
 <idcm:MetroWindow x:Class="AvaloniaDemo.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:idcm="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
@@ -11,7 +11,7 @@
         Title="Dock Avalonia Demo" Height="680" Width="1200" >
     <Grid>
         <Grid.Styles>
-            <Style Selector="idc|ProportionalStackPanelSplitter">
+            <Style Selector="ac|ProportionalStackPanelSplitter">
                 <Setter Property="Background" Value="LightGray" />
             </Style>
         </Grid.Styles>
@@ -24,9 +24,9 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.Items>
                 <Rectangle Fill="Green" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <ItemsControl>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -35,9 +35,9 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.Items>
                         <Rectangle Fill="Green" />
-                        <idc:ProportionalStackPanelSplitter />
+                        <ac:ProportionalStackPanelSplitter />
                         <Rectangle Fill="Blue" />
-                        <idc:ProportionalStackPanelSplitter />
+                        <ac:ProportionalStackPanelSplitter />
                         <Rectangle Fill="Red" />
                     </ItemsControl.Items>
                 </ItemsControl>
@@ -45,28 +45,28 @@
         </ItemsControl>
 
         <!--<idcm:ProportionalStackPanel Orientation="Horizontal">
-            <idcm:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
-                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
-                <idc:ProportionalStackPanelSplitter />
+            <idcm:ProportionalStackPanel ac:ProportionalStackPanelSplitter.Proportion="0.5">
+                <Rectangle Fill="Red" ac:ProportionalStackPanelSplitter.Proportion="0.5" />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Green" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
             </idcm:ProportionalStackPanel>
-            <idc:ProportionalStackPanelSplitter />
+            <ac:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
                 <Rectangle Fill="Blue" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Green" />
             </idcm:ProportionalStackPanel>
-            <idc:ProportionalStackPanelSplitter />
+            <ac:ProportionalStackPanelSplitter />
             <idcm:ProportionalStackPanel>
                 <Rectangle Fill="Green" />
-                <idc:ProportionalStackPanelSplitter />
+                <ac:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-                <idc:ProportionalStackPanelSplitter />
-                <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
+                <ac:ProportionalStackPanelSplitter />
+                <Rectangle Fill="Red" ac:ProportionalStackPanelSplitter.Proportion="0.5" />
             </idcm:ProportionalStackPanel>
         </idcm:ProportionalStackPanel>-->
     </Grid>

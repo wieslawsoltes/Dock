@@ -34,7 +34,7 @@
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
                 <ItemsControl Items="{Binding Views}">
-                    <!-- FIXME: Binding to attached Propertion property does not work. -->
+                    <!-- FIXME: Binding to attached Proportion property does not work. -->
                     <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
                             <Setter Property="ac:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>

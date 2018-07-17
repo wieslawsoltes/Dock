@@ -52,7 +52,7 @@
                 <Rectangle Fill="Blue" />
             </idc:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
-            <idcm:ProportionalStackPanel>
+            <idc:ProportionalStackPanel>
                 <Rectangle Fill="Blue" />
                 <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" />
@@ -60,7 +60,7 @@
                 <Rectangle Fill="Green" />
             </idc:ProportionalStackPanel>
             <idc:ProportionalStackPanelSplitter />
-            <idcm:ProportionalStackPanel>
+            <idc:ProportionalStackPanel>
                 <Rectangle Fill="Green" />
                 <idc:ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />

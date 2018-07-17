@@ -22,14 +22,14 @@
                 <ac:ProportionalStackPanelSplitter Background="Red" />
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
-                <idc:DocumentControl ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                <idc:DocumentControl/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
                 <idc:DockToolChrome IsActive="{Binding IsActive}">
                     <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>-->
-                    <idc:ToolControl ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                    <idc:ToolControl/>
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
@@ -42,8 +42,7 @@
                     </ItemsControl.Styles>-->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <idc:ProportionalStackPanel ac:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}" 
-                                                        Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
+                            <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

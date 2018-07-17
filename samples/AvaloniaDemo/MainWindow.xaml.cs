@@ -109,17 +109,13 @@ namespace AvaloniaDemo
                     var editorView = new EditorTool
                     {
                         Id = "Editor",
-                        Width = double.NaN,
-                        Height = double.NaN,
                         Title = "Editor"
                     };
 
                     var layout = new ToolDock
                     {
                         Id = nameof(IToolDock),
-                        Dock = "",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = nameof(IToolDock),
                         CurrentView = editorView,
                         DefaultView = editorView,

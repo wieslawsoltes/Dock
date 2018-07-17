@@ -25,7 +25,7 @@
                 <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:DockToolChrome  IsActive="{Binding IsActive}">
+                <idc:DockToolChrome IsActive="{Binding IsActive}">
                     <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>-->

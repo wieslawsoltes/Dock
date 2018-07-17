@@ -295,19 +295,16 @@ namespace Dock.Model
                 if (dock.Parent is IDock parentDock)
                 {
                     var toRemove = new List<IView>();
-                    // HACK: var dockSide = dock.Dock;
                     var dockIndex = parentDock.Views.IndexOf(dock);
 
                     if(dockIndex > 0
-                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious
-                        /* HACK: && splitterPrevious.Dock == dockSide*/)
+                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious)
                     {
                         toRemove.Add(splitterPrevious);
                     }
 
                     if(dockIndex < parentDock.Views.Count -1
-                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext
-                        /* HACK: && splitterNext.Dock == dockSide*/)
+                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext)
                     {
                         toRemove.Add(splitterNext);
                     }

@@ -7,12 +7,14 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
              xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
+        <converters:OrientationConverter x:Key="OrientationConverter"/>
     </UserControl.Resources>
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
@@ -39,7 +41,7 @@
                     </ItemsControl.Styles>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <idc:ProportionalStackPanel />
+                            <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

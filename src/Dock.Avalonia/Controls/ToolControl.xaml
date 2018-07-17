@@ -39,7 +39,7 @@
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </UserControl.Styles>
-    <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
+    <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}"/>
         </i:Interaction.Behaviors>

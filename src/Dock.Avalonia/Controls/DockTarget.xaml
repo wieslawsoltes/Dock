@@ -4,9 +4,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
     <Style Selector="local|DockTarget">
+        <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*" IsHitTestVisible="False">
+                <Grid Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*">
                     <Grid Background="Red" ColumnSpan="2" Opacity="0" Name="PART_TopIndicator" />
                     <Grid Background="Blue" Grid.Row="1" ColumnSpan="2" Opacity="0" Name="PART_BottomIndicator" />
                     <Grid Background="Green" RowSpan="2" Opacity="0" Name="PART_LeftIndicator" />

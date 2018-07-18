@@ -137,13 +137,13 @@ namespace Dock.Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void SetTargetProportion(double dy)
+        private void SetTargetProportion(double dragDelta)
         {
             var proportion = GetProportion(_element);
 
             var panel = GetPanel();
 
-            var dProportion = dy / panel.Bounds.Height;
+            var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
             proportion += dProportion;
 

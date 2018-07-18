@@ -447,7 +447,7 @@ namespace Dock.Model
                     }
                 case IToolTab sourceToolTab:
                     {
-                        return false;
+                        return true;
                     }
                 case IDocumentTab sourceDocumentTab:
                     {
@@ -457,6 +457,27 @@ namespace Dock.Model
                     {
                         return false;
                     }
+                case IToolDock targetTool:
+                    {
+                        foreach (var tab in sourceTab.Views.OfType<ITab>().ToList())
+                        {
+                            if(bExecute)
+                            {
+
+                            }
+                            DockIntoTab(tab, targetTool, action, operation, bExecute);
+                        }
+                        return false;
+                    }
+                case IDocumentDock targetTab:
+                    {
+                        foreach (var tab in sourceTab.Views.OfType<ITab>())
+                        {
+                            DockIntoTab(tab, targetTab as ITab, action, operation, bExecute);
+                        }
+                        return true;//DockIntoTab(documentTab, targetTab, action, operation, bExecute);
+                    }
+
                 case ITabDock targetTab:
                     {
                         return false;

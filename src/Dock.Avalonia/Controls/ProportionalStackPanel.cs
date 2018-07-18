@@ -43,6 +43,7 @@ namespace Dock.Avalonia.Controls
             }).ToList();
         }
 
+        /// <inheritdoc/>
         protected override void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             base.ChildrenChanged(sender, e);

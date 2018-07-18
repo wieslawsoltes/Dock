@@ -4,14 +4,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
     <Style Selector="local|DockTarget">
+        <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*">
                     <Grid Background="Red" ColumnSpan="2" Opacity="0" Name="PART_TopIndicator" />
                     <Grid Background="Blue" Grid.Row="1" ColumnSpan="2" Opacity="0" Name="PART_BottomIndicator" />
                     <Grid Background="Green" RowSpan="2" Opacity="0" Name="PART_LeftIndicator" />
-                    <Grid Background="Orange" Grid.Column="1" RowSpan="2" Opacity="0" Name="PART_RightIndicator"/>
-                    <Grid Background="Purple" ColumnSpan="2" RowSpan="2" Opacity="0" Name="PART_CenterIndicator"/>
+                    <Grid Background="Orange" Grid.Column="1" RowSpan="2" Opacity="0" Name="PART_RightIndicator" />
+                    <Grid Background="Purple" ColumnSpan="2" RowSpan="2" Opacity="0" Name="PART_CenterIndicator" />
                     <Grid RowSpan="2" ColumnSpan="2">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
                             <Image Name="PART_TopSelector" Source="resm:Dock.Avalonia.Assets.DockAnchorableTop.png?assembly=Dock.Avalonia" Height="40" Width="40" Grid.Column="1" />

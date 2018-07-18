@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -42,6 +43,21 @@ namespace Dock.Avalonia.Controls
             }).ToList();
         }
 
+        protected override void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            base.ChildrenChanged(sender, e);
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    foreach (var item in e.NewItems.OfType<IControl>())
+                    {
+                        ProportionalStackPanelSplitter.SetProportion(item as IControl, double.NaN);
+                    }
+                    break;
+            }
+        }
+
         private void AssignProportions()
         {
             double assignedProportion = 0;
@@ -66,12 +82,37 @@ namespace Dock.Avalonia.Controls
 
             if (unassignedProportions > 0)
             {
+                var toAssign = assignedProportion;
                 foreach (Control element in GetChildren().Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
                 {
                     if (!(element is ProportionalStackPanelSplitter))
                     {
-                        ProportionalStackPanelSplitter.SetProportion(element, (1.0 - assignedProportion) / unassignedProportions);
+                        ProportionalStackPanelSplitter.SetProportion(element, (1.0 - toAssign) / unassignedProportions);
+                        assignedProportion += (1.0 - toAssign) / unassignedProportions;
                     }
+                }
+            }
+
+            if (assignedProportion < 1)
+            {
+                var numChildren = (double)GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)).Count();
+
+                var toAdd = (1.0 - assignedProportion) / numChildren;
+
+                foreach (var child in GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)))
+                {
+                    ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) + toAdd);
+                }
+            }
+            else if (assignedProportion > 1)
+            {
+                var numChildren = (double)GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)).Count();
+
+                var toRemove = (assignedProportion - 1.0) / numChildren;
+
+                foreach (var child in GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)))
+                {
+                    ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) - toRemove);
                 }
             }
         }

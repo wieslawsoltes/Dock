@@ -120,12 +120,12 @@ namespace Dock.Avalonia.Controls
 
                     if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
                     {
-                        this.SetTargetWidth((_element.DesiredSize.Width * dSize.Width) - _element.DesiredSize.Width);
+                        SetTargetWidth((_element.DesiredSize.Width * dSize.Width) - _element.DesiredSize.Width, panel);
                     }
 
                     if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
                     {
-                        this.SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height);
+                        SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height, panel);
                     }
                 }
 
@@ -137,13 +137,13 @@ namespace Dock.Avalonia.Controls
             UpdateTargetElement();
         }
 
-        private void SetTargetProportion(double dy)
+        private void SetTargetProportion(double dragDelta)
         {
             var proportion = GetProportion(_element);
 
             var panel = GetPanel();
 
-            var dProportion = dy / panel.Bounds.Height;
+            var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
             proportion += dProportion;
 
@@ -165,7 +165,7 @@ namespace Dock.Avalonia.Controls
             panel.InvalidateArrange();
         }
 
-        private void SetTargetHeight(double dy)
+        private void SetTargetHeight(double dy, ProportionalStackPanel panel)
         {
             double height = _element.Height + dy;
 
@@ -179,7 +179,6 @@ namespace Dock.Avalonia.Controls
                 height = _element.MaxHeight;
             }
 
-            var panel = GetPanel();
             if (panel.Orientation == Orientation.Vertical && height > panel.DesiredSize.Height - Thickness)
             {
                 height = panel.DesiredSize.Height - Thickness;
@@ -188,7 +187,7 @@ namespace Dock.Avalonia.Controls
             _element.Height = height;
         }
 
-        private void SetTargetWidth(double dx)
+        private void SetTargetWidth(double dx, ProportionalStackPanel panel)
         {
             double width = _element.Width + dx;
 
@@ -202,7 +201,6 @@ namespace Dock.Avalonia.Controls
                 width = _element.MaxWidth;
             }
 
-            var panel = GetPanel();
             if (panel.Orientation == Orientation.Horizontal && width > panel.DesiredSize.Width - Thickness)
             {
                 width = panel.DesiredSize.Width - Thickness;

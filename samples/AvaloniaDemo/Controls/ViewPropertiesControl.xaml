@@ -8,7 +8,6 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-             xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <UserControl.Styles>
@@ -38,19 +37,15 @@
     <TabControl>
         <TabItem Header="View">
             <ScrollViewer>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
                     <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
                     <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock Text="Width:" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox Text="{Binding Width, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBlock Text="Height:" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox Text="{Binding Height, Mode=TwoWay}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBlock Text="Title:" Grid.Row="3" Grid.Column="0"/>
-                    <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
-                    <TextBlock Text="Context:" Grid.Row="4" Grid.Column="0"/>
-                    <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="4" Grid.Column="1"/>
-                    <TextBlock Text="Parent:" Grid.Row="5" Grid.Column="0"/>
-                    <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
+                    <TextBlock Text="Title:" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="Context:" Grid.Row="2" Grid.Column="0"/>
+                    <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
+                    <TextBlock Text="Parent:" Grid.Row="3" Grid.Column="0"/>
+                    <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
                 </Grid>
             </ScrollViewer>
         </TabItem>

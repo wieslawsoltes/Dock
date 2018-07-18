@@ -11,14 +11,13 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockBase : ViewBase, IDock
     {
-        private INavigateAdapter _navigate;
+        private INavigateAdapter _navigateAdapter;
         private IList<IView> _views;
         private IView _currentView;
         private IView _defaultView;
         private IView _focusedView;
         private bool _isActive;
         private IList<IDockWindow> _windows;
-        private string _dock;
         private IDockFactory _factory;
 
         /// <summary>
@@ -26,7 +25,7 @@ namespace Dock.Model
         /// </summary>
         public DockBase()
         {
-            _navigate = new NavigateAdapter(this);
+            _navigateAdapter = new NavigateAdapter(this);
         }
 
         /// <inheritdoc/>
@@ -77,11 +76,11 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoBack => _navigate.CanGoBack;
+        public bool CanGoBack => _navigateAdapter.CanGoBack;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoForward => _navigate.CanGoForward;
+        public bool CanGoForward => _navigateAdapter.CanGoForward;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -89,14 +88,6 @@ namespace Dock.Model
         {
             get => _windows;
             set => this.RaiseAndSetIfChanged(ref _windows, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public string Dock
-        {
-            get => _dock;
-            set => this.RaiseAndSetIfChanged(ref _dock, value);
         }
 
         /// <inheritdoc/>
@@ -110,31 +101,43 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void GoBack()
         {
-            _navigate.GoBack();
+            _navigateAdapter.GoBack();
         }
 
         /// <inheritdoc/>
         public virtual void GoForward()
         {
-            _navigate.GoForward();
+            _navigateAdapter.GoForward();
         }
 
         /// <inheritdoc/>
         public virtual void Navigate(object root)
         {
-            _navigate.Navigate(root, true);
+            _navigateAdapter.Navigate(root, true);
         }
 
         /// <inheritdoc/>
         public virtual void ShowWindows()
         {
-            _navigate.ShowWindows();
+            _navigateAdapter.ShowWindows();
         }
 
         /// <inheritdoc/>
         public virtual void HideWindows()
         {
-            _navigate.HideWindows();
+            _navigateAdapter.HideWindows();
+        }
+
+        /// <inheritdoc/>
+        public virtual void ExitWindows()
+        {
+            _navigateAdapter.ExitWindows();
+        }
+
+        /// <inheritdoc/>
+        public virtual void Close()
+        {
+            _navigateAdapter.Close();
         }
     }
 }

@@ -51,11 +51,6 @@ namespace Dock.Model
         IList<IDockWindow> Windows { get; set; }
 
         /// <summary>
-        /// Gets or sets dock position.
-        /// </summary>
-        string Dock { get; set; }
-
-        /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
         IDockFactory Factory { get; set; }
@@ -85,5 +80,15 @@ namespace Dock.Model
         /// Hide windows.
         /// </summary>
         void HideWindows();
+
+        /// <summary>
+        /// Exit windows.
+        /// </summary>
+        void ExitWindows();
+
+        /// <summary>
+        /// Cloe layout.
+        /// </summary>
+        void Close();
     }
 }

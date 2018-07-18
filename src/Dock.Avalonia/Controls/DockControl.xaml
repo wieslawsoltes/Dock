@@ -7,39 +7,41 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-             xmlns:ac="clr-namespace:Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
+        <converters:OrientationConverter x:Key="OrientationConverter"/>
     </UserControl.Resources>
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
             <DataTemplate DataType="Controls:ISplitterDock">
-                <ac:DockPanelSplitter Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}"/>
+                <idc:ProportionalStackPanelSplitter Background="Transparent"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
-                <idc:DocumentControl Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}"/>
+                <idc:DocumentControl/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:DockToolChrome Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}" IsActive="{Binding IsActive}">
+                <idc:DockToolChrome IsActive="{Binding IsActive}">
                     <!--<i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>-->
-                    <idc:ToolControl />
+                    <idc:ToolControl/>
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
-                <ItemsControl Items="{Binding Views}" Width="{Binding Width, Mode=TwoWay}" Height="{Binding Height, Mode=TwoWay}">
-                    <ItemsControl.Styles>
+                <ItemsControl Items="{Binding Views}">
+                    <!-- FIXME: Binding to attached Proportion property does not work. -->
+                    <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
-                            <Setter Property="DockPanel.Dock" Value="{Binding Dock, Mode=OneWay}"/>
+                            <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
                         </Style>
-                    </ItemsControl.Styles>
+                    </ItemsControl.Styles>-->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <DockPanel LastChildFill="True"/>
+                            <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

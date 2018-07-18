@@ -47,7 +47,7 @@ namespace Dock.Avalonia.Controls
 
         internal DockOperation GetDockOperation(DragEventArgs e)
         {
-            DockOperation result = DockOperation.Window;
+            var result = DockOperation.Window;
 
             if (InvalidateIndicator(_leftSelector, _leftIndicator, e))
             {

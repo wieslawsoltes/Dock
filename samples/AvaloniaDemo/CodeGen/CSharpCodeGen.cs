@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace AvaloniaDemo.CodeGen
 {
@@ -89,8 +90,6 @@ namespace AvaloniaDemo.CodeGen
             Output($"{indent}var {id} = new {root.GetType().Name}()");
             Output($"{indent}{{");
             Output($"{indent}    Id = \"{root.Id}\",");
-            Output($"{indent}    Width = {FormatDouble(root.Width)},");
-            Output($"{indent}    Height = {FormatDouble(root.Height)},");
             Output($"{indent}    Title = \"{root.Title}\",");
             Output($"{indent}}};");
         }
@@ -108,10 +107,19 @@ namespace AvaloniaDemo.CodeGen
             Output($"{indent}var {id} = new {root.GetType().Name}()");
             Output($"{indent}{{");
             Output($"{indent}    Id = \"{root.Id}\",");
-            Output($"{indent}    Width = {FormatDouble(root.Width)},");
-            Output($"{indent}    Height = {FormatDouble(root.Height)},");
             Output($"{indent}    Title = \"{root.Title}\",");
-            Output($"{indent}    Dock = \"{root.Dock}\",");
+
+            if (root is ILayoutDock layoutDock)
+            {
+                Output($"{indent}    Proportion = \"{FormatDouble(layoutDock.Proportion)}\",");
+                Output($"{indent}    Orientation = \"{layoutDock.Orientation}\",");
+            }
+
+            if (root is ITabDock tabDock)
+            {
+                Output($"{indent}    Proportion = \"{FormatDouble(tabDock.Proportion)}\",");
+            }
+
             Output($"{indent}}};");
 
             if (root.Views != null)

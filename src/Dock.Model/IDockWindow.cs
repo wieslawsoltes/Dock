@@ -64,6 +64,16 @@ namespace Dock.Model
         IDockHost Host { get; set; }
 
         /// <summary>
+        /// Loads window properties.
+        /// </summary>
+        void Load();
+
+        /// <summary>
+        /// Saves window properties.
+        /// </summary>
+        void Save();
+
+        /// <summary>
         /// Presents window.
         /// </summary>
         /// <param name="isDialog">The value that indicates whether window is dialog.</param>
@@ -73,5 +83,10 @@ namespace Dock.Model
         /// Destroys window.
         /// </summary>
         void Destroy();
+
+        /// <summary>
+        /// Exits window.
+        /// </summary>
+        void Exit();
     }
 }

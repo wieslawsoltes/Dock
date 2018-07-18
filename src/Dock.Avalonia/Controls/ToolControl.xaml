@@ -35,14 +35,11 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent" />
         </Style>
-        <Style Selector="TabStrip:singleitem">
-            <Setter Property="IsVisible" Value="False" />
-        </Style>
         <Style Selector="Grid.grip:floating">
             <Setter Property="IsVisible" Value="False" />
         </Style>
     </UserControl.Styles>
-    <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent" DockPanel.Dock="{Binding Dock, Mode=OneWay}">
+    <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}"/>
         </i:Interaction.Behaviors>
@@ -81,9 +78,6 @@
                 </Style>
                 <Style Selector="TabStripItem:selected:pointerover">
                     <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
-                </Style>
-                <Style Selector="TabStrip:singleitem">
-                    <Setter Property="IsVisible" Value="False" />
                 </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>

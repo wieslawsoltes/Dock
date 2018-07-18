@@ -10,6 +10,9 @@
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
+     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -38,5 +41,8 @@
   </PropertyGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

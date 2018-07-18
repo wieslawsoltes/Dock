@@ -93,7 +93,7 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public void Enter(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
-            DockOperation operation = DockOperation.Fill;
+            var operation = DockOperation.Fill;
             bool isView = sourceContext is IView view;
 
             if (Validate(sender, e, sourceContext, targetContext, operation) == false)
@@ -123,7 +123,7 @@ namespace Dock.Avalonia
         public void Over(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
             bool isView = sourceContext is IView view;
-            DockOperation operation = DockOperation.Fill;
+            var operation = DockOperation.Fill;
 
             if (_adornerHelper.Adorner is DockTarget target)
             {
@@ -148,7 +148,7 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public void Drop(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
-            DockOperation operation = DockOperation.Fill;
+            var operation = DockOperation.Fill;
             bool isView = sourceContext is IView view;
 
             if (_adornerHelper.Adorner is DockTarget target)

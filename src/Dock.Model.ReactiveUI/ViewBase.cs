@@ -14,8 +14,6 @@ namespace Dock.Model
         private string _id;
         private string _title;
         private object _context;
-        private double _width;
-        private double _height;
         private IView _parent;
 
         /// <inheritdoc/>
@@ -40,22 +38,6 @@ namespace Dock.Model
         {
             get => _context;
             set => this.RaiseAndSetIfChanged(ref _context, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = true, EmitDefaultValue = true)]
-        public double Width
-        {
-            get => _width;
-            set => this.RaiseAndSetIfChanged(ref _width, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = true, EmitDefaultValue = true)]
-        public double Height
-        {
-            get => _height;
-            set => this.RaiseAndSetIfChanged(ref _height, value);
         }
 
         /// <inheritdoc/>

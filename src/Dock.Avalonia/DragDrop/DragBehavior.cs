@@ -154,7 +154,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                Point point = e.GetPosition(AssociatedObject);
+                var point = e.GetPosition(AssociatedObject);
                 Vector diff = _dragStartPoint - point;
                 bool min = (Math.Abs(diff.X) > MinimumHorizontalDragDistance || Math.Abs(diff.Y) > MinimumVerticalDragDistance);
                 if (_pointerPressed == true && _doDragDrop == false && min == true)

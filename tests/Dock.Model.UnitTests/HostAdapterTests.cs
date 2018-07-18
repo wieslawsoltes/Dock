@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Dock.Model.UnitTests
 {
-    public class NavigateAdapterTests
+    public class HostAdapterTests
     {
         [Fact]
-        public void NavigateAdapter_Ctor()
+        public void HostAdapter_Ctor()
         {
-            var dock = new TestDock();
-            var actual = new NavigateAdapter(dock);
+            var window = new TestWindow();
+            var actual = new HostAdapter(window);
             Assert.NotNull(actual);
         }
     }

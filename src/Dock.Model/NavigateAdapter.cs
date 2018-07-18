@@ -12,7 +12,7 @@ namespace Dock.Model
         {
             return e.SelectMany(c =>
             {
-                IEnumerable<T> r = f(c);
+                var r = f(c);
                 if (r == null)
                     return Enumerable.Empty<T>();
                 else
@@ -99,7 +99,7 @@ namespace Dock.Model
         {
             if (_dock.CurrentView is IDock currentViewWindows)
             {
-                currentViewWindows.HideWindows();
+                currentViewWindows.Close();
                 _dock.CurrentView = null;
             }
         }
@@ -128,7 +128,7 @@ namespace Dock.Model
         {
             if (_dock.CurrentView is IDock currentViewWindows)
             {
-                currentViewWindows.HideWindows();
+                currentViewWindows.Close();
             }
 
             if (view != null && _dock.CurrentView != view)
@@ -196,8 +196,32 @@ namespace Dock.Model
             {
                 foreach (var window in _dock.Windows)
                 {
+                    window.Save();
                     window.Destroy();
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void ExitWindows()
+        {
+            if (_dock.Windows != null)
+            {
+                foreach (var window in _dock.Windows)
+                {
+                    window.Save();
+                    window.Exit();
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Close()
+        {
+            _dock.ExitWindows();
+            if (_dock.CurrentView is IDock currentViewWindows)
+            {
+                currentViewWindows.ExitWindows();
             }
         }
     }

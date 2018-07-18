@@ -9,6 +9,11 @@ namespace Dock.Model
     public interface IDockHost
     {
         /// <summary>
+        /// Gets or sets dock window.
+        /// </summary>
+        IDockWindow Window { get; set; }
+
+        /// <summary>
         /// Presents host.
         /// </summary>
         /// <param name="isDialog">The value that indicates whether window is dialog.</param>

@@ -9,8 +9,6 @@ namespace Dock.Model.UnitTests
         public string Id { get; set; }
         public string Title { get; set; }
         public object Context { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
         public IView Parent { get; set; }
         public IList<IView> Views { get; set; }
         public IView CurrentView { get; set; }
@@ -20,7 +18,6 @@ namespace Dock.Model.UnitTests
         public bool CanGoBack => false;
         public bool CanGoForward => false;
         public IList<IDockWindow> Windows { get; set; }
-        public string Dock { get; set; }
         public IDockFactory Factory { get; set; }
 
         public void GoBack()
@@ -44,6 +41,16 @@ namespace Dock.Model.UnitTests
         }
 
         public void HideWindows()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ExitWindows()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Close()
         {
             throw new System.NotImplementedException();
         }

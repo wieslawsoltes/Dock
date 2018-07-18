@@ -24,16 +24,6 @@ namespace Dock.Model
         object Context { get; set; }
 
         /// <summary>
-        /// Gets or sets view width.
-        /// </summary>
-        double Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets view height.
-        /// </summary>
-        double Height { get; set; }
-
-        /// <summary>
         /// Gets or sets view parent.
         /// </summary>
         /// <remarks>If parrent is null than view is root.</remarks>

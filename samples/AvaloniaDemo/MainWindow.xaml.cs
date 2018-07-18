@@ -21,17 +21,24 @@ namespace AvaloniaDemo
             this.InitializeComponent();
             this.AttachDevTools();
 
+            this.Closing += (sender, e) =>
+            {
+                if (this.DataContext is MainWindowViewModel vm)
+                {
+                    if (vm.Layout is IDock dock)
+                    {
+                        dock.Close();
+                    }
+                };
+            };
+
             this.FindControl<MenuItem>("FileNew").Click += (sender, e) =>
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
                     if (vm.Layout is IDock root)
                     {
-                        root.HideWindows();
-                        if (root.CurrentView is IDock dock)
-                        {
-                            dock.HideWindows();
-                        }
+                        root.Close();
                     }
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
@@ -52,11 +59,7 @@ namespace AvaloniaDemo
                         IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
                         {
-                            root.HideWindows();
-                            if (root.CurrentView is IDock dock)
-                            {
-                                dock.HideWindows();
-                            }
+                            root.Close();
                         }
                         vm.Layout = layout;
                         vm.Factory.InitLayout(vm.Layout, vm);
@@ -106,17 +109,13 @@ namespace AvaloniaDemo
                     var editorView = new EditorTool
                     {
                         Id = "Editor",
-                        Width = double.NaN,
-                        Height = double.NaN,
                         Title = "Editor"
                     };
 
                     var layout = new ToolDock
                     {
                         Id = nameof(IToolDock),
-                        Dock = "",
-                        Width = double.NaN,
-                        Height = double.NaN,
+                        Proportion = double.NaN,
                         Title = nameof(IToolDock),
                         CurrentView = editorView,
                         DefaultView = editorView,

@@ -17,8 +17,6 @@ namespace AvaloniaDemo.ViewModels
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            // Documents
-
             var document1 = new Document1
             {
                 Id = "Document1",
@@ -36,8 +34,6 @@ namespace AvaloniaDemo.ViewModels
                 Id = "Document3",
                 Title = "Document3"
             };
-
-            // Left / Top
 
             var leftTopTool1 = new LeftTopTool1
             {
@@ -57,8 +53,6 @@ namespace AvaloniaDemo.ViewModels
                 Title = "LeftTop3"
             };
 
-            // Left / Bottom
-
             var leftBottomTool1 = new LeftBottomTool1
             {
                 Id = "LeftBottom1",
@@ -76,8 +70,6 @@ namespace AvaloniaDemo.ViewModels
                 Id = "LeftBottom3",
                 Title = "LeftBottom3"
             };
-
-            // Right / Top
 
             var rightTopTool1 = new RightTopTool1
             {
@@ -97,8 +89,6 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightTop3"
             };
 
-            // Right / Bottom
-
             var rightBottomTool1 = new RightBottomTool1
             {
                 Id = "RightBottom1",
@@ -117,114 +107,6 @@ namespace AvaloniaDemo.ViewModels
                 Title = "RightBottom3"
             };
 
-            // Left Pane
-
-            var leftPane = new LayoutDock
-            {
-                Id = "LeftPane",
-                Title = "LeftPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                CurrentView = null,
-                Views = CreateList<IView>
-                (
-                    new ToolDock
-                    {
-                        Id = "LeftPaneTop",
-                        Title = "LeftPaneTop",
-                        Proportion = double.NaN,
-                        CurrentView = leftTopTool1,
-                        Views = CreateList<IView>
-                        (
-                            leftTopTool1,
-                            leftTopTool2,
-                            leftTopTool3
-                        )
-                    },
-                    new SplitterDock()
-                    {
-                        Id = "LeftPaneTopSplitter",
-                        Title = "LeftPaneTopSplitter"
-                    },
-                    new ToolDock
-                    {
-                        Id = "LeftPaneBottom",
-                        Title = "LeftPaneBottom",
-                        Proportion = double.NaN,
-                        CurrentView = leftBottomTool1,
-                        Views = CreateList<IView>
-                        (
-                            leftBottomTool1,
-                            leftBottomTool2,
-                            leftBottomTool3
-                        )
-                    }
-                )
-            };
-
-            // Right Pane
-
-            var rightPane = new LayoutDock
-            {
-                Id = "RightPane",
-                Title = "RightPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                CurrentView = null,
-                Views = CreateList<IView>
-                (
-                    new ToolDock
-                    {
-                        Id = "RightPaneTop",
-                        Title = "RightPaneTop",
-                        Proportion = double.NaN,
-                        CurrentView = rightTopTool1,
-                        Views = CreateList<IView>
-                        (
-                            rightTopTool1,
-                            rightTopTool2,
-                            rightTopTool3
-                        )
-                    },
-                    new SplitterDock()
-                    {
-                        Id = "RightPaneTopSplitter",
-                        Title = "RightPaneTopSplitter"
-                    },
-                    new ToolDock
-                    {
-                        Id = "RightPaneBottom",
-                        Title = "RightPaneBottom",
-                        Proportion = double.NaN,
-                        CurrentView = rightBottomTool1,
-                        Views = CreateList<IView>
-                        (
-                            rightBottomTool1,
-                            rightBottomTool2,
-                            rightBottomTool3
-                        )
-                    }
-                )
-            };
-
-            // Documents
-
-            var documentsPane = new DocumentDock
-            {
-                Id = "DocumentsPane",
-                Title = "DocumentsPane",
-                Proportion = double.NaN,
-                CurrentView = document1,
-                Views = CreateList<IView>
-                (
-                    document1,
-                    document2,
-                    document3
-                )
-            };
-
-            // Main
-
             var mainLayout = new LayoutDock
             {
                 Id = "MainLayout",
@@ -234,19 +116,113 @@ namespace AvaloniaDemo.ViewModels
                 CurrentView = null,
                 Views = CreateList<IView>
                 (
-                    leftPane,
+                    new LayoutDock
+                    {
+                        Id = "LeftPane",
+                        Title = "LeftPane",
+                        Proportion = double.NaN,
+                        Orientation = Orientation.Vertical,
+                        CurrentView = null,
+                        Views = CreateList<IView>
+                        (
+                            new ToolDock
+                            {
+                                Id = "LeftPaneTop",
+                                Title = "LeftPaneTop",
+                                Proportion = double.NaN,
+                                CurrentView = leftTopTool1,
+                                Views = CreateList<IView>
+                                (
+                                    leftTopTool1,
+                                    leftTopTool2,
+                                    leftTopTool3
+                                )
+                            },
+                            new SplitterDock()
+                            {
+                                Id = "LeftPaneTopSplitter",
+                                Title = "LeftPaneTopSplitter"
+                            },
+                            new ToolDock
+                            {
+                                Id = "LeftPaneBottom",
+                                Title = "LeftPaneBottom",
+                                Proportion = double.NaN,
+                                CurrentView = leftBottomTool1,
+                                Views = CreateList<IView>
+                                (
+                                    leftBottomTool1,
+                                    leftBottomTool2,
+                                    leftBottomTool3
+                                )
+                            }
+                        )
+                    },
                     new SplitterDock()
                     {
                         Id = "LeftSplitter",
                         Title = "LeftSplitter"
                     },
-                    documentsPane,
+                    new DocumentDock
+                    {
+                        Id = "DocumentsPane",
+                        Title = "DocumentsPane",
+                        Proportion = double.NaN,
+                        CurrentView = document1,
+                        Views = CreateList<IView>
+                        (
+                            document1,
+                            document2,
+                            document3
+                        )
+                    },
                     new SplitterDock()
                     {
                         Id = "RightSplitter",
                         Title = "RightSplitter"
                     },
-                    rightPane
+                    new LayoutDock
+                    {
+                        Id = "RightPane",
+                        Title = "RightPane",
+                        Proportion = double.NaN,
+                        Orientation = Orientation.Vertical,
+                        CurrentView = null,
+                        Views = CreateList<IView>
+                        (
+                            new ToolDock
+                            {
+                                Id = "RightPaneTop",
+                                Title = "RightPaneTop",
+                                Proportion = double.NaN,
+                                CurrentView = rightTopTool1,
+                                Views = CreateList<IView>
+                                (
+                                    rightTopTool1,
+                                    rightTopTool2,
+                                    rightTopTool3
+                                )
+                            },
+                            new SplitterDock()
+                            {
+                                Id = "RightPaneTopSplitter",
+                                Title = "RightPaneTopSplitter"
+                            },
+                            new ToolDock
+                            {
+                                Id = "RightPaneBottom",
+                                Title = "RightPaneBottom",
+                                Proportion = double.NaN,
+                                CurrentView = rightBottomTool1,
+                                Views = CreateList<IView>
+                                (
+                                    rightBottomTool1,
+                                    rightBottomTool2,
+                                    rightBottomTool3
+                                )
+                            }
+                        )
+                    }
                 )
             };
 
@@ -258,15 +234,11 @@ namespace AvaloniaDemo.ViewModels
                 Views = CreateList<IView>(mainLayout)
             };
 
-            // Home
-
             var homeView = new HomeView
             {
                 Id = "Home",
                 Title = "Home"
             };
-
-            // Root
 
             var root = new RootDock
             {

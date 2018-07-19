@@ -27,10 +27,7 @@ namespace AvaloniaDemo.ViewModels
                 Title = nameof(IRootDock),
                 CurrentView = view,
                 DefaultView = view,
-                Views = CreateList<IView>
-                (
-                    view
-                )
+                Views = CreateList<IView>(view)
             };
         }
 

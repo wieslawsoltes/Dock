@@ -255,10 +255,7 @@ namespace AvaloniaDemo.ViewModels
                 Id = "Main",
                 Title = "Main",
                 CurrentView = mainLayout,
-                Views = CreateList<IView>
-                (
-                   mainLayout
-                )
+                Views = CreateList<IView>(mainLayout)
             };
 
             // Home

@@ -102,7 +102,7 @@
                             <TextBlock Text="{Binding Title}" />
                             <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />
                         </StackPanel>
-                        <Button Height="14" Width="14" Command="{Binding Close}" Background="Transparent">
+                        <Button Height="14" Width="14" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding}" Background="Transparent">
                             <Button.Styles>
                                 <Style Selector="Button">
                                     <Setter Property="BorderThickness" Value="0"/>

@@ -459,11 +459,37 @@ namespace Dock.Model
                     }
                 case ITabDock targetTab:
                     {
-                        if(bExecute)
+                        if (bExecute)
                         {
-                            foreach (var tab in sourceTab.Views.OfType<ITab>().ToList())
+                            switch (operation)
                             {
-                                DockIntoTab(tab, targetTab, action, operation, bExecute);
+                                case DockOperation.Fill:
+                                    foreach (var tab in sourceTab.Views.OfType<ITab>().ToList())
+                                    {
+                                        DockIntoTab(tab, targetTab, action, operation, bExecute);
+                                    }
+                                    break;
+
+                                case DockOperation.Window:
+                                    throw new NotSupportedException();
+
+                                default: // when we are splitting.
+                                    var toMove = sourceTab.Views.OfType<ITab>().ToList();
+
+                                    if(toMove.Count == 1)
+                                    {
+                                        DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                    }
+                                    else
+                                    {
+                                        DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+
+                                        foreach(var tab in toMove.Skip(1))
+                                        {
+                                            DockIntoTab(tab, toMove.First(), action, DockOperation.Fill, bExecute);
+                                        }
+                                    }
+                                    break;
                             }
                         }
                         return true;

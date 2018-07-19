@@ -316,7 +316,7 @@ namespace Dock.Model
 
                 if (dock is IRootDock rootDock && rootDock.Window != null)
                 {
-                    rootDock.Window.Exit();
+                    RemoveWindow(rootDock.Window);
                 }
                 else
                 {

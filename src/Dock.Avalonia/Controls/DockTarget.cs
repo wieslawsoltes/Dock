@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Dock.Model;
-using System.Reactive.Linq;
 
 namespace Dock.Avalonia.Controls
 {
@@ -26,6 +23,11 @@ namespace Dock.Avalonia.Controls
         private Control _leftSelector;
         private Control _rightSelector;
         private Control _centerSelector;
+
+        static DockTarget()
+        {
+            IsHitTestVisibleProperty.OverrideDefaultValue(typeof(DockTarget), false);
+        }
 
         /// <inheritdoc/>
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)

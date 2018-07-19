@@ -111,13 +111,13 @@ namespace AvaloniaDemo.CodeGen
 
             if (root is ILayoutDock layoutDock)
             {
-                Output($"{indent}    Proportion = \"{FormatDouble(layoutDock.Proportion)}\",");
-                Output($"{indent}    Orientation = \"{layoutDock.Orientation}\",");
+                Output($"{indent}    Proportion = {FormatDouble(layoutDock.Proportion)},");
+                Output($"{indent}    Orientation = Orientation.{layoutDock.Orientation},");
             }
 
             if (root is ITabDock tabDock)
             {
-                Output($"{indent}    Proportion = \"{FormatDouble(tabDock.Proportion)}\",");
+                Output($"{indent}    Proportion = {FormatDouble(tabDock.Proportion)},");
             }
 
             Output($"{indent}}};");

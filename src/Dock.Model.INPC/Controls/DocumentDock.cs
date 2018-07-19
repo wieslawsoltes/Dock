@@ -7,6 +7,7 @@ namespace Dock.Model.Controls
     /// <summary>
     /// Document dock.
     /// </summary>
+    [DataContract(IsReference = true)]
     public class DocumentDock : DockBase, IDocumentDock
     {
         private double _proportion;

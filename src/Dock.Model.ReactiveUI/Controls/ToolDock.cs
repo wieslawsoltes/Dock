@@ -8,6 +8,7 @@ namespace Dock.Model.Controls
     /// <summary>
     /// Tool dock.
     /// </summary>
+    [DataContract(IsReference = true)]
     public class ToolDock : DockBase, IToolDock
     {
         private double _proportion;

@@ -7,6 +7,7 @@ namespace Dock.Model.Controls
     /// <summary>
     /// Layout dock.
     /// </summary>
+    [DataContract(IsReference = true)]
     public class LayoutDock : DockBase, ILayoutDock
     {
         private double _proportion;

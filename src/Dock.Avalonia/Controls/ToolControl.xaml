@@ -69,6 +69,9 @@
                 <Style Selector="TabStripItem:pointerover">
                     <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLight}" />
                 </Style>
+                <Style Selector="TabStrip:singleitem">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
                 <Style Selector="TabStripItem:selected">
                     <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushLight}" />

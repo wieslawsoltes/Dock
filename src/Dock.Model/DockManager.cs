@@ -196,7 +196,11 @@ namespace Dock.Model
                                     }
                                 case DockOperation.Window:
                                     {
-                                        return false;
+                                        if (bExecute)
+                                        {
+                                            return DockIntoWindow(sourceTab, targetTabParent, action, operation, bExecute);
+                                        }
+                                        return true;
                                     }
                             }
                             return false;

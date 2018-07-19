@@ -6,9 +6,9 @@ using Avalonia.Logging.Serilog;
 
 namespace ProportionalStackPanelDemo
 {
-    class Program
+    internal class Program
     {
-        static void Print(Exception ex)
+        private static void Print(Exception ex)
         {
             Console.WriteLine(ex.Message);
             Console.WriteLine(ex.StackTrace);
@@ -19,7 +19,7 @@ namespace ProportionalStackPanelDemo
         }
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {

@@ -9,6 +9,11 @@ namespace Dock.Model
     public interface IDockHost
     {
         /// <summary>
+        /// Gets or sets value that indicates whether host size and position is tracked.
+        /// </summary>
+        bool IsTracked { get; set; }
+
+        /// <summary>
         /// Gets or sets dock window.
         /// </summary>
         IDockWindow Window { get; set; }
@@ -18,11 +23,6 @@ namespace Dock.Model
         /// </summary>
         /// <param name="isDialog">The value that indicates whether window is dialog.</param>
         void Present(bool isDialog);
-
-        /// <summary>
-        /// Destroys host.
-        /// </summary>
-        void Destroy();
 
         /// <summary>
         /// Exits host.

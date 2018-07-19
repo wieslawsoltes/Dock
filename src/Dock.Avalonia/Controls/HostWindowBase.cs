@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Model;
@@ -12,6 +13,9 @@ namespace Dock.Avalonia.Controls
     public abstract class HostWindowBase : MetroWindow, IDockHost
     {
         /// <inheritdoc/>
+        public bool IsTracked { get; set; }
+
+        /// <inheritdoc/>
         public IDockWindow Window { get; set; }
 
         /// <summary>
@@ -21,7 +25,10 @@ namespace Dock.Avalonia.Controls
         {
             PositionChanged += (sender, e) =>
             {
-                if (Window != null)
+#if DEBUG
+                Console.WriteLine($"HostWindowBase: PositionChanged");
+#endif
+                if (Window != null && IsTracked == true)
                 {
                     Window.Save();
                 }
@@ -29,7 +36,10 @@ namespace Dock.Avalonia.Controls
 
             LayoutUpdated += (sender, e) =>
             {
-                if (Window != null)
+#if DEBUG
+                Console.WriteLine($"HostWindowBase: LayoutUpdated");
+#endif
+                if (Window != null && IsTracked == true)
                 {
                     Window.Save();
                 }
@@ -37,7 +47,10 @@ namespace Dock.Avalonia.Controls
 
             Closing += (sender, e) =>
             {
-                if (Window != null)
+#if DEBUG
+                Console.WriteLine($"HostWindowBase: Closing");
+#endif
+                if (Window != null && IsTracked == true)
                 {
                     Window.Save();
 
@@ -69,12 +82,6 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        public void Destroy()
-        {
-            this.Hide();
-        }
-
-        /// <inheritdoc/>
         public void Exit()
         {
             this.Close();
@@ -99,6 +106,9 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetSize(double width, double height)
         {
+#if DEBUG
+            Console.WriteLine($"HostWindowBase: SetSize {width}x{height}");
+#endif
             if (width != double.NaN)
             {
                 this.Width = width;
@@ -115,6 +125,9 @@ namespace Dock.Avalonia.Controls
         {
             width = this.Width;
             height = this.Height;
+#if DEBUG
+            Console.WriteLine($"HostWindowBase: GetSize {width}x{height}");
+#endif
         }
 
         /// <inheritdoc/>

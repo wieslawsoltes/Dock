@@ -40,11 +40,6 @@ namespace Dock.Model.UnitTests
             throw new System.NotImplementedException();
         }
 
-        public void HideWindows()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void ExitWindows()
         {
             throw new System.NotImplementedException();

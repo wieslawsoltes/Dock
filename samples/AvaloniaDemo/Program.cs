@@ -10,9 +10,9 @@ using Dock.Model.Controls;
 
 namespace AvaloniaDemo
 {
-    class Program
+    internal class Program
     {
-        static void Print(Exception ex)
+        private static void Print(Exception ex)
         {
             Console.WriteLine(ex.Message);
             Console.WriteLine(ex.StackTrace);
@@ -23,7 +23,7 @@ namespace AvaloniaDemo
         }
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {

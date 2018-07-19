@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -181,7 +180,7 @@ namespace Dock.Model
         {
             if (window?.Owner is IDock dock)
             {
-                window.Destroy();
+                window.Exit();
                 dock.Windows?.Remove(window);
             }
         }

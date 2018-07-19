@@ -41,11 +41,6 @@ namespace Dock.Model
         void ShowWindows();
 
         /// <summary>
-        /// Implementation of the <see cref="IDock.HideWindows()"/> method.
-        /// </summary>
-        void HideWindows();
-
-        /// <summary>
         /// Implementation of the <see cref="IDock.ExitWindows()"/> method.
         /// </summary>
         void ExitWindows();

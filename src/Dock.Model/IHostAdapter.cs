@@ -9,11 +9,6 @@ namespace Dock.Model
     public interface IHostAdapter
     {
         /// <summary>
-        /// Implementation of the <see cref="IDockWindow.Load()"/> method.
-        /// </summary>
-        void Load();
-
-        /// <summary>
         /// Implementation of the <see cref="IDockWindow.Save()"/> method.
         /// </summary>
         void Save();
@@ -22,11 +17,6 @@ namespace Dock.Model
         /// Implementation of the <see cref="IDockWindow.Present(bool)"/> method.
         /// </summary>
         void Present(bool isDialog);
-
-        /// <summary>
-        /// Implementation of the <see cref="IDockWindow.Destroy()"/> method.
-        /// </summary>
-        void Destroy();
 
         /// <summary>
         /// Implementation of the <see cref="IDockWindow.Exit()"/> method.

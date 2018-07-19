@@ -17,22 +17,12 @@ namespace Dock.Model.UnitTests
         public IDock Layout { get; set; }
         public IDockHost Host { get; set; }
 
-        public void Load()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Save()
         {
             throw new System.NotImplementedException();
         }
 
         public void Present(bool isDialog)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Destroy()
         {
             throw new System.NotImplementedException();
         }

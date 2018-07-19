@@ -32,7 +32,7 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Windows">
-                    <MenuItem x:Name="ViewWindowsHide" Header="_Hide" Command="{Binding Layout.HideWindows}"/>
+                    <MenuItem x:Name="ViewWindowsExit" Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
                     <Separator/>
                     <MenuItem x:Name="ViewWindowsShow" Header="_Show" Command="{Binding Layout.ShowWindows}"/>
                 </MenuItem>

@@ -20,16 +20,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public void Load()
-        {
-            if (_window.Host != null)
-            {
-                _window.Host.SetPosition(_window.X, _window.Y);
-                _window.Host.SetSize(_window.Width, _window.Height);
-            }
-        }
-
-        /// <inheritdoc/>
         public void Save()
         {
             if (_window.Host != null)
@@ -55,21 +45,13 @@ namespace Dock.Model
 
             if (_window.Host != null)
             {
-                Load();
                 _window.Host.Present(isDialog);
+                _window.Host.SetPosition(_window.X, _window.Y);
+                _window.Host.SetSize(_window.Width, _window.Height);
                 _window.Host.SetTitle(_window.Title);
                 _window.Host.SetContext(_window.Context);
                 _window.Host.SetLayout(_window.Layout);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void Destroy()
-        {
-            if (_window.Host != null)
-            {
-                Save();
-                _window.Host.Destroy();
+                _window.Host.IsTracked = true;
             }
         }
 
@@ -79,6 +61,7 @@ namespace Dock.Model
             if (_window.Host != null)
             {
                 Save();
+                _window.Host.IsTracked = false;
                 _window.Host.Exit();
                 _window.Host = null;
             }

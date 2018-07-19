@@ -121,12 +121,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public void Load()
-        {
-            _hostAdapter.Load();
-        }
-
-        /// <inheritdoc/>
         public void Save()
         {
             _hostAdapter.Save();
@@ -136,12 +130,6 @@ namespace Dock.Model
         public void Present(bool isDialog)
         {
             _hostAdapter.Present(isDialog);
-        }
-
-        /// <inheritdoc/>
-        public void Destroy()
-        {
-            _hostAdapter.Destroy();
         }
 
         /// <inheritdoc/>

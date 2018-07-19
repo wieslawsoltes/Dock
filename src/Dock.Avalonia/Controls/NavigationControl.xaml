@@ -11,6 +11,6 @@
         <TextBox x:Name="Id" Text="" Grid.Column="3"/>
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
         <Button Content="ShowWindows" Command="{Binding CurrentView.ShowWindows}" Grid.Column="5"/>
-        <Button Content="HideWindows" Command="{Binding CurrentView.HideWindows}" Grid.Column="6"/>
+        <Button Content="ExitWindows" Command="{Binding CurrentView.ExitWindows}" Grid.Column="6"/>
     </Grid>
 </UserControl>

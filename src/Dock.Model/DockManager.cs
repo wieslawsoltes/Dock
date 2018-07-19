@@ -461,7 +461,7 @@ namespace Dock.Model
                     {
                         if(bExecute)
                         {
-                            foreach (var tab in sourceTab.Views.OfType<ITab>())
+                            foreach (var tab in sourceTab.Views.OfType<ITab>().ToList())
                             {
                                 DockIntoTab(tab, targetTab, action, operation, bExecute);
                             }

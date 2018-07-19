@@ -468,28 +468,31 @@ namespace Dock.Model
                                     {
                                         DockIntoTab(tab, targetTab, action, operation, bExecute);
                                     }
-                                    break;
-
+                                    return true;
                                 case DockOperation.Window:
-                                    throw new NotSupportedException();
-
-                                default: // when we are splitting.
-                                    var toMove = sourceTab.Views.OfType<ITab>().ToList();
-
-                                    if(toMove.Count == 1)
                                     {
-                                        DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                        return DockIntoWindow(sourceTab, targetView, action, operation, bExecute);
                                     }
-                                    else
+                                default:
                                     {
-                                        DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                        // when we are splitting.
+                                        var toMove = sourceTab.Views.OfType<ITab>().ToList();
 
-                                        foreach(var tab in toMove.Skip(1))
+                                        if (toMove.Count == 1)
                                         {
-                                            DockIntoTab(tab, toMove.First(), action, DockOperation.Fill, bExecute);
+                                            DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                        }
+                                        else
+                                        {
+                                            DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+
+                                            foreach (var tab in toMove.Skip(1))
+                                            {
+                                                DockIntoTab(tab, toMove.First(), action, DockOperation.Fill, bExecute);
+                                            }
                                         }
                                     }
-                                    break;
+                                    return true;
                             }
                         }
                         return true;

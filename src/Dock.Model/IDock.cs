@@ -31,7 +31,7 @@ namespace Dock.Model
         IView FocusedView { get; set; }
 
         /// <summary>
-        /// Gets or sets if the Host is the currently active host.
+        /// Gets or sets if the view is the currently active.
         /// </summary>
         bool IsActive { get; set; }
 

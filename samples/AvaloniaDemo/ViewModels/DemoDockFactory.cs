@@ -122,17 +122,17 @@ namespace AvaloniaDemo.ViewModels
             var leftPane = new LayoutDock
             {
                 Id = "LeftPane",
+                Title = "LeftPane",
                 Proportion = double.NaN,
                 Orientation = Orientation.Vertical,
-                Title = "LeftPane",
                 CurrentView = null,
                 Views = CreateList<IView>
                 (
                     new ToolDock
                     {
                         Id = "LeftPaneTop",
-                        Proportion = double.NaN,
                         Title = "LeftPaneTop",
+                        Proportion = double.NaN,
                         CurrentView = leftTopTool1,
                         Views = CreateList<IView>
                         (
@@ -149,8 +149,8 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         Id = "LeftPaneBottom",
-                        Proportion = double.NaN,
                         Title = "LeftPaneBottom",
+                        Proportion = double.NaN,
                         CurrentView = leftBottomTool1,
                         Views = CreateList<IView>
                         (
@@ -167,17 +167,17 @@ namespace AvaloniaDemo.ViewModels
             var rightPane = new LayoutDock
             {
                 Id = "RightPane",
+                Title = "RightPane",
                 Proportion = double.NaN,
                 Orientation = Orientation.Vertical,
-                Title = "RightPane",
                 CurrentView = null,
                 Views = CreateList<IView>
                 (
                     new ToolDock
                     {
                         Id = "RightPaneTop",
-                        Proportion = double.NaN,
                         Title = "RightPaneTop",
+                        Proportion = double.NaN,
                         CurrentView = rightTopTool1,
                         Views = CreateList<IView>
                         (
@@ -194,8 +194,8 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         Id = "RightPaneBottom",
-                        Proportion = double.NaN,
                         Title = "RightPaneBottom",
+                        Proportion = double.NaN,
                         CurrentView = rightBottomTool1,
                         Views = CreateList<IView>
                         (
@@ -212,8 +212,8 @@ namespace AvaloniaDemo.ViewModels
             var documentsPane = new DocumentDock
             {
                 Id = "DocumentsPane",
-                Proportion = double.NaN,
                 Title = "DocumentsPane",
+                Proportion = double.NaN,
                 CurrentView = document1,
                 Views = CreateList<IView>
                 (
@@ -228,9 +228,9 @@ namespace AvaloniaDemo.ViewModels
             var mainLayout = new LayoutDock
             {
                 Id = "MainLayout",
+                Title = "MainLayout",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
-                Title = "MainLayout",
                 CurrentView = null,
                 Views = CreateList<IView>
                 (
@@ -255,10 +255,7 @@ namespace AvaloniaDemo.ViewModels
                 Id = "Main",
                 Title = "Main",
                 CurrentView = mainLayout,
-                Views = CreateList<IView>
-                (
-                   mainLayout
-                )
+                Views = CreateList<IView>(mainLayout)
             };
 
             // Home

@@ -46,5 +46,11 @@ namespace Dock.Model
             get => _parent;
             set => this.RaiseAndSetIfChanged(ref _parent, value);
         }
+
+        /// <inheritdoc/>
+        public virtual bool OnClose()
+        {
+            return true;
+        }
     }
 }

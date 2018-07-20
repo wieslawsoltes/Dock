@@ -55,7 +55,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void OnSelected ()
+        public virtual void OnSelected()
         {
         }
     }

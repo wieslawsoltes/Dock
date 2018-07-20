@@ -5,7 +5,7 @@ using Dock.Model;
 
 namespace AvaloniaDemo.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : ReactiveObject, IMainWindowViewModel
     {
         private IDockFactory _factory;
         private IView _layout;

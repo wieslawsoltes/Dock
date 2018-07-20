@@ -23,7 +23,7 @@ namespace AvaloniaDemo
 
             this.Closing += (sender, e) =>
             {
-                if (this.DataContext is MainWindowViewModel vm)
+                if (this.DataContext is IMainWindowViewModel vm)
                 {
                     if (vm.Layout is IDock dock)
                     {
@@ -34,7 +34,7 @@ namespace AvaloniaDemo
 
             this.FindControl<MenuItem>("FileNew").Click += (sender, e) =>
             {
-                if (this.DataContext is MainWindowViewModel vm)
+                if (this.DataContext is IMainWindowViewModel vm)
                 {
                     if (vm.Layout is IDock root)
                     {
@@ -54,7 +54,7 @@ namespace AvaloniaDemo
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is MainWindowViewModel vm)
+                    if (this.DataContext is IMainWindowViewModel vm)
                     {
                         IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
@@ -77,7 +77,7 @@ namespace AvaloniaDemo
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is MainWindowViewModel vm)
+                    if (this.DataContext is IMainWindowViewModel vm)
                     {
                         ModelSerializer.Save(result, vm.Layout);
                     }
@@ -94,7 +94,7 @@ namespace AvaloniaDemo
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is MainWindowViewModel vm)
+                    if (this.DataContext is IMainWindowViewModel vm)
                     {
                         ICodeGen codeGeb = new CSharpCodeGen();
                         codeGeb.Generate(vm.Layout, result);
@@ -104,7 +104,7 @@ namespace AvaloniaDemo
 
             this.FindControl<MenuItem>("ViewEditor").Click += (sender, e) =>
             {
-                if (this.DataContext is MainWindowViewModel vm)
+                if (this.DataContext is IMainWindowViewModel vm)
                 {
                     var editorView = new EditorTool
                     {

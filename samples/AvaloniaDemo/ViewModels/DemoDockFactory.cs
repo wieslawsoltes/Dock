@@ -1,6 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
@@ -11,10 +9,8 @@ using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels
 {
-    /// <inheritdoc/>
     public class DemoDockFactory : DockFactory
     {
-        /// <inheritdoc/>
         public override IDock CreateLayout()
         {
             var document1 = new Document1
@@ -252,12 +248,10 @@ namespace AvaloniaDemo.ViewModels
             return root;
         }
 
-        /// <inheritdoc/>
         public override void InitLayout(IView layout, object context)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                // Defaults
                 [nameof(IRootDock)] = () => context,
                 [nameof(ILayoutDock)] = () => context,
                 [nameof(IDocumentDock)] = () => context,
@@ -266,11 +260,9 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDockWindow)] = () => context,
                 [nameof(IDocumentTab)] = () => context,
                 [nameof(IToolTab)] = () => context,
-                // Documents
                 ["Document1"] = () => context,
                 ["Document2"] = () => context,
                 ["Document3"] = () => context,
-                // Tools
                 ["LeftTop1"] = () => context,
                 ["LeftTop2"] = () => context,
                 ["LeftTop3"] = () => context,
@@ -295,12 +287,9 @@ namespace AvaloniaDemo.ViewModels
                 ["MainLayout"] = () => context,
                 ["LeftSplitter"] = () => context,
                 ["RightSplitter"] = () => context,
-                // Layouts
                 ["MainLayout"] = () => context,
-                // Views
                 ["Home"] = () => context,
                 ["Main"] = () => context,
-                // Editor
                 ["Editor"] = () => new LayoutEditorViewModel()
                 {
                     Factory = this,

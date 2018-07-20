@@ -1,6 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Dock.Model;
+﻿using Dock.Model;
 using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels
@@ -90,55 +88,46 @@ namespace AvaloniaDemo.ViewModels
             _factory.InsertView(dock, view, index, context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddLayout(IDock dock)
         {
             InsertLayout(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddRoot(IDock dock)
         {
             InsertRoot(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddSplitter(IDock dock)
         {
             InsertSplitter(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddDocument(IDock dock)
         {
             InsertDocument(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddTool(IDock dock)
         {
             InsertTool(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddView(IDock dock)
         {
             InsertView(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddToolTab(IDock dock)
         {
             InsertToolTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void AddDocumentTab(IDock dock)
         {
             InsertDocumentTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
         }
 
-        /// <inheritdoc/>
         public virtual void InsertLayoutBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -148,7 +137,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertRootBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -158,7 +146,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertSplitterBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -168,7 +155,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertDocumentBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -178,7 +164,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertToolBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -188,7 +173,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertViewBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -198,7 +182,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertToolTabBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -208,7 +191,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertDocumentTabBefore(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -218,7 +200,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertLayoutAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -228,7 +209,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertRootAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -238,7 +218,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertSplitterAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -248,7 +227,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertDocumentAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -258,7 +236,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertToolAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -268,7 +245,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertViewAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -278,7 +254,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertToolTabAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -288,7 +263,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void InsertDocumentTabAfter(IDock dock)
         {
             if (dock.Parent is IDock parent && parent.Views != null)
@@ -298,13 +272,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <summary>
-        /// Copies properties from view to destination view.
-        /// </summary>
-        /// <param name="source">The source view.</param>
-        /// <param name="destination">The destination view.</param>
-        /// <param name="bCopyViews">The flag indicating whether to copy source views.</param>
-        /// <param name="bCopyWindows">The flag indicating whether to copy source windows.</param>
         private void Copy(IView source, IView destination, bool bCopyViews, bool bCopyWindows)
         {
             destination.Id = source.Id;
@@ -339,7 +306,6 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToLayout(IDock dock)
         {
             var layout = _factory.CreateLayoutDock();
@@ -348,7 +314,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, layout);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToRoot(IDock dock)
         {
             var root = _factory.CreateRootDock();
@@ -357,7 +322,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, root);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToSplitter(IDock dock)
         {
             var splitter = _factory.CreateSplitterDock();
@@ -366,7 +330,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, splitter);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToDocument(IDock dock)
         {
             var document = _factory.CreateDocumentDock();
@@ -375,7 +338,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, document);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToTool(IDock dock)
         {
             var tool = _factory.CreateToolDock();
@@ -384,7 +346,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, tool);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToView(IDock dock)
         {
             var view = _factory.CreateView();
@@ -393,7 +354,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, view);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToToolTab(IDock dock)
         {
             var toolTab = _factory.CreateToolTab();
@@ -402,7 +362,6 @@ namespace AvaloniaDemo.ViewModels
             _factory.Replace(dock, toolTab);
         }
 
-        /// <inheritdoc/>
         public virtual void ConvertToDocumentTab(IDock dock)
         {
             var documentTab = _factory.CreateDocumentTab();

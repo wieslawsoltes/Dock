@@ -1,15 +1,10 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Dock.Model;
 using Dock.Model.Controls;
 
 namespace AvaloniaDemo.CodeGen
 {
-    /// <summary>
-    /// CSharp code generator.
-    /// </summary>
     public class CSharpCodeGen : ICodeGen
     {
         private StringBuilder _sb;
@@ -214,10 +209,8 @@ using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels
 {
-    /// <inheritdoc/>
     public class DemoDockFactory : DockFactory
     {
-        /// <inheritdoc/>
         public override IDock CreateLayout()
         {");
         }
@@ -226,7 +219,6 @@ namespace AvaloniaDemo.ViewModels
         {
             Output(@"        }
 
-        /// <inheritdoc/>
         public override void InitLayout(IView layout, object context)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
@@ -252,7 +244,6 @@ namespace AvaloniaDemo.ViewModels
 }");
         }
 
-        /// <inheritdoc/>
         public void Generate(IView view, string path)
         {
             _sb = new StringBuilder();

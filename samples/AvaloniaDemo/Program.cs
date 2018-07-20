@@ -1,12 +1,12 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
+﻿using System;
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
+//using ReactiveUI;
 
 namespace AvaloniaDemo
 {
@@ -20,6 +20,12 @@ namespace AvaloniaDemo
             {
                 Print(ex.InnerException);
             }
+        }
+
+        private static Program()
+        {
+            ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ObservableCollection<>));
+            //ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));
         }
 
         [STAThread]
@@ -39,7 +45,6 @@ namespace AvaloniaDemo
 
                 BuildAvaloniaApp().Start<MainWindow>(() =>
                 {
-                    // NOTE: Initialize layout after main window was created so child windows can be created.
                     vm.Factory = factory;
                     vm.Layout = layout ?? vm.Factory.CreateLayout();
                     vm.Factory.InitLayout(vm.Layout, vm);

@@ -1,6 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -9,10 +7,8 @@ using Dock.Model.Controls.Editor;
 
 namespace AvaloniaDemo.ViewModels
 {
-    /// <inheritdoc/>
     public class EmptyDockFactory : DockFactory
     {
-        /// <inheritdoc/>
         public override IDock CreateLayout()
         {
             var view = new ViewStub
@@ -31,7 +27,6 @@ namespace AvaloniaDemo.ViewModels
             };
         }
 
-        /// <inheritdoc/>
         public override void InitLayout(IView layout, object context)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>

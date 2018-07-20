@@ -1,9 +1,10 @@
 ﻿using Dock.Model;
 using Dock.Model.Controls;
+using ReactiveUI;
 
-namespace AvaloniaDemo.ViewModels
+namespace AvaloniaDemo.ReactiveUI.ViewModels
 {
-    public class LayoutEditorViewModel : ReactiveObject, ILayoutEditor
+    public class LayoutEditorViewModel : ReactiveObject, ILayoutEditorViewModel
     {
         private IDockFactory _factory;
         private IView _layout;

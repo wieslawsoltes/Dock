@@ -1,7 +1,6 @@
 ﻿using Dock.Model;
-//using ReactiveUI;
 
-namespace AvaloniaDemo.ViewModels
+namespace AvaloniaDemo.INPC.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IMainWindowViewModel
     {

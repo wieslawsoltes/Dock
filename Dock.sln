@@ -12,6 +12,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D
 		config.ps1 = config.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{F8F9350B-0321-4C8A-A0EB-BF5F2283994E}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		circle.yml = circle.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.TXT = LICENSE.TXT
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E58CB250-1197-4D0F-BBC1-F9733B1B48DC}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50-CC9F-4DDC-9524-55D56E63A840}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet.Config = NuGet.Config
@@ -35,9 +54,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B04
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.INPC.csproj", "{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.ReactiveUI.csproj", "{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProportionalStackPanelDemo", "samples\ProportionalStackPanelDemo\ProportionalStackPanelDemo.csproj", "{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.INPC", "src\Dock.Model.INPC\Dock.Model.INPC.csproj", "{5CBD444C-EFA3-47B8-88A0-F5BCD99E171E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI", "src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{3920BA8E-AED3-425C-8F3A-BEC14E30673A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
 EndProject
@@ -47,34 +76,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.UnitTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.INPC", "src\Dock.Model.INPC\Dock.Model.INPC.csproj", "{5CBD444C-EFA3-47B8-88A0-F5BCD99E171E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.INPC.UnitTests", "tests\Dock.Model.INPC.UnitTests\Dock.Model.INPC.UnitTests.csproj", "{C8442732-C248-4F42-8A3A-9E7C46D00F91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI", "src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{3920BA8E-AED3-425C-8F3A-BEC14E30673A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{F8F9350B-0321-4C8A-A0EB-BF5F2283994E}"
-	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
-		appveyor.yml = appveyor.yml
-		circle.yml = circle.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
-	ProjectSection(SolutionItems) = preProject
-		LICENSE.TXT = LICENSE.TXT
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E58CB250-1197-4D0F-BBC1-F9733B1B48DC}"
-	ProjectSection(SolutionItems) = preProject
-		.gitattributes = .gitattributes
-		.gitignore = .gitignore
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProportionalStackPanelDemo", "samples\ProportionalStackPanelDemo\ProportionalStackPanelDemo.csproj", "{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +90,14 @@ Global
 		{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B46A85D-102E-46F5-9B74-F1616E850605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B46A85D-102E-46F5-9B74-F1616E850605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B46A85D-102E-46F5-9B74-F1616E850605}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +142,8 @@ Global
 		{9F77EE50-CC9F-4DDC-9524-55D56E63A840} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 		{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 		{2B7AA608-8B4A-4700-BA51-ADA07363EDEB} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{82E531E5-4AEE-4668-BE7A-4B5F46630FBA} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{4B46A85D-102E-46F5-9B74-F1616E850605} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{2A9959DB-769C-4524-A817-507C554615EA} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}

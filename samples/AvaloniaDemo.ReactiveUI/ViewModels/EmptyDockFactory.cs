@@ -5,7 +5,7 @@ using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
 
-namespace AvaloniaDemo.ViewModels
+namespace AvaloniaDemo.ReactiveUI.ViewModels
 {
     public class EmptyDockFactory : DockFactory
     {

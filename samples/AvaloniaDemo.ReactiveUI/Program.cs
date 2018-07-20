@@ -6,9 +6,9 @@ using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
-//using ReactiveUI;
+using ReactiveUI;
 
-namespace AvaloniaDemo
+namespace AvaloniaDemo.ReactiveUI
 {
     internal class Program
     {
@@ -24,8 +24,7 @@ namespace AvaloniaDemo
 
         static Program()
         {
-            ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ObservableCollection<>));
-            //ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));
+            ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));
         }
 
         [STAThread]

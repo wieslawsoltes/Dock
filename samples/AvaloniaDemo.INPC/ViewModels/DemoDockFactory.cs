@@ -7,7 +7,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.ViewModels
+namespace AvaloniaDemo.INPC.ViewModels
 {
     public class DemoDockFactory : DockFactory
     {

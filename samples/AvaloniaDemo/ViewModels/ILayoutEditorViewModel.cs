@@ -2,8 +2,10 @@
 
 namespace AvaloniaDemo.ViewModels
 {
-    public interface ILayoutEditor
+    public interface ILayoutEditorViewModel
     {
+        IDockFactory Factory { get; set; }
+        IView Layout { get; set; }
         void AddLayout(IDock dock);
         void AddRoot(IDock dock);
         void AddSplitter(IDock dock);

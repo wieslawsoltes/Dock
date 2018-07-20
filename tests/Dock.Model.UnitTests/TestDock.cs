@@ -25,6 +25,11 @@ namespace Dock.Model.UnitTests
             throw new System.NotImplementedException();
         }
 
+        public void OnSelected()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void GoBack()
         {
             throw new System.NotImplementedException();

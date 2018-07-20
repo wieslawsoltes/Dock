@@ -34,5 +34,10 @@ namespace Dock.Model
         /// </summary>
         /// <returns>true to accept the close, and false to cancel the close.</returns>
         bool OnClose();
+
+        /// <summary>
+        /// Called when the view becomes the selected view.
+        /// </summary>
+        void OnSelected();
     }
 }

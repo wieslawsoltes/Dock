@@ -191,6 +191,8 @@ namespace Dock.Model
             if (view.Parent is IDock dock)
             {
                 dock.CurrentView = view;
+
+                view.OnSelected();
             }
         }
 

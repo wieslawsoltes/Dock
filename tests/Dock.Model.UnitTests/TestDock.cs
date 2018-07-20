@@ -20,6 +20,16 @@ namespace Dock.Model.UnitTests
         public IList<IDockWindow> Windows { get; set; }
         public IDockFactory Factory { get; set; }
 
+        public bool OnClose()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnSelected()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void GoBack()
         {
             throw new System.NotImplementedException();

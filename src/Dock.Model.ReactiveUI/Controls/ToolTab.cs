@@ -10,8 +10,5 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class ToolTab : ViewBase, IToolTab, IDocumentTab
     {
-        public virtual void OnClose()
-        {
-        }
     }
 }

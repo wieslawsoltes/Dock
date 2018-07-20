@@ -10,7 +10,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo
+namespace AvaloniaDemo.INPC
 {
     public class MainWindow : HostWindowBase
     {

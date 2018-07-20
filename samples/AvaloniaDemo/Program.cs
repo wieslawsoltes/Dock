@@ -22,7 +22,7 @@ namespace AvaloniaDemo
             }
         }
 
-        private static Program()
+        static Program()
         {
             ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ObservableCollection<>));
             //ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));

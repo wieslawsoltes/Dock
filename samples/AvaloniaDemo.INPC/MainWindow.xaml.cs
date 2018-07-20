@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using AvaloniaDemo.CodeGen;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
+using AvaloniaDemo.INPC.ViewModels;
 using AvaloniaDemo.INPC.ViewModels.Tools;
 using Dock.Avalonia.Controls;
 using Dock.Model;

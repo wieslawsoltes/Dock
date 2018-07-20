@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
@@ -139,27 +140,34 @@ namespace Dock.Avalonia.Controls
 
         private void SetTargetProportion(double dragDelta)
         {
-            var proportion = GetProportion(_element);
-
             var panel = GetPanel();
-
-            var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
-
-            proportion += dProportion;
-
-            SetProportion(_element, proportion);
-
             var children = panel.GetChildren();
 
             int index = children.IndexOf(this) + 1;
 
             var child = children[index];
 
-            var currentProportion = GetProportion(child);
+            var targetElementProportion = GetProportion(_element);
+            var neighbourProportion = GetProportion(child);
 
-            currentProportion -= dProportion;
+            var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
-            SetProportion(child, currentProportion);
+            if (targetElementProportion + dProportion < 0)
+            {
+                dProportion = -targetElementProportion;
+            }
+
+            if(neighbourProportion - dProportion < 0)
+            {
+                dProportion = +neighbourProportion;
+            }
+
+            targetElementProportion += dProportion;
+            neighbourProportion -= dProportion;
+
+            SetProportion(_element, targetElementProportion);
+
+            SetProportion(child, neighbourProportion);
 
             panel.InvalidateMeasure();
             panel.InvalidateArrange();

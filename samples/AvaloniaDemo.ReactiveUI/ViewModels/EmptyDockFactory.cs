@@ -4,6 +4,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
+using AvaloniaDemo.ViewModels;
 
 namespace AvaloniaDemo.ReactiveUI.ViewModels
 {

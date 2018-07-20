@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AvaloniaDemo.ViewModels.Documents;
-using AvaloniaDemo.ViewModels.Tools;
-using AvaloniaDemo.ViewModels.Views;
+using AvaloniaDemo.ViewModels;
+using AvaloniaDemo.ReactiveUI.ViewModels.Documents;
+using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
+using AvaloniaDemo.ReactiveUI.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;

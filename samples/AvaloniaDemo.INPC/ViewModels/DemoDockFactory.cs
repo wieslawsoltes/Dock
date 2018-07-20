@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AvaloniaDemo.ViewModels.Documents;
-using AvaloniaDemo.ViewModels.Tools;
-using AvaloniaDemo.ViewModels.Views;
+using AvaloniaDemo.ViewModels;
+using AvaloniaDemo.INPC.ViewModels.Documents;
+using AvaloniaDemo.INPC.ViewModels.Tools;
+using AvaloniaDemo.INPC.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;

@@ -1,4 +1,6 @@
 ﻿using Dock.Model;
+using AvaloniaDemo.ViewModels;
+
 
 namespace AvaloniaDemo.INPC.ViewModels
 {

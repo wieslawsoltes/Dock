@@ -1,5 +1,6 @@
 ﻿using Dock.Model;
 using Dock.Model.Controls;
+using AvaloniaDemo.ViewModels;
 
 namespace AvaloniaDemo.INPC.ViewModels
 {

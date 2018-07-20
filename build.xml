@@ -45,7 +45,15 @@
     </Project>-->
   </Tests>
   <Apps>
-    <Project Name="AvaloniaDemo" Path="samples">
+    <Project Name="AvaloniaDemo.INPC" Path="samples">
+      <Frameworks>
+        <Framework>netcoreapp2.1</Framework>
+      </Frameworks>
+      <Runtimes>
+        <Runtime>win7-x64</Runtime>
+      </Runtimes>
+    </Project>
+    <Project Name="AvaloniaDemo.ReactiveUI" Path="samples">
       <Frameworks>
         <Framework>netcoreapp2.1</Framework>
       </Frameworks>

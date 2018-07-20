@@ -1,0 +1,180 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:controls="clr-namespace:AvaloniaDemo.Controls;assembly=AvaloniaDemo"
+             xmlns:Documents="clr-namespace:AvaloniaDemo.ReactiveUI.ViewModels.Documents;assembly=AvaloniaDemo.ReactiveUI"
+             xmlns:Tools="clr-namespace:AvaloniaDemo.ReactiveUI.ViewModels.Tools;assembly=AvaloniaDemo.ReactiveUI"
+             xmlns:Views="clr-namespace:AvaloniaDemo.ReactiveUI.ViewModels.Views;assembly=AvaloniaDemo.ReactiveUI">
+    <Application.Styles>
+        <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
+        <StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.ProportionalStackPanelSplitter.xaml?assembly=Dock.Avalonia"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockTarget.xaml?assembly=Dock.Avalonia"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.DockToolChrome.xaml?assembly=Dock.Avalonia"/>
+        <StyleInclude Source="resm:Dock.Avalonia.Controls.MetroWindow.xaml?assembly=Dock.Avalonia"/>
+    </Application.Styles>
+    <Application.Resources>
+        <SolidColorBrush x:Key="ApplicationAccentBrush">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentBrushLight">#1C97EA</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
+    </Application.Resources>
+    <Application.DataTemplates>
+        <!-- Documents -->
+        <DataTemplate DataType="Documents:Document1">
+            <Grid Focusable="True" Background="Gray">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Documents:Document2">
+            <Grid Focusable="True" Background="Gray">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Documents:Document3">
+            <Grid Focusable="True" Background="Gray">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <!-- Tools -->
+        <DataTemplate DataType="Tools:LeftTopTool1">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:LeftTopTool2">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:LeftTopTool3">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:LeftBottomTool1">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:LeftBottomTool2">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:LeftBottomTool3">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightTopTool1">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightTopTool2">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightTopTool3">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightBottomTool1">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightBottomTool2">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:RightBottomTool3">
+            <Grid Focusable="True" Background="WhiteSmoke">
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Tools:EditorTool">
+            <controls:LayoutEditorControl DataContext="{Binding Context}"/>
+        </DataTemplate>
+        <!-- Views -->
+        <DataTemplate DataType="Views:HomeView">
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Id}"/>
+                    <TextBlock Text="{Binding Title}"/>
+                    <TextBlock Text="{Binding Context}"/>
+                    <Button Content="Main" Command="{Binding Context.Layout.Navigate}" CommandParameter="Main"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="Views:MainView">
+            <Grid>
+                <ContentControl Content="{Binding CurrentView}"/>
+            </Grid>
+        </DataTemplate>
+    </Application.DataTemplates>
+</Application>

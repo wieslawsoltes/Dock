@@ -54,9 +54,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B04
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{2B7AA608-8B4A-4700-BA51-ADA07363EDEB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.INPC.csproj", "{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.INPC", "samples\AvaloniaDemo.INPC\AvaloniaDemo.INPC.csproj", "{82E531E5-4AEE-4668-BE7A-4B5F46630FBA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.ReactiveUI.csproj", "{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.ReactiveUI", "samples\AvaloniaDemo.ReactiveUI\AvaloniaDemo.ReactiveUI.csproj", "{9C80C5AB-A973-42CC-A596-BDE64D1C3B9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProportionalStackPanelDemo", "samples\ProportionalStackPanelDemo\ProportionalStackPanelDemo.csproj", "{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}"
 EndProject

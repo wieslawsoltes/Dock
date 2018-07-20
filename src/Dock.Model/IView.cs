@@ -28,5 +28,11 @@ namespace Dock.Model
         /// </summary>
         /// <remarks>If parrent is null than view is root.</remarks>
         IView Parent { get; set; }
+
+        /// <summary>
+        /// Called when the view is closed.
+        /// </summary>
+        /// <returns>true to accept the close, and false to cancel the close.</returns>
+        bool OnClose();
     }
 }

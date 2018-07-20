@@ -330,10 +330,13 @@ namespace Dock.Model
         {
             if (view?.Parent is IDock dock && dock.Views != null)
             {
-                int index = dock.Views.IndexOf(view);
-                dock.Views.Remove(view);
-                dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
-                Collapse(dock);
+                if (view.OnClose())
+                {
+                    int index = dock.Views.IndexOf(view);
+                    dock.Views.Remove(view);
+                    dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
+                    Collapse(dock);
+                }
             }
         }
 

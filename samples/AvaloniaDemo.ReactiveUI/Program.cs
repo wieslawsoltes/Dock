@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 using AvaloniaDemo.Serializer;
-using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;

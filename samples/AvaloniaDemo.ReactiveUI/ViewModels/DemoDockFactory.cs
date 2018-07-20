@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels.Documents;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
 using AvaloniaDemo.ReactiveUI.ViewModels.Views;

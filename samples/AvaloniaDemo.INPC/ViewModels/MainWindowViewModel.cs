@@ -1,10 +1,8 @@
 ﻿using Dock.Model;
-using AvaloniaDemo.ViewModels;
-
 
 namespace AvaloniaDemo.INPC.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject, IMainWindowViewModel
+    public class MainWindowViewModel : ReactiveObject
     {
         private IDockFactory _factory;
         private IView _layout;

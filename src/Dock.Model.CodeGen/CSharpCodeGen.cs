@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.CodeGen
+namespace Dock.Model.CodeGen
 {
     public class CSharpCodeGen : ICodeGen
     {

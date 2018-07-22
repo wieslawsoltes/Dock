@@ -1,7 +1,7 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-             xmlns:controls="clr-namespace:AvaloniaDemo.Controls;assembly=AvaloniaDemo"
+             xmlns:editor="clr-namespace:Dock.Avalonia.Editor.Controls;assembly=Dock.Avalonia.Editor"
              xmlns:Documents="clr-namespace:AvaloniaDemo.INPC.ViewModels.Documents;assembly=AvaloniaDemo.INPC"
              xmlns:Tools="clr-namespace:AvaloniaDemo.INPC.ViewModels.Tools;assembly=AvaloniaDemo.INPC"
              xmlns:Views="clr-namespace:AvaloniaDemo.INPC.ViewModels.Views;assembly=AvaloniaDemo.INPC">
@@ -158,7 +158,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="Tools:EditorTool">
-            <controls:LayoutEditorControl DataContext="{Binding Context}"/>
+            <editor:LayoutEditorControl DataContext="{Binding Context}"/>
         </DataTemplate>
         <!-- Views -->
         <DataTemplate DataType="Views:HomeView">

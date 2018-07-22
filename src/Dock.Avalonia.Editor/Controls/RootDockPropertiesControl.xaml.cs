@@ -1,11 +1,11 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo.Controls
+namespace Dock.Avalonia.Editor.Controls
 {
-    public class WindowsPropertiesControl : UserControl
+    public class RootDockPropertiesControl : UserControl
     {
-        public WindowsPropertiesControl()
+        public RootDockPropertiesControl()
         {
             this.InitializeComponent();
         }

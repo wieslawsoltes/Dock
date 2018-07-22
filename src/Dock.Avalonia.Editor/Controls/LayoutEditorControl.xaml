@@ -130,7 +130,7 @@
             <TreeView.KeyBindings>
                 <KeyBinding Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding #views.SelectedItem}" Gesture="Delete"/>
             </TreeView.KeyBindings>
-            <TreeViewItem Header="{Binding Layout.Title}" DataContext="{Binding}" Items="{Binding Layout.Views}"/>
+            <TreeViewItem Header="{Binding Layout.Title}" Items="{Binding Layout.Views}"/>
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
         <Grid Grid.Column="2" Grid.Row="0" DataContext="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">

@@ -8,44 +8,16 @@
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
-    <UserControl.Styles>
-        <Style Selector="TextBlock.drag">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        </Style>
-        <Style Selector="TabStripItem">
-            <Setter Property="Margin" Value="4"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="FontSize" Value="12"/>
-        </Style>
-        <Style Selector="TextBlock">
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-        <Style Selector="TextBox">
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-        <Style Selector="CheckBox">
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-        <Style Selector="Button">
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-    </UserControl.Styles>
-    <TabControl>
-        <TabItem Header="View">
-            <ScrollViewer>
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
-                    <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
-                    <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock Text="Title:" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBlock Text="Context:" Grid.Row="2" Grid.Column="0"/>
-                    <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
-                    <TextBlock Text="Parent:" Grid.Row="3" Grid.Column="0"/>
-                    <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
-                </Grid>
-            </ScrollViewer>
-        </TabItem>
-    </TabControl>
+    <ScrollViewer>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+            <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Text="Title:" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+            <TextBlock Text="Context:" Grid.Row="2" Grid.Column="0"/>
+            <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
+            <TextBlock Text="Parent:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

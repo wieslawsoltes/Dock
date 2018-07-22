@@ -20,6 +20,23 @@
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
+        <Style Selector="TabStripItem">
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
         <Style Selector="TreeViewItem">
             <Setter Property="IsExpanded" Value="True"/>
         </Style>
@@ -107,6 +124,7 @@
                 </TextBlock.ContextMenu>
             </TextBlock>
         </TreeDataTemplate>
+        
     </UserControl.DataTemplates>
     <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="60*,Auto,40*">
         <TreeView x:Name="views" Grid.Column="0" Grid.Row="0">
@@ -120,10 +138,27 @@
             <ContentControl Content="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
-                        <local:DockPropertiesControl/>
+                        <TabControl>
+                            <TabItem Header="View">
+                                <local:ViewPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Dock">
+                                <local:DockPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Views">
+                                <local:ViewsPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Windows">
+                                <local:WindowsPropertiesControl/>
+                            </TabItem>
+                        </TabControl>
                     </DataTemplate>
                     <DataTemplate DataType="Dock:IView">
-                        <local:ViewPropertiesControl/>
+                        <TabControl>
+                            <TabItem Header="View">
+                                <local:ViewPropertiesControl/>
+                            </TabItem>
+                        </TabControl>
                     </DataTemplate>
                 </ContentControl.DataTemplates>
             </ContentControl>
@@ -136,13 +171,37 @@
             <ContentControl Content="{Binding #windows.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
                 <ContentControl.DataTemplates>
                     <DataTemplate DataType="Dock:IDock">
-                        <local:DockPropertiesControl/>
+                        <TabControl>
+                            <TabItem Header="View">
+                                <local:ViewPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Dock">
+                                <local:DockPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Views">
+                                <local:ViewsPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Windows">
+                                <local:WindowsPropertiesControl/>
+                            </TabItem>
+                        </TabControl>
                     </DataTemplate>
                     <DataTemplate DataType="Dock:IView">
-                        <local:ViewPropertiesControl/>
+                        <TabControl>
+                            <TabItem Header="View">
+                                <local:ViewPropertiesControl/>
+                            </TabItem>
+                        </TabControl>
                     </DataTemplate>
                     <DataTemplate DataType="Dock:IDockWindow">
-                        <local:DockWindowPropertiesControl/>
+                        <TabControl>
+                            <TabItem Header="Window">
+                                <local:DockWindowPropertiesControl/>
+                            </TabItem>
+                            <TabItem Header="Layout">
+                                <local:DockPropertiesControl DataContext="{Binding Layout}"/>
+                            </TabItem>
+                        </TabControl>
                     </DataTemplate>
                 </ContentControl.DataTemplates>
             </ContentControl>

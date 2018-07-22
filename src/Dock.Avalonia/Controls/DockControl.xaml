@@ -21,10 +21,10 @@
                 <idc:ProportionalStackPanelSplitter Background="Transparent"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IDocumentDock">
-                <idc:DocumentControl/>
+                <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
-                <idc:DockToolChrome IsActive="{Binding IsActive}">
+                <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                     <i:Interaction.Behaviors>
                         <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                     </i:Interaction.Behaviors>
@@ -32,8 +32,7 @@
                 </idc:DockToolChrome>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">
-                <ItemsControl Items="{Binding Views}">
-                    <!-- FIXME: Binding to attached Proportion property does not work. -->
+                <ItemsControl Items="{Binding Views}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                     <!--<ItemsControl.Styles>
                         <Style Selector="ItemsControl > ContentPresenter">
                             <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>

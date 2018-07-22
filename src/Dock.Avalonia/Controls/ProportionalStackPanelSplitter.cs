@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 
@@ -23,7 +24,7 @@ namespace Dock.Avalonia.Controls
         /// Defines the Proportion attached property.
         /// </summary>
         public static readonly AttachedProperty<double> ProportionProperty =
-            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("Proportion", double.NaN);
+            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("Proportion", double.NaN, false, BindingMode.TwoWay);
 
         /// <summary>
         /// Gets the value of the Proportion attached property on the specified control.

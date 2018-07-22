@@ -4,6 +4,7 @@ using AvaloniaDemo.INPC.ViewModels.Documents;
 using AvaloniaDemo.INPC.ViewModels.Tools;
 using AvaloniaDemo.INPC.ViewModels.Views;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
@@ -290,9 +291,8 @@ namespace AvaloniaDemo.INPC.ViewModels
                 ["MainLayout"] = () => context,
                 ["Home"] = () => context,
                 ["Main"] = () => context,
-                ["Editor"] = () => new LayoutEditorViewModel()
+                ["Editor"] = () => new LayoutEditor()
                 {
-                    Factory = this,
                     Layout = layout
                 }
             };

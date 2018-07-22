@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\Rx.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\EmbedXaml.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+  </ItemGroup>
+
+</Project>

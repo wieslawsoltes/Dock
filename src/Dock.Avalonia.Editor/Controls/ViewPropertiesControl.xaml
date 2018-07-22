@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Dock.Avalonia.Editor.Controls.ViewPropertiesControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Dock.Avalonia.Editor.Controls;assembly=Dock.Avalonia.Editor"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             Design.Width="600" Design.Height="540">
+    <ScrollViewer>
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+            <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
+            <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
+            <TextBlock Text="Title:" Grid.Row="1" Grid.Column="0"/>
+            <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="1" Grid.Column="1"/>
+            <TextBlock Text="Context:" Grid.Row="2" Grid.Column="0"/>
+            <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
+            <TextBlock Text="Parent:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Text="{Binding Parent.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

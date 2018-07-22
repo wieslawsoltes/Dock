@@ -3,7 +3,7 @@ using System.Text;
 using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.CodeGen
+namespace Dock.CodeGen
 {
     public class CSharpCodeGen : ICodeGen
     {

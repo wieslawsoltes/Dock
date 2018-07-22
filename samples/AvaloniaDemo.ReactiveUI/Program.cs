@@ -1,10 +1,10 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
-using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 using ReactiveUI;
 
 namespace AvaloniaDemo.ReactiveUI
@@ -21,24 +21,20 @@ namespace AvaloniaDemo.ReactiveUI
             }
         }
 
-        static Program()
-        {
-            ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ReactiveList<>));
-        }
-
         [STAThread]
         private static void Main(string[] args)
         {
             try
             {
+                var serializer = new DockJsonSerializer(typeof(ReactiveList<>));
                 var vm = new MainWindowViewModel();
                 var factory = new DemoDockFactory();
                 IDock layout = null;
 
-                string path = ModelSerializer.GetBasePath("Layout.json");
-                if (ModelSerializer.Exists(path))
+                string path = serializer.GetBasePath("Layout.json");
+                if (serializer.Exists(path))
                 {
-                    layout = ModelSerializer.Load<RootDock>(path);
+                    layout = serializer.Load<RootDock>(path);
                 }
 
                 BuildAvaloniaApp().Start<MainWindow>(() =>
@@ -54,7 +50,7 @@ namespace AvaloniaDemo.ReactiveUI
                     dock.Close();
                 }
 
-                ModelSerializer.Save(path, vm.Layout);
+                serializer.Save(path, vm.Layout);
             }
             catch (Exception ex)
             {

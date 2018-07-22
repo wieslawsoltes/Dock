@@ -2,10 +2,10 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Logging.Serilog;
-using AvaloniaDemo.Serializer;
 using AvaloniaDemo.INPC.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 
 namespace AvaloniaDemo.INPC
 {
@@ -21,24 +21,20 @@ namespace AvaloniaDemo.INPC
             }
         }
 
-        static Program()
-        {
-            ModelSerializer.Serializer = new NewtonsoftJsonSerializer(typeof(ObservableCollection<>));
-        }
-
         [STAThread]
         private static void Main(string[] args)
         {
             try
             {
+                var serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
                 var vm = new MainWindowViewModel();
                 var factory = new DemoDockFactory();
                 IDock layout = null;
 
-                string path = ModelSerializer.GetBasePath("Layout.json");
-                if (ModelSerializer.Exists(path))
+                string path = serializer.GetBasePath("Layout.json");
+                if (serializer.Exists(path))
                 {
-                    layout = ModelSerializer.Load<RootDock>(path);
+                    layout = serializer.Load<RootDock>(path);
                 }
 
                 BuildAvaloniaApp().Start<MainWindow>(() =>
@@ -54,7 +50,7 @@ namespace AvaloniaDemo.INPC
                     dock.Close();
                 }
 
-                ModelSerializer.Save(path, vm.Layout);
+                serializer.Save(path, vm.Layout);
             }
             catch (Exception ex)
             {

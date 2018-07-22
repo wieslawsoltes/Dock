@@ -4,6 +4,7 @@ using AvaloniaDemo.ReactiveUI.ViewModels.Documents;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
 using AvaloniaDemo.ReactiveUI.ViewModels.Views;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
@@ -290,9 +291,8 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
                 ["MainLayout"] = () => context,
                 ["Home"] = () => context,
                 ["Main"] = () => context,
-                ["Editor"] = () => new LayoutEditorViewModel()
+                ["Editor"] = () => new LayoutEditor()
                 {
-                    Factory = this,
                     Layout = layout
                 }
             };

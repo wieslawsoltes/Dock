@@ -1,6 +1,6 @@
 ﻿using Dock.Model;
 
-namespace AvaloniaDemo.CodeGen
+namespace Dock.CodeGen
 {
     public interface ICodeGen
     {

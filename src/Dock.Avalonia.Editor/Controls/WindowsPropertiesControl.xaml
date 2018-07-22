@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Dock.Avalonia.Editor.Controls.WindowsPropertiesControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Dock.Avalonia.Editor.Controls;assembly=Dock.Avalonia.Editor"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+             Design.Width="600" Design.Height="540">
+    <UserControl.Resources>
+        <id:DockDragHandler x:Key="DockDragHandler"/>
+    </UserControl.Resources>
+    <ListBox x:Name="windows" Items="{Binding Windows}" Margin="4">
+        <ListBox.KeyBindings>
+            <KeyBinding Command="{Binding Parent.Factory.RemoveWindow}" CommandParameter="{Binding #windows.SelectedItem}" Gesture="Delete"/>
+        </ListBox.KeyBindings>
+        <ListBox.DataTemplates>
+            <DataTemplate DataType="Dock:IDockWindow">
+                <TextBlock Text="{Binding Title}" Classes="drag">
+                    <i:Interaction.Behaviors>
+                        <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
+                    </i:Interaction.Behaviors>
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="_Remove" Command="{Binding Parent.Factory.RemoveWindow}" CommandParameter="{Binding}"/>
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
+            </DataTemplate>
+        </ListBox.DataTemplates>
+    </ListBox>
+</UserControl>

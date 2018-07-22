@@ -1,10 +1,9 @@
 ﻿using Dock.Model;
 
-namespace AvaloniaDemo.ViewModels
+namespace Dock.Avalonia.Editor
 {
-    public interface ILayoutEditorViewModel
+    public interface ILayoutEditor
     {
-        IDockFactory Factory { get; set; }
         IView Layout { get; set; }
         void AddLayout(IDock dock);
         void AddRoot(IDock dock);

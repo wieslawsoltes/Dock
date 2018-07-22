@@ -2,19 +2,21 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using AvaloniaDemo.CodeGen;
-using AvaloniaDemo.Serializer;
-using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
 using Dock.Avalonia.Controls;
+using Dock.CodeGen;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
+using ReactiveUI;
 
 namespace AvaloniaDemo.ReactiveUI
 {
     public class MainWindow : HostWindowBase
     {
+        private DockJsonSerializer _serializer = new DockJsonSerializer(typeof(ReactiveList<>));
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -22,7 +24,7 @@ namespace AvaloniaDemo.ReactiveUI
 
             this.Closing += (sender, e) =>
             {
-                if (this.DataContext is IMainWindowViewModel vm)
+                if (this.DataContext is MainWindowViewModel vm)
                 {
                     if (vm.Layout is IDock dock)
                     {
@@ -33,7 +35,7 @@ namespace AvaloniaDemo.ReactiveUI
 
             this.FindControl<MenuItem>("FileNew").Click += (sender, e) =>
             {
-                if (this.DataContext is IMainWindowViewModel vm)
+                if (this.DataContext is MainWindowViewModel vm)
                 {
                     if (vm.Layout is IDock root)
                     {
@@ -53,9 +55,9 @@ namespace AvaloniaDemo.ReactiveUI
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is IMainWindowViewModel vm)
+                    if (this.DataContext is MainWindowViewModel vm)
                     {
-                        IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
+                        IDock layout = _serializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
                         {
                             root.Close();
@@ -76,9 +78,9 @@ namespace AvaloniaDemo.ReactiveUI
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is IMainWindowViewModel vm)
+                    if (this.DataContext is MainWindowViewModel vm)
                     {
-                        ModelSerializer.Save(result, vm.Layout);
+                        _serializer.Save(result, vm.Layout);
                     }
                 }
             };
@@ -93,7 +95,7 @@ namespace AvaloniaDemo.ReactiveUI
                 var result = await dlg.ShowAsync(this);
                 if (result != null)
                 {
-                    if (this.DataContext is IMainWindowViewModel vm)
+                    if (this.DataContext is MainWindowViewModel vm)
                     {
                         ICodeGen codeGeb = new CSharpCodeGen();
                         codeGeb.Generate(vm.Layout, result);
@@ -103,7 +105,7 @@ namespace AvaloniaDemo.ReactiveUI
 
             this.FindControl<MenuItem>("ViewEditor").Click += (sender, e) =>
             {
-                if (this.DataContext is IMainWindowViewModel vm)
+                if (this.DataContext is MainWindowViewModel vm)
                 {
                     var editorView = new EditorTool
                     {

@@ -21,6 +21,21 @@
         <Framework>netstandard2.0</Framework>
       </Frameworks>
     </Project>
+    <Project Name="Dock.Avalonia.Editor" Path="src">
+      <Frameworks>
+        <Framework>netstandard2.0</Framework>
+      </Frameworks>
+    </Project>
+    <Project Name="Dock.CodeGen" Path="src">
+      <Frameworks>
+        <Framework>netstandard2.0</Framework>
+      </Frameworks>
+    </Project>
+    <Project Name="Dock.Serializer" Path="src">
+      <Frameworks>
+        <Framework>netstandard2.0</Framework>
+      </Frameworks>
+    </Project>
   </Sources>
   <Tests>
     <Project Name="Dock.Model.UnitTests" Path="tests">

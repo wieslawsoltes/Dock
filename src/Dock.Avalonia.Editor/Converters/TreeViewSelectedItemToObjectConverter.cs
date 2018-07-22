@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 
-namespace Dock.Avalonia.Converters
+namespace Dock.Avalonia.Editor.Converters
 {
     /// <summary>
     /// Return valid object when using TreeView.SelectedItem.DataContext source.

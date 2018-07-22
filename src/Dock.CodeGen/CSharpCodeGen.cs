@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Dock.Model;
 using Dock.Model.Controls;
 
-namespace Dock.Model.CodeGen
+namespace Dock.CodeGen
 {
     public class CSharpCodeGen : ICodeGen
     {

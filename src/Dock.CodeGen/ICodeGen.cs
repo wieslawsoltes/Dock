@@ -1,6 +1,6 @@
 ﻿using Dock.Model;
 
-namespace Dock.Model.CodeGen
+namespace Dock.CodeGen
 {
     public interface ICodeGen
     {

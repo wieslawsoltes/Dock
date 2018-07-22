@@ -7,8 +7,8 @@ using AvaloniaDemo.INPC.ViewModels.Tools;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia.Controls;
+using Dock.CodeGen;
 using Dock.Model;
-using Dock.Model.CodeGen;
 using Dock.Model.Controls;
 
 namespace AvaloniaDemo.INPC

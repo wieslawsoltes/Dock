@@ -24,8 +24,8 @@
   <Import Project="..\..\build\EmbedXaml.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.CodeGen\Dock.CodeGen.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.CodeGen\Dock.Model.CodeGen.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Editor\Dock.Avalonia.Editor.csproj" />

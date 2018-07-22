@@ -1,7 +1,7 @@
 <Styles  xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia" xmlns="https://github.com/avaloniaui">
     <Style Selector="local|DockToolChrome">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
@@ -34,21 +34,21 @@
                             </DockPanel>
                         </Grid>
                     </Border>
-                    <ContentPresenter Grid.Row="1" 
+                    <ContentPresenter Grid.Row="1"
                                       Name="PART_ContentPresenter"
-                                      Background="{DynamicResource ThemeControlBackgroundBrush}"
+                                      Background="{DynamicResource ThemeBackgroundBrush}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}"/>
+                                      Padding="{TemplateBinding Padding}" />
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="Button.chromeButton">
-        <Setter Property="Margin" Value="2 0 0 0"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="2 0 0 0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="Transparent" />
     </Style>
     <Style Selector="local|DockToolChrome /template/ Border#PART_Border">

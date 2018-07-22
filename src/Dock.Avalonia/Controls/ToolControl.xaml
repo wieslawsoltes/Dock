@@ -9,30 +9,30 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="1200" Design.Height="540">
     <UserControl.Resources>
-        <id:DockDragHandler x:Key="DockDragHandler"/>
-        <id:DockDropHandler x:Key="DockDropHandler5" Id="5"/>
-        <id:DockDropHandler x:Key="DockDropHandler6" Id="6"/>
-        <id:DockDropHandler x:Key="DockDropHandler7" Id="7"/>
+        <id:DockDragHandler x:Key="DockDragHandler" />
+        <id:DockDropHandler x:Key="DockDropHandler5" Id="5" />
+        <id:DockDropHandler x:Key="DockDropHandler6" Id="6" />
+        <id:DockDropHandler x:Key="DockDropHandler7" Id="7" />
     </UserControl.Resources>
     <i:Interaction.Behaviors>
-        <id:SetRootFocusedViewOnPointerPressedBehavior/>
+        <id:SetRootFocusedViewOnPointerPressedBehavior />
     </i:Interaction.Behaviors>
     <UserControl.Styles>
         <Style Selector="TextBlock.drag">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
         <Style Selector="Border.panel">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="4"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderDarkBrush}"/>
-            <Setter Property="BorderThickness" Value="1 0 1 1"/>
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderDarkBrush}" />
+            <Setter Property="BorderThickness" Value="1 0 1 1" />
         </Style>
         <Style Selector="Button.chromeButton">
-            <Setter Property="Margin" Value="2 0 0 0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="2 0 0 0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="Grid.grip:floating">
@@ -41,11 +41,11 @@
     </UserControl.Styles>
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
         <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}"/>
+            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}" />
         </i:Interaction.Behaviors>
         <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
             <i:Interaction.Behaviors>
-                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler6}"/>
+                <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler6}" />
             </i:Interaction.Behaviors>
             <TabStrip.Styles>
                 <Style Selector="TabStrip">
@@ -62,7 +62,7 @@
                     <Setter Property="BorderThickness" Value="0" />
                     <Setter Property="Margin" Value="0" />
                     <Setter Property="Padding" Value="4 1 4 0" />
-                    <Setter Property="FontSize" Value="12"/>
+                    <Setter Property="FontSize" Value="12" />
                     <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                     <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
                 </Style>
@@ -87,16 +87,16 @@
                 <DataTemplate DataType="Dock:IView">
                     <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
                         <i:Interaction.Behaviors>
-                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler7}"/>
+                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}" />
+                            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler7}" />
                         </i:Interaction.Behaviors>
-                        <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
+                        <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
                     </StackPanel>
                 </DataTemplate>
             </TabStrip.DataTemplates>
         </TabStrip>
-        <Border Classes="panel" ZIndex="-1">
-            <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Border Classes="panel" ZIndex="-1" Background="{DynamicResource ThemeControlBackgroundBrush}">
+            <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </Border>
     </DockPanel>
 </UserControl>

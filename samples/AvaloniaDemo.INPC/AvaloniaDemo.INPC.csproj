@@ -29,7 +29,7 @@
     <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Editor\Dock.Avalonia.Editor.csproj" />
-    <ProjectReference Include="..\AvaloniaDemo\AvaloniaDemo.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
   </ItemGroup>
 
 </Project>

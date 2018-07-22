@@ -5,6 +5,8 @@ namespace Dock.Avalonia.Editor
 {
     public class LayoutEditor : ILayoutEditor
     {
+        public IView Layout { get; set; }
+
         private void InsertLayout(IDock dock, int index, object context)
         {
             if (dock.Factory is IDockFactory factory)

@@ -4,6 +4,7 @@ namespace Dock.Avalonia.Editor
 {
     public interface ILayoutEditor
     {
+        IView Layout { get; set; }
         void AddLayout(IDock dock);
         void AddRoot(IDock dock);
         void AddSplitter(IDock dock);

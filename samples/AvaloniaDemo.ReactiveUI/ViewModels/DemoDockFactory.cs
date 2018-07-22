@@ -292,6 +292,9 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
                 ["Home"] = () => context,
                 ["Main"] = () => context,
                 ["Editor"] = () => new LayoutEditor()
+                {
+                    Layout = layout
+                }
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>

@@ -4,16 +4,19 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
-using AvaloniaDemo.Serializer;
 using Dock.Avalonia.Controls;
 using Dock.CodeGen;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
+using ReactiveUI;
 
 namespace AvaloniaDemo.ReactiveUI
 {
     public class MainWindow : HostWindowBase
     {
+        private DockJsonSerializer _serializer = new DockJsonSerializer(typeof(ReactiveList<>));
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -54,7 +57,7 @@ namespace AvaloniaDemo.ReactiveUI
                 {
                     if (this.DataContext is MainWindowViewModel vm)
                     {
-                        IDock layout = ModelSerializer.Load<RootDock>(result.FirstOrDefault());
+                        IDock layout = _serializer.Load<RootDock>(result.FirstOrDefault());
                         if (vm.Layout is IDock root)
                         {
                             root.Close();
@@ -77,7 +80,7 @@ namespace AvaloniaDemo.ReactiveUI
                 {
                     if (this.DataContext is MainWindowViewModel vm)
                     {
-                        ModelSerializer.Save(result, vm.Layout);
+                        _serializer.Save(result, vm.Layout);
                     }
                 }
             };

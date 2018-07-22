@@ -38,15 +38,15 @@
                 <MenuItem x:Name="ViewEditor" Header="_Editor..."/>
             </MenuItem>
             <MenuItem Header="_Options">
-                <MenuItem Header="Drag Behaviors Enabled">
+                <MenuItem x:Name="OptionsDragBehaviorIsEnabled" Header="Drag Behaviors Enabled">
                     <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding Path=(id:DragBehavior.IsEnabled), Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
+                        <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Drop Behaviors Enabled">
+                <MenuItem x:Name="OptionsDropBehaviorIsEnabled" Header="Drop Behaviors Enabled">
                     <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding Path=(id:DropBehavior.IsEnabled), Mode=TwoWay, RelativeSource={RelativeSource Self}}"/>
+                        <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>

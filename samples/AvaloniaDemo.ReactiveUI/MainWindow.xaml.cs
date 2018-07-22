@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
+using Dock.Avalonia;
 using Dock.Avalonia.Controls;
 using Dock.CodeGen;
 using Dock.Model;
@@ -142,6 +143,18 @@ namespace AvaloniaDemo.ReactiveUI
                         window.Present(false);
                     }
                 }
+            };
+
+            this.FindControl<MenuItem>("OptionsDragBehaviorIsEnabled").Click += (sender, e) =>
+            {
+                bool isEnabled = (bool)GetValue(DragBehavior.IsEnabledProperty);
+                SetValue(DragBehavior.IsEnabledProperty, !isEnabled);
+            };
+
+            this.FindControl<MenuItem>("OptionsDropBehaviorIsEnabled").Click += (sender, e) =>
+            {
+                bool isEnabled = (bool)GetValue(DropBehavior.IsEnabledProperty);
+                SetValue(DropBehavior.IsEnabledProperty, !isEnabled);
             };
         }
 

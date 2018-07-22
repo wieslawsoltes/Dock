@@ -124,7 +124,6 @@
                 </TextBlock.ContextMenu>
             </TextBlock>
         </TreeDataTemplate>
-        
     </UserControl.DataTemplates>
     <Grid ColumnDefinitions="300,Auto,*" RowDefinitions="60*,Auto,40*">
         <TreeView x:Name="views" Grid.Column="0" Grid.Row="0">
@@ -134,77 +133,15 @@
             <TreeViewItem Header="{Binding Layout.Title}" DataContext="{Binding}" Items="{Binding Layout.Views}"/>
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="0" Width="6"/>
-        <Grid Grid.Column="2" Grid.Row="0">
-            <ContentControl Content="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
-                <ContentControl.DataTemplates>
-                    <DataTemplate DataType="Dock:IDock">
-                        <TabControl>
-                            <TabItem Header="View">
-                                <local:ViewPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Dock">
-                                <local:DockPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Views">
-                                <local:ViewsPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Windows">
-                                <local:WindowsPropertiesControl/>
-                            </TabItem>
-                        </TabControl>
-                    </DataTemplate>
-                    <DataTemplate DataType="Dock:IView">
-                        <TabControl>
-                            <TabItem Header="View">
-                                <local:ViewPropertiesControl/>
-                            </TabItem>
-                        </TabControl>
-                    </DataTemplate>
-                </ContentControl.DataTemplates>
-            </ContentControl>
+        <Grid Grid.Column="2" Grid.Row="0" DataContext="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
+            <local:PropertiesControl/>
         </Grid>
         <GridSplitter Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Height="6"/>
         <TreeView x:Name="windows" DataContext="{Binding #views.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}" Items="{Binding Windows}" Grid.Column="0" Grid.Row="2">
         </TreeView>
         <GridSplitter Grid.Column="1" Grid.Row="2" Width="6"/>
-        <Grid Grid.Column="2" Grid.Row="2">
-            <ContentControl Content="{Binding #windows.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
-                <ContentControl.DataTemplates>
-                    <DataTemplate DataType="Dock:IDock">
-                        <TabControl>
-                            <TabItem Header="View">
-                                <local:ViewPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Dock">
-                                <local:DockPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Views">
-                                <local:ViewsPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Windows">
-                                <local:WindowsPropertiesControl/>
-                            </TabItem>
-                        </TabControl>
-                    </DataTemplate>
-                    <DataTemplate DataType="Dock:IView">
-                        <TabControl>
-                            <TabItem Header="View">
-                                <local:ViewPropertiesControl/>
-                            </TabItem>
-                        </TabControl>
-                    </DataTemplate>
-                    <DataTemplate DataType="Dock:IDockWindow">
-                        <TabControl>
-                            <TabItem Header="Window">
-                                <local:DockWindowPropertiesControl/>
-                            </TabItem>
-                            <TabItem Header="Layout">
-                                <local:DockPropertiesControl DataContext="{Binding Layout}"/>
-                            </TabItem>
-                        </TabControl>
-                    </DataTemplate>
-                </ContentControl.DataTemplates>
-            </ContentControl>
+        <Grid Grid.Column="2" Grid.Row="2" DataContext="{Binding #windows.SelectedItem, Converter={StaticResource TreeViewSelectedItemToObjectConverter}}">
+            <local:PropertiesControl/>
         </Grid>
     </Grid>
 </UserControl>

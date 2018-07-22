@@ -1,93 +1,101 @@
-﻿using Dock.Avalonia.Editor;
-using Dock.Model;
+﻿using Dock.Model;
 using Dock.Model.Controls;
-using ReactiveUI;
 
-namespace AvaloniaDemo.ReactiveUI.ViewModels
+namespace Dock.Avalonia.Editor
 {
-    public class LayoutEditorViewModel : ReactiveObject, ILayoutEditor
+    public class LayoutEditor : ILayoutEditor
     {
-        private IDockFactory _factory;
-        private IView _layout;
-
-        public IDockFactory Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
-
-        public IView Layout
-        {
-            get => _layout;
-            set => this.RaiseAndSetIfChanged(ref _layout, value);
-        }
-
         private void InsertLayout(IDock dock, int index, object context)
         {
-            var view = _factory.CreateLayoutDock();
-            view.Id = nameof(ILayoutDock);
-            view.Title = nameof(ILayoutDock);
-            view.Proportion = double.NaN;
-            view.Orientation = Orientation.Horizontal;
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateLayoutDock();
+                view.Id = nameof(ILayoutDock);
+                view.Title = nameof(ILayoutDock);
+                view.Proportion = double.NaN;
+                view.Orientation = Orientation.Horizontal;
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertRoot(IDock dock, int index, object context)
         {
-            var view = _factory.CreateRootDock();
-            view.Id = nameof(IRootDock);
-            view.Title = nameof(IRootDock);
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateRootDock();
+                view.Id = nameof(IRootDock);
+                view.Title = nameof(IRootDock);
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertSplitter(IDock dock, int index, object context)
         {
-            var view = _factory.CreateSplitterDock();
-            view.Id = nameof(ISplitterDock);
-            view.Title = nameof(ISplitterDock);
-            _factory.InsertView(dock, view, index, context);
+
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateSplitterDock();
+                view.Id = nameof(ISplitterDock);
+                view.Title = nameof(ISplitterDock);
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertDocument(IDock dock, int index, object context)
         {
-            var view = _factory.CreateDocumentDock();
-            view.Id = nameof(IDocumentDock);
-            view.Title = nameof(IDocumentDock);
-            view.Proportion = double.NaN;
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateDocumentDock();
+                view.Id = nameof(IDocumentDock);
+                view.Title = nameof(IDocumentDock);
+                view.Proportion = double.NaN;
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertTool(IDock dock, int index, object context)
         {
-            var view = _factory.CreateToolDock();
-            view.Id = nameof(IToolDock);
-            view.Title = nameof(IToolDock);
-            view.Proportion = double.NaN;
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateToolDock();
+                view.Id = nameof(IToolDock);
+                view.Title = nameof(IToolDock);
+                view.Proportion = double.NaN;
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertView(IDock dock, int index, object context)
         {
-            var view = _factory.CreateView();
-            view.Id = nameof(IView);
-            view.Title = nameof(IView);
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateView();
+                view.Id = nameof(IView);
+                view.Title = nameof(IView);
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertToolTab(IDock dock, int index, object context)
         {
-            var view = _factory.CreateToolTab();
-            view.Id = nameof(IToolTab);
-            view.Title = nameof(IToolTab);
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateToolTab();
+                view.Id = nameof(IToolTab);
+                view.Title = nameof(IToolTab);
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         private void InsertDocumentTab(IDock dock, int index, object context)
         {
-            var view = _factory.CreateDocumentTab();
-            view.Id = nameof(IDocumentTab);
-            view.Title = nameof(IDocumentTab);
-            _factory.InsertView(dock, view, index, context);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateDocumentTab();
+                view.Id = nameof(IDocumentTab);
+                view.Title = nameof(IDocumentTab);
+                factory.InsertView(dock, view, index, context);
+            }
         }
 
         public virtual void AddLayout(IDock dock)
@@ -310,66 +318,90 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
 
         public virtual void ConvertToLayout(IDock dock)
         {
-            var layout = _factory.CreateLayoutDock();
-            Copy(dock, layout, true, true);
-            _factory.Update(layout, dock.Context, dock.Parent);
-            _factory.Replace(dock, layout);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var layout = factory.CreateLayoutDock();
+                Copy(dock, layout, true, true);
+                factory.Update(layout, dock.Context, dock.Parent);
+                factory.Replace(dock, layout);
+            }
         }
 
         public virtual void ConvertToRoot(IDock dock)
         {
-            var root = _factory.CreateRootDock();
-            Copy(dock, root, true, true);
-            _factory.Update(root, dock.Context, dock.Parent);
-            _factory.Replace(dock, root);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var root = factory.CreateRootDock();
+                Copy(dock, root, true, true);
+                factory.Update(root, dock.Context, dock.Parent);
+                factory.Replace(dock, root);
+            }
         }
 
         public virtual void ConvertToSplitter(IDock dock)
         {
-            var splitter = _factory.CreateSplitterDock();
-            Copy(dock, splitter, false, false);
-            _factory.Update(splitter, dock.Context, dock.Parent);
-            _factory.Replace(dock, splitter);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var splitter = factory.CreateSplitterDock();
+                Copy(dock, splitter, false, false);
+                factory.Update(splitter, dock.Context, dock.Parent);
+                factory.Replace(dock, splitter);
+            }
         }
 
         public virtual void ConvertToDocument(IDock dock)
         {
-            var document = _factory.CreateDocumentDock();
-            Copy(dock, document, true, false);
-            _factory.Update(document, dock.Context, dock.Parent);
-            _factory.Replace(dock, document);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var document = factory.CreateDocumentDock();
+                Copy(dock, document, true, false);
+                factory.Update(document, dock.Context, dock.Parent);
+                factory.Replace(dock, document);
+            }
         }
 
         public virtual void ConvertToTool(IDock dock)
         {
-            var tool = _factory.CreateToolDock();
-            Copy(dock, tool, true, false);
-            _factory.Update(tool, dock.Context, dock.Parent);
-            _factory.Replace(dock, tool);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var tool = factory.CreateToolDock();
+                Copy(dock, tool, true, false);
+                factory.Update(tool, dock.Context, dock.Parent);
+                factory.Replace(dock, tool);
+            }
         }
 
         public virtual void ConvertToView(IDock dock)
         {
-            var view = _factory.CreateView();
-            Copy(dock, view, false, true);
-            _factory.Update(view, dock.Context, dock.Parent);
-            _factory.Replace(dock, view);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var view = factory.CreateView();
+                Copy(dock, view, false, true);
+                factory.Update(view, dock.Context, dock.Parent);
+                factory.Replace(dock, view);
+            }
         }
 
         public virtual void ConvertToToolTab(IDock dock)
         {
-            var toolTab = _factory.CreateToolTab();
-            Copy(dock, toolTab, false, true);
-            _factory.Update(toolTab, dock.Context, dock.Parent);
-            _factory.Replace(dock, toolTab);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var toolTab = factory.CreateToolTab();
+                Copy(dock, toolTab, false, true);
+                factory.Update(toolTab, dock.Context, dock.Parent);
+                factory.Replace(dock, toolTab);
+            }
         }
 
         public virtual void ConvertToDocumentTab(IDock dock)
         {
-            var documentTab = _factory.CreateDocumentTab();
-            Copy(dock, documentTab, false, true);
-            _factory.Update(documentTab, dock.Context, dock.Parent);
-            _factory.Replace(dock, documentTab);
+            if (dock.Factory is IDockFactory factory)
+            {
+                var documentTab = factory.CreateDocumentTab();
+                Copy(dock, documentTab, false, true);
+                factory.Update(documentTab, dock.Context, dock.Parent);
+                factory.Replace(dock, documentTab);
+            }
         }
     }
 }

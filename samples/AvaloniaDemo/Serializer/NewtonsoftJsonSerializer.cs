@@ -8,7 +8,7 @@ namespace AvaloniaDemo.Serializer
     {
         private readonly JsonSerializerSettings _settings;
 
-        public NewtonsoftJsonSerializer(Type type)
+        public NewtonsoftJsonSerializer(Type listType)
         {
             _settings = new JsonSerializerSettings()
             {
@@ -16,7 +16,7 @@ namespace AvaloniaDemo.Serializer
                 TypeNameHandling = TypeNameHandling.Objects,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                ContractResolver = new ListContractResolver(type),
+                ContractResolver = new ListContractResolver(listType),
                 NullValueHandling = NullValueHandling.Ignore,
                 Converters =
                 {

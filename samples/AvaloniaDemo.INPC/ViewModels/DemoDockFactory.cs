@@ -4,6 +4,7 @@ using AvaloniaDemo.INPC.ViewModels.Documents;
 using AvaloniaDemo.INPC.ViewModels.Tools;
 using AvaloniaDemo.INPC.ViewModels.Views;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
@@ -290,11 +291,7 @@ namespace AvaloniaDemo.INPC.ViewModels
                 ["MainLayout"] = () => context,
                 ["Home"] = () => context,
                 ["Main"] = () => context,
-                ["Editor"] = () => new LayoutEditorViewModel()
-                {
-                    Factory = this,
-                    Layout = layout
-                }
+                ["Editor"] = () => new LayoutEditor()
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>

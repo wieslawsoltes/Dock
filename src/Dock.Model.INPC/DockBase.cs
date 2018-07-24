@@ -19,7 +19,6 @@ namespace Dock.Model
         private bool _isActive;
         private IList<IDockWindow> _windows;
         private IDockFactory _factory;
-
         private double _proportion = double.NaN;
 
         /// <inheritdoc/>

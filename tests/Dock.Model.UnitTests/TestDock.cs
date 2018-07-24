@@ -20,6 +20,7 @@ namespace Dock.Model.UnitTests
         public IList<IDockWindow> Windows { get; set; }
         public IDockFactory Factory { get; set; }
         public double Proportion { get; set; } = double.NaN;
+        public bool IsCollapsable { get; set; } = true;
 
         public bool OnClose()
         {

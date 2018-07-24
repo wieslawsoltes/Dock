@@ -482,22 +482,27 @@ namespace Dock.Model
             splitter.Title = nameof(ISplitterDock);
             var layout = dock.Parent as ILayoutDock;
 
+            var index = layout.Views.IndexOf(dock);
+
             switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Top:
-                    layout.Views.Insert(0, splitter);
-                    layout.Views.Insert(0, split);
-                    split.Proportion = double.NaN;
+                    layout.Views.Insert(index, splitter);
+                    layout.Views.Insert(index, split);
+                    split.Proportion = dock.Proportion / 2;
+                    dock.Proportion /= 2;
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
-                    layout.Views.Add(splitter);
-                    layout.Views.Add(split);
+                    layout.Views.Insert(index + 1, split);
+                    layout.Views.Insert(index + 1, splitter);
 
                     splitter.Parent = layout;
                     split.Context = layout.Context;
-                    split.Proportion = double.NaN;
+
+                    split.Proportion = dock.Proportion / 2;
+                    dock.Proportion /= 2;
                     break;
             }
         }

@@ -82,8 +82,13 @@ namespace Dock.Model
         void ExitWindows();
 
         /// <summary>
-        /// Cloe layout.
+        /// Close layout.
         /// </summary>
         void Close();
+
+        /// <summary>
+        /// Gets or sets if the Dock collapses when all its children are removed.
+        /// </summary>
+        bool IsCollapsable { get; set; }
     }
 }

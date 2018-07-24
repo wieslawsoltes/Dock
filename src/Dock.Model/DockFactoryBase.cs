@@ -291,7 +291,7 @@ namespace Dock.Model
 
         private void Collapse(IDock dock)
         {
-            if (dock.Views.Count == 0)
+            if (dock.IsCollapsable && dock.Views.Count == 0)
             {
                 if (dock.Parent is IDock parentDock)
                 {

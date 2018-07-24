@@ -20,6 +20,7 @@ namespace Dock.Model
         private bool _isActive;
         private IList<IDockWindow> _windows;
         private IDockFactory _factory;
+        private bool _isCollapsable = true;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -27,6 +28,14 @@ namespace Dock.Model
         public DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool IsCollapsable
+        {
+            get => _isCollapsable;
+            set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
         }
 
         /// <inheritdoc/>

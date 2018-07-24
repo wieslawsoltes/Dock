@@ -463,7 +463,6 @@ namespace Dock.Model
             var containerProportion = dock.Proportion;
             dock.Proportion = double.NaN;
 
-
             if (view is IDock viewDock)
             {
                 split = viewDock;

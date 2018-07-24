@@ -459,6 +459,10 @@ namespace Dock.Model
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
             IDock split = null;
+
+            var containerProportion = dock.Proportion;
+            dock.Proportion = double.NaN;
+
             if (view is IDock viewDock)
             {
                 split = viewDock;
@@ -481,6 +485,7 @@ namespace Dock.Model
             layout.Id = nameof(ILayoutDock);
             layout.Title = nameof(ILayoutDock);
             layout.CurrentView = null;
+            layout.Proportion = containerProportion;
 
             var splitter = CreateSplitterDock();
             splitter.Id = nameof(ISplitterDock);

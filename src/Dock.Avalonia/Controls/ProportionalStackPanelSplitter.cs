@@ -16,7 +16,6 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class ProportionalStackPanelSplitter : Thumb
     {
-        private Control _element;
         private Size _previousParentSize;
         private bool _initialised;
 
@@ -114,20 +113,20 @@ namespace Dock.Avalonia.Controls
                     return;
                 }
 
-                var proportion = GetProportion(_element);
+                var target = GetTargetElement();
 
-                if (_initialised && _element.IsArrangeValid && _element.IsMeasureValid)
+                if (_initialised && target != null && target.IsArrangeValid && target.IsMeasureValid)
                 {
                     var dSize = new Size(panel.Bounds.Size.Width / _previousParentSize.Width, panel.Bounds.Size.Height / _previousParentSize.Height);
 
                     if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
                     {
-                        SetTargetWidth((_element.DesiredSize.Width * dSize.Width) - _element.DesiredSize.Width, panel);
+                        SetTargetWidth((target.DesiredSize.Width * dSize.Width) - target.DesiredSize.Width, panel, target);
                     }
 
                     if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
                     {
-                        SetTargetHeight((_element.DesiredSize.Height * dSize.Height) - _element.DesiredSize.Height, panel);
+                        SetTargetHeight((target.DesiredSize.Height * dSize.Height) - target.DesiredSize.Height, panel, target);
                     }
                 }
 
@@ -136,11 +135,11 @@ namespace Dock.Avalonia.Controls
             };
 
             UpdateHeightOrWidth();
-            UpdateTargetElement();
         }
 
         private void SetTargetProportion(double dragDelta)
         {
+            var target = GetTargetElement();
             var panel = GetPanel();
             var children = panel.GetChildren();
 
@@ -148,7 +147,7 @@ namespace Dock.Avalonia.Controls
 
             var child = children[index];
 
-            var targetElementProportion = GetProportion(_element);
+            var targetElementProportion = GetProportion(target);
             var neighbourProportion = GetProportion(child);
 
             var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
@@ -158,7 +157,7 @@ namespace Dock.Avalonia.Controls
                 dProportion = -targetElementProportion;
             }
 
-            if(neighbourProportion - dProportion < 0)
+            if (neighbourProportion - dProportion < 0)
             {
                 dProportion = +neighbourProportion;
             }
@@ -166,7 +165,7 @@ namespace Dock.Avalonia.Controls
             targetElementProportion += dProportion;
             neighbourProportion -= dProportion;
 
-            SetProportion(_element, targetElementProportion);
+            SetProportion(target, targetElementProportion);
 
             SetProportion(child, neighbourProportion);
 
@@ -174,18 +173,18 @@ namespace Dock.Avalonia.Controls
             panel.InvalidateArrange();
         }
 
-        private void SetTargetHeight(double dy, ProportionalStackPanel panel)
+        private void SetTargetHeight(double dy, ProportionalStackPanel panel, Control target)
         {
-            double height = _element.Height + dy;
+            double height = target.Height + dy;
 
-            if (height < _element.MinHeight)
+            if (height < target.MinHeight)
             {
-                height = _element.MinHeight;
+                height = target.MinHeight;
             }
 
-            if (height > _element.MaxHeight)
+            if (height > target.MaxHeight)
             {
-                height = _element.MaxHeight;
+                height = target.MaxHeight;
             }
 
             if (panel.Orientation == Orientation.Vertical && height > panel.DesiredSize.Height - Thickness)
@@ -193,21 +192,21 @@ namespace Dock.Avalonia.Controls
                 height = panel.DesiredSize.Height - Thickness;
             }
 
-            _element.Height = height;
+            target.Height = height;
         }
 
-        private void SetTargetWidth(double dx, ProportionalStackPanel panel)
+        private void SetTargetWidth(double dx, ProportionalStackPanel panel, Control target)
         {
-            double width = _element.Width + dx;
+            double width = target.Width + dx;
 
-            if (width < _element.MinWidth)
+            if (width < target.MinWidth)
             {
-                width = _element.MinWidth;
+                width = target.MinWidth;
             }
 
-            if (width > _element.MaxWidth)
+            if (width > target.MaxWidth)
             {
-                width = _element.MaxWidth;
+                width = target.MaxWidth;
             }
 
             if (panel.Orientation == Orientation.Horizontal && width > panel.DesiredSize.Width - Thickness)
@@ -215,7 +214,7 @@ namespace Dock.Avalonia.Controls
                 width = panel.DesiredSize.Width - Thickness;
             }
 
-            _element.Width = width;
+            target.Width = width;
         }
 
         private void UpdateHeightOrWidth()
@@ -253,19 +252,19 @@ namespace Dock.Avalonia.Controls
             return null;
         }
 
-        private void UpdateTargetElement()
+        private Control GetTargetElement()
         {
             if (Parent is ContentPresenter presenter)
             {
                 if (!(presenter.GetVisualParent() is Panel panel))
                 {
-                    return;
+                    return null;
                 }
 
                 int index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
-                    _element = (panel.Children[index - 1] as ContentPresenter).Child as Control;
+                    return (panel.Children[index - 1] as ContentPresenter).Child as Control;
                 }
             }
             else
@@ -275,9 +274,11 @@ namespace Dock.Avalonia.Controls
                 int index = panel.Children.IndexOf(this);
                 if (index > 0 && panel.Children.Count > 0)
                 {
-                    _element = panel.Children[index - 1] as Control;
+                    return panel.Children[index - 1] as Control;
                 }
             }
+
+            return null;
         }
     }
 }

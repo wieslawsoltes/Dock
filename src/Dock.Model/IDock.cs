@@ -55,6 +55,11 @@ namespace Dock.Model
         /// </summary>
         IDockFactory Factory { get; set; }
 
+        /// <summary> 
+        /// Gets or sets splitter proportion. 
+        /// </summary> 
+        double Proportion { get; set; }
+
         /// <summary>
         /// Navigates to the most recent entry in back navigation history, if there is one.
         /// </summary>

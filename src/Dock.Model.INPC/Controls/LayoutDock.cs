@@ -10,16 +10,7 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class LayoutDock : DockBase, ILayoutDock
     {
-        private double _proportion;
         private Orientation _orientation;
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double Proportion
-        {
-            get => _proportion;
-            set => this.RaiseAndSetIfChanged(ref _proportion, value);
-        }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]

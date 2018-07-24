@@ -21,14 +21,6 @@ namespace Dock.Model
         private IDockFactory _factory;
         private double _proportion = double.NaN;
 
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double Proportion
-        {
-            get => _proportion;
-            set => this.RaiseAndSetIfChanged(ref _proportion, value);
-        }
-
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
         /// </summary>
@@ -105,6 +97,14 @@ namespace Dock.Model
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public double Proportion
+        {
+            get => _proportion;
+            set => this.RaiseAndSetIfChanged(ref _proportion, value);
         }
 
         /// <inheritdoc/>

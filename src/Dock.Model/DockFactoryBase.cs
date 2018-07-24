@@ -488,6 +488,7 @@ namespace Dock.Model
                 case DockOperation.Top:
                     layout.Views.Insert(0, splitter);
                     layout.Views.Insert(0, split);
+                    split.Proportion = double.NaN;
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
@@ -496,6 +497,7 @@ namespace Dock.Model
 
                     splitter.Parent = layout;
                     split.Context = layout.Context;
+                    split.Proportion = double.NaN;
                     break;
             }
         }

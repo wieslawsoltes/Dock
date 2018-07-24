@@ -481,54 +481,104 @@ namespace Dock.Model
                 }
             }
 
-            var layout = CreateLayoutDock();
-            layout.Id = nameof(ILayoutDock);
-            layout.Title = nameof(ILayoutDock);
-            layout.CurrentView = null;
-            layout.Proportion = containerProportion;
+            var layout = dock.Parent as ILayoutDock;
+
+            bool createLayout = layout == null ? true : false;
+
+            if (!createLayout)
+            {
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Right:
+                        if (layout.Orientation != Orientation.Horizontal)
+                        {
+                            createLayout = true;
+                        }
+                        break;
+
+                    case DockOperation.Top:
+                    case DockOperation.Bottom:
+                        if (layout.Orientation != Orientation.Vertical)
+                        {
+                            createLayout = true;
+                        }
+                        break;
+                }
+            }
+
+            if (createLayout)
+            {
+                layout = CreateLayoutDock();
+                layout.Id = nameof(ILayoutDock);
+                layout.Title = nameof(ILayoutDock);
+                layout.CurrentView = null;
+                layout.Proportion = containerProportion;
+
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Right:
+                        layout.Orientation = Orientation.Horizontal;
+                        break;
+                    case DockOperation.Top:
+                    case DockOperation.Bottom:
+                        layout.Orientation = Orientation.Vertical;
+                        break;
+                }
+
+                layout.Views = CreateList<IView>();
+            }
 
             var splitter = CreateSplitterDock();
             splitter.Id = nameof(ISplitterDock);
             splitter.Title = nameof(ISplitterDock);
 
-            switch (operation)
+            if (createLayout)
             {
-                case DockOperation.Left:
-                case DockOperation.Right:
-                    layout.Orientation = Orientation.Horizontal;
-                    break;
-                case DockOperation.Top:
-                case DockOperation.Bottom:
-                    layout.Orientation = Orientation.Vertical;
-                    break;
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Top:
+                        layout.Views.Add(split);
+                        break;
+                    case DockOperation.Right:
+                    case DockOperation.Bottom:
+                        layout.Views.Add(dock);
+                        break;
+                }
+
+                layout.Views.Add(splitter);
+
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Top:
+                        layout.Views.Add(dock);
+                        break;
+                    case DockOperation.Right:
+                    case DockOperation.Bottom:
+                        layout.Views.Add(split);
+                        break;
+                }
             }
-
-            layout.Views = CreateList<IView>();
-
-            switch (operation)
+            else
             {
-                case DockOperation.Left:
-                case DockOperation.Top:
-                    layout.Views.Add(split);
-                    break;
-                case DockOperation.Right:
-                case DockOperation.Bottom:
-                    layout.Views.Add(dock);
-                    break;
-            }
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Top:
+                        layout.Views.Insert(0, splitter);
+                        layout.Views.Insert(0, split);
+                        break;
+                    case DockOperation.Right:
+                    case DockOperation.Bottom:
+                        layout.Views.Add(splitter);
+                        layout.Views.Add(split);
 
-            layout.Views.Add(splitter);
-
-            switch (operation)
-            {
-                case DockOperation.Left:
-                case DockOperation.Top:
-                    layout.Views.Add(dock);
-                    break;
-                case DockOperation.Right:
-                case DockOperation.Bottom:
-                    layout.Views.Add(split);
-                    break;
+                        splitter.Parent = layout;
+                        break;
+                }
             }
 
             return layout;
@@ -545,8 +595,12 @@ namespace Dock.Model
                 case DockOperation.Bottom:
                     {
                         var layout = CreateSplitLayout(dock, view, dock.Context, operation);
-                        Replace(dock, layout);
-                        Update(layout, dock.Context, dock.Parent);
+
+                        if (layout != dock.Parent)
+                        {
+                            Replace(dock, layout);
+                            Update(layout, dock.Context, dock.Parent);
+                        }
                     }
                     break;
                 default:

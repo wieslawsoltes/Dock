@@ -9,11 +9,6 @@ namespace Dock.Model.Controls
     public interface ILayoutDock : IDock
     {
         /// <summary>
-        /// Gets or sets splitter proportion.
-        /// </summary>
-        double Proportion { get; set; }
-
-        /// <summary>
         /// Gets or sets layout orientation.
         /// </summary>
         Orientation Orientation { get; set; }

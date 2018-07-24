@@ -29,6 +29,16 @@ namespace Dock.Model
             _navigateAdapter = new NavigateAdapter(this);
         }
 
+        private double _proportion = double.NaN;
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public double Proportion
+        {
+            get => _proportion;
+            set => this.RaiseAndSetIfChanged(ref _proportion, value);
+        }
+
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IView> Views

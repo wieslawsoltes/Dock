@@ -85,5 +85,10 @@ namespace Dock.Model
         /// Cloe layout.
         /// </summary>
         void Close();
+
+        /// <summary> 
+        /// Gets or sets splitter proportion. 
+        /// </summary> 
+        double Proportion { get; set; }
     }
 }

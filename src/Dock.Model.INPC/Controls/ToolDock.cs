@@ -10,14 +10,5 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class ToolDock : DockBase, IToolDock
     {
-        private double _proportion;
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double Proportion
-        {
-            get => _proportion;
-            set => this.RaiseAndSetIfChanged(ref _proportion, value);
-        }
     }
 }

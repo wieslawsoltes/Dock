@@ -21,6 +21,7 @@ namespace Dock.Model
         private IList<IDockWindow> _windows;
         private IDockFactory _factory;
         private double _proportion = double.NaN;
+        private bool _isCollapsable = true;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -106,6 +107,14 @@ namespace Dock.Model
         {
             get => _proportion;
             set => this.RaiseAndSetIfChanged(ref _proportion, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool IsCollapsable
+        {
+            get => _isCollapsable;
+            set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
         }
 
         /// <inheritdoc/>

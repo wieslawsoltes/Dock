@@ -7,6 +7,38 @@ namespace Dock.Avalonia.Editor
     {
         public IView Layout { get; set; }
 
+        private void Copy(IView source, IView destination, bool bCopyViews, bool bCopyWindows)
+        {
+            destination.Id = source.Id;
+            destination.Title = source.Title;
+            destination.Context = source.Context;
+
+            if (source is IDock sourceDock && destination is IDock destinationDock)
+            {
+                destinationDock.Proportion = sourceDock.Proportion;
+                destinationDock.IsActive = sourceDock.IsActive;
+                destinationDock.IsCollapsable = sourceDock.IsCollapsable;
+
+                if (bCopyViews)
+                {
+                    destinationDock.Views = sourceDock.Views;
+                    destinationDock.CurrentView = sourceDock.CurrentView;
+                    destinationDock.DefaultView = sourceDock.DefaultView;
+                    destinationDock.FocusedView = sourceDock.FocusedView;
+                }
+
+                if (bCopyWindows)
+                {
+                    destinationDock.Windows = sourceDock.Windows;
+                }
+            }
+
+            if (source is ILayoutDock sourceLayoutDock && destination is ILayoutDock destinationLayoutDock)
+            {
+                destinationLayoutDock.Orientation = sourceLayoutDock.Orientation;
+            }
+        }
+
         private void InsertLayout(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
@@ -281,40 +313,6 @@ namespace Dock.Avalonia.Editor
             {
                 int index = parent.Views.IndexOf(dock) + 1;
                 InsertDocumentTab(parent, index);
-            }
-        }
-
-        private void Copy(IView source, IView destination, bool bCopyViews, bool bCopyWindows)
-        {
-            destination.Id = source.Id;
-            destination.Title = source.Title;
-
-            if (source is ILayoutDock sourceLayoutDock && destination is ILayoutDock destinationLayoutDock)
-            {
-                destinationLayoutDock.Proportion = sourceLayoutDock.Proportion;
-                destinationLayoutDock.Orientation = sourceLayoutDock.Orientation;
-            }
-
-            if (source is ITabDock sourceTabDock && destination is ITabDock destinationTabDock)
-            {
-                destinationTabDock.Proportion = sourceTabDock.Proportion;
-            }
-
-            if (source is IDock sourceDock && destination is IDock destinationDock)
-            {
-                if (bCopyViews)
-                {
-                    destinationDock.Views = sourceDock.Views;
-                    destinationDock.CurrentView = sourceDock.CurrentView;
-                    destinationDock.DefaultView = sourceDock.DefaultView;
-                    destinationDock.FocusedView = sourceDock.FocusedView;
-                    destinationDock.IsActive = sourceDock.IsActive;
-                }
-
-                if (bCopyWindows)
-                {
-                    destinationDock.Windows = sourceDock.Windows;
-                }
             }
         }
 

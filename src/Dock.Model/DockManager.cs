@@ -108,7 +108,7 @@ namespace Dock.Model
 #if DEBUG
             Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
 #endif
-            if (sourceTab.Parent is ITabDock sourceTabParent )
+            if (sourceTab.Parent is ITabDock sourceTabParent)
             {
                 var targetTab = targetTabParent.Views.LastOrDefault();
 
@@ -232,11 +232,11 @@ namespace Dock.Model
             {
                 case DockOperation.Fill:
                     {
-                        if (sourceView != targetView 
+                        if (sourceView != targetView
                             && sourceView.Parent != targetView
                             && sourceView.Parent is IDock sourceViewParent
                             && sourceViewParent.Factory is IDockFactory factory
-                            && factory.FindRoot(sourceView) is IDock root 
+                            && factory.FindRoot(sourceView) is IDock root
                             && root.CurrentView is IDock currentViewRoot)
                         {
                             if (bExecute)
@@ -246,7 +246,7 @@ namespace Dock.Model
                                 var window = factory.CreateWindowFrom(sourceView);
                                 if (window != null)
                                 {
-                                    factory.AddWindow(currentViewRoot, window, sourceView.Context);
+                                    factory.AddWindow(currentViewRoot, window);
 
                                     window.X = ScreenPosition.X;
                                     window.Y = ScreenPosition.Y;

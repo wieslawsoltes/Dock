@@ -104,16 +104,14 @@ namespace Dock.Model
         /// Initialize layout.
         /// </summary>
         /// <param name="layout">The layout to initialize.</param>
-        /// <param name="context">The context object.</param>
-        void InitLayout(IView layout, object context);
+        void InitLayout(IView layout);
 
         /// <summary>
         /// Gets context.
         /// </summary>
         /// <param name="id">The object id.</param>
-        /// <param name="context">The default context.</param>
-        /// <returns>The located context or default context.</returns>
-        object GetContext(string id, object context);
+        /// <returns>The located context.</returns>
+        object GetContext(string id);
 
         /// <summary>
         /// Gets host.
@@ -126,25 +124,22 @@ namespace Dock.Model
         /// Updates window.
         /// </summary>
         /// <param name="window">The window to update.</param>
-        /// <param name="context">The context object.</param>
         /// <param name="owner">The window owner view.</param>
-        void Update(IDockWindow window, object context, IView owner);
+        void Update(IDockWindow window, IView owner);
 
         /// <summary>
         /// Update view.
         /// </summary>
         /// <param name="view">The view to update.</param>
-        /// <param name="context">The context object.</param>
         /// <param name="parent">The parent view.</param>
-        void Update(IView view, object context, IView parent);
+        void Update(IView view, IView parent);
 
         /// <summary>
         /// Adds <see cref="IView"/> into dock <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The parent dock.</param>
         /// <param name="view">The view to add.</param>
-        /// <param name="context">The view context.</param>
-        void AddView(IDock dock, IView view, object context);
+        void AddView(IDock dock, IView view);
 
         /// <summary>
         /// Inserts <see cref="IView"/> into dock <see cref="IDock.Views"/> collection.
@@ -152,16 +147,14 @@ namespace Dock.Model
         /// <param name="dock">The parent dock.</param>
         /// <param name="view">The view to add.</param>
         /// <param name="index">The view index.</param>
-        /// <param name="context">The view context.</param>
-        void InsertView(IDock dock, IView view, int index, object context);
+        void InsertView(IDock dock, IView view, int index);
 
         /// <summary>
         /// Adds window into dock windows list.
         /// </summary>
         /// <param name="dock">The window dock.</param>
         /// <param name="window">The window to add.</param>
-        /// <param name="context">The context for dock window.</param>
-        void AddWindow(IDock dock, IDockWindow window, object context);
+        void AddWindow(IDock dock, IDockWindow window);
 
         /// <summary>
         /// Removes window from owner windows list.
@@ -264,10 +257,9 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
         /// <param name="view">The optional view to add to splitted side.</param>
-        /// <param name="context">The context object.</param>
         /// <param name="operation">The dock operation.</param>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation);
+        IDock CreateSplitLayout(IDock dock, IView view, DockOperation operation);
 
         /// <summary>
         /// Splits dock and updates parent layout.

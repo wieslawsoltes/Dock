@@ -7,7 +7,7 @@ namespace Dock.Avalonia.Editor
     {
         public IView Layout { get; set; }
 
-        private void InsertLayout(IDock dock, int index, object context)
+        private void InsertLayout(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
@@ -16,22 +16,22 @@ namespace Dock.Avalonia.Editor
                 view.Title = nameof(ILayoutDock);
                 view.Proportion = double.NaN;
                 view.Orientation = Orientation.Horizontal;
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertRoot(IDock dock, int index, object context)
+        private void InsertRoot(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
                 var view = factory.CreateRootDock();
                 view.Id = nameof(IRootDock);
                 view.Title = nameof(IRootDock);
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertSplitter(IDock dock, int index, object context)
+        private void InsertSplitter(IDock dock, int index)
         {
 
             if (dock.Factory is IDockFactory factory)
@@ -39,11 +39,11 @@ namespace Dock.Avalonia.Editor
                 var view = factory.CreateSplitterDock();
                 view.Id = nameof(ISplitterDock);
                 view.Title = nameof(ISplitterDock);
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertDocument(IDock dock, int index, object context)
+        private void InsertDocument(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
@@ -51,11 +51,11 @@ namespace Dock.Avalonia.Editor
                 view.Id = nameof(IDocumentDock);
                 view.Title = nameof(IDocumentDock);
                 view.Proportion = double.NaN;
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertTool(IDock dock, int index, object context)
+        private void InsertTool(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
@@ -63,81 +63,81 @@ namespace Dock.Avalonia.Editor
                 view.Id = nameof(IToolDock);
                 view.Title = nameof(IToolDock);
                 view.Proportion = double.NaN;
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertView(IDock dock, int index, object context)
+        private void InsertView(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
                 var view = factory.CreateView();
                 view.Id = nameof(IView);
                 view.Title = nameof(IView);
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertToolTab(IDock dock, int index, object context)
+        private void InsertToolTab(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
                 var view = factory.CreateToolTab();
                 view.Id = nameof(IToolTab);
                 view.Title = nameof(IToolTab);
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
-        private void InsertDocumentTab(IDock dock, int index, object context)
+        private void InsertDocumentTab(IDock dock, int index)
         {
             if (dock.Factory is IDockFactory factory)
             {
                 var view = factory.CreateDocumentTab();
                 view.Id = nameof(IDocumentTab);
                 view.Title = nameof(IDocumentTab);
-                factory.InsertView(dock, view, index, context);
+                factory.InsertView(dock, view, index);
             }
         }
 
         public virtual void AddLayout(IDock dock)
         {
-            InsertLayout(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertLayout(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddRoot(IDock dock)
         {
-            InsertRoot(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertRoot(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddSplitter(IDock dock)
         {
-            InsertSplitter(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertSplitter(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddDocument(IDock dock)
         {
-            InsertDocument(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertDocument(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddTool(IDock dock)
         {
-            InsertTool(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertTool(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddView(IDock dock)
         {
-            InsertView(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertView(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddToolTab(IDock dock)
         {
-            InsertToolTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertToolTab(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void AddDocumentTab(IDock dock)
         {
-            InsertDocumentTab(dock, dock.Views != null ? dock.Views.Count : 0, dock.Context);
+            InsertDocumentTab(dock, dock.Views != null ? dock.Views.Count : 0);
         }
 
         public virtual void InsertLayoutBefore(IDock dock)
@@ -145,7 +145,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertLayout(parent, index, parent.Context);
+                InsertLayout(parent, index);
             }
         }
 
@@ -154,7 +154,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertRoot(parent, index, parent.Context);
+                InsertRoot(parent, index);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertSplitter(parent, index, parent.Context);
+                InsertSplitter(parent, index);
             }
         }
 
@@ -172,7 +172,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertDocument(parent, index, parent.Context);
+                InsertDocument(parent, index);
             }
         }
 
@@ -181,7 +181,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertTool(parent, index, parent.Context);
+                InsertTool(parent, index);
             }
         }
 
@@ -190,7 +190,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertView(parent, index, parent.Context);
+                InsertView(parent, index);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertToolTab(parent, index, parent.Context);
+                InsertToolTab(parent, index);
             }
         }
 
@@ -208,7 +208,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock);
-                InsertDocumentTab(parent, index, parent.Context);
+                InsertDocumentTab(parent, index);
             }
         }
 
@@ -217,7 +217,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertLayout(parent, index, parent.Context);
+                InsertLayout(parent, index);
             }
         }
 
@@ -226,7 +226,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertRoot(parent, index, parent.Context);
+                InsertRoot(parent, index);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertSplitter(parent, index, parent.Context);
+                InsertSplitter(parent, index);
             }
         }
 
@@ -244,7 +244,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertDocument(parent, index, parent.Context);
+                InsertDocument(parent, index);
             }
         }
 
@@ -253,7 +253,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertTool(parent, index, parent.Context);
+                InsertTool(parent, index);
             }
         }
 
@@ -262,7 +262,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertView(parent, index, parent.Context);
+                InsertView(parent, index);
             }
         }
 
@@ -271,7 +271,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertToolTab(parent, index, parent.Context);
+                InsertToolTab(parent, index);
             }
         }
 
@@ -280,7 +280,7 @@ namespace Dock.Avalonia.Editor
             if (dock.Parent is IDock parent && parent.Views != null)
             {
                 int index = parent.Views.IndexOf(dock) + 1;
-                InsertDocumentTab(parent, index, parent.Context);
+                InsertDocumentTab(parent, index);
             }
         }
 
@@ -324,7 +324,7 @@ namespace Dock.Avalonia.Editor
             {
                 var layout = factory.CreateLayoutDock();
                 Copy(dock, layout, true, true);
-                factory.Update(layout, dock.Context, dock.Parent);
+                factory.Update(layout, dock.Parent);
                 factory.Replace(dock, layout);
             }
         }
@@ -335,7 +335,7 @@ namespace Dock.Avalonia.Editor
             {
                 var root = factory.CreateRootDock();
                 Copy(dock, root, true, true);
-                factory.Update(root, dock.Context, dock.Parent);
+                factory.Update(root, dock.Parent);
                 factory.Replace(dock, root);
             }
         }
@@ -346,7 +346,7 @@ namespace Dock.Avalonia.Editor
             {
                 var splitter = factory.CreateSplitterDock();
                 Copy(dock, splitter, false, false);
-                factory.Update(splitter, dock.Context, dock.Parent);
+                factory.Update(splitter, dock.Parent);
                 factory.Replace(dock, splitter);
             }
         }
@@ -357,7 +357,7 @@ namespace Dock.Avalonia.Editor
             {
                 var document = factory.CreateDocumentDock();
                 Copy(dock, document, true, false);
-                factory.Update(document, dock.Context, dock.Parent);
+                factory.Update(document, dock.Parent);
                 factory.Replace(dock, document);
             }
         }
@@ -368,7 +368,7 @@ namespace Dock.Avalonia.Editor
             {
                 var tool = factory.CreateToolDock();
                 Copy(dock, tool, true, false);
-                factory.Update(tool, dock.Context, dock.Parent);
+                factory.Update(tool, dock.Parent);
                 factory.Replace(dock, tool);
             }
         }
@@ -379,7 +379,7 @@ namespace Dock.Avalonia.Editor
             {
                 var view = factory.CreateView();
                 Copy(dock, view, false, true);
-                factory.Update(view, dock.Context, dock.Parent);
+                factory.Update(view, dock.Parent);
                 factory.Replace(dock, view);
             }
         }
@@ -390,7 +390,7 @@ namespace Dock.Avalonia.Editor
             {
                 var toolTab = factory.CreateToolTab();
                 Copy(dock, toolTab, false, true);
-                factory.Update(toolTab, dock.Context, dock.Parent);
+                factory.Update(toolTab, dock.Parent);
                 factory.Replace(dock, toolTab);
             }
         }
@@ -401,7 +401,7 @@ namespace Dock.Avalonia.Editor
             {
                 var documentTab = factory.CreateDocumentTab();
                 Copy(dock, documentTab, false, true);
-                factory.Update(documentTab, dock.Context, dock.Parent);
+                factory.Update(documentTab, dock.Parent);
                 factory.Replace(dock, documentTab);
             }
         }

@@ -44,7 +44,7 @@ namespace AvaloniaDemo.ReactiveUI
                     }
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    vm.Factory.InitLayout(vm.Layout);
                 }
             };
 
@@ -64,7 +64,7 @@ namespace AvaloniaDemo.ReactiveUI
                             root.Close();
                         }
                         vm.Layout = layout;
-                        vm.Factory.InitLayout(vm.Layout, vm);
+                        vm.Factory.InitLayout(vm.Layout);
                     }
                 }
             };
@@ -127,14 +127,14 @@ namespace AvaloniaDemo.ReactiveUI
                         )
                     };
 
-                    vm.Factory.Update(layout, null, vm.Layout);
+                    vm.Factory.Update(layout, vm.Layout);
 
                     var window = vm.Factory.CreateWindowFrom(layout);
                     if (window != null)
                     {
                         if (vm.Layout is IDock root)
                         {
-                            vm.Factory.AddWindow(root, window, null);
+                            vm.Factory.AddWindow(root, window);
                         }
                         window.X = 0;
                         window.Y = 0;

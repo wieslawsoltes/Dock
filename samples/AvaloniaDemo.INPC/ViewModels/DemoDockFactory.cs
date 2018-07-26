@@ -249,48 +249,48 @@ namespace AvaloniaDemo.INPC.ViewModels
             return root;
         }
 
-        public override void InitLayout(IView layout, object context)
+        public override void InitLayout(IView layout)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => context,
-                [nameof(ILayoutDock)] = () => context,
-                [nameof(IDocumentDock)] = () => context,
-                [nameof(IToolDock)] = () => context,
-                [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context,
-                [nameof(IDocumentTab)] = () => context,
-                [nameof(IToolTab)] = () => context,
-                ["Document1"] = () => context,
-                ["Document2"] = () => context,
-                ["Document3"] = () => context,
-                ["LeftTop1"] = () => context,
-                ["LeftTop2"] = () => context,
-                ["LeftTop3"] = () => context,
-                ["LeftBottom1"] = () => context,
-                ["LeftBottom2"] = () => context,
-                ["LeftBottom3"] = () => context,
-                ["RightTop1"] = () => context,
-                ["RightTop2"] = () => context,
-                ["RightTop3"] = () => context,
-                ["RightBottom1"] = () => context,
-                ["RightBottom2"] = () => context,
-                ["RightBottom3"] = () => context,
-                ["LeftPane"] = () => context,
-                ["LeftPaneTop"] = () => context,
-                ["LeftPaneTopSplitter"] = () => context,
-                ["LeftPaneBottom"] = () => context,
-                ["RightPane"] = () => context,
-                ["RightPaneTop"] = () => context,
-                ["RightPaneTopSplitter"] = () => context,
-                ["RightPaneBottom"] = () => context,
-                ["DocumentsPane"] = () => context,
-                ["MainLayout"] = () => context,
-                ["LeftSplitter"] = () => context,
-                ["RightSplitter"] = () => context,
-                ["MainLayout"] = () => context,
-                ["Home"] = () => context,
-                ["Main"] = () => context,
+                [nameof(IRootDock)] = () => layout,
+                [nameof(ILayoutDock)] = () => layout,
+                [nameof(IDocumentDock)] = () => layout,
+                [nameof(IToolDock)] = () => layout,
+                [nameof(ISplitterDock)] = () => layout,
+                [nameof(IDockWindow)] = () => layout,
+                [nameof(IDocumentTab)] = () => layout,
+                [nameof(IToolTab)] = () => layout,
+                ["Document1"] = () => layout,
+                ["Document2"] = () => layout,
+                ["Document3"] = () => layout,
+                ["LeftTop1"] = () => layout,
+                ["LeftTop2"] = () => layout,
+                ["LeftTop3"] = () => layout,
+                ["LeftBottom1"] = () => layout,
+                ["LeftBottom2"] = () => layout,
+                ["LeftBottom3"] = () => layout,
+                ["RightTop1"] = () => layout,
+                ["RightTop2"] = () => layout,
+                ["RightTop3"] = () => layout,
+                ["RightBottom1"] = () => layout,
+                ["RightBottom2"] = () => layout,
+                ["RightBottom3"] = () => layout,
+                ["LeftPane"] = () => layout,
+                ["LeftPaneTop"] = () => layout,
+                ["LeftPaneTopSplitter"] = () => layout,
+                ["LeftPaneBottom"] = () => layout,
+                ["RightPane"] = () => layout,
+                ["RightPaneTop"] = () => layout,
+                ["RightPaneTopSplitter"] = () => layout,
+                ["RightPaneBottom"] = () => layout,
+                ["DocumentsPane"] = () => layout,
+                ["MainLayout"] = () => layout,
+                ["LeftSplitter"] = () => layout,
+                ["RightSplitter"] = () => layout,
+                ["MainLayout"] = () => layout,
+                ["Home"] = () => layout,
+                ["Main"] = () => layout,
                 ["Editor"] = () => new LayoutEditor()
                 {
                     Layout = layout
@@ -302,7 +302,7 @@ namespace AvaloniaDemo.INPC.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            base.InitLayout(layout, context);
+            base.InitLayout(layout);
         }
     }
 }

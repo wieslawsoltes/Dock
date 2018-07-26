@@ -41,7 +41,7 @@ namespace AvaloniaDemo.ReactiveUI
                 {
                     vm.Factory = factory;
                     vm.Layout = layout ?? vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    vm.Factory.InitLayout(vm.Layout);
                     return vm;
                 });
 

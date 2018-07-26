@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -38,7 +39,12 @@ namespace Dock.CodeGen
             {
                 return "double.NaN";
             }
-            return $"{value}";
+            return $"{value.ToString(CultureInfo.GetCultureInfo("en-GB"))}";
+        }
+
+        private string FormatBool(bool value)
+        {
+            return value ? "true" : "false";
         }
 
         private void WriteWindow(IDockWindow window, string indent = "")
@@ -104,8 +110,8 @@ namespace Dock.CodeGen
             Output($"{indent}    Id = \"{root.Id}\",");
             Output($"{indent}    Title = \"{root.Title}\",");
             Output($"{indent}    Proportion = {FormatDouble(root.Proportion)},");
-            Output($"{indent}    IsActive = {root.IsActive},");
-            Output($"{indent}    IsCollapsable = {root.IsCollapsable},");
+            Output($"{indent}    IsActive = {FormatBool(root.IsActive)},");
+            Output($"{indent}    IsCollapsable = {FormatBool(root.IsCollapsable)},");
 
             if (root is ILayoutDock layoutDock)
             {

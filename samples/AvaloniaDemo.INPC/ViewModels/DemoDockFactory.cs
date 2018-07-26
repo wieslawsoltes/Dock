@@ -12,6 +12,13 @@ namespace AvaloniaDemo.INPC.ViewModels
 {
     public class DemoDockFactory : DockFactory
     {
+        private object _context;
+
+        public DemoDockFactory(object context)
+        {
+            _context = context;
+        }
+
         public override IDock CreateLayout()
         {
             var document1 = new Document1
@@ -253,44 +260,44 @@ namespace AvaloniaDemo.INPC.ViewModels
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => layout,
-                [nameof(ILayoutDock)] = () => layout,
-                [nameof(IDocumentDock)] = () => layout,
-                [nameof(IToolDock)] = () => layout,
-                [nameof(ISplitterDock)] = () => layout,
-                [nameof(IDockWindow)] = () => layout,
-                [nameof(IDocumentTab)] = () => layout,
-                [nameof(IToolTab)] = () => layout,
-                ["Document1"] = () => layout,
-                ["Document2"] = () => layout,
-                ["Document3"] = () => layout,
-                ["LeftTop1"] = () => layout,
-                ["LeftTop2"] = () => layout,
-                ["LeftTop3"] = () => layout,
-                ["LeftBottom1"] = () => layout,
-                ["LeftBottom2"] = () => layout,
-                ["LeftBottom3"] = () => layout,
-                ["RightTop1"] = () => layout,
-                ["RightTop2"] = () => layout,
-                ["RightTop3"] = () => layout,
-                ["RightBottom1"] = () => layout,
-                ["RightBottom2"] = () => layout,
-                ["RightBottom3"] = () => layout,
-                ["LeftPane"] = () => layout,
-                ["LeftPaneTop"] = () => layout,
-                ["LeftPaneTopSplitter"] = () => layout,
-                ["LeftPaneBottom"] = () => layout,
-                ["RightPane"] = () => layout,
-                ["RightPaneTop"] = () => layout,
-                ["RightPaneTopSplitter"] = () => layout,
-                ["RightPaneBottom"] = () => layout,
-                ["DocumentsPane"] = () => layout,
-                ["MainLayout"] = () => layout,
-                ["LeftSplitter"] = () => layout,
-                ["RightSplitter"] = () => layout,
-                ["MainLayout"] = () => layout,
+                [nameof(IRootDock)] = () => _context,
+                [nameof(ILayoutDock)] = () => _context,
+                [nameof(IDocumentDock)] = () => _context,
+                [nameof(IToolDock)] = () => _context,
+                [nameof(ISplitterDock)] = () => _context,
+                [nameof(IDockWindow)] = () => _context,
+                [nameof(IDocumentTab)] = () => _context,
+                [nameof(IToolTab)] = () => _context,
+                ["Document1"] = () => _context,
+                ["Document2"] = () => _context,
+                ["Document3"] = () => _context,
+                ["LeftTop1"] = () => _context,
+                ["LeftTop2"] = () => _context,
+                ["LeftTop3"] = () => _context,
+                ["LeftBottom1"] = () => _context,
+                ["LeftBottom2"] = () => _context,
+                ["LeftBottom3"] = () => _context,
+                ["RightTop1"] = () => _context,
+                ["RightTop2"] = () => _context,
+                ["RightTop3"] = () => _context,
+                ["RightBottom1"] = () => _context,
+                ["RightBottom2"] = () => _context,
+                ["RightBottom3"] = () => _context,
+                ["LeftPane"] = () => _context,
+                ["LeftPaneTop"] = () => _context,
+                ["LeftPaneTopSplitter"] = () => _context,
+                ["LeftPaneBottom"] = () => _context,
+                ["RightPane"] = () => _context,
+                ["RightPaneTop"] = () => _context,
+                ["RightPaneTopSplitter"] = () => _context,
+                ["RightPaneBottom"] = () => _context,
+                ["DocumentsPane"] = () => _context,
+                ["MainLayout"] = () => _context,
+                ["LeftSplitter"] = () => _context,
+                ["RightSplitter"] = () => _context,
+                ["MainLayout"] = () => _context,
                 ["Home"] = () => layout,
-                ["Main"] = () => layout,
+                ["Main"] = () => _context,
                 ["Editor"] = () => new LayoutEditor()
                 {
                     Layout = layout

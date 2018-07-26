@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.ReactiveUI.Factories;
 using AvaloniaDemo.ReactiveUI.Model;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using Dock.Model;

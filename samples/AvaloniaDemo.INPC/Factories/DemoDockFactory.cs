@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using AvaloniaDemo.ReactiveUI.ViewModels.Documents;
-using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
-using AvaloniaDemo.ReactiveUI.ViewModels.Views;
+using AvaloniaDemo.INPC.Model;
+using AvaloniaDemo.INPC.ViewModels.Documents;
+using AvaloniaDemo.INPC.ViewModels.Tools;
+using AvaloniaDemo.INPC.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.ReactiveUI.ViewModels
+namespace AvaloniaDemo.INPC.Factories
 {
     public class DemoDockFactory : DockFactory
     {
@@ -268,9 +269,9 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
                 [nameof(IDockWindow)] = () => _context,
                 [nameof(IDocumentTab)] = () => _context,
                 [nameof(IToolTab)] = () => _context,
-                ["Document1"] = () => _context,
-                ["Document2"] = () => _context,
-                ["Document3"] = () => _context,
+                ["Document1"] = () => new Document1Model(),
+                ["Document2"] = () => new Document2Model(),
+                ["Document3"] = () => new Document3Model(),
                 ["LeftTop1"] = () => _context,
                 ["LeftTop2"] = () => _context,
                 ["LeftTop3"] = () => _context,

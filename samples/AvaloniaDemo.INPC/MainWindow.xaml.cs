@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.INPC.Factories;
 using AvaloniaDemo.INPC.ViewModels;
 using AvaloniaDemo.INPC.ViewModels.Tools;
 using Dock.Avalonia;

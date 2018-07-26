@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.INPC.Factories;
 using AvaloniaDemo.INPC.Model;
 using AvaloniaDemo.INPC.ViewModels;
 using Dock.Model;

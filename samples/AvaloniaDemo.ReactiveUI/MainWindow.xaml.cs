@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.ReactiveUI.Factories;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
 using Dock.Avalonia;

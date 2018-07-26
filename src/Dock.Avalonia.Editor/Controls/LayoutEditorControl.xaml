@@ -42,7 +42,7 @@
         </Style>
     </UserControl.Styles>
     <UserControl.DataTemplates>
-        <TreeDataTemplate DataType="Dock:IView" ItemsSource="{Binding Views}">
+        <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Views}">
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <i:Interaction.Behaviors>
                     <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
@@ -115,6 +115,19 @@
                 </TextBlock.ContextMenu>
             </TextBlock>
         </TreeDataTemplate>
+        <DataTemplate DataType="Dock:IView">
+            <TextBlock Text="{Binding Title}" Classes="drag">
+                <i:Interaction.Behaviors>
+                    <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
+                    <id:DropBehavior Context="{Binding}" Handler="{StaticResource TreeViewDropHandler}"/>
+                </i:Interaction.Behaviors>
+                <TextBlock.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="_Remove" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
+        </DataTemplate>
         <TreeDataTemplate DataType="Dock:IDockWindow" ItemsSource="{Binding Layout.Views}">
             <TextBlock Text="{Binding Title}" Classes="drag">
                 <TextBlock.ContextMenu>

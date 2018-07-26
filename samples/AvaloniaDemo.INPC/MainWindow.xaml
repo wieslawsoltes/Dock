@@ -6,7 +6,7 @@
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:local="clr-namespace:AvaloniaDemo.INPC;assembly=AvaloniaDemo.INPC"
-        UseLayoutRounding="True"
+        UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
         Title="Dock Avalonia Demo" Height="680" Width="1200"

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:editor="clr-namespace:Dock.Avalonia.Editor.Controls;assembly=Dock.Avalonia.Editor"
+             xmlns:views="clr-namespace:AvaloniaDemo.INPC.Views;assembly=AvaloniaDemo.INPC"
              xmlns:Documents="clr-namespace:AvaloniaDemo.INPC.ViewModels.Documents;assembly=AvaloniaDemo.INPC"
              xmlns:Tools="clr-namespace:AvaloniaDemo.INPC.ViewModels.Tools;assembly=AvaloniaDemo.INPC"
              xmlns:Views="clr-namespace:AvaloniaDemo.INPC.ViewModels.Views;assembly=AvaloniaDemo.INPC">
@@ -22,140 +23,50 @@
     <Application.DataTemplates>
         <!-- Documents -->
         <DataTemplate DataType="Documents:Document1">
-            <Grid Focusable="True" Background="Gray">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:Document1/>
         </DataTemplate>
         <DataTemplate DataType="Documents:Document2">
-            <Grid Focusable="True" Background="Gray">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:Document2/>
         </DataTemplate>
         <DataTemplate DataType="Documents:Document3">
-            <Grid Focusable="True" Background="Gray">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:Document3/>
         </DataTemplate>
         <!-- Tools -->
         <DataTemplate DataType="Tools:LeftTopTool1">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftTopTool1/>
         </DataTemplate>
         <DataTemplate DataType="Tools:LeftTopTool2">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftTopTool2/>
         </DataTemplate>
         <DataTemplate DataType="Tools:LeftTopTool3">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftTopTool3/>
         </DataTemplate>
         <DataTemplate DataType="Tools:LeftBottomTool1">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftBottomTool1/>
         </DataTemplate>
         <DataTemplate DataType="Tools:LeftBottomTool2">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftBottomTool2/>
         </DataTemplate>
         <DataTemplate DataType="Tools:LeftBottomTool3">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:LeftBottomTool3/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightTopTool1">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightTopTool1/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightTopTool2">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightTopTool2/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightTopTool3">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightTopTool3/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightBottomTool1">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightBottomTool1/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightBottomTool2">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightBottomTool2/>
         </DataTemplate>
         <DataTemplate DataType="Tools:RightBottomTool3">
-            <Grid Focusable="True" Background="WhiteSmoke">
-                <StackPanel>
-                    <TextBlock Text="{Binding Id}"/>
-                    <TextBlock Text="{Binding Title}"/>
-                    <TextBlock Text="{Binding Context}"/>
-                </StackPanel>
-            </Grid>
+            <views:RightBottomTool3/>
         </DataTemplate>
         <DataTemplate DataType="Tools:EditorTool">
             <editor:LayoutEditorControl DataContext="{Binding Context}"/>

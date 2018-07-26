@@ -16,11 +16,11 @@ namespace Dock.Model
         private IView _currentView;
         private IView _defaultView;
         private IView _focusedView;
+        private double _proportion = double.NaN;
         private bool _isActive;
+        private bool _isCollapsable = true;
         private IList<IDockWindow> _windows;
         private IDockFactory _factory;
-        private double _proportion = double.NaN;
-        private bool _isCollapsable = true;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -70,10 +70,26 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public double Proportion
+        {
+            get => _proportion;
+            set => this.RaiseAndSetIfChanged(ref _proportion, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool IsActive
         {
             get => _isActive;
             set => this.RaiseAndSetIfChanged(ref _isActive, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool IsCollapsable
+        {
+            get => _isCollapsable;
+            set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
         }
 
         /// <inheritdoc/>
@@ -98,22 +114,6 @@ namespace Dock.Model
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public double Proportion
-        {
-            get => _proportion;
-            set => this.RaiseAndSetIfChanged(ref _proportion, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public bool IsCollapsable
-        {
-            get => _isCollapsable;
-            set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
         }
 
         /// <inheritdoc/>

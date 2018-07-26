@@ -9,17 +9,23 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <ScrollViewer>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
             <TextBlock Text="CurrentView:" Grid.Row="0" Grid.Column="0"/>
             <TextBox Text="{Binding CurrentView.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="0" Grid.Column="1"/>
             <TextBlock Text="DefaultView:" Grid.Row="1" Grid.Column="0"/>
             <TextBox Text="{Binding DefaultView.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="1" Grid.Column="1"/>
             <TextBlock Text="FocusedView:" Grid.Row="2" Grid.Column="0"/>
             <TextBox Text="{Binding FocusedView.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
-            <TextBlock Text="CanGoBack:" Grid.Row="3" Grid.Column="0"/>
-            <CheckBox IsChecked="{Binding CanGoBack, Mode=OneWay}" IsEnabled="False" Grid.Row="3" Grid.Column="1"/>
-            <TextBlock Text="CanGoForward:" Grid.Row="4" Grid.Column="0"/>
-            <CheckBox IsChecked="{Binding CanGoForward, Mode=OneWay}" IsEnabled="False" Grid.Row="4" Grid.Column="1"/>
+            <TextBlock Text="Proportion:" Grid.Row="3" Grid.Column="0"/>
+            <TextBox Text="{Binding Proportion, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
+            <TextBlock Text="IsActive:" Grid.Row="4" Grid.Column="0"/>
+            <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" IsEnabled="True" Grid.Row="4" Grid.Column="1"/>
+            <TextBlock Text="IsCollapsable:" Grid.Row="5" Grid.Column="0"/>
+            <CheckBox IsChecked="{Binding IsCollapsable, Mode=TwoWay}" IsEnabled="True" Grid.Row="5" Grid.Column="1"/>
+            <TextBlock Text="CanGoBack:" Grid.Row="6" Grid.Column="0"/>
+            <CheckBox IsChecked="{Binding CanGoBack, Mode=OneWay}" IsEnabled="False" Grid.Row="6" Grid.Column="1"/>
+            <TextBlock Text="CanGoForward:" Grid.Row="7" Grid.Column="0"/>
+            <CheckBox IsChecked="{Binding CanGoForward, Mode=OneWay}" IsEnabled="False" Grid.Row="7" Grid.Column="1"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

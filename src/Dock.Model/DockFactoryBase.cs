@@ -455,6 +455,58 @@ namespace Dock.Model
             }
         }
 
+        public virtual void SplitExistingLayout (IDock dock, IView view, DockOperation operation)
+        {
+            IDock split;
+
+            if (view is IDock viewDock)
+            {
+                split = viewDock;
+            }
+            else
+            {
+                split = CreateLayoutDock();
+                split.Id = nameof(ILayoutDock);
+                split.Title = nameof(ILayoutDock);
+
+                if (view != null)
+                {
+                    split.CurrentView = view;
+                    split.Views = CreateList<IView>();
+                    split.Views.Add(view);
+                }
+            }
+
+            var splitter = CreateSplitterDock();
+            splitter.Id = nameof(ISplitterDock);
+            splitter.Title = nameof(ISplitterDock);
+            var layout = dock.Parent as ILayoutDock;
+
+            var index = layout.Views.IndexOf(dock);
+
+            switch (operation)
+            {
+                case DockOperation.Left:
+                case DockOperation.Top:
+                    layout.Views.Insert(index, splitter);
+                    layout.Views.Insert(index, split);
+                    split.Proportion = dock.Proportion / 2;
+                    dock.Proportion /= 2;
+                    break;
+                case DockOperation.Right:
+                case DockOperation.Bottom:
+                    layout.Views.Insert(index + 1, split);
+                    layout.Views.Insert(index + 1, splitter);
+
+                    splitter.Parent = layout;
+                    split.Context = layout.Context;
+
+                    split.Proportion = dock.Proportion / 2;
+                    dock.Proportion /= 2;
+                    break;
+            }
+        }
+
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
         {
@@ -487,10 +539,6 @@ namespace Dock.Model
             layout.CurrentView = null;
             layout.Proportion = containerProportion;
 
-            var splitter = CreateSplitterDock();
-            splitter.Id = nameof(ISplitterDock);
-            splitter.Title = nameof(ISplitterDock);
-
             switch (operation)
             {
                 case DockOperation.Left:
@@ -504,6 +552,10 @@ namespace Dock.Model
             }
 
             layout.Views = CreateList<IView>();
+
+            var splitter = CreateSplitterDock();
+            splitter.Id = nameof(ISplitterDock);
+            splitter.Title = nameof(ISplitterDock);
 
             switch (operation)
             {
@@ -534,6 +586,37 @@ namespace Dock.Model
             return layout;
         }
 
+        private bool NewLayoutRequired(IDock dock, DockOperation operation)
+        {
+            var layout = dock.Parent as ILayoutDock;
+
+            bool result = layout == null ? true : false;
+
+            if (!result)
+            {
+                switch (operation)
+                {
+                    case DockOperation.Left:
+                    case DockOperation.Right:
+                        if (layout.Orientation != Orientation.Horizontal)
+                        {
+                            result = true;
+                        }
+                        break;
+
+                    case DockOperation.Top:
+                    case DockOperation.Bottom:
+                        if (layout.Orientation != Orientation.Vertical)
+                        {
+                            result = true;
+                        }
+                        break;
+                }
+            }
+
+            return result;
+        }
+
         /// <inheritdoc/>
         public virtual void Split(IDock dock, IView view, DockOperation operation)
         {
@@ -544,9 +627,17 @@ namespace Dock.Model
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        var layout = CreateSplitLayout(dock, view, dock.Context, operation);
-                        Replace(dock, layout);
-                        Update(layout, dock.Context, dock.Parent);
+                        if (NewLayoutRequired(dock, operation))
+                        {
+                            var layout = CreateSplitLayout(dock, view, dock.Context, operation);
+
+                            Replace(dock, layout);
+                            Update(layout, dock.Context, dock.Parent);
+                        }
+                        else
+                        {
+                            SplitExistingLayout(dock, view, operation);
+                        }
                     }
                     break;
                 default:

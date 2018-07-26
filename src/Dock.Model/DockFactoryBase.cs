@@ -54,9 +54,9 @@ namespace Dock.Model
         public abstract IDock CreateDock();
 
         /// <inheritdoc/>
-        public virtual void InitLayout(IView layout, object context)
+        public virtual void InitLayout(IView layout)
         {
-            Update(layout, context, null);
+            Update(layout, null);
             if (layout is IDock root)
             {
                 root.ShowWindows();
@@ -72,7 +72,7 @@ namespace Dock.Model
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>
-        public virtual object GetContext(string id, object context)
+        public virtual object GetContext(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
@@ -82,7 +82,7 @@ namespace Dock.Model
                     return locator?.Invoke();
                 }
             }
-            return context;
+            return null;
         }
 
         /// <inheritdoc/>
@@ -100,24 +100,33 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void Update(IDockWindow window, object context, IView owner)
+        public virtual void Update(IDockWindow window, IView owner)
         {
             window.Host = GetHost(window.Id);
             window.Host.Window = window;
-            window.Context = GetContext(window.Id, context);
+
+            if (GetContext(window.Id) is object context)
+            {
+                window.Context = context;
+            }
+
             window.Owner = owner;
             window.Factory = this;
 
             if (window.Layout != null)
             {
-                Update(window.Layout, context, window.Layout.Parent);
+                Update(window.Layout, window.Layout.Parent);
             }
         }
 
         /// <inheritdoc/>
-        public virtual void Update(IView view, object context, IView parent)
+        public virtual void Update(IView view, IView parent)
         {
-            view.Context = GetContext(view.Id, context);
+            if (GetContext(view.Id) is object context)
+            {
+                view.Context = context;
+            }
+
             view.Parent = parent;
 
             if (view is IDock dock)
@@ -128,7 +137,7 @@ namespace Dock.Model
                 {
                     foreach (var child in dock.Views)
                     {
-                        Update(child, context, view);
+                        Update(child, view);
                     }
                 }
 
@@ -136,16 +145,16 @@ namespace Dock.Model
                 {
                     foreach (var child in dock.Windows)
                     {
-                        Update(child, context, view);
+                        Update(child, view);
                     }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public virtual void AddView(IDock dock, IView view, object context)
+        public virtual void AddView(IDock dock, IView view)
         {
-            Update(view, context, dock);
+            Update(view, dock);
             if (dock.Views == null)
             {
                 dock.Views = CreateList<IView>();
@@ -154,9 +163,9 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void InsertView(IDock dock, IView view, int index, object context)
+        public virtual void InsertView(IDock dock, IView view, int index)
         {
-            Update(view, context, dock);
+            Update(view, dock);
             if (dock.Views == null)
             {
                 dock.Views = CreateList<IView>();
@@ -165,14 +174,14 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void AddWindow(IDock dock, IDockWindow window, object context)
+        public virtual void AddWindow(IDock dock, IDockWindow window)
         {
             if (dock.Windows == null)
             {
                 dock.Windows = CreateList<IDockWindow>();
             }
             dock.Windows.Add(window);
-            Update(window, context, dock);
+            Update(window, dock);
         }
 
         /// <inheritdoc/>
@@ -370,7 +379,7 @@ namespace Dock.Model
                 targetIndex += 1;
 
             targetDock.Views.Insert(targetIndex, sourceView);
-            Update(sourceView, sourceView.Context, targetDock);
+            Update(sourceView, targetDock);
             targetDock.CurrentView = sourceView;
         }
 
@@ -382,7 +391,7 @@ namespace Dock.Model
                 RemoveView(first);
 
                 targetDock.Views.Add(first);
-                Update(first, first.Context, second);
+                Update(first, second);
                 targetDock.CurrentView = first;
             }
         }
@@ -404,8 +413,8 @@ namespace Dock.Model
                 sourceDock.Views.Insert(firstIndex, second);
                 targetDock.Views.Insert(secondIndex, first);
 
-                Update(first, first.Context, secondParent);
-                Update(second, second.Context, firstParent);
+                Update(first, secondParent);
+                Update(second, firstParent);
 
                 sourceDock.CurrentView = second;
                 targetDock.CurrentView = first;
@@ -437,8 +446,8 @@ namespace Dock.Model
             sourceDock.Views[sourceIndex] = originalTargetView;
             targetDock.Views[targetIndex] = originalSourceView;
 
-            Update(originalSourceView, originalSourceView.Context, targetDock);
-            Update(originalTargetView, originalTargetView.Context, sourceDock);
+            Update(originalSourceView, targetDock);
+            Update(originalTargetView, sourceDock);
 
             sourceDock.CurrentView = originalTargetView;
             targetDock.CurrentView = originalSourceView;
@@ -456,7 +465,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDock CreateSplitLayout(IDock dock, IView view, object context, DockOperation operation)
+        public virtual IDock CreateSplitLayout(IDock dock, IView view, DockOperation operation)
         {
             IDock split = null;
 
@@ -544,9 +553,9 @@ namespace Dock.Model
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        var layout = CreateSplitLayout(dock, view, dock.Context, operation);
+                        var layout = CreateSplitLayout(dock, view, operation);
                         Replace(dock, layout);
-                        Update(layout, dock.Context, dock.Parent);
+                        Update(layout, dock.Parent);
                     }
                     break;
                 default:
@@ -594,7 +603,7 @@ namespace Dock.Model
                 var window = CreateWindowFrom(dock);
                 if (window != null)
                 {
-                    AddWindow(currentViewRoot, window, dock.Context);
+                    AddWindow(currentViewRoot, window);
 
                     window.X = 0;
                     window.Y = 0;

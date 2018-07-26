@@ -3,7 +3,7 @@ using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Editor
 {
-    public class LayoutEditor : ILayoutEditor
+    public class LayoutEditor
     {
         public IView Layout { get; set; }
 

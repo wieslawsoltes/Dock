@@ -103,17 +103,19 @@ namespace Dock.CodeGen
             Output($"{indent}{{");
             Output($"{indent}    Id = \"{root.Id}\",");
             Output($"{indent}    Title = \"{root.Title}\",");
+            Output($"{indent}    Proportion = {FormatDouble(root.Proportion)},");
+            Output($"{indent}    IsActive = {root.IsActive},");
+            Output($"{indent}    IsCollapsable = {root.IsCollapsable},");
 
             if (root is ILayoutDock layoutDock)
             {
-                Output($"{indent}    Proportion = {FormatDouble(layoutDock.Proportion)},");
                 Output($"{indent}    Orientation = Orientation.{layoutDock.Orientation},");
             }
 
-            if (root is ITabDock tabDock)
-            {
-                Output($"{indent}    Proportion = {FormatDouble(tabDock.Proportion)},");
-            }
+            //if (root is IRootDock rootDock)
+            //{
+            //    WriteWindow(rootDock.Window, indent);
+            //}
 
             Output($"{indent}}};");
 
@@ -200,17 +202,26 @@ namespace Dock.CodeGen
         {
             Output(@"using System;
 using System.Collections.Generic;
-using AvaloniaDemo.ViewModels.Documents;
-using AvaloniaDemo.ViewModels.Tools;
-using AvaloniaDemo.ViewModels.Views;
+using AvaloniaDemo.INPC.Model;
+using AvaloniaDemo.INPC.ViewModels.Documents;
+using AvaloniaDemo.INPC.ViewModels.Tools;
+using AvaloniaDemo.INPC.ViewModels.Views;
 using Dock.Avalonia.Controls;
-using Dock.Model; 
+using Dock.Avalonia.Editor;
+using Dock.Model;
 using Dock.Model.Controls; 
 
-namespace AvaloniaDemo.ViewModels
+namespace AvaloniaDemo.INPC.Factories
 {
     public class DemoDockFactory : DockFactory
     {
+        private object _context;
+
+        public DemoDockFactory(object context)
+        {
+            _context = context;
+        }
+
         public override IDock CreateLayout()
         {");
         }
@@ -219,18 +230,18 @@ namespace AvaloniaDemo.ViewModels
         {
             Output(@"        }
 
-        public override void InitLayout(IView layout, object context)
+        public override void InitLayout(IView layout)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => context,
-                [nameof(ILayoutDock)] = () => context,
-                [nameof(IDocumentDock)] = () => context,
-                [nameof(IToolDock)] = () => context,
-                [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context,
-                [nameof(IDocumentTab)] = () => context,
-                [nameof(IToolTab)] = () => context
+                [nameof(IRootDock)] = () => _context,
+                [nameof(ILayoutDock)] = () => _context,
+                [nameof(IDocumentDock)] = () => _context,
+                [nameof(IToolDock)] = () => _context,
+                [nameof(ISplitterDock)] = () => _context,
+                [nameof(IDockWindow)] = () => _context,
+                [nameof(IDocumentTab)] = () => _context,
+                [nameof(IToolTab)] = () => _context,
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
@@ -238,7 +249,7 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            base.InitLayout(layout, context);
+            base.InitLayout(layout);
         }
     }
 }");

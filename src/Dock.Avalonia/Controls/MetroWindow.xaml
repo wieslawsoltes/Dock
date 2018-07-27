@@ -17,7 +17,7 @@
                                 <Grid RowDefinitions="Auto, *">
                                     <Grid ColumnDefinitions="Auto,*,Auto" Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{TemplateBinding IsChromeVisible}">
                                         <Grid>
-                                            <StackPanel Orientation="Horizontal" Gap="10">
+                                            <StackPanel Orientation="Horizontal" Spacing="10">
                                                 <Rectangle Height="20" Width="20" Fill="Blue" />
                                                 <Border BorderThickness="0">
                                                     <TextBlock Margin="0 7 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" />

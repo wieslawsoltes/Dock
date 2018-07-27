@@ -1,6 +1,8 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.ReactiveUI.Factories;
+using AvaloniaDemo.ReactiveUI.Model;
 using AvaloniaDemo.ReactiveUI.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -28,7 +30,7 @@ namespace AvaloniaDemo.ReactiveUI
             {
                 var serializer = new DockJsonSerializer(typeof(ReactiveList<>));
                 var vm = new MainWindowViewModel();
-                var factory = new DemoDockFactory();
+                var factory = new DemoDockFactory(new DemoData());
                 IDock layout = null;
 
                 string path = serializer.GetBasePath("Layout.json");
@@ -41,7 +43,7 @@ namespace AvaloniaDemo.ReactiveUI
                 {
                     vm.Factory = factory;
                     vm.Layout = layout ?? vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    vm.Factory.InitLayout(vm.Layout);
                     return vm;
                 });
 

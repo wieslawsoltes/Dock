@@ -30,10 +30,20 @@ namespace Dock.Model
         /// </summary>
         IView FocusedView { get; set; }
 
+        /// <summary> 
+        /// Gets or sets splitter proportion. 
+        /// </summary> 
+        double Proportion { get; set; }
+
         /// <summary>
         /// Gets or sets if the view is the currently active.
         /// </summary>
         bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the Dock collapses when all its children are removed.
+        /// </summary>
+        bool IsCollapsable { get; set; }
 
         /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
@@ -54,11 +64,6 @@ namespace Dock.Model
         /// Gets or sets dock factory.
         /// </summary>
         IDockFactory Factory { get; set; }
-
-        /// <summary> 
-        /// Gets or sets splitter proportion. 
-        /// </summary> 
-        double Proportion { get; set; }
 
         /// <summary>
         /// Navigates to the most recent entry in back navigation history, if there is one.
@@ -90,10 +95,5 @@ namespace Dock.Model
         /// Close layout.
         /// </summary>
         void Close();
-
-        /// <summary>
-        /// Gets or sets if the Dock collapses when all its children are removed.
-        /// </summary>
-        bool IsCollapsable { get; set; }
     }
 }

@@ -10,8 +10,6 @@
              Design.Width="600" Design.Height="540">
     <ScrollViewer>
         <Grid RowDefinitions="Auto" ColumnDefinitions="Auto,*" Margin="4">
-            <TextBlock Text="Proportion:" Grid.Row="0" Grid.Column="0"/>
-            <TextBox Text="{Binding Proportion, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

@@ -5,7 +5,7 @@ using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
 
-namespace AvaloniaDemo.ReactiveUI.ViewModels
+namespace AvaloniaDemo.INPC.Factories
 {
     public class EmptyDockFactory : DockFactory
     {
@@ -27,18 +27,18 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
             };
         }
 
-        public override void InitLayout(IView layout, object context)
+        public override void InitLayout(IView layout)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => context,
-                [nameof(ILayoutDock)] = () => context,
-                [nameof(IDocumentDock)] = () => context,
-                [nameof(IToolDock)] = () => context,
-                [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context,
-                [nameof(IDocumentTab)] = () => context,
-                [nameof(IToolTab)] = () => context,
+                [nameof(IRootDock)] = () => layout,
+                [nameof(ILayoutDock)] = () => layout,
+                [nameof(IDocumentDock)] = () => layout,
+                [nameof(IToolDock)] = () => layout,
+                [nameof(ISplitterDock)] = () => layout,
+                [nameof(IDockWindow)] = () => layout,
+                [nameof(IDocumentTab)] = () => layout,
+                [nameof(IToolTab)] = () => layout,
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
@@ -46,7 +46,7 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            base.InitLayout(layout, context);
+            base.InitLayout(layout);
         }
     }
 }

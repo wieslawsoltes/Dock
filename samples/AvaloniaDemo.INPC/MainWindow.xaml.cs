@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.INPC.Factories;
 using AvaloniaDemo.INPC.ViewModels;
 using AvaloniaDemo.INPC.ViewModels.Tools;
 using Dock.Avalonia;
@@ -44,7 +45,7 @@ namespace AvaloniaDemo.INPC
                     }
                     vm.Factory = new EmptyDockFactory();
                     vm.Layout = vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    vm.Factory.InitLayout(vm.Layout);
                 }
             };
 
@@ -64,7 +65,7 @@ namespace AvaloniaDemo.INPC
                             root.Close();
                         }
                         vm.Layout = layout;
-                        vm.Factory.InitLayout(vm.Layout, vm);
+                        vm.Factory.InitLayout(vm.Layout);
                     }
                 }
             };
@@ -127,14 +128,14 @@ namespace AvaloniaDemo.INPC
                         )
                     };
 
-                    vm.Factory.Update(layout, null, vm.Layout);
+                    vm.Factory.Update(layout, vm.Layout);
 
                     var window = vm.Factory.CreateWindowFrom(layout);
                     if (window != null)
                     {
                         if (vm.Layout is IDock root)
                         {
-                            vm.Factory.AddWindow(root, window, null);
+                            vm.Factory.AddWindow(root, window);
                         }
                         window.X = 0;
                         window.Y = 0;

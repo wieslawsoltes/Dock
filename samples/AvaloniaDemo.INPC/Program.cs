@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Logging.Serilog;
+using AvaloniaDemo.INPC.Factories;
+using AvaloniaDemo.INPC.Model;
 using AvaloniaDemo.INPC.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -28,7 +30,7 @@ namespace AvaloniaDemo.INPC
             {
                 var serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
                 var vm = new MainWindowViewModel();
-                var factory = new DemoDockFactory();
+                var factory = new DemoDockFactory(new DemoData());
                 IDock layout = null;
 
                 string path = serializer.GetBasePath("Layout.json");
@@ -41,7 +43,7 @@ namespace AvaloniaDemo.INPC
                 {
                     vm.Factory = factory;
                     vm.Layout = layout ?? vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout, vm);
+                    vm.Factory.InitLayout(vm.Layout);
                     return vm;
                 });
 

@@ -85,7 +85,7 @@
             <TabStrip.DataTemplates>
                 <DataTemplate DataType="Dock:IView">
                     <!--
-                    <StackPanel Orientation="Horizontal" Background="Transparent" Gap="2">
+                    <StackPanel Orientation="Horizontal" Background="Transparent" Spacing="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
@@ -93,7 +93,7 @@
                         <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
                     </StackPanel>
                     -->
-                    <StackPanel Orientation="Horizontal" Gap="2">
+                    <StackPanel Orientation="Horizontal" Spacing="2">
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>

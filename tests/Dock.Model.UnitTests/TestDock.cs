@@ -14,13 +14,13 @@ namespace Dock.Model.UnitTests
         public IView CurrentView { get; set; }
         public IView DefaultView { get; set; }
         public IView FocusedView { get; set; }
+        public double Proportion { get; set; } = double.NaN;
         public bool IsActive { get; set; }
+        public bool IsCollapsable { get; set; } = true;
         public bool CanGoBack => false;
         public bool CanGoForward => false;
         public IList<IDockWindow> Windows { get; set; }
         public IDockFactory Factory { get; set; }
-        public double Proportion { get; set; } = double.NaN;
-        public bool IsCollapsable { get; set; } = true;
 
         public bool OnClose()
         {

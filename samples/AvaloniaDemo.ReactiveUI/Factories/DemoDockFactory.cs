@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AvaloniaDemo.ReactiveUI.Model;
 using AvaloniaDemo.ReactiveUI.ViewModels.Documents;
 using AvaloniaDemo.ReactiveUI.ViewModels.Tools;
 using AvaloniaDemo.ReactiveUI.ViewModels.Views;
@@ -8,10 +9,17 @@ using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
-namespace AvaloniaDemo.ReactiveUI.ViewModels
+namespace AvaloniaDemo.ReactiveUI.Factories
 {
     public class DemoDockFactory : DockFactory
     {
+        private object _context;
+
+        public DemoDockFactory(object context)
+        {
+            _context = context;
+        }
+
         public override IDock CreateLayout()
         {
             var document1 = new Document1
@@ -249,48 +257,48 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
             return root;
         }
 
-        public override void InitLayout(IView layout, object context)
+        public override void InitLayout(IView layout)
         {
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => context,
-                [nameof(ILayoutDock)] = () => context,
-                [nameof(IDocumentDock)] = () => context,
-                [nameof(IToolDock)] = () => context,
-                [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context,
-                [nameof(IDocumentTab)] = () => context,
-                [nameof(IToolTab)] = () => context,
-                ["Document1"] = () => context,
-                ["Document2"] = () => context,
-                ["Document3"] = () => context,
-                ["LeftTop1"] = () => context,
-                ["LeftTop2"] = () => context,
-                ["LeftTop3"] = () => context,
-                ["LeftBottom1"] = () => context,
-                ["LeftBottom2"] = () => context,
-                ["LeftBottom3"] = () => context,
-                ["RightTop1"] = () => context,
-                ["RightTop2"] = () => context,
-                ["RightTop3"] = () => context,
-                ["RightBottom1"] = () => context,
-                ["RightBottom2"] = () => context,
-                ["RightBottom3"] = () => context,
-                ["LeftPane"] = () => context,
-                ["LeftPaneTop"] = () => context,
-                ["LeftPaneTopSplitter"] = () => context,
-                ["LeftPaneBottom"] = () => context,
-                ["RightPane"] = () => context,
-                ["RightPaneTop"] = () => context,
-                ["RightPaneTopSplitter"] = () => context,
-                ["RightPaneBottom"] = () => context,
-                ["DocumentsPane"] = () => context,
-                ["MainLayout"] = () => context,
-                ["LeftSplitter"] = () => context,
-                ["RightSplitter"] = () => context,
-                ["MainLayout"] = () => context,
-                ["Home"] = () => context,
-                ["Main"] = () => context,
+                [nameof(IRootDock)] = () => _context,
+                [nameof(ILayoutDock)] = () => _context,
+                [nameof(IDocumentDock)] = () => _context,
+                [nameof(IToolDock)] = () => _context,
+                [nameof(ISplitterDock)] = () => _context,
+                [nameof(IDockWindow)] = () => _context,
+                [nameof(IDocumentTab)] = () => _context,
+                [nameof(IToolTab)] = () => _context,
+                ["Document1"] = () => new Document1Model(),
+                ["Document2"] = () => new Document2Model(),
+                ["Document3"] = () => new Document3Model(),
+                ["LeftTop1"] = () => new LeftTopTool1Model(),
+                ["LeftTop2"] = () => new LeftTopTool2Model(),
+                ["LeftTop3"] = () => new LeftTopTool3Model(),
+                ["LeftBottom1"] = () => new LeftBottomTool1Model(),
+                ["LeftBottom2"] = () => new LeftBottomTool2Model(),
+                ["LeftBottom3"] = () => new LeftBottomTool3Model(),
+                ["RightTop1"] = () => new RightTopTool1Model(),
+                ["RightTop2"] = () => new RightTopTool2Model(),
+                ["RightTop3"] = () => new RightTopTool3Model(),
+                ["RightBottom1"] = () => new RightBottomTool1Model(),
+                ["RightBottom2"] = () => new RightBottomTool2Model(),
+                ["RightBottom3"] = () => new RightBottomTool3Model(),
+                ["LeftPane"] = () => _context,
+                ["LeftPaneTop"] = () => _context,
+                ["LeftPaneTopSplitter"] = () => _context,
+                ["LeftPaneBottom"] = () => _context,
+                ["RightPane"] = () => _context,
+                ["RightPaneTop"] = () => _context,
+                ["RightPaneTopSplitter"] = () => _context,
+                ["RightPaneBottom"] = () => _context,
+                ["DocumentsPane"] = () => _context,
+                ["MainLayout"] = () => _context,
+                ["LeftSplitter"] = () => _context,
+                ["RightSplitter"] = () => _context,
+                ["MainLayout"] = () => _context,
+                ["Home"] = () => layout,
+                ["Main"] = () => _context,
                 ["Editor"] = () => new LayoutEditor()
                 {
                     Layout = layout
@@ -302,7 +310,7 @@ namespace AvaloniaDemo.ReactiveUI.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            base.InitLayout(layout, context);
+            base.InitLayout(layout);
         }
     }
 }

@@ -365,7 +365,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveView(IDock sourceDock, IDock targetDock, IView sourceView, IView targetView)
         {
-            RemoveView(sourceView);
+            if (sourceView?.Parent is IDock dock && dock.Views != null)
+            {
+                    int index = dock.Views.IndexOf(sourceView);
+                    dock.Views.Remove(sourceView);
+                    dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
+                    Collapse(dock);
+            }
 
             if (targetDock.Views == null)
             {
@@ -388,7 +394,13 @@ namespace Dock.Model
         {
             if (first.Parent is IDock sourceDock && second.Parent is IDock targetDock)
             {
-                RemoveView(first);
+                if (sourceDock.Views != null)
+                {
+                    int index = sourceDock.Views.IndexOf(first);
+                    sourceDock.Views.Remove(first);
+                    sourceDock.CurrentView = sourceDock.Views.Count > 0 ? sourceDock.Views[index > 0 ? index - 1 : 0] : null;
+                    Collapse(sourceDock);
+                }
 
                 targetDock.Views.Add(first);
                 Update(first, second);
@@ -598,7 +610,13 @@ namespace Dock.Model
         {
             if (FindRoot(dock) is IDock root && root.CurrentView is IDock currentViewRoot)
             {
-                RemoveView(dock);
+                if (dock?.Parent is IDock parentDock && dock.Views != null)
+                {
+                    int index = parentDock.Views.IndexOf(dock);
+                    parentDock.Views.Remove(dock);
+                    parentDock.CurrentView = parentDock.Views.Count > 0 ? parentDock.Views[index > 0 ? index - 1 : 0] : null;
+                    Collapse(parentDock);
+                }
 
                 var window = CreateWindowFrom(dock);
                 if (window != null)

@@ -171,14 +171,13 @@ namespace Dock.Model
                                                     {
                                                         if (targetTabParent.Factory is IDockFactory factory)
                                                         {
-                                                            factory.RemoveView(sourceTab);
-
                                                             IDock document = factory.CreateDocumentDock();
                                                             document.Id = nameof(IDocumentDock);
                                                             document.Title = nameof(IDocumentDock);
                                                             document.CurrentView = sourceTab;
                                                             document.Views = factory.CreateList<IView>();
-                                                            document.Views.Add(sourceTab);
+
+                                                            factory.MoveView(sourceTabParent, document, sourceTab, sourceTab);
 
                                                             factory.Split(targetTabParent, document, operation);
                                                         }

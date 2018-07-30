@@ -1,4 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);REACTIVEUI</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="reactiveui" Version="8.0.0" />
   </ItemGroup>

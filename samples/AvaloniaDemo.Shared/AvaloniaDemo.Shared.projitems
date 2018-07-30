@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>30bc3a7a-3e21-4f7a-a72b-33420ea3edf0</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>AvaloniaDemo.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Document1.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Document2.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\Document3.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool1.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool2.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool3.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftTopTool1.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftTopTool2.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftTopTool3.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightBottomTool1.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightBottomTool2.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightBottomTool3.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightTopTool1.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightTopTool2.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\RightTopTool3.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\DemoDockFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Factories\EmptyDockFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainWindow.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Model\DemoData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Document1Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Document2Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Document3Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftBottomTool1Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftBottomTool2Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftBottomTool3Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftTopTool1Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftTopTool2Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LeftTopTool3Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightBottomTool1Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightBottomTool2Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightBottomTool3Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightTopTool1Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightTopTool2Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\RightTopTool3Model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Program.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Documents\Document1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Documents\Document2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Documents\Document3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\EditorTool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftBottomTool1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftBottomTool2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftBottomTool3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftTopTool1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftTopTool2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\LeftTopTool3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightBottomTool1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightBottomTool2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightBottomTool3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightTopTool1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightTopTool2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Tools\RightTopTool3.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Views\HomeView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Views\MainView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Document1.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Document2.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Document3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool1.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool2.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftTopTool1.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftTopTool2.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\LeftTopTool3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightBottomTool1.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightBottomTool2.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightBottomTool3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightTopTool1.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightTopTool2.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RightTopTool3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

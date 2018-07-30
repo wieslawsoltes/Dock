@@ -84,7 +84,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.ReactiveUI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{1B7E0B00-604B-43BC-9544-62544E9D09D8}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AvaloniaDemo.Shared", "samples\AvaloniaDemo.Shared\AvaloniaDemo.Shared.shproj", "{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		samples\AvaloniaDemo.Shared\AvaloniaDemo.Shared.projitems*{30bc3a7a-3e21-4f7a-a72b-33420ea3edf0}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -169,6 +174,7 @@ Global
 		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{1B7E0B00-604B-43BC-9544-62544E9D09D8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

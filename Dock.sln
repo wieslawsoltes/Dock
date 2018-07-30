@@ -84,11 +84,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.ReactiveUI", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{1B7E0B00-604B-43BC-9544-62544E9D09D8}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AvaloniaDemo.Shared", "samples\AvaloniaDemo.Shared\AvaloniaDemo.Shared.shproj", "{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.shproj", "{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		samples\AvaloniaDemo.Shared\AvaloniaDemo.Shared.projitems*{30bc3a7a-3e21-4f7a-a72b-33420ea3edf0}*SharedItemsImports = 13
+		samples\AvaloniaDemo\AvaloniaDemo.projitems*{30bc3a7a-3e21-4f7a-a72b-33420ea3edf0}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

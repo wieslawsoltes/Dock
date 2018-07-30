@@ -24,7 +24,7 @@
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
 
-  <Import Project="..\AvaloniaDemo.Shared\AvaloniaDemo.Shared.projitems" Label="Shared" />
+  <Import Project="..\AvaloniaDemo\AvaloniaDemo.projitems" Label="Shared" />
 
   <Import Project="..\..\build\EmbedXaml.props" />
 

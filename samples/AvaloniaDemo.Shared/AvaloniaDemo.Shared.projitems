@@ -6,7 +6,7 @@
     <SharedGUID>30bc3a7a-3e21-4f7a-a72b-33420ea3edf0</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>AvaloniaDemo.Shared</Import_RootNamespace>
+    <Import_RootNamespace>AvaloniaDemo</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml">

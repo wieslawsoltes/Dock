@@ -7,6 +7,8 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <AssemblyName>AvaloniaDemo</AssemblyName>
+    <RootNamespace>AvaloniaDemo</RootNamespace>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -20,6 +22,8 @@
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**" />
   </ItemGroup>
+
+  <Import Project="..\AvaloniaDemo.Shared\AvaloniaDemo.Shared.projitems" Label="Shared" />
 
   <Import Project="..\..\build\EmbedXaml.props" />
 

@@ -60,7 +60,7 @@ namespace Dock.Model
         /// <summary>
         /// Sets host topmost.
         /// </summary>
-        /// <param name="layout">The host topmost.</param>
+        /// <param name="topmost">The host topmost.</param>
         void SetTopmost(bool topmost);
 
         /// <summary>

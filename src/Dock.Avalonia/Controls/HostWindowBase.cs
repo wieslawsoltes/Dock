@@ -131,6 +131,12 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
+        public void SetTopmost(bool topmost)
+        {
+            this.Topmost = topmost;
+        }
+
+        /// <inheritdoc/>
         public void SetTitle(string title)
         {
             this.Title = title;

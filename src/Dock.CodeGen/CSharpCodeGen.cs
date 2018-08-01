@@ -64,6 +64,7 @@ namespace Dock.CodeGen
             Output($"{indent}    Y = {FormatDouble(window.Y)},");
             Output($"{indent}    Width = {FormatDouble(window.Width)},");
             Output($"{indent}    Height = {FormatDouble(window.Height)},");
+            Output($"{indent}    Topmost = {FormatBool(window.Topmost)},");
             Output($"{indent}    Title = \"{window.Title}\",");
 
             Output($"{indent}}};");

@@ -34,6 +34,11 @@ namespace Dock.Model
         double Height { get; set; }
 
         /// <summary>
+        /// Gets or sets whether this window appears on top of all other windows.
+        /// </summary>
+        bool Topmost { get; set; }
+
+        /// <summary>
         /// Gets or sets window title.
         /// </summary>
         string Title { get; set; }

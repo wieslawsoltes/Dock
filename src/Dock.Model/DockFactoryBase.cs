@@ -636,12 +636,14 @@ namespace Dock.Model
         public virtual IDockWindow CreateWindowFrom(IView view)
         {
             IView target = null;
+            bool topmost = false;
 
             switch (view)
             {
                 case IRootDock targetRoot:
                     {
                         target = targetRoot.CurrentView;
+                        topmost = false;
                     }
                     break;
                 case IToolTab targetToolTab:
@@ -656,6 +658,8 @@ namespace Dock.Model
                             dock.Views = CreateList<IView>();
                             dock.Views.Add(view);
                         }
+
+                        topmost = true;
                     }
                     break;
                 case IDocumentTab targetDocumentTab:
@@ -670,21 +674,26 @@ namespace Dock.Model
                             dock.Views = CreateList<IView>();
                             dock.Views.Add(view);
                         }
+
+                        topmost = false;
                     }
                     break;
                 case ILayoutDock targetLayout:
                     {
                         target = targetLayout;
+                        topmost = false;
                     }
                     break;
                 case IToolDock targetTool:
                     {
                         target = view;
+                        topmost = true;
                     }
                     break;
                 case IDocumentDock targetDocument:
                     {
                         target = view;
+                        topmost = false;
                     }
                     break;
                 default:
@@ -710,6 +719,7 @@ namespace Dock.Model
             window.Title = nameof(IDockWindow);
             window.Width = double.NaN;
             window.Height = double.NaN;
+            window.Topmost = topmost;
             window.Layout = root;
 
             root.Window = window;

@@ -1,4 +1,4 @@
-<Styles  xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia" xmlns="https://github.com/avaloniaui">
+﻿<Styles  xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia" xmlns="https://github.com/avaloniaui">
     <Style Selector="local|DockToolChrome">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />

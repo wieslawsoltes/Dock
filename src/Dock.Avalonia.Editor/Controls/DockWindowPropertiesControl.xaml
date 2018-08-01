@@ -9,7 +9,7 @@
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              Design.Width="600" Design.Height="540">
     <ScrollViewer>
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*" Margin="4">
             <TextBlock Text="Id:" Grid.Row="0" Grid.Column="0"/>
             <TextBox Text="{Binding Id, Mode=TwoWay}" Grid.Row="0" Grid.Column="1"/>
             <TextBlock Text="X:" Grid.Row="1" Grid.Column="0"/>
@@ -20,14 +20,16 @@
             <TextBox Text="{Binding Width, Mode=TwoWay}" Grid.Row="3" Grid.Column="1"/>
             <TextBlock Text="Height:" Grid.Row="4" Grid.Column="0"/>
             <TextBox Text="{Binding Height, Mode=TwoWay}" Grid.Row="4" Grid.Column="1"/>
-            <TextBlock Text="Title:" Grid.Row="5" Grid.Column="0"/>
-            <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="5" Grid.Column="1"/>   
-            <TextBlock Text="Owner:" Grid.Row="6" Grid.Column="0"/>
-            <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="6" Grid.Column="1"/>
-            <TextBlock Text="Layout:" Grid.Row="7" Grid.Column="0"/>
-            <TextBox Text="{Binding Layout.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="7" Grid.Column="1"/>
-            <Button Content="Present" Command="{Binding Present}" CommandParameter="False" Grid.Row="8" Grid.Column="1"/>
-            <Button Content="Exit" Command="{Binding Exit}" Grid.Row="9" Grid.Column="1"/>  
+            <TextBlock Text="Topmost:" Grid.Row="5" Grid.Column="0"/>
+            <CheckBox IsChecked="{Binding Topmost, Mode=TwoWay}" IsEnabled="True" Grid.Row="5" Grid.Column="1"/>
+            <TextBlock Text="Title:" Grid.Row="6" Grid.Column="0"/>
+            <TextBox Text="{Binding Title, Mode=TwoWay}" Grid.Row="6" Grid.Column="1"/>
+            <TextBlock Text="Owner:" Grid.Row="7" Grid.Column="0"/>
+            <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="7" Grid.Column="1"/>
+            <TextBlock Text="Layout:" Grid.Row="8" Grid.Column="0"/>
+            <TextBox Text="{Binding Layout.Title, Mode=OneWay, FallbackValue={x:Null}}" IsReadOnly="True" Grid.Row="8" Grid.Column="1"/>
+            <Button Content="Present" Command="{Binding Present}" CommandParameter="False" Grid.Row="9" Grid.Column="1"/>
+            <Button Content="Exit" Command="{Binding Exit}" Grid.Row="10" Grid.Column="1"/>
         </Grid>
     </ScrollViewer>
 </UserControl>

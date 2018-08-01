@@ -10,13 +10,13 @@
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding CurrentView}">
-                                    <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
+                                    <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">
-                                    <Image Source="resm:Dock.Avalonia.Assets.PinAutoHide_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
+                                    <Image Source="resm:Dock.Avalonia.Assets.PinAutoHide_Dark.png?assembly=Dock.Avalonia" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">
-                                    <Image Source="resm:Dock.Avalonia.Assets.PinMenu_Dark.png?assembly=Dock.Avalonia" Height="12" Width="12" Stretch="None" />
+                                    <Image Source="resm:Dock.Avalonia.Assets.PinMenu_Dark.png?assembly=Dock.Avalonia" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Grid Height="5"  Margin="0 0 10 0">
                                     <Grid.Background>

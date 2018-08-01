@@ -10,6 +10,7 @@ namespace Dock.Model.UnitTests
         public double Y { get; set; }
         public double Width { get; set; }
         public double Height { get; set; }
+        public bool Topmost { get; set; }
         public string Title { get; set; }
         public object Context { get; set; }
         public IView Owner { get; set; }

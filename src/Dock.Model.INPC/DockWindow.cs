@@ -16,6 +16,7 @@ namespace Dock.Model
         private double _y;
         private double _width;
         private double _height;
+        private bool _topmost;
         private string _title;
         private object _context;
         private IView _owner;
@@ -69,6 +70,14 @@ namespace Dock.Model
         {
             get => _height;
             set => this.RaiseAndSetIfChanged(ref _height, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool Topmost
+        {
+            get => _topmost;
+            set => this.RaiseAndSetIfChanged(ref _topmost, value);
         }
 
         /// <inheritdoc/>

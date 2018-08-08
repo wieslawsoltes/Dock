@@ -17,30 +17,23 @@ namespace AvaloniaDemo.Factories
                 Title = nameof(IView)
             };
 
-            return new RootDock
-            {
-                Id = nameof(IRootDock),
-                Title = nameof(IRootDock),
-                CurrentView = view,
-                DefaultView = view,
-                Views = CreateList<IView>(view),
-                Top = new PinDock()
-                {
-                    Alignment = Alignment.Top
-                },
-                Bottom = new PinDock()
-                {
-                    Alignment = Alignment.Bottom
-                },
-                Left = new PinDock()
-                {
-                    Alignment = Alignment.Left
-                },
-                Right = new PinDock()
-                {
-                    Alignment = Alignment.Right
-                }
-            };
+            var root = CreateRootDock();
+
+            root.Id = nameof(IRootDock);
+            root.Title = nameof(IRootDock);
+            root.CurrentView = view;
+            root.DefaultView = view;
+            root.Views = CreateList<IView>(view);
+            root.Top = CreatePinDock();
+            root.Top.Alignment = Alignment.Top;
+            root.Bottom = CreatePinDock();
+            root.Bottom.Alignment = Alignment.Bottom;
+            root.Left = CreatePinDock();
+            root.Left.Alignment = Alignment.Left;
+            root.Right = CreatePinDock();
+            root.Right.Alignment = Alignment.Right;
+
+            return root;
         }
 
         public override void InitLayout(IView layout)

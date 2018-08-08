@@ -12,7 +12,7 @@
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding CurrentView}">
                                     <Image Source="resm:Dock.Avalonia.Assets.PinClose_Dark.png?assembly=Dock.Avalonia" Height="13" Width="13" Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" DockPanel.Dock="Right">
+                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Parent.Factory.PinView}" CommandParameter="{Binding CurrentView}">
                                     <Image Source="resm:Dock.Avalonia.Assets.PinAutoHide_Dark.png?assembly=Dock.Avalonia" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">

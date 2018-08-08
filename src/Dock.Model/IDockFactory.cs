@@ -192,6 +192,12 @@ namespace Dock.Model
         IView FindView(IDock dock, Func<IView, bool> predicate);
 
         /// <summary>
+        /// Pins views.
+        /// </summary>
+        /// <param name="view">The view to pin.</param>
+        void PinView(IView view);
+
+        /// <summary>
         /// Removes view from parent <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="view">The view to remove.</param>

@@ -298,6 +298,12 @@ namespace Dock.Model
             return null;
         }
 
+        /// <inheritdoc/>
+        public virtual void PinView(IView view)
+        {
+            // TODO: Implement view pinning.
+        }
+
         private void Collapse(IDock dock)
         {
             if (dock.IsCollapsable && dock.Views.Count == 0)

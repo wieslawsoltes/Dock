@@ -251,7 +251,23 @@ namespace AvaloniaDemo.Factories
                 Title = "Root",
                 CurrentView = homeView,
                 DefaultView = homeView,
-                Views = CreateList<IView>(homeView, mainView)
+                Views = CreateList<IView>(homeView, mainView),
+                Top = new PinDock()
+                {
+                    Alignment = Alignment.Top
+                },
+                Bottom = new PinDock()
+                {
+                    Alignment = Alignment.Bottom
+                },
+                Left = new PinDock()
+                {
+                    Alignment = Alignment.Left
+                },
+                Right = new PinDock()
+                {
+                    Alignment = Alignment.Right
+                }
             };
 
             return root;

@@ -10,8 +10,17 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class PinDock : DockBase, IPinDock
     {
+        private Alignment _alignment = Alignment.Unset;
         private bool _isExpanded = false;
         private bool _autoHide = true;
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public Alignment Alignment
+        {
+            get => _alignment;
+            set => this.RaiseAndSetIfChanged(ref _alignment, value);
+        }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]

@@ -23,7 +23,23 @@ namespace AvaloniaDemo.Factories
                 Title = nameof(IRootDock),
                 CurrentView = view,
                 DefaultView = view,
-                Views = CreateList<IView>(view)
+                Views = CreateList<IView>(view),
+                Top = new PinDock()
+                {
+                    Alignment = Alignment.Top
+                },
+                Bottom = new PinDock()
+                {
+                    Alignment = Alignment.Bottom
+                },
+                Left = new PinDock()
+                {
+                    Alignment = Alignment.Left
+                },
+                Right = new PinDock()
+                {
+                    Alignment = Alignment.Right
+                }
             };
         }
 

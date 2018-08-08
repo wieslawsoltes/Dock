@@ -11,6 +11,10 @@ namespace Dock.Model.Controls
     public class RootDock : DockBase, IRootDock
     {
         private IDockWindow _window;
+        private IPinDock _top;
+        private IPinDock _bottom;
+        private IPinDock _left;
+        private IPinDock _right;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -18,6 +22,38 @@ namespace Dock.Model.Controls
         {
             get => _window;
             set => this.RaiseAndSetIfChanged(ref _window, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IPinDock Top
+        {
+            get => _top;
+            set => this.RaiseAndSetIfChanged(ref _top, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IPinDock Bottom
+        {
+            get => _bottom;
+            set => this.RaiseAndSetIfChanged(ref _bottom, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IPinDock Left
+        {
+            get => _left;
+            set => this.RaiseAndSetIfChanged(ref _left, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IPinDock Right
+        {
+            get => _right;
+            set => this.RaiseAndSetIfChanged(ref _right, value);
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Runtime.Serialization;
+
+namespace Dock.Model.Controls
+{
+    /// <summary>
+    /// Pin dock.
+    /// </summary>
+    [DataContract(IsReference = true)]
+    public class PinDock : DockBase, IPinDock
+    {
+        private bool _isExpanded = false;
+        private bool _autoHide = true;
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public bool AutoHide
+        {
+            get => _autoHide;
+            set => this.RaiseAndSetIfChanged(ref _autoHide, value);
+        }
+    }
+}

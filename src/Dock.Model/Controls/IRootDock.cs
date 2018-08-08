@@ -12,5 +12,25 @@ namespace Dock.Model.Controls
         /// Gets or sets owner window.
         /// </summary>
         IDockWindow Window { get; set; }
+
+        /// <summary>
+        /// Gets or sets top pin dock.
+        /// </summary>
+        IPinDock Top { get; set; }
+
+        /// <summary>
+        /// Gets or sets bottom pin dock.
+        /// </summary>
+        IPinDock Bottom { get; set; }
+
+        /// <summary>
+        /// Gets or sets left pin dock.
+        /// </summary>
+        IPinDock Left { get; set; }
+
+        /// <summary>
+        /// Gets or sets right pin dock.
+        /// </summary>
+        IPinDock Right { get; set; }
     }
 }

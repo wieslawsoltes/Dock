@@ -27,6 +27,9 @@ namespace Dock.Model
         public abstract IRootDock CreateRootDock();
 
         /// <inheritdoc/>
+        public abstract IPinDock CreatePinDock();
+
+        /// <inheritdoc/>
         public abstract ILayoutDock CreateLayoutDock();
 
         /// <inheritdoc/>

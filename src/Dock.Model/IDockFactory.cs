@@ -41,6 +41,12 @@ namespace Dock.Model
         IRootDock CreateRootDock();
 
         /// <summary>
+        /// Creates <see cref="IPinDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IPinDock"/> class.</returns>
+        IPinDock CreatePinDock();
+
+        /// <summary>
         /// Creates <see cref="ILayoutDock"/>.
         /// </summary>
         /// <returns>The new instance of the <see cref="ILayoutDock"/> class.</returns>

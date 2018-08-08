@@ -17,6 +17,11 @@ namespace Dock.Model.UnitTests
             throw new System.NotImplementedException();
         }
 
+        public override IPinDock CreatePinDock()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override ILayoutDock CreateLayoutDock()
         {
             throw new System.NotImplementedException();

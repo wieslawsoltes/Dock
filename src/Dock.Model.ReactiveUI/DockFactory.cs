@@ -24,6 +24,9 @@ namespace Dock.Model
         public override IRootDock CreateRootDock() => new RootDock();
 
         /// <inheritdoc/>
+        public override IPinDock CreatePinDock() => new PinDock();
+
+        /// <inheritdoc/>
         public override ILayoutDock CreateLayoutDock() => new LayoutDock();
 
         /// <inheritdoc/>

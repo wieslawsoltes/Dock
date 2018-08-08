@@ -45,8 +45,23 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </DataTemplate>
+            <DataTemplate DataType="Controls:IPinDock">
+                <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False">
+                    <TabStrip.Styles>
+                        <Style Selector="TabStrip:empty">
+                            <Setter Property="IsVisible" Value="False" />
+                        </Style>
+                    </TabStrip.Styles>
+                </TabStrip>
+            </DataTemplate>
             <DataTemplate DataType="Controls:IRootDock">
-                <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                <DockPanel Background="Transparent">
+                    <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
+                    <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
+                    <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
+                    <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
+                    <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                </DockPanel>
             </DataTemplate>
         </ContentControl.DataTemplates>
     </ContentControl>

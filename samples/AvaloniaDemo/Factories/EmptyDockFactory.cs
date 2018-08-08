@@ -48,6 +48,7 @@ namespace AvaloniaDemo.Factories
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => layout,
+                [nameof(IPinDock)] = () => layout,
                 [nameof(ILayoutDock)] = () => layout,
                 [nameof(IDocumentDock)] = () => layout,
                 [nameof(IToolDock)] = () => layout,

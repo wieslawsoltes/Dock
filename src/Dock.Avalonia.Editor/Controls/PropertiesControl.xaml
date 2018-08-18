@@ -28,6 +28,37 @@
                     <TabItem Header="Windows">
                         <local:WindowsPropertiesControl/>
                     </TabItem>
+                    <TabItem Header="Top">
+                        <ContentControl Content="{Bidning Top}"/>
+                    </TabItem>
+                    <TabItem Header="Bottom">
+                        <ContentControl Content="{Bidning Bottom}"/>
+                    </TabItem>
+                    <TabItem Header="Left">
+                        <ContentControl Content="{Bidning Left}"/>
+                    </TabItem>
+                    <TabItem Header="Right">
+                        <ContentControl Content="{Bidning Right}"/>
+                    </TabItem>
+                </TabControl>
+            </DataTemplate>
+            <DataTemplate DataType="Controls:IPinDock">
+                <TabControl>
+                    <TabItem Header="PinDock">
+                        <local:PinDockPropertiesControl/>
+                    </TabItem>
+                    <TabItem Header="View">
+                        <local:ViewPropertiesControl/>
+                    </TabItem>
+                    <TabItem Header="Dock">
+                        <local:DockPropertiesControl/>
+                    </TabItem>
+                    <TabItem Header="Views">
+                        <local:ViewsPropertiesControl/>
+                    </TabItem>
+                    <TabItem Header="Windows">
+                        <local:WindowsPropertiesControl/>
+                    </TabItem>
                 </TabControl>
             </DataTemplate>
             <DataTemplate DataType="Controls:ILayoutDock">

@@ -14,6 +14,7 @@
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
         <converters:OrientationConverter x:Key="OrientationConverter"/>
+        <converters:AlignmentConverter x:Key="AlignmentConverter"/>
     </UserControl.Resources>
     <ContentControl Content="{Binding}">
         <ContentControl.DataTemplates>
@@ -45,8 +46,26 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </DataTemplate>
+            <DataTemplate DataType="Controls:IPinDock">
+                <DockPanel Background="Transparent">
+                    <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                        <TabStrip.Styles>
+                            <Style Selector="TabStrip:empty">
+                                <Setter Property="IsVisible" Value="False" />
+                            </Style>
+                        </TabStrip.Styles>
+                    </TabStrip>
+                    <ContentControl Content="{Binding CurrentView}" IsVisible="{Binding IsExpanded}"/>
+                </DockPanel>
+            </DataTemplate>
             <DataTemplate DataType="Controls:IRootDock">
-                <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                <DockPanel Background="Transparent">
+                    <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
+                    <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
+                    <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
+                    <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
+                    <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                </DockPanel>
             </DataTemplate>
         </ContentControl.DataTemplates>
     </ContentControl>

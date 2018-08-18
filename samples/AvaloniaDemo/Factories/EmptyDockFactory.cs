@@ -17,14 +17,23 @@ namespace AvaloniaDemo.Factories
                 Title = nameof(IView)
             };
 
-            return new RootDock
-            {
-                Id = nameof(IRootDock),
-                Title = nameof(IRootDock),
-                CurrentView = view,
-                DefaultView = view,
-                Views = CreateList<IView>(view)
-            };
+            var root = CreateRootDock();
+
+            root.Id = nameof(IRootDock);
+            root.Title = nameof(IRootDock);
+            root.CurrentView = view;
+            root.DefaultView = view;
+            root.Views = CreateList<IView>(view);
+            root.Top = CreatePinDock();
+            root.Top.Alignment = Alignment.Top;
+            root.Bottom = CreatePinDock();
+            root.Bottom.Alignment = Alignment.Bottom;
+            root.Left = CreatePinDock();
+            root.Left.Alignment = Alignment.Left;
+            root.Right = CreatePinDock();
+            root.Right.Alignment = Alignment.Right;
+
+            return root;
         }
 
         public override void InitLayout(IView layout)
@@ -32,6 +41,7 @@ namespace AvaloniaDemo.Factories
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => layout,
+                [nameof(IPinDock)] = () => layout,
                 [nameof(ILayoutDock)] = () => layout,
                 [nameof(IDocumentDock)] = () => layout,
                 [nameof(IToolDock)] = () => layout,

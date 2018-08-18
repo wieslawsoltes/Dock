@@ -27,6 +27,9 @@ namespace Dock.Model
         public abstract IRootDock CreateRootDock();
 
         /// <inheritdoc/>
+        public abstract IPinDock CreatePinDock();
+
+        /// <inheritdoc/>
         public abstract ILayoutDock CreateLayoutDock();
 
         /// <inheritdoc/>
@@ -296,6 +299,12 @@ namespace Dock.Model
             }
 
             return null;
+        }
+
+        /// <inheritdoc/>
+        public virtual void PinView(IView view)
+        {
+            // TODO: Implement view pinning.
         }
 
         private void Collapse(IDock dock)

@@ -41,6 +41,12 @@ namespace Dock.Model
         IRootDock CreateRootDock();
 
         /// <summary>
+        /// Creates <see cref="IPinDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IPinDock"/> class.</returns>
+        IPinDock CreatePinDock();
+
+        /// <summary>
         /// Creates <see cref="ILayoutDock"/>.
         /// </summary>
         /// <returns>The new instance of the <see cref="ILayoutDock"/> class.</returns>
@@ -190,6 +196,12 @@ namespace Dock.Model
         /// <param name="predicate">The predicate to filter views.</param>
         /// <returns>The view instance or null if view was not found.</returns>
         IView FindView(IDock dock, Func<IView, bool> predicate);
+
+        /// <summary>
+        /// Pins views.
+        /// </summary>
+        /// <param name="view">The view to pin.</param>
+        void PinView(IView view);
 
         /// <summary>
         /// Removes view from parent <see cref="IDock.Views"/> collection.

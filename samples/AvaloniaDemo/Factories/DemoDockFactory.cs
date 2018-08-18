@@ -245,14 +245,21 @@ namespace AvaloniaDemo.Factories
                 Title = "Home"
             };
 
-            var root = new RootDock
-            {
-                Id = "Root",
-                Title = "Root",
-                CurrentView = homeView,
-                DefaultView = homeView,
-                Views = CreateList<IView>(homeView, mainView)
-            };
+            var root = CreateRootDock();
+
+            root.Id = "Root";
+            root.Title = "Root";
+            root.CurrentView = homeView;
+            root.DefaultView = homeView;
+            root.Views = CreateList<IView>(homeView, mainView);
+            root.Top = CreatePinDock();
+            root.Top.Alignment = Alignment.Top;
+            root.Bottom = CreatePinDock();
+            root.Bottom.Alignment = Alignment.Bottom;
+            root.Left = CreatePinDock();
+            root.Left.Alignment = Alignment.Left;
+            root.Right = CreatePinDock();
+            root.Right.Alignment = Alignment.Right;
 
             return root;
         }
@@ -262,6 +269,7 @@ namespace AvaloniaDemo.Factories
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => _context,
+                [nameof(IPinDock)] = () => _context,
                 [nameof(ILayoutDock)] = () => _context,
                 [nameof(IDocumentDock)] = () => _context,
                 [nameof(IToolDock)] = () => _context,

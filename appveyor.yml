@@ -13,8 +13,8 @@ environment:
 test: off
 deploy: off
 install:
-  - if not exist dotnet-sdk-2.1.300-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/8/8/5/88544F33-836A-49A5-8B67-451C24709A8F/dotnet-sdk-2.1.300-win-x64.exe -FileName "dotnet-sdk-2.1.300-win-x64.exe"
-  - ps: Start-Process -FilePath "dotnet-sdk-2.1.300-win-x64.exe" -ArgumentList "/quiet" -Wait
+  - if not exist dotnet-sdk-2.1.401-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/E/8/A/E8AF2EE0-5DDA-4420-A395-D1A50EEFD83E/dotnet-sdk-2.1.401-win-x64.exe -FileName "dotnet-sdk-2.1.401-win-x64.exe"
+  - ps: Start-Process -FilePath "dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/quiet" -Wait
   - cmd: dotnet --info
 build_script:
 - ps: .\build.ps1 -NuGetPushBranch master -NuGetPushRepoName wieslawsoltes/Dock -BuildSources -TestSources -PackSources -BuildApps -PublishApps -CopyRedist -ZipApps
@@ -28,4 +28,4 @@ notifications:
   on_build_failure: true
   on_build_status_changed: true
 cache:
-  - dotnet-sdk-2.1.300-win-x64.exe
+  - dotnet-sdk-2.1.401-win-x64.exe

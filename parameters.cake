@@ -56,7 +56,9 @@ public class Parameters
             ( "./src", "Dock.Avalonia" ),
             ( "./src", "Dock.Avalonia.Editor" ),
             ( "./src", "Dock.CodeGen" ),
-            ( "./src", "Dock.Serializer" )
+            ( "./src", "Dock.Serializer" ),
+            ( "./samples", "AvaloniaDemo.INPC" ),
+            ( "./samples", "AvaloniaDemo.ReactiveUI" )
         };
 
         TestProjects = new []

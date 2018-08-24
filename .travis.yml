@@ -9,12 +9,11 @@ env:
 mono: latest
 dotnet: 2.1.401
 before_install:
-  - curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
-  - curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
-  - sudo apt-get update
-  - sudo apt-get install -y powershell
   - dotnet --info
-script: pwsh -File build.ps1 -BuildSources -TestSources -BuildApps -DisabledFrameworks net461
+  - dotnet tool install -g Cake.Tool --version 0.30.0
+  - export PATH="$PATH:$HOME/.dotnet/tools"
+script:
+  - dotnet cake build.cake --target="Travis" --platform="Any CPU" --configuration="Release"
 notifications:
   webhooks:
     urls:

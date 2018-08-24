@@ -1,6 +1,8 @@
 version: '{build}'
 image: Visual Studio 2017
 skip_branch_with_pr: true
+platform: Any CPU
+configuration: Release
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -16,16 +18,17 @@ install:
   - if not exist dotnet-sdk-2.1.401-win-x64.exe appveyor DownloadFile https://download.microsoft.com/download/E/8/A/E8AF2EE0-5DDA-4420-A395-D1A50EEFD83E/dotnet-sdk-2.1.401-win-x64.exe -FileName "dotnet-sdk-2.1.401-win-x64.exe"
   - ps: Start-Process -FilePath "dotnet-sdk-2.1.401-win-x64.exe" -ArgumentList "/quiet" -Wait
   - cmd: dotnet --info
+  - cmd: dotnet tool install -g Cake.Tool --version 0.30.0
 build_script:
-- ps: .\build.ps1 -NuGetPushBranch master -NuGetPushRepoName wieslawsoltes/Dock -BuildSources -TestSources -PackSources -BuildApps -PublishApps -CopyRedist -ZipApps
-artifacts:
-  - path: artifacts\*.nupkg
-  - path: artifacts\*.zip
+- cmd: dotnet cake build.cake -Target="AppVeyor" -Platform="%PLATFORM%" -Configuration="%CONFIGURATION%"
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/b8334e4ccc2876427242
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
+artifacts:
+  - path: artifacts\nuget\*.nupkg
+  - path: artifacts\zip\*.zip
 cache:
   - dotnet-sdk-2.1.401-win-x64.exe

@@ -119,10 +119,14 @@ Task("Push")
 {
     var apiKey = EnvironmentVariable(parameters.IsNugetRelease ? "NUGET_API_KEY" : "MYGET_API_KEY");
     var apiUrl = EnvironmentVariable(parameters.IsNugetRelease ? "NUGET_API_URL" : "MYGET_API_URL");
-    DotNetCoreNuGetPush($"{parameters.Artifacts}/nuget/*.nupkg", new DotNetCoreNuGetPushSettings {
-        Source = apiUrl,
-        ApiKey = apiKey
-    });
+    var packages = GetFiles($"{parameters.Artifacts}/nuget/*.nupkg");
+    foreach (var package in packages)
+    {
+        DotNetCoreNuGetPush(package.FullPath, new DotNetCoreNuGetPushSettings {
+            Source = apiUrl,
+            ApiKey = apiKey
+        });
+    }
 });
 
 Task("Default")

@@ -19,8 +19,8 @@ A docking layout system.
 
 | Version               | Framework      | Model         | Download                                                                                                                                                                                                 |
 |-----------------------|----------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 7 8.1 10 x64  | netcoreapp2.1  | INPC          | [AvaloniaDemo.INPC-netcoreapp2.1-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo.INPC-netcoreapp2.1-win7-x64.zip?branch=master)                   |
-| Windows 7 8.1 10 x64  | netcoreapp2.1  | ReactiveUI    | [AvaloniaDemo.ReactiveUI-netcoreapp2.1-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/AvaloniaDemo.ReactiveUI-netcoreapp2.1-win7-x64.zip?branch=master)       |
+| Windows 7 8.1 10 x64  | netcoreapp2.1  | INPC          | [AvaloniaDemo.INPC-netcoreapp2.1-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/zip/AvaloniaDemo.INPC-netcoreapp2.1-win7-x64.zip?branch=master)                   |
+| Windows 7 8.1 10 x64  | netcoreapp2.1  | ReactiveUI    | [AvaloniaDemo.ReactiveUI-netcoreapp2.1-win7-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/Dock/artifacts/artifacts/zip/AvaloniaDemo.ReactiveUI-netcoreapp2.1-win7-x64.zip?branch=master)       |
 
 ## Building Dock
 

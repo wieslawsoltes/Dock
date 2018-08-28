@@ -1,7 +1,3 @@
-// dotnet tool install -g Cake.Tool --version 0.30.0
-// dotnet cake build.cake -Target="Build"
-// dotnet cake build.cake --target="Build"
-
 #load "./parameters.cake"
 
 Setup<Parameters>(context =>
@@ -25,19 +21,6 @@ Task("Clean")
         DotNetCoreClean($"{path}/{name}/{name}.csproj", new DotNetCoreCleanSettings {
             Configuration = parameters.Configuration,
             Verbosity = DotNetCoreVerbosity.Minimal
-        });
-    }
-});
-
-Task("Restore")
-    .Does<Parameters>(parameters => 
-{
-    foreach(var project in parameters.BuildProjects)
-    {
-        (string path, string name) = project;
-        Information($"Restore: {name}");
-        DotNetCoreRestore($"{path}/{name}/{name}.csproj", new DotNetCoreRestoreSettings {
-            DisableParallel = false
         });
     }
 });
@@ -134,7 +117,6 @@ Task("Default")
 
 Task("AppVeyor")
   .IsDependentOn("Clean")
-  .IsDependentOn("Restore")
   .IsDependentOn("Build")
   .IsDependentOn("Test")
   .IsDependentOn("Publish")

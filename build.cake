@@ -56,7 +56,7 @@ Task("Publish")
     .Does<Parameters>(parameters => 
 {
     CleanDirectory($"{parameters.Artifacts}/zip");
-    var redistVersion = "14.14.26405";
+    var redistVersion = "14.15.26706";
     var redistPath = $"C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Redist\\MSVC\\{redistVersion}\\x64\\Microsoft.VC141.CRT\\";
     var redistRuntime = "win7-x64";
     foreach(var project in parameters.PublishProjects)

@@ -7,9 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		_config.yml = _config.yml
-		build.ps1 = build.ps1
-		build.xml = build.xml
-		config.ps1 = config.ps1
+		build.cake = build.cake
+		parameters.cake = parameters.cake
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{F8F9350B-0321-4C8A-A0EB-BF5F2283994E}"
@@ -41,7 +40,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
 		build\Avalonia.props = build\Avalonia.props
 		build\Base.props = build\Base.props
-		build\CsvHelper.props = build\CsvHelper.props
 		build\EmbedXaml.props = build\EmbedXaml.props
 		build\NETCore.props = build\NETCore.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props

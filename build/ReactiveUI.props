@@ -3,6 +3,6 @@
     <DefineConstants>$(DefineConstants);REACTIVEUI</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="reactiveui" Version="8.0.0" />
+    <PackageReference Include="reactiveui" Version="8.7.1" />
   </ItemGroup>
 </Project>

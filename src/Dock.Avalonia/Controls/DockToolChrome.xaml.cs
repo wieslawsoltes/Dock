@@ -11,7 +11,7 @@ namespace Dock.Avalonia.Controls
     {
         static DockToolChrome()
         {
-            PseudoClass(IsActiveProperty, ":active");
+            PseudoClass<DockToolChrome>(IsActiveProperty, ":active");
         }
 
         /// <summary>

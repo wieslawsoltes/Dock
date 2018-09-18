@@ -133,7 +133,6 @@ Task("Azure-Windows")
   .IsDependentOn("Clean")
   .IsDependentOn("Build")
   .IsDependentOn("Test")
-  .IsDependentOn("Publish")
   .IsDependentOn("Pack");
 
 Task("Azure-macOS")

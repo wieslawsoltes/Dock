@@ -129,4 +129,17 @@ Task("Travis")
 Task("CircleCI")
   .IsDependentOn("Test");
 
+Task("Azure-Windows")
+  .IsDependentOn("Clean")
+  .IsDependentOn("Build")
+  .IsDependentOn("Test")
+  .IsDependentOn("Publish")
+  .IsDependentOn("Pack");
+
+Task("Azure-macOS")
+  .IsDependentOn("Test");
+
+Task("Azure-Linux")
+  .IsDependentOn("Test");
+
 RunTarget(Context.Argument("target", "Default"));

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Controls.Editor;
-using ReactiveUI;
+using ReactiveUI.Legacy;
 
 namespace Dock.Model
 {

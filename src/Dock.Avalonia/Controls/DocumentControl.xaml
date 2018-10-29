@@ -27,7 +27,7 @@
         <Style Selector="Border.panel">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="4"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderMidBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <Style Selector="Button.chromeButton">
@@ -117,7 +117,7 @@
             </TabStrip.DataTemplates>
         </TabStrip>
         <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
-        <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderMidBrush}">
+        <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
             <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </DockPanel>

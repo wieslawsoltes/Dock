@@ -4,7 +4,7 @@
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         UseLayoutRounding="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
-        FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLightBrush}"
+        FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
         Title="ProportionalStackPanel Demo" Height="680" Width="1200" >
     <Grid>
         <Grid.Styles>

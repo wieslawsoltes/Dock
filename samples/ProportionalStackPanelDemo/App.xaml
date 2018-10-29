@@ -12,7 +12,7 @@
     </Application.Styles>
     <Application.Resources>
         <SolidColorBrush x:Key="ApplicationAccentBrush">#007ACC</SolidColorBrush>
-        <SolidColorBrush x:Key="ApplicationAccentBrushLight">#1C97EA</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentBrushLow">#1C97EA</SolidColorBrush>
         <SolidColorBrush x:Key="ApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
     </Application.Resources>
 </Application>

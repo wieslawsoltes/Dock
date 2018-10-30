@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		_config.yml = _config.yml
 		build.cake = build.cake
 		parameters.cake = parameters.cake
 	EndProjectSection
@@ -14,7 +13,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{F8F9350B-0321-4C8A-A0EB-BF5F2283994E}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
+		_config.yml = _config.yml
 		appveyor.yml = appveyor.yml
+		azure-pipelines.yml = azure-pipelines.yml
 		circle.yml = circle.yml
 	EndProjectSection
 EndProject
@@ -83,6 +84,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{1B7E0B00-604B-43BC-9544-62544E9D09D8}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.shproj", "{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{66511C25-B6B8-4781-892F-012366DB4F6E}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.TXT = LICENSE.TXT
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -173,6 +180,7 @@ Global
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{1B7E0B00-604B-43BC-9544-62544E9D09D8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{66511C25-B6B8-4781-892F-012366DB4F6E} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

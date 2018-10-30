@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
-        FontFamily="Segoe UI, Arial" BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
         Title="Dock Avalonia Demo" Height="680" Width="1200"
         id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
     <idc:MetroWindow.Resources>

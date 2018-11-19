@@ -1,4 +1,5 @@
-﻿<Application xmlns="https://github.com/avaloniaui"
+﻿<Application x:Class="AvaloniaDemo.MainWindow"
+             xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:editor="clr-namespace:Dock.Avalonia.Editor.Controls;assembly=Dock.Avalonia.Editor"

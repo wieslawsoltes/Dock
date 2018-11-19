@@ -3,12 +3,15 @@
 <UserControl x:Class="Dock.Avalonia.Controls.DocumentControl"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
              xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
-             Design.Width="1200" Design.Height="540">
+             mc:Ignorable="d"
+             d:DesignWidth="300" d:DesignHeight="400">
     <UserControl.Resources>
         <id:DockDragHandler x:Key="DockDragHandler"/>
         <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>

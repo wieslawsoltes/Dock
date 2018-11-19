@@ -123,12 +123,6 @@ Task("AppVeyor")
   .IsDependentOn("Pack")
   .IsDependentOn("Push");
 
-Task("Travis")
-  .IsDependentOn("Test");
-
-Task("CircleCI")
-  .IsDependentOn("Test");
-
 Task("Azure-Windows")
   .IsDependentOn("Clean")
   .IsDependentOn("Build")

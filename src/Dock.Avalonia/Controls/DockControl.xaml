@@ -56,7 +56,15 @@
                             <Style Selector="TabStrip:empty">
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
+                            <Style Selector="TabStrip /template/ ItemsPanel > WrapPanel">
+                                <Setter Property="Orientation" Value="Vertical"/>
+                            </Style>
                         </TabStrip.Styles>
+                        <TabStrip.DataTemplates>
+                            <DataTemplate DataType="Dock:IView">
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </TabStrip.DataTemplates>
                     </TabStrip>
                     <ContentControl Content="{Binding CurrentView}" IsVisible="{Binding IsExpanded}"/>
                 </DockPanel>

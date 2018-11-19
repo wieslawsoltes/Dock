@@ -305,6 +305,42 @@ namespace Dock.Model
         public virtual void PinView(IView view)
         {
             // TODO: Implement view pinning.
+
+            if (view != null && FindRoot(view) is IRootDock root)
+            {
+                if (PinClosestPinDock(root, view) is IPinDock pinDock)
+                {
+                    PinView(pinDock, view);
+                }
+            }
+        }
+
+        private IPinDock PinClosestPinDock(IRootDock root, IView view)
+        {
+            // TODO: Find closest pin dock to the view (Top, Bottom, Left or Right).
+
+            if (root.Left == null)
+            {
+                root.Left = CreatePinDock();
+                root.Left.Alignment = Alignment.Left;
+                root.Left.IsExpanded = false;
+                root.Left.AutoHide = true;
+            }
+
+            return root.Left;
+        }
+
+        private void PinView(IPinDock pinDock, IView view)
+        {
+            RemoveView(view);
+
+            if (pinDock.Views == null)
+            {
+                pinDock.Views = CreateList<IView>();
+            }
+
+            pinDock.Views.Add(view);
+            pinDock.CurrentView = view;
         }
 
         private void Collapse(IDock dock)

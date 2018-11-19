@@ -90,6 +90,10 @@
                     <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
+                <Style Selector="TabStripItem:selected:pointerover">
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
                 <DataTemplate DataType="Dock:IView">

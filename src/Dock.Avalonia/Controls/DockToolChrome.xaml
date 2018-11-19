@@ -6,7 +6,7 @@
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border BorderBrush="{DynamicResource ThemeBorderLowBrush}" Name="PART_Border">
-                        <Grid Name="PART_Grip">
+                        <Grid Name="PART_Grip"> 
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentView.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding CurrentView}">

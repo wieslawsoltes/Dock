@@ -80,7 +80,8 @@
                     <Setter Property="Padding" Value="4 2 4 0" />
                 </Style>
                 <Style Selector="TabStripItem:selected:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                 </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>

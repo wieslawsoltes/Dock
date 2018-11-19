@@ -43,7 +43,7 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="Button.documentTabButton:pointerover">
-            <Setter Property="Background" Value="#52B0EF" />
+            <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushHigh}" />
         </Style>
         <Style Selector="TabStripItem:selected Button.documentTabButton Path">
             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
@@ -83,11 +83,11 @@
                     <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                 </Style>
                 <Style Selector="TabStripItem:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
                 <Style Selector="TabStripItem:selected">
-                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
             </TabStrip.Styles>
@@ -125,7 +125,7 @@
                 </DataTemplate>
             </TabStrip.DataTemplates>
         </TabStrip>
-        <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+        <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
         <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
             <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>

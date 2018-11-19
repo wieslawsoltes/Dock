@@ -39,6 +39,19 @@
         <Style Selector="Grid.grip:floating">
             <Setter Property="IsVisible" Value="False" />
         </Style>
+        <Style Selector="Button.documentTabButton">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="Button.documentTabButton:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushHigh}" />
+        </Style>
+        <Style Selector="TabStripItem:selected Button.documentTabButton Path">
+            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+        </Style>
+        <Style Selector="TabStripItem:pointerover Button.documentTabButton Path">
+            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+        </Style>
+
     </UserControl.Styles>
     <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
         <i:Interaction.Behaviors>
@@ -70,16 +83,12 @@
                     <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                 </Style>
                 <Style Selector="TabStripItem:pointerover">
-                    <Setter Property="FontWeight" Value="Normal"/>
-                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
-                </Style>
-                <Style Selector="TabStripItem:selected">
-                    <Setter Property="FontWeight" Value="Normal"/>
-                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>
                     <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
-                <Style Selector="TabStripItem:selected Button">
-                    <Setter Property="Background" Value="Red"/>
+                <Style Selector="TabStripItem:selected">
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                 </Style>
             </TabStrip.Styles>
             <TabStrip.DataTemplates>
@@ -102,7 +111,7 @@
                             <TextBlock Text="{Binding Title}" />
                             <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />
                         </StackPanel>
-                        <Button Height="14" Width="14" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding}" Background="Transparent">
+                        <Button Height="14" Width="14" Command="{Binding Parent.Factory.RemoveView}" CommandParameter="{Binding}" Classes="documentTabButton">
                             <Button.Styles>
                                 <Style Selector="Button">
                                     <Setter Property="BorderThickness" Value="0"/>
@@ -110,13 +119,13 @@
                                     <Setter Property="Margin" Value="0"/>
                                 </Style>
                             </Button.Styles>
-                            <Path Margin="2" Stretch="Uniform" UseLayoutRounding="False" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="#525456" />
+                            <Path Margin="2" Stretch="Uniform" UseLayoutRounding="False" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
                         </Button>
                     </StackPanel>
                 </DataTemplate>
             </TabStrip.DataTemplates>
         </TabStrip>
-        <Grid Background="{DynamicResource ApplicationAccentBrush}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+        <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
         <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
             <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>

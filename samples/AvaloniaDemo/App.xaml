@@ -16,8 +16,9 @@
         <StyleInclude Source="resm:Dock.Avalonia.Controls.MetroWindow.xaml?assembly=Dock.Avalonia"/>
     </Application.Styles>
     <Application.Resources>
-        <SolidColorBrush x:Key="ApplicationAccentBrush">#007ACC</SolidColorBrush>
-        <SolidColorBrush x:Key="ApplicationAccentBrushLow">#1C97EA</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentBrushLow">#007ACC</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
+        <SolidColorBrush x:Key="ApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
         <SolidColorBrush x:Key="ApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
     </Application.Resources>
     <Application.DataTemplates>

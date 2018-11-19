@@ -67,14 +67,14 @@
                     <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
                 </Style>
                 <Style Selector="TabStripItem:pointerover">
-                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}" />
+                    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}" />
                 </Style>
                 <Style Selector="TabStrip:singleitem">
                     <Setter Property="IsVisible" Value="False" />
                 </Style>
                 <Style Selector="TabStripItem:selected">
                     <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
-                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushLow}" />
+                    <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushMed}" />
                     <Setter Property="BorderThickness" Value="1 0 1 1" />
                     <Setter Property="Margin" Value="0 -1 0 0" />
                     <Setter Property="Padding" Value="4 2 4 0" />

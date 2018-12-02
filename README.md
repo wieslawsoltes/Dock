@@ -2,8 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/Dock.svg)](https://gitter.im/wieslawsoltes/Dock?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/d77dburg3ckelv40/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/dock/branch/master)
-[![Build Status](https://dev.azure.com/wieslawsoltes/Dock/_apis/build/status/wieslawsoltes.Dock)](https://dev.azure.com/wieslawsoltes/Dock/_build/latest?definitionId=1)
+[![Build status](https://dev.azure.com/wieslawsoltes/Dock/_apis/build/status/Dock)](https://dev.azure.com/wieslawsoltes/Dock/_build/latest?definitionId=22)
 
 [![NuGet](https://img.shields.io/nuget/v/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Model)
 [![MyGet](https://img.shields.io/myget/dock-nightly/vpre/Dock.Model.svg?label=myget)](https://www.myget.org/gallery/dock-nightly) 

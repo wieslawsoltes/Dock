@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
-    <RuntimeIdentifiers>win7-x64;ubuntu.14.04-x64;debian.8-x64;osx.10.12-x64</RuntimeIdentifiers>
+    <OutputType>Exe</OutputType>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
-  <Import Project="..\..\build\NETCore.props" />
   <Import Project="..\..\build\NSubsys.props" />
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />

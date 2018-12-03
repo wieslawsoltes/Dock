@@ -1,14 +1,18 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Version>0.0.2$(VersionSuffix)</Version>
+    <VersionPrefix>0.0.3</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
     <Description>A docking layout system.</Description>
     <Copyright>Copyright © Wiesław Šoltés 2018</Copyright>
-    <PackageLicenseUrl>https://github.com/wieslawsoltes/Dock/blob/master/LICENSE.TXT</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.TXT" Pack="True" PackagePath="$(PackageLicenseFile)"/>
+  </ItemGroup>
   <PropertyGroup>
      <LangVersion>latest</LangVersion>
   </PropertyGroup>

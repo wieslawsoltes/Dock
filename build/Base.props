@@ -6,13 +6,10 @@
     <Company>Wiesław Šoltés</Company>
     <Description>A docking layout system.</Description>
     <Copyright>Copyright © Wiesław Šoltés 2018</Copyright>
-    <PackageLicenseFile>LICENSE.TXT</PackageLicenseFile>
+    <PackageLicenseUrl>https://github.com/wieslawsoltes/Dock/blob/master/LICENSE.TXT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\LICENSE.TXT" Pack="True" PackagePath="$(PackageLicenseFile)"/>
-  </ItemGroup>
   <PropertyGroup>
      <LangVersion>latest</LangVersion>
   </PropertyGroup>

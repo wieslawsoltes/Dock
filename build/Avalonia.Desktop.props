@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build989-beta" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SharpDX" Version="4.0.1" />
@@ -10,8 +10,8 @@
     <PackageReference Include="SharpDX.DXGI" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="1.60.0" />
-    <PackageReference Include="Avalonia.Skia.Linux.Natives" Version="1.60.0.1" />
+    <PackageReference Include="SkiaSharp" Version="1.68.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.Trace" Version="2.1.0" />

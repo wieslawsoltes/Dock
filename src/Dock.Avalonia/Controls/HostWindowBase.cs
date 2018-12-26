@@ -69,7 +69,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (!this.IsVisible)
                 {
-                    this.ShowDialog();
+                    this.ShowDialog(null); // FIXME: Set correct parent window.
                 }
             }
             else

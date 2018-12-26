@@ -17,7 +17,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 
   <Import Project="..\..\build\EmbedXaml.props" />

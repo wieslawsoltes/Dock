@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build989-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-build1091-beta" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SharpDX" Version="4.0.1" />

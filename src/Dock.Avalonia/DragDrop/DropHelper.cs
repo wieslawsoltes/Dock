@@ -49,7 +49,7 @@ namespace Dock.Avalonia
             var relativeTo = e.Source as IControl;
             var point = e.GetPosition(relativeTo);
             var visual = relativeTo as IVisual;
-            var screenPoint = visual.PointToScreen(point);
+            var screenPoint = visual.PointToScreen(point).ToPoint(1.0);
             return FixInvalidPosition(relativeTo, screenPoint);
         }
     }

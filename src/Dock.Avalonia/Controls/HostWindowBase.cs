@@ -92,7 +92,7 @@ namespace Dock.Avalonia.Controls
         {
             if (x != double.NaN && y != double.NaN)
             {
-                Position = new Point(x, y);
+                Position = new PixelPoint((int)x, (int)y);
             }
         }
 

@@ -19,9 +19,7 @@ namespace Dock.Model
 
         internal bool DockIntoTab(ITab sourceTab, ITab targetTab, DragAction action, DockOperation operation, bool bExecute)
         {
-#if DEBUG
-            Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
-#endif
+            Logger.Log($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
             if (sourceTab.Parent is ITabDock sourceTabParent && targetTab.Parent is ITabDock targetTabParent)
             {
                 if (sourceTabParent == targetTabParent)
@@ -105,9 +103,7 @@ namespace Dock.Model
 
         internal bool DockIntoTab(ITab sourceTab, ITabDock targetTabParent, DragAction action, DockOperation operation, bool bExecute)
         {
-#if DEBUG
-            Console.WriteLine($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
-#endif
+            Logger.Log($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
             if (sourceTab.Parent is ITabDock sourceTabParent)
             {
                 var targetTab = targetTabParent.Views.LastOrDefault();
@@ -186,9 +182,7 @@ namespace Dock.Model
                                                 }
                                             default:
                                                 {
-#if DEBUG
-                                                    Console.WriteLine($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
-#endif
+                                                    Logger.Log($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
                                                     return false;
                                                 }
                                         }
@@ -224,9 +218,7 @@ namespace Dock.Model
 
         internal bool DockIntoWindow(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
-#if DEBUG
-            Console.WriteLine($"{nameof(DockIntoWindow)}: {sourceView.Title} -> {targetView.Title}");
-#endif
+            Logger.Log($"{nameof(DockIntoWindow)}: {sourceView.Title} -> {targetView.Title}");
             switch (operation)
             {
                 case DockOperation.Fill:
@@ -292,9 +284,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {toolTab} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {toolTab} -> {targetView}");
                         return false;
                     }
             }
@@ -330,9 +320,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {documentTab} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {documentTab} -> {targetView}");
                         return false;
                     }
             }
@@ -364,9 +352,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceRoot} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceRoot} -> {targetView}");
                         return false;
                     }
             }
@@ -398,9 +384,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceView} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceView} -> {targetView}");
                         return false;
                     }
             }
@@ -432,9 +416,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceLayout} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceLayout} -> {targetView}");
                         return false;
                     }
             }
@@ -502,9 +484,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {targetView.GetType()}: {sourceTab} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceTab} -> {targetView}");
                         return false;
                     }
             }
@@ -537,9 +517,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported type {sourceView.GetType()}: {sourceView} -> {targetView}");
-#endif
+                        Logger.Log($"Not supported type {sourceView.GetType()}: {sourceView} -> {targetView}");
                         return false;
                     }
             }

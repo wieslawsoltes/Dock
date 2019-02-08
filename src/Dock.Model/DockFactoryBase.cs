@@ -743,9 +743,7 @@ namespace Dock.Model
                     break;
                 default:
                     {
-#if DEBUG
-                        Console.WriteLine($"Not supported window source: {view}");
-#endif
+                        Logger.Log($"Not supported window source: {view}");
                         return null;
                     }
             }

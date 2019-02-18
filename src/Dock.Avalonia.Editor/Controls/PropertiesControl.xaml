@@ -32,16 +32,16 @@
                         <local:WindowsPropertiesControl/>
                     </TabItem>
                     <TabItem Header="Top">
-                        <ContentControl Content="{Bidning Top}"/>
+                        <ContentControl Content="{Binding Top}"/>
                     </TabItem>
                     <TabItem Header="Bottom">
-                        <ContentControl Content="{Bidning Bottom}"/>
+                        <ContentControl Content="{Binding Bottom}"/>
                     </TabItem>
                     <TabItem Header="Left">
-                        <ContentControl Content="{Bidning Left}"/>
+                        <ContentControl Content="{Binding Left}"/>
                     </TabItem>
                     <TabItem Header="Right">
-                        <ContentControl Content="{Bidning Right}"/>
+                        <ContentControl Content="{Binding Right}"/>
                     </TabItem>
                 </TabControl>
             </DataTemplate>

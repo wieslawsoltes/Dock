@@ -56,7 +56,7 @@
                             <Style Selector="TabStrip:empty">
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
-                            <Style Selector="TabStrip /template/ ItemsPanel > WrapPanel">
+                            <Style Selector="TabStrip /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
                                 <Setter Property="Orientation" Value="Vertical"/>
                             </Style>
                         </TabStrip.Styles>

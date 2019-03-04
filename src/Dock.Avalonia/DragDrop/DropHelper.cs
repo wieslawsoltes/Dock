@@ -12,19 +12,6 @@ namespace Dock.Avalonia
     /// </summary>
     public static class DropHelper
     {
-        private static Point TransformPoint(Matrix matrix, Point point)
-        {
-            return new Point(
-                (point.X * matrix.M11) + (point.Y * matrix.M21) + matrix.M31,
-                (point.X * matrix.M12) + (point.Y * matrix.M22) + matrix.M32);
-        }
-
-        private static Point FixInvalidPosition(IControl control, Point point)
-        {
-            var matrix = control?.RenderTransform?.Value;
-            return matrix != null ? TransformPoint(matrix.Value.Invert(), point) : point;
-        }
-
         /// <summary>
         /// Calculates fixed drag position relative to event source.
         /// </summary>
@@ -35,7 +22,7 @@ namespace Dock.Avalonia
         {
             var relativeTo = e.Source as IControl;
             var point = e.GetPosition(relativeTo);
-            return FixInvalidPosition(relativeTo, point);
+            return point;
         }
 
         /// <summary>
@@ -50,7 +37,7 @@ namespace Dock.Avalonia
             var point = e.GetPosition(relativeTo);
             var visual = relativeTo as IVisual;
             var screenPoint = visual.PointToScreen(point).ToPoint(1.0);
-            return FixInvalidPosition(relativeTo, screenPoint);
+            return screenPoint;
         }
     }
 }

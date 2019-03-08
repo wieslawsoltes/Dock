@@ -11,7 +11,11 @@
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border BorderBrush="{DynamicResource ThemeBorderLowBrush}" Name="PART_Border">
+                        <Border.Resources>
+                            <id:DockDragHandler x:Key="DockDragHandler"/>
+                        </Border.Resources>
                         <i:Interaction.Behaviors>
+                            <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:SetRootFocusedViewOnPointerPressedBehavior />
                         </i:Interaction.Behaviors>
                         <Grid Name="PART_Grip">

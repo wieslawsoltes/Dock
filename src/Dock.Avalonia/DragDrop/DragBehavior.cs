@@ -93,15 +93,22 @@ namespace Dock.Avalonia
                 data.Set(DragDataFormats.Context, Context);
 
                 var effect = DragDropEffects.None;
-
                 if (e.InputModifiers.HasFlag(InputModifiers.Alt))
+                {
                     effect |= DragDropEffects.Link;
+                }
                 else if (e.InputModifiers.HasFlag(InputModifiers.Shift))
+                {
                     effect |= DragDropEffects.Move;
+                }
                 else if (e.InputModifiers.HasFlag(InputModifiers.Control))
+                {
                     effect |= DragDropEffects.Copy;
+                }
                 else
+                {
                     effect |= DragDropEffects.Move;
+                }
 
                 var result = await DragDrop.DoDragDrop(data, effect);
                 Handler?.AfterDragDrop(sender, e, Context);

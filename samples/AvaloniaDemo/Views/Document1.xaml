@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400">
     <Grid Focusable="True" Background="Gray">
@@ -10,20 +11,7 @@
             <TextBlock Text="{Binding Id}"/>
             <TextBlock Text="{Binding Title}"/>
             <TextBlock Text="{Binding Context}"/>
-            <StackPanel Orientation="Vertical" Spacing="4" Background="Transparent">
-                <StackPanel Orientation="Horizontal"
-                        Margin="0,16,0,0"
-                        HorizontalAlignment="Center"
-                        Spacing="16">
-                    <Border BorderBrush="{DynamicResource ThemeAccentBrush}" BorderThickness="2" Padding="16" Name="DragMe">
-                        <TextBlock Name="DragState">Drag Me</TextBlock>
-                    </Border>
-                    <Border Background="{DynamicResource ThemeAccentBrush2}" Padding="16"
-                            DragDrop.AllowDrop="True">
-                        <TextBlock Name="DropState">Drop some text or files here</TextBlock>
-                    </Border>
-                </StackPanel>
-            </StackPanel>
+            <views:DragAndDrop/>
         </StackPanel>
     </Grid>
 </UserControl>

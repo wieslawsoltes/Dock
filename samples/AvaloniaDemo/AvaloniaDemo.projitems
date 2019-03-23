@@ -33,6 +33,9 @@
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool3.xaml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\DragAndDrop.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Views\LeftTopTool1.xaml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -129,6 +132,10 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\LeftBottomTool3.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\DragAndDrop.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

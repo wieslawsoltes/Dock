@@ -27,12 +27,6 @@ namespace Dock.Avalonia
             AvaloniaProperty.Register<DropBehavior, IDropHandler>(nameof(Handler));
 
         /// <summary>
-        /// Define <see cref="IsTunneled"/> property.
-        /// </summary>
-        public static readonly AvaloniaProperty IsTunneledProperty =
-            AvaloniaProperty.Register<DropBehavior, bool>(nameof(IsTunneled), false);
-
-        /// <summary>
         /// Define IsEnabled attached property.
         /// </summary>
         public static readonly AvaloniaProperty IsEnabledProperty =
@@ -54,15 +48,6 @@ namespace Dock.Avalonia
         {
             get => (IDropHandler)GetValue(HandlerProperty);
             set => SetValue(HandlerProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets tunneled event flag.
-        /// </summary>
-        public bool IsTunneled
-        {
-            get => (bool)GetValue(IsTunneledProperty);
-            set => SetValue(IsTunneledProperty, value);
         }
 
         /// <summary>
@@ -90,17 +75,10 @@ namespace Dock.Avalonia
         {
             base.OnAttached();
             DragDrop.SetAllowDrop(AssociatedObject, true);
-
-            var routes = RoutingStrategies.Direct | RoutingStrategies.Bubble;
-            if (IsTunneled)
-            {
-                routes |= RoutingStrategies.Tunnel;
-            }
-
-            AssociatedObject.AddHandler(DragDrop.DragEnterEvent, DragEnter, routes);
-            AssociatedObject.AddHandler(DragDrop.DragLeaveEvent, DragLeave, routes);
-            AssociatedObject.AddHandler(DragDrop.DragOverEvent, DragOver, routes);
-            AssociatedObject.AddHandler(DragDrop.DropEvent, Drop, routes);
+            AssociatedObject.AddHandler(DragDrop.DragEnterEvent, DragEnter);
+            AssociatedObject.AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+            AssociatedObject.AddHandler(DragDrop.DragOverEvent, DragOver);
+            AssociatedObject.AddHandler(DragDrop.DropEvent, Drop);
         }
 
         /// <inheritdoc/>

@@ -15,7 +15,6 @@
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400">
     <UserControl.Resources>
-        <id:DockDragHandler x:Key="DockDragHandler"/>
         <converters:OrientationConverter x:Key="OrientationConverter"/>
         <converters:AlignmentConverter x:Key="AlignmentConverter"/>
     </UserControl.Resources>
@@ -29,9 +28,6 @@
             </DataTemplate>
             <DataTemplate DataType="Controls:IToolDock">
                 <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                    <i:Interaction.Behaviors>
-                        <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                    </i:Interaction.Behaviors>
                     <idc:ToolControl/>
                 </idc:DockToolChrome>
             </DataTemplate>

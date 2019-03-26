@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Git;
@@ -13,7 +14,7 @@ class Build : NukeBuild
 {
     public static int Main() => Execute<Build>(x => x.Compile);
 
-    [Solution("Dock.sln")]
+    [Solution]
     readonly Solution Solution;
 
     [GitRepository]
@@ -44,6 +45,14 @@ class Build : NukeBuild
     {
         Configuration = Configuration ?? "Release";
         VersionSuffix = VersionSuffix ?? "";
+    }
+
+    private void DeleteDirectories(IReadOnlyCollection<string> directories)
+    {
+        foreach (var directory in directories)
+        {
+            DeleteDirectory(directory);
+        }
     }
 
     Target Clean => _ => _

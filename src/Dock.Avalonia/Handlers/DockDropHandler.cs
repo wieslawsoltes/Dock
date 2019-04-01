@@ -161,7 +161,7 @@ namespace Dock.Avalonia
                 _adornerHelper.RemoveAdorner(sender as IVisual);
             }
 
-            if (Execute(sender, e, targetContext, sourceContext, operation) == false)
+            if (Execute(sender, e, sourceContext, targetContext, operation) == false)
             {
                 if (!isView)
                 {

@@ -101,7 +101,7 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public override bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, object state)
+        public override bool Execute(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
             if (sourceContext is IDock sourceDock && targetContext is IDock targetDock)
             {

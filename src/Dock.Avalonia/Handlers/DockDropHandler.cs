@@ -197,7 +197,7 @@ namespace Dock.Avalonia
         }
 
         /// <inheritdoc/>
-        public bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, object state)
+        public bool Execute(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
             if (_executed == false && state is DockOperation operation && sourceContext is IView sourceView && targetContext is IView targetView)
             {

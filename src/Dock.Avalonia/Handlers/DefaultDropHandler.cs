@@ -43,7 +43,7 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public virtual void Drop(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
-            if (Execute(sender, e, targetContext, sourceContext, null) == false)
+            if (Execute(sender, e, sourceContext, targetContext, null) == false)
             {
                 e.DragEffects = DragDropEffects.None;
                 e.Handled = true;
@@ -68,7 +68,7 @@ namespace Dock.Avalonia
         }
         
         /// <inheritdoc/>
-        public virtual bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, object state)
+        public virtual bool Execute(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
             return false;
         }

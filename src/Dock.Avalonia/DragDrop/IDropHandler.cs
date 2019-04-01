@@ -60,11 +60,11 @@ namespace Dock.Avalonia
         /// </summary>
         /// <param name="sender">The sender object.</param>
         /// <param name="e">The drag event arguments.</param>
-        /// <param name="targetContext">The target context.</param>
         /// <param name="sourceContext">The source context.</param>
+        /// <param name="targetContext">The target context.</param>
         /// <param name="state">The state object.</param>
         /// <returns>True if drag operation was successfuly executed.</returns>
-        bool Execute(object sender, DragEventArgs e, object targetContext, object sourceContext, object state);
+        bool Execute(object sender, DragEventArgs e, object sourceContext, object targetContext, object state);
 
         /// <summary>
         /// Cancel drag operation.

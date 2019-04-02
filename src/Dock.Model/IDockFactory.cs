@@ -210,6 +210,12 @@ namespace Dock.Model
         void RemoveView(IView view);
 
         /// <summary>
+        /// Removes view from parent <see cref="IDock.Views"/> collection, and call IView.OnClose.
+        /// </summary>
+        /// <param name="view">The view to remove.</param>
+        void CloseView(IView view);
+
+        /// <summary>
         /// Moves view inside <see cref="IDock.Views"/> collection.
         /// </summary>
         /// <param name="dock">The views dock.</param>

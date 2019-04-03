@@ -12,6 +12,7 @@
                  d:DesignWidth="1200" d:DesignHeight="680"
                  UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
                  WindowState="Normal" WindowStartupLocation="CenterScreen"
+                 Foreground="{DynamicResource ThemeForegroundBrush}"
                  BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
                  Title="Dock Avalonia Demo" Height="680" Width="1200"
                  id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">

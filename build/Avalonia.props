@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.7.1-build20190326-01" />
-    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.7.1-build20190326-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.7.1-build20190403-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.7.1-build20190403-01" />
   </ItemGroup>
 </Project>

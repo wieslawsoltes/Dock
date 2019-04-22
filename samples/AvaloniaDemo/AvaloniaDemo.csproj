@@ -1,0 +1,212 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <OutputType>WinExe</OutputType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <AssemblyName>AvaloniaDemo</AssemblyName>
+    <RootNamespace>AvaloniaDemo</RootNamespace>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\Rx.props" />
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Newtonsoft.Json.props" />
+  <Import Project="..\..\build\ReactiveUI.props" />
+
+  <ItemGroup>
+    <Compile Include="**\*.cs" Exclude="obj\**" />
+  </ItemGroup>
+
+  <Import Project="..\AvaloniaDemo\AvaloniaDemo.projitems" Label="Shared" />
+
+  <Import Project="..\..\build\EmbedXaml.props" />
+
+  <ItemGroup>
+    <AvaloniaResource Remove="App.xaml" />
+    <AvaloniaResource Remove="MainWindow.xaml" />
+    <AvaloniaResource Remove="Views\Document1.xaml" />
+    <AvaloniaResource Remove="Views\Document2.xaml" />
+    <AvaloniaResource Remove="Views\Document3.xaml" />
+    <AvaloniaResource Remove="Views\DragAndDrop.xaml" />
+    <AvaloniaResource Remove="Views\LeftBottomTool1.xaml" />
+    <AvaloniaResource Remove="Views\LeftBottomTool2.xaml" />
+    <AvaloniaResource Remove="Views\LeftBottomTool3.xaml" />
+    <AvaloniaResource Remove="Views\LeftTopTool1.xaml" />
+    <AvaloniaResource Remove="Views\LeftTopTool2.xaml" />
+    <AvaloniaResource Remove="Views\LeftTopTool3.xaml" />
+    <AvaloniaResource Remove="Views\RightBottomTool1.xaml" />
+    <AvaloniaResource Remove="Views\RightBottomTool2.xaml" />
+    <AvaloniaResource Remove="Views\RightBottomTool3.xaml" />
+    <AvaloniaResource Remove="Views\RightTopTool1.xaml" />
+    <AvaloniaResource Remove="Views\RightTopTool2.xaml" />
+    <AvaloniaResource Remove="Views\RightTopTool3.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="MainWindow.xaml" />
+    <None Remove="Views\Document1.xaml" />
+    <None Remove="Views\Document2.xaml" />
+    <None Remove="Views\Document3.xaml" />
+    <None Remove="Views\DragAndDrop.xaml" />
+    <None Remove="Views\LeftBottomTool1.xaml" />
+    <None Remove="Views\LeftBottomTool2.xaml" />
+    <None Remove="Views\LeftBottomTool3.xaml" />
+    <None Remove="Views\LeftTopTool1.xaml" />
+    <None Remove="Views\LeftTopTool2.xaml" />
+    <None Remove="Views\LeftTopTool3.xaml" />
+    <None Remove="Views\RightBottomTool1.xaml" />
+    <None Remove="Views\RightBottomTool2.xaml" />
+    <None Remove="Views\RightBottomTool3.xaml" />
+    <None Remove="Views\RightTopTool1.xaml" />
+    <None Remove="Views\RightTopTool2.xaml" />
+    <None Remove="Views\RightTopTool3.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Document1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Document2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Document3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DragAndDrop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftBottomTool1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftBottomTool2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftBottomTool3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftTopTool1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftTopTool2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LeftTopTool3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightBottomTool1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightBottomTool2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightBottomTool3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightTopTool1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightTopTool2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RightTopTool3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.CodeGen\Dock.CodeGen.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Editor\Dock.Avalonia.Editor.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="MainWindow.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Document1.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Document2.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Document3.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DragAndDrop.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftBottomTool1.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftBottomTool2.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftBottomTool3.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftTopTool1.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftTopTool2.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LeftTopTool3.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightBottomTool1.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightBottomTool2.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightBottomTool3.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightTopTool1.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightTopTool2.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RightTopTool3.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

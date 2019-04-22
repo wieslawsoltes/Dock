@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProportionalStackPanelDemo", "samples\ProportionalStackPanelDemo\ProportionalStackPanelDemo.csproj", "{5FF463E5-959B-45A3-B3D8-1B67A599D1C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
@@ -69,20 +71,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.Editor", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.CodeGen", "src\Dock.CodeGen\Dock.CodeGen.csproj", "{DA1542AA-C866-4F6C-A032-5A4A8F667F20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.INPC", "samples\AvaloniaDemo.INPC\AvaloniaDemo.INPC.csproj", "{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.ReactiveUI", "samples\AvaloniaDemo.ReactiveUI\AvaloniaDemo.ReactiveUI.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{1B7E0B00-604B-43BC-9544-62544E9D09D8}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.shproj", "{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\build\_build.csproj", "{D96A5888-05F6-482D-87EA-CC4608172F4D}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		samples\AvaloniaDemo\AvaloniaDemo.projitems*{30bc3a7a-3e21-4f7a-a72b-33420ea3edf0}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -132,10 +125,6 @@ Global
 		{DA1542AA-C866-4F6C-A032-5A4A8F667F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA1542AA-C866-4F6C-A032-5A4A8F667F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA1542AA-C866-4F6C-A032-5A4A8F667F20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -167,10 +156,8 @@ Global
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{B21F1DCA-CB29-4B1D-839C-ADB4C398D2E8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{DA1542AA-C866-4F6C-A032-5A4A8F667F20} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-		{FE5EBC91-BA86-4C4B-B29E-BE4A4C7CC4F0} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{1B7E0B00-604B-43BC-9544-62544E9D09D8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-		{30BC3A7A-3E21-4F7A-A72B-33420EA3EDF0} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{D96A5888-05F6-482D-87EA-CC4608172F4D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

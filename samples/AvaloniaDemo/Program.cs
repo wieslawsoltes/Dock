@@ -13,21 +13,9 @@ namespace AvaloniaDemo
 {
     internal class Program
     {
-        private static void Print(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(ex.StackTrace);
-            if (ex.InnerException != null)
-            {
-                Print(ex.InnerException);
-            }
-        }
-
         [STAThread]
         private static void Main(string[] args)
         {
-            try
-            {
                 var serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
                 var vm = new MainWindowViewModel();
                 var factory = new DemoDockFactory(new DemoData());
@@ -53,11 +41,6 @@ namespace AvaloniaDemo
                 }
 
                 serializer.Save(path, vm.Layout);
-            }
-            catch (Exception ex)
-            {
-                Print(ex);
-            }
         }
 
         public static AppBuilder BuildAvaloniaApp()

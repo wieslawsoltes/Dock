@@ -16,31 +16,31 @@ namespace AvaloniaDemo
         [STAThread]
         private static void Main(string[] args)
         {
-                var serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
-                var vm = new MainWindowViewModel();
-                var factory = new DemoDockFactory(new DemoData());
-                IDock layout = null;
+            var serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
+            var vm = new MainWindowViewModel();
+            var factory = new DemoDockFactory(new DemoData());
+            IDock layout = null;
 
-                string path = serializer.GetBasePath("Layout.json");
-                if (serializer.Exists(path))
-                {
-                    layout = serializer.Load<RootDock>(path);
-                }
+            string path = serializer.GetBasePath("Layout.json");
+            if (serializer.Exists(path))
+            {
+                layout = serializer.Load<RootDock>(path);
+            }
 
-                BuildAvaloniaApp().Start<MainWindow>(() =>
-                {
-                    vm.Factory = factory;
-                    vm.Layout = layout ?? vm.Factory.CreateLayout();
-                    vm.Factory.InitLayout(vm.Layout);
-                    return vm;
-                });
+            BuildAvaloniaApp().Start<MainWindow>(() =>
+            {
+                vm.Factory = factory;
+                vm.Layout = layout ?? vm.Factory.CreateLayout();
+                vm.Factory.InitLayout(vm.Layout);
+                return vm;
+            });
 
-                if (vm.Layout is IDock dock)
-                {
-                    dock.Close();
-                }
+            if (vm.Layout is IDock dock)
+            {
+                dock.Close();
+            }
 
-                serializer.Save(path, vm.Layout);
+            serializer.Save(path, vm.Layout);
         }
 
         public static AppBuilder BuildAvaloniaApp()

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.8.1-cibuild0002121-beta" />
+    <PackageReference Include="Avalonia" Version="0.8.1-cibuild0002194-beta" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.5.0" />
@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.8.1-build20190429-01" />
-    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.8.1-build20190429-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.8.1-build20190506-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.8.1-build20190506-01" />
   </ItemGroup>
 </Project>

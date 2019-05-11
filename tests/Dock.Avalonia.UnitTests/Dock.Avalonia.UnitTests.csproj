@@ -10,6 +10,7 @@
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Behaviors.props" />
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>

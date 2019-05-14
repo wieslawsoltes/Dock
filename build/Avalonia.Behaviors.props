@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.8.1-build20190511-01" />
-    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.8.1-build20190511-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions" Version="0.8.1-build20190514-01" />
+    <PackageReference Include="Avalonia.Xaml.Interactions.Custom" Version="0.8.1-build20190514-01" />
   </ItemGroup>
 </Project>

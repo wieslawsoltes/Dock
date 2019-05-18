@@ -84,7 +84,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetPosition(double x, double y)
         {
-            if (x != double.NaN && y != double.NaN)
+            if (!double.IsNaN(x) && !double.IsNaN(y))
             {
                 Position = new PixelPoint((int)x, (int)y);
             }
@@ -101,12 +101,12 @@ namespace Dock.Avalonia.Controls
         public void SetSize(double width, double height)
         {
             Logger.Log($"HostWindowBase: SetSize {width}x{height}");
-            if (width != double.NaN)
+            if (!double.IsNaN(width))
             {
                 this.Width = width;
             }
 
-            if (height != double.NaN)
+            if (!double.IsNaN(height))
             {
                 this.Height = height;
             }

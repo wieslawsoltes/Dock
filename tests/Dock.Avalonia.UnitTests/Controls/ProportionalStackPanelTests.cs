@@ -16,6 +16,56 @@ namespace Dock.Avalonia.UnitTests.Controls
     public class ProportionalStackPanelTests
     {
         [Fact]
+        public void Lays_Out_Children_Horizontal()
+        {
+            var target = new ProportionalStackPanel()
+            {
+                Width = 300,
+                Height = 100,
+                Orientation = Orientation.Horizontal,
+                Children =
+                {
+                    new Rectangle(),
+                    new ProportionalStackPanelSplitter(),
+                    new Rectangle()
+                }
+            };
+
+            target.Measure(Size.Infinity);
+            target.Arrange(new Rect(target.DesiredSize));
+
+            Assert.Equal(new Size(300, 100), target.Bounds.Size);
+            Assert.Equal(new Rect(0, 0, 148, 100), target.Children[0].Bounds);
+            Assert.Equal(new Rect(148, 0, 0, 100), target.Children[1].Bounds);
+            Assert.Equal(new Rect(148, 0, 148, 100), target.Children[2].Bounds);
+        }
+
+        [Fact]
+        public void Lays_Out_Children_Vertical()
+        {
+            var target = new ProportionalStackPanel()
+            {
+                Width = 100,
+                Height = 300,
+                Orientation = Orientation.Vertical,
+                Children =
+                {
+                    new Rectangle(),
+                    new ProportionalStackPanelSplitter(),
+                    new Rectangle()
+                }
+            };
+
+            target.Measure(Size.Infinity);
+            target.Arrange(new Rect(target.DesiredSize));
+
+            Assert.Equal(new Size(100, 300), target.Bounds.Size);
+            Assert.Equal(new Rect(0, 0, 100, 148), target.Children[0].Bounds);
+            Assert.Equal(new Rect(0, 148, 100, 0), target.Children[1].Bounds);
+            Assert.Equal(new Rect(0, 148, 100, 148), target.Children[2].Bounds);
+        }
+
+        [Fact]
         public void Lays_Out_Children_Default()
         {
             var target = new ProportionalStackPanel()

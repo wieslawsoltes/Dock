@@ -388,7 +388,7 @@ namespace Dock.Model
                     }
                     else
                     {
-                        throw new IndexOutOfRangeException();
+                        // TODO:
                     }
                 }
 

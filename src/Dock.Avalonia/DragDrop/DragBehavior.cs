@@ -85,7 +85,7 @@ namespace Dock.Avalonia
 
         private async void DoDrag(object sender, PointerPressedEventArgs e)
         {
-            if (e.MouseButton == MouseButton.Left && GetIsEnabled(AssociatedObject))
+            if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton) && GetIsEnabled(AssociatedObject))
             {
                 Handler?.BeforeDragDrop(sender, e, Context);
 

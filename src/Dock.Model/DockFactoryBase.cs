@@ -421,8 +421,14 @@ namespace Dock.Model
                 {
                     throw new IndexOutOfRangeException();
                 }
-                var currentView = dock.Views[indexCurrentView];
-                dock.CurrentView = dock.Views.Count > 0 ? currentView : null;
+                if (dock.Views.Count > 0)
+                {
+                    dock.CurrentView = dock.Views[indexCurrentView];
+                }
+                else
+                {
+                    dock.CurrentView = null;
+                }
                 Collapse(dock);
             }
         }
@@ -470,8 +476,14 @@ namespace Dock.Model
                 {
                     throw new IndexOutOfRangeException();
                 }
-                var currentView = dock.Views[indexCurrentView];
-                dock.CurrentView = dock.Views.Count > 0 ? currentView : null;
+                if (dock.Views.Count > 0)
+                {
+                    dock.CurrentView = dock.Views[indexCurrentView];
+                }
+                else
+                {
+                    dock.CurrentView = null;
+                }
                 Collapse(dock);
             }
 
@@ -518,8 +530,14 @@ namespace Dock.Model
                     {
                         throw new IndexOutOfRangeException();
                     }
-                    var currentView = sourceDock.Views[indexCurrentView];
-                    sourceDock.CurrentView = sourceDock.Views.Count > 0 ? currentView : null;
+                    if (sourceDock.Views.Count > 0)
+                    {
+                        sourceDock.CurrentView = sourceDock.Views[indexCurrentView];
+                    }
+                    else
+                    {
+                        sourceDock.CurrentView = null;
+                    }
                     Collapse(sourceDock);
                 }
 
@@ -770,8 +788,14 @@ namespace Dock.Model
                         {
                             throw new IndexOutOfRangeException();
                         }
-                        var currentView = parentDock.Views[currentViewIndex];
-                        parentDock.CurrentView = parentDock.Views.Count > 0 ? currentView : null;
+                        if (parentDock.Views.Count > 0)
+                        {
+                            parentDock.CurrentView = parentDock.Views[currentViewIndex];
+                        }
+                        else
+                        {
+                            parentDock.CurrentView = null;
+                        }
                         Collapse(parentDock); 
                     }
                     else

@@ -168,12 +168,19 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void InsertView(IDock dock, IView view, int index)
         {
-            Update(view, dock);
-            if (dock.Views == null)
+            if (index >= 0)
             {
-                dock.Views = CreateList<IView>();
+                Update(view, dock);
+                if (dock.Views == null)
+                {
+                    dock.Views = CreateList<IView>();
+                }
+                dock.Views.Insert(index, view); 
             }
-            dock.Views.Insert(index, view);
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         /// <inheritdoc/>
@@ -352,21 +359,38 @@ namespace Dock.Model
                     var toRemove = new List<IView>();
                     var dockIndex = parentDock.Views.IndexOf(dock);
 
-                    if (dockIndex > 0
-                        && parentDock.Views[dockIndex - 1] is ISplitterDock splitterPrevious)
+                    if (dockIndex >= 0)
                     {
-                        toRemove.Add(splitterPrevious);
-                    }
+                        int indexSplitterPrevious = dockIndex - 1;
+                        if (indexSplitterPrevious < 0)
+                        {
+                            throw new IndexOutOfRangeException();
+                        }
+                        var previousView = parentDock.Views[indexSplitterPrevious];
+                        if (dockIndex > 0 && previousView is ISplitterDock splitterPrevious)
+                        {
+                            toRemove.Add(splitterPrevious);
+                        }
 
-                    if (dockIndex < parentDock.Views.Count - 1
-                        && parentDock.Views[dockIndex + 1] is ISplitterDock splitterNext)
-                    {
-                        toRemove.Add(splitterNext);
-                    }
+                        int indexSplitterNext = dockIndex + 1;
+                        if (indexSplitterNext < 0)
+                        {
+                            throw new IndexOutOfRangeException();
+                        }
+                        var nextView = parentDock.Views[indexSplitterNext];
+                        if (dockIndex < parentDock.Views.Count - 1 && nextView is ISplitterDock splitterNext)
+                        {
+                            toRemove.Add(splitterNext);
+                        }
 
-                    foreach (var removeView in toRemove)
+                        foreach (var removeView in toRemove)
+                        {
+                            RemoveView(removeView);
+                        } 
+                    }
+                    else
                     {
-                        RemoveView(removeView);
+                        throw new IndexOutOfRangeException();
                     }
                 }
 
@@ -387,8 +411,18 @@ namespace Dock.Model
             if (view?.Parent is IDock dock && dock.Views != null)
             {
                 int index = dock.Views.IndexOf(view);
+                if (index < 0)
+                {
+                    throw new IndexOutOfRangeException();
+                }
                 dock.Views.Remove(view);
-                dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
+                int indexCurrentView = index > 0 ? index - 1 : 0;
+                if (indexCurrentView < 0)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                var currentView = dock.Views[indexCurrentView];
+                dock.CurrentView = dock.Views.Count > 0 ? currentView : null;
                 Collapse(dock);
             }
         }
@@ -408,9 +442,16 @@ namespace Dock.Model
             int sourceIndex = dock.Views.IndexOf(sourceView);
             int targetIndex = dock.Views.IndexOf(targetView);
 
-            dock.Views.RemoveAt(sourceIndex);
-            dock.Views.Insert(targetIndex, sourceView);
-            dock.CurrentView = sourceView;
+            if (sourceIndex >= 0 && targetIndex >= 0)
+            {
+                dock.Views.RemoveAt(sourceIndex);
+                dock.Views.Insert(targetIndex, sourceView);
+                dock.CurrentView = sourceView; 
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         /// <inheritdoc/>
@@ -418,10 +459,20 @@ namespace Dock.Model
         {
             if (sourceView?.Parent is IDock dock && dock.Views != null)
             {
-                    int index = dock.Views.IndexOf(sourceView);
-                    dock.Views.Remove(sourceView);
-                    dock.CurrentView = dock.Views.Count > 0 ? dock.Views[index > 0 ? index - 1 : 0] : null;
-                    Collapse(dock);
+                int index = dock.Views.IndexOf(sourceView);
+                if (index < 0)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                dock.Views.Remove(sourceView);
+                int indexCurrentView = index > 0 ? index - 1 : 0;
+                if (indexCurrentView < 0)
+                {
+                    throw new IndexOutOfRangeException();
+                }
+                var currentView = dock.Views[indexCurrentView];
+                dock.CurrentView = dock.Views.Count > 0 ? currentView : null;
+                Collapse(dock);
             }
 
             if (targetDock.Views == null)
@@ -431,9 +482,18 @@ namespace Dock.Model
 
             int targetIndex = targetDock.Views.IndexOf(targetView);
             if (targetIndex < 0)
+            {
                 targetIndex = 0;
+            }
             else
+            {
                 targetIndex += 1;
+            }
+
+            if (targetIndex < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
 
             targetDock.Views.Insert(targetIndex, sourceView);
             Update(sourceView, targetDock);
@@ -448,8 +508,18 @@ namespace Dock.Model
                 if (sourceDock.Views != null)
                 {
                     int index = sourceDock.Views.IndexOf(first);
+                    if (index < 0)
+                    {
+                        throw new IndexOutOfRangeException();
+                    }
                     sourceDock.Views.Remove(first);
-                    sourceDock.CurrentView = sourceDock.Views.Count > 0 ? sourceDock.Views[index > 0 ? index - 1 : 0] : null;
+                    int indexCurrentView = index > 0 ? index - 1 : 0;
+                    if (indexCurrentView < 0)
+                    {
+                        throw new IndexOutOfRangeException();
+                    }
+                    var currentView = sourceDock.Views[indexCurrentView];
+                    sourceDock.CurrentView = sourceDock.Views.Count > 0 ? currentView : null;
                     Collapse(sourceDock);
                 }
 
@@ -470,17 +540,24 @@ namespace Dock.Model
                 int firstIndex = sourceDock.Views.IndexOf(first);
                 int secondIndex = targetDock.Views.IndexOf(second);
 
-                sourceDock.Views.RemoveAt(firstIndex);
-                targetDock.Views.RemoveAt(secondIndex);
+                if (firstIndex >= 0 && secondIndex >= 0)
+                {
+                    sourceDock.Views.RemoveAt(firstIndex);
+                    targetDock.Views.RemoveAt(secondIndex);
 
-                sourceDock.Views.Insert(firstIndex, second);
-                targetDock.Views.Insert(secondIndex, first);
+                    sourceDock.Views.Insert(firstIndex, second);
+                    targetDock.Views.Insert(secondIndex, first);
 
-                Update(first, secondParent);
-                Update(second, firstParent);
+                    Update(first, secondParent);
+                    Update(second, firstParent);
 
-                sourceDock.CurrentView = second;
-                targetDock.CurrentView = first;
+                    sourceDock.CurrentView = second;
+                    targetDock.CurrentView = first; 
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
         }
 
@@ -490,12 +567,19 @@ namespace Dock.Model
             int sourceIndex = dock.Views.IndexOf(sourceView);
             int targetIndex = dock.Views.IndexOf(targetView);
 
-            var originalSourceView = dock.Views[sourceIndex];
-            var originalTargetView = dock.Views[targetIndex];
+            if (sourceIndex >= 0 && targetIndex >= 0)
+            {
+                var originalSourceView = dock.Views[sourceIndex];
+                var originalTargetView = dock.Views[targetIndex];
 
-            dock.Views[targetIndex] = originalSourceView;
-            dock.Views[sourceIndex] = originalTargetView;
-            dock.CurrentView = originalTargetView;
+                dock.Views[targetIndex] = originalSourceView;
+                dock.Views[sourceIndex] = originalTargetView;
+                dock.CurrentView = originalTargetView; 
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         /// <inheritdoc/>
@@ -504,16 +588,23 @@ namespace Dock.Model
             int sourceIndex = sourceDock.Views.IndexOf(sourceView);
             int targetIndex = targetDock.Views.IndexOf(targetView);
 
-            var originalSourceView = sourceDock.Views[sourceIndex];
-            var originalTargetView = targetDock.Views[targetIndex];
-            sourceDock.Views[sourceIndex] = originalTargetView;
-            targetDock.Views[targetIndex] = originalSourceView;
+            if (sourceIndex >= 0 && targetIndex >= 0)
+            {
+                var originalSourceView = sourceDock.Views[sourceIndex];
+                var originalTargetView = targetDock.Views[targetIndex];
+                sourceDock.Views[sourceIndex] = originalTargetView;
+                targetDock.Views[targetIndex] = originalSourceView;
 
-            Update(originalSourceView, targetDock);
-            Update(originalTargetView, sourceDock);
+                Update(originalSourceView, targetDock);
+                Update(originalTargetView, sourceDock);
 
-            sourceDock.CurrentView = originalTargetView;
-            targetDock.CurrentView = originalSourceView;
+                sourceDock.CurrentView = originalTargetView;
+                targetDock.CurrentView = originalSourceView; 
+            }
+            else
+            {
+                throw new IndexOutOfRangeException();
+            }
         }
 
         /// <inheritdoc/>
@@ -522,8 +613,15 @@ namespace Dock.Model
             if (source.Parent is IDock dock)
             {
                 int index = dock.Views.IndexOf(source);
-                dock.Views.RemoveAt(index);
-                dock.Views.Insert(index, destination);
+                if (index >= 0)
+                {
+                    dock.Views.RemoveAt(index);
+                    dock.Views.Insert(index, destination); 
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
         }
 
@@ -664,9 +762,22 @@ namespace Dock.Model
                 if (dock?.Parent is IDock parentDock && dock.Views != null)
                 {
                     int index = parentDock.Views.IndexOf(dock);
-                    parentDock.Views.Remove(dock);
-                    parentDock.CurrentView = parentDock.Views.Count > 0 ? parentDock.Views[index > 0 ? index - 1 : 0] : null;
-                    Collapse(parentDock);
+                    if (index >= 0)
+                    {
+                        parentDock.Views.Remove(dock);
+                        int currentViewIndex = index > 0 ? index - 1 : 0;
+                        if (currentViewIndex < 0)
+                        {
+                            throw new IndexOutOfRangeException();
+                        }
+                        var currentView = parentDock.Views[currentViewIndex];
+                        parentDock.CurrentView = parentDock.Views.Count > 0 ? currentView : null;
+                        Collapse(parentDock); 
+                    }
+                    else
+                    {
+                        throw new IndexOutOfRangeException();
+                    }
                 }
 
                 var window = CreateWindowFrom(dock);

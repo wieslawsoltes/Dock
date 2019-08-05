@@ -362,25 +362,23 @@ namespace Dock.Model
                     if (dockIndex >= 0)
                     {
                         int indexSplitterPrevious = dockIndex - 1;
-                        if (indexSplitterPrevious < 0)
+                        if (dockIndex > 0 && indexSplitterPrevious >= 0)
                         {
-                            throw new IndexOutOfRangeException();
-                        }
-                        var previousView = parentDock.Views[indexSplitterPrevious];
-                        if (dockIndex > 0 && previousView is ISplitterDock splitterPrevious)
-                        {
-                            toRemove.Add(splitterPrevious);
+                            var previousView = parentDock.Views[indexSplitterPrevious];
+                            if (previousView is ISplitterDock splitterPrevious)
+                            {
+                                toRemove.Add(splitterPrevious);
+                            }
                         }
 
                         int indexSplitterNext = dockIndex + 1;
-                        if (indexSplitterNext < 0)
+                        if (dockIndex < parentDock.Views.Count - 1 && indexSplitterNext >= 0)
                         {
-                            throw new IndexOutOfRangeException();
-                        }
-                        var nextView = parentDock.Views[indexSplitterNext];
-                        if (dockIndex < parentDock.Views.Count - 1 && nextView is ISplitterDock splitterNext)
-                        {
-                            toRemove.Add(splitterNext);
+                            var nextView = parentDock.Views[indexSplitterNext];
+                            if (nextView is ISplitterDock splitterNext)
+                            {
+                                toRemove.Add(splitterNext);
+                            }
                         }
 
                         foreach (var removeView in toRemove)

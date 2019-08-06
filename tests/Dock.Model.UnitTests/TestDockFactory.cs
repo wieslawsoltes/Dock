@@ -57,16 +57,6 @@ namespace Dock.Model.UnitTests
             throw new System.NotImplementedException();
         }
 
-        public override IView CreateView()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override IDock CreateDock()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override IDock CreateLayout()
         {
             throw new System.NotImplementedException();

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using Dock.Model.Controls;
-using Dock.Model.Controls.Editor;
 using ReactiveUI.Legacy;
 
 namespace Dock.Model
@@ -48,11 +47,5 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         public override IDocumentTab CreateDocumentTab() => new DocumentTab();
-
-        /// <inheritdoc/>
-        public override IView CreateView() => new ViewStub();
-
-        /// <inheritdoc/>
-        public override IDock CreateDock() => new DockStub();
     }
 }

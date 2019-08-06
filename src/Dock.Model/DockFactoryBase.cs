@@ -51,12 +51,6 @@ namespace Dock.Model
         public abstract IDocumentTab CreateDocumentTab();
 
         /// <inheritdoc/>
-        public abstract IView CreateView();
-
-        /// <inheritdoc/>
-        public abstract IDock CreateDock();
-
-        /// <inheritdoc/>
         public virtual void InitLayout(IView layout)
         {
             Update(layout, null);

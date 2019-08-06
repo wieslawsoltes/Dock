@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Factories;
+using AvaloniaDemo.Model;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia;
@@ -41,7 +42,7 @@ namespace AvaloniaDemo
                     {
                         root.Close();
                     }
-                    vm.Factory = new EmptyDockFactory();
+                    vm.Factory = new DemoDockFactory(new DemoData());
                     vm.Layout = vm.Factory.CreateLayout();
                     vm.Factory.InitLayout(vm.Layout);
                 }

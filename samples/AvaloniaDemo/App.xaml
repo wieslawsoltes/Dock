@@ -70,9 +70,6 @@
         <DataTemplate DataType="Tools:RightBottomTool3">
             <views:RightBottomTool3/>
         </DataTemplate>
-        <DataTemplate DataType="Tools:EditorTool">
-            <editor:LayoutEditorControl DataContext="{Binding Context}"/>
-        </DataTemplate>
         <!-- Views -->
         <DataTemplate DataType="Views:HomeView">
             <Grid>

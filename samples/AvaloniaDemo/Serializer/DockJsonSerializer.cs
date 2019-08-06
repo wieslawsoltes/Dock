@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Dock.Serializer
+namespace AvaloniaDemo.Serializer
 {
     public sealed class DockJsonSerializer
     {

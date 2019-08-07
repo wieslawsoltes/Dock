@@ -13,7 +13,6 @@
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
-        <Setter Property="Title" Value="{Binding CurrentView.Title, FallbackValue=Dock}" />
     </Style>
     <Style Selector="idc|HostWindow:toolwindow">
         <Setter Property="IsChromeVisible" Value="False" />

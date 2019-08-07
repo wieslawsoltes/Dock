@@ -10,5 +10,8 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class ToolDock : DockBase, IToolDock
     {
+        static ToolDock()
+        {
+        }
     }
 }

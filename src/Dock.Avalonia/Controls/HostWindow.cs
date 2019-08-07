@@ -16,7 +16,7 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class HostWindow : Window, IStyleable, IDockHost
     {
-       private Grid _titleBar;
+        private Control _titleBar;
 
         private Grid _bottomHorizontalGrip;
         private Grid _bottomLeftGrip;
@@ -177,7 +177,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnTemplateApplied(e);
 
-            _titleBar = e.NameScope.Find<Grid>("titlebar");
+            _titleBar = e.NameScope.Find<Control>("titlebar");
             _minimiseButton = e.NameScope.Find<Button>("minimiseButton");
             _restoreButton = e.NameScope.Find<Button>("restoreButton");
             _closeButton = e.NameScope.Find<Button>("closeButton");

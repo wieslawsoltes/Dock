@@ -4,7 +4,7 @@ using Dock.Avalonia.Controls;
 
 namespace ProportionalStackPanelDemo
 {
-    public class MainWindow : HostWindowBase
+    public class MainWindow : MetroWindow
     {
         public MainWindow()
         {

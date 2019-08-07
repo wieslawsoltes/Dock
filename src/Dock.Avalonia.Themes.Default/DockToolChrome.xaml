@@ -9,13 +9,13 @@
     <Style Selector="local|DockToolChrome">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />
+        <Style.Resources>
+            <id:DockDragHandler x:Key="DockDragHandler"/>
+        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border BorderBrush="{DynamicResource ThemeBorderLowBrush}" Name="PART_Border">
-                        <Border.Resources>
-                            <id:DockDragHandler x:Key="DockDragHandler"/>
-                        </Border.Resources>
                         <i:Interaction.Behaviors>
                             <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
                             <id:SetRootFocusedViewOnPointerPressedBehavior />

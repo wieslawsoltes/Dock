@@ -1,4 +1,4 @@
-﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <idc:MetroWindow x:Class="Dock.Avalonia.Controls.HostWindow"
                  xmlns="https://github.com/avaloniaui"
@@ -35,5 +35,5 @@
             <Setter Property="Margin" Value="0" />
         </Style>
     </idc:MetroWindow.Styles>
-    <idc:DockControl x:Name="dock" Margin="0" />
+    <idc:DockControl x:Name="dock" Layout="{Binding}" Margin="0" />
 </idc:MetroWindow>

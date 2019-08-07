@@ -14,6 +14,7 @@
         <StyleInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.xaml"/>
         <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.xaml"/>
         <StyleInclude Source="avares://Dock.Avalonia/Controls/DockToolChrome.xaml"/>
+        <StyleInclude Source="avares://Dock.Avalonia/Controls/DockControl.xaml"/>
         <StyleInclude Source="avares://Dock.Avalonia/Controls/MetroWindow.xaml"/>
     </Application.Styles>
     <Application.Resources>

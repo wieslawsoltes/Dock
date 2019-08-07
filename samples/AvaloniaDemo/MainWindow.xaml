@@ -53,7 +53,7 @@
             </MenuItem>
         </Menu>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
-        <idc:DockControl DataContext="{Binding Layout}" Margin="4" Grid.Row="2"/>
+        <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
         <TextBlock Text="{Binding Layout.FocusedView}" Margin="4" Grid.Row="3" />
     </Grid>
 </idc:MetroWindow>

@@ -11,9 +11,9 @@ using Dock.Model;
 namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Host window base class.
+    /// Interaction logic for <see cref="HostWindow"/> xaml.
     /// </summary>
-    public abstract class HostWindowBase : Window, IStyleable, IDockHost
+    public class HostWindow : Window, IStyleable, IDockHost
     {
        private Grid _titleBar;
 
@@ -66,6 +66,28 @@ namespace Dock.Avalonia.Controls
         }
 
         Type IStyleable.StyleKey => typeof(HostWindow);
+
+        /// <summary>
+        /// Attaches grip to chrome.
+        /// </summary>
+        /// <param name="chrome">The chrome control.</param>
+        public void AttachGrip(DockToolChrome chrome)
+        {
+            Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
+            {
+                Close();
+            });
+
+            //Observable.FromEventPattern(chrome.MinimiseButton, nameof(Button.Click)).Subscribe(o =>
+            //{
+            //    WindowState = WindowState.Minimized;
+            //});
+
+            _titleBar = chrome.Grip;
+
+            ((IPseudoClasses)chrome.Classes).Add(":floating");
+            this.PseudoClasses.Set(":toolwindow", true);
+        }
 
         private void ToggleWindowState()
         {

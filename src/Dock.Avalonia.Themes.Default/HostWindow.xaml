@@ -13,6 +13,7 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
         <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
         <Setter Property="HasSystemDecorations" Value="false" />
+        <Setter Property="IsChromeVisible" Value="False" />
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="BorderThickness" Value="1" />

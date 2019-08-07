@@ -178,6 +178,10 @@ namespace Dock.Model
             set { SetValue(FactoryProperty, value); }
         }
 
+        static DockBase()
+        {
+        }
+
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
         /// </summary>

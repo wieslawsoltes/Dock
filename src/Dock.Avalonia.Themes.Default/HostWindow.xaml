@@ -28,10 +28,8 @@
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="Title" Value="{Binding #dock.Layout.CurrentView.Title, FallbackValue=Dock}" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <idc:DockControl x:Name="dock" Layout="{Binding}" Margin="0" />
-            </ControlTemplate>
+        <Setter Property="Content">
+            <idc:DockControl x:Name="dock" Layout="{Binding}" />
         </Setter>
     </Style>
 </Styles>

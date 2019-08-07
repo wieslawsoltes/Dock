@@ -76,8 +76,9 @@
                                         </Grid>
                                     </Grid>
                                     <Grid Grid.Row="1">
-                                        <!-- <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" /> -->
+                                        <!--<ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" />-->
                                         <idc:DockControl Layout="{Binding}" />
+                                        <!--<TextBlock Text="{Binding}"/>-->
                                     </Grid>
                                 </Grid>
                             </Grid>

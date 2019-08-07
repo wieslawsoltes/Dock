@@ -80,5 +80,9 @@ namespace Dock.Model.Controls
             get { return GetValue(RightProperty); }
             set { SetValue(RightProperty, value); }
         }
+
+        static RootDock()
+        {
+        }
     }
 }

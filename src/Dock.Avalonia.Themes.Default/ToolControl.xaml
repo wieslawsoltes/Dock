@@ -8,6 +8,12 @@
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
     <Style Selector="local|ToolControl">
+        <Style.Resources>
+            <id:DockDragHandler x:Key="DockDragHandler" />
+            <id:DockDropHandler x:Key="DockDropHandler5" Id="5" />
+            <id:DockDropHandler x:Key="DockDropHandler6" Id="6" />
+            <id:DockDropHandler x:Key="DockDropHandler7" Id="7" />
+        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
@@ -15,12 +21,6 @@
                         <id:SetRootFocusedViewOnPointerPressedBehavior />
                         <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}" />
                     </i:Interaction.Behaviors>
-                    <DockPanel.Resources>
-                        <id:DockDragHandler x:Key="DockDragHandler" />
-                        <id:DockDropHandler x:Key="DockDropHandler5" Id="5" />
-                        <id:DockDropHandler x:Key="DockDropHandler6" Id="6" />
-                        <id:DockDropHandler x:Key="DockDropHandler7" Id="7" />
-                    </DockPanel.Resources>
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent" />

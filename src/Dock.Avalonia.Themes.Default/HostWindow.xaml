@@ -25,7 +25,7 @@
                     <AdornerDecorator>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
-                                <idc:DockControl Layout="{Binding $self.DataContext}" />
+                                <idc:DockControl Layout="{Binding $self.DataContext.Layout}" />
                             </Grid>
                             <Grid Grid.Row="0" Grid.RowSpan="5" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                                 <Grid Background="Transparent" Width="10" Height="4" />

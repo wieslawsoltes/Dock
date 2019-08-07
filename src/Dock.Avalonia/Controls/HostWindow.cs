@@ -344,7 +344,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetContext(object context)
         {
-            this.DataContext = context;
+            //this.DataContext = context;
         }
 
         /// <inheritdoc/>

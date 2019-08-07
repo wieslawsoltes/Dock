@@ -16,7 +16,6 @@
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="IsChromeVisible" Value="False" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="Title" Value="{Binding $self.DataContext.CurrentView.Title, FallbackValue=Dock}" />
         <Setter Property="Template">

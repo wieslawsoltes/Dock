@@ -10,5 +10,8 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class SplitterDock : DockBase, ISplitterDock
     {
+        static SplitterDock()
+        {
+        }
     }
 }

@@ -14,7 +14,7 @@ using Dock.Model.Controls;
 
 namespace AvaloniaDemo
 {
-    public class MainWindow : HostWindowBase
+    public class MainWindow : MetroWindow
     {
         private DockJsonSerializer _serializer = new DockJsonSerializer(typeof(ObservableCollection<>));
 

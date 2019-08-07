@@ -19,7 +19,6 @@ namespace Dock.Model
         private double _height;
         private bool _topmost;
         private string _title;
-        private object _context;
         private IView _owner;
         private IDockFactory _factory;
         private IDock _layout;
@@ -87,14 +86,6 @@ namespace Dock.Model
         {
             get => _title;
             set => this.RaiseAndSetIfChanged(ref _title, value);
-        }
-
-        /// <inheritdoc/>
-        [IgnoreDataMember]
-        public object Context
-        {
-            get => _context;
-            set => this.RaiseAndSetIfChanged(ref _context, value);
         }
 
         /// <inheritdoc/>

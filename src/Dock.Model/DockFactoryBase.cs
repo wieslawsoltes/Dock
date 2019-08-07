@@ -101,12 +101,6 @@ namespace Dock.Model
         {
             window.Host = GetHost(window.Id);
             window.Host.Window = window;
-
-            if (GetContext(window.Id) is object context)
-            {
-                window.Context = context;
-            }
-
             window.Owner = owner;
             window.Factory = this;
 

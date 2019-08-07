@@ -57,12 +57,6 @@ namespace Dock.Model
             AvaloniaProperty.Register<DockWindow, string>(nameof(TitleProperty));
 
         /// <summary>
-        /// Defines the <see cref="Context"/> property.
-        /// </summary>
-        public static readonly StyledProperty<object> ContextProperty =
-            AvaloniaProperty.Register<DockWindow, object>(nameof(ContextProperty));
-
-        /// <summary>
         /// Defines the <see cref="Owner"/> property.
         /// </summary>
         public static readonly StyledProperty<IView> OwnerProperty =
@@ -140,14 +134,6 @@ namespace Dock.Model
         {
             get { return GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
-        }
-
-        /// <inheritdoc/>
-        [IgnoreDataMember]
-        public object Context
-        {
-            get { return GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
         }
 
         /// <inheritdoc/>

@@ -8,23 +8,23 @@
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
-        <Style Selector="idc|HostWindow">
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="WindowState" Value="Normal" />
-            <Setter Property="UseLayoutRounding" Value="True" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
-            <Setter Property="Title" Value="{Binding CurrentView.Title, FallbackValue=Dock}" />
-        </Style>
-        <Style Selector="idc|HostWindow:toolwindow">
-            <Setter Property="IsChromeVisible" Value="False" />
-            <Setter Property="BorderThickness" Value="1 1 1 1" />
-        </Style>
-        <Style Selector="idc|HostWindow /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Margin" Value="4" />
-        </Style>
-        <Style Selector="idc|HostWindow:toolwindow /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Margin" Value="0" />
-        </Style>
+    <Style Selector="idc|HostWindow">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="WindowState" Value="Normal" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+        <Setter Property="Title" Value="{Binding CurrentView.Title, FallbackValue=Dock}" />
+    </Style>
+    <Style Selector="idc|HostWindow:toolwindow">
+        <Setter Property="IsChromeVisible" Value="False" />
+        <Setter Property="BorderThickness" Value="1 1 1 1" />
+    </Style>
+    <Style Selector="idc|HostWindow /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="4" />
+    </Style>
+    <Style Selector="idc|HostWindow:toolwindow /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="0" />
+    </Style>
     <Style Selector="local|HostWindow">
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
@@ -76,9 +76,8 @@
                                         </Grid>
                                     </Grid>
                                     <Grid Grid.Row="1">
-                                        <!--<ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" />-->
-                                        <idc:DockControl Layout="{Binding}" />
-                                        <!--<TextBlock Text="{Binding}"/>-->
+                                        <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}"/>
+                                        <!--<idc:DockControl Layout="{Binding}" />-->
                                     </Grid>
                                 </Grid>
                             </Grid>

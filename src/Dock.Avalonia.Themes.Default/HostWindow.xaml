@@ -25,55 +25,7 @@
                     <AdornerDecorator>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
-                                <Grid RowDefinitions="Auto, *">
-                                    <Grid ColumnDefinitions="Auto,*,Auto" Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{TemplateBinding IsChromeVisible}">
-                                        <Grid>
-                                            <StackPanel Orientation="Horizontal" Spacing="10">
-                                                <Rectangle Height="20" Width="20" Fill="Blue" />
-                                                <Border BorderThickness="0">
-                                                    <TextBlock Margin="0 7 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" />
-                                                </Border>
-                                            </StackPanel>
-                                        </Grid>
-                                        <ContentPresenter Grid.Column="1" Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" />
-                                        <Grid Grid.Column="2" HorizontalAlignment="Right" Margin="0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Background="Transparent" BorderThickness="0" Name="minimiseButton">
-                                                <Panel Margin="4" Height="8" Width="8">
-                                                    <DrawingPresenter>
-                                                        <DrawingGroup>
-                                                            <DrawingGroup.Children>
-                                                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                                                <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
-                                                                <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
-                                                            </DrawingGroup.Children>
-                                                        </DrawingGroup>
-                                                    </DrawingPresenter>
-                                                </Panel>
-                                                </Button>
-                                                <Button Background="Transparent" BorderThickness="0" Name="restoreButton">
-                                                    <Panel Margin="4">
-                                                        <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Data="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" Fill="{DynamicResource ThemeForegroundBrush}" />
-                                                    </Panel>
-                                                </Button>
-                                                <Button Background="Transparent" BorderThickness="0" Name="closeButton">
-                                                    <Panel Margin="4">
-                                                        <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Data="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" Fill="{DynamicResource ThemeForegroundBrush}" />
-                                                    </Panel>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid Grid.Row="1">
-                                        <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}">
-                                            <ContentPresenter.DataTemplates>
-                                                <DataTemplate DataType="Dock:IDock">
-                                                    <idc:DockControl Layout="{Binding}" />
-                                                </DataTemplate>
-                                            </ContentPresenter.DataTemplates>
-                                        </ContentPresenter>
-                                    </Grid>
-                                </Grid>
+                                <idc:DockControl Layout="{Binding $self.DataContext}" />
                             </Grid>
                             <Grid Grid.Row="0" Grid.RowSpan="5" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                                 <Grid Background="Transparent" Width="10" Height="4" />

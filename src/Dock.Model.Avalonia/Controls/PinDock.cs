@@ -52,5 +52,9 @@ namespace Dock.Model.Controls
             get { return GetValue(AutoHideProperty); }
             set { SetValue(AutoHideProperty, value); }
         }
+
+        static PinDock()
+        {
+        }
     }
 }

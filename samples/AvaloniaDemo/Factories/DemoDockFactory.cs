@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia.Data;
 using AvaloniaDemo.Model;
 using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
@@ -312,7 +313,10 @@ namespace AvaloniaDemo.Factories
             {
                 [nameof(IDockWindow)] = () =>
                 {
-                    var hostWindow = new HostWindow();
+                    var hostWindow = new HostWindow()
+                    {
+                        [!HostWindow.TitleProperty] = new Binding("CurrentView.Title")
+                    };
 
                     hostWindow.Content = new DockControl()
                     {

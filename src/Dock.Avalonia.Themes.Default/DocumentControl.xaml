@@ -9,6 +9,12 @@
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
         xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="local|DocumentControl">
+        <Style.Resources>
+            <id:DockDragHandler x:Key="DockDragHandler"/>
+            <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>
+            <id:DockDropHandler x:Key="DockDropHandler2" Id="2"/>
+            <id:DockDropHandler x:Key="DockDropHandler3" Id="3"/>
+        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
@@ -16,12 +22,6 @@
                         <id:SetRootFocusedViewOnPointerPressedBehavior/>
                         <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
                     </i:Interaction.Behaviors>
-                    <DockPanel.Resources>
-                        <id:DockDragHandler x:Key="DockDragHandler"/>
-                        <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>
-                        <id:DockDropHandler x:Key="DockDropHandler2" Id="2"/>
-                        <id:DockDropHandler x:Key="DockDropHandler3" Id="3"/>
-                    </DockPanel.Resources>
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>

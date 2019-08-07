@@ -18,7 +18,7 @@
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="IsChromeVisible" Value="False" />
         <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Title" Value="{Binding Content.CurrentView.Title, FallbackValue=Dock}" />
+        <Setter Property="Title" Value="{Binding $self.DataContext.CurrentView.Title, FallbackValue=Dock}" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">

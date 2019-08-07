@@ -1,19 +1,21 @@
-﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
-<UserControl x:Class="Dock.Avalonia.Controls.NavigationControl"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             d:DesignWidth="800" d:DesignHeight="30">
-    <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
-        <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"/>
-        <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"/>
-        <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultView}" Grid.Column="2"/>
-        <TextBox x:Name="Id" Text="" Grid.Column="3"/>
-        <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
-        <Button Content="ShowWindows" Command="{Binding CurrentView.ShowWindows}" Grid.Column="5"/>
-        <Button Content="ExitWindows" Command="{Binding CurrentView.ExitWindows}" Grid.Column="6"/>
-    </Grid>
-</UserControl>
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+    <Style Selector="local|NavigationControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
+                    <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"/>
+                    <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"/>
+                    <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultView}" Grid.Column="2"/>
+                    <TextBox x:Name="Id" Text="" Grid.Column="3"/>
+                    <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
+                    <Button Content="ShowWindows" Command="{Binding CurrentView.ShowWindows}" Grid.Column="5"/>
+                    <Button Content="ExitWindows" Command="{Binding CurrentView.ExitWindows}" Grid.Column="6"/>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

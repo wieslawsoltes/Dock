@@ -24,5 +24,9 @@ namespace Dock.Model.Controls
             get { return GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
+
+        static LayoutDock()
+        {
+        }
     }
 }

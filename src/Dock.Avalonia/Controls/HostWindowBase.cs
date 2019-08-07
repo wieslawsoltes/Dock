@@ -84,39 +84,39 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
-            if (_topHorizontalGrip.IsPointerOver)
+            if (_topHorizontalGrip != null && _topHorizontalGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.North);
             }
-            else if (_bottomHorizontalGrip.IsPointerOver)
+            else if (_bottomHorizontalGrip != null && _bottomHorizontalGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.South);
             }
-            else if (_leftVerticalGrip.IsPointerOver)
+            else if (_leftVerticalGrip != null && _leftVerticalGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.West);
             }
-            else if (_rightVerticalGrip.IsPointerOver)
+            else if (_rightVerticalGrip != null && _rightVerticalGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.East);
             }
-            else if (_topLeftGrip.IsPointerOver)
+            else if (_topLeftGrip != null && _topLeftGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.NorthWest);
             }
-            else if (_bottomLeftGrip.IsPointerOver)
+            else if (_bottomLeftGrip != null && _bottomLeftGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.SouthWest);
             }
-            else if (_topRightGrip.IsPointerOver)
+            else if (_topRightGrip != null && _topRightGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.NorthEast);
             }
-            else if (_bottomRightGrip.IsPointerOver)
+            else if (_bottomRightGrip != null && _bottomRightGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.SouthEast);
             }
-            else if (_titleBar.IsPointerOver)
+            else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
                 _mouseDownPosition = e.GetPosition(this);
@@ -139,7 +139,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            if (_titleBar.IsPointerOver && _mouseDown)
+            if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
             {
                 WindowState = WindowState.Normal;
                 BeginMoveDrag();
@@ -170,15 +170,30 @@ namespace Dock.Avalonia.Controls
             _topRightGrip = e.NameScope.Find<Grid>("topRightGrip");
             _bottomRightGrip = e.NameScope.Find<Grid>("bottomRightGrip");
 
-            _minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
+            if (_minimiseButton != null)
+            {
+                _minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
+            }
 
-            _restoreButton.Click += (sender, ee) => { ToggleWindowState(); };
+            if (_restoreButton != null)
+            {
+                _restoreButton.Click += (sender, ee) => { ToggleWindowState(); };
+            }
 
-            _titleBar.DoubleTapped += (sender, ee) => { ToggleWindowState(); };
+            if (_titleBar != null)
+            {
+                _titleBar.DoubleTapped += (sender, ee) => { ToggleWindowState(); };
+            }
 
-            _closeButton.Click += (sender, ee) => { Close(); };
+            if (_closeButton != null)
+            {
+                _closeButton.Click += (sender, ee) => { Close(); };
+            }
 
-            //icon.DoubleTapped += (sender, ee) => { Close(); };
+            //if (_icon != null)
+            //{
+            //    _icon.DoubleTapped += (sender, ee) => { Close(); };
+            //}
         }
 
         /// <inheritdoc/>

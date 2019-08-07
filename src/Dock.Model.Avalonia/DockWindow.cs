@@ -183,6 +183,10 @@ namespace Dock.Model
             set { SetValue(HostProperty, value); }
         }
 
+        static DockWindow()
+        {
+        }
+
         /// <summary>
         /// Initializes new instance of the <see cref="DockWindow"/> class.
         /// </summary>

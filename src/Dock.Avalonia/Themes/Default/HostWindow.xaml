@@ -1,0 +1,37 @@
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
+    <Style Selector="local|HostWindow idc|MetroWindow">
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+    <Style Selector="local|HostWindow idc|MetroWindow:toolwindow">
+        <Setter Property="IsChromeVisible" Value="False" />
+        <Setter Property="BorderThickness" Value="1 1 1 1" />
+    </Style>
+    <Style Selector="local|HostWindow idc|MetroWindow /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="4" />
+    </Style>
+    <Style Selector="local|HostWindow idc|MetroWindow:toolwindow /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Margin" Value="0" />
+    </Style>
+    <Style Selector="local|HostWindow">
+        <Setter Property="Width" Value="300" />
+        <Setter Property="Height" Value="400" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="WindowState" Value="Normal" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+        <Setter Property="Title" Value="{Binding #dock.DataContext.CurrentView.Title, FallbackValue=Dock}" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <idc:DockControl x:Name="dock" Layout="{Binding}" Margin="0" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -10,20 +10,8 @@
     <Application.Styles>
         <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
         <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/DockToolChrome.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/DockControl.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/NavigationControl.xaml"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Controls/MetroWindow.xaml"/>
+        <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/DefaultTheme.xaml"/>
     </Application.Styles>
-    <Application.Resources>
-        <SolidColorBrush x:Key="ApplicationAccentBrushLow">#007ACC</SolidColorBrush>
-        <SolidColorBrush x:Key="ApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
-        <SolidColorBrush x:Key="ApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
-        <SolidColorBrush x:Key="ApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
-    </Application.Resources>
     <Application.DataTemplates>
         <!-- Documents -->
         <DataTemplate DataType="Documents:Document1">

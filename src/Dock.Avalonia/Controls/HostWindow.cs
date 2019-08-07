@@ -1,11 +1,12 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
-using System.Reactive.Linq;
-using System;
+using Avalonia.Styling;
 
 namespace Dock.Avalonia.Controls
 {
@@ -17,23 +18,6 @@ namespace Dock.Avalonia.Controls
         private Control _titleBar;
         private bool _mouseDown;
         private Point _mouseDownPosition;        
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostWindow"/> class.
-        /// </summary>
-        public HostWindow()
-        {
-            this.InitializeComponent();
-        }
-
-        /// <summary>
-        /// Initialize the Xaml components.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.AttachDevTools();
-        }
 
         /// <summary>
         /// Attaches grip to chrome.
@@ -102,5 +86,10 @@ namespace Dock.Avalonia.Controls
             base.OnPointerMoved(e);
         }
 
+        /// <inheritdoc/>
+        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        {
+            base.OnTemplateApplied(e);
+        }
     }
 }

@@ -7,15 +7,7 @@
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
-    <Style Selector="local|HostWindow idc|MetroWindow">
-        <Setter Property="BorderThickness" Value="1" />
-    </Style>
-    <Style Selector="local|HostWindow idc|MetroWindow:toolwindow">
-        <Setter Property="IsChromeVisible" Value="False" />
-        <Setter Property="BorderThickness" Value="1 1 1 1" />
-    </Style>
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
     <Style Selector="local|HostWindow idc|MetroWindow /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Margin" Value="4" />
     </Style>
@@ -28,9 +20,11 @@
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="IsChromeVisible" Value="False" />
         <Setter Property="Title" Value="{Binding #dock.Layout.CurrentView.Title, FallbackValue=Dock}" />
         <Setter Property="DataTemplates">
-            <DataTemplate DataType="Controls:IDock">
+            <DataTemplate DataType="Dock:IDock">
                 <idc:DockControl x:Name="dock" Layout="{Binding}" />
             </DataTemplate>
         </Setter>

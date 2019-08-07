@@ -11,13 +11,13 @@
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
         xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="local|DockControl">
+        <Style.Resources>
+            <converters:OrientationConverter x:Key="OrientationConverter"/>
+            <converters:AlignmentConverter x:Key="AlignmentConverter"/>
+        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
                 <ContentControl Content="{Binding Layout}">
-                    <ContentControl.Resources>
-                        <converters:OrientationConverter x:Key="OrientationConverter"/>
-                        <converters:AlignmentConverter x:Key="AlignmentConverter"/>
-                    </ContentControl.Resources>
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="Controls:ISplitterDock">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>

@@ -69,6 +69,10 @@ namespace Dock.Model
             set { SetValue(ParentProperty, value); }
         }
 
+        static ViewBase()
+        {
+        }
+
         /// <inheritdoc/>
         public virtual bool OnClose()
         {

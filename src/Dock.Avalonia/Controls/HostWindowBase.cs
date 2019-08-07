@@ -23,6 +23,8 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindowBase()
         {
+            this.AttachDevTools();
+
             PositionChanged += (sender, e) =>
             {
                 Logger.Log($"HostWindowBase: PositionChanged");

@@ -16,7 +16,7 @@ namespace Dock.Avalonia.Controls
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
         public static readonly StyledProperty<IDock> LayoutProperty =
-            AvaloniaProperty.Register<DockPanel, IDock>(nameof(Layout));
+            AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
 
         /// <summary>
         /// Gets or sets the dock layout.

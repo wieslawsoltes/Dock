@@ -310,7 +310,19 @@ namespace AvaloniaDemo.Factories
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () =>
+                {
+                    var hostWindow = new HostWindow();
+
+                    hostWindow.Content = new DockControl()
+                    {
+                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
+                    };
+
+                    hostWindow.ApplyTemplate();
+
+                    return hostWindow;
+                }
             };
 
             base.InitLayout(layout);

@@ -50,7 +50,6 @@ namespace Dock.Model
                 _window.Host.SetSize(_window.Width, _window.Height);
                 _window.Host.SetTopmost(_window.Topmost);
                 _window.Host.SetTitle(_window.Title);
-                _window.Host.SetContext(_window.Context);
                 _window.Host.SetLayout(_window.Layout);
                 _window.Host.IsTracked = true;
             }

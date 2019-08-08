@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
+using Avalonia.Collections;
 using Dock.Model.Controls;
-using ReactiveUI.Legacy;
 
 namespace Dock.Model
 {
@@ -15,9 +15,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            var type = typeof(ReactiveList<>).MakeGenericType(typeof(T));
-#pragma warning restore CS0618 // Type or member is obsolete
+            var type = typeof(AvaloniaList<>).MakeGenericType(typeof(T));
             return (IList<T>)Activator.CreateInstance(type, items);
         }
 

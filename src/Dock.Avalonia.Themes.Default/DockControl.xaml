@@ -1,0 +1,81 @@
+<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+<!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+    <Style Selector="local|DockControl">
+        <Style.Resources>
+            <converters:OrientationConverter x:Key="OrientationConverter"/>
+            <converters:AlignmentConverter x:Key="AlignmentConverter"/>
+        </Style.Resources>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentControl Content="{Binding Layout}">
+                    <ContentControl.DataTemplates>
+                        <DataTemplate DataType="Controls:ISplitterDock">
+                            <idc:ProportionalStackPanelSplitter Background="Transparent"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="Controls:IDocumentDock">
+                            <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="Controls:IToolDock">
+                            <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <idc:ToolControl/>
+                            </idc:DockToolChrome>
+                        </DataTemplate>
+                        <DataTemplate DataType="Controls:ILayoutDock">
+                            <ItemsControl Items="{Binding Views}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <!--<ItemsControl.Styles>
+                                    <Style Selector="ItemsControl > ContentPresenter">
+                                        <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
+                                    </Style>
+                                </ItemsControl.Styles>-->
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="Controls:IPinDock">
+                            <DockPanel Background="Transparent">
+                                <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                                    <TabStrip.Styles>
+                                        <Style Selector="TabStrip:empty">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </Style>
+                                        <Style Selector="TabStrip /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+                                            <Setter Property="Orientation" Value="Vertical"/>
+                                        </Style>
+                                    </TabStrip.Styles>
+                                    <TabStrip.DataTemplates>
+                                        <DataTemplate DataType="Dock:IView">
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </TabStrip.DataTemplates>
+                                </TabStrip>
+                                <ContentControl Content="{Binding CurrentView}" IsVisible="{Binding IsExpanded}"/>
+                            </DockPanel>
+                        </DataTemplate>
+                        <DataTemplate DataType="Controls:IRootDock">
+                            <DockPanel Background="Transparent">
+                                <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
+                                <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
+                                <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
+                                <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
+                                <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ContentControl.DataTemplates>
+                </ContentControl>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

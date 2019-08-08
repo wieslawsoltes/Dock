@@ -51,12 +51,6 @@ namespace Dock.Model
         public abstract IDocumentTab CreateDocumentTab();
 
         /// <inheritdoc/>
-        public abstract IView CreateView();
-
-        /// <inheritdoc/>
-        public abstract IDock CreateDock();
-
-        /// <inheritdoc/>
         public virtual void InitLayout(IView layout)
         {
             Update(layout, null);
@@ -107,12 +101,6 @@ namespace Dock.Model
         {
             window.Host = GetHost(window.Id);
             window.Host.Window = window;
-
-            if (GetContext(window.Id) is object context)
-            {
-                window.Context = context;
-            }
-
             window.Owner = owner;
             window.Factory = this;
 

@@ -70,12 +70,6 @@ namespace Dock.Model
         void SetTitle(string title);
 
         /// <summary>
-        /// Sets host context.
-        /// </summary>
-        /// <param name="context">The host context.</param>
-        void SetContext(object context);
-
-        /// <summary>
         /// Sets host layout.
         /// </summary>
         /// <param name="layout">The host layout.</param>

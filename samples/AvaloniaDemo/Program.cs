@@ -4,10 +4,10 @@ using Avalonia;
 using Avalonia.Logging.Serilog;
 using AvaloniaDemo.Factories;
 using AvaloniaDemo.Model;
+using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
 
 namespace AvaloniaDemo
 {

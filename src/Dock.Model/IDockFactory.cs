@@ -89,18 +89,6 @@ namespace Dock.Model
         IDocumentTab CreateDocumentTab();
 
         /// <summary>
-        /// Creates <see cref="IView"/>.
-        /// </summary>
-        /// <returns>The new instance of the <see cref="IView"/> class.</returns>
-        IView CreateView();
-
-        /// <summary>
-        /// Creates <see cref="IDock"/>.
-        /// </summary>
-        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock CreateDock();
-
-        /// <summary>
         /// Creates layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>

@@ -44,11 +44,6 @@ namespace Dock.Model
         string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets window context.
-        /// </summary>
-        object Context { get; set; }
-
-        /// <summary>
         /// Gets or sets window owner view.
         /// </summary>
         IView Owner { get; set; }

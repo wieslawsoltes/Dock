@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia.Data;
 using AvaloniaDemo.Model;
 using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
 using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Editor;
 using Dock.Model;
 using Dock.Model.Controls;
 
@@ -306,16 +306,27 @@ namespace AvaloniaDemo.Factories
                 ["RightSplitter"] = () => _context,
                 ["MainLayout"] = () => _context,
                 ["Home"] = () => layout,
-                ["Main"] = () => _context,
-                ["Editor"] = () => new LayoutEditor()
-                {
-                    Layout = layout
-                }
+                ["Main"] = () => _context
             };
 
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () =>
+                {
+                    var hostWindow = new HostWindow()
+                    {
+                        [!HostWindow.TitleProperty] = new Binding("CurrentView.Title")
+                    };
+
+                    hostWindow.Content = new DockControl()
+                    {
+                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
+                    };
+
+                    hostWindow.ApplyTemplate();
+
+                    return hostWindow;
+                }
             };
 
             base.InitLayout(layout);

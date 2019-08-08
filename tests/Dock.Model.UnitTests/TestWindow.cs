@@ -12,7 +12,6 @@ namespace Dock.Model.UnitTests
         public double Height { get; set; }
         public bool Topmost { get; set; }
         public string Title { get; set; }
-        public object Context { get; set; }
         public IView Owner { get; set; }
         public IDockFactory Factory { get; set; }
         public IDock Layout { get; set; }

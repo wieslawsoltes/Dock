@@ -7,7 +7,7 @@ namespace Dock.Model.Avalonia.UnitTests.Controls
 {
     public class RootDockTests
     {
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void RootDock_Ctor()
         {
             var actual = new RootDock();

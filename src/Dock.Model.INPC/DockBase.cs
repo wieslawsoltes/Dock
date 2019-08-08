@@ -94,11 +94,11 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoBack => _navigateAdapter.CanGoBack;
+        public bool CanGoBack => _navigateAdapter?.CanGoBack ?? false;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoForward => _navigateAdapter.CanGoForward;
+        public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -119,37 +119,37 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void GoBack()
         {
-            _navigateAdapter.GoBack();
+            _navigateAdapter?.GoBack();
         }
 
         /// <inheritdoc/>
         public virtual void GoForward()
         {
-            _navigateAdapter.GoForward();
+            _navigateAdapter?.GoForward();
         }
 
         /// <inheritdoc/>
         public virtual void Navigate(object root)
         {
-            _navigateAdapter.Navigate(root, true);
+            _navigateAdapter?.Navigate(root, true);
         }
 
         /// <inheritdoc/>
         public virtual void ShowWindows()
         {
-            _navigateAdapter.ShowWindows();
+            _navigateAdapter?.ShowWindows();
         }
 
         /// <inheritdoc/>
         public virtual void ExitWindows()
         {
-            _navigateAdapter.ExitWindows();
+            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>
         public virtual void Close()
         {
-            _navigateAdapter.Close();
+            _navigateAdapter?.Close();
         }
     }
 }

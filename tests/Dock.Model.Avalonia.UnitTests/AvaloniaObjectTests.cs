@@ -17,5 +17,13 @@ namespace Dock.Model.Avalonia.UnitTests
 
     public class TestAvaloniaObject : AvaloniaObject
     {
+        public static readonly StyledProperty<object> TestProperty =
+            AvaloniaProperty.Register<TestAvaloniaObject, object>(nameof(TestProperty));
+
+        public object Test
+        {
+            get { return GetValue(TestProperty); }
+            set { SetValue(TestProperty, value); }
+        }
     }
 }

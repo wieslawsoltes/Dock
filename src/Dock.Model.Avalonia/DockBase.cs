@@ -100,8 +100,8 @@ namespace Dock.Model
             set
             {
                 SetValue(CurrentViewProperty, value);
-                SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter.CanGoBack);
-                SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter.CanGoForward);
+                SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
+                SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
                 Factory?.SetFocusedView(this, value);
             }
         }
@@ -150,7 +150,7 @@ namespace Dock.Model
         [IgnoreDataMember]
         public bool CanGoBack
         {
-            get { return _navigateAdapter.CanGoBack; }
+            get { return _navigateAdapter?.CanGoBack ?? false; }
             private set { SetAndRaise(CanGoBackProperty, ref _canGoBack, value); }
         }
 
@@ -158,7 +158,7 @@ namespace Dock.Model
         [IgnoreDataMember]
         public bool CanGoForward
         {
-            get { return _navigateAdapter.CanGoForward; }
+            get { return _navigateAdapter?.CanGoForward ?? false; }
             private set { SetAndRaise(CanGoForwardProperty, ref _canGoForward, value); }
         }
 
@@ -193,13 +193,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void GoBack()
         {
-            _navigateAdapter.GoBack();
+            _navigateAdapter?.GoBack();
         }
 
         /// <inheritdoc/>
         public virtual void GoForward()
         {
-            _navigateAdapter.GoForward();
+            _navigateAdapter?.GoForward();
         }
 
         /// <inheritdoc/>
@@ -211,19 +211,19 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void ShowWindows()
         {
-            _navigateAdapter.ShowWindows();
+            _navigateAdapter?.ShowWindows();
         }
 
         /// <inheritdoc/>
         public virtual void ExitWindows()
         {
-            _navigateAdapter.ExitWindows();
+            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>
         public virtual void Close()
         {
-            _navigateAdapter.Close();
+            _navigateAdapter?.Close();
         }
     }
 }

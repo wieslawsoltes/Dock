@@ -15,8 +15,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items)
         {
-            var type = typeof(ObservableCollection<>).MakeGenericType(typeof(T));
-            return (IList<T>)Activator.CreateInstance(type, items);
+            return new ObservableCollection<T>(items);
         }
 
         /// <inheritdoc/>

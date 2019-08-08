@@ -7,7 +7,7 @@ namespace Dock.Model.Avalonia.UnitTests.Controls
 {
     public class LayoutDockTests
     {
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void LayoutDock_Ctor()
         {
             var actual = new LayoutDock();

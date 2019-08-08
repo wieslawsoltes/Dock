@@ -7,7 +7,7 @@ namespace Dock.Model.Avalonia.UnitTests.Controls
 {
     public class ToolDockTests
     {
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void ToolDock_Ctor()
         {
             var actual = new ToolDock();

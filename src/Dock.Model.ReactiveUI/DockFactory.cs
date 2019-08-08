@@ -16,9 +16,8 @@ namespace Dock.Model
         public override IList<T> CreateList<T>(params T[] items)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
-            var type = typeof(ReactiveList<>).MakeGenericType(typeof(T));
+            return new ReactiveList<T>(items);
 #pragma warning restore CS0618 // Type or member is obsolete
-            return (IList<T>)Activator.CreateInstance(type, items);
         }
 
         /// <inheritdoc/>

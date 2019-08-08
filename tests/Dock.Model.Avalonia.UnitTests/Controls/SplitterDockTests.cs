@@ -7,7 +7,7 @@ namespace Dock.Model.Avalonia.UnitTests.Controls
 {
     public class SplitterDockTests
     {
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void SplitterDock_Ctor()
         {
             var actual = new SplitterDock();

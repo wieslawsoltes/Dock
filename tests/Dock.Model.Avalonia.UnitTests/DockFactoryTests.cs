@@ -26,7 +26,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.Equal(0, actual.Count);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreateRootDock_Creates_RootDock_Type()
         {
             var factory = new TestDockFactory();
@@ -35,7 +35,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.IsType<RootDock>(actual);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreatePinDock_Creates_PinDock()
         {
             var factory = new TestDockFactory();
@@ -44,7 +44,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.IsType<PinDock>(actual);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreateLayoutDock_Creates_LayoutDock()
         {
             var factory = new TestDockFactory();
@@ -53,7 +53,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.IsType<LayoutDock>(actual);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreateSplitterDock_Creates_SplitterDock()
         {
             var factory = new TestDockFactory();
@@ -62,7 +62,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.IsType<SplitterDock>(actual);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreateToolDock_Creates_ToolDock()
         {
             var factory = new TestDockFactory();
@@ -71,7 +71,7 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.IsType<ToolDock>(actual);
         }
 
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void CreateDocumentDock_Creates_DocumentDock()
         {
             var factory = new TestDockFactory();

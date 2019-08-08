@@ -7,7 +7,7 @@ namespace Dock.Model.Avalonia.UnitTests.Controls
 {
     public class PinDockDockTests
     {
-        [Fact(Skip="Avalonia issue")]
+        [Fact]
         public void PinDock_Ctor()
         {
             var actual = new PinDock();

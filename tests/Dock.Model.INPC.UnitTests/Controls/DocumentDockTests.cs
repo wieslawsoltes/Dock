@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Dock.Model.INPC.UnitTests.Controls
 {
-    public class DockStubTests
+    public class DocumentDockTests
     {
         [Fact]
         public void DocumentDock_Ctor()

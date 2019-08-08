@@ -3,14 +3,14 @@
 using Dock.Model.Controls;
 using Xunit;
 
-namespace Dock.Model.ReactiveUI.UnitTests.Controls
+namespace Dock.Model.Avalonia.UnitTests.Controls
 {
-    public class DocumentDockTests
+    public class SplitterDockTests
     {
-        [Fact]
-        public void DocumentDock_Ctor()
+        [Fact(Skip="Avalonia issue")]
+        public void SplitterDock_Ctor()
         {
-            var actual = new DocumentDock();
+            var actual = new SplitterDock();
             Assert.NotNull(actual);
         }
     }

@@ -3,14 +3,14 @@
 using Dock.Model.Controls;
 using Xunit;
 
-namespace Dock.Model.ReactiveUI.UnitTests.Controls
+namespace Dock.Model.Avalonia.UnitTests.Controls
 {
-    public class DocumentDockTests
+    public class ToolTabTests
     {
         [Fact]
-        public void DocumentDock_Ctor()
+        public void ToolTab_Ctor()
         {
-            var actual = new DocumentDock();
+            var actual = new ToolTab();
             Assert.NotNull(actual);
         }
     }

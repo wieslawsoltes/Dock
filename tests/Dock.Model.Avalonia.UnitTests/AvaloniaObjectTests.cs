@@ -1,17 +1,21 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Dock.Model.Controls;
 using Xunit;
+using Avalonia;
 
-namespace Dock.Model.ReactiveUI.UnitTests.Controls
+namespace Dock.Model.Avalonia.UnitTests
 {
-    public class DocumentDockTests
+    public class AvaloniaObjectTests
     {
         [Fact]
-        public void DocumentDock_Ctor()
+        public void TestAvaloniaObject_Ctor()
         {
-            var actual = new DocumentDock();
+            var actual = new TestAvaloniaObject();
             Assert.NotNull(actual);
         }
+    }
+
+    public class TestAvaloniaObject : AvaloniaObject
+    {
     }
 }

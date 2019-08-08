@@ -323,8 +323,6 @@ namespace AvaloniaDemo.Factories
                         [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
                     };
 
-                    hostWindow.ApplyTemplate();
-
                     return hostWindow;
                 }
             };

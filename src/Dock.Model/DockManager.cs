@@ -106,6 +106,14 @@ namespace Dock.Model
             Logger.Log($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTabParent.Title}");
             if (sourceTab.Parent is ITabDock sourceTabParent)
             {
+                if (sourceTabParent == targetTabParent)
+                {
+                    if (sourceTabParent.Views.Count == 1)
+                    {
+                        return false;
+                    }
+                }
+
                 var targetTab = targetTabParent.Views.LastOrDefault();
 
                 switch (action)

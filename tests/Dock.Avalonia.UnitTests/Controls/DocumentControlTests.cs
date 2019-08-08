@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls
 {
-    public class DockPanelSplitterTests
+    public class DocumentControlTests
     {
         [Fact]
-        public void DockPanelSplitter_Ctor()
+        public void DocumentControl_Ctor()
         {
-            var actual = new DockPanelSplitter();
+            var actual = new DocumentControl();
             Assert.NotNull(actual);
         }
     }

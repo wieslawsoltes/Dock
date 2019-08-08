@@ -16,6 +16,13 @@ namespace Dock.Avalonia.UnitTests.Controls
     public class ProportionalStackPanelTests
     {
         [Fact]
+        public void ProportionalStackPanel_Ctor()
+        {
+            var actual = new ProportionalStackPanel();
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
         public void Lays_Out_Children_Horizontal()
         {
             var target = new ProportionalStackPanel()

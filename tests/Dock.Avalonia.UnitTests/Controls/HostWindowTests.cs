@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls
 {
-    public class DockPanelSplitterTests
+    public class HostWindowTests
     {
-        [Fact]
-        public void DockPanelSplitter_Ctor()
+        [Fact(Skip = "Need to initialize Avalonia first")]
+        public void HostWindow_Ctor()
         {
-            var actual = new DockPanelSplitter();
+            var actual = new HostWindow();
             Assert.NotNull(actual);
         }
     }

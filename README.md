@@ -11,7 +11,7 @@ A docking layout system.
 
 ## About
 
-**Dock** is a docking layout system for [Avalonia](https://github.com/AvaloniaUI/Avalonia) applications. Use of `Dock` is governed by the MIT License.
+**Dock** is a docking layout system for [Avalonia](https://github.com/AvaloniaUI/Avalonia) applications. Use of Dock is governed by the MIT License.
 
 ## Building Dock
 

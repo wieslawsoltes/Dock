@@ -30,6 +30,12 @@
 
   <Import Project="..\..\build\EmbedXaml.props" />
 
+  <PropertyGroup>
+    <PublishTrimmed>True</PublishTrimmed>
+    <PublishSingleFile>False</PublishSingleFile>
+    <PublishReadyToRun>True</PublishReadyToRun>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />

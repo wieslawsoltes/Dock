@@ -272,6 +272,7 @@ namespace Dock.Model
 
         internal bool ValidateToolTab(IToolTab toolTab, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateToolTab)}: {toolTab.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:
@@ -308,6 +309,7 @@ namespace Dock.Model
 
         internal bool ValidateDocumentTab(IDocumentTab documentTab, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateDocumentTab)}: {documentTab.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:
@@ -344,6 +346,7 @@ namespace Dock.Model
 
         internal bool ValidateRoot(IRootDock sourceRoot, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateRoot)}: {sourceRoot.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:
@@ -376,6 +379,7 @@ namespace Dock.Model
 
         internal bool ValidateView(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateView)}: {sourceView.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:
@@ -408,6 +412,7 @@ namespace Dock.Model
 
         internal bool ValidateLayout(ILayoutDock sourceLayout, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateLayout)}: {sourceLayout.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:
@@ -440,6 +445,7 @@ namespace Dock.Model
 
         internal bool ValidateTab(ITabDock sourceTab, IView targetView, DragAction action, DockOperation operation, bool bExecute)
         {
+            Logger.Log($"{nameof(ValidateTab)}: {sourceTab.Title} -> {targetView.Title}");
             switch (targetView)
             {
                 case IRootDock targetRoot:

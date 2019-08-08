@@ -460,6 +460,11 @@ namespace Dock.Model
                     }
                 case ITabDock targetTab:
                     {
+                        if (sourceTab == targetTab)
+                        {
+                            return false;
+                        }
+
                         if (bExecute)
                         {
                             switch (operation)

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Metadata;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -21,6 +22,7 @@ namespace Dock.Avalonia.Controls
         /// Gets or sets the dock layout.
         /// </summary>
         /// <value>The layout.</value>
+        [Content]
         public IDock Layout
         {
             get { return GetValue(LayoutProperty); }

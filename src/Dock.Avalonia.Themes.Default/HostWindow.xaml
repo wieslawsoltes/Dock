@@ -20,7 +20,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                    <AdornerDecorator>
+                    <VisualLayerManager>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
                                 <Grid RowDefinitions="Auto, *">
@@ -37,17 +37,17 @@
                                         <Grid Grid.Column="2" HorizontalAlignment="Right" Margin="0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Button Background="Transparent" BorderThickness="0" Name="minimiseButton">
-                                                <Panel Margin="4" Height="8" Width="8">
-                                                    <DrawingPresenter>
-                                                        <DrawingGroup>
-                                                            <DrawingGroup.Children>
-                                                                <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                                                <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
-                                                                <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
-                                                            </DrawingGroup.Children>
-                                                        </DrawingGroup>
-                                                    </DrawingPresenter>
-                                                </Panel>
+                                                    <Panel Margin="4" Height="8" Width="8">
+                                                        <DrawingPresenter>
+                                                            <DrawingGroup>
+                                                                <DrawingGroup.Children>
+                                                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
+                                                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
+                                                                </DrawingGroup.Children>
+                                                            </DrawingGroup>
+                                                        </DrawingPresenter>
+                                                    </Panel>
                                                 </Button>
                                                 <Button Background="Transparent" BorderThickness="0" Name="restoreButton">
                                                     <Panel Margin="4">
@@ -83,7 +83,7 @@
                             <Grid Background="Transparent" Width="4" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Cursor="SizeWestEast" Name="rightVerticalGrip" />
                             <Grid Background="Transparent" Width="4" Height="10" Grid.Row="4" Grid.Column="2" Name="bottomRightGrip" Cursor="BottomRightCorner" />
                         </Grid>
-                    </AdornerDecorator>
+                    </VisualLayerManager>
                 </Border>
             </ControlTemplate>
         </Setter>

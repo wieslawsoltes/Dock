@@ -7,6 +7,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.VisualTree;
 
 namespace Dock.Avalonia.Controls

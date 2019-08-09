@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls;
@@ -85,7 +85,7 @@ namespace Dock.Avalonia
 
         private async void DoDrag(object sender, PointerPressedEventArgs e)
         {
-            if (e.MouseButton == MouseButton.Left && GetIsEnabled(AssociatedObject))
+            if (e.InputModifiers == InputModifiers.LeftMouseButton && GetIsEnabled(AssociatedObject))
             {
                 Handler?.BeforeDragDrop(sender, e, Context);
 
@@ -110,8 +110,9 @@ namespace Dock.Avalonia
                     effect |= DragDropEffects.Move;
                 }
 
-                var result = await DragDrop.DoDragDrop(data, effect);
+                var result = await DragDrop.DoDragDrop(e, data, effect);
                 Handler?.AfterDragDrop(sender, e, Context);
+
             }
         }
     }

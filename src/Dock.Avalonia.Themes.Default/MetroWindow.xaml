@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                    <AdornerDecorator>
+                    <VisualLayerManager>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
                                 <Grid RowDefinitions="Auto, *">
@@ -74,7 +74,7 @@
                             <Grid Background="Transparent" Width="4" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Cursor="SizeWestEast" Name="rightVerticalGrip" />
                             <Grid Background="Transparent" Width="4" Height="10" Grid.Row="4" Grid.Column="2" Name="bottomRightGrip" Cursor="BottomRightCorner" />
                         </Grid>
-                    </AdornerDecorator>
+                    </VisualLayerManager>
                 </Border>
             </ControlTemplate>
         </Setter>

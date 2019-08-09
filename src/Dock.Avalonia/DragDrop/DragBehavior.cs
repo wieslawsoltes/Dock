@@ -90,11 +90,9 @@ namespace Dock.Avalonia
         {
             base.OnAttached();
 
-            var routes = RoutingStrategies.Direct | RoutingStrategies.Bubble;
-
-            AssociatedObject.AddHandler(InputElement.PointerPressedEvent, PointerPressed, routes);
-            AssociatedObject.AddHandler(InputElement.PointerReleasedEvent, PointerReleased, routes);
-            AssociatedObject.AddHandler(InputElement.PointerMovedEvent, PointerMoved, routes);
+            AssociatedObject.AddHandler(InputElement.PointerPressedEvent, PointerPressed, RoutingStrategies.Direct | RoutingStrategies.Bubble);
+            AssociatedObject.AddHandler(InputElement.PointerReleasedEvent, PointerReleased, RoutingStrategies.Direct | RoutingStrategies.Bubble);
+            AssociatedObject.AddHandler(InputElement.PointerMovedEvent, PointerMoved, RoutingStrategies.Direct | RoutingStrategies.Bubble);
         }
 
         /// <inheritdoc/>

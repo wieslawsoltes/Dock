@@ -40,13 +40,13 @@ namespace Dock.Avalonia.Controls
         /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
         public static readonly AvaloniaProperty<bool> IsChromeVisibleProperty =
-            AvaloniaProperty.Register<MetroWindow, bool>(nameof(IsChromeVisible), true);
+            AvaloniaProperty.Register<HostWindow, bool>(nameof(IsChromeVisible), true);
 
         /// <summary>
         /// Defines the <see cref="TitleBarContent"/> property.
         /// </summary>
         public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
-            AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
+            AvaloniaProperty.Register<HostWindow, Control>(nameof(TitleBarContent));
 
         /// <summary>
         ///  Gets or sets the flag indicating whether chrome is visible.

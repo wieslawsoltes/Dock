@@ -1,0 +1,17 @@
+name: .NET Core CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        version: 2.2.108
+    - name: Build with dotnet
+      run: dotnet build --configuration Release

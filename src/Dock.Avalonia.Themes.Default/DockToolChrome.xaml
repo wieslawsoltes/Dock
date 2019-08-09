@@ -1,4 +1,4 @@
-<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
+﻿<!-- Copyright (c) Wiesław Šoltés. All rights reserved. -->
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,12 +6,18 @@
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
-    <Style Selector="local|DockToolChrome">
-        <Setter Property="BorderThickness" Value="0" />
+    <Style Selector="Button.chromeButton">
+        <Setter Property="Margin" Value="2 0 0 0" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="local|DockToolChrome">
         <Style.Resources>
             <id:DockDragHandler x:Key="DockDragHandler"/>
         </Style.Resources>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
@@ -58,12 +64,6 @@
                 </Grid>
             </ControlTemplate>
         </Setter>
-    </Style>
-    <Style Selector="Button.chromeButton">
-        <Setter Property="Margin" Value="2 0 0 0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Background" Value="Transparent" />
     </Style>
     <Style Selector="local|DockToolChrome /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="1 1 1 0" />

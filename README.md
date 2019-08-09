@@ -68,6 +68,7 @@ and install the package like this:
 ## Resources
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
+* [Sample Dock application.](https://github.com/wieslawsoltes/AvaloniaDockApplication)
 
 ## License
 

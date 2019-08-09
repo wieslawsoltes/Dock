@@ -42,12 +42,6 @@ namespace Dock.Avalonia
             AvaloniaProperty.Register<DragBehavior, IDragHandler>(nameof(Handler));
 
         /// <summary>
-        /// Define <see cref="IsTunneled"/> property.
-        /// </summary>
-        public static readonly AvaloniaProperty IsTunneledProperty =
-            AvaloniaProperty.Register<DragBehavior, bool>(nameof(IsTunneled), false);
-
-        /// <summary>
         /// Define IsEnabled attached property.
         /// </summary>
         public static readonly AvaloniaProperty IsEnabledProperty =
@@ -69,15 +63,6 @@ namespace Dock.Avalonia
         {
             get => (IDragHandler)GetValue(HandlerProperty);
             set => SetValue(HandlerProperty, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the flag indicating whether pointer events are tunneled.
-        /// </summary>
-        public bool IsTunneled
-        {
-            get => (bool)GetValue(IsTunneledProperty);
-            set => SetValue(IsTunneledProperty, value);
         }
 
         /// <summary>
@@ -106,10 +91,6 @@ namespace Dock.Avalonia
             base.OnAttached();
 
             var routes = RoutingStrategies.Direct | RoutingStrategies.Bubble;
-            if (IsTunneled)
-            {
-                routes |= RoutingStrategies.Tunnel;
-            }
 
             AssociatedObject.AddHandler(InputElement.PointerPressedEvent, PointerPressed, routes);
             AssociatedObject.AddHandler(InputElement.PointerReleasedEvent, PointerReleased, routes);
@@ -129,7 +110,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                if (e.InputModifiers == InputModifiers.LeftMouseButton)
+                if (e.MouseButton == MouseButton.Left)
                 {
                     _dragStartPoint = e.GetPosition(AssociatedObject);
                     _pointerPressed = true;
@@ -142,7 +123,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                if (e.InputModifiers == InputModifiers.LeftMouseButton)
+                if (e.MouseButton == MouseButton.Left)
                 {
                     _pointerPressed = false;
                     _doDragDrop = false;

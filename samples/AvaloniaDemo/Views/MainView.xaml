@@ -19,17 +19,17 @@
         </i:Interaction.Behaviors>
         <Menu Grid.Row="0">
             <MenuItem Header="_File">
-                <MenuItem x:Name="FileNew" Header="_New"/>
+                <MenuItem Header="_New" Command="{Binding FileNew}"/>
                 <Separator/>
-                <MenuItem x:Name="FileOpen" Header="_Open..."/>
+                <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
                 <Separator/>
-                <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>
+                <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Windows">
-                    <MenuItem x:Name="ViewWindowsExit" Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
+                    <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
                     <Separator/>
-                    <MenuItem x:Name="ViewWindowsShow" Header="_Show" Command="{Binding Layout.ShowWindows}"/>
+                    <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Options">

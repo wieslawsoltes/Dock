@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System;
+using System.IO;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Factories;
@@ -22,18 +24,20 @@ namespace AvaloniaDemo
         public override void OnFrameworkInitializationCompleted()
         {
             var vm = new MainWindowViewModel();
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            vm.Serializer = new DockJsonSerializer(typeof(ReactiveList<>));
+#pragma warning restore CS0618 // Type or member is obsolete
+
             var factory = new DemoDockFactory(new DemoData());
             IDock layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-#pragma warning disable CS0618 // Type or member is obsolete
-                var serializer = new DockJsonSerializer(typeof(ReactiveList<>));
-#pragma warning restore CS0618 // Type or member is obsolete
-                string path = serializer.GetBasePath("Layout.json");
-                if (serializer.Exists(path))
+                string path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
+                if (File.Exists(path))
                 {
-                    layout = serializer.Load<RootDock>(path);
+                    layout = vm.Serializer.Load<RootDock>(path);
                 }
 
                 var window = new MainWindow
@@ -62,7 +66,7 @@ namespace AvaloniaDemo
                     {
                         dock.Close();
                     }
-                    serializer.Save(path, vm.Layout);
+                    vm.Serializer.Save(path, vm.Layout);
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)

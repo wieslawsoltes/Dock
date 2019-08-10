@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace AvaloniaDemo.Serializer
 {
-    public sealed class DockJsonSerializer
+    public sealed class DockJsonSerializer : IDockJsonSerializer
     {
         private readonly JsonSerializerSettings _settings;
 
@@ -59,54 +59,36 @@ namespace AvaloniaDemo.Serializer
             return JsonConvert.SerializeObject(value, _settings);
         }
 
-        public T Deserialize<T>(string json)
+        public T Deserialize<T>(string text)
         {
-            return JsonConvert.DeserializeObject<T>(json, _settings);
-        }
-
-        public string GetBaseDirectory()
-        {
-            return AppContext.BaseDirectory;
-        }
-
-        public string GetBasePath(string path)
-        {
-            return System.IO.Path.Combine(GetBaseDirectory(), path);
-        }
-
-        public bool Exists(string path)
-        {
-            return System.IO.File.Exists(path);
-        }
-
-        public string ReadText(string path)
-        {
-            using (var stream = System.IO.File.OpenRead(path))
-            using (var sr = new System.IO.StreamReader(stream, Encoding.UTF8))
-            {
-                return sr.ReadToEnd();
-            }
-        }
-
-        public void WriteText(string path, string text)
-        {
-            using (var stream = System.IO.File.Create(path))
-            using (var sw = new System.IO.StreamWriter(stream, Encoding.UTF8))
-            {
-                sw.Write(text);
-            }
+            return JsonConvert.DeserializeObject<T>(text, _settings);
         }
 
         public T Load<T>(string path)
         {
-            var json = ReadText(path);
-            return Deserialize<T>(json);
+            using (var stream = System.IO.File.OpenRead(path))
+            using (var streamReader = new System.IO.StreamReader(stream, Encoding.UTF8))
+            {
+                var text = streamReader.ReadToEnd();
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    return Deserialize<T>(text);
+                }
+                return default;
+            }
         }
 
         public void Save<T>(string path, T value)
         {
-            var json = Serialize<T>(value);
-            WriteText(path, json);
+            var text = Serialize<T>(value);
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                using (var stream = System.IO.File.Create(path))
+                using (var streamWriter = new System.IO.StreamWriter(stream, Encoding.UTF8))
+                {
+                    streamWriter.Write(text);
+                }
+            }
         }
     }
 }

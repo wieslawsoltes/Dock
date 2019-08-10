@@ -5,6 +5,7 @@ using AvaloniaDemo.Factories;
 using AvaloniaDemo.Model;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
+using AvaloniaDemo.Views;
 using Dock.Model;
 using Dock.Model.Controls;
 using ReactiveUI.Legacy;
@@ -20,15 +21,15 @@ namespace AvaloniaDemo
 
         public override void OnFrameworkInitializationCompleted()
         {
+            var vm = new MainWindowViewModel();
+            var factory = new DemoDockFactory(new DemoData());
+            IDock layout = null;
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 var serializer = new DockJsonSerializer(typeof(ReactiveList<>));
 #pragma warning restore CS0618 // Type or member is obsolete
-                var vm = new MainWindowViewModel();
-                var factory = new DemoDockFactory(new DemoData());
-                IDock layout = null;
-
                 string path = serializer.GetBasePath("Layout.json");
                 if (serializer.Exists(path))
                 {
@@ -46,6 +47,10 @@ namespace AvaloniaDemo
 
                 window.Closing += (sender, e) =>
                 {
+                    if (vm.Layout is IDock dock)
+                    {
+                        dock.Close();
+                    }
                     // TODO: Save main window position, size and state.
                 };
 
@@ -60,10 +65,19 @@ namespace AvaloniaDemo
                     serializer.Save(path, vm.Layout);
                 };
             }
-            //else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            //{
-            //    singleViewLifetime.MainView = new MainView();
-            //}
+            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+            {
+                var view = new MainView()
+                {
+                    DataContext = vm
+                };
+
+                vm.Factory = factory;
+                vm.Layout = layout ?? vm.Factory.CreateLayout();
+                vm.Factory.InitLayout(vm.Layout);
+
+                singleViewLifetime.MainView = view;
+            }
             base.OnFrameworkInitializationCompleted();
         }
     }

@@ -3,57 +3,14 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-                 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-                 xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
                  xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-                 xmlns:local="clr-namespace:AvaloniaDemo;assembly=AvaloniaDemo"
+                 xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
                  mc:Ignorable="d"
                  d:DesignWidth="1200" d:DesignHeight="680"
                  UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
                  WindowState="Normal" WindowStartupLocation="CenterScreen"
                  Foreground="{DynamicResource ThemeForegroundBrush}"
                  BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
-                 Title="Dock Avalonia Demo" Height="680" Width="1200"
-                 id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
-    <idc:MetroWindow.Resources>
-        <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
-    </idc:MetroWindow.Resources>
-    <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
-        <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
-        </i:Interaction.Behaviors>
-        <Menu Grid.Row="0">
-            <MenuItem Header="_File">
-                <MenuItem x:Name="FileNew" Header="_New"/>
-                <Separator/>
-                <MenuItem x:Name="FileOpen" Header="_Open..."/>
-                <Separator/>
-                <MenuItem x:Name="FileSaveAs" Header="Save _As..."/>
-            </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="_Windows">
-                    <MenuItem x:Name="ViewWindowsExit" Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
-                    <Separator/>
-                    <MenuItem x:Name="ViewWindowsShow" Header="_Show" Command="{Binding Layout.ShowWindows}"/>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Options">
-                <MenuItem x:Name="OptionsDragBehaviorIsEnabled" Header="Drag Behaviors Enabled">
-                    <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem x:Name="OptionsDropBehaviorIsEnabled" Header="Drop Behaviors Enabled">
-                    <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
-        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
-        <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
-        <TextBlock Text="{Binding Layout.FocusedView}" Margin="4" Grid.Row="3" />
-    </Grid>
+                 Title="Dock Avalonia Demo" Height="680" Width="1200">
+    <views:MainView/>
 </idc:MetroWindow>

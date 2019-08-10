@@ -64,6 +64,7 @@ and install the package like this:
 * [Dock.Model.Avalonia](https://www.nuget.org/packages/Dock.Model.Avalonia/) - Core docking library implementation using Avalonia.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
 * [Dock.Avalonia.Themes.Default](https://www.nuget.org/packages/Dock.Avalonia.Themes.Default/) - Default themes for Avalonia docking implementation.
+* [Dock.Avalonia.Themes.Metro](https://www.nuget.org/packages/Dock.Avalonia.Themes.Metro/) - Metro themes for Avalonia docking implementation.
 
 ## Resources
 

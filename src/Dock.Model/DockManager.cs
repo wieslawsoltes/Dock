@@ -198,7 +198,7 @@ namespace Dock.Model
                                                 }
                                             default:
                                                 {
-                                                    Logger.Log($"Not supported tab type {sourceTab.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
+                                                    Logger.Log($"Not supported tab type {sourceTab?.GetType().Name} to splitting : {sourceTab} -> {targetTabParent}");
                                                     return false;
                                                 }
                                         }
@@ -301,7 +301,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {toolTab} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {toolTab} -> {targetView}");
                         return false;
                     }
             }
@@ -338,7 +338,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {documentTab} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {documentTab} -> {targetView}");
                         return false;
                     }
             }
@@ -371,7 +371,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceRoot} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {sourceRoot} -> {targetView}");
                         return false;
                     }
             }
@@ -404,7 +404,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceView} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {sourceView} -> {targetView}");
                         return false;
                     }
             }
@@ -437,7 +437,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceLayout} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {sourceLayout} -> {targetView}");
                         return false;
                     }
             }
@@ -511,7 +511,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetView.GetType()}: {sourceTab} -> {targetView}");
+                        Logger.Log($"Not supported type {targetView?.GetType()}: {sourceTab} -> {targetView}");
                         return false;
                     }
             }
@@ -544,7 +544,7 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {sourceView.GetType()}: {sourceView} -> {targetView}");
+                        Logger.Log($"Not supported type {sourceView?.GetType()}: {sourceView} -> {targetView}");
                         return false;
                     }
             }

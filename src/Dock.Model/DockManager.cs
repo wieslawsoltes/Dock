@@ -24,12 +24,9 @@ namespace Dock.Model
             {
                 if (sourceTabParent == targetTabParent)
                 {
-                    if (sourceTabParent == targetTabParent)
+                    if (sourceTabParent.Views.Count == 1)
                     {
-                        if (sourceTabParent.Views.Count == 1)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
 
                     switch (action)

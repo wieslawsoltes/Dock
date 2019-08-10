@@ -75,7 +75,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{9FC6C15A-C513-4516-8AC5-568FA8F6DE24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Avalonia.Themes.Default", "src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj", "{7B8F87B5-FAB8-4191-A09F-9100727E056D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.Themes.Default", "src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj", "{7B8F87B5-FAB8-4191-A09F-9100727E056D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.Themes.Metro", "src\Dock.Avalonia.Themes.Metro\Dock.Avalonia.Themes.Metro.csproj", "{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,10 @@ Global
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +167,7 @@ Global
 		{686F0686-FB89-4F51-BA22-4529248745C9} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{9FC6C15A-C513-4516-8AC5-568FA8F6DE24} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

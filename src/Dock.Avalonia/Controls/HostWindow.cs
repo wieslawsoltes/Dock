@@ -175,21 +175,21 @@ namespace Dock.Avalonia.Controls
         {
             base.OnTemplateApplied(e);
 
-            _titleBar = e.NameScope.Find<Control>("titlebar");
-            _minimiseButton = e.NameScope.Find<Button>("minimiseButton");
-            _restoreButton = e.NameScope.Find<Button>("restoreButton");
-            _closeButton = e.NameScope.Find<Button>("closeButton");
-            _icon = e.NameScope.Find<Image>("icon");
+            _titleBar = e.NameScope.Find<Control>("PART_TitleBar");
+            _minimiseButton = e.NameScope.Find<Button>("PART_MinimiseButton");
+            _restoreButton = e.NameScope.Find<Button>("PART_RestoreButton");
+            _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
+            _icon = e.NameScope.Find<Image>("PART_Icon");
 
-            _topHorizontalGrip = e.NameScope.Find<Grid>("topHorizontalGrip");
-            _bottomHorizontalGrip = e.NameScope.Find<Grid>("bottomHorizontalGrip");
-            _leftVerticalGrip = e.NameScope.Find<Grid>("leftVerticalGrip");
-            _rightVerticalGrip = e.NameScope.Find<Grid>("rightVerticalGrip");
+            _topHorizontalGrip = e.NameScope.Find<Grid>("PART_TopHorizontalGrip");
+            _bottomHorizontalGrip = e.NameScope.Find<Grid>("PART_BottomHorizontalGrip");
+            _leftVerticalGrip = e.NameScope.Find<Grid>("PART_LeftVerticalGrip");
+            _rightVerticalGrip = e.NameScope.Find<Grid>("PART_RightVerticalGrip");
 
-            _topLeftGrip = e.NameScope.Find<Grid>("topLeftGrip");
-            _bottomLeftGrip = e.NameScope.Find<Grid>("bottomLeftGrip");
-            _topRightGrip = e.NameScope.Find<Grid>("topRightGrip");
-            _bottomRightGrip = e.NameScope.Find<Grid>("bottomRightGrip");
+            _topLeftGrip = e.NameScope.Find<Grid>("PART_TopLeftGrip");
+            _bottomLeftGrip = e.NameScope.Find<Grid>("PART_BottomLeftGrip");
+            _topRightGrip = e.NameScope.Find<Grid>("PART_TopRightGrip");
+            _bottomRightGrip = e.NameScope.Find<Grid>("PART_BottomRightGrip");
 
             if (_minimiseButton != null)
             {

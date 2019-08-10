@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Dock.Model.UnitTests
 {
-    public class ListContractResolverTests
+    public class DockManagerTests
     {
         [Fact]
         public void DockManager_Ctor()

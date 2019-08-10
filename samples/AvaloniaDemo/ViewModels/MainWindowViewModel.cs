@@ -1,7 +1,5 @@
 ﻿using Dock.Model;
-#if REACTIVEUI
 using ReactiveUI;
-#endif
 
 namespace AvaloniaDemo.ViewModels
 {

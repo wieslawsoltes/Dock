@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 
 namespace Dock.Model.UnitTests
 {
@@ -19,17 +20,17 @@ namespace Dock.Model.UnitTests
 
         public void Save()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Present(bool isDialog)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

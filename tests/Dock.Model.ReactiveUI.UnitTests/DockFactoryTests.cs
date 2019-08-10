@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Xunit;
+using System;
 using Dock.Model.Controls;
 using ReactiveUI.Legacy;
+using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests
 {
@@ -113,7 +114,7 @@ namespace Dock.Model.ReactiveUI.UnitTests
     {
         public override IDock CreateLayout()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

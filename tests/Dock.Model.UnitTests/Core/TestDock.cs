@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using System.Collections.Generic;
 
 namespace Dock.Model.UnitTests
@@ -24,42 +25,42 @@ namespace Dock.Model.UnitTests
 
         public bool OnClose()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void OnSelected()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void GoBack()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void GoForward()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Navigate(object root)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ShowWindows()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void ExitWindows()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Close()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

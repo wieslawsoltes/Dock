@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using Xunit;
-using System.Collections.Generic;
+using System;
 using Avalonia.Collections;
 using Dock.Model.Controls;
+using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests
 {
@@ -112,7 +112,7 @@ namespace Dock.Model.Avalonia.UnitTests
     {
         public override IDock CreateLayout()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 
 namespace Dock.Avalonia
@@ -13,6 +15,20 @@ namespace Dock.Avalonia
     /// </summary>
     public sealed class DragBehavior : Behavior<Control>
     {
+        private Point _dragStartPoint;
+        private bool _pointerPressed;
+        private bool _doDragDrop;
+
+        /// <summary>
+        /// Minimum horizontal drag distance to initiate drag operation.
+        /// </summary>
+        public static double MinimumHorizontalDragDistance = 4;
+
+        /// <summary>
+        /// Minimum vertical drag distance to initiate drag operation.
+        /// </summary>
+        public static double MinimumVerticalDragDistance = 4;
+
         /// <summary>
         /// Define <see cref="Context"/> property.
         /// </summary>
@@ -73,45 +89,88 @@ namespace Dock.Avalonia
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.PointerPressed += DoDrag;
+
+            AssociatedObject.AddHandler(InputElement.PointerPressedEvent, PointerPressed, RoutingStrategies.Direct | RoutingStrategies.Bubble);
+            AssociatedObject.AddHandler(InputElement.PointerReleasedEvent, PointerReleased, RoutingStrategies.Direct | RoutingStrategies.Bubble);
+            AssociatedObject.AddHandler(InputElement.PointerMovedEvent, PointerMoved, RoutingStrategies.Direct | RoutingStrategies.Bubble);
         }
 
         /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            AssociatedObject.PointerPressed -= DoDrag;
+            AssociatedObject.RemoveHandler(InputElement.PointerPressedEvent, PointerPressed);
+            AssociatedObject.RemoveHandler(InputElement.PointerReleasedEvent, PointerReleased);
+            AssociatedObject.RemoveHandler(InputElement.PointerMovedEvent, PointerMoved);
         }
 
-        private async void DoDrag(object sender, PointerPressedEventArgs e)
+        private void PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (e.MouseButton == MouseButton.Left && GetIsEnabled(AssociatedObject))
+            if (GetIsEnabled(AssociatedObject))
             {
-                Handler?.BeforeDragDrop(sender, e, Context);
+                if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
+                {
+                    _dragStartPoint = e.GetPosition(AssociatedObject);
+                    _pointerPressed = true;
+                    _doDragDrop = false;
+                }
+            }
+        }
 
-                var data = new DataObject();
-                data.Set(DragDataFormats.Context, Context);
+        private void PointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            if (GetIsEnabled(AssociatedObject))
+            {
+                if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
+                {
+                    _pointerPressed = false;
+                    _doDragDrop = false;
+                }
+            }
+        }
 
-                var effect = DragDropEffects.None;
-                if (e.InputModifiers.HasFlag(InputModifiers.Alt))
+        private async void PointerMoved(object sender, PointerEventArgs e)
+        {
+            if (GetIsEnabled(AssociatedObject))
+            {
+                var point = e.GetPosition(AssociatedObject);
+                Vector diff = _dragStartPoint - point;
+                bool min = (Math.Abs(diff.X) > MinimumHorizontalDragDistance || Math.Abs(diff.Y) > MinimumVerticalDragDistance);
+                if (_pointerPressed == true && _doDragDrop == false && min == true)
                 {
-                    effect |= DragDropEffects.Link;
-                }
-                else if (e.InputModifiers.HasFlag(InputModifiers.Shift))
-                {
-                    effect |= DragDropEffects.Move;
-                }
-                else if (e.InputModifiers.HasFlag(InputModifiers.Control))
-                {
-                    effect |= DragDropEffects.Copy;
-                }
-                else
-                {
-                    effect |= DragDropEffects.Move;
-                }
+                    _doDragDrop = true;
 
-                var result = await DragDrop.DoDragDrop(data, effect);
-                Handler?.AfterDragDrop(sender, e, Context);
+                    Handler?.BeforeDragDrop(sender, e, Context);
+
+                    var data = new DataObject();
+                    data.Set(DragDataFormats.Context, Context);
+
+                    var effect = DragDropEffects.None;
+
+                    if (e.InputModifiers.HasFlag(InputModifiers.Alt))
+                    {
+                        effect |= DragDropEffects.Link;
+                    }
+                    else if (e.InputModifiers.HasFlag(InputModifiers.Shift))
+                    {
+                        effect |= DragDropEffects.Move;
+                    }
+                    else if (e.InputModifiers.HasFlag(InputModifiers.Control))
+                    {
+                        effect |= DragDropEffects.Copy;
+                    }
+                    else
+                    {
+                        effect |= DragDropEffects.Move;
+                    }
+
+                    var result = await DragDrop.DoDragDrop(e, data, effect);
+
+                    Handler?.AfterDragDrop(sender, e, Context);
+
+                    _pointerPressed = false;
+                    _doDragDrop = false;
+                }
             }
         }
     }

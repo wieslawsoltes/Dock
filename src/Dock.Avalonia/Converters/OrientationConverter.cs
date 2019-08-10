@@ -5,6 +5,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Layout;
 
 namespace Dock.Avalonia.Converters
 {

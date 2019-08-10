@@ -108,7 +108,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                if (e.MouseButton == MouseButton.Left)
+                if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
                 {
                     _dragStartPoint = e.GetPosition(AssociatedObject);
                     _pointerPressed = true;
@@ -121,7 +121,7 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                if (e.MouseButton == MouseButton.Left)
+                if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
                 {
                     _pointerPressed = false;
                     _doDragDrop = false;

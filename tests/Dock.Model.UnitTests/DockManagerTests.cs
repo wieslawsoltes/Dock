@@ -12,5 +12,13 @@ namespace Dock.Model.UnitTests
             var actual = new DockManager();
             Assert.NotNull(actual);
         }
+
+        [Fact]
+        public void Validate_sourceView_Null()
+        {
+            var manager = new DockManager();
+            var actual = manager.Validate(null, null, DragAction.Move, DockOperation.Fill, false);
+            Assert.False(actual);
+        }
     }
 }

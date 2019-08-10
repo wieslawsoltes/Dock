@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
 using System.Linq;
 using Dock.Model.Controls;
 
@@ -22,6 +21,11 @@ namespace Dock.Model
             Logger.Log($"{nameof(DockIntoTab)}: {sourceTab.Title} -> {targetTab.Title}");
             if (sourceTab.Parent is ITabDock sourceTabParent && targetTab.Parent is ITabDock targetTabParent)
             {
+                if (sourceTab == targetTab && sourceTabParent == targetTabParent)
+                {
+                    return false;
+                }
+
                 if (sourceTabParent == targetTabParent)
                 {
                     if (sourceTabParent.Views.Count == 1)
@@ -62,6 +66,7 @@ namespace Dock.Model
                                 return true;
                             }
                     }
+
                     return false;
                 }
                 else
@@ -119,8 +124,6 @@ namespace Dock.Model
                     }
                 }
 
-                var targetTab = targetTabParent.Views.LastOrDefault();
-
                 switch (action)
                 {
                     case DragAction.Copy:
@@ -137,15 +140,28 @@ namespace Dock.Model
                             {
                                 case DockOperation.Fill:
                                     {
-                                        if (sourceTabParent.Factory is IDockFactory factory)
+                                        var targetTab = targetTabParent.Views.LastOrDefault();
+
+                                        if (targetTab == null || sourceTab == targetTab)
                                         {
-                                            if (bExecute)
+                                            return false;
+                                        }
+
+                                        if (sourceTab == targetTab && sourceTabParent == targetTabParent)
+                                        {
+                                            return false;
+                                        }
+
+
+                                        if (bExecute)
+                                        {
+                                            if (sourceTabParent.Factory is IDockFactory factory)
                                             {
                                                 factory.MoveView(sourceTabParent, targetTabParent, sourceTab, targetTab);
                                             }
-                                            return true;
                                         }
-                                        return false;
+
+                                        return true;
                                     }
                                 case DockOperation.Left:
                                 case DockOperation.Right:
@@ -202,17 +218,25 @@ namespace Dock.Model
                                     }
                                 case DockOperation.Window:
                                     {
-                                        if (bExecute)
-                                        {
-                                            return DockIntoWindow(sourceTab, targetTabParent, action, operation, bExecute);
-                                        }
-                                        return true;
+                                        return DockIntoWindow(sourceTab, targetTabParent, action, operation, bExecute);
                                     }
                             }
                             return false;
                         }
                     case DragAction.Link:
                         {
+                            var targetTab = targetTabParent.Views.LastOrDefault();
+
+                            if (targetTab == null || sourceTab == targetTab)
+                            {
+                                return false;
+                            }
+
+                            if (sourceTab == targetTab && sourceTabParent == targetTabParent)
+                            {
+                                return false;
+                            }
+
                             if (bExecute)
                             {
                                 if (sourceTabParent.Factory is IDockFactory factory)
@@ -468,43 +492,52 @@ namespace Dock.Model
                             return false;
                         }
 
-                        if (bExecute)
+                        switch (operation)
                         {
-                            switch (operation)
-                            {
-                                case DockOperation.Fill:
+                            case DockOperation.Fill:
+                                {
                                     foreach (var tab in sourceTab.Views.OfType<ITab>().ToList())
                                     {
-                                        DockIntoTab(tab, targetTab, action, operation, bExecute);
+                                        if (DockIntoTab(tab, targetTab, action, operation, bExecute) == false)
+                                        {
+                                            return false;
+                                        }
                                     }
                                     return true;
-                                case DockOperation.Window:
-                                    {
-                                        return DockIntoWindow(sourceTab, targetView, action, operation, bExecute);
-                                    }
-                                default:
-                                    {
-                                        // when we are splitting.
-                                        var toMove = sourceTab.Views.OfType<ITab>().ToList();
+                                }
+                            case DockOperation.Window:
+                                {
+                                    return DockIntoWindow(sourceTab, targetView, action, operation, bExecute);
+                                }
+                            default:
+                                {
+                                    var toMove = sourceTab.Views.OfType<ITab>().ToList();
 
-                                        if (toMove.Count == 1)
+                                    if (toMove.Count == 1)
+                                    {
+                                        if (DockIntoTab(toMove.First(), targetTab, action, operation, bExecute) == false)
                                         {
-                                            DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                            return false;
                                         }
-                                        else
+                                    }
+                                    else
+                                    {
+                                        if (DockIntoTab(toMove.First(), targetTab, action, operation, bExecute) == false)
                                         {
-                                            DockIntoTab(toMove.First(), targetTab, action, operation, bExecute);
+                                            return false;
+                                        }
 
-                                            foreach (var tab in toMove.Skip(1))
+                                        foreach (var tab in toMove.Skip(1))
+                                        {
+                                            if (DockIntoTab(tab, toMove.First(), action, DockOperation.Fill, bExecute) == false)
                                             {
-                                                DockIntoTab(tab, toMove.First(), action, DockOperation.Fill, bExecute);
+                                                return false;
                                             }
                                         }
                                     }
                                     return true;
-                            }
+                                }
                         }
-                        return true;
                     }
                 default:
                     {

@@ -97,7 +97,6 @@ namespace Dock.Avalonia.Controls
                 case WindowState.Maximized:
                     WindowState = WindowState.Normal;
                     break;
-
                 case WindowState.Normal:
                     WindowState = WindowState.Maximized;
                     break;
@@ -168,7 +167,6 @@ namespace Dock.Avalonia.Controls
                 BeginMoveDrag();
                 _mouseDown = false;
             }
-
             base.OnPointerMoved(e);
         }
 

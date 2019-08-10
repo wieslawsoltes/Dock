@@ -140,7 +140,11 @@ namespace Dock.Model
                             {
                                 case DockOperation.Fill:
                                     {
-                                        var targetTab = targetTabParent.Views.LastOrDefault();
+                                        var targetTab = targetTabParent.CurrentView;
+                                        if (targetTab == null)
+                                        {
+                                            targetTab = targetTabParent.Views.LastOrDefault();
+                                        }
 
                                         if (targetTab == null || sourceTab == targetTab)
                                         {
@@ -151,7 +155,6 @@ namespace Dock.Model
                                         {
                                             return false;
                                         }
-
 
                                         if (bExecute)
                                         {
@@ -221,11 +224,16 @@ namespace Dock.Model
                                         return DockIntoWindow(sourceTab, targetTabParent, action, operation, bExecute);
                                     }
                             }
+
                             return false;
                         }
                     case DragAction.Link:
                         {
-                            var targetTab = targetTabParent.Views.LastOrDefault();
+                            var targetTab = targetTabParent.CurrentView;
+                            if (targetTab == null)
+                            {
+                                targetTab = targetTabParent.Views.LastOrDefault();
+                            }
 
                             if (targetTab == null || sourceTab == targetTab)
                             {
@@ -244,6 +252,7 @@ namespace Dock.Model
                                     factory.SwapView(sourceTabParent, targetTabParent, sourceTab, targetTab);
                                 }
                             }
+
                             return true;
                         }
                 }

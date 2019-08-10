@@ -2,12 +2,12 @@
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
-    <Style Selector="local|ToolControl">
+    <Style Selector="idc|ToolControl">
         <Style.Resources>
             <id:DockDragHandler x:Key="DockDragHandler" />
             <id:DockDropHandler x:Key="DockDropHandler5" Id="5" />

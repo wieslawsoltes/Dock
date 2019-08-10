@@ -5,14 +5,14 @@
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:local="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
     <Style Selector="Button.chromeButton">
         <Setter Property="Margin" Value="2 0 0 0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="Transparent" />
     </Style>
-    <Style Selector="local|DockToolChrome">
+    <Style Selector="idc|DockToolChrome">
         <Style.Resources>
             <id:DockDragHandler x:Key="DockDragHandler"/>
         </Style.Resources>
@@ -65,16 +65,16 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="local|DockToolChrome /template/ Border#PART_Border">
+    <Style Selector="idc|DockToolChrome /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="1 1 1 0" />
     </Style>
-    <Style Selector="local|DockToolChrome:floating /template/ Border#PART_Border">
+    <Style Selector="idc|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
     </Style>
-    <Style Selector="local|DockToolChrome /template/ Grid#PART_Grip">
+    <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>
-    <Style Selector="local|DockToolChrome:active /template/ Grid#PART_Grip">
+    <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />
         <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
     </Style>

@@ -121,11 +121,8 @@ namespace Dock.Avalonia
         {
             if (GetIsEnabled(AssociatedObject))
             {
-                if (e.MouseButton == MouseButton.Left)
-                {
-                    _pointerPressed = false;
-                    _doDragDrop = false;
-                }
+                _pointerPressed = false;
+                _doDragDrop = false;
             }
         }
 

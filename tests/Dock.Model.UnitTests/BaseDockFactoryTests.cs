@@ -21,7 +21,7 @@ namespace Dock.Model.UnitTests
     {
         public override IList<T> CreateList<T>(params T[] items)
         {
-            throw new NotImplementedException();
+            return new List<T>(items);
         }
 
         public override IRootDock CreateRootDock()

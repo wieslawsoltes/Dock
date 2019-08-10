@@ -14,8 +14,6 @@
   <Import Project="..\..\build\Rx.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
-  <Import Project="..\..\build\Newtonsoft.Json.props" />
-  <!--<Import Project="..\..\build\ReactiveUI.props" />-->
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**" />
@@ -30,10 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.INPC\Dock.Model.INPC.csproj" />
-    <!--<ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />-->
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj" />
   </ItemGroup>
 
 </Project>

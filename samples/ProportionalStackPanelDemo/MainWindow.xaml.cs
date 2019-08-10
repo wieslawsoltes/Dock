@@ -1,10 +1,10 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Controls;
 
 namespace ProportionalStackPanelDemo
 {
-    public class MainWindow : MetroWindow
+    public class MainWindow : Window
     {
         public MainWindow()
         {

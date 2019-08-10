@@ -16,7 +16,7 @@
         </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentControl Content="{Binding Layout}">
+                <ContentControl Content="{TemplateBinding Layout}">
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="Controls:ISplitterDock">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>

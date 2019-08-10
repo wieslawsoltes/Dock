@@ -8,7 +8,7 @@
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
         xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
-    <Style Selector="local|DocumentControl">
+    <Style Selector="idc|DocumentControl">
         <Style.Resources>
             <id:DockDragHandler x:Key="DockDragHandler"/>
             <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>

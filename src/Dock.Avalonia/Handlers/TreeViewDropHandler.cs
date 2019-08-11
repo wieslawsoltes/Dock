@@ -14,13 +14,13 @@ namespace Dock.Avalonia
         {
             var point = DropHelper.GetPosition(sender, e);
 
-            if (sourceDock != targetDock && sourceDock.Factory is IDockFactory factory)
+            if (sourceDock != targetDock && sourceDock.Factory is IFactory factory)
             {
                 if (e.DragEffects == DragDropEffects.Copy)
                 {
                     if (bExecute)
                     {
-                        // TODO: Clone layout and insert into Views collection.
+                        // TODO: Clone layout and insert into Visible collection.
                     }
                     return true;
                 }

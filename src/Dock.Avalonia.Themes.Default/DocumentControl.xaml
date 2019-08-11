@@ -19,7 +19,7 @@
             <ControlTemplate>
                 <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
                     <i:Interaction.Behaviors>
-                        <id:SetRootFocusedViewOnPointerPressedBehavior/>
+                        <id:SeFocusedOnPointerPressedBehavior />
                         <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
                     </i:Interaction.Behaviors>
                     <DockPanel.Styles>
@@ -56,7 +56,7 @@
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
+                    <TabStrip Name="PART_TabStrip" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <i:Interaction.Behaviors>
                             <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>
                         </i:Interaction.Behaviors>
@@ -95,7 +95,7 @@
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
-                            <DataTemplate DataType="Dock:IView">
+                            <DataTemplate DataType="Dock:IDockable">
                                 <!--
                                 <StackPanel Orientation="Horizontal" Background="Transparent" Spacing="2">
                                     <i:Interaction.Behaviors>
@@ -114,7 +114,7 @@
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />
                                     </StackPanel>
-                                    <Button Height="14" Width="14" Command="{Binding Parent.Factory.CloseView}" CommandParameter="{Binding}" Classes="documentTabButton">
+                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton">
                                         <Button.Styles>
                                             <Style Selector="Button">
                                                 <Setter Property="BorderThickness" Value="0"/>
@@ -130,7 +130,7 @@
                     </TabStrip>
                     <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
                     <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                        <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <Carousel Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </Border>
                 </DockPanel>
             </ControlTemplate>

@@ -15,19 +15,19 @@ namespace Dock.Model.Controls
         /// Defines the <see cref="Alignment"/> property.
         /// </summary>
         public static readonly StyledProperty<Alignment> AlignmentProperty =
-            AvaloniaProperty.Register<PinDock, Alignment>(nameof(AlignmentProperty), Alignment.Unset);
+            AvaloniaProperty.Register<PinDock, Alignment>(nameof(Alignment), Alignment.Unset);
 
         /// <summary>
         /// Defines the <see cref="IsExpanded"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<PinDock, bool>(nameof(IsExpandedProperty), false);
+            AvaloniaProperty.Register<PinDock, bool>(nameof(IsExpanded), false);
 
         /// <summary>
         /// Defines the <see cref="AutoHide"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> AutoHideProperty =
-            AvaloniaProperty.Register<PinDock, bool>(nameof(AutoHideProperty), true);
+            AvaloniaProperty.Register<PinDock, bool>(nameof(AutoHide), true);
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -51,10 +51,6 @@ namespace Dock.Model.Controls
         {
             get { return GetValue(AutoHideProperty); }
             set { SetValue(AutoHideProperty, value); }
-        }
-
-        static PinDock()
-        {
         }
     }
 }

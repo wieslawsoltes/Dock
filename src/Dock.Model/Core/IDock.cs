@@ -8,27 +8,37 @@ namespace Dock.Model
     /// <summary>
     /// Dock contract.
     /// </summary>
-    public interface IDock : IView
+    public interface IDock : IDockable
     {
         /// <summary>
-        /// Gets or sets views.
+        /// Gets or sets visible dockables.
         /// </summary>
-        IList<IView> Views { get; set; }
+        IList<IDockable> Visible { get; set; }
 
         /// <summary>
-        /// Gets or sets current view.
+        /// Gets or sets hidden dockables.
         /// </summary>
-        IView CurrentView { get; set; }
+        IList<IDockable> Hidden { get; set; }
 
         /// <summary>
-        /// Gets or sets default view.
+        /// Gets or sets pinned dockables.
         /// </summary>
-        IView DefaultView { get; set; }
+        IList<IDockable> Pinned { get; set; }
 
         /// <summary>
-        /// Gets or sets the focused view.
+        /// Gets or sets current dockable.
         /// </summary>
-        IView FocusedView { get; set; }
+        IDockable CurrentDockable { get; set; }
+
+        /// <summary>
+        /// Gets or sets default dockable.
+        /// </summary>
+        IDockable DefaultDockable { get; set; }
+
+        /// <summary>
+        /// Gets or sets the focused dockable.
+        /// </summary>
+        IDockable FocusedDockable { get; set; }
 
         /// <summary> 
         /// Gets or sets splitter proportion. 
@@ -36,7 +46,7 @@ namespace Dock.Model
         double Proportion { get; set; }
 
         /// <summary>
-        /// Gets or sets if the view is the currently active.
+        /// Gets or sets if the dockable is the currently active.
         /// </summary>
         bool IsActive { get; set; }
 
@@ -63,7 +73,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
-        IDockFactory Factory { get; set; }
+        IFactory Factory { get; set; }
 
         /// <summary>
         /// Navigates to the most recent entry in back navigation history, if there is one.

@@ -3,8 +3,7 @@ using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using AvaloniaDemo.Factories;
-using AvaloniaDemo.Model;
+using AvaloniaDemo.Models;
 using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
@@ -23,13 +22,13 @@ namespace AvaloniaDemo
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var vm = new MainWindowViewModel();
+            var mainWindowViewModel = new MainWindowViewModel();
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            vm.Serializer = new DockJsonSerializer(typeof(ReactiveList<>));
+            mainWindowViewModel.Serializer = new DockJsonSerializer(typeof(ReactiveList<>));
 #pragma warning restore CS0618 // Type or member is obsolete
 
-            var factory = new DemoDockFactory(new DemoData());
+            var factory = new DemoFactory(new DemoData());
             IDock layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
@@ -37,50 +36,52 @@ namespace AvaloniaDemo
                 string path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
                 if (File.Exists(path))
                 {
-                    layout = vm.Serializer.Load<RootDock>(path);
+                    layout = mainWindowViewModel.Serializer.Load<RootDock>(path);
                 }
 
-                var window = new MainWindow
+                var mainWindow = new MainWindow
                 {
-                    DataContext = vm
+                    DataContext = mainWindowViewModel
                 };
 
-                vm.Factory = factory;
-                vm.Layout = layout ?? vm.Factory.CreateLayout();
-                vm.Factory.InitLayout(vm.Layout);
+                // TODO: Restore main window position, size and state.
 
-                window.Closing += (sender, e) =>
+                mainWindowViewModel.Factory = factory;
+                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory.CreateLayout();
+                mainWindowViewModel.Factory.InitLayout(mainWindowViewModel.Layout);
+
+                mainWindow.Closing += (sender, e) =>
                 {
-                    if (vm.Layout is IDock dock)
+                    if (mainWindowViewModel.Layout is IDock dock)
                     {
                         dock.Close();
                     }
                     // TODO: Save main window position, size and state.
                 };
 
-                desktopLifetime.MainWindow = window;
+                desktopLifetime.MainWindow = mainWindow;
 
                 desktopLifetime.Exit += (sennder, e) =>
                 {
-                    if (vm.Layout is IDock dock)
+                    if (mainWindowViewModel.Layout is IDock dock)
                     {
                         dock.Close();
                     }
-                    vm.Serializer.Save(path, vm.Layout);
+                    mainWindowViewModel.Serializer.Save(path, mainWindowViewModel.Layout);
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
             {
-                var view = new MainView()
+                var mainView = new MainView()
                 {
-                    DataContext = vm
+                    DataContext = mainWindowViewModel
                 };
 
-                vm.Factory = factory;
-                vm.Layout = layout ?? vm.Factory.CreateLayout();
-                vm.Factory.InitLayout(vm.Layout);
+                mainWindowViewModel.Factory = factory;
+                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory.CreateLayout();
+                mainWindowViewModel.Factory.InitLayout(mainWindowViewModel.Layout);
 
-                singleViewLifetime.MainView = view;
+                singleViewLifetime.MainView = mainView;
             }
             base.OnFrameworkInitializationCompleted();
         }

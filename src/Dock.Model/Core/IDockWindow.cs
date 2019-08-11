@@ -44,24 +44,24 @@ namespace Dock.Model
         string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets window owner view.
+        /// Gets or sets window owner dockable.
         /// </summary>
-        IView Owner { get; set; }
+        IDockable Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
-        IDockFactory Factory { get; set; }
+        IFactory Factory { get; set; }
 
         /// <summary>
-        /// Gets or sets views layout.
+        /// Gets or sets layout.
         /// </summary>
         IDock Layout { get; set; }
 
         /// <summary>
         /// Gets or sets dock window.
         /// </summary>
-        IDockHost Host { get; set; }
+        IHostWindow Host { get; set; }
 
         /// <summary>
         /// Saves window properties.

@@ -7,6 +7,7 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
@@ -17,37 +18,9 @@
         <i:Interaction.Behaviors>
             <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
         </i:Interaction.Behaviors>
-        <Menu Grid.Row="0">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New" Command="{Binding FileNew}"/>
-                <Separator/>
-                <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
-                <Separator/>
-                <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
-            </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="_Windows">
-                    <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
-                    <Separator/>
-                    <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}"/>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem Header="_Options">
-                <MenuItem x:Name="OptionsDragBehaviorIsEnabled" Header="Drag Behaviors Enabled">
-                    <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem x:Name="OptionsDropBehaviorIsEnabled" Header="Drop Behaviors Enabled">
-                    <MenuItem.Icon>
-                        <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
+        <views:MenuView Grid.Row="0"/>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
         <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
-        <TextBlock Text="{Binding Layout.FocusedView}" Margin="4" Grid.Row="3" />
+        <TextBlock Text="{Binding Layout.FocusedDockable}" Margin="4" Grid.Row="3" />
     </Grid>
 </UserControl>

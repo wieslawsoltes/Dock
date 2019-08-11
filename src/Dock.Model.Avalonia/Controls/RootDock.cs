@@ -15,31 +15,31 @@ namespace Dock.Model.Controls
         /// Defines the <see cref="Window"/> property.
         /// </summary>
         public static readonly StyledProperty<IDockWindow> WindowProperty =
-            AvaloniaProperty.Register<RootDock, IDockWindow>(nameof(WindowProperty));
+            AvaloniaProperty.Register<RootDock, IDockWindow>(nameof(Window));
 
         /// <summary>
         /// Defines the <see cref="Top"/> property.
         /// </summary>
         public static readonly StyledProperty<IPinDock> TopProperty =
-            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(TopProperty));
+            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(Top));
 
         /// <summary>
         /// Defines the <see cref="Bottom"/> property.
         /// </summary>
         public static readonly StyledProperty<IPinDock> BottomProperty =
-            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(BottomProperty));
+            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(Bottom));
 
         /// <summary>
         /// Defines the <see cref="Left"/> property.
         /// </summary>
         public static readonly StyledProperty<IPinDock> LeftProperty =
-            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(LeftProperty));
+            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(Left));
 
         /// <summary>
         /// Defines the <see cref="Right"/> property.
         /// </summary>
         public static readonly StyledProperty<IPinDock> RightProperty =
-            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(RightProperty));
+            AvaloniaProperty.Register<RootDock, IPinDock>(nameof(Right));
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -79,10 +79,6 @@ namespace Dock.Model.Controls
         {
             get { return GetValue(RightProperty); }
             set { SetValue(RightProperty, value); }
-        }
-
-        static RootDock()
-        {
         }
     }
 }

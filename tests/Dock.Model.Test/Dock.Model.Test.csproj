@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <IsPackable>False</IsPackable>
+    <IsTestProject>False</IsTestProject>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Base.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+  </ItemGroup>
+
+</Project>

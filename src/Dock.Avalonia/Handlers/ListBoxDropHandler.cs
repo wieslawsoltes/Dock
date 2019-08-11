@@ -16,15 +16,15 @@ namespace Dock.Avalonia
 
             if (sourceDock != targetDock)
             {
-                if (sourceDock.Parent is IDock sourceParent && targetDock.Parent is IDock targetParent)
+                if (sourceDock.Owner is IDock sourceOwner && targetDock.Owner is IDock targetOwner)
                 {
-                    if (sourceParent == targetParent)
+                    if (sourceOwner == targetOwner)
                     {
                         if (e.DragEffects == DragDropEffects.Copy)
                         {
                             if (bExecute)
                             {
-                                // TODO: Clone layout and insert into Views collection.
+                                // TODO: Clone layout and insert into Visible collection.
                             }
                             return true;
                         }
@@ -32,9 +32,9 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                if (sourceParent.Factory is IDockFactory factory)
+                                if (sourceOwner.Factory is IFactory factory)
                                 {
-                                    factory.MoveView(sourceParent, sourceDock, targetDock);
+                                    factory.MoveDockable(sourceOwner, sourceDock, targetDock);
                                 }
                             }
                             return true;
@@ -43,9 +43,9 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                if (sourceParent.Factory is IDockFactory factory)
+                                if (sourceOwner.Factory is IFactory factory)
                                 {
-                                    factory.SwapView(sourceParent, sourceDock, targetDock);
+                                    factory.SwapDockable(sourceOwner, sourceDock, targetDock);
                                 }
                             }
                             return true;
@@ -57,7 +57,7 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                // TODO: Clone layout and insert into Views collection.
+                                // TODO: Clone layout and insert into Visible collection.
                             }
                             return true;
                         }
@@ -65,9 +65,9 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                if (sourceParent.Factory is IDockFactory factory)
+                                if (sourceOwner.Factory is IFactory factory)
                                 {
-                                    factory.MoveView(sourceParent, targetParent, sourceDock, targetDock);
+                                    factory.MoveDockable(sourceOwner, targetOwner, sourceDock, targetDock);
                                 }
                             }
                             return true;
@@ -76,9 +76,9 @@ namespace Dock.Avalonia
                         {
                             if (bExecute)
                             {
-                                if (sourceParent.Factory is IDockFactory factory)
+                                if (sourceOwner.Factory is IFactory factory)
                                 {
-                                    factory.SwapView(sourceParent, targetParent, sourceDock, targetDock);
+                                    factory.SwapDockable(sourceOwner, targetOwner, sourceDock, targetDock);
                                 }
                             }
                             return true;

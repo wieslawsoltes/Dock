@@ -10,7 +10,7 @@ namespace Dock.Model
     /// Dock window.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class DockWindow : AvaloniaObject, IDockWindow
+    public class DockWindow : StyledElement, IDockWindow
     {
         private IHostAdapter _hostAdapter;
 
@@ -18,67 +18,67 @@ namespace Dock.Model
         /// Defines the <see cref="Id"/> property.
         /// </summary>
         public static readonly StyledProperty<string> IdProperty =
-            AvaloniaProperty.Register<DockWindow, string>(nameof(IdProperty));
+            AvaloniaProperty.Register<DockWindow, string>(nameof(Id));
 
         /// <summary>
         /// Defines the <see cref="X"/> property.
         /// </summary>
         public static readonly StyledProperty<double> XProperty =
-            AvaloniaProperty.Register<DockWindow, double>(nameof(XProperty));
+            AvaloniaProperty.Register<DockWindow, double>(nameof(X));
 
         /// <summary>
         /// Defines the <see cref="Y"/> property.
         /// </summary>
         public static readonly StyledProperty<double> YProperty =
-            AvaloniaProperty.Register<DockWindow, double>(nameof(YProperty));
+            AvaloniaProperty.Register<DockWindow, double>(nameof(Y));
 
         /// <summary>
         /// Defines the <see cref="Width"/> property.
         /// </summary>
         public static readonly StyledProperty<double> WidthProperty =
-            AvaloniaProperty.Register<DockWindow, double>(nameof(WidthProperty));
+            AvaloniaProperty.Register<DockWindow, double>(nameof(Width));
 
         /// <summary>
         /// Defines the <see cref="Height"/> property.
         /// </summary>
         public static readonly StyledProperty<double> HeightProperty =
-            AvaloniaProperty.Register<DockWindow, double>(nameof(HeightProperty));
+            AvaloniaProperty.Register<DockWindow, double>(nameof(Height));
 
         /// <summary>
         /// Defines the <see cref="Topmost"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> TopmostProperty =
-            AvaloniaProperty.Register<DockWindow, bool>(nameof(TopmostProperty));
+            AvaloniaProperty.Register<DockWindow, bool>(nameof(Topmost));
 
         /// <summary>
         /// Defines the <see cref="Title"/> property.
         /// </summary>
         public static readonly StyledProperty<string> TitleProperty =
-            AvaloniaProperty.Register<DockWindow, string>(nameof(TitleProperty));
+            AvaloniaProperty.Register<DockWindow, string>(nameof(Title));
 
         /// <summary>
         /// Defines the <see cref="Owner"/> property.
         /// </summary>
-        public static readonly StyledProperty<IView> OwnerProperty =
-            AvaloniaProperty.Register<DockWindow, IView>(nameof(OwnerProperty));
+        public static readonly StyledProperty<IDockable> OwnerProperty =
+            AvaloniaProperty.Register<DockWindow, IDockable>(nameof(Owner));
 
         /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDockFactory> FactoryProperty =
-            AvaloniaProperty.Register<DockWindow, IDockFactory>(nameof(FactoryProperty));
+        public static readonly StyledProperty<IFactory> FactoryProperty =
+            AvaloniaProperty.Register<DockWindow, IFactory>(nameof(Factory));
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
         public static readonly StyledProperty<IDock> LayoutProperty =
-            AvaloniaProperty.Register<DockWindow, IDock>(nameof(LayoutProperty));
+            AvaloniaProperty.Register<DockWindow, IDock>(nameof(Layout));
 
         /// <summary>
         /// Defines the <see cref="Host"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDockHost> HostProperty =
-            AvaloniaProperty.Register<DockWindow, IDockHost>(nameof(HostProperty));
+        public static readonly StyledProperty<IHostWindow> HostProperty =
+            AvaloniaProperty.Register<DockWindow, IHostWindow>(nameof(Host));
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -138,7 +138,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IView Owner
+        public IDockable Owner
         {
             get { return GetValue(OwnerProperty); }
             set { SetValue(OwnerProperty, value); }
@@ -146,7 +146,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get { return GetValue(FactoryProperty); }
             set { SetValue(FactoryProperty, value); }
@@ -163,14 +163,10 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockHost Host
+        public IHostWindow Host
         {
             get { return GetValue(HostProperty); }
             set { SetValue(HostProperty, value); }
-        }
-
-        static DockWindow()
-        {
         }
 
         /// <summary>

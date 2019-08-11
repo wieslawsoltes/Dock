@@ -13,14 +13,14 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public void BeforeDragDrop(object sender, PointerEventArgs e, object context)
         {
-            if (context is IView view)
+            if (context is IDockable dockable)
             {
-                if (view.Parent is IDock dock
-                    && dock.Factory is IDockFactory factory
+                if (dockable.Owner is IDock dock
+                    && dock.Factory is IFactory factory
                     && factory.FindRoot(dock) is IDock root
-                    && root.CurrentView is IDock currentViewRoot)
+                    && root.CurrentDockable is IDock currentRootDockable)
                 {
-                    currentViewRoot.ShowWindows();
+                    currentRootDockable.ShowWindows();
                 }
             }
         }

@@ -9,11 +9,11 @@
                 <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
                     <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"/>
                     <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"/>
-                    <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultView}" Grid.Column="2"/>
+                    <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}" Grid.Column="2"/>
                     <TextBox x:Name="Id" Text="" Grid.Column="3"/>
                     <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
-                    <Button Content="ShowWindows" Command="{Binding CurrentView.ShowWindows}" Grid.Column="5"/>
-                    <Button Content="ExitWindows" Command="{Binding CurrentView.ExitWindows}" Grid.Column="6"/>
+                    <Button Content="ShowWindows" Command="{Binding CurrentDockable.ShowWindows}" Grid.Column="5"/>
+                    <Button Content="ExitWindows" Command="{Binding CurrentDockable.ExitWindows}" Grid.Column="6"/>
                 </Grid>
             </ControlTemplate>
         </Setter>

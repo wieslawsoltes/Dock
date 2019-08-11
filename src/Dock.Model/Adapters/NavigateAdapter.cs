@@ -26,8 +26,8 @@ namespace Dock.Model
     /// </summary>
     public class NavigateAdapter : INavigateAdapter
     {
-        private readonly Stack<IView> _back;
-        private readonly Stack<IView> _forward;
+        private readonly Stack<IDockable> _back;
+        private readonly Stack<IDockable> _forward;
         private readonly IDock _dock;
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace Dock.Model
         /// <param name="dock">The dock instance.</param>
         public NavigateAdapter(IDock dock)
         {
-            _back = new Stack<IView>();
-            _forward = new Stack<IView>();
+            _back = new Stack<IDockable>();
+            _forward = new Stack<IDockable>();
             _dock = dock;
         }
 
@@ -53,9 +53,9 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (_dock.CurrentView != null)
+                if (_dock.CurrentDockable != null)
                 {
-                    _forward.Push(_dock.CurrentView);
+                    _forward.Push(_dock.CurrentDockable);
                 }
                 Navigate(root, false);
             }
@@ -67,9 +67,9 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (_dock.CurrentView != null)
+                if (_dock.CurrentDockable != null)
                 {
-                    _back.Push(_dock.CurrentView);
+                    _back.Push(_dock.CurrentDockable);
                 }
                 Navigate(root, false);
             }
@@ -81,26 +81,26 @@ namespace Dock.Model
             switch (root)
             {
                 case null:
-                    ResetCurrentView();
+                    ResetCurrentDockable();
                     ResetBack();
                     break;
-                case IView view:
-                    NavigateTo(view, bSnapshot);
+                case IDockable dockable:
+                    NavigateTo(dockable, bSnapshot);
                     break;
                 case string id:
-                    NavigateToUseViews(id, bSnapshot);
+                    NavigateToUseVisible(id, bSnapshot);
                     break;
                 default:
                     throw new ArgumentException($"Invalid root object type: {root.GetType()}");
             }
         }
 
-        private void ResetCurrentView()
+        private void ResetCurrentDockable()
         {
-            if (_dock.CurrentView is IDock currentViewWindows)
+            if (_dock.CurrentDockable is IDock currentDockableWindows)
             {
-                currentViewWindows.Close();
-                _dock.CurrentView = null;
+                currentDockableWindows.Close();
+                _dock.CurrentDockable = null;
             }
         }
 
@@ -117,60 +117,60 @@ namespace Dock.Model
             }
         }
 
-        private void PushBack(IView view)
+        private void PushBack(IDockable dockable)
         {
             if (_forward.Count > 0)
                 _forward.Clear();
-            _back.Push(view);
+            _back.Push(dockable);
         }
 
-        private void NavigateTo(IView view, bool bSnapshot)
+        private void NavigateTo(IDockable dockable, bool bSnapshot)
         {
-            if (_dock.CurrentView is IDock currentViewWindows)
+            if (_dock.CurrentDockable is IDock currentDockableWindows)
             {
-                currentViewWindows.Close();
+                currentDockableWindows.Close();
             }
 
-            if (view != null && _dock.CurrentView != view)
+            if (dockable != null && _dock.CurrentDockable != dockable)
             {
-                if (_dock.CurrentView != null && bSnapshot == true)
+                if (_dock.CurrentDockable != null && bSnapshot == true)
                 {
-                    PushBack(_dock.CurrentView);
+                    PushBack(_dock.CurrentDockable);
                 }
 
-                _dock.CurrentView = view;
+                _dock.CurrentDockable = dockable;
             }
 
-            if (view is IDock dockWindows)
+            if (dockable is IDock dockWindows)
             {
                 dockWindows.ShowWindows();
             }
         }
 
-        private void NavigateToUseViews(string id, bool bSnapshot)
+        private void NavigateToUseVisible(string id, bool bSnapshot)
         {
-            var result = _dock.Views.FirstOrDefault(v => v.Id == id);
+            var result = _dock.Visible.FirstOrDefault(v => v.Id == id);
             if (result != null)
             {
                 Navigate(result, bSnapshot);
             }
             else
             {
-                NavigateToUseAllViews(id, bSnapshot);
+                NavigateToUseAllVisible(id, bSnapshot);
             }
         }
 
-        private void NavigateToUseAllViews(string id, bool bSnapshot)
+        private void NavigateToUseAllVisible(string id, bool bSnapshot)
         {
-            var views = _dock.Views.Flatten(v =>
+            var visible = _dock.Visible.Flatten(v =>
             {
                 if (v is IDock n)
                 {
-                    return n.Views;
+                    return n.Visible;
                 }
                 return null;
             });
-            var result = views.FirstOrDefault(v => v.Id == id);
+            var result = visible.FirstOrDefault(v => v.Id == id);
             if (result != null)
             {
                 Navigate(result, bSnapshot);
@@ -206,9 +206,9 @@ namespace Dock.Model
         public void Close()
         {
             _dock.ExitWindows();
-            if (_dock.CurrentView is IDock currentViewWindows)
+            if (_dock.CurrentDockable is IDock currentDockableWindows)
             {
-                currentViewWindows.ExitWindows();
+                currentDockableWindows.ExitWindows();
             }
         }
     }

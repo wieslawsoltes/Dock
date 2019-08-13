@@ -16,7 +16,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public DockPoint ScreenPosition { get; set; }
 
-        internal bool DockDockIntoDock(IDock sourceDock, IToolDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockDockIntoDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             var visible = sourceDock.Visible.ToList();
 

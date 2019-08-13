@@ -48,17 +48,17 @@ namespace Dock.Model
         {
             if (sourceDockable.Owner is IDock sourceDockableOwner && targetDockable.Owner is IDock targetDockableOwner)
             {
-                if (sourceDockable == targetDockable && sourceDockableOwner == targetDockableOwner)
-                {
-                    return false;
-                }
+                //if (sourceDockable == targetDockable && sourceDockableOwner == targetDockableOwner)
+                //{
+                //    return false;
+                //}
 
                 if (sourceDockableOwner == targetDockableOwner)
                 {
-                    if (sourceDockableOwner.Visible.Count == 1)
-                    {
-                        return false;
-                    }
+                    //if (sourceDockableOwner.Visible.Count == 1)
+                    //{
+                    //    return false;
+                    //}
 
                     return DockDockable(sourceDockable, sourceDockableOwner, targetDockable, action, bExecute);
                 }
@@ -152,13 +152,13 @@ namespace Dock.Model
         {
             if (sourceDockable.Owner is IDock sourceDockableOwner)
             {
-                if (sourceDockableOwner == targetDock)
-                {
-                    if (sourceDockableOwner.Visible.Count == 1)
-                    {
-                        return false;
-                    }
-                }
+                //if (sourceDockableOwner == targetDock)
+                //{
+                //    if (sourceDockableOwner.Visible.Count == 1)
+                //    {
+                //        return false;
+                //    }
+                //}
 
                 return DockDockableIntoDock(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
             }
@@ -281,15 +281,20 @@ namespace Dock.Model
                 targetDockable = targetDock.Visible.LastOrDefault();
             }
 
-            if (targetDockable == null || sourceDockable == targetDockable)
+            if (targetDockable == null)
             {
                 return false;
             }
 
-            if (sourceDockable == targetDockable && sourceDockableOwner == targetDock)
-            {
-                return false;
-            }
+            //if (sourceDockable == targetDockable)
+            //{
+            //    return false;
+            //}
+
+            //if (sourceDockableOwner == targetDock)
+            //{
+            //    return false;
+            //}
 
             if (bExecute)
             {
@@ -310,15 +315,20 @@ namespace Dock.Model
                 targetDockable = targetDock.Visible.LastOrDefault();
             }
 
-            if (targetDockable == null || sourceDockable == targetDockable)
+            if (targetDockable == null)
             {
                 return false;
             }
 
-            if (sourceDockable == targetDockable && sourceDockableOwner == targetDock)
-            {
-                return false;
-            }
+            //if (sourceDockable == targetDockable)
+            //{
+            //    return false;
+            //}
+
+            //if (sourceDockableOwner == targetDock)
+            //{
+            //    return false;
+            //}
 
             if (bExecute)
             {
@@ -337,8 +347,12 @@ namespace Dock.Model
             {
                 case DockOperation.Fill:
                     {
-                        if (sourceDockable != targetDockable
-                            && sourceDockable.Owner != targetDockable
+                        if (sourceDockable == targetDockable)
+                        {
+                            return false;
+                        }
+
+                        if (sourceDockable.Owner != targetDockable
                             && sourceDockable.Owner is IDock sourceDockableOwner
                             && sourceDockableOwner.Factory is IFactory factory
                             && factory.FindRoot(sourceDockable) is IDock root

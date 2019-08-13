@@ -451,6 +451,43 @@ namespace Dock.Model
             return false;
         }
 
+        internal bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            Logger.Log($"{nameof(ValidateDockable)}: {sourceDockable.Title} -> {targetDockable.Title}");
+            switch (targetDockable)
+            {
+                case ITool tool:
+                    {
+                        return false;
+                    }
+                case IDocument document:
+                    {
+                        return false;
+                    }
+                case IToolDock toolDock:
+                    {
+                        return false;
+                    }
+                case IDocumentDock documentDock:
+                    {
+                        return false;
+                    }
+                case IProportionalDock proportionalDock:
+                    {
+                        return false;
+                    }
+                case IRootDock rootDock:
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDockable} -> {targetDockable}");
+                        return false;
+                    }
+            }
+        }
+
         internal bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             Logger.Log($"{nameof(ValidateTool)}: {sourceTool.Title} -> {targetDockable.Title}");
@@ -520,117 +557,6 @@ namespace Dock.Model
                 default:
                     {
                         Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDocument} -> {targetDockable}");
-                        return false;
-                    }
-            }
-        }
-
-        internal bool ValidateRootDock(IRootDock sourceRootDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            Logger.Log($"{nameof(ValidateRootDock)}: {sourceRootDock.Title} -> {targetDockable.Title}");
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceRootDock} -> {targetDockable}");
-                        return false;
-                    }
-            }
-        }
-
-        internal bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            Logger.Log($"{nameof(ValidateDockable)}: {sourceDockable.Title} -> {targetDockable.Title}");
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDockable} -> {targetDockable}");
-                        return false;
-                    }
-            }
-        }
-
-        internal bool ValidateProportionalDock(IProportionalDock sourceProportionalDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            Logger.Log($"{nameof(ValidateProportionalDock)}: {sourceProportionalDock.Title} -> {targetDockable.Title}");
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceProportionalDock} -> {targetDockable}");
                         return false;
                     }
             }
@@ -905,6 +831,80 @@ namespace Dock.Model
                 default:
                     {
                         Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDocumentDock} -> {targetDockable}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateProportionalDock(IProportionalDock sourceProportionalDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            Logger.Log($"{nameof(ValidateProportionalDock)}: {sourceProportionalDock.Title} -> {targetDockable.Title}");
+            switch (targetDockable)
+            {
+                case ITool tool:
+                    {
+                        return false;
+                    }
+                case IDocument document:
+                    {
+                        return false;
+                    }
+                case IToolDock toolDock:
+                    {
+                        return false;
+                    }
+                case IDocumentDock documentDock:
+                    {
+                        return false;
+                    }
+                case IProportionalDock proportionalDock:
+                    {
+                        return false;
+                    }
+                case IRootDock rootDock:
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceProportionalDock} -> {targetDockable}");
+                        return false;
+                    }
+            }
+        }
+
+        internal bool ValidateRootDock(IRootDock sourceRootDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        {
+            Logger.Log($"{nameof(ValidateRootDock)}: {sourceRootDock.Title} -> {targetDockable.Title}");
+            switch (targetDockable)
+            {
+                case ITool tool:
+                    {
+                        return false;
+                    }
+                case IDocument document:
+                    {
+                        return false;
+                    }
+                case IToolDock toolDock:
+                    {
+                        return false;
+                    }
+                case IDocumentDock documentDock:
+                    {
+                        return false;
+                    }
+                case IProportionalDock proportionalDock:
+                    {
+                        return false;
+                    }
+                case IRootDock rootDock:
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceRootDock} -> {targetDockable}");
                         return false;
                     }
             }

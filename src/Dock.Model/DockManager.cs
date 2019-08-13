@@ -671,76 +671,6 @@ namespace Dock.Model
             }
         }
 
-        internal bool ValidateProportionalDock(IProportionalDock sourceProportionalDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
-        internal bool ValidateRootDock(IRootDock sourceRootDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
         /// <inheritdoc/>
         public bool Validate(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
@@ -764,11 +694,11 @@ namespace Dock.Model
                     }
                 case IProportionalDock proportionalDock:
                     {
-                        return ValidateProportionalDock(proportionalDock, targetDockable, action, operation, bExecute);
+                        return false;
                     }
                 case IRootDock rootDock:
                     {
-                        return ValidateRootDock(rootDock, targetDockable, action, operation, bExecute);
+                        return false;
                     }
                 default:
                     {

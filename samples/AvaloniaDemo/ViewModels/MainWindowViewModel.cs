@@ -2,44 +2,36 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using AvaloniaDemo.Factories;
-using AvaloniaDemo.Model;
-using AvaloniaDemo.Serializer;
+using AvaloniaDemo.Models;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 using ReactiveUI;
 
 namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IDockJsonSerializer _serializer;
-        private IDockFactory _factory;
-        private IView _layout;
-        private string _currentView;
+        private IDockSerializer _serializer;
+        private IFactory _factory;
+        private IDockable _layout;
 
-        public IDockJsonSerializer Serializer
+        public IDockSerializer Serializer
         {
             get => _serializer;
             set => this.RaiseAndSetIfChanged(ref _serializer, value);
         }
 
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
         }
 
-        public IView Layout
+        public IDockable Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
-        }
-
-        public string CurrentView
-        {
-            get => _currentView;
-            set => this.RaiseAndSetIfChanged(ref _currentView, value);
         }
 
         public void FileNew()
@@ -48,7 +40,7 @@ namespace AvaloniaDemo.ViewModels
             {
                 root.Close();
             }
-            Factory = new DemoDockFactory(new DemoData());
+            Factory = new DemoFactory(new DemoData());
             Layout = Factory.CreateLayout();
             Factory.InitLayout(Layout);
         }

@@ -10,8 +10,5 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class DocumentDock : DockBase, IDocumentDock
     {
-        static DocumentDock()
-        {
-        }
     }
 }

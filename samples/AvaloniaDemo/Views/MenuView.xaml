@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="AvaloniaDemo.Views.MenuView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="20">
+    <Menu>
+        <MenuItem Header="_File">
+            <MenuItem Header="_New" Command="{Binding FileNew}"/>
+            <Separator/>
+            <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
+            <Separator/>
+            <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
+        </MenuItem>
+        <MenuItem Header="_View">
+            <MenuItem Header="_Windows">
+                <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
+                <Separator/>
+                <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}"/>
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="_Options">
+            <MenuItem x:Name="OptionsDragBehaviorIsEnabled" Header="Drag Behaviors Enabled">
+                <MenuItem.Icon>
+                    <CheckBox IsChecked="{Binding $self.(id:DragBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <Separator/>
+            <MenuItem x:Name="OptionsDropBehaviorIsEnabled" Header="Drop Behaviors Enabled">
+                <MenuItem.Icon>
+                    <CheckBox IsChecked="{Binding $self.(id:DropBehavior.IsEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
+    </Menu>
+</UserControl>

@@ -19,7 +19,7 @@ namespace Dock.Model.Controls
         bool IsExpanded { get; set; }
 
         /// <summary>
-        /// Gets or sets if the Dock auto hides view when pointer is not over.
+        /// Gets or sets if the Dock auto hides dockable when pointer is not over.
         /// </summary>
         bool AutoHide { get; set; }
     }

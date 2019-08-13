@@ -5,15 +5,15 @@ using System.Runtime.Serialization;
 namespace Dock.Model
 {
     /// <summary>
-    /// View base class.
+    /// Dockable base class.
     /// </summary>
     [DataContract(IsReference = true)]
-    public abstract class ViewBase : ReactiveObject, IView
+    public abstract class DockableBase : ReactiveObject, IDockable
     {
         private string _id;
         private string _title;
         private object _context;
-        private IView _parent;
+        private IDockable _owner;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
@@ -41,10 +41,10 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IView Parent
+        public IDockable Owner
         {
-            get => _parent;
-            set => this.RaiseAndSetIfChanged(ref _parent, value);
+            get => _owner;
+            set => this.RaiseAndSetIfChanged(ref _owner, value);
         }
 
         /// <inheritdoc/>

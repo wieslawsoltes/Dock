@@ -10,18 +10,20 @@ namespace Dock.Model
     /// Dock base class.
     /// </summary>
     [DataContract(IsReference = true)]
-    public abstract class DockBase : ViewBase, IDock
+    public abstract class DockBase : DockableBase, IDock
     {
         private INavigateAdapter _navigateAdapter;
-        private IList<IView> _views;
-        private IView _currentView;
-        private IView _defaultView;
-        private IView _focusedView;
+        private IList<IDockable> _visible;
+        private IList<IDockable> _hidden;
+        private IList<IDockable> _pinned;
+        private IDockable _currentDockable;
+        private IDockable _defaultDockable;
+        private IDockable _focusedDockable;
         private double _proportion = double.NaN;
         private bool _isCollapsable = true;
         private bool _isActive;
         private IList<IDockWindow> _windows;
-        private IDockFactory _factory;
+        private IFactory _factory;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -33,40 +35,56 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IList<IView> Views
+        public IList<IDockable> Visible
         {
-            get => _views;
-            set => this.RaiseAndSetIfChanged(ref _views, value);
+            get => _visible;
+            set => this.RaiseAndSetIfChanged(ref _visible, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView CurrentView
+        public IList<IDockable> Hidden
         {
-            get => _currentView;
+            get => _hidden;
+            set => this.RaiseAndSetIfChanged(ref _hidden, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IList<IDockable> Pinned
+        {
+            get => _pinned;
+            set => this.RaiseAndSetIfChanged(ref _pinned, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IDockable CurrentDockable
+        {
+            get => _currentDockable;
             set
             {
-                this.RaiseAndSetIfChanged(ref _currentView, value);
+                this.RaiseAndSetIfChanged(ref _currentDockable, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
-                _factory?.SetFocusedView(this, value);
+                _factory?.SetFocusedDockable(this, value);
             }
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView DefaultView
+        public IDockable DefaultDockable
         {
-            get => _defaultView;
-            set => this.RaiseAndSetIfChanged(ref _defaultView, value);
+            get => _defaultDockable;
+            set => this.RaiseAndSetIfChanged(ref _defaultDockable, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView FocusedView
+        public IDockable FocusedDockable
         {
-            get => _focusedView;
-            set => this.RaiseAndSetIfChanged(ref _focusedView, value);
+            get => _focusedDockable;
+            set => this.RaiseAndSetIfChanged(ref _focusedDockable, value);
         }
 
         /// <inheritdoc/>
@@ -111,7 +129,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);

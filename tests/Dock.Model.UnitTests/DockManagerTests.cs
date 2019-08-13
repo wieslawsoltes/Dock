@@ -14,7 +14,7 @@ namespace Dock.Model.UnitTests
         }
 
         [Fact]
-        public void Validate_sourceView_Null()
+        public void Validate_sourceDockable_Null()
         {
             var manager = new DockManager();
             var actual = manager.Validate(null, null, DragAction.Move, DockOperation.Fill, false);

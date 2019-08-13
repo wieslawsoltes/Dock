@@ -13,6 +13,8 @@ A docking layout system.
 
 **Dock** is a docking layout system for [Avalonia](https://github.com/AvaloniaUI/Avalonia) applications. Use of Dock is governed by the MIT License.
 
+[![Dock](images/Dock.png)](images/Dock.png)
+
 ## Building Dock
 
 First, clone the repository or download the latest zip.

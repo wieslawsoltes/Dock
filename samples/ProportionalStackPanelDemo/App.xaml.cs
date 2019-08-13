@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using ProportionalStackPanelDemo.Views;
 
 namespace ProportionalStackPanelDemo
 {
@@ -17,10 +18,10 @@ namespace ProportionalStackPanelDemo
             {
                 desktopLifetime.MainWindow = new MainWindow();
             }
-            //else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            //{
-            //    singleViewLifetime.MainView = new MainView();
-            //}
+            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
+            {
+                singleViewLifetime.MainView = new MainView();
+            }
             base.OnFrameworkInitializationCompleted();
         }
     }

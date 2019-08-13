@@ -14,7 +14,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Interaction logic for <see cref="HostWindow"/> xaml.
     /// </summary>
-    public class HostWindow : Window, IStyleable, IDockHost
+    public class HostWindow : Window, IStyleable, IHostWindow
     {
         private Control _titleBar;
 

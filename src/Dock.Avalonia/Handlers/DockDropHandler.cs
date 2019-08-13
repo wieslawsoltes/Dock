@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -94,11 +93,11 @@ namespace Dock.Avalonia
         public void Enter(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
             var operation = DockOperation.Fill;
-            bool isView = sourceContext is IView view;
+            bool isDockable = sourceContext is IDockable dockable;
 
             if (Validate(sender, e, sourceContext, targetContext, operation) == false)
             {
-                if (!isView)
+                if (!isDockable)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
@@ -106,7 +105,7 @@ namespace Dock.Avalonia
             }
             else
             {
-                if (isView && sender is DockPanel panel)
+                if (isDockable && sender is DockPanel panel)
                 {
                     if (sender is IVisual visual)
                     {
@@ -122,7 +121,7 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public void Over(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
-            bool isView = sourceContext is IView view;
+            bool isDockable = sourceContext is IDockable dockable;
             var operation = DockOperation.Fill;
 
             if (_adornerHelper.Adorner is DockTarget target)
@@ -132,7 +131,7 @@ namespace Dock.Avalonia
 
             if (Validate(sender, e, sourceContext, targetContext, operation) == false)
             {
-                if (!isView)
+                if (!isDockable)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
@@ -149,21 +148,21 @@ namespace Dock.Avalonia
         public void Drop(object sender, DragEventArgs e, object sourceContext, object targetContext)
         {
             var operation = DockOperation.Fill;
-            bool isView = sourceContext is IView view;
+            bool isDockable = sourceContext is IDockable dockable;
 
             if (_adornerHelper.Adorner is DockTarget target)
             {
                 operation = target.GetDockOperation(e);
             }
 
-            if (isView && sender is DockPanel panel)
+            if (isDockable && sender is DockPanel panel)
             {
                 _adornerHelper.RemoveAdorner(sender as IVisual);
             }
 
             if (Execute(sender, e, sourceContext, targetContext, operation) == false)
             {
-                if (!isView)
+                if (!isDockable)
                 {
                     e.DragEffects = DragDropEffects.None;
                     e.Handled = true;
@@ -186,12 +185,12 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public bool Validate(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
-            if (state is DockOperation operation && sourceContext is IView sourceView && targetContext is IView targetView)
+            if (state is DockOperation operation && sourceContext is IDockable sourceDockable && targetContext is IDockable targetDockable)
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Logger.Log($"Validate [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                return _manager.Validate(sourceView, targetView, ToDragAction(e), operation, false);
+                Logger.Log($"Validate [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                return _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, false);
             }
             return false;
         }
@@ -199,15 +198,15 @@ namespace Dock.Avalonia
         /// <inheritdoc/>
         public bool Execute(object sender, DragEventArgs e, object sourceContext, object targetContext, object state)
         {
-            if (_executed == false && state is DockOperation operation && sourceContext is IView sourceView && targetContext is IView targetView)
+            if (_executed == false && state is DockOperation operation && sourceContext is IDockable sourceDockable && targetContext is IDockable targetDockable)
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Logger.Log($"Execute [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
-                bool bResult = _manager.Validate(sourceView, targetView, ToDragAction(e), operation, true);
+                Logger.Log($"Execute [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                bool bResult = _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
-                    Logger.Log($"Executed [{Id}]: {sourceView.Title} -> {targetView.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
+                    Logger.Log($"Executed [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
                     _executed = true;
                     return true;
                 }

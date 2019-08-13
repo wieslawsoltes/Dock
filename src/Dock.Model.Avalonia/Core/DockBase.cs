@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Metadata;
 
 namespace Dock.Model
@@ -11,53 +12,65 @@ namespace Dock.Model
     /// Dock base class.
     /// </summary>
     [DataContract(IsReference = true)]
-    public abstract class DockBase : ViewBase, IDock
+    public abstract class DockBase : DockableBase, IDock
     {
         private INavigateAdapter _navigateAdapter;
         private bool _canGoBack;
         private bool _canGoForward;
 
         /// <summary>
-        /// Defines the <see cref="Views"/> property.
+        /// Defines the <see cref="Visible"/> property.
         /// </summary>
-        public static readonly StyledProperty<IList<IView>> ViewsProperty =
-            AvaloniaProperty.Register<DockBase, IList<IView>>(nameof(ViewsProperty));
+        public static readonly StyledProperty<IList<IDockable>> VisibleProperty =
+            AvaloniaProperty.Register<DockBase, IList<IDockable>>(nameof(Visible));
 
         /// <summary>
-        /// Defines the <see cref="CurrentView"/> property.
+        /// Defines the <see cref="Hidden"/> property.
         /// </summary>
-        public static readonly StyledProperty<IView> CurrentViewProperty =
-            AvaloniaProperty.Register<DockBase, IView>(nameof(CurrentViewProperty));
+        public static readonly StyledProperty<IList<IDockable>> HiddenProperty =
+            AvaloniaProperty.Register<DockBase, IList<IDockable>>(nameof(Hidden));
 
         /// <summary>
-        /// Defines the <see cref="DefaultView"/> property.
+        /// Defines the <see cref="Pinned"/> property.
         /// </summary>
-        public static readonly StyledProperty<IView> DefaultViewProperty =
-            AvaloniaProperty.Register<DockBase, IView>(nameof(DefaultViewProperty));
+        public static readonly StyledProperty<IList<IDockable>> PinnedProperty =
+            AvaloniaProperty.Register<DockBase, IList<IDockable>>(nameof(Pinned));
 
         /// <summary>
-        /// Defines the <see cref="FocusedView"/> property.
+        /// Defines the <see cref="CurrentDockable"/> property.
         /// </summary>
-        public static readonly StyledProperty<IView> FocusedViewProperty =
-            AvaloniaProperty.Register<DockBase, IView>(nameof(FocusedViewProperty));
+        public static readonly StyledProperty<IDockable> CurrentDockableProperty =
+            AvaloniaProperty.Register<DockBase, IDockable>(nameof(CurrentDockable));
+
+        /// <summary>
+        /// Defines the <see cref="DefaultDockable"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IDockable> DefaultDockableProperty =
+            AvaloniaProperty.Register<DockBase, IDockable>(nameof(DefaultDockable));
+
+        /// <summary>
+        /// Defines the <see cref="FocusedDockable"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IDockable> FocusedDockableProperty =
+            AvaloniaProperty.Register<DockBase, IDockable>(nameof(FocusedDockable));
 
         /// <summary>
         /// Defines the <see cref="Proportion"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ProportionProperty =
-            AvaloniaProperty.Register<DockBase, double>(nameof(ProportionProperty), double.NaN);
+            AvaloniaProperty.Register<DockBase, double>(nameof(Proportion), double.NaN);
 
         /// <summary>
         /// Defines the <see cref="IsActive"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> IsActiveProperty =
-            AvaloniaProperty.Register<DockBase, bool>(nameof(IsActiveProperty));
+            AvaloniaProperty.Register<DockBase, bool>(nameof(IsActive));
 
         /// <summary>
         /// Defines the <see cref="IsCollapsable"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> IsCollapsableProperty =
-            AvaloniaProperty.Register<DockBase, bool>(nameof(IsCollapsableProperty), true);
+            AvaloniaProperty.Register<DockBase, bool>(nameof(IsCollapsable), true);
 
         /// <summary>
         /// Defines the <see cref="CanGoBack"/> property.
@@ -75,51 +88,67 @@ namespace Dock.Model
         /// Defines the <see cref="Windows"/> property.
         /// </summary>
         public static readonly StyledProperty<IList<IDockWindow>> WindowsProperty =
-            AvaloniaProperty.Register<DockBase, IList<IDockWindow>>(nameof(WindowsProperty));
+            AvaloniaProperty.Register<DockBase, IList<IDockWindow>>(nameof(Windows));
 
         /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDockFactory> FactoryProperty =
-            AvaloniaProperty.Register<DockBase, IDockFactory>(nameof(FactoryProperty));
+        public static readonly StyledProperty<IFactory> FactoryProperty =
+            AvaloniaProperty.Register<DockBase, IFactory>(nameof(Factory));
 
         /// <inheritdoc/>
         [Content]
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IList<IView> Views
+        public IList<IDockable> Visible
         {
-            get { return GetValue(ViewsProperty); }
-            set { SetValue(ViewsProperty, value); }
+            get { return GetValue(VisibleProperty); }
+            set { SetValue(VisibleProperty, value); }
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView CurrentView
+        public IList<IDockable> Hidden
         {
-            get { return GetValue(CurrentViewProperty); }
+            get { return GetValue(HiddenProperty); }
+            set { SetValue(HiddenProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IList<IDockable> Pinned
+        {
+            get { return GetValue(PinnedProperty); }
+            set { SetValue(PinnedProperty, value); }
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public IDockable CurrentDockable
+        {
+            get { return GetValue(CurrentDockableProperty); }
             set
             {
-                SetValue(CurrentViewProperty, value);
+                SetValue(CurrentDockableProperty, value);
                 SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
                 SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
-                Factory?.SetFocusedView(this, value);
+                Factory?.SetFocusedDockable(this, value);
             }
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView DefaultView
+        public IDockable DefaultDockable
         {
-            get { return GetValue(DefaultViewProperty); }
-            set { SetValue(DefaultViewProperty, value); }
+            get { return GetValue(DefaultDockableProperty); }
+            set { SetValue(DefaultDockableProperty, value); }
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IView FocusedView
+        public IDockable FocusedDockable
         {
-            get { return GetValue(FocusedViewProperty); }
-            set { SetValue(FocusedViewProperty, value); }
+            get { return GetValue(FocusedDockableProperty); }
+            set { SetValue(FocusedDockableProperty, value); }
         }
 
         /// <inheritdoc/>
@@ -172,14 +201,10 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get { return GetValue(FactoryProperty); }
             set { SetValue(FactoryProperty, value); }
-        }
-
-        static DockBase()
-        {
         }
 
         /// <summary>
@@ -188,6 +213,7 @@ namespace Dock.Model
         public DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
+            Visible = new AvaloniaList<IDockable>();
         }
 
         /// <inheritdoc/>

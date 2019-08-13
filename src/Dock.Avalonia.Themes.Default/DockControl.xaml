@@ -29,8 +29,8 @@
                                 <idc:ToolControl/>
                             </idc:DockToolChrome>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:ILayoutDock">
-                            <ItemsControl Items="{Binding Views}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                        <DataTemplate DataType="Controls:IProportionalDock">
+                            <ItemsControl Items="{Binding Visible}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <!--<ItemsControl.Styles>
                                     <Style Selector="ItemsControl > ContentPresenter">
                                         <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
@@ -45,7 +45,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
                             <DockPanel Background="Transparent">
-                                <TabStrip Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                                <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
                                     <TabStrip.Styles>
                                         <Style Selector="TabStrip:empty">
                                             <Setter Property="IsVisible" Value="False" />
@@ -55,12 +55,12 @@
                                         </Style>
                                     </TabStrip.Styles>
                                     <TabStrip.DataTemplates>
-                                        <DataTemplate DataType="Dock:IView">
+                                        <DataTemplate DataType="Dock:IDockable">
                                             <TextBlock Text="{Binding Title}"/>
                                         </DataTemplate>
                                     </TabStrip.DataTemplates>
                                 </TabStrip>
-                                <ContentControl Content="{Binding CurrentView}" IsVisible="{Binding IsExpanded}"/>
+                                <ContentControl Content="{Binding CurrentDockable}" IsVisible="{Binding IsExpanded}"/>
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
@@ -69,7 +69,7 @@
                                 <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
                                 <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
                                 <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
-                                <Carousel Items="{Binding Views}" SelectedItem="{Binding CurrentView, Mode=TwoWay}" IsVirtualized="False"/>
+                                <Carousel Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" IsVirtualized="False"/>
                             </DockPanel>
                         </DataTemplate>
                     </ContentControl.DataTemplates>

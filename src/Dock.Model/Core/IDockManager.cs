@@ -21,12 +21,12 @@ namespace Dock.Model
         /// <summary>
         /// Validates docking operation.
         /// </summary>
-        /// <param name="sourceView">The source view.</param>
-        /// <param name="targetView">The target view.</param>
+        /// <param name="sourceDockable">The source dockable.</param>
+        /// <param name="targetDockable">The target dockable.</param>
         /// <param name="action">The drag action.</param>
         /// <param name="operation">The dock operation.</param>
         /// <param name="bExecute">The flag indicating whether to execute.</param>
         /// <returns>True if docking operation can be executed otherwise false.</returns>
-        bool Validate(IView sourceView, IView targetView, DragAction action, DockOperation operation, bool bExecute);
+        bool Validate(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute);
     }
 }

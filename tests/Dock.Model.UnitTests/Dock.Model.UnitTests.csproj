@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Model.Test\Dock.Model.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -18,10 +18,10 @@ namespace Dock.Model
         private double _height;
         private bool _topmost;
         private string _title;
-        private IView _owner;
-        private IDockFactory _factory;
+        private IDockable _owner;
+        private IFactory _factory;
         private IDock _layout;
-        private IDockHost _host;
+        private IHostWindow _host;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockWindow"/> class.
@@ -89,7 +89,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IView Owner
+        public IDockable Owner
         {
             get => _owner;
             set => this.RaiseAndSetIfChanged(ref _owner, value);
@@ -97,7 +97,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
@@ -113,7 +113,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockHost Host
+        public IHostWindow Host
         {
             get => _host;
             set => this.RaiseAndSetIfChanged(ref _host, value);

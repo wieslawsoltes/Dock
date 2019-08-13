@@ -60,18 +60,18 @@ namespace Dock.Model
                         return false;
                     }
 
-                    return NewMethod7(sourceDockable, sourceDockableOwner, targetDockable, action, bExecute);
+                    return DockDockable(sourceDockable, sourceDockableOwner, targetDockable, action, bExecute);
                 }
                 else
                 {
-                    return NewMethod6(sourceDockable, sourceDockableOwner, targetDockable, targetDockableOwner, action, bExecute);
+                    return DockDockable(sourceDockable, sourceDockableOwner, targetDockable, targetDockableOwner, action, bExecute);
                 }
             }
 
             return false;
         }
 
-        internal bool NewMethod7(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, DragAction action, bool bExecute)
+        internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, DragAction action, bool bExecute)
         {
             switch (action)
             {
@@ -110,7 +110,7 @@ namespace Dock.Model
             return false;
         }
 
-        internal bool NewMethod6(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, IDock targetDockableOwner, DragAction action, bool bExecute)
+        internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, IDock targetDockableOwner, DragAction action, bool bExecute)
         {
             switch (action)
             {
@@ -160,13 +160,13 @@ namespace Dock.Model
                     }
                 }
 
-                return NewMethod15(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
+                return DockDockableIntoDock(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
             }
 
             return false;
         }
 
-        private bool NewMethod15(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockDockableIntoDock(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (action)
             {
@@ -180,7 +180,7 @@ namespace Dock.Model
                     }
                 case DragAction.Move:
                     {
-                        return NewMethod5(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
+                        return DockDockable(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
                     }
                 case DragAction.Link:
                     {
@@ -190,7 +190,7 @@ namespace Dock.Model
             return false;
         }
 
-        internal bool NewMethod5(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (operation)
             {
@@ -222,7 +222,7 @@ namespace Dock.Model
                     {
                         if (bExecute)
                         {
-                            SplitRemove(sourceDockable, targetDock, operation);
+                            SplitRemoveDockable(sourceDockable, targetDock, operation);
                         }
                         return true;
                     }
@@ -230,7 +230,7 @@ namespace Dock.Model
                     {
                         if (bExecute)
                         {
-                            SplitMove(sourceDockable, sourceDockableOwner, targetDock, operation);
+                            SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                         }
                         return true;
                     }
@@ -241,7 +241,7 @@ namespace Dock.Model
             }
         }
 
-        internal void SplitRemove(IDockable sourceDockable, IDock targetDock, DockOperation operation)
+        internal void SplitRemoveDockable(IDockable sourceDockable, IDock targetDock, DockOperation operation)
         {
             if (targetDock.Factory is IFactory factory)
             {
@@ -258,7 +258,7 @@ namespace Dock.Model
             }
         }
 
-        internal void SplitMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
+        internal void SplitMoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
         {
             if (targetDock.Factory is IFactory factory)
             {
@@ -269,7 +269,6 @@ namespace Dock.Model
                 documentDock.Visible = factory.CreateList<IDockable>();
 
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
-
                 factory.Split(targetDock, documentDock, operation);
             }
         }
@@ -357,7 +356,7 @@ namespace Dock.Model
             return false;
         }
 
-        private void DockDockableIntoWindow(IDockable sourceDockable, IDock targetWindowOwner)
+        internal void DockDockableIntoWindow(IDockable sourceDockable, IDock targetWindowOwner)
         {
             if (targetWindowOwner.Factory is IFactory factory)
             {
@@ -375,6 +374,37 @@ namespace Dock.Model
                     window.Present(false);
                 }
             }
+        }
+
+        internal bool DockDockable(IDock sourceDock, IDockable targetDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            switch (operation)
+            {
+                case DockOperation.Fill:
+                    {
+                        return DockDockableIntoDockVisible(sourceDock, targetDock, action, operation, bExecute);
+                    }
+                case DockOperation.Window:
+                    {
+                        return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
+                    }
+                default:
+                    {
+                        return DockDockIntoDock(sourceDock, targetDock, action, operation, bExecute);
+                    }
+            }
+        }
+
+        internal bool DockDockableIntoDockVisible(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            foreach (var dockable in sourceDock.Visible.ToList())
+            {
+                if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         internal bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
@@ -465,8 +495,7 @@ namespace Dock.Model
                         {
                             return false;
                         }
-
-                        return NewMethod1(sourceDock, targetDockable, toolDock, action, operation, bExecute);
+                        return DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute);
                     }
                 case IDocumentDock documentDock:
                     {
@@ -474,8 +503,7 @@ namespace Dock.Model
                         {
                             return false;
                         }
-
-                        return NewMethod1(sourceDock, targetDockable, documentDock, action, operation, bExecute);
+                        return DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute);
                     }
                 case IProportionalDock proportionalDock:
                     {
@@ -490,37 +518,6 @@ namespace Dock.Model
                         return false;
                     }
             }
-        }
-
-        internal bool NewMethod1(IDock sourceDock, IDockable targetDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (operation)
-            {
-                case DockOperation.Fill:
-                    {
-                        return NewMethod2(sourceDock, targetDock, action, operation, bExecute);
-                    }
-                case DockOperation.Window:
-                    {
-                        return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
-                    }
-                default:
-                    {
-                        return DockDockIntoDock(sourceDock, targetDock, action, operation, bExecute);
-                    }
-            }
-        }
-
-        internal bool NewMethod2(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
-        {
-            foreach (var dockable in sourceDock.Visible.ToList())
-            {
-                if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <inheritdoc/>

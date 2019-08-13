@@ -436,7 +436,7 @@ namespace Dock.Model
                         {
                             case DockOperation.Fill:
                                 {
-                                    foreach (var dockable in toolDock.Visible.ToList())
+                                    foreach (var dockable in sourceToolDock.Visible.ToList())
                                     {
                                         if (DockIntoDock(dockable, toolDock, action, operation, bExecute) == false)
                                         {
@@ -447,11 +447,11 @@ namespace Dock.Model
                                 }
                             case DockOperation.Window:
                                 {
-                                    return DockIntoWindow(toolDock, targetDockable, action, operation, bExecute);
+                                    return DockIntoWindow(sourceToolDock, targetDockable, action, operation, bExecute);
                                 }
                             default:
                                 {
-                                    var toMove = toolDock.Visible.ToList();
+                                    var toMove = sourceToolDock.Visible.ToList();
 
                                     if (toMove.Count == 1)
                                     {

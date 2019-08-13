@@ -401,7 +401,7 @@ namespace Dock.Model
             }
         }
 
-        internal bool ValidateToolDock(IToolDock sourceToolDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        internal bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDockable)
             {
@@ -415,7 +415,7 @@ namespace Dock.Model
                     }
                 case IToolDock toolDock:
                     {
-                        if (sourceToolDock == toolDock)
+                        if (sourceDock == toolDock)
                         {
                             return false;
                         }
@@ -424,7 +424,7 @@ namespace Dock.Model
                         {
                             case DockOperation.Fill:
                                 {
-                                    foreach (var dockable in sourceToolDock.Visible.ToList())
+                                    foreach (var dockable in sourceDock.Visible.ToList())
                                     {
                                         if (DockIntoDock(dockable, toolDock, action, operation, bExecute) == false)
                                         {
@@ -435,11 +435,11 @@ namespace Dock.Model
                                 }
                             case DockOperation.Window:
                                 {
-                                    return DockIntoWindow(sourceToolDock, targetDockable, action, operation, bExecute);
+                                    return DockIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
                                 }
                             default:
                                 {
-                                    var toMove = sourceToolDock.Visible.ToList();
+                                    var toMove = sourceDock.Visible.ToList();
 
                                     if (toMove.Count == 1)
                                     {
@@ -469,7 +469,7 @@ namespace Dock.Model
                     }
                 case IDocumentDock documentDock:
                     {
-                        if (sourceToolDock == documentDock)
+                        if (sourceDock == documentDock)
                         {
                             return false;
                         }
@@ -478,7 +478,7 @@ namespace Dock.Model
                         {
                             case DockOperation.Fill:
                                 {
-                                    foreach (var dockable in sourceToolDock.Visible.ToList())
+                                    foreach (var dockable in sourceDock.Visible.ToList())
                                     {
                                         if (DockIntoDock(dockable, documentDock, action, operation, bExecute) == false)
                                         {
@@ -489,11 +489,11 @@ namespace Dock.Model
                                 }
                             case DockOperation.Window:
                                 {
-                                    return DockIntoWindow(sourceToolDock, targetDockable, action, operation, bExecute);
+                                    return DockIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
                                 }
                             default:
                                 {
-                                    var toMove = sourceToolDock.Visible.ToList();
+                                    var toMove = sourceDock.Visible.ToList();
 
                                     if (toMove.Count == 1)
                                     {
@@ -527,142 +527,7 @@ namespace Dock.Model
                     }
                 case IRootDock rootDock:
                     {
-                        return DockIntoWindow(sourceToolDock, targetDockable, action, operation, bExecute);
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
-        internal bool ValidateDocumentDock(IDocumentDock sourceDocumentDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        if (sourceDocumentDock == toolDock)
-                        {
-                            return false;
-                        }
-
-                        switch (operation)
-                        {
-                            case DockOperation.Fill:
-                                {
-                                    foreach (var dockable in sourceDocumentDock.Visible.ToList())
-                                    {
-                                        if (DockIntoDock(dockable, toolDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }
-                            case DockOperation.Window:
-                                {
-                                    return DockIntoWindow(sourceDocumentDock, targetDockable, action, operation, bExecute);
-                                }
-                            default:
-                                {
-                                    var toMove = sourceDocumentDock.Visible.ToList();
-
-                                    if (toMove.Count == 1)
-                                    {
-                                        if (DockIntoDock(toMove.First(), toolDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (DockIntoDock(toMove.First(), toolDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-
-                                        foreach (var dockable in toMove.Skip(1))
-                                        {
-                                            if (DockIntoDockable(dockable, toMove.First(), action, DockOperation.Fill, bExecute) == false)
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    return true;
-                                }
-                        }
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        if (sourceDocumentDock == documentDock)
-                        {
-                            return false;
-                        }
-
-                        switch (operation)
-                        {
-                            case DockOperation.Fill:
-                                {
-                                    foreach (var dockable in sourceDocumentDock.Visible.ToList())
-                                    {
-                                        if (DockIntoDock(dockable, documentDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                }
-                            case DockOperation.Window:
-                                {
-                                    return DockIntoWindow(sourceDocumentDock, targetDockable, action, operation, bExecute);
-                                }
-                            default:
-                                {
-                                    var toMove = sourceDocumentDock.Visible.ToList();
-
-                                    if (toMove.Count == 1)
-                                    {
-                                        if (DockIntoDock(toMove.First(), documentDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (DockIntoDock(toMove.First(), documentDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-
-                                        foreach (var dockable in toMove.Skip(1))
-                                        {
-                                            if (DockIntoDockable(dockable, toMove.First(), action, DockOperation.Fill, bExecute) == false)
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    return true;
-                                }
-                        }
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return DockIntoWindow(sourceDocumentDock, targetDockable, action, operation, bExecute);
+                        return DockIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
                     }
                 default:
                     {
@@ -686,11 +551,11 @@ namespace Dock.Model
                     }
                 case IToolDock toolDock:
                     {
-                        return ValidateToolDock(toolDock, targetDockable, action, operation, bExecute);
+                        return ValidateDock(toolDock, targetDockable, action, operation, bExecute);
                     }
                 case IDocumentDock documentDock:
                     {
-                        return ValidateDocumentDock(documentDock, targetDockable, action, operation, bExecute);
+                        return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
                     }
                 case IProportionalDock proportionalDock:
                     {

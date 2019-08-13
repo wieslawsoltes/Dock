@@ -19,7 +19,6 @@ namespace Dock.Model
         internal bool DockDockIntoDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
             var visible = sourceDock.Visible.ToList();
-
             if (visible.Count == 1)
             {
                 if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)

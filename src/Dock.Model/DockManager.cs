@@ -325,41 +325,6 @@ namespace Dock.Model
             return false;
         }
 
-        internal bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
-        {
-            switch (targetDockable)
-            {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
-                case IDocumentDock documentDock:
-                    {
-                        return false;
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
-                default:
-                    {
-                        return false;
-                    }
-            }
-        }
-
         internal bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDockable)

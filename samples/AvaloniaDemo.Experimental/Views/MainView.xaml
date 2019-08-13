@@ -17,6 +17,53 @@
              id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
     <UserControl.Resources>
         <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
+        <dmc:RootDock x:Key="RootLayout" Id="Root" Title="Root" CurrentDockable="{Binding #Dashboard}" DefaultDockable="{Binding #Dashboard}">
+            <dmc:RootDock.Top>
+                <dmc:PinDock x:Name="PinDockTop" Alignment="Top"/>
+            </dmc:RootDock.Top>
+            <dmc:RootDock.Bottom>
+                <dmc:PinDock x:Name="PinDockBottom" Alignment="Bottom"/>
+            </dmc:RootDock.Bottom>
+            <dmc:RootDock.Left>
+                <dmc:PinDock x:Name="PinDockLeft" Alignment="Left"/>
+            </dmc:RootDock.Left>
+            <dmc:RootDock.Right>
+                <dmc:PinDock x:Name="PinDockRight" Alignment="Right"/>
+            </dmc:RootDock.Right>
+            <vmv:DashboardViewModel x:Name="Dashboard" Id="Dashboard" Title="Dashboard"/>
+            <vmv:HomeViewModel x:Name="Home" Id="Home" Title="Home" CurrentDockable="{Binding #MainLayout}">
+                <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
+                    <dmc:ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
+                        <dmc:ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" CurrentDockable="{Binding #LeftTop1}">
+                            <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1"/>
+                            <vmt:LeftTopTool2ViewModel x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2"/>
+                        </dmc:ToolDock>
+                        <dmc:SplitterDock x:Name="LeftPaneTopSplitter" Id="LeftPaneTopSplitter" Title="LeftPaneTopSplitter" />
+                        <dmc:ToolDock x:Name="LeftPaneBottom" Id="LeftPaneBottom" Title="LeftPaneBottom" Proportion="NaN" CurrentDockable="{Binding #LeftBottom1}">
+                            <vmt:LeftBottomTool1ViewModel x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1"/>
+                            <vmt:LeftBottomTool2ViewModel x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2"/>
+                        </dmc:ToolDock>
+                    </dmc:ProportionalDock>
+                    <dmc:SplitterDock x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
+                    <dmc:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" Proportion="NaN" CurrentDockable="{Binding #Document1}">
+                        <vmd:Document1ViewModel x:Name="Document1" Id="Document1" Title="Document1"/>
+                        <vmd:Document2ViewModel x:Name="Document2" Id="Document2" Title="Document2"/>
+                    </dmc:DocumentDock>
+                    <dmc:SplitterDock x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter"/>
+                    <dmc:ProportionalDock x:Name="RightPane" Id="RightPane" Title="RightPane" Proportion="NaN" Orientation="Vertical">
+                        <dmc:ToolDock x:Name="RightPaneTop" Id="RightPaneTop" Title="RightPaneTop" Proportion="NaN" CurrentDockable="{Binding #RightTop1}">
+                            <vmt:RightTopTool1ViewModel x:Name="RightTop1" Id="RightTop1" Title="RightTop1"/>
+                            <vmt:RightTopTool2ViewModel x:Name="RightTop2" Id="RightTop2" Title="RightTop2"/>
+                        </dmc:ToolDock>
+                        <dmc:SplitterDock x:Name="RightPaneTopSplitter" Id="RightPaneTopSplitter" Title="RightPaneTopSplitter"/>
+                        <dmc:ToolDock x:Name="RightPaneBottom" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="NaN" CurrentDockable="{Binding #RightBottom1}">
+                            <vmt:RightBottomTool1ViewModel x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1"/>
+                            <vmt:RightBottomTool2ViewModel x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2"/>
+                        </dmc:ToolDock>
+                    </dmc:ProportionalDock>
+                </dmc:ProportionalDock>
+            </vmv:HomeViewModel>
+        </dmc:RootDock>
     </UserControl.Resources>
     <Grid ColumnDefinitions="*,Auto,250" RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <i:Interaction.Behaviors>
@@ -26,55 +73,7 @@
         <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="6"/>
         <views:MenuView Grid.Row="0"/>
         <idc:NavigationControl DataContext="{Binding #dockControl.Layout}" Margin="4" Grid.Column="0" Grid.Row="1"/>
-        <idc:DockControl x:Name="dockControl" Margin="4" Grid.Column="0" Grid.Row="2">
-            <dmc:RootDock x:Name="Root" Id="Root" Title="Root" CurrentDockable="{Binding #Dashboard}" DefaultDockable="{Binding #Dashboard}">
-                <dmc:RootDock.Top>
-                    <dmc:PinDock x:Name="PinDockTop" Alignment="Top"/>
-                </dmc:RootDock.Top>
-                <dmc:RootDock.Bottom>
-                    <dmc:PinDock x:Name="PinDockBottom" Alignment="Bottom"/>
-                </dmc:RootDock.Bottom>
-                <dmc:RootDock.Left>
-                    <dmc:PinDock x:Name="PinDockLeft" Alignment="Left"/>
-                </dmc:RootDock.Left>
-                <dmc:RootDock.Right>
-                    <dmc:PinDock x:Name="PinDockRight" Alignment="Right"/>
-                </dmc:RootDock.Right>
-                <vmv:DashboardViewModel x:Name="Dashboard" Id="Dashboard" Title="Dashboard"/>
-                <vmv:HomeViewModel x:Name="Home" Id="Home" Title="Home" CurrentDockable="{Binding #MainLayout}">
-                    <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
-                        <dmc:ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
-                            <dmc:ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" CurrentDockable="{Binding #LeftTop1}">
-                                <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1"/>
-                                <vmt:LeftTopTool2ViewModel x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2"/>
-                            </dmc:ToolDock>
-                            <dmc:SplitterDock x:Name="LeftPaneTopSplitter" Id="LeftPaneTopSplitter" Title="LeftPaneTopSplitter" />
-                            <dmc:ToolDock x:Name="LeftPaneBottom" Id="LeftPaneBottom" Title="LeftPaneBottom" Proportion="NaN" CurrentDockable="{Binding #LeftBottom1}">
-                                <vmt:LeftBottomTool1ViewModel x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1"/>
-                                <vmt:LeftBottomTool2ViewModel x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2"/>
-                            </dmc:ToolDock>
-                        </dmc:ProportionalDock>
-                        <dmc:SplitterDock x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
-                        <dmc:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" Proportion="NaN" CurrentDockable="{Binding #Document1}">
-                            <vmd:Document1ViewModel x:Name="Document1" Id="Document1" Title="Document1"/>
-                            <vmd:Document2ViewModel x:Name="Document2" Id="Document2" Title="Document2"/>
-                        </dmc:DocumentDock>
-                        <dmc:SplitterDock x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter"/>
-                        <dmc:ProportionalDock x:Name="RightPane" Id="RightPane" Title="RightPane" Proportion="NaN" Orientation="Vertical">
-                            <dmc:ToolDock x:Name="RightPaneTop" Id="RightPaneTop" Title="RightPaneTop" Proportion="NaN" CurrentDockable="{Binding #RightTop1}">
-                                <vmt:RightTopTool1ViewModel x:Name="RightTop1" Id="RightTop1" Title="RightTop1"/>
-                                <vmt:RightTopTool2ViewModel x:Name="RightTop2" Id="RightTop2" Title="RightTop2"/>
-                            </dmc:ToolDock>
-                            <dmc:SplitterDock x:Name="RightPaneTopSplitter" Id="RightPaneTopSplitter" Title="RightPaneTopSplitter"/>
-                            <dmc:ToolDock x:Name="RightPaneBottom" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="NaN" CurrentDockable="{Binding #RightBottom1}">
-                                <vmt:RightBottomTool1ViewModel x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1"/>
-                                <vmt:RightBottomTool2ViewModel x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2"/>
-                            </dmc:ToolDock>
-                        </dmc:ProportionalDock>
-                    </dmc:ProportionalDock>
-                </vmv:HomeViewModel>
-            </dmc:RootDock>
-        </idc:DockControl>
+        <idc:DockControl x:Name="dockControl" Layout="{StaticResource RootLayout}" Margin="4" Grid.Column="0" Grid.Row="2"/>
         <TextBlock Text="{Binding #dockControl.Layout.FocusedDockable}" Margin="4" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" />
     </Grid>
 </UserControl>

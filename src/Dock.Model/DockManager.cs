@@ -114,11 +114,11 @@ namespace Dock.Model
         internal bool DockIntoToolDock(IDockable sourceDockable, IToolDock targetDockableOwner, DragAction action, DockOperation operation, bool bExecute)
         {
             Logger.Log($"{nameof(DockIntoDockable)}: {sourceDockable.Title} -> {targetDockableOwner.Title}");
-            if (sourceDockable.Owner is IDock sourceDockOwner)
+            if (sourceDockable.Owner is IDock sourceDockableOwner)
             {
-                if (sourceDockOwner == targetDockableOwner)
+                if (sourceDockableOwner == targetDockableOwner)
                 {
-                    if (sourceDockOwner.Visible.Count == 1)
+                    if (sourceDockableOwner.Visible.Count == 1)
                     {
                         return false;
                     }
@@ -151,16 +151,16 @@ namespace Dock.Model
                                             return false;
                                         }
 
-                                        if (sourceDockable == targetDockable && sourceDockOwner == targetDockableOwner)
+                                        if (sourceDockable == targetDockable && sourceDockableOwner == targetDockableOwner)
                                         {
                                             return false;
                                         }
 
                                         if (bExecute)
                                         {
-                                            if (sourceDockOwner.Factory is IFactory factory)
+                                            if (sourceDockableOwner.Factory is IFactory factory)
                                             {
-                                                factory.MoveDockable(sourceDockOwner, targetDockableOwner, sourceDockable, targetDockable);
+                                                factory.MoveDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
                                             }
                                         }
 
@@ -205,7 +205,7 @@ namespace Dock.Model
                                                             documentDock.CurrentDockable = sourceDockable;
                                                             documentDock.Visible = factory.CreateList<IDockable>();
 
-                                                            factory.MoveDockable(sourceDockOwner, documentDock, sourceDockable, sourceDockable);
+                                                            factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
 
                                                             factory.Split(targetDockableOwner, documentDock, operation);
                                                         }
@@ -240,16 +240,16 @@ namespace Dock.Model
                                 return false;
                             }
 
-                            if (sourceDockable == targetDockable && sourceDockOwner == targetDockableOwner)
+                            if (sourceDockable == targetDockable && sourceDockableOwner == targetDockableOwner)
                             {
                                 return false;
                             }
 
                             if (bExecute)
                             {
-                                if (sourceDockOwner.Factory is IFactory factory)
+                                if (sourceDockableOwner.Factory is IFactory factory)
                                 {
-                                    factory.SwapDockable(sourceDockOwner, targetDockableOwner, sourceDockable, targetDockable);
+                                    factory.SwapDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
                                 }
                             }
 
@@ -577,8 +577,9 @@ namespace Dock.Model
                     }
                 case IToolDock toolDock:
                     {
-                        if (toolDock == sourceToolDock)
+                        if (sourceToolDock == toolDock)
                         {
+                            Logger.Log($"{nameof(ValidateToolDock)}: {nameof(sourceToolDock)} == {toolDock}");
                             return false;
                         }
 
@@ -633,6 +634,7 @@ namespace Dock.Model
                     {
                         if (sourceToolDock == documentDock)
                         {
+                            Logger.Log($"{nameof(ValidateToolDock)}: {nameof(sourceToolDock)} == {documentDock}");
                             return false;
                         }
 
@@ -716,6 +718,7 @@ namespace Dock.Model
                     {
                         if (sourceDocumentDock == toolDock)
                         {
+                            Logger.Log($"{nameof(ValidateDocumentDock)}: {nameof(sourceDocumentDock)} == {toolDock}");
                             return false;
                         }
 
@@ -770,6 +773,7 @@ namespace Dock.Model
                     {
                         if (sourceDocumentDock == documentDock)
                         {
+                            Logger.Log($"{nameof(ValidateDocumentDock)}: {nameof(sourceDocumentDock)} == {documentDock}");
                             return false;
                         }
 

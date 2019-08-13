@@ -870,7 +870,6 @@ namespace Dock.Model
                     break;
                 default:
                     {
-                        Logger.Log($"Not supported window source: {dockable}");
                         return null;
                     }
             }

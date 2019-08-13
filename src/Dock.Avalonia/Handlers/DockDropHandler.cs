@@ -189,7 +189,6 @@ namespace Dock.Avalonia
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Logger.Log($"Validate [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
                 return _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, false);
             }
             return false;
@@ -202,11 +201,9 @@ namespace Dock.Avalonia
             {
                 _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
                 _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                Logger.Log($"Execute [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
                 bool bResult = _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
-                    Logger.Log($"Executed [{Id}]: {sourceDockable.Title} -> {targetDockable.Title} [{operation}] [{_manager.Position}] [{_manager.ScreenPosition}]");
                     _executed = true;
                     return true;
                 }

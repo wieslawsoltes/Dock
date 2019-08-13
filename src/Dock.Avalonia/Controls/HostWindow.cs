@@ -232,7 +232,6 @@ namespace Dock.Avalonia.Controls
 
             PositionChanged += (sender, e) =>
             {
-                Logger.Log($"HostWindow: PositionChanged");
                 if (Window != null && IsTracked == true)
                 {
                     Window.Save();
@@ -241,7 +240,6 @@ namespace Dock.Avalonia.Controls
 
             LayoutUpdated += (sender, e) =>
             {
-                Logger.Log($"HostWindow: LayoutUpdated");
                 if (Window != null && IsTracked == true)
                 {
                     Window.Save();
@@ -250,7 +248,6 @@ namespace Dock.Avalonia.Controls
 
             Closing += (sender, e) =>
             {
-                Logger.Log($"HostWindow: Closing");
                 if (Window != null && IsTracked == true)
                 {
                     Window.Save();
@@ -307,7 +304,6 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void SetSize(double width, double height)
         {
-            Logger.Log($"HostWindow: SetSize {width}x{height}");
             if (!double.IsNaN(width))
             {
                 this.Width = width;
@@ -324,7 +320,6 @@ namespace Dock.Avalonia.Controls
         {
             width = this.Width;
             height = this.Height;
-            Logger.Log($"HostWindow: GetSize {width}x{height}");
         }
 
         /// <inheritdoc/>

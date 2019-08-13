@@ -18,7 +18,6 @@ namespace Dock.Model
 
         internal bool DockIntoDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(DockIntoDockable)}: {sourceDockable.Title} -> {targetDockable.Title}");
             if (sourceDockable.Owner is IDock sourceDockableOwner && targetDockable.Owner is IDock targetDockableOwner)
             {
                 if (sourceDockable == targetDockable && sourceDockableOwner == targetDockableOwner)
@@ -113,7 +112,6 @@ namespace Dock.Model
 
         internal bool DockIntoDock(IDockable sourceDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(DockIntoDock)}: {sourceDockable.Title} -> {targetDock.Title}");
             if (sourceDockable.Owner is IDock sourceDockableOwner)
             {
                 if (sourceDockableOwner == targetDock)
@@ -214,7 +212,6 @@ namespace Dock.Model
                                                 }
                                             default:
                                                 {
-                                                    Logger.Log($"Not supported dockable type {sourceDockable?.GetType().Name} to splitting : {sourceDockable} -> {targetDock}");
                                                     return false;
                                                 }
                                         }
@@ -264,7 +261,6 @@ namespace Dock.Model
 
         internal bool DockIntoWindow(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(DockIntoWindow)}: {sourceDockable.Title} -> {targetDockable.Title}");
             switch (operation)
             {
                 case DockOperation.Fill:
@@ -302,7 +298,6 @@ namespace Dock.Model
 
         internal bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateDockable)}: {sourceDockable.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -331,7 +326,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDockable} -> {targetDockable}");
                         return false;
                     }
             }
@@ -339,7 +333,6 @@ namespace Dock.Model
 
         internal bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateTool)}: {sourceTool.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -368,7 +361,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceTool} -> {targetDockable}");
                         return false;
                     }
             }
@@ -376,7 +368,6 @@ namespace Dock.Model
 
         internal bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateDocument)}: {sourceDocument.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -405,7 +396,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDocument} -> {targetDockable}");
                         return false;
                     }
             }
@@ -413,7 +403,6 @@ namespace Dock.Model
 
         internal bool ValidateToolDock(IToolDock sourceToolDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateToolDock)}: {sourceToolDock.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -428,7 +417,6 @@ namespace Dock.Model
                     {
                         if (sourceToolDock == toolDock)
                         {
-                            Logger.Log($"{nameof(ValidateToolDock)}: {nameof(sourceToolDock)} == {toolDock}");
                             return false;
                         }
 
@@ -483,7 +471,6 @@ namespace Dock.Model
                     {
                         if (sourceToolDock == documentDock)
                         {
-                            Logger.Log($"{nameof(ValidateToolDock)}: {nameof(sourceToolDock)} == {documentDock}");
                             return false;
                         }
 
@@ -544,7 +531,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceToolDock} -> {targetDockable}");
                         return false;
                     }
             }
@@ -552,7 +538,6 @@ namespace Dock.Model
 
         internal bool ValidateDocumentDock(IDocumentDock sourceDocumentDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateToolDock)}: {sourceDocumentDock.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -567,7 +552,6 @@ namespace Dock.Model
                     {
                         if (sourceDocumentDock == toolDock)
                         {
-                            Logger.Log($"{nameof(ValidateDocumentDock)}: {nameof(sourceDocumentDock)} == {toolDock}");
                             return false;
                         }
 
@@ -622,7 +606,6 @@ namespace Dock.Model
                     {
                         if (sourceDocumentDock == documentDock)
                         {
-                            Logger.Log($"{nameof(ValidateDocumentDock)}: {nameof(sourceDocumentDock)} == {documentDock}");
                             return false;
                         }
 
@@ -683,7 +666,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceDocumentDock} -> {targetDockable}");
                         return false;
                     }
             }
@@ -691,7 +673,6 @@ namespace Dock.Model
 
         internal bool ValidateProportionalDock(IProportionalDock sourceProportionalDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateProportionalDock)}: {sourceProportionalDock.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -720,7 +701,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceProportionalDock} -> {targetDockable}");
                         return false;
                     }
             }
@@ -728,7 +708,6 @@ namespace Dock.Model
 
         internal bool ValidateRootDock(IRootDock sourceRootDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
-            Logger.Log($"{nameof(ValidateRootDock)}: {sourceRootDock.Title} -> {targetDockable.Title}");
             switch (targetDockable)
             {
                 case ITool tool:
@@ -757,7 +736,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {targetDockable?.GetType()}: {sourceRootDock} -> {targetDockable}");
                         return false;
                     }
             }
@@ -794,7 +772,6 @@ namespace Dock.Model
                     }
                 default:
                     {
-                        Logger.Log($"Not supported type {sourceDockable?.GetType()}: {sourceDockable} -> {targetDockable}");
                         return false;
                     }
             }

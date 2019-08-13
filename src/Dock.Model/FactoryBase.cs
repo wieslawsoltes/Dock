@@ -470,7 +470,10 @@ namespace Dock.Model
                 {
                     dock.CurrentDockable = null;
                 }
-                Collapse(dock);
+                if (sourceDock != targetDock)
+                {
+                    Collapse(dock);
+                }
             }
 
             if (targetDock.Visible == null)

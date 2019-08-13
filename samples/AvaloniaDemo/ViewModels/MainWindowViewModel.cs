@@ -3,20 +3,20 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using AvaloniaDemo.Models;
-using AvaloniaDemo.Serializer;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 using ReactiveUI;
 
 namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IDockJsonSerializer _serializer;
+        private IDockSerializer _serializer;
         private IFactory _factory;
         private IDockable _layout;
 
-        public IDockJsonSerializer Serializer
+        public IDockSerializer Serializer
         {
             get => _serializer;
             set => this.RaiseAndSetIfChanged(ref _serializer, value);

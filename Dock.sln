@@ -83,6 +83,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Experimental",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Test", "tests\Dock.Model.Test\Dock.Model.Test.csproj", "{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,10 @@ Global
 		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -182,6 +188,7 @@ Global
 		{AC0CD72F-3FA9-4085-BD07-6EC5D9CE5CEA} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{89E990CD-1206-4F39-8353-03A580F4570E} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,9 +9,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace AvaloniaDemo.Serializer
+namespace Dock.Serializer
 {
-    public sealed class DockJsonSerializer : IDockJsonSerializer
+    public sealed class DockSerializer : IDockSerializer
     {
         private readonly JsonSerializerSettings _settings;
 
@@ -37,7 +39,7 @@ namespace AvaloniaDemo.Serializer
             }
         }
 
-        public DockJsonSerializer(Type listType)
+        public DockSerializer(Type listType)
         {
             _settings = new JsonSerializerSettings()
             {

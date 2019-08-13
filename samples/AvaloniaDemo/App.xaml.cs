@@ -4,11 +4,11 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Models;
-using AvaloniaDemo.Serializer;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 using ReactiveUI.Legacy;
 
 namespace AvaloniaDemo
@@ -25,7 +25,7 @@ namespace AvaloniaDemo
             var mainWindowViewModel = new MainWindowViewModel();
 
 #pragma warning disable CS0618 // Type or member is obsolete
-            mainWindowViewModel.Serializer = new DockJsonSerializer(typeof(ReactiveList<>));
+            mainWindowViewModel.Serializer = new DockSerializer(typeof(ReactiveList<>));
 #pragma warning restore CS0618 // Type or member is obsolete
 
             var factory = new DemoFactory(new DemoData());

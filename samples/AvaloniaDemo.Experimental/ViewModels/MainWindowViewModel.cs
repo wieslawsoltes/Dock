@@ -6,10 +6,10 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using AvaloniaDemo.Models;
-using AvaloniaDemo.Serializer;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Serializer;
 
 namespace AvaloniaDemo.ViewModels
 {
@@ -17,13 +17,13 @@ namespace AvaloniaDemo.ViewModels
     {
         private DockControl _dockControl;
         private IFactory _factory;
-        private IDockJsonSerializer _serializer;
+        private IDockSerializer _serializer;
         private string _path;
 
         public MainWindowViewModel()
         {
             _factory = new DemoFactory(new DemoData());
-            _serializer = new DockJsonSerializer(typeof(AvaloniaList<>));
+            _serializer = new DockSerializer(typeof(AvaloniaList<>));
             _path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
         }
 

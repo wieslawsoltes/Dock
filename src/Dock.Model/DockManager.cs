@@ -16,6 +16,35 @@ namespace Dock.Model
         /// <inheritdoc/>
         public DockPoint ScreenPosition { get; set; }
 
+        internal bool DockDockIntoDock(IDock sourceDock, IToolDock targetDock, DragAction action, DockOperation operation, bool bExecute)
+        {
+            var visible = sourceDock.Visible.ToList();
+
+            if (visible.Count == 1)
+            {
+                if (DockIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (DockIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                {
+                    return false;
+                }
+
+                foreach (var dockable in visible.Skip(1))
+                {
+                    if (DockIntoDockable(dockable, visible.First(), action, DockOperation.Fill, bExecute) == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         internal bool DockIntoDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             if (sourceDockable.Owner is IDock sourceDockableOwner && targetDockable.Owner is IDock targetDockableOwner)
@@ -439,31 +468,7 @@ namespace Dock.Model
                                 }
                             default:
                                 {
-                                    var toMove = sourceDock.Visible.ToList();
-
-                                    if (toMove.Count == 1)
-                                    {
-                                        if (DockIntoDock(toMove.First(), toolDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (DockIntoDock(toMove.First(), toolDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-
-                                        foreach (var dockable in toMove.Skip(1))
-                                        {
-                                            if (DockIntoDockable(dockable, toMove.First(), action, DockOperation.Fill, bExecute) == false)
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    return true;
+                                    return DockDockIntoDock(sourceDock, toolDock, action, operation, bExecute);
                                 }
                         }
                     }
@@ -493,31 +498,7 @@ namespace Dock.Model
                                 }
                             default:
                                 {
-                                    var toMove = sourceDock.Visible.ToList();
-
-                                    if (toMove.Count == 1)
-                                    {
-                                        if (DockIntoDock(toMove.First(), documentDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (DockIntoDock(toMove.First(), documentDock, action, operation, bExecute) == false)
-                                        {
-                                            return false;
-                                        }
-
-                                        foreach (var dockable in toMove.Skip(1))
-                                        {
-                                            if (DockIntoDockable(dockable, toMove.First(), action, DockOperation.Fill, bExecute) == false)
-                                            {
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    return true;
+                                    return DockDockIntoDock(sourceDock, documentDock, action, operation, bExecute);
                                 }
                         }
                     }

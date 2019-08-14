@@ -27,14 +27,6 @@ namespace Dock.Model
                     return false;
                 }
             }
-            //if (sourceDockable == targetDockable)
-            //{
-            //    return false;
-            //}
-            //if (sourceDockableOwner == targetDock)
-            //{
-            //    return false;
-            //}
             if (bExecute)
             {
                 if (sourceDockableOwner.Factory is IFactory factory)
@@ -56,14 +48,6 @@ namespace Dock.Model
                     return false;
                 }
             }
-            //if (sourceDockable == targetDockable)
-            //{
-            //    return false;
-            //}
-            //if (sourceDockableOwner == targetDock)
-            //{
-            //    return false;
-            //}
             if (bExecute)
             {
                 if (sourceDockableOwner.Factory is IFactory factory)
@@ -157,20 +141,8 @@ namespace Dock.Model
         {
             if (sourceDockable.Owner is IDock sourceDockableOwner && targetDockable.Owner is IDock targetDockableOwner)
             {
-                //if (sourceDockable == targetDockable)
-                //{
-                //    return false;
-                //}
-                //if (sourceDockableOwner == targetDockableOwner)
-                //{
-                //    return false;
-                //}
                 if (sourceDockableOwner == targetDockableOwner)
                 {
-                    //if (sourceDockableOwner.Visible.Count == 1)
-                    //{
-                    //    return false;
-                    //}
                     return DockDockable(sourceDockable, sourceDockableOwner, targetDockable, action, bExecute);
                 }
                 else
@@ -205,11 +177,7 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
-                    if (bExecute)
-                    {
-                        // TODO: Clone item.
-                    }
-                    return true;
+                    return false;
                 case DragAction.Move:
                     if (bExecute)
                     {
@@ -238,11 +206,7 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
-                    if (bExecute)
-                    {
-                        // TODO: Clone item.
-                    }
-                    return true;
+                    return false;
                 case DragAction.Move:
                     if (bExecute)
                     {
@@ -288,13 +252,6 @@ namespace Dock.Model
         {
             if (sourceDockable.Owner is IDock sourceDockableOwner)
             {
-                //if (sourceDockableOwner == targetDock)
-                //{
-                //    if (sourceDockableOwner.Visible.Count == 1)
-                //    {
-                //        return false;
-                //    }
-                //}
                 return DockDockableIntoDock(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
             }
             return false;
@@ -305,11 +262,7 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
-                    if (bExecute)
-                    {
-                        // TODO: Clone item.
-                    }
-                    return true;
+                    return false;
                 case DragAction.Move:
                     return DockDockable(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
                 case DragAction.Link:

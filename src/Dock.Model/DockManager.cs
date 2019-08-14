@@ -321,7 +321,8 @@ namespace Dock.Model
 
         internal bool DockDockableIntoDockVisible(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            foreach (var dockable in sourceDock.Visible.ToList())
+            var visible = sourceDock.Visible.ToList();
+            foreach (var dockable in visible)
             {
                 if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
                 {

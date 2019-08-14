@@ -22,23 +22,19 @@ namespace Dock.Model
             if (targetDockable == null)
             {
                 targetDockable = targetDock.Visible.LastOrDefault();
+                if (targetDockable == null)
+                {
+                    return false;
+                }
             }
-
-            if (targetDockable == null)
-            {
-                return false;
-            }
-
             //if (sourceDockable == targetDockable)
             //{
             //    return false;
             //}
-
             //if (sourceDockableOwner == targetDock)
             //{
             //    return false;
             //}
-
             if (bExecute)
             {
                 if (sourceDockableOwner.Factory is IFactory factory)
@@ -46,7 +42,6 @@ namespace Dock.Model
                     factory.MoveDockable(sourceDockableOwner, targetDock, sourceDockable, targetDockable);
                 }
             }
-
             return true;
         }
 
@@ -56,23 +51,19 @@ namespace Dock.Model
             if (targetDockable == null)
             {
                 targetDockable = targetDock.Visible.LastOrDefault();
+                if (targetDockable == null)
+                {
+                    return false;
+                }
             }
-
-            if (targetDockable == null)
-            {
-                return false;
-            }
-
             //if (sourceDockable == targetDockable)
             //{
             //    return false;
             //}
-
             //if (sourceDockableOwner == targetDock)
             //{
             //    return false;
             //}
-
             if (bExecute)
             {
                 if (sourceDockableOwner.Factory is IFactory factory)
@@ -80,7 +71,6 @@ namespace Dock.Model
                     factory.SwapDockable(sourceDockableOwner, targetDock, sourceDockable, targetDockable);
                 }
             }
-
             return true;
         }
 
@@ -89,14 +79,12 @@ namespace Dock.Model
             if (targetDock.Factory is IFactory factory)
             {
                 factory.RemoveDockable(sourceDockable);
-
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
                 toolDock.CurrentDockable = sourceDockable;
                 toolDock.Visible = factory.CreateList<IDockable>();
                 toolDock.Visible.Add(sourceDockable);
-
                 factory.Split(targetDock, toolDock, operation);
             }
         }
@@ -110,7 +98,6 @@ namespace Dock.Model
                 documentDock.Title = nameof(IDocumentDock);
                 documentDock.CurrentDockable = sourceDockable;
                 documentDock.Visible = factory.CreateList<IDockable>();
-
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
                 factory.Split(targetDock, documentDock, operation);
             }
@@ -121,25 +108,19 @@ namespace Dock.Model
             switch (sourceDockable)
             {
                 case ITool tool:
+                    if (bExecute)
                     {
-                        if (bExecute)
-                        {
-                            SplitRemoveDockable(sourceDockable, targetDock, operation);
-                        }
-                        return true;
+                        SplitRemoveDockable(sourceDockable, targetDock, operation);
                     }
+                    return true;
                 case IDocument document:
+                    if (bExecute)
                     {
-                        if (bExecute)
-                        {
-                            SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
-                        }
-                        return true;
+                        SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                     }
+                    return true;
                 default:
-                    {
-                        return false;
-                    }
+                    return false;
             }
         }
 
@@ -148,28 +129,28 @@ namespace Dock.Model
             switch (operation)
             {
                 case DockOperation.Fill:
+                    if (sourceDockable == targetDockable)
                     {
-                        if (sourceDockable == targetDockable)
-                        {
-                            return false;
-                        }
-
-                        if (sourceDockable.Owner != targetDockable
-                            && sourceDockable.Owner is IDock sourceDockableOwner
-                            && sourceDockableOwner.Factory is IFactory factory
-                            && factory.FindRoot(sourceDockable) is IDock root
-                            && root.CurrentDockable is IDock targetWindowOwner)
-                        {
-                            if (bExecute)
-                            {
-                                DockDockableIntoWindow(sourceDockable, targetWindowOwner);
-                            }
-                            return true;
-                        }
-                        break;
+                        return false;
                     }
+                    if (sourceDockable.Owner != targetDockable && sourceDockable.Owner is IDock sourceDockableOwner)
+                    {
+                        if (sourceDockableOwner.Factory is IFactory factory)
+                        {
+                            if (factory.FindRoot(sourceDockable) is IDock root && root.CurrentDockable is IDock targetWindowOwner)
+                            {
+                                if (bExecute)
+                                {
+                                    DockDockableIntoWindow(sourceDockable, targetWindowOwner);
+                                }
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                default:
+                    return false;
             }
-            return false;
         }
 
         internal bool DockDockableIntoDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
@@ -180,19 +161,16 @@ namespace Dock.Model
                 //{
                 //    return false;
                 //}
-
                 //if (sourceDockableOwner == targetDockableOwner)
                 //{
                 //    return false;
                 //}
-
                 if (sourceDockableOwner == targetDockableOwner)
                 {
                     //if (sourceDockableOwner.Visible.Count == 1)
                     //{
                     //    return false;
                     //}
-
                     return DockDockable(sourceDockable, sourceDockableOwner, targetDockable, action, bExecute);
                 }
                 else
@@ -208,7 +186,6 @@ namespace Dock.Model
             if (targetWindowOwner.Factory is IFactory factory)
             {
                 factory.RemoveDockable(sourceDockable);
-
                 var window = factory.CreateWindowFrom(sourceDockable);
                 if (window != null)
                 {
@@ -228,37 +205,32 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
+                    if (bExecute)
                     {
-                        if (bExecute)
-                        {
-                            // TODO: Clone item.
-                        }
-                        return true;
+                        // TODO: Clone item.
                     }
+                    return true;
                 case DragAction.Move:
+                    if (bExecute)
                     {
-                        if (bExecute)
+                        if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (sourceDockableOwner.Factory is IFactory factory)
-                            {
-                                factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
-                            }
+                            factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
                         }
-                        return true;
                     }
+                    return true;
                 case DragAction.Link:
+                    if (bExecute)
                     {
-                        if (bExecute)
+                        if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (sourceDockableOwner.Factory is IFactory factory)
-                            {
-                                factory.SwapDockable(sourceDockableOwner, sourceDockable, targetDockable);
-                            }
+                            factory.SwapDockable(sourceDockableOwner, sourceDockable, targetDockable);
                         }
-                        return true;
                     }
+                    return true;
+                default:
+                    return false;
             }
-            return false;
         }
 
         internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, IDock targetDockableOwner, DragAction action, bool bExecute)
@@ -266,37 +238,32 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
+                    if (bExecute)
                     {
-                        if (bExecute)
-                        {
-                            // TODO: Clone item.
-                        }
-                        return true;
+                        // TODO: Clone item.
                     }
+                    return true;
                 case DragAction.Move:
+                    if (bExecute)
                     {
-                        if (bExecute)
+                        if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (sourceDockableOwner.Factory is IFactory factory)
-                            {
-                                factory.MoveDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
-                            }
+                            factory.MoveDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
                         }
-                        return true;
                     }
+                    return true;
                 case DragAction.Link:
+                    if (bExecute)
                     {
-                        if (bExecute)
+                        if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (sourceDockableOwner.Factory is IFactory factory)
-                            {
-                                factory.SwapDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
-                            }
+                            factory.SwapDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
                         }
-                        return true;
                     }
+                    return true;
+                default:
+                    return false;
             }
-            return false;
         }
 
         internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
@@ -304,22 +271,17 @@ namespace Dock.Model
             switch (operation)
             {
                 case DockOperation.Fill:
-                    {
-                        return MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute);
-                    }
+                    return MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute);
                 case DockOperation.Left:
                 case DockOperation.Right:
                 case DockOperation.Top:
                 case DockOperation.Bottom:
-                    {
-                        return SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute);
-                    }
+                    return SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute);
                 case DockOperation.Window:
-                    {
-                        return DockDockableIntoWindow(sourceDockable, targetDock, action, operation, bExecute);
-                    }
+                    return DockDockableIntoWindow(sourceDockable, targetDock, action, operation, bExecute);
+                default:
+                    return false;
             }
-            return false;
         }
 
         internal bool DockDockableIntoDock(IDockable sourceDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
@@ -333,7 +295,6 @@ namespace Dock.Model
                 //        return false;
                 //    }
                 //}
-
                 return DockDockableIntoDock(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
             }
             return false;
@@ -344,23 +305,18 @@ namespace Dock.Model
             switch (action)
             {
                 case DragAction.Copy:
+                    if (bExecute)
                     {
-                        if (bExecute)
-                        {
-                            // TODO: Clone item.
-                        }
-                        return true;
+                        // TODO: Clone item.
                     }
+                    return true;
                 case DragAction.Move:
-                    {
-                        return DockDockable(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
-                    }
+                    return DockDockable(sourceDockable, sourceDockableOwner, targetDock, action, operation, bExecute);
                 case DragAction.Link:
-                    {
-                        return SwapDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute);
-                    }
+                    return SwapDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute);
+                default:
+                    return false;
             }
-            return false;
         }
 
         internal bool DockDockableIntoDockVisible(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
@@ -391,7 +347,6 @@ namespace Dock.Model
                 {
                     return false;
                 }
-
                 foreach (var dockable in visible.Skip(1))
                 {
                     if (DockDockableIntoDockable(dockable, visible.First(), action, DockOperation.Fill, bExecute) == false)
@@ -408,17 +363,11 @@ namespace Dock.Model
             switch (operation)
             {
                 case DockOperation.Fill:
-                    {
-                        return DockDockableIntoDockVisible(sourceDock, targetDock, action, operation, bExecute);
-                    }
+                    return DockDockableIntoDockVisible(sourceDock, targetDock, action, operation, bExecute);
                 case DockOperation.Window:
-                    {
-                        return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
-                    }
+                    return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
                 default:
-                    {
-                        return DockDockIntoDock(sourceDock, targetDock, action, operation, bExecute);
-                    }
+                    return DockDockIntoDock(sourceDock, targetDock, action, operation, bExecute);
             }
         }
 
@@ -428,33 +377,17 @@ namespace Dock.Model
             switch (targetDockable)
             {
                 case ITool tool:
-                    {
-                        return DockDockableIntoDockable(sourceTool, tool, action, operation, bExecute);
-                    }
+                    return DockDockableIntoDockable(sourceTool, tool, action, operation, bExecute);
                 case IDocument document:
-                    {
-                        return DockDockableIntoDockable(sourceTool, document, action, operation, bExecute);
-                    }
+                    return DockDockableIntoDockable(sourceTool, document, action, operation, bExecute);
                 case IToolDock toolDock:
-                    {
-                        return DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute);
-                    }
+                    return DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute);
                 case IDocumentDock documentDock:
-                    {
-                        return DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute);
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
+                    return DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute);
                 case IRootDock rootDock:
-                    {
-                        return DockDockableIntoWindow(sourceTool, targetDockable, action, operation, bExecute);
-                    }
+                    return DockDockableIntoWindow(sourceTool, targetDockable, action, operation, bExecute);
                 default:
-                    {
-                        return false;
-                    }
+                    return false;
             }
         }
 
@@ -463,34 +396,14 @@ namespace Dock.Model
         {
             switch (targetDockable)
             {
-                case ITool tool:
-                    {
-                        return false;
-                    }
                 case IDocument document:
-                    {
-                        return DockDockableIntoDockable(sourceDocument, document, action, operation, bExecute);
-                    }
-                case IToolDock toolDock:
-                    {
-                        return false;
-                    }
+                    return DockDockableIntoDockable(sourceDocument, document, action, operation, bExecute);
                 case IDocumentDock documentDock:
-                    {
-                        return DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute);
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
+                    return DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute);
                 case IRootDock rootDock:
-                    {
-                        return DockDockableIntoWindow(sourceDocument, targetDockable, action, operation, bExecute);
-                    }
+                    return DockDockableIntoWindow(sourceDocument, targetDockable, action, operation, bExecute);
                 default:
-                    {
-                        return false;
-                    }
+                     return false;
             }
         }
 

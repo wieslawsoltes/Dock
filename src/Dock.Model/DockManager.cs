@@ -422,7 +422,8 @@ namespace Dock.Model
             }
         }
 
-        internal bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        /// <inheritdoc/>
+        public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDockable)
             {
@@ -457,7 +458,8 @@ namespace Dock.Model
             }
         }
 
-        internal bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        /// <inheritdoc/>
+        public bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDockable)
             {
@@ -492,7 +494,8 @@ namespace Dock.Model
             }
         }
 
-        internal bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        /// <inheritdoc/>
+        public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (targetDockable)
             {
@@ -536,7 +539,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public bool Validate(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+        public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
         {
             switch (sourceDockable)
             {

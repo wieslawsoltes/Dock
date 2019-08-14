@@ -17,7 +17,7 @@ namespace Dock.Model.UnitTests
         public void Validate_sourceDockable_Null()
         {
             var manager = new DockManager();
-            var actual = manager.Validate(null, null, DragAction.Move, DockOperation.Fill, false);
+            var actual = manager.ValidateDockable(null, null, DragAction.Move, DockOperation.Fill, false);
             Assert.False(actual);
         }
     }

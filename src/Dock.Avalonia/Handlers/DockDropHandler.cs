@@ -58,7 +58,7 @@ namespace Dock.Avalonia
     /// </summary>
     public class DockDropHandler : IDropHandler
     {
-        private IDockManager _manager = new DockManager();
+        private IDockManager _dockManager = new DockManager();
         private AdornerHelper _adornerHelper = new AdornerHelper();
         private bool _executed = false;
 
@@ -187,9 +187,9 @@ namespace Dock.Avalonia
         {
             if (state is DockOperation operation && sourceContext is IDockable sourceDockable && targetContext is IDockable targetDockable)
             {
-                _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
-                _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                return _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, false);
+                _dockManager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
+                _dockManager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
+                return _dockManager.ValidateDockable(sourceDockable, targetDockable, ToDragAction(e), operation, false);
             }
             return false;
         }
@@ -199,9 +199,9 @@ namespace Dock.Avalonia
         {
             if (_executed == false && state is DockOperation operation && sourceContext is IDockable sourceDockable && targetContext is IDockable targetDockable)
             {
-                _manager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
-                _manager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
-                bool bResult = _manager.Validate(sourceDockable, targetDockable, ToDragAction(e), operation, true);
+                _dockManager.Position = ToDockPoint(DropHelper.GetPosition(sender, e));
+                _dockManager.ScreenPosition = ToDockPoint(DropHelper.GetPositionScreen(sender, e));
+                bool bResult = _dockManager.ValidateDockable(sourceDockable, targetDockable, ToDragAction(e), operation, true);
                 if (bResult == true)
                 {
                     _executed = true;

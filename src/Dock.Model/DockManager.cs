@@ -499,42 +499,22 @@ namespace Dock.Model
         {
             switch (targetDockable)
             {
-                case ITool tool:
-                    {
-                        return false;
-                    }
-                case IDocument document:
-                    {
-                        return false;
-                    }
                 case IToolDock toolDock:
+                    if (sourceDock == toolDock)
                     {
-                        if (sourceDock == toolDock)
-                        {
-                            return false;
-                        }
-                        return DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute);
+                        return false;
                     }
+                    return DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute);
                 case IDocumentDock documentDock:
-                    {
-                        if (sourceDock == documentDock)
-                        {
-                            return false;
-                        }
-                        return DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute);
-                    }
-                case IProportionalDock proportionalDock:
+                    if (sourceDock == documentDock)
                     {
                         return false;
                     }
+                    return DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute);
                 case IRootDock rootDock:
-                    {
-                        return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
-                    }
+                    return DockDockableIntoWindow(sourceDock, targetDockable, action, operation, bExecute);
                 default:
-                    {
-                        return false;
-                    }
+                    return false;
             }
         }
 
@@ -544,33 +524,15 @@ namespace Dock.Model
             switch (sourceDockable)
             {
                 case ITool tool:
-                    {
-                        return ValidateTool(tool, targetDockable, action, operation, bExecute);
-                    }
+                    return ValidateTool(tool, targetDockable, action, operation, bExecute);
                 case IDocument document:
-                    {
-                        return ValidateDocument(document, targetDockable, action, operation, bExecute);
-                    }
+                    return ValidateDocument(document, targetDockable, action, operation, bExecute);
                 case IToolDock toolDock:
-                    {
-                        return ValidateDock(toolDock, targetDockable, action, operation, bExecute);
-                    }
+                    return ValidateDock(toolDock, targetDockable, action, operation, bExecute);
                 case IDocumentDock documentDock:
-                    {
-                        return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
-                    }
-                case IProportionalDock proportionalDock:
-                    {
-                        return false;
-                    }
-                case IRootDock rootDock:
-                    {
-                        return false;
-                    }
+                    return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
                 default:
-                    {
-                        return false;
-                    }
+                    return false;
             }
         }
     }

@@ -372,7 +372,7 @@ namespace Dock.Avalonia.Controls
                         break;
                     case EventType.Released:
                         {
-                            if (_doDragDrop == true)
+                            if (_doDragDrop == true && _dropControl != null)
                             {
                                 var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
                                 if (pointDropControl != null)
@@ -380,6 +380,7 @@ namespace Dock.Avalonia.Controls
                                     Drop(pointDropControl.Value, dragAction);
                                 }
                             }
+                            Leave();
                             _dragControl = null;
                             _dropControl = null;
                             _pointerPressed = false;
@@ -436,6 +437,7 @@ namespace Dock.Avalonia.Controls
                                         if (_dropControl != null)
                                         {
                                             Leave();
+                                            _dropControl = null;
                                         }
 
                                         _dropControl = dropControl;
@@ -450,6 +452,7 @@ namespace Dock.Avalonia.Controls
                                 else
                                 {
                                     Leave();
+                                    _dropControl = null;
                                 }
                             }
                         }
@@ -464,6 +467,7 @@ namespace Dock.Avalonia.Controls
                         break;
                     case EventType.CaptureLost:
                         {
+                            Leave();
                             _dragControl = null;
                             _dropControl = null;
                             _pointerPressed = false;

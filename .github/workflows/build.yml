@@ -13,9 +13,9 @@ jobs:
   build:
     name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-        strategy:
-          matrix:
-            os: [ubuntu-18.04, windows-2019, macOS-10.14]
+      strategy:
+        matrix:
+          os: [ubuntu-18.04, windows-2019, macOS-10.14]
 
     steps:
     - uses: actions/checkout@v1

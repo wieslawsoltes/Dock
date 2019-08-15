@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -86,7 +87,8 @@ namespace Dock.Avalonia.Controls
 
             if (selector != null)
             {
-                var selectorPoint = selector.TranslatePoint(point, selector);
+                var selectorPoint = VisualRoot.TranslatePoint(point, selector);
+                Debug.WriteLine($"InvalidateIndicator : {point} -> {selectorPoint.Value}");
                 if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null)
                 {
                     indicator.Opacity = 0.5;

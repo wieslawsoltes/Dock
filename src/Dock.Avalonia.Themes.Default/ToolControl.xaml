@@ -76,7 +76,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Background="Transparent" Spacing="2">
+                                <StackPanel Name="DragTool" idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Background="Transparent" Spacing="2">
                                     <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
                                 </StackPanel>
                             </DataTemplate>

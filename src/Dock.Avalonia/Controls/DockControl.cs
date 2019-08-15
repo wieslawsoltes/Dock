@@ -154,35 +154,41 @@ namespace Dock.Avalonia.Controls
         {
             if (VisualRoot is IInputElement input)
             {
-                var controls = input.InputHitTest(point)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
+                var local = this.TranslatePoint(point, input);
+                var controls = input.InputHitTest(local.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
                 if (controls?.Count > 0)
                 {
-                    Debug.WriteLine($"{name} : {source.GetType().Name} : {point}");
-
-                    var first = controls.FirstOrDefault();
-                    Process(first, point);
-
-                    //foreach (var control in controls)
-                    //{
-                    //    Process(control, point);
-                    //}
+                    Debug.WriteLine($"{name} : {source.GetType().Name} : {local.Value}");
+                    foreach (var control in controls)
+                    {
+                        if (Process(control, local.Value) == true)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
         }
 
-        private static void Process(IControl control, Point point)
+        private static bool Process(IControl control, Point point)
         {
+            bool result = false;
+
             //Debug.WriteLine($"- Process : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
 
             if (control.GetValue(DockControl.IsDropAreaProperty) == true)
             {
                 //Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                result = true;
             }
 
             if (control.GetValue(DockControl.IsDragAreaProperty) == true)
             {
                 Debug.WriteLine($"- Drag : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                result = true;
             }
+
+            return result;
         }
 
         /// <inheritdoc/>

@@ -293,7 +293,7 @@ namespace Dock.Avalonia.Controls
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
+                _dockManager.ScreenPosition = ToDockPoint(VisualRoot.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
@@ -310,7 +310,7 @@ namespace Dock.Avalonia.Controls
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
+                _dockManager.ScreenPosition = ToDockPoint(VisualRoot.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
 
@@ -328,19 +328,16 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Process(Point pointDockControl, Vector delta, EventType eventType, DragAction dragAction)
+        private void Process(Point point, Vector delta, EventType eventType, DragAction dragAction)
         {
-            if (!(VisualRoot is IInputElement input))
+            if (!(this is IInputElement input))
             {
                 return;
             }
 
-            var pointVisulaRoot = VisualRoot.TranslatePoint(pointDockControl, VisualRoot);
-            if (pointVisulaRoot == null)
-            {
-                return;
-            }
-            var controls = input.InputHitTest(pointVisulaRoot.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
+            Debug.WriteLine($"Process : {point} : {eventType} : {dragAction}");
+
+            var controls = input.InputHitTest(point)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
             if (controls?.Count > 0)
             {
                 switch (eventType)
@@ -360,10 +357,10 @@ namespace Dock.Avalonia.Controls
 
                             if (dragControl != null)
                             {
-                                Debug.WriteLine($"Drag : {pointDockControl} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
+                                Debug.WriteLine($"Drag : {point} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
                                 _dragControl = dragControl;
                                 _dropControl = null;
-                                _dragStartPoint = pointVisulaRoot.Value;
+                                _dragStartPoint = point;
                                 _pointerPressed = true;
                                 _doDragDrop = false;
                                 break;
@@ -374,11 +371,7 @@ namespace Dock.Avalonia.Controls
                         {
                             if (_doDragDrop == true && _dropControl != null)
                             {
-                                var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
-                                if (pointDropControl != null)
-                                {
-                                    Drop(pointDropControl.Value, dragAction);
-                                }
+                                Drop(point, dragAction);
                             }
                             Leave();
                             _dragControl = null;
@@ -396,7 +389,7 @@ namespace Dock.Avalonia.Controls
 
                             if (_doDragDrop == false)
                             {
-                                Vector diff = _dragStartPoint - pointVisulaRoot.Value;
+                                Vector diff = _dragStartPoint - point;
                                 bool haveMinimumDragDistance = (Math.Abs(diff.X) > MinimumHorizontalDragDistance || Math.Abs(diff.Y) > MinimumVerticalDragDistance);
                                 if (haveMinimumDragDistance == true)
                                 {
@@ -423,14 +416,10 @@ namespace Dock.Avalonia.Controls
 
                                 if (dropControl != null)
                                 {
-                                    Debug.WriteLine($"Drop : {pointDockControl} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                    Debug.WriteLine($"Drop : {point} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
                                     if (_dropControl == dropControl)
                                     {
-                                        var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
-                                        if (pointDropControl != null)
-                                        {
-                                            Over(pointDropControl.Value, dragAction);
-                                        }
+                                        Over(point, dragAction);
                                     }
                                     else
                                     {
@@ -442,11 +431,7 @@ namespace Dock.Avalonia.Controls
 
                                         _dropControl = dropControl;
 
-                                        var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
-                                        if (pointDropControl != null)
-                                        {
-                                            Enter(pointDropControl.Value, dragAction);
-                                        }
+                                        Enter(point, dragAction);
                                     }
                                 }
                                 else

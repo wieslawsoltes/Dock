@@ -1,6 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -8,9 +8,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Metadata;
-using Avalonia.Rendering;
 using Avalonia.VisualTree;
 using Dock.Model;
 
@@ -27,11 +26,62 @@ namespace Dock.Avalonia.Controls
         WheelChanged
     }
 
+    internal class AdornerHelper
+    {
+        public Control Adorner;
+
+        public void AddAdorner(IVisual visual)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(visual);
+            if (layer != null)
+            {
+                if (Adorner?.Parent is Panel panel)
+                {
+                    layer.Children.Remove(Adorner);
+                    Adorner = null;
+                }
+
+                Adorner = new DockTarget
+                {
+                    [AdornerLayer.AdornedElementProperty] = visual,
+                };
+
+                ((ISetLogicalParent)Adorner).SetParent(visual as ILogical);
+
+                layer.Children.Add(Adorner);
+            }
+        }
+
+        public void RemoveAdorner(IVisual visual)
+        {
+            var layer = AdornerLayer.GetAdornerLayer(visual);
+            if (layer != null)
+            {
+                if (Adorner?.Parent is Panel panel)
+                {
+                    layer.Children.Remove(Adorner);
+                    ((ISetLogicalParent)Adorner).SetParent(null);
+                    Adorner = null;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Interaction logic for <see cref="DockControl"/> xaml.
     /// </summary>
     public class DockControl : TemplatedControl
     {
+        /// <summary>
+        /// Minimum horizontal drag distance to initiate drag operation.
+        /// </summary>
+        public static double MinimumHorizontalDragDistance = 4;
+
+        /// <summary>
+        /// Minimum vertical drag distance to initiate drag operation.
+        /// </summary>
+        public static double MinimumVerticalDragDistance = 4;
+
         /// <summary>
         /// Defines the IsDragArea attached property.
         /// </summary>
@@ -153,102 +203,351 @@ namespace Dock.Avalonia.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
-        private void Process(Point point, Vector delta, EventType eventType)
+        private IDockManager _dockManager = new DockManager();
+        private AdornerHelper _adornerHelper = new AdornerHelper();
+        private IControl _dragControl;
+        private IControl _dropControl;
+        private Point _dragStartPoint;
+        private bool _pointerPressed;
+        private bool _doDragDrop;
+
+        private DragAction ToDragAction(PointerEventArgs e)
+        {
+            if (e.InputModifiers.HasFlag(InputModifiers.Alt))
+            {
+                return DragAction.Link;
+            }
+            else if (e.InputModifiers.HasFlag(InputModifiers.Shift))
+            {
+                return DragAction.Move;
+            }
+            else if (e.InputModifiers.HasFlag(InputModifiers.Control))
+            {
+                return DragAction.Copy;
+            }
+            else
+            {
+                return DragAction.Move;
+            }
+        }
+
+        private DockPoint ToDockPoint(Point point)
+        {
+            return new DockPoint(point.X, point.Y);
+        }
+
+        private void Enter(Point point, DragAction dragAction)
+        {
+            Validate(point, DockOperation.Fill, dragAction);
+
+            if (_dropControl is DockPanel)
+            {
+                _adornerHelper.AddAdorner(_dropControl);
+            }
+        }
+
+        private void Over(Point point, DragAction dragAction)
+        {
+            var operation = DockOperation.Fill;
+
+            if (_adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point);
+            }
+
+            Validate(point, operation, dragAction);
+        }
+
+        private void Drop(Point point, DragAction dragAction)
+        {
+            var operation = DockOperation.Fill;
+
+            if (_adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point);
+            }
+
+            if (_dropControl is DockPanel panel)
+            {
+                _adornerHelper.RemoveAdorner(_dropControl);
+            }
+
+            Execute(point, operation, dragAction);
+        }
+
+        private void Leave()
+        {
+            if (_dropControl is DockPanel)
+            {
+                _adornerHelper.RemoveAdorner(_dropControl);
+            }
+        }
+
+        private bool Validate(Point point, DockOperation operation, DragAction dragAction)
+        {
+            if (_dragControl == null || _dropControl == null)
+            {
+                return false;
+            }
+
+            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
+            {
+                _dockManager.Position = ToDockPoint(point);
+                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
+                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+            }
+
+            return false;
+        }
+
+        private bool Execute(Point point, DockOperation operation, DragAction dragAction)
+        {
+            if (_dragControl == null || _dropControl == null)
+            {
+                return false;
+            }
+
+            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
+            {
+                _dockManager.Position = ToDockPoint(point);
+                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
+                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+            }
+
+            return false;
+        }
+
+        private void ShowWindows(IDockable dockable)
+        {
+            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
+            {
+                if (factory.FindRoot(dock) is IDock root && root.CurrentDockable is IDock currentRootDockable)
+                {
+                    currentRootDockable.ShowWindows();
+                }
+            }
+        }
+
+        private IControl ProcessDragAreas(IControl control, Point point, EventType eventType)
+        {
+            if (control.GetValue(DockControl.IsDragAreaProperty) == true)
+            {
+                return control;
+            }
+            return null;
+        }
+
+        private IControl ProcessDropAreas(IControl control, Point point, EventType eventType)
+        {
+            if (control.GetValue(DockControl.IsDropAreaProperty) == true)
+            {
+                return control;
+            }
+            return null;
+        }
+
+        private void Process(Point pointDockControl, Vector delta, EventType eventType, DragAction dragAction)
         {
             if (!(VisualRoot is IInputElement input))
             {
                 return;
             }
 
-            var local = VisualRoot.TranslatePoint(point, VisualRoot);
-            var controls = input.InputHitTest(local.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
+            var pointVisulaRoot = VisualRoot.TranslatePoint(pointDockControl, VisualRoot);
+            if (pointVisulaRoot == null)
+            {
+                return;
+            }
+            var controls = input.InputHitTest(pointVisulaRoot.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
             if (controls?.Count > 0)
             {
-                IControl first = null;
-
-                foreach (var control in controls)
+                switch (eventType)
                 {
-                    first = ProcessDragAreas(control, local.Value, eventType);
-                    if (first != null)
-                    {
+                    case EventType.Pressed:
+                        {
+                            IControl dragControl = null;
+
+                            foreach (var control in controls)
+                            {
+                                var result = ProcessDragAreas(control, pointVisulaRoot.Value, eventType);
+                                if (result != null)
+                                {
+                                    dragControl = result;
+                                    break;
+                                }
+                            }
+
+                            if (dragControl != null)
+                            {
+                                Debug.WriteLine($"Drag : {pointDockControl} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
+                                _dragControl = dragControl;
+                                _dropControl = null;
+                                _dragStartPoint = pointVisulaRoot.Value;
+                                _pointerPressed = true;
+                                _doDragDrop = false;
+                                break;
+                            }
+                        }
                         break;
-                    }
+                    case EventType.Released:
+                        {
+                            if (_doDragDrop == true)
+                            {
+                                var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
+                                if (pointDropControl != null)
+                                {
+                                    Drop(pointDropControl.Value, dragAction);
+                                }
+                            }
+                            _dragControl = null;
+                            _dropControl = null;
+                            _pointerPressed = false;
+                            _doDragDrop = false;
+                        }
+                        break;
+                    case EventType.Moved:
+                        {
+                            if (_pointerPressed == false)
+                            {
+                                break;
+                            }
+
+                            if (_doDragDrop == false)
+                            {
+                                Vector diff = _dragStartPoint - pointVisulaRoot.Value;
+                                bool haveMinimumDragDistance = (Math.Abs(diff.X) > MinimumHorizontalDragDistance || Math.Abs(diff.Y) > MinimumVerticalDragDistance);
+                                if (haveMinimumDragDistance == true)
+                                {
+                                    if (_dragControl.DataContext is IDockable targetDockable)
+                                    {
+                                        ShowWindows(targetDockable);
+                                    }
+                                    _doDragDrop = true;
+                                }
+                            }
+
+                            if (_doDragDrop == true)
+                            {
+                                IControl dropControl = null;
+
+                                foreach (var control in controls)
+                                {
+                                    var result = ProcessDropAreas(control, pointVisulaRoot.Value, eventType);
+                                    if (result != null)
+                                    {
+                                        dropControl = result;
+                                        break;
+                                    }
+                                }
+
+                                if (dropControl != null)
+                                {
+                                    Debug.WriteLine($"Drop : {pointDockControl} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                    if (_dropControl == dropControl)
+                                    {
+                                        var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
+                                        if (pointDropControl != null)
+                                        {
+                                            Over(pointDropControl.Value, dragAction);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (_dropControl != null)
+                                        {
+                                            Leave();
+                                        }
+
+                                        _dropControl = dropControl;
+
+                                        var pointDropControl = _dropControl.TranslatePoint(pointDockControl, _dropControl);
+                                        if (pointDropControl != null)
+                                        {
+                                            Enter(pointDropControl.Value, dragAction);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Leave();
+                                }
+                            }
+                        }
+                        break;
+                    case EventType.Enter:
+                        {
+                        }
+                        break;
+                    case EventType.Leave:
+                        {
+                        }
+                        break;
+                    case EventType.CaptureLost:
+                        {
+                            _dragControl = null;
+                            _dropControl = null;
+                            _pointerPressed = false;
+                            _doDragDrop = false;
+                        }
+                        break;
+                    case EventType.WheelChanged:
+                        {
+                        }
+                        break;
                 }
-
-                if (first != null)
-                {
-                    // TODO: 
-                }
             }
-        }
-
-        private static IControl ProcessDragAreas(IControl control, Point point, EventType eventType)
-        {
-            if (control.GetValue(DockControl.IsDragAreaProperty) == true)
-            {
-                Debug.WriteLine($"Drag : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-                return control;
-            }
-            return null;
-        }
-
-        private static IControl ProcessDropAreas(IControl control, Point point, EventType eventType)
-        {
-            if (control.GetValue(DockControl.IsDropAreaProperty) == true)
-            {
-                Debug.WriteLine($"Drop : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-                return control;
-            }
-            return null;
         }
 
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            Process(e.GetPosition(this), new Vector(), EventType.Pressed);
+            if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
+            {
+                Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e));
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
-            Process(e.GetPosition(this), new Vector(), EventType.Released);
+            Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
-            Process(e.GetPosition(this), new Vector(), EventType.Moved);
+            Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerEnter(PointerEventArgs e)
         {
             base.OnPointerEnter(e);
-            Process(e.GetPosition(this), new Vector(), EventType.Enter);
+            Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             base.OnPointerLeave(e);
-            Process(e.GetPosition(this), new Vector(), EventType.Leave);
+            Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
         {
             base.OnPointerCaptureLost(e);
-            Process(new Point(), new Vector(), EventType.CaptureLost);
+            Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            Process(e.GetPosition(this), e.Delta, EventType.WheelChanged);
+            Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e));
         }
     }
 }

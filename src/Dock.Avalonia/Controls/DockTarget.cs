@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -47,31 +48,31 @@ namespace Dock.Avalonia.Controls
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
         }
 
-        internal DockOperation GetDockOperation(DragEventArgs e)
+        internal DockOperation GetDockOperation(Point point)
         {
             var result = DockOperation.Window;
 
-            if (InvalidateIndicator(_leftSelector, _leftIndicator, e))
+            if (InvalidateIndicator(_leftSelector, _leftIndicator, point))
             {
                 result = DockOperation.Left;
             }
 
-            if (InvalidateIndicator(_rightSelector, _rightIndicator, e))
+            if (InvalidateIndicator(_rightSelector, _rightIndicator, point))
             {
                 result = DockOperation.Right;
             }
 
-            if (InvalidateIndicator(_topSelector, _topIndicator, e))
+            if (InvalidateIndicator(_topSelector, _topIndicator, point))
             {
                 result = DockOperation.Top;
             }
 
-            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, e))
+            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point))
             {
                 result = DockOperation.Bottom;
             }
 
-            if (InvalidateIndicator(_centerSelector, _centerIndicator, e))
+            if (InvalidateIndicator(_centerSelector, _centerIndicator, point))
             {
                 result = DockOperation.Fill;
             }
@@ -79,16 +80,16 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control selector, Grid indicator, DragEventArgs e)
+        private bool InvalidateIndicator(Control selector, Grid indicator, Point point)
         {
             bool result = false;
 
             if (selector != null)
             {
-                if (selector.InputHitTest(e.GetPosition(selector)) != null)
+                var selectorPoint = selector.TranslatePoint(point, selector);
+                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null)
                 {
                     indicator.Opacity = 0.5;
-
                     result = true;
                 }
                 else

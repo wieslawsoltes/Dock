@@ -141,15 +141,6 @@ namespace Dock.Avalonia.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
-        private bool Filter(IVisual visual)
-        {
-            if (visual is AdornerLayer || visual.IsVisible == false)
-            {
-                return false;
-            }
-            return true;
-        }
-
         private void Process(IInteractive source, Point point, string name)
         {
             if (VisualRoot is IInputElement input)

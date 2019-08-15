@@ -267,7 +267,7 @@ namespace Dock.Avalonia.Controls
                 operation = target.GetDockOperation(point);
             }
 
-            if (_dropControl is DockPanel panel)
+            if (_dropControl is DockPanel)
             {
                 _adornerHelper.RemoveAdorner(_dropControl);
             }
@@ -328,24 +328,6 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private IControl ProcessDragAreas(IControl control, Point point, EventType eventType)
-        {
-            if (control.GetValue(DockControl.IsDragAreaProperty) == true)
-            {
-                return control;
-            }
-            return null;
-        }
-
-        private IControl ProcessDropAreas(IControl control, Point point, EventType eventType)
-        {
-            if (control.GetValue(DockControl.IsDropAreaProperty) == true)
-            {
-                return control;
-            }
-            return null;
-        }
-
         private void Process(Point pointDockControl, Vector delta, EventType eventType, DragAction dragAction)
         {
             if (!(VisualRoot is IInputElement input))
@@ -369,10 +351,9 @@ namespace Dock.Avalonia.Controls
 
                             foreach (var control in controls)
                             {
-                                var result = ProcessDragAreas(control, pointVisulaRoot.Value, eventType);
-                                if (result != null)
+                                if (control.GetValue(DockControl.IsDragAreaProperty) == true)
                                 {
-                                    dragControl = result;
+                                    dragControl = control;
                                     break;
                                 }
                             }
@@ -432,10 +413,9 @@ namespace Dock.Avalonia.Controls
 
                                 foreach (var control in controls)
                                 {
-                                    var result = ProcessDropAreas(control, pointVisulaRoot.Value, eventType);
-                                    if (result != null)
+                                    if (control.GetValue(DockControl.IsDropAreaProperty) == true)
                                     {
-                                        dropControl = result;
+                                        dropControl = control;
                                         break;
                                     }
                                 }

@@ -38,10 +38,9 @@ namespace Dock.Avalonia.Controls
         [Conditional("DEBUG")]
         private void Print(IVisual relativeTo, PointerEventArgs e, string name)
         {
-            var point = e.GetPosition(relativeTo);
-
             if (VisualRoot is IRenderRoot root)
             {
+                var point = e.GetPosition(relativeTo);
                 var visuals = root.GetVisualsAt(point, x => (!(x is AdornerLayer) && x.IsVisible)).ToList();
                 if (visuals.Count > 0)
                 {

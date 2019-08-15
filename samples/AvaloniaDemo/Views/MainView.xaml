@@ -3,21 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
-             id:DragBehavior.IsEnabled="True" id:DropBehavior.IsEnabled="True">
-    <UserControl.Resources>
-        <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
-    </UserControl.Resources>
+             idc:DockControl.IsDragEnabled="True" idc:DockControl.IsDropEnabled="True">
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
-        <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
-        </i:Interaction.Behaviors>
         <views:MenuView Grid.Row="0"/>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
         <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>

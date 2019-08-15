@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia;
+using Dock.Avalonia.Controls;
 
 namespace AvaloniaDemo.Views
 {
@@ -10,16 +11,16 @@ namespace AvaloniaDemo.Views
         {
             this.InitializeComponent();
 
-            this.FindControl<MenuItem>("OptionsDragBehaviorIsEnabled").Click += (sender, e) =>
+            this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
             {
-                bool isEnabled = (bool)GetValue(DragBehavior.IsEnabledProperty);
-                SetValue(DragBehavior.IsEnabledProperty, !isEnabled);
+                bool isEnabled = (bool)GetValue(DockControl.IsDragEnabledProperty);
+                SetValue(DockControl.IsDragEnabledProperty, !isEnabled);
             };
 
-            this.FindControl<MenuItem>("OptionsDropBehaviorIsEnabled").Click += (sender, e) =>
+            this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (sender, e) =>
             {
-                bool isEnabled = (bool)GetValue(DropBehavior.IsEnabledProperty);
-                SetValue(DropBehavior.IsEnabledProperty, !isEnabled);
+                bool isEnabled = (bool)GetValue(DockControl.IsDropEnabledProperty);
+                SetValue(DockControl.IsDropEnabledProperty, !isEnabled);
             };
         }
 

@@ -30,7 +30,7 @@
                             </idc:DockToolChrome>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IProportionalDock">
-                            <ItemsControl Items="{Binding Visible}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <ItemsControl idc:DockControl.IsDropArea="True" Items="{Binding Visible}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <!--<ItemsControl.Styles>
                                     <Style Selector="ItemsControl > ContentPresenter">
                                         <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
@@ -45,7 +45,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
                             <DockPanel Background="Transparent">
-                                <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                                <TabStrip idc:DockControl.IsDropArea="True" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
                                     <TabStrip.Styles>
                                         <Style Selector="TabStrip:empty">
                                             <Setter Property="IsVisible" Value="False" />
@@ -64,7 +64,7 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
-                            <DockPanel Background="Transparent">
+                            <DockPanel idc:DockControl.IsDropArea="True" Background="Transparent">
                                 <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
                                 <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
                                 <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>

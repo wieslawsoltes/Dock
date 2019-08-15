@@ -140,13 +140,20 @@ namespace Dock.Avalonia.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
-        [Conditional("DEBUG")]
-        private void Print(IVisual relativeTo, PointerEventArgs e, string name)
+        private bool Filter(IVisual visual)
+        {
+            if (visual is AdornerLayer || visual.IsVisible == false)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void Process(Point point, string name)
         {
             if (VisualRoot is IRenderRoot root)
             {
-                var point = e.GetPosition(relativeTo);
-                var visuals = root.GetVisualsAt(point, x => (!(x is AdornerLayer) && x.IsVisible)).ToList();
+                var visuals = root.GetVisualsAt(point, x => Filter(x)).ToList();
                 if (visuals.Count > 0)
                 {
                     Debug.WriteLine($"{name} : {root.GetType().Name} : {point}");
@@ -154,14 +161,25 @@ namespace Dock.Avalonia.Controls
                     {
                         if (visual is IControl control)
                         {
-                            Debug.WriteLine($"- {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"- {visual.GetType().Name}");
+                            Process(control, point);
                         }
                     }
                 }
+            }
+        }
+
+        private static void Process(IControl control, Point point)
+        {
+            Debug.WriteLine($"- Process : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+
+            if (GetIsDragArea(control))
+            {
+                Debug.WriteLine($"- Drag : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+            }
+
+            if (GetIsDropArea(control))
+            {
+                Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
             }
         }
 
@@ -169,35 +187,35 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            Print(this, e, nameof(OnPointerPressed));
+            Process(e.GetPosition(this), nameof(OnPointerPressed));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
-            Print(this, e, nameof(OnPointerReleased));
+            Process(e.GetPosition(this), nameof(OnPointerReleased));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
-            Print(this, e, nameof(OnPointerMoved));
+            Process(e.GetPosition(this), nameof(OnPointerMoved));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerEnter(PointerEventArgs e)
         {
             base.OnPointerEnter(e);
-            Print(this, e, nameof(OnPointerEnter));
+            Process(e.GetPosition(this), nameof(OnPointerEnter));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             base.OnPointerLeave(e);
-            Print(this, e, nameof(OnPointerLeave));
+            Process(e.GetPosition(this), nameof(OnPointerLeave));
         }
 
         /// <inheritdoc/>
@@ -210,7 +228,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            Print(this, e, nameof(OnPointerWheelChanged));
+            Process(e.GetPosition(this), nameof(OnPointerWheelChanged));
         }
     }
 }

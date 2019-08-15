@@ -1,0 +1,45 @@
+on: [push]
+
+jobs:
+  build:
+    name: Ubuntu
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100-preview7-012821
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --configuration Release
+  build:
+    name: Windows
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100-preview7-012821
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --configuration Release
+  build:
+    name: macOS
+    runs-on: macOS-10.14
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100-preview7-012821
+    - name: Build
+      run: dotnet build --configuration Release
+    - name: Test
+      run: dotnet test --configuration Release

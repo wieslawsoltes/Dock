@@ -39,7 +39,7 @@ namespace Dock.Avalonia.Controls
         /// Sets the value of the Proportion attached property on the specified control.
         /// </summary>
         /// <param name="control">The control.</param>
-        /// <param name="value">The value of the Dock property.</param>
+        /// <param name="value">The value of the Proportion property.</param>
         public static void SetProportion(IControl control, double value)
         {
             control.SetValue(ProportionProperty, value);

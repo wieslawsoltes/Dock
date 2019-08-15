@@ -18,11 +18,11 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
-                    <Border idc:DockControl.IsDragArea="True" Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+                    <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <i:Interaction.Behaviors>
                             <id:SeFocusedOnPointerPressedBehavior/>
                         </i:Interaction.Behaviors>
-                        <Grid Name="PART_Grip">
+                        <Grid idc:DockControl.IsDragArea="True" Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding CurrentDockable}">

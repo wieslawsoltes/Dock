@@ -86,12 +86,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <!--
-                                <StackPanel idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Background="Transparent" Spacing="2">
-                                    <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
-                                </StackPanel>
-                                -->
-                                <StackPanel idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Spacing="2">
+                                <StackPanel Name="DragDocument" idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />

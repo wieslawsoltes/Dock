@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Avalonia.Rendering;
 using Avalonia.VisualTree;
@@ -149,32 +150,33 @@ namespace Dock.Avalonia.Controls
             return true;
         }
 
-        private void Process(Point point, string name)
+        private void Process(IInteractive source, Point point, string name)
         {
-            if (VisualRoot is IRenderRoot root)
+            if (VisualRoot is IInputElement input)
             {
-                var visuals = root.GetVisualsAt(point, x => Filter(x)).ToList();
-                if (visuals.Count > 0)
+                var controls = input.InputHitTest(point)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
+                if (controls?.Count > 0)
                 {
-                    Debug.WriteLine($"{name} : {root.GetType().Name} : {point}");
-                    foreach (var visual in visuals)
-                    {
-                        if (visual is IControl control)
-                        {
-                            Process(control, point);
-                        }
-                    }
+                    Debug.WriteLine($"{name} : {source.GetType().Name} : {point}");
+
+                    var first = controls.FirstOrDefault();
+                    Process(first, point);
+
+                    //foreach (var control in controls)
+                    //{
+                    //    Process(control, point);
+                    //}
                 }
             }
         }
 
         private static void Process(IControl control, Point point)
         {
-            Debug.WriteLine($"- Process : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+            //Debug.WriteLine($"- Process : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
 
             if (control.GetValue(DockControl.IsDropAreaProperty) == true)
             {
-                Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                //Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
             }
 
             if (control.GetValue(DockControl.IsDragAreaProperty) == true)
@@ -187,35 +189,35 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            Process(e.GetPosition(this), nameof(OnPointerPressed));
+            Process(e.Source, e.GetPosition(this), nameof(OnPointerPressed));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
-            Process(e.GetPosition(this), nameof(OnPointerReleased));
+            Process(e.Source, e.GetPosition(this), nameof(OnPointerReleased));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
-            Process(e.GetPosition(this), nameof(OnPointerMoved));
+            Process(e.Source, e.GetPosition(this), nameof(OnPointerMoved));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerEnter(PointerEventArgs e)
         {
             base.OnPointerEnter(e);
-            Process(e.GetPosition(this), nameof(OnPointerEnter));
+            //Process(e.Source, e.GetPosition(this), nameof(OnPointerEnter));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             base.OnPointerLeave(e);
-            Process(e.GetPosition(this), nameof(OnPointerLeave));
+            //Process(e.Source, e.GetPosition(this), nameof(OnPointerLeave));
         }
 
         /// <inheritdoc/>
@@ -228,7 +230,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            Process(e.GetPosition(this), nameof(OnPointerWheelChanged));
+            Process(e.Source, e.GetPosition(this), nameof(OnPointerWheelChanged));
         }
     }
 }

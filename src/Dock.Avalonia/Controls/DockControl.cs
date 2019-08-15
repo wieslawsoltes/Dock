@@ -1,5 +1,6 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -15,6 +16,17 @@ using Dock.Model;
 
 namespace Dock.Avalonia.Controls
 {
+    internal enum EventType
+    {
+        Pressed,
+        Released,
+        Moved,
+        Enter,
+        Leave,
+        CaptureLost,
+        WheelChanged
+    }
+
     /// <summary>
     /// Interaction logic for <see cref="DockControl"/> xaml.
     /// </summary>
@@ -141,93 +153,102 @@ namespace Dock.Avalonia.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
-        private void Process(IInteractive source, Point point, string name)
+        private void Process(Point point, Vector delta, EventType eventType)
         {
-            if (VisualRoot is IInputElement input)
+            if (!(VisualRoot is IInputElement input))
             {
-                var local = this.TranslatePoint(point, input);
-                var controls = input.InputHitTest(local.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
-                if (controls?.Count > 0)
+                return;
+            }
+
+            var local = VisualRoot.TranslatePoint(point, VisualRoot);
+            var controls = input.InputHitTest(local.Value)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
+            if (controls?.Count > 0)
+            {
+                IControl first = null;
+
+                foreach (var control in controls)
                 {
-                    Debug.WriteLine($"{name} : {source.GetType().Name} : {local.Value}");
-                    foreach (var control in controls)
+                    first = ProcessDragAreas(control, local.Value, eventType);
+                    if (first != null)
                     {
-                        if (Process(control, local.Value) == true)
-                        {
-                            break;
-                        }
+                        break;
                     }
+                }
+
+                if (first != null)
+                {
+                    // TODO: 
                 }
             }
         }
 
-        private static bool Process(IControl control, Point point)
+        private static IControl ProcessDragAreas(IControl control, Point point, EventType eventType)
         {
-            bool result = false;
-
-            //Debug.WriteLine($"- Process : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-
-            if (control.GetValue(DockControl.IsDropAreaProperty) == true)
-            {
-                //Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-                result = true;
-            }
-
             if (control.GetValue(DockControl.IsDragAreaProperty) == true)
             {
-                Debug.WriteLine($"- Drag : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
-                result = true;
+                Debug.WriteLine($"Drag : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                return control;
             }
+            return null;
+        }
 
-            return result;
+        private static IControl ProcessDropAreas(IControl control, Point point, EventType eventType)
+        {
+            if (control.GetValue(DockControl.IsDropAreaProperty) == true)
+            {
+                Debug.WriteLine($"Drop : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                return control;
+            }
+            return null;
         }
 
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            Process(e.Source, e.GetPosition(this), nameof(OnPointerPressed));
+            Process(e.GetPosition(this), new Vector(), EventType.Pressed);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
-            Process(e.Source, e.GetPosition(this), nameof(OnPointerReleased));
+            Process(e.GetPosition(this), new Vector(), EventType.Released);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
-            Process(e.Source, e.GetPosition(this), nameof(OnPointerMoved));
+            Process(e.GetPosition(this), new Vector(), EventType.Moved);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerEnter(PointerEventArgs e)
         {
             base.OnPointerEnter(e);
-            //Process(e.Source, e.GetPosition(this), nameof(OnPointerEnter));
+            Process(e.GetPosition(this), new Vector(), EventType.Enter);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             base.OnPointerLeave(e);
-            //Process(e.Source, e.GetPosition(this), nameof(OnPointerLeave));
+            Process(e.GetPosition(this), new Vector(), EventType.Leave);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
         {
             base.OnPointerCaptureLost(e);
+            Process(new Point(), new Vector(), EventType.CaptureLost);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            Process(e.Source, e.GetPosition(this), nameof(OnPointerWheelChanged));
+            Process(e.GetPosition(this), e.Delta, EventType.WheelChanged);
         }
     }
 }

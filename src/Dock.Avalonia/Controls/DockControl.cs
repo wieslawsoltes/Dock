@@ -36,9 +36,9 @@ namespace Dock.Avalonia.Controls
         }
 
         [Conditional("DEBUG")]
-        private void Print(PointerEventArgs e, string name)
+        private void Print(IVisual relativeTo, PointerEventArgs e, string name)
         {
-            var point = e.GetPosition(this);
+            var point = e.GetPosition(relativeTo);
 
             if (VisualRoot is IRenderRoot root)
             {
@@ -65,35 +65,35 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            Print(e, nameof(OnPointerPressed));
+            Print(this, e, nameof(OnPointerPressed));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
             base.OnPointerReleased(e);
-            Print(e, nameof(OnPointerReleased));
+            Print(this, e, nameof(OnPointerReleased));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
             base.OnPointerMoved(e);
-            Print(e, nameof(OnPointerMoved));
+            Print(this, e, nameof(OnPointerMoved));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerEnter(PointerEventArgs e)
         {
             base.OnPointerEnter(e);
-            Print(e, nameof(OnPointerEnter));
+            Print(this, e, nameof(OnPointerEnter));
         }
 
         /// <inheritdoc/>
         protected override void OnPointerLeave(PointerEventArgs e)
         {
             base.OnPointerLeave(e);
-            Print(e, nameof(OnPointerLeave));
+            Print(this, e, nameof(OnPointerLeave));
         }
 
         /// <inheritdoc/>
@@ -106,7 +106,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
         {
             base.OnPointerWheelChanged(e);
-            Print(e, nameof(OnPointerWheelChanged));
+            Print(this, e, nameof(OnPointerWheelChanged));
         }
     }
 }

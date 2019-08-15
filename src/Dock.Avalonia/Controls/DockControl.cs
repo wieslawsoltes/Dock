@@ -174,12 +174,12 @@ namespace Dock.Avalonia.Controls
 
             if (control.GetValue(DockControl.IsDropAreaProperty) == true)
             {
-                Debug.WriteLine($"- Drag : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
             }
 
             if (control.GetValue(DockControl.IsDragAreaProperty) == true)
             {
-                Debug.WriteLine($"- Drop : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                Debug.WriteLine($"- Drag : {point} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
             }
         }
 

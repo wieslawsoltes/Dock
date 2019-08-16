@@ -286,6 +286,17 @@ namespace Dock.Avalonia.Controls
             return new DockPoint(point.X, point.Y);
         }
 
+        private void ShowWindows(IDockable dockable)
+        {
+            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
+            {
+                if (factory.FindRoot(dock) is IDock root && root.CurrentDockable is IDock currentRootDockable)
+                {
+                    currentRootDockable.ShowWindows();
+                }
+            }
+        }
+
         private void Enter(Point point, DragAction dragAction)
         {
             Validate(point, DockOperation.Fill, dragAction);
@@ -365,17 +376,6 @@ namespace Dock.Avalonia.Controls
             }
 
             return false;
-        }
-
-        private void ShowWindows(IDockable dockable)
-        {
-            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
-            {
-                if (factory.FindRoot(dock) is IDock root && root.CurrentDockable is IDock currentRootDockable)
-                {
-                    currentRootDockable.ShowWindows();
-                }
-            }
         }
 
         private void Process(Point point, Vector delta, EventType eventType, DragAction dragAction)

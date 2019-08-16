@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+    - release/*
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, windows-2019, macOS-10.14]
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.0.100-preview7-012821
+    - name: Build Release
+      run: dotnet build --configuration Release
+    - name: Test Release
+      run: dotnet test --configuration Release

@@ -11,7 +11,7 @@
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel idc:DockControl.IsDropArea="True" Grid.Row="1" ZIndex="1" Background="Transparent">
+                <DockPanel Name="DropDocumentDock" idc:DockControl.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
                     <i:Interaction.Behaviors>
                         <id:SeFocusedOnPointerPressedBehavior />
                     </i:Interaction.Behaviors>
@@ -49,7 +49,7 @@
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip idc:DockControl.IsDropArea="True" Name="PART_TabStrip" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
+                    <TabStrip Name="PART_TabStrip" idc:DockControl.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="MaxHeight" Value="24" />
@@ -86,7 +86,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel Name="DragDocument" idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Orientation="Horizontal" Spacing="2">
+                                <StackPanel Name="DragDocument" idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />

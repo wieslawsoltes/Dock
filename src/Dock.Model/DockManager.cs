@@ -107,6 +107,13 @@ namespace Dock.Model
                 case IDocument _:
                     if (bExecute)
                     {
+                        if (sourceDockableOwner == targetDock)
+                        {
+                            if (targetDock.Visible.Count == 1)
+                            {
+                                return false;
+                            }
+                        }
                         SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                     }
                     return true;

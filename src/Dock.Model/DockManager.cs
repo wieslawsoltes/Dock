@@ -357,7 +357,7 @@ namespace Dock.Model
                 case IRootDock _:
                     return DockDockableIntoWindow(sourceDocument, targetDockable, operation, bExecute);
                 default:
-                     return false;
+                    return false;
             }
         }
 

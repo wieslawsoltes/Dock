@@ -488,6 +488,7 @@ namespace Dock.Model
                 return;
             }
 
+            // TODO: Fix crash.
             targetDock.Visible.Insert(targetIndex, sourceDockable);
             UpdateDockable(sourceDockable, targetDock);
             targetDock.CurrentDockable = sourceDockable;

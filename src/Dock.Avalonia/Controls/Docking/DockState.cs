@@ -56,7 +56,7 @@ namespace Dock.Avalonia.Controls
         private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-            
+
             if (isValid == true && _dropControl is DockPanel)
             {
                 _adornerHelper.AddAdorner(_dropControl);

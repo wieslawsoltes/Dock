@@ -375,6 +375,8 @@ namespace Dock.Avalonia.Controls
                                 Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
                                 if (_dropControl == dropControl)
                                 {
+                                    _targetPoint = targetPoint;
+                                    _targetDockControl = targetDockControl;
                                     Over(targetPoint, dragAction, targetDockControl);
                                 }
                                 else

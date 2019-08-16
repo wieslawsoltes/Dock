@@ -194,5 +194,11 @@ namespace Dock.Model
         {
             _hostAdapter.Exit();
         }
+
+        /// <inheritdoc/>
+        public IDockWindow Clone()
+        {
+            return CloneHelper.CloneDockWindow(this);
+        }
     }
 }

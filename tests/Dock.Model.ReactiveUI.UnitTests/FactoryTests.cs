@@ -90,24 +90,6 @@ namespace Dock.Model.ReactiveUI.UnitTests
             Assert.NotNull(actual);
             Assert.IsType<DockWindow>(actual);
         }
-
-        [Fact]
-        public void CreateTool_Creates_Tool()
-        {
-            var factory = new TestFactory();
-            var actual = factory.CreateTool();
-            Assert.NotNull(actual);
-            Assert.IsType<Tool>(actual);
-        }
-
-        [Fact]
-        public void CreateDocument_Creates_Document()
-        {
-            var factory = new TestFactory();
-            var actual = factory.CreateDocument();
-            Assert.NotNull(actual);
-            Assert.IsType<Document>(actual);
-        }
     }
 
     public class TestFactory : Factory

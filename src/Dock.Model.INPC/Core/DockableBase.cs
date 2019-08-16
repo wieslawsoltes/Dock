@@ -57,5 +57,8 @@ namespace Dock.Model
         public virtual void OnSelected()
         {
         }
+
+        /// <inheritdoc/>
+        public abstract IDockable Clone();
     }
 }

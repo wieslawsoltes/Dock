@@ -38,5 +38,11 @@ namespace Dock.Model.Controls
             get => _autoHide;
             set => this.RaiseAndSetIfChanged(ref _autoHide, value);
         }
+
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.ClonePinDock(this);
+        }
     }
 }

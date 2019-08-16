@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests
@@ -16,5 +17,9 @@ namespace Dock.Model.Avalonia.UnitTests
 
     public class TestDockBase : DockBase
     {
+        public override IDockable Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

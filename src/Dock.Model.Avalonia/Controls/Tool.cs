@@ -8,7 +8,12 @@ namespace Dock.Model.Controls
     /// Tool.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Tool : DockableBase, ITool, IDocument
+    public abstract class Tool : DockableBase, ITool, IDocument
     {
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return this;
+        }
     }
 }

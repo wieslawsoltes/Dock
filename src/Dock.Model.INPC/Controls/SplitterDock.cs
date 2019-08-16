@@ -10,5 +10,10 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class SplitterDock : DockBase, ISplitterDock
     {
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.CloneSplitterDock(this);
+        }
     }
 }

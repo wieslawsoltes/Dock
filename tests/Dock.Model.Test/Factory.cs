@@ -23,9 +23,5 @@ namespace Dock.Model
         public override IDocumentDock CreateDocumentDock() => new DocumentDock();
 
         public override IDockWindow CreateDockWindow() => new DockWindow();
-
-        public override ITool CreateTool() => new Tool();
-
-        public override IDocument CreateDocument() => new Document();
     }
 }

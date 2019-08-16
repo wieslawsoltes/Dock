@@ -39,11 +39,5 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         public override IDockWindow CreateDockWindow() => new DockWindow();
-
-        /// <inheritdoc/>
-        public override ITool CreateTool() => new Tool();
-
-        /// <inheritdoc/>
-        public override IDocument CreateDocument() => new Document();
     }
 }

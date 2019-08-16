@@ -52,5 +52,11 @@ namespace Dock.Model.Controls
             get { return GetValue(AutoHideProperty); }
             set { SetValue(AutoHideProperty, value); }
         }
+        
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.ClonePinDock(this);
+        }
     }
 }

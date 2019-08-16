@@ -35,7 +35,7 @@ namespace Dock.Model
                     {
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            factory.AddDockable(targetDock, sourceDockable);
+                            factory.MoveDockable(sourceDockableOwner, targetDock, sourceDockable, null);
                         }
                     }
                     return true;

@@ -112,7 +112,7 @@ namespace Dock.Model
         {
             switch (operation)
             {
-                case DockOperation.Fill:
+                case DockOperation.Window:
                     if (sourceDockable == targetDockable)
                     {
                         return false;

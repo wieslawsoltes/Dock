@@ -17,7 +17,7 @@
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                        <Grid Name="PART_Grip" id:DockProperties.IsDragArea="True">
+                        <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding CurrentDockable}">
@@ -64,6 +64,12 @@
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
+        <Setter Property="id:DockProperties.IsDragArea" Value="True" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:floating /template/ Grid#PART_Grip">
+        <Setter Property="id:DockProperties.IsDragArea" Value="False" />
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />

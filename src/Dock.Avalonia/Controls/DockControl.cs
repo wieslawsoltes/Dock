@@ -155,7 +155,7 @@ namespace Dock.Avalonia.Controls
 
         private void Drop(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            var operation = DockOperation.Fill;
+            var operation = DockOperation.Window;
 
             if (_adornerHelper.Adorner is DockTarget target)
             {
@@ -260,9 +260,16 @@ namespace Dock.Avalonia.Controls
                     break;
                 case EventType.Released:
                     {
-                        if (_doDragDrop == true && _dropControl != null)
+                        if (_doDragDrop == true)
                         {
-                            Drop(point, dragAction, relativeTo);
+                            if (_dropControl != null)
+                            {
+                                Drop(point, dragAction, relativeTo);
+                            }
+                            else
+                            {
+                                // TODO: Create window.
+                            }
                         }
                         Leave();
                         _dragControl = null;

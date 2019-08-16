@@ -141,6 +141,7 @@ namespace AvaloniaDemo
                     {
                         Id = "DocumentsPane",
                         Title = "DocumentsPane",
+                        IsCollapsable = false,
                         Proportion = double.NaN,
                         CurrentDockable = document1,
                         Visible = CreateList<IDockable>

@@ -99,28 +99,28 @@ namespace Dock.Model
             switch (sourceDockable)
             {
                 case ITool _:
+                    if (sourceDockableOwner == targetDock)
+                    {
+                        if (targetDock.Visible.Count == 1)
+                        {
+                            return false;
+                        }
+                    }
                     if (bExecute)
                     {
-                        if (sourceDockableOwner == targetDock)
-                        {
-                            if (targetDock.Visible.Count == 1)
-                            {
-                                return false;
-                            }
-                        }
                         SplitRemoveDockable(sourceDockable, targetDock, operation);
                     }
                     return true;
                 case IDocument _:
+                    if (sourceDockableOwner == targetDock)
+                    {
+                        if (targetDock.Visible.Count == 1)
+                        {
+                            return false;
+                        }
+                    }
                     if (bExecute)
                     {
-                        if (sourceDockableOwner == targetDock)
-                        {
-                            if (targetDock.Visible.Count == 1)
-                            {
-                                return false;
-                            }
-                        }
                         SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                     }
                     return true;

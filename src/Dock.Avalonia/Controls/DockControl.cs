@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.Metadata;
 using Avalonia.VisualTree;
@@ -203,6 +204,34 @@ namespace Dock.Avalonia.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
+
+
+
+        /// <summary>
+        /// Initialize the new instance of the <see cref="DockControl"/>.
+        /// </summary>
+        public DockControl()
+        {
+            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        }
+
+        private void Pressed(object sender, PointerPressedEventArgs e)
+        {
+            Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e));
+        }
+
+        private void Released(object sender, PointerReleasedEventArgs e)
+        {
+            Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e));
+        }
+
+        private void Moved(object sender, PointerEventArgs e)
+        {
+            Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e));
+        }
+
         private IDockManager _dockManager = new DockManager();
         private AdornerHelper _adornerHelper = new AdornerHelper();
         private IControl _dragControl;
@@ -330,13 +359,62 @@ namespace Dock.Avalonia.Controls
 
         private void Process(Point point, Vector delta, EventType eventType, DragAction dragAction)
         {
+            //Debug.WriteLine($"Process : {point} : {eventType} : {dragAction}");
+
             if (!(this is IInputElement input))
             {
                 return;
             }
 
-            Debug.WriteLine($"Process : {point} : {eventType} : {dragAction}");
 
+
+            switch (eventType)
+            {
+                case EventType.Pressed:
+                    {
+                        var controls = input.GetInputElementsAt(point)?.OfType<IControl>().ToList();
+                        if (controls?.Count > 0)
+                        {
+                            foreach (var control in controls)
+                            {
+                                Debug.WriteLine($"control : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                                if (control.GetValue(DockControl.IsDragAreaProperty) == true)
+                                {
+                                    Debug.WriteLine($"Drag : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                                    _pointerPressed = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case EventType.Released:
+                    {
+                        _pointerPressed = false;
+                    }
+                    break;
+                case EventType.Moved:
+                    {
+                        if (_pointerPressed == true)
+                        {
+                            var controls = input.GetInputElementsAt(point)?.OfType<IControl>().ToList();
+                            if (controls?.Count > 0)
+                            {
+                                foreach (var control in controls)
+                                {
+                                    if (control.GetValue(DockControl.IsDropAreaProperty) == true)
+                                    {
+                                        Debug.WriteLine($"Drop : {point} : {eventType} : {control.Name} : {control.GetType().Name} : {control.DataContext?.GetType().Name}");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+
+ /*
             var controls = input.InputHitTest(point)?.GetSelfAndVisualDescendants()?.OfType<IControl>().ToList();
             if (controls?.Count > 0)
             {
@@ -465,16 +543,17 @@ namespace Dock.Avalonia.Controls
                         break;
                 }
             }
+*/
         }
-
+        /*
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
-            if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
-            {
+            //if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton))
+            //{
                 Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e));
-            }
+            //}
         }
 
         /// <inheritdoc/>
@@ -518,5 +597,6 @@ namespace Dock.Avalonia.Controls
             base.OnPointerWheelChanged(e);
             Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e));
         }
+        */
     }
 }

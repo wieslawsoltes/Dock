@@ -35,7 +35,7 @@
                         </dmc:ToolDock>
                     </dmc:ProportionalDock>
                     <dmc:SplitterDock x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
-                    <dmc:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" Proportion="NaN" CurrentDockable="{Binding #Document1}">
+                    <dmc:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" IsCollapsable="False" Proportion="NaN" CurrentDockable="{Binding #Document1}">
                         <vmd:Document1ViewModel x:Name="Document1" Id="Document1" Title="Document1"/>
                         <vmd:Document2ViewModel x:Name="Document2" Id="Document2" Title="Document2"/>
                     </dmc:DocumentDock>

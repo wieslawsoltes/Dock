@@ -13,14 +13,14 @@ namespace AvaloniaDemo.Views
 
             this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
             {
-                bool isEnabled = (bool)GetValue(DockControl.IsDragEnabledProperty);
-                SetValue(DockControl.IsDragEnabledProperty, !isEnabled);
+                bool isEnabled = (bool)GetValue(DockProperties.IsDragEnabledProperty);
+                SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
             };
 
             this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (sender, e) =>
             {
-                bool isEnabled = (bool)GetValue(DockControl.IsDropEnabledProperty);
-                SetValue(DockControl.IsDropEnabledProperty, !isEnabled);
+                bool isEnabled = (bool)GetValue(DockProperties.IsDropEnabledProperty);
+                SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
             };
         }
 

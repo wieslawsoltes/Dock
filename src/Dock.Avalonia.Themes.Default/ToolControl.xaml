@@ -10,7 +10,7 @@
     <Style Selector="idc|ToolControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropToolDock" idc:DockControl.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
+                <DockPanel Name="DropToolDock" idc:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
                     <i:Interaction.Behaviors>
                         <id:SeFocusedOnPointerPressedBehavior />
                     </i:Interaction.Behaviors>
@@ -36,7 +36,7 @@
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" idc:DockControl.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
+                    <TabStrip Name="PART_TabStrip" idc:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="ItemsPanel">
@@ -76,7 +76,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel Name="DragTool" idc:DockControl.IsDragArea="True" idc:DockControl.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                <StackPanel Name="DragTool" idc:DockProperties.IsDragArea="True" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
                                 </StackPanel>
                             </DataTemplate>

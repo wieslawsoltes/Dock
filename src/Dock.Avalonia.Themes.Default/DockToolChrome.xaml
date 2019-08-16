@@ -22,7 +22,7 @@
                         <i:Interaction.Behaviors>
                             <id:SeFocusedOnPointerPressedBehavior/>
                         </i:Interaction.Behaviors>
-                        <Grid Name="PART_Grip" idc:DockControl.IsDragArea="True">
+                        <Grid Name="PART_Grip" idc:DockProperties.IsDragArea="True">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding CurrentDockable}">

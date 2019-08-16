@@ -163,7 +163,7 @@ namespace Dock.Model
                 {
                     dock.Visible = CreateList<IDockable>();
                 }
-                dock.Visible.Insert(index, dockable); 
+                dock.Visible.Insert(index, dockable);
             }
         }
 
@@ -242,7 +242,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockable FindDockable(IDock dock, Func< IDockable, bool> predicate)
+        public virtual IDockable FindDockable(IDock dock, Func<IDockable, bool> predicate)
         {
             if (predicate(dock) == true)
             {
@@ -368,7 +368,7 @@ namespace Dock.Model
                         foreach (var removeVisible in toRemove)
                         {
                             RemoveDockable(removeVisible);
-                        } 
+                        }
                     }
                     else
                     {
@@ -434,7 +434,7 @@ namespace Dock.Model
             {
                 dock.Visible.RemoveAt(sourceIndex);
                 dock.Visible.Insert(targetIndex, sourceDockable);
-                dock.CurrentDockable = sourceDockable; 
+                dock.CurrentDockable = sourceDockable;
             }
         }
 
@@ -552,7 +552,7 @@ namespace Dock.Model
                     UpdateDockable(second, firstOwner);
 
                     sourceDock.CurrentDockable = second;
-                    targetDock.CurrentDockable = first; 
+                    targetDock.CurrentDockable = first;
                 }
             }
         }
@@ -570,7 +570,7 @@ namespace Dock.Model
 
                 dock.Visible[targetIndex] = originalSourceDockable;
                 dock.Visible[sourceIndex] = originalTargetDockable;
-                dock.CurrentDockable = originalTargetDockable; 
+                dock.CurrentDockable = originalTargetDockable;
             }
         }
 
@@ -591,7 +591,7 @@ namespace Dock.Model
                 UpdateDockable(originalTargetDockable, sourceDock);
 
                 sourceDock.CurrentDockable = originalTargetDockable;
-                targetDock.CurrentDockable = originalSourceDockable; 
+                targetDock.CurrentDockable = originalSourceDockable;
             }
         }
 
@@ -604,7 +604,7 @@ namespace Dock.Model
                 if (index >= 0)
                 {
                     dock.Visible.RemoveAt(index);
-                    dock.Visible.Insert(index, destination); 
+                    dock.Visible.Insert(index, destination);
                 }
             }
         }
@@ -762,7 +762,7 @@ namespace Dock.Model
                         {
                             ownerDock.CurrentDockable = null;
                         }
-                        Collapse(ownerDock); 
+                        Collapse(ownerDock);
                     }
                     else
                     {

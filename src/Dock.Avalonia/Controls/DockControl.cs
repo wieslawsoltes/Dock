@@ -354,7 +354,7 @@ namespace Dock.Avalonia.Controls
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(VisualRoot.PointToScreen(point).ToPoint(1.0));
+                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
@@ -371,7 +371,7 @@ namespace Dock.Avalonia.Controls
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(VisualRoot.PointToScreen(point).ToPoint(1.0));
+                _dockManager.ScreenPosition = ToDockPoint(this.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
 

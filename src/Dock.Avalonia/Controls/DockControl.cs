@@ -215,44 +215,42 @@ namespace Dock.Avalonia.Controls
             return false;
         }
 
-        private IControl GetDragControl(IInputElement input, Point point)
+        private IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
-            IControl dragControl = null;
-
-            var controls = input.GetInputElementsAt(point)?.OfType<IControl>()?.ToList();
-            if (controls?.Count > 0)
+            IEnumerable<IInputElement> inputElements = null;
+            try
             {
-                foreach (var control in controls)
+                inputElements = input.GetInputElementsAt(point);
+            }
+            catch (Exception ex)
+            {
+                Print(ex);
+                void Print(Exception exception)
                 {
-                    if (control.GetValue(DockControl.IsDragAreaProperty) == true)
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                    if (ex.InnerException != null)
                     {
-                        dragControl = control;
-                        break;
+                        Print(ex.InnerException);
                     }
                 }
             }
-
-            return dragControl;
-        }
-
-        private IControl GetDropControl(IInputElement input, Point point)
-        {
-            IControl dropControl = null;
-
-            var controls = input.GetInputElementsAt(point)?.OfType<IControl>()?.ToList();
-            if (controls?.Count > 0)
+            if (inputElements == null)
+            {
+                return null;
+            }
+            var controls = inputElements.OfType<IControl>().ToList();
+            if (controls != null)
             {
                 foreach (var control in controls)
                 {
-                    if (control.GetValue(DockControl.IsDropAreaProperty) == true)
+                    if (control.GetValue(property) == true)
                     {
-                        dropControl = control;
-                        break;
+                        return control;
                     }
                 }
             }
-
-            return dropControl;
+            return null;
         }
 
         /// <summary>
@@ -275,7 +273,7 @@ namespace Dock.Avalonia.Controls
             {
                 case EventType.Pressed:
                     {
-                        var dragControl = GetDragControl(inputActiveDockControl, point);
+                        var dragControl = GetControl(inputActiveDockControl, point, DockControl.IsDragAreaProperty);
                         if (dragControl != null)
                         {
                             Debug.WriteLine($"Drag : {point} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
@@ -350,7 +348,7 @@ namespace Dock.Avalonia.Controls
                                     {
                                         continue;
                                     }
-                                    dropControl = GetDropControl(inputDockControl, dockControlPoint);
+                                    dropControl = GetControl(inputDockControl, dockControlPoint, DockControl.IsDropAreaProperty);
                                     if (dropControl != null)
                                     {
                                         targetPoint = dockControlPoint;
@@ -362,7 +360,7 @@ namespace Dock.Avalonia.Controls
 
                             if (dropControl == null)
                             {
-                                dropControl = GetDropControl(inputActiveDockControl, point);
+                                dropControl = GetControl(inputActiveDockControl, point, DockControl.IsDropAreaProperty);
                                 if (dropControl != null)
                                 {
                                     targetPoint = point;

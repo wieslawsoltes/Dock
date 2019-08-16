@@ -9,7 +9,7 @@
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" idc:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
+                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>
@@ -44,7 +44,7 @@
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" idc:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
+                    <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="MaxHeight" Value="24" />
@@ -81,7 +81,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel Name="DragDocument" idc:DockProperties.IsDragArea="True" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />

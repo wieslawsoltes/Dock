@@ -4,8 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia
 {
     internal class AdornerHelper
     {

@@ -8,9 +8,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 using Dock.Model;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia
 {
     /// <summary>
     /// Docking state.

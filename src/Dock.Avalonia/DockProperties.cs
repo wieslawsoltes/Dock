@@ -4,7 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia
 {
     /// <summary>
     /// Dock properties.

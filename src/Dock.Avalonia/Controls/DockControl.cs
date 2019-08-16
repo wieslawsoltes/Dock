@@ -346,7 +346,6 @@ namespace Dock.Avalonia.Controls
                                 {
                                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                                     var dockControlPoint = dockControl.PointToClient(screenPoint);
-                                    Debug.WriteLine($"{point} -> {dockControlPoint}");
                                     if (dockControlPoint == null)
                                     {
                                         continue;

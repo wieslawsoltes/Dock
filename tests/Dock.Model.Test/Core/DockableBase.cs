@@ -21,5 +21,7 @@ namespace Dock.Model
         public virtual void OnSelected()
         {
         }
+
+        public abstract IDockable Clone();
     }
 }

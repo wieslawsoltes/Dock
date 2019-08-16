@@ -56,5 +56,11 @@ namespace Dock.Model.Controls
             get => _right;
             set => this.RaiseAndSetIfChanged(ref _right, value);
         }
+
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.CloneRootDock(this);
+        }
     }
 }

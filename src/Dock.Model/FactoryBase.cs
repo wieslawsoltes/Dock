@@ -45,12 +45,6 @@ namespace Dock.Model
         public abstract IDockWindow CreateDockWindow();
 
         /// <inheritdoc/>
-        public abstract ITool CreateTool();
-
-        /// <inheritdoc/>
-        public abstract IDocument CreateDocument();
-
-        /// <inheritdoc/>
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>

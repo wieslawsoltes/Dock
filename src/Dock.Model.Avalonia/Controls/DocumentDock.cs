@@ -10,5 +10,10 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class DocumentDock : DockBase, IDocumentDock
     {
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.CloneDocumentDock(this);
+        }
     }
 }

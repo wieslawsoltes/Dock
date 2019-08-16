@@ -8,7 +8,12 @@ namespace Dock.Model.Controls
     /// Document.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class Document : DockableBase, IDocument
+    public abstract class Document : DockableBase, IDocument
     {
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return this;
+        }
     }
 }

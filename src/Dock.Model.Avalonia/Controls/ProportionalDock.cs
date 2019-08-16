@@ -24,5 +24,11 @@ namespace Dock.Model.Controls
             get { return GetValue(OrientationProperty); }
             set { SetValue(OrientationProperty, value); }
         }
+
+        /// <inheritdoc/>
+        public override IDockable Clone()
+        {
+            return CloneHelper.CloneProportionalDock(this);
+        }
     }
 }

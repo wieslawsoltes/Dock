@@ -17,7 +17,7 @@ namespace Dock.Avalonia
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {
-                if (Adorner?.Parent is Panel panel)
+                if (Adorner?.Parent is Panel)
                 {
                     layer.Children.Remove(Adorner);
                     Adorner = null;

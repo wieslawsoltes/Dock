@@ -18,6 +18,13 @@ namespace Dock.Model
 
         internal bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
         {
+            if (sourceDockableOwner == targetDock)
+            {
+                if (targetDock.Visible.Count == 1)
+                {
+                    return false;
+                }
+            }
             var targetDockable = targetDock.CurrentDockable;
             if (targetDockable == null)
             {

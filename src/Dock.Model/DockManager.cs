@@ -371,6 +371,8 @@ namespace Dock.Model
                     return DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute);
                 case IDocumentDock documentDock:
                     return DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute);
+                case IPinDock pinDock:
+                    return DockDockableIntoDock(sourceTool, pinDock, action, operation, bExecute);
                 case ITool tool:
                     return DockDockableIntoDockable(sourceTool, tool, action, bExecute);
                 case IDocument document:
@@ -415,6 +417,12 @@ namespace Dock.Model
                         return false;
                     }
                     return DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute);
+                case IPinDock pinDock:
+                    if (sourceDock == pinDock)
+                    {
+                        return false;
+                    }
+                    return DockDockable(sourceDock, targetDockable, pinDock, action, operation, bExecute);
                 default:
                     return false;
             }
@@ -429,6 +437,8 @@ namespace Dock.Model
                     return ValidateDock(toolDock, targetDockable, action, operation, bExecute);
                 case IDocumentDock documentDock:
                     return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
+                case IPinDock pinDock:
+                    return ValidateDock(pinDock, targetDockable, action, operation, bExecute);
                 case ITool tool:
                     return ValidateTool(tool, targetDockable, action, operation, bExecute);
                 case IDocument document:

@@ -2,8 +2,6 @@
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
@@ -12,9 +10,6 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel Name="DropDocumentDock" idc:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
-                    <i:Interaction.Behaviors>
-                        <id:SeFocusedOnPointerPressedBehavior />
-                    </i:Interaction.Behaviors>
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>

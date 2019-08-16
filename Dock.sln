@@ -31,7 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73}"
 	ProjectSection(SolutionItems) = preProject
-		build\Avalonia.Behaviors.props = build\Avalonia.Behaviors.props
 		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
 		build\Avalonia.props = build\Avalonia.props
 		build\Base.props = build\Base.props
@@ -83,7 +82,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Experimental",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Test", "tests\Dock.Model.Test\Dock.Model.Test.csproj", "{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,8 +2,6 @@
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
     <Style Selector="Button.chromeButton">
@@ -19,9 +17,6 @@
             <ControlTemplate>
                 <Grid RowDefinitions="25,*">
                     <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                        <i:Interaction.Behaviors>
-                            <id:SeFocusedOnPointerPressedBehavior/>
-                        </i:Interaction.Behaviors>
                         <Grid Name="PART_Grip" idc:DockProperties.IsDragArea="True">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />

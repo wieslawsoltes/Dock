@@ -50,31 +50,31 @@ namespace Dock.Avalonia.Controls
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
         }
 
-        internal DockOperation GetDockOperation(Point point, IVisual input, DragAction dragAction, Func<Point, DockOperation, DragAction, bool> validate)
+        internal DockOperation GetDockOperation(Point point, IVisual relativeTo, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
         {
             var result = DockOperation.Window;
 
-            if (InvalidateIndicator(_leftSelector, _leftIndicator, point, input, DockOperation.Left, dragAction, validate))
+            if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate))
             {
                 result = DockOperation.Left;
             }
 
-            if (InvalidateIndicator(_rightSelector, _rightIndicator, point, input, DockOperation.Right, dragAction, validate))
+            if (InvalidateIndicator(_rightSelector, _rightIndicator, point, relativeTo, DockOperation.Right, dragAction, validate))
             {
                 result = DockOperation.Right;
             }
 
-            if (InvalidateIndicator(_topSelector, _topIndicator, point, input, DockOperation.Top, dragAction, validate))
+            if (InvalidateIndicator(_topSelector, _topIndicator, point, relativeTo, DockOperation.Top, dragAction, validate))
             {
                 result = DockOperation.Top;
             }
 
-            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, input, DockOperation.Bottom, dragAction, validate))
+            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, relativeTo, DockOperation.Bottom, dragAction, validate))
             {
                 result = DockOperation.Bottom;
             }
 
-            if (InvalidateIndicator(_centerSelector, _centerIndicator, point, input, DockOperation.Fill, dragAction, validate))
+            if (InvalidateIndicator(_centerSelector, _centerIndicator, point, relativeTo, DockOperation.Fill, dragAction, validate))
             {
                 result = DockOperation.Fill;
             }
@@ -82,12 +82,12 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual input, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, bool> validate)
+        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
         {
             if (selector != null)
             {
-                var selectorPoint = input.TranslatePoint(point, selector);
-                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction) == true)
+                var selectorPoint = relativeTo.TranslatePoint(point, selector);
+                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo) == true)
                 {
                     indicator.Opacity = 0.5;
                     return true;

@@ -219,7 +219,7 @@ namespace Dock.Avalonia.Controls
         {
             IControl dragControl = null;
 
-            var controls = input.GetInputElementsAt(point)?.OfType<IControl>().ToList();
+            var controls = input.GetInputElementsAt(point)?.OfType<IControl>()?.ToList();
             if (controls?.Count > 0)
             {
                 foreach (var control in controls)
@@ -239,7 +239,7 @@ namespace Dock.Avalonia.Controls
         {
             IControl dropControl = null;
 
-            var controls = input.GetInputElementsAt(point)?.OfType<IControl>().ToList();
+            var controls = input.GetInputElementsAt(point)?.OfType<IControl>()?.ToList();
             if (controls?.Count > 0)
             {
                 foreach (var control in controls)

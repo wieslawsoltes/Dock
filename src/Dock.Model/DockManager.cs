@@ -147,13 +147,13 @@ namespace Dock.Model
                     }
                     if (sourceDockable.Owner is IDock sourceDockableOwner)
                     {
-                        if (sourceDockableOwner is IDocumentDock)
-                        {
-                            if (sourceDockableOwner.Visible.Count == 1)
-                            {
-                                return false;
-                            }
-                        }
+                        //if (sourceDockableOwner is IDocumentDock)
+                        //{
+                        //    if (sourceDockableOwner.Visible.Count == 1)
+                        //    {
+                        //        return false;
+                        //    }
+                        //}
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
                             if (factory.FindRoot(sourceDockable) is IDock root && root.CurrentDockable is IDock targetWindowOwner)

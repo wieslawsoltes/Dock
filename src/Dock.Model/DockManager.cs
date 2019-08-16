@@ -94,6 +94,13 @@ namespace Dock.Model
                 case ITool _:
                     if (bExecute)
                     {
+                        if (sourceDockableOwner == targetDock)
+                        {
+                            if (targetDock.Visible.Count == 1)
+                            {
+                                return false;
+                            }
+                        }
                         SplitRemoveDockable(sourceDockable, targetDock, operation);
                     }
                     return true;

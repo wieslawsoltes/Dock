@@ -9,18 +9,11 @@
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
         xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="idc|DocumentControl">
-        <Style.Resources>
-            <id:DockDragHandler x:Key="DockDragHandler"/>
-            <id:DockDropHandler x:Key="DockDropHandler1" Id="1"/>
-            <id:DockDropHandler x:Key="DockDropHandler2" Id="2"/>
-            <id:DockDropHandler x:Key="DockDropHandler3" Id="3"/>
-        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
+                <DockPanel Name="DropDocumentDock" idc:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
                     <i:Interaction.Behaviors>
                         <id:SeFocusedOnPointerPressedBehavior />
-                        <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler1}"/>
                     </i:Interaction.Behaviors>
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
@@ -56,10 +49,7 @@
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
-                        <i:Interaction.Behaviors>
-                            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler2}"/>
-                        </i:Interaction.Behaviors>
+                    <TabStrip Name="PART_TabStrip" idc:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="MaxHeight" Value="24" />
@@ -96,20 +86,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <!--
-                                <StackPanel Orientation="Horizontal" Background="Transparent" Spacing="2">
-                                    <i:Interaction.Behaviors>
-                                        <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                                        <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
-                                    </i:Interaction.Behaviors>
-                                    <TextBlock Text="{Binding Title}" Classes="drag" Margin="2"/>
-                                </StackPanel>
-                                -->
-                                <StackPanel Orientation="Horizontal" Spacing="2">
-                                    <i:Interaction.Behaviors>
-                                        <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}"/>
-                                        <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler3}"/>
-                                    </i:Interaction.Behaviors>
+                                <StackPanel Name="DragDocument" idc:DockProperties.IsDragArea="True" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />

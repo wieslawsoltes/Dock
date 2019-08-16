@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 
 namespace ProportionalStackPanelDemo.Views
@@ -9,7 +10,7 @@ namespace ProportionalStackPanelDemo.Views
         public MainWindow()
         {
             this.InitializeComponent();
-            this.AttachDevTools();
+            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
         }
 
         private void InitializeComponent()

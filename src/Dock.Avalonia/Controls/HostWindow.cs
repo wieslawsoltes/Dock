@@ -228,7 +228,7 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindow()
         {
-            this.AttachDevTools();
+            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
 
             PositionChanged += (sender, e) =>
             {

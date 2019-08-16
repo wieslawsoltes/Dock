@@ -8,18 +8,11 @@
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
     <Style Selector="idc|ToolControl">
-        <Style.Resources>
-            <id:DockDragHandler x:Key="DockDragHandler" />
-            <id:DockDropHandler x:Key="DockDropHandler5" Id="5" />
-            <id:DockDropHandler x:Key="DockDropHandler6" Id="6" />
-            <id:DockDropHandler x:Key="DockDropHandler7" Id="7" />
-        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Grid.Row="1" ZIndex="1" Background="Transparent">
+                <DockPanel Name="DropToolDock" idc:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
                     <i:Interaction.Behaviors>
                         <id:SeFocusedOnPointerPressedBehavior />
-                        <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler5}" />
                     </i:Interaction.Behaviors>
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
@@ -43,10 +36,7 @@
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
-                        <i:Interaction.Behaviors>
-                            <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler6}" />
-                        </i:Interaction.Behaviors>
+                    <TabStrip Name="PART_TabStrip" idc:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="ItemsPanel">
@@ -86,11 +76,7 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel Orientation="Horizontal" Background="Transparent" Spacing="2">
-                                    <i:Interaction.Behaviors>
-                                        <id:DragBehavior Context="{Binding}" Handler="{StaticResource DockDragHandler}" />
-                                        <id:DropBehavior Context="{Binding}" Handler="{StaticResource DockDropHandler7}" />
-                                    </i:Interaction.Behaviors>
+                                <StackPanel Name="DragTool" idc:DockProperties.IsDragArea="True" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
                                 </StackPanel>
                             </DataTemplate>

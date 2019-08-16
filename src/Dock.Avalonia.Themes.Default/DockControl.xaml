@@ -38,14 +38,14 @@
                                 </ItemsControl.Styles>-->
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <idc:ProportionalStackPanel Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
+                                        <idc:ProportionalStackPanel Name="DropProportional" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
-                            <DockPanel Background="Transparent">
-                                <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Background="Transparent" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                            <DockPanel Name="DropPin" idc:DockProperties.IsDropArea="True" Background="Transparent">
+                                <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
                                     <TabStrip.Styles>
                                         <Style Selector="TabStrip:empty">
                                             <Setter Property="IsVisible" Value="False" />
@@ -56,7 +56,9 @@
                                     </TabStrip.Styles>
                                     <TabStrip.DataTemplates>
                                         <DataTemplate DataType="Dock:IDockable">
-                                            <TextBlock Text="{Binding Title}"/>
+                                            <StackPanel Name="DragPin" idc:DockProperties.IsDragArea="True" idc:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                                <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
+                                            </StackPanel>
                                         </DataTemplate>
                                     </TabStrip.DataTemplates>
                                 </TabStrip>
@@ -64,7 +66,7 @@
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
-                            <DockPanel Background="Transparent">
+                            <DockPanel Name="DropRoot" idc:DockProperties.IsDropArea="False" Background="Transparent">
                                 <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
                                 <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
                                 <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>

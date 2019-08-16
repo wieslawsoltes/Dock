@@ -165,10 +165,6 @@ namespace Dock.Model
                 }
                 dock.Visible.Insert(index, dockable); 
             }
-            else
-            {
-                throw new IndexOutOfRangeException();
-            }
         }
 
         /// <inheritdoc/>
@@ -399,13 +395,13 @@ namespace Dock.Model
                 int index = dock.Visible.IndexOf(dockable);
                 if (index < 0)
                 {
-                    throw new IndexOutOfRangeException();
+                    return;
                 }
                 dock.Visible.Remove(dockable);
                 int indexCurrentDockable = index > 0 ? index - 1 : 0;
                 if (indexCurrentDockable < 0)
                 {
-                    throw new IndexOutOfRangeException();
+                    return;
                 }
                 if (dock.Visible.Count > 0)
                 {
@@ -440,10 +436,6 @@ namespace Dock.Model
                 dock.Visible.Insert(targetIndex, sourceDockable);
                 dock.CurrentDockable = sourceDockable; 
             }
-            else
-            {
-                throw new IndexOutOfRangeException();
-            }
         }
 
         /// <inheritdoc/>
@@ -454,13 +446,13 @@ namespace Dock.Model
                 int index = dock.Visible.IndexOf(sourceDockable);
                 if (index < 0)
                 {
-                    throw new IndexOutOfRangeException();
+                    return;
                 }
                 dock.Visible.Remove(sourceDockable);
                 int indexCurrentDockable = index > 0 ? index - 1 : 0;
                 if (indexCurrentDockable < 0)
                 {
-                    throw new IndexOutOfRangeException();
+                    return;
                 }
                 if (dock.Visible.Count > 0)
                 {
@@ -493,9 +485,10 @@ namespace Dock.Model
 
             if (targetIndex < 0)
             {
-                throw new IndexOutOfRangeException();
+                return;
             }
 
+            // TODO: Fix crash.
             targetDock.Visible.Insert(targetIndex, sourceDockable);
             UpdateDockable(sourceDockable, targetDock);
             targetDock.CurrentDockable = sourceDockable;
@@ -511,13 +504,13 @@ namespace Dock.Model
                     int index = sourceDock.Visible.IndexOf(first);
                     if (index < 0)
                     {
-                        throw new IndexOutOfRangeException();
+                        return;
                     }
                     sourceDock.Visible.Remove(first);
                     int indexCurrentDockable = index > 0 ? index - 1 : 0;
                     if (indexCurrentDockable < 0)
                     {
-                        throw new IndexOutOfRangeException();
+                        return;
                     }
                     if (sourceDock.Visible.Count > 0)
                     {
@@ -561,10 +554,6 @@ namespace Dock.Model
                     sourceDock.CurrentDockable = second;
                     targetDock.CurrentDockable = first; 
                 }
-                else
-                {
-                    throw new IndexOutOfRangeException();
-                }
             }
         }
 
@@ -582,10 +571,6 @@ namespace Dock.Model
                 dock.Visible[targetIndex] = originalSourceDockable;
                 dock.Visible[sourceIndex] = originalTargetDockable;
                 dock.CurrentDockable = originalTargetDockable; 
-            }
-            else
-            {
-                throw new IndexOutOfRangeException();
             }
         }
 
@@ -608,10 +593,6 @@ namespace Dock.Model
                 sourceDock.CurrentDockable = originalTargetDockable;
                 targetDock.CurrentDockable = originalSourceDockable; 
             }
-            else
-            {
-                throw new IndexOutOfRangeException();
-            }
         }
 
         /// <inheritdoc/>
@@ -624,10 +605,6 @@ namespace Dock.Model
                 {
                     dock.Visible.RemoveAt(index);
                     dock.Visible.Insert(index, destination); 
-                }
-                else
-                {
-                    throw new IndexOutOfRangeException();
                 }
             }
         }
@@ -775,7 +752,7 @@ namespace Dock.Model
                         int currentDockableIndex = index > 0 ? index - 1 : 0;
                         if (currentDockableIndex < 0)
                         {
-                            throw new IndexOutOfRangeException();
+                            return;
                         }
                         if (ownerDock.Visible.Count > 0)
                         {
@@ -789,7 +766,7 @@ namespace Dock.Model
                     }
                     else
                     {
-                        throw new IndexOutOfRangeException();
+                        return;
                     }
                 }
 

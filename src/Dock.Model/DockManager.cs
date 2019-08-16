@@ -112,12 +112,12 @@ namespace Dock.Model
         {
             switch (operation)
             {
-                case DockOperation.Fill:
+                case DockOperation.Window:
                     if (sourceDockable == targetDockable)
                     {
                         return false;
                     }
-                    if (sourceDockable.Owner != targetDockable && sourceDockable.Owner is IDock sourceDockableOwner)
+                    if (sourceDockable.Owner is IDock sourceDockableOwner)
                     {
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
@@ -330,16 +330,16 @@ namespace Dock.Model
         {
             switch (targetDockable)
             {
-                case ITool tool:
-                    return DockDockableIntoDockable(sourceTool, tool, action, bExecute);
-                case IDocument document:
-                    return DockDockableIntoDockable(sourceTool, document, action, bExecute);
+                case IRootDock _:
+                    return DockDockableIntoWindow(sourceTool, targetDockable, operation, bExecute);
                 case IToolDock toolDock:
                     return DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute);
                 case IDocumentDock documentDock:
                     return DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute);
-                case IRootDock _:
-                    return DockDockableIntoWindow(sourceTool, targetDockable, operation, bExecute);
+                case ITool tool:
+                    return DockDockableIntoDockable(sourceTool, tool, action, bExecute);
+                case IDocument document:
+                    return DockDockableIntoDockable(sourceTool, document, action, bExecute);
                 default:
                     return false;
             }
@@ -350,14 +350,14 @@ namespace Dock.Model
         {
             switch (targetDockable)
             {
-                case IDocument document:
-                    return DockDockableIntoDockable(sourceDocument, document, action, bExecute);
-                case IDocumentDock documentDock:
-                    return DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute);
                 case IRootDock _:
                     return DockDockableIntoWindow(sourceDocument, targetDockable, operation, bExecute);
+                case IDocumentDock documentDock:
+                    return DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute);
+                case IDocument document:
+                    return DockDockableIntoDockable(sourceDocument, document, action, bExecute);
                 default:
-                     return false;
+                    return false;
             }
         }
 
@@ -366,6 +366,8 @@ namespace Dock.Model
         {
             switch (targetDockable)
             {
+                case IRootDock _:
+                    return DockDockableIntoWindow(sourceDock, targetDockable, operation, bExecute);
                 case IToolDock toolDock:
                     if (sourceDock == toolDock)
                     {
@@ -378,8 +380,6 @@ namespace Dock.Model
                         return false;
                     }
                     return DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute);
-                case IRootDock _:
-                    return DockDockableIntoWindow(sourceDock, targetDockable, operation, bExecute);
                 default:
                     return false;
             }
@@ -390,14 +390,14 @@ namespace Dock.Model
         {
             switch (sourceDockable)
             {
-                case ITool tool:
-                    return ValidateTool(tool, targetDockable, action, operation, bExecute);
-                case IDocument document:
-                    return ValidateDocument(document, targetDockable, action, operation, bExecute);
                 case IToolDock toolDock:
                     return ValidateDock(toolDock, targetDockable, action, operation, bExecute);
                 case IDocumentDock documentDock:
                     return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
+                case ITool tool:
+                    return ValidateTool(tool, targetDockable, action, operation, bExecute);
+                case IDocument document:
+                    return ValidateDocument(document, targetDockable, action, operation, bExecute);
                 default:
                     return false;
             }

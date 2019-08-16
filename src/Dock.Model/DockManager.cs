@@ -24,7 +24,14 @@ namespace Dock.Model
                 targetDockable = targetDock.Visible.LastOrDefault();
                 if (targetDockable == null)
                 {
-                    return false;
+                    if (bExecute)
+                    {
+                        if (sourceDockableOwner.Factory is IFactory factory)
+                        {
+                            factory.AddDockable(targetDock, sourceDockable);
+                        }
+                    }
+                    return true;
                 }
             }
             if (bExecute)

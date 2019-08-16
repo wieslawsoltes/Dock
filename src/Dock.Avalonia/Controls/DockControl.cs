@@ -313,7 +313,7 @@ namespace Dock.Avalonia.Controls
 
             if (_adornerHelper.Adorner is DockTarget target)
             {
-                operation = target.GetDockOperation(point, this);
+                operation = target.GetDockOperation(point, this, dragAction, Validate);
             }
 
             Validate(point, operation, dragAction);
@@ -325,7 +325,7 @@ namespace Dock.Avalonia.Controls
 
             if (_adornerHelper.Adorner is DockTarget target)
             {
-                operation = target.GetDockOperation(point, this);
+                operation = target.GetDockOperation(point, this, dragAction, Validate);
             }
 
             if (_dropControl is DockPanel)

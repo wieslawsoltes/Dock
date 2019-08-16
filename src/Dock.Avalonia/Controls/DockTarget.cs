@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -49,31 +50,31 @@ namespace Dock.Avalonia.Controls
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
         }
 
-        internal DockOperation GetDockOperation(Point point, IVisual input)
+        internal DockOperation GetDockOperation(Point point, IVisual input, DragAction dragAction, Func<Point, DockOperation, DragAction, bool> validate)
         {
             var result = DockOperation.Window;
 
-            if (InvalidateIndicator(_leftSelector, _leftIndicator, point, input))
+            if (InvalidateIndicator(_leftSelector, _leftIndicator, point, input, DockOperation.Left, dragAction, validate))
             {
                 result = DockOperation.Left;
             }
 
-            if (InvalidateIndicator(_rightSelector, _rightIndicator, point, input))
+            if (InvalidateIndicator(_rightSelector, _rightIndicator, point, input, DockOperation.Right, dragAction, validate))
             {
                 result = DockOperation.Right;
             }
 
-            if (InvalidateIndicator(_topSelector, _topIndicator, point, input))
+            if (InvalidateIndicator(_topSelector, _topIndicator, point, input, DockOperation.Top, dragAction, validate))
             {
                 result = DockOperation.Top;
             }
 
-            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, input))
+            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, input, DockOperation.Bottom, dragAction, validate))
             {
                 result = DockOperation.Bottom;
             }
 
-            if (InvalidateIndicator(_centerSelector, _centerIndicator, point, input))
+            if (InvalidateIndicator(_centerSelector, _centerIndicator, point, input, DockOperation.Fill, dragAction, validate))
             {
                 result = DockOperation.Fill;
             }
@@ -81,25 +82,23 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual input)
+        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual input, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, bool> validate)
         {
-            bool result = false;
-
             if (selector != null)
             {
                 var selectorPoint = input.TranslatePoint(point, selector);
-                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null)
+                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction) == true)
                 {
                     indicator.Opacity = 0.5;
-                    result = true;
+                    return true;
                 }
                 else
                 {
                     indicator.Opacity = 0;
+                    return false;
                 }
             }
-
-            return result;
+            return false;
         }
     }
 }

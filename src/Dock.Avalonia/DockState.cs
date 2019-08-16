@@ -18,8 +18,8 @@ namespace Dock.Avalonia
     /// </summary>
     internal class DockState
     {
-        private IDockManager _dockManager = new DockManager();
-        private AdornerHelper _adornerHelper = new AdornerHelper();
+        private readonly IDockManager _dockManager = new DockManager();
+        private readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private IControl _dragControl = null;
         private IControl _dropControl = null;
         private Point _dragStartPoint = default;

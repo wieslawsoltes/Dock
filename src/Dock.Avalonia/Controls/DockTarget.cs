@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -49,31 +49,31 @@ namespace Dock.Avalonia.Controls
             _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
         }
 
-        internal DockOperation GetDockOperation(Point point)
+        internal DockOperation GetDockOperation(Point point, IVisual input)
         {
             var result = DockOperation.Window;
 
-            if (InvalidateIndicator(_leftSelector, _leftIndicator, point))
+            if (InvalidateIndicator(_leftSelector, _leftIndicator, point, input))
             {
                 result = DockOperation.Left;
             }
 
-            if (InvalidateIndicator(_rightSelector, _rightIndicator, point))
+            if (InvalidateIndicator(_rightSelector, _rightIndicator, point, input))
             {
                 result = DockOperation.Right;
             }
 
-            if (InvalidateIndicator(_topSelector, _topIndicator, point))
+            if (InvalidateIndicator(_topSelector, _topIndicator, point, input))
             {
                 result = DockOperation.Top;
             }
 
-            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point))
+            if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, input))
             {
                 result = DockOperation.Bottom;
             }
 
-            if (InvalidateIndicator(_centerSelector, _centerIndicator, point))
+            if (InvalidateIndicator(_centerSelector, _centerIndicator, point, input))
             {
                 result = DockOperation.Fill;
             }
@@ -81,14 +81,13 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control selector, Grid indicator, Point point)
+        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual input)
         {
             bool result = false;
 
             if (selector != null)
             {
-                var selectorPoint = VisualRoot.TranslatePoint(point, selector);
-                Debug.WriteLine($"InvalidateIndicator : {point} -> {selectorPoint.Value}");
+                var selectorPoint = input.TranslatePoint(point, selector);
                 if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null)
                 {
                     indicator.Opacity = 0.5;

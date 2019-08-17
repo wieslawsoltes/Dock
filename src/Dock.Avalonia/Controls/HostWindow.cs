@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Dock.Model;
 
@@ -26,13 +28,10 @@ namespace Dock.Avalonia.Controls
         private Grid _topHorizontalGrip;
         private Grid _topLeftGrip;
         private Grid _topRightGrip;
-
         private Button _closeButton;
         private Button _minimiseButton;
         private Button _restoreButton;
-
         private Image _icon;
-
         private bool _mouseDown;
         private Point _mouseDownPosition;
 
@@ -68,6 +67,78 @@ namespace Dock.Avalonia.Controls
 
         Type IStyleable.StyleKey => typeof(HostWindow);
 
+        /// <inheritdoc/>
+        public bool IsTracked { get; set; }
+
+        /// <inheritdoc/>
+        public IDockWindow Window { get; set; }
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="HostWindow"/> class.
+        /// </summary>
+        public HostWindow()
+        {
+            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
+
+            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(InputElement.PointerCaptureLostEvent, CaptureLost, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+            PositionChanged += (sender, e) =>
+            {
+                if (Window != null && IsTracked == true)
+                {
+                    Window.Save();
+                }
+            };
+
+            LayoutUpdated += (sender, e) =>
+            {
+                if (Window != null && IsTracked == true)
+                {
+                    Window.Save();
+                }
+            };
+
+            Closing += (sender, e) =>
+            {
+                if (Window != null && IsTracked == true)
+                {
+                    Window.Save();
+
+                    if (Window.Layout is IDock root)
+                    {
+                        root.Close();
+                    }
+                }
+            };
+        }
+
+        private void Pressed(object sender, PointerPressedEventArgs e)
+        {
+            // TODO:
+            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Pressed)} {e.GetPosition(this)}");
+        }
+
+        private void Released(object sender, PointerReleasedEventArgs e)
+        {
+            // TODO:
+            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Released)} {e.GetPosition(this)}");
+        }
+
+        private void Moved(object sender, PointerEventArgs e)
+        {
+            // TODO:
+            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Moved)} {e.GetPosition(this)}");
+        }
+
+        private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
+        {
+            // TODO:
+            Debug.WriteLine($"{nameof(HostWindow)} {nameof(CaptureLost)}");
+        }
+
         /// <summary>
         /// Attaches grip to chrome.
         /// </summary>
@@ -90,6 +161,9 @@ namespace Dock.Avalonia.Controls
             this.PseudoClasses.Set(":toolwindow", true);
         }
 
+        /// <summary>
+        /// Toggles window state.
+        /// </summary>
         private void ToggleWindowState()
         {
             switch (WindowState)
@@ -215,49 +289,6 @@ namespace Dock.Avalonia.Controls
             //{
             //    _icon.DoubleTapped += (sender, ee) => { Close(); };
             //}
-        }
-
-        /// <inheritdoc/>
-        public bool IsTracked { get; set; }
-
-        /// <inheritdoc/>
-        public IDockWindow Window { get; set; }
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="HostWindow"/> class.
-        /// </summary>
-        public HostWindow()
-        {
-            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
-
-            PositionChanged += (sender, e) =>
-            {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
-                }
-            };
-
-            LayoutUpdated += (sender, e) =>
-            {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
-                }
-            };
-
-            Closing += (sender, e) =>
-            {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
-
-                    if (Window.Layout is IDock root)
-                    {
-                        root.Close();
-                    }
-                }
-            };
         }
 
         /// <inheritdoc/>

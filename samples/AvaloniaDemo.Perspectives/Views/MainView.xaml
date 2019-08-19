@@ -15,6 +15,6 @@
     <Grid RowDefinitions="Auto,*,25" Background="Transparent">
         <views:MenuView Grid.Row="0"/>
         <idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="1"/>
-        <TextBlock Text="{Binding #dockControl.Layout.FocusedDockable}" Margin="4" Grid.Row="1" />
+        <TextBlock Text="{Binding #dockControl.Layout.FocusedDockable}" Margin="4" Grid.Row="2" />
     </Grid>
 </UserControl>

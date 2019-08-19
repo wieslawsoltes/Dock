@@ -399,15 +399,12 @@ namespace Dock.Model
                 int index = dock.Views.IndexOf(view);
                 if (index < 0)
                 {
-                    throw new IndexOutOfRangeException();
+                    return;
                 }
                 dock.Views.Remove(view);
                 int indexCurrentView = index > 0 ? index - 1 : 0;
-                if (indexCurrentView < 0)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-                if (dock.Views.Count > 0)
+                
+                if (dock.Views.Count > 0 && indexCurrentView >= 0)
                 {
                     dock.CurrentView = dock.Views[indexCurrentView];
                 }

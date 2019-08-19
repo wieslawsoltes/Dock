@@ -19,22 +19,31 @@ namespace Dock.Model
             target.Id = source.Id;
             target.Title = source.Title;
 
-            target.Visible = source.Factory.CreateList<IDockable>();
-            foreach (var visible in source.Visible)
+            if (source.Visible != null)
             {
-                target.Visible.Add(visible.Clone());
+                target.Visible = source.Factory.CreateList<IDockable>();
+                foreach (var visible in source.Visible)
+                {
+                    target.Visible.Add(visible.Clone());
+                }
             }
 
-            target.Hidden = source.Factory.CreateList<IDockable>();
-            foreach (var hidden in source.Hidden)
+            if (source.Hidden != null)
             {
-                target.Hidden.Add(hidden.Clone());
+                target.Hidden = source.Factory.CreateList<IDockable>();
+                foreach (var hidden in source.Hidden)
+                {
+                    target.Hidden.Add(hidden.Clone());
+                }
             }
 
-            target.Pinned = source.Factory.CreateList<IDockable>();
-            foreach (var pinned in source.Pinned)
+            if (source.Pinned != null)
             {
-                target.Pinned.Add(pinned.Clone());
+                target.Pinned = source.Factory.CreateList<IDockable>();
+                foreach (var pinned in source.Pinned)
+                {
+                    target.Pinned.Add(pinned.Clone());
+                }
             }
 
             int indexCurrentDockable = source.Visible.IndexOf(source.CurrentDockable);
@@ -59,10 +68,13 @@ namespace Dock.Model
             target.IsActive = source.IsActive;
             target.IsCollapsable = source.IsCollapsable;
 
-            target.Windows = source.Factory.CreateList<IDockWindow>();
-            foreach (var window in source.Windows)
+            if (source.Windows != null)
             {
-                target.Windows.Add(window.Clone());
+                target.Windows = source.Factory.CreateList<IDockWindow>();
+                foreach (var window in source.Windows)
+                {
+                    target.Windows.Add(window.Clone());
+                }
             }
         }
 
@@ -77,11 +89,11 @@ namespace Dock.Model
 
             CloneDockProperties(source, rootDock);
 
-            rootDock.Window = source.Window.Clone();
-            rootDock.Top = (IPinDock)source.Top.Clone();
-            rootDock.Bottom = (IPinDock)source.Bottom.Clone();
-            rootDock.Left = (IPinDock)source.Left.Clone();
-            rootDock.Right = (IPinDock)source.Right.Clone();
+            rootDock.Window = source.Window?.Clone();
+            rootDock.Top = (IPinDock)source.Top?.Clone();
+            rootDock.Bottom = (IPinDock)source.Bottom?.Clone();
+            rootDock.Left = (IPinDock)source.Left?.Clone();
+            rootDock.Right = (IPinDock)source.Right?.Clone();
 
             return rootDock;
         }
@@ -178,7 +190,7 @@ namespace Dock.Model
             dockWindow.Height = source.Height;
             dockWindow.Topmost = source.Topmost;
             dockWindow.Title = source.Title;
-            dockWindow.Layout = (IDock)source.Layout.Clone();
+            dockWindow.Layout = (IDock)source.Layout?.Clone();
 
             return dockWindow;
         }

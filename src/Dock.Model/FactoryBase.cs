@@ -87,14 +87,18 @@ namespace Dock.Model
                     return locator?.Invoke();
                 }
             }
-            throw new Exception($"Dock host with {id} is not registered.");
+            return null; // Dock host window with provided id is not registered.
         }
 
         /// <inheritdoc/>
         public virtual void UpdateDockable(IDockWindow window, IDockable owner)
         {
             window.Host = GetHostWindow(window.Id);
-            window.Host.Window = window;
+            if (window.Host != null)
+            {
+                window.Host.Window = window;
+            }
+
             window.Owner = owner;
             window.Factory = this;
 
@@ -698,7 +702,7 @@ namespace Dock.Model
                     }
                     break;
                 default:
-                    throw new NotSupportedException($"Not support dock operation: {operation}.");
+                    throw new NotSupportedException($"Not supported split operation: {operation}.");
             }
         }
 

@@ -59,7 +59,7 @@ namespace AvaloniaDemo.ViewModels
         public MainWindowViewModel()
         {
             DockControl = null;
-            Factory = new DemoFactory(new DemoData());
+            Factory = new DemoFactory();
             Serializer = new DockSerializer(typeof(AvaloniaList<>));
             Path = System.IO.Path.Combine(AppContext.BaseDirectory, "Layout.json");
         }
@@ -108,7 +108,7 @@ namespace AvaloniaDemo.ViewModels
                 {
                     root.Close();
                 }
-                Factory = new DemoFactory(new DemoData());
+                Factory = new DemoFactory();
                 DockControl.Layout = Factory.CreateLayout();
                 Factory.InitLayout(DockControl.Layout);
             }
@@ -150,6 +150,33 @@ namespace AvaloniaDemo.ViewModels
                     Serializer.Save(result, DockControl.Layout);
                 }
             }
+        }
+
+        public void SaveWindowLayout()
+        {
+            // TODO:
+            if (DockControl != null)
+            {
+                if (DockControl.Layout != null && Layout.CurrentDockable != null)
+                {
+                    var dockable = Layout.CurrentDockable.Clone();
+                    if (dockable != null)
+                    {
+                        Factory.AddDockable(DockControl.Layout, dockable);
+                        Factory.SetCurrentDockable(dockable);
+                    }
+                }
+            }
+        }
+
+        public void ManageWindowLayouts()
+        {
+            // TODO:
+        }
+
+        public void ResetWindowLayout()
+        {
+            // TODO:
         }
 
         private Window GetWindow()

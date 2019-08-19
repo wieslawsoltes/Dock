@@ -35,5 +35,19 @@
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>
+        <MenuItem Header="_Window">
+            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}"/>
+            <MenuItem Header="_Apply Window Layout" Items="{Binding Visible}">
+                <MenuItem.Styles>
+                    <Style Selector="MenuItem">
+                        <Setter Property="Header" Value="{Binding Title}"/>
+                        <Setter Property="Command" Value="{Binding Factory.SetCurrentDockable}"/>
+                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                    </Style>
+                </MenuItem.Styles>
+            </MenuItem>
+            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}"/>
+            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}"/>
+        </MenuItem>
     </Menu>
 </UserControl>

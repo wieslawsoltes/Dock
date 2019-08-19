@@ -46,22 +46,31 @@ namespace Dock.Model
                 }
             }
 
-            int indexCurrentDockable = source.Visible.IndexOf(source.CurrentDockable);
-            if (indexCurrentDockable >= 0)
+            if (source.Visible != null)
             {
-                target.CurrentDockable = target.Visible[indexCurrentDockable];
+                int indexCurrentDockable = source.Visible.IndexOf(source.CurrentDockable);
+                if (indexCurrentDockable >= 0)
+                {
+                    target.CurrentDockable = target.Visible[indexCurrentDockable];
+                }
             }
 
-            int indexDefaultDockable = source.Visible.IndexOf(source.DefaultDockable);
-            if (indexDefaultDockable >= 0)
+            if (source.Visible != null)
             {
-                target.DefaultDockable = target.Visible[indexDefaultDockable];
+                int indexDefaultDockable = source.Visible.IndexOf(source.DefaultDockable);
+                if (indexDefaultDockable >= 0)
+                {
+                    target.DefaultDockable = target.Visible[indexDefaultDockable];
+                }
             }
 
-            int indexFocusedDockable = source.Visible.IndexOf(source.FocusedDockable);
-            if (indexFocusedDockable >= 0)
+            if (source.Visible != null)
             {
-                target.FocusedDockable = target.Visible[indexFocusedDockable];
+                int indexFocusedDockable = source.Visible.IndexOf(source.FocusedDockable);
+                if (indexFocusedDockable >= 0)
+                {
+                    target.FocusedDockable = target.Visible[indexFocusedDockable];
+                }
             }
 
             target.Proportion = source.Proportion;

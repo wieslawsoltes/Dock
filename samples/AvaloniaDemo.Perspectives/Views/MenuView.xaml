@@ -37,7 +37,7 @@
         </MenuItem>
         <MenuItem Header="_Window">
             <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}"/>
-            <MenuItem Header="_Apply Window Layout" Items="{Binding Visible}">
+            <MenuItem Header="_Apply Window Layout" Items="{Binding DockControl.Layout.Visible}">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem">
                         <Setter Property="Header" Value="{Binding Title}"/>

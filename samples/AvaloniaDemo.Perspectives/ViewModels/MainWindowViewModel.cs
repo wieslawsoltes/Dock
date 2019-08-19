@@ -157,9 +157,9 @@ namespace AvaloniaDemo.ViewModels
             // TODO:
             if (DockControl != null)
             {
-                if (DockControl.Layout != null && Layout.CurrentDockable != null)
+                if (DockControl.Layout != null && DockControl.Layout.CurrentDockable != null)
                 {
-                    var dockable = Layout.CurrentDockable.Clone();
+                    var dockable = DockControl.Layout.CurrentDockable.Clone();
                     if (dockable != null)
                     {
                         Factory.AddDockable(DockControl.Layout, dockable);

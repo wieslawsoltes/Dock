@@ -76,13 +76,13 @@ namespace Dock.Model
         /// Defines the <see cref="CanGoBack"/> property.
         /// </summary>
         public static readonly DirectProperty<DockBase, bool> CanGoBackProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoBackProperty), (o) => o.CanGoBack);
+            AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoBack), (o) => o.CanGoBack);
 
         /// <summary>
         /// Defines the <see cref="CanGoForward"/> property.
         /// </summary>
         public static readonly DirectProperty<DockBase, bool> CanGoForwardProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoForwardProperty), (o) => o.CanGoForward);
+            AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoForward), (o) => o.CanGoForward);
 
         /// <summary>
         /// Defines the <see cref="Windows"/> property.

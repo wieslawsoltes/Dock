@@ -90,6 +90,14 @@ namespace Dock.Model.Avalonia.UnitTests
         }
     }
 
+    public class TestDocument : Document
+    {
+    }
+
+    public class TestTool : Tool
+    {
+    }
+
     public class TestFactory : Factory
     {
         public override IDock CreateLayout()

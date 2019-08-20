@@ -17,9 +17,9 @@
         </MenuItem>
         <MenuItem Header="_View">
             <MenuItem Header="_Windows">
-                <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
+                <MenuItem Header="_Exit" Command="{Binding DockControl.Layout.ExitWindows}"/>
                 <Separator/>
-                <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}"/>
+                <MenuItem Header="_Show" Command="{Binding DockControl.Layout.ShowWindows}"/>
             </MenuItem>
         </MenuItem>
         <MenuItem Header="_Options">

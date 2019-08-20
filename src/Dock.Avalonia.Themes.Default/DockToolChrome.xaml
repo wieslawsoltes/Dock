@@ -19,11 +19,11 @@
                     <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left" Text="{Binding CurrentDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding CurrentDockable}">
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding AvtiveDockable.Title}" HorizontalAlignment="Left" TextAlignment="Center" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
+                                <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding AvtiveDockable}">
                                     <Image Source="avares://Dock.Avalonia.Themes.Default/Assets/PinClose_Dark.png" Height="13" Width="13" Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Owner.Factory.PinDockable}" CommandParameter="{Binding CurrentDockable}">
+                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Owner.Factory.PinDockable}" CommandParameter="{Binding AvtiveDockable}">
                                     <Image Source="avares://Dock.Avalonia.Themes.Default/Assets/PinAutoHide_Dark.png" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">

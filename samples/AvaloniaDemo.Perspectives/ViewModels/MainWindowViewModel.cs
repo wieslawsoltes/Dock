@@ -40,7 +40,15 @@ namespace AvaloniaDemo.ViewModels
                         DockControl.Layout = layout;
                     }
                 }
-
+                else
+                {
+                    var layout = DockControl.Layout;
+                    if (layout != null)
+                    {
+                        var factory = new DemoFactory();
+                        factory.InitLayout(layout);
+                    }
+                }
             }
         }
 

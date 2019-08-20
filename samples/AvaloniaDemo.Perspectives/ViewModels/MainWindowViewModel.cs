@@ -32,22 +32,18 @@ namespace AvaloniaDemo.ViewModels
                 var path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
                 if (File.Exists(path))
                 {
-                    var layout = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
-                    if (layout != null)
+                    var root = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
+                    if (root != null)
                     {
-                        var factory = new DemoFactory();
-                        factory.InitLayout(layout);
-                        DockControl.Layout = layout;
+                        DockControl.Layout = root;
                     }
                 }
-                else
+
+                var layout = DockControl.Layout;
+                if (layout != null)
                 {
-                    var layout = DockControl.Layout;
-                    if (layout != null)
-                    {
-                        var factory = new DemoFactory();
-                        factory.InitLayout(layout);
-                    }
+                    var factory = new DemoFactory();
+                    factory.InitLayout(layout);
                 }
             }
         }

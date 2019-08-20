@@ -31,7 +31,7 @@
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding AvtiveDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
+                    <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="ItemsPanel">
@@ -78,7 +78,7 @@
                         </TabStrip.DataTemplates>
                     </TabStrip>
                     <Border Classes="panel" ZIndex="-1" Background="{DynamicResource ThemeControlBackgroundBrush}">
-                        <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding AvtiveDockable, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                     </Border>
                 </DockPanel>
             </ControlTemplate>

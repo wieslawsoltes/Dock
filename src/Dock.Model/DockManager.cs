@@ -25,7 +25,7 @@ namespace Dock.Model
                     return false;
                 }
             }
-            var targetDockable = targetDock.AvtiveDockable;
+            var targetDockable = targetDock.ActiveDockable;
             if (targetDockable == null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
@@ -53,7 +53,7 @@ namespace Dock.Model
 
         internal bool SwapDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
         {
-            var targetDockable = targetDock.AvtiveDockable;
+            var targetDockable = targetDock.ActiveDockable;
             if (targetDockable == null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
@@ -80,7 +80,7 @@ namespace Dock.Model
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.AvtiveDockable = sourceDockable;
+                toolDock.ActiveDockable = sourceDockable;
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();
                 toolDock.VisibleDockables.Add(sourceDockable);
                 factory.Split(targetDock, toolDock, operation);
@@ -94,7 +94,7 @@ namespace Dock.Model
                 IDock documentDock = factory.CreateDocumentDock();
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
-                documentDock.AvtiveDockable = sourceDockable;
+                documentDock.ActiveDockable = sourceDockable;
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
                 factory.Split(targetDock, documentDock, operation);
@@ -156,7 +156,7 @@ namespace Dock.Model
                         //}
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (factory.FindRoot(sourceDockable) is IDock root && root.AvtiveDockable is IDock targetWindowOwner)
+                            if (factory.FindRoot(sourceDockable) is IDock root && root.ActiveDockable is IDock targetWindowOwner)
                             {
                                 if (bExecute)
                                 {

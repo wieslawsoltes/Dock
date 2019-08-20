@@ -124,7 +124,7 @@ namespace AvaloniaDemo.ViewModels
                 if (clone != null)
                 {
                     owner.Factory.AddDockable(owner, clone);
-                    owner.Factory.SetAvtiveDockable(clone);
+                    owner.Factory.SetActiveDockable(clone);
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace AvaloniaDemo.ViewModels
         {
             if (layout != null && layout.Owner is IDock owner)
             {
-                owner.Factory.SetAvtiveDockable(layout);
+                owner.Factory.SetActiveDockable(layout);
             }
         }
 

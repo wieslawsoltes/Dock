@@ -37,10 +37,10 @@ namespace Dock.Model
             AvaloniaProperty.Register<DockBase, IList<IDockable>>(nameof(PinnedDockables));
 
         /// <summary>
-        /// Defines the <see cref="AvtiveDockable"/> property.
+        /// Defines the <see cref="ActiveDockable"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDockable> AvtiveDockableProperty =
-            AvaloniaProperty.Register<DockBase, IDockable>(nameof(AvtiveDockable));
+        public static readonly StyledProperty<IDockable> ActiveDockableProperty =
+            AvaloniaProperty.Register<DockBase, IDockable>(nameof(ActiveDockable));
 
         /// <summary>
         /// Defines the <see cref="DefaultDockable"/> property.
@@ -123,12 +123,12 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IDockable AvtiveDockable
+        public IDockable ActiveDockable
         {
-            get { return GetValue(AvtiveDockableProperty); }
+            get { return GetValue(ActiveDockableProperty); }
             set
             {
-                SetValue(AvtiveDockableProperty, value);
+                SetValue(ActiveDockableProperty, value);
                 SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
                 SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
                 Factory?.SetFocusedDockable(this, value);

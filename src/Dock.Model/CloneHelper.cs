@@ -48,10 +48,10 @@ namespace Dock.Model
 
             if (source.VisibleDockables != null)
             {
-                int indexAvtiveDockable = source.VisibleDockables.IndexOf(source.AvtiveDockable);
-                if (indexAvtiveDockable >= 0)
+                int indexActiveDockable = source.VisibleDockables.IndexOf(source.ActiveDockable);
+                if (indexActiveDockable >= 0)
                 {
-                    target.AvtiveDockable = target.VisibleDockables[indexAvtiveDockable];
+                    target.ActiveDockable = target.VisibleDockables[indexActiveDockable];
                 }
             }
 

@@ -14,7 +14,7 @@ namespace Dock.Model
 
         public IList<IDockable> PinnedDockables { get; set; }
 
-        public IDockable AvtiveDockable { get; set; }
+        public IDockable ActiveDockable { get; set; }
 
         public IDockable DefaultDockable { get; set; }
 

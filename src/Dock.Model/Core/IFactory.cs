@@ -149,7 +149,7 @@ namespace Dock.Model
         /// will become the selected dockable.
         /// </summary>
         /// <param name="dockable">The dockable to select.</param>
-        void SetAvtiveDockable(IDockable dockable);
+        void SetActiveDockable(IDockable dockable);
 
         /// <summary>
         /// Sets the currently focused dockable updating IsActive flags.

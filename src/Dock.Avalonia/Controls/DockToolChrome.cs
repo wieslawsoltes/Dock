@@ -28,6 +28,12 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
 
         /// <summary>
+        /// Define the <see cref="IsActive"/> property.
+        /// </summary>
+        public static readonly AvaloniaProperty<bool> IsActiveProperty =
+            AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
+
+        /// <summary>
         /// Gets or sets chrome tool title.
         /// </summary>
         public string Title
@@ -35,12 +41,6 @@ namespace Dock.Avalonia.Controls
             get { return GetValue(TitleProprty); }
             set { SetValue(TitleProprty, value); }
         }
-
-        /// <summary>
-        /// Define the <see cref="IsActive"/> property.
-        /// </summary>
-        public static readonly AvaloniaProperty<bool> IsActiveProperty =
-            AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
 
         /// <summary>
         /// Gets or sets if this is the currently active Tool.

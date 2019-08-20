@@ -28,3 +28,5 @@ jobs:
       run: dotnet build --configuration Release
     - name: Test Release
       run: dotnet test --configuration Release
+    - name: Pack Release
+      run: dotnet pack --configuration Release --output ./artifacts/NuGet

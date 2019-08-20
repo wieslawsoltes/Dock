@@ -18,6 +18,9 @@ namespace Dock.Model
         {
             target.Id = source.Id;
             target.Title = source.Title;
+            target.Proportion = source.Proportion;
+            target.IsActive = source.IsActive;
+            target.IsCollapsable = source.IsCollapsable;
 
             if (source.VisibleDockables != null)
             {
@@ -66,10 +69,6 @@ namespace Dock.Model
                     target.FocusedDockable = target.VisibleDockables[indexFocusedDockable];
                 }
             }
-
-            target.Proportion = source.Proportion;
-            target.IsActive = source.IsActive;
-            target.IsCollapsable = source.IsCollapsable;
 
             if (source.Windows != null)
             {

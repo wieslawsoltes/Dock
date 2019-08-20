@@ -25,9 +25,23 @@ jobs:
       with:
         dotnet-version: 3.0.100-preview7-012821
     - name: Build Release
-      run: dotnet build --configuration Release
+      run: dotnet build -c Release
     - name: Test Release
-      run: dotnet test --configuration Release
+      run: dotnet test -c Release
     - name: Pack Release
       if: github.event_name != 'pull_request'
-      run: dotnet pack --configuration Release --output ./artifacts/NuGet
+      run: dotnet pack -c Release -o ./artifacts/NuGet
+    - name: Publish Windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        dotnet publish -c Release -f net461 -r win7-x64 -o ./artifacts/AvaloniaDemo-net461-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+        dotnet publish -c Release -f netcoreapp2.2 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp2.2-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+        dotnet publish -c Release -f netcoreapp3.0 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+    - name: Publish Linux
+      if: matrix.os == 'ubuntu-18.04'
+      run: |
+        dotnet publish -c Release -f netcoreapp3.0 -r debian.8-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-debian.8-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+        dotnet publish -c Release -f netcoreapp3.0 -r ubuntu.14.04-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+    - name: Publish macOS
+      if: matrix.os == 'macOS-10.14'
+      run: dotnet publish -c Release -f netcoreapp3.0 -r osx.10.12-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj

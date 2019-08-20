@@ -157,13 +157,13 @@ namespace AvaloniaDemo.ViewModels
             // TODO:
             if (DockControl != null)
             {
-                if (DockControl.Layout != null && DockControl.Layout.CurrentDockable != null)
+                if (DockControl.Layout != null && DockControl.Layout.AvtiveDockable != null)
                 {
-                    var dockable = DockControl.Layout.CurrentDockable.Clone();
+                    var dockable = DockControl.Layout.AvtiveDockable.Clone();
                     if (dockable != null)
                     {
                         Factory.AddDockable(DockControl.Layout, dockable);
-                        Factory.SetCurrentDockable(dockable);
+                        Factory.SetAvtiveDockable(dockable);
                     }
                 }
             }

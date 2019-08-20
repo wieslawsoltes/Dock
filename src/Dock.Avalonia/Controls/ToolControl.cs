@@ -35,12 +35,12 @@ namespace Dock.Avalonia.Controls
         {
             if (this.DataContext is IDock dock && dock.Factory is IFactory factory)
             {
-                if (dock.CurrentDockable != null)
+                if (dock.AvtiveDockable != null)
                 {
-                    if (factory.FindRoot(dock.CurrentDockable) is IDock root)
+                    if (factory.FindRoot(dock.AvtiveDockable) is IDock root)
                     {
-                        Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.CurrentDockable}");
-                        factory.SetFocusedDockable(root, dock.CurrentDockable);
+                        Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.AvtiveDockable}");
+                        factory.SetFocusedDockable(root, dock.AvtiveDockable);
                     }
                 }
             }

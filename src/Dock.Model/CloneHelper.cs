@@ -19,57 +19,57 @@ namespace Dock.Model
             target.Id = source.Id;
             target.Title = source.Title;
 
-            if (source.Visible != null)
+            if (source.VisibleDockables != null)
             {
-                target.Visible = source.Factory.CreateList<IDockable>();
-                foreach (var visible in source.Visible)
+                target.VisibleDockables = source.Factory.CreateList<IDockable>();
+                foreach (var visible in source.VisibleDockables)
                 {
-                    target.Visible.Add(visible.Clone());
+                    target.VisibleDockables.Add(visible.Clone());
                 }
             }
 
-            if (source.Hidden != null)
+            if (source.HiddenDockables != null)
             {
-                target.Hidden = source.Factory.CreateList<IDockable>();
-                foreach (var hidden in source.Hidden)
+                target.HiddenDockables = source.Factory.CreateList<IDockable>();
+                foreach (var hidden in source.HiddenDockables)
                 {
-                    target.Hidden.Add(hidden.Clone());
+                    target.HiddenDockables.Add(hidden.Clone());
                 }
             }
 
-            if (source.Pinned != null)
+            if (source.PinnedDockables != null)
             {
-                target.Pinned = source.Factory.CreateList<IDockable>();
-                foreach (var pinned in source.Pinned)
+                target.PinnedDockables = source.Factory.CreateList<IDockable>();
+                foreach (var pinned in source.PinnedDockables)
                 {
-                    target.Pinned.Add(pinned.Clone());
+                    target.PinnedDockables.Add(pinned.Clone());
                 }
             }
 
-            if (source.Visible != null)
+            if (source.VisibleDockables != null)
             {
-                int indexCurrentDockable = source.Visible.IndexOf(source.CurrentDockable);
-                if (indexCurrentDockable >= 0)
+                int indexAvtiveDockable = source.VisibleDockables.IndexOf(source.AvtiveDockable);
+                if (indexAvtiveDockable >= 0)
                 {
-                    target.CurrentDockable = target.Visible[indexCurrentDockable];
+                    target.AvtiveDockable = target.VisibleDockables[indexAvtiveDockable];
                 }
             }
 
-            if (source.Visible != null)
+            if (source.VisibleDockables != null)
             {
-                int indexDefaultDockable = source.Visible.IndexOf(source.DefaultDockable);
+                int indexDefaultDockable = source.VisibleDockables.IndexOf(source.DefaultDockable);
                 if (indexDefaultDockable >= 0)
                 {
-                    target.DefaultDockable = target.Visible[indexDefaultDockable];
+                    target.DefaultDockable = target.VisibleDockables[indexDefaultDockable];
                 }
             }
 
-            if (source.Visible != null)
+            if (source.VisibleDockables != null)
             {
-                int indexFocusedDockable = source.Visible.IndexOf(source.FocusedDockable);
+                int indexFocusedDockable = source.VisibleDockables.IndexOf(source.FocusedDockable);
                 if (indexFocusedDockable >= 0)
                 {
-                    target.FocusedDockable = target.Visible[indexFocusedDockable];
+                    target.FocusedDockable = target.VisibleDockables[indexFocusedDockable];
                 }
             }
 

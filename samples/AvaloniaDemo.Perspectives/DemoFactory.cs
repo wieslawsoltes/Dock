@@ -38,7 +38,7 @@ namespace AvaloniaDemo
                 {
                     var hostWindow = new HostWindow()
                     {
-                        [!HostWindow.TitleProperty] = new Binding("CurrentDockable.Title")
+                        [!HostWindow.TitleProperty] = new Binding("AvtiveDockable.Title")
                     };
 
                     hostWindow.Content = new DockControl()

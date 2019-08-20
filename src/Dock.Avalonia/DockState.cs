@@ -127,6 +127,7 @@ namespace Dock.Avalonia
 
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
                 _dockManager.Position = ToDockPoint(point);
                 _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);

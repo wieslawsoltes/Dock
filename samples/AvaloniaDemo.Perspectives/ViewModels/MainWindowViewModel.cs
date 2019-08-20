@@ -116,11 +116,11 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void SaveWindowLayout(IDockable dockable)
+        public void SaveWindowLayout(IDock layout)
         {
-            if (dockable != null && dockable.Owner is IDock owner)
+            if (layout != null && layout.Owner is IDock owner)
             {
-                var clone = dockable.Clone();
+                var clone = layout.Clone();
                 if (clone != null)
                 {
                     owner.Factory.AddDockable(owner, clone);
@@ -129,11 +129,11 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void ApplyWindowLayout(IDockable dockable)
+        public void ApplyWindowLayout(IDock layout)
         {
-            if (dockable != null && dockable.Owner is IDock dock)
+            if (layout != null && layout.Owner is IDock owner)
             {
-                dock.Factory.SetAvtiveDockable(dockable);
+                owner.Factory.SetAvtiveDockable(layout);
             }
         }
 
@@ -142,7 +142,7 @@ namespace AvaloniaDemo.ViewModels
             // TODO:
         }
 
-        public void ResetWindowLayout(IDockable dockable)
+        public void ResetWindowLayout(IDock dock)
         {
             // TODO:
         }

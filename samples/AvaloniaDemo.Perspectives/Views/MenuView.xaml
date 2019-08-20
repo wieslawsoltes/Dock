@@ -41,7 +41,7 @@
                 <MenuItem.Styles>
                     <Style Selector="MenuItem">
                         <Setter Property="Header" Value="{Binding Title}"/>
-                        <Setter Property="Command" Value="{Binding Factory.SetAvtiveDockable}"/>
+                        <Setter Property="Command" Value="{Binding $parent.DataContext.ApplyWindowLayout}"/>
                         <Setter Property="CommandParameter" Value="{Binding}"/>
                     </Style>
                 </MenuItem.Styles>

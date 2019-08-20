@@ -39,7 +39,7 @@ namespace Dock.Avalonia.Controls
                 {
                     if (factory.FindRoot(dock.ActiveDockable) is IDock root)
                     {
-                        Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.ActiveDockable}");
+                        Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);
                     }
                 }

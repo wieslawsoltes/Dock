@@ -14,15 +14,13 @@ namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : StyledElement
     {
-        public static readonly DirectProperty<MainWindowViewModel, DockControl> DockControlProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, DockControl>(nameof(DockControl), o => o.DockControl, (o, v) => o.DockControl = v);
-
-        private DockControl _dockControl;
+        public static readonly StyledProperty<DockControl> DockControlProperty =
+            AvaloniaProperty.Register<MainWindowViewModel, DockControl>(nameof(DockControl));
 
         public DockControl DockControl
         {
-            get { return _dockControl; }
-            set { SetAndRaise(DockControlProperty, ref _dockControl, value); }
+            get { return GetValue(DockControlProperty); }
+            set { SetValue(DockControlProperty, value); }
         }
 
         public void AttachDockControl(DockControl dockControl)

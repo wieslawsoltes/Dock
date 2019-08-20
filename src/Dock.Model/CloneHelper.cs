@@ -53,19 +53,13 @@ namespace Dock.Model
                 {
                     target.ActiveDockable = target.VisibleDockables[indexActiveDockable];
                 }
-            }
 
-            if (source.VisibleDockables != null)
-            {
                 int indexDefaultDockable = source.VisibleDockables.IndexOf(source.DefaultDockable);
                 if (indexDefaultDockable >= 0)
                 {
                     target.DefaultDockable = target.VisibleDockables[indexDefaultDockable];
                 }
-            }
 
-            if (source.VisibleDockables != null)
-            {
                 int indexFocusedDockable = source.VisibleDockables.IndexOf(source.FocusedDockable);
                 if (indexFocusedDockable >= 0)
                 {

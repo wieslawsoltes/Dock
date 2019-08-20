@@ -12,9 +12,25 @@
     <UserControl.Styles>
         <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.xaml"/>
     </UserControl.Styles>
-    <Grid RowDefinitions="Auto,*,25" Background="Transparent">
-        <views:MenuView Grid.Row="0"/>
-        <idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="1"/>
-        <TextBlock Text="{Binding #dockControl.Layout.FocusedDockable}" Margin="4" Grid.Row="2" />
+    <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="*,200" Background="Transparent">
+        <views:MenuView Grid.Row="0" Grid.Column="0"/>
+        <idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Text="{Binding #dockControl.Layout.FocusedDockable}" Margin="4" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <Grid RowDefinitions="Auto,*,Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+            <StackPanel Grid.Row="0">
+                <Button Content="Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
+                <Button Content="Apply Window Layout" Command="{Binding ApplyWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
+                <Button Content="Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding #dockControl.Layout}" Margin="4,2"/>
+                <Button Content="Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
+            </StackPanel>
+            <ListBox Items="{Binding #dockControl.Layout.VisibleDockables}" SelectedItem="{Binding #dockControl.Layout.ActiveDockable, Mode=TwoWay}" Margin="4" Grid.Row="1">
+                <ListBox.DataTemplates>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}"/>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+            <TextBox Text="{Binding #dockControl.Layout.ActiveDockable.Title}" Margin="4" Grid.Row="2"/>
+        </Grid> 
     </Grid>
 </UserControl>

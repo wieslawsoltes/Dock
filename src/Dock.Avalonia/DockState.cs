@@ -135,12 +135,24 @@ namespace Dock.Avalonia
             return false;
         }
 
+        private bool IsHitTestVisible(IVisual visual)
+        {
+            var element = visual as IInputElement;
+            return element != null &&
+                   element.IsVisible &&
+                   element.IsHitTestVisible &&
+                   element.IsEffectivelyEnabled &&
+                   element.IsAttachedToVisualTree;
+        }
+
         private IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement> inputElements = null;
             try
             {
-                inputElements = input.GetInputElementsAt(point);
+                inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
+                // TODO: GetInputElementsAt can throw.
+                // inputElements = input.GetInputElementsAt(point);
             }
             catch (Exception ex)
             {

@@ -28,14 +28,12 @@
                             </idc:DockToolChrome>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IProportionalDock">
-                            <ItemsControl Items="{Binding VisibleDockables}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                <!--
+                            <ItemsControl Items="{Binding VisibleDockables}">
                                 <ItemsControl.Styles>
                                     <Style Selector="ItemsControl > ContentPresenter">
                                         <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
                                     </Style>
                                 </ItemsControl.Styles>
-                                -->
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <idc:ProportionalStackPanel Name="DropProportional" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>

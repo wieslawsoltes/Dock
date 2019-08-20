@@ -37,6 +37,7 @@ jobs:
         dotnet publish -c Release -f net461 -r win7-x64 -o ./artifacts/AvaloniaDemo-net461-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp2.2 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp2.2-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp3.0 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+
     - name: Publish Linux
       if: matrix.os == 'ubuntu-18.04'
       run: |
@@ -44,4 +45,15 @@ jobs:
         dotnet publish -c Release -f netcoreapp3.0 -r ubuntu.14.04-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
     - name: Publish macOS
       if: matrix.os == 'macOS-10.14'
+      uses: montudor/action-zip@v0.1.0
       run: dotnet publish -c Release -f netcoreapp3.0 -r osx.10.12-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
+    - name: Archive macOS0
+      if: matrix.os == 'macOS-10.14'
+      uses: montudor/action-zip@v0.1.
+      run: zip -r ./artifacts/Zip/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64.zip ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64
+    - name: Upload macOS
+      if: matrix.os == 'macOS-10.14'
+      uses: actions/upload-artifact@master
+      with:
+        name: AvaloniaDemo-netcoreapp3.0-osx.10.12-x64
+        path: ./artifacts/Zip/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64.zip

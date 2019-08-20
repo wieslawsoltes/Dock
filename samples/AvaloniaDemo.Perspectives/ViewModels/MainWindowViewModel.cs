@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using AvaloniaDemo.Models;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;

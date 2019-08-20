@@ -29,4 +29,5 @@ jobs:
     - name: Test Release
       run: dotnet test --configuration Release
     - name: Pack Release
+      if: github.event_name != 'pull_request'
       run: dotnet pack --configuration Release --output ./artifacts/NuGet

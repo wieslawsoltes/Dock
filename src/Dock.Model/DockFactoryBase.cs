@@ -404,7 +404,12 @@ namespace Dock.Model
                 dock.Views.Remove(view);
                 int indexCurrentView = index > 0 ? index - 1 : 0;
                 
-                if (dock.Views.Count > 0 && indexCurrentView >= 0)
+                if(indexCurrentView < 0)
+                {
+                    return;
+                }
+
+                if (dock.Views.Count > 0)
                 {
                     dock.CurrentView = dock.Views[indexCurrentView];
                 }

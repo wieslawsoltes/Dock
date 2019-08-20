@@ -36,7 +36,7 @@
             </MenuItem>
         </MenuItem>
         <MenuItem Header="_Window">
-            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}"/>
+            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding DockControl.Layout.ActiveDockable}"/>
             <MenuItem Header="_Apply Window Layout" Items="{Binding DockControl.Layout.VisibleDockables}">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem">
@@ -46,8 +46,8 @@
                     </Style>
                 </MenuItem.Styles>
             </MenuItem>
-            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}"/>
-            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}"/>
+            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding DockControl.Layout}"/>
+            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding DockControl.Layout.ActiveDockable}"/>
         </MenuItem>
     </Menu>
 </UserControl>

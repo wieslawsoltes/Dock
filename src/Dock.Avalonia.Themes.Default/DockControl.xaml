@@ -20,10 +20,21 @@
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IDocumentDock">
-                            <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                            <idc:DocumentControl>
+                                <idc:DocumentControl.Styles>
+                                    <Style Selector="idc|DocumentControl">
+                                        <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
+                                    </Style>
+                                </idc:DocumentControl.Styles>
+                            </idc:DocumentControl>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IToolDock">
-                            <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockToolChrome IsActive="{Binding IsActive}">
+                                <idc:DockToolChrome.Styles>
+                                    <Style Selector="idc|DockToolChrome">
+                                        <Setter Property="idc:ProportionalStackPanelSplitter.Proportion" Value="{Binding Proportion}"/>
+                                    </Style>
+                                </idc:DockToolChrome.Styles>
                                 <idc:ToolControl/>
                             </idc:DockToolChrome>
                         </DataTemplate>

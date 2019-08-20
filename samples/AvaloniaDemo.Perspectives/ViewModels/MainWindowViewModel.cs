@@ -17,50 +17,12 @@ namespace AvaloniaDemo.ViewModels
         public static readonly DirectProperty<MainWindowViewModel, DockControl> DockControlProperty =
             AvaloniaProperty.RegisterDirect<MainWindowViewModel, DockControl>(nameof(DockControl), o => o.DockControl, (o, v) => o.DockControl = v);
 
-        public static readonly DirectProperty<MainWindowViewModel, IFactory> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, IDockSerializer> SerializerProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IDockSerializer>(nameof(Serializer), o => o.Serializer, (o, v) => o.Serializer = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, string> PathProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, string>(nameof(Path), o => o.Path, (o, v) => o.Path = v);
-
         private DockControl _dockControl;
-        private IFactory _factory;
-        private IDockSerializer _serializer;
-        private string _path;
 
         public DockControl DockControl
         {
             get { return _dockControl; }
             set { SetAndRaise(DockControlProperty, ref _dockControl, value); }
-        }
-
-        public IFactory Factory
-        {
-            get { return _factory; }
-            set { SetAndRaise(FactoryProperty, ref _factory, value); }
-        }
-
-        public IDockSerializer Serializer
-        {
-            get { return _serializer; }
-            set { SetAndRaise(SerializerProperty, ref _serializer, value); }
-        }
-
-        public string Path
-        {
-            get { return _path; }
-            set { SetAndRaise(PathProperty, ref _path, value); }
-        }
-
-        public MainWindowViewModel()
-        {
-            DockControl = null;
-            Factory = new DemoFactory();
-            Serializer = new DockSerializer(typeof(AvaloniaList<>));
-            Path = System.IO.Path.Combine(AppContext.BaseDirectory, "Layout.json");
         }
 
         public void AttachDockControl(DockControl dockControl)
@@ -69,32 +31,28 @@ namespace AvaloniaDemo.ViewModels
             {
                 DockControl = dockControl;
 
-                if (File.Exists(Path))
+                var path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
+                if (File.Exists(path))
                 {
-                    var layout = Serializer.Load<RootDock>(Path);
+                    var layout = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
                     if (layout != null)
                     {
+                        var factory = new DemoFactory();
+                        factory.InitLayout(layout);
                         DockControl.Layout = layout;
                     }
                 }
 
-                if (DockControl.Layout != null)
-                {
-                    Factory.InitLayout(DockControl.Layout);
-                }
             }
         }
 
         public void DetachDockControl()
         {
-            if (DockControl != null)
+            if (DockControl?.Layout is IDock layout)
             {
-                if (DockControl.Layout != null)
-                {
-                    DockControl.Layout.Close();
-                    Serializer.Save(Path, DockControl.Layout);
-                }
-
+                layout.Close();
+                var path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
+                new DockSerializer(typeof(AvaloniaList<>)).Save(path, DockControl.Layout);
                 DockControl = null;
             }
         }
@@ -107,9 +65,10 @@ namespace AvaloniaDemo.ViewModels
                 {
                     root.Close();
                 }
-                Factory = new DemoFactory();
-                DockControl.Layout = Factory.CreateLayout();
-                Factory.InitLayout(DockControl.Layout);
+                var factory = new DemoFactory();
+                var layout = factory.CreateLayout();
+                factory.InitLayout(layout);
+                DockControl.Layout = layout;
             }
         }
 
@@ -123,13 +82,21 @@ namespace AvaloniaDemo.ViewModels
                 var result = await dlg.ShowAsync(GetWindow());
                 if (result != null)
                 {
-                    IDock layout = Serializer?.Load<RootDock>(result.FirstOrDefault());
-                    if (DockControl.Layout is IDock root)
+                    var path = result.FirstOrDefault();
+                    if (path != null)
                     {
-                        root.Close();
+                        var layout = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
+                        if (layout != null)
+                        {
+                            if (DockControl.Layout is IDock root)
+                            {
+                                root.Close();
+                            }
+                            var factory = new DemoFactory();
+                            factory.InitLayout(layout);
+                            DockControl.Layout = layout;
+                        }
                     }
-                    DockControl.Layout = layout;
-                    Factory.InitLayout(DockControl.Layout);
                 }
             }
         }
@@ -146,7 +113,7 @@ namespace AvaloniaDemo.ViewModels
                 var result = await dlg.ShowAsync(GetWindow());
                 if (result != null)
                 {
-                    Serializer.Save(result, DockControl.Layout);
+                    new DockSerializer(typeof(AvaloniaList<>)).Save(result, DockControl.Layout);
                 }
             }
         }

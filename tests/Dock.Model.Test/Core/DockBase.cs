@@ -8,13 +8,13 @@ namespace Dock.Model
     {
         private INavigateAdapter _navigateAdapter;
 
-        public IList<IDockable> Visible { get; set; }
+        public IList<IDockable> VisibleDockables { get; set; }
 
-        public IList<IDockable> Hidden { get; set; }
+        public IList<IDockable> HiddenDockables { get; set; }
 
-        public IList<IDockable> Pinned { get; set; }
+        public IList<IDockable> PinnedDockables { get; set; }
 
-        public IDockable CurrentDockable { get; set; }
+        public IDockable AvtiveDockable { get; set; }
 
         public IDockable DefaultDockable { get; set; }
 

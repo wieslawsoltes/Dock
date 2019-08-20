@@ -20,15 +20,15 @@ namespace Dock.Model
         {
             if (sourceDockableOwner == targetDock)
             {
-                if (targetDock.Visible.Count == 1)
+                if (targetDock.VisibleDockables.Count == 1)
                 {
                     return false;
                 }
             }
-            var targetDockable = targetDock.CurrentDockable;
+            var targetDockable = targetDock.AvtiveDockable;
             if (targetDockable == null)
             {
-                targetDockable = targetDock.Visible.LastOrDefault();
+                targetDockable = targetDock.VisibleDockables.LastOrDefault();
                 if (targetDockable == null)
                 {
                     if (bExecute)
@@ -53,10 +53,10 @@ namespace Dock.Model
 
         internal bool SwapDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
         {
-            var targetDockable = targetDock.CurrentDockable;
+            var targetDockable = targetDock.AvtiveDockable;
             if (targetDockable == null)
             {
-                targetDockable = targetDock.Visible.LastOrDefault();
+                targetDockable = targetDock.VisibleDockables.LastOrDefault();
                 if (targetDockable == null)
                 {
                     return false;
@@ -80,9 +80,9 @@ namespace Dock.Model
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.CurrentDockable = sourceDockable;
-                toolDock.Visible = factory.CreateList<IDockable>();
-                toolDock.Visible.Add(sourceDockable);
+                toolDock.AvtiveDockable = sourceDockable;
+                toolDock.VisibleDockables = factory.CreateList<IDockable>();
+                toolDock.VisibleDockables.Add(sourceDockable);
                 factory.Split(targetDock, toolDock, operation);
             }
         }
@@ -94,8 +94,8 @@ namespace Dock.Model
                 IDock documentDock = factory.CreateDocumentDock();
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
-                documentDock.CurrentDockable = sourceDockable;
-                documentDock.Visible = factory.CreateList<IDockable>();
+                documentDock.AvtiveDockable = sourceDockable;
+                documentDock.VisibleDockables = factory.CreateList<IDockable>();
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
                 factory.Split(targetDock, documentDock, operation);
             }
@@ -108,7 +108,7 @@ namespace Dock.Model
                 case ITool _:
                     if (sourceDockableOwner == targetDock)
                     {
-                        if (targetDock.Visible.Count == 1)
+                        if (targetDock.VisibleDockables.Count == 1)
                         {
                             return false;
                         }
@@ -121,7 +121,7 @@ namespace Dock.Model
                 case IDocument _:
                     if (sourceDockableOwner == targetDock)
                     {
-                        if (targetDock.Visible.Count == 1)
+                        if (targetDock.VisibleDockables.Count == 1)
                         {
                             return false;
                         }
@@ -149,14 +149,14 @@ namespace Dock.Model
                     {
                         //if (sourceDockableOwner is IDocumentDock)
                         //{
-                        //    if (sourceDockableOwner.Visible.Count == 1)
+                        //    if (sourceDockableOwner.VisibleDockables.Count == 1)
                         //    {
                         //        return false;
                         //    }
                         //}
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (factory.FindRoot(sourceDockable) is IDock root && root.CurrentDockable is IDock targetWindowOwner)
+                            if (factory.FindRoot(sourceDockable) is IDock root && root.AvtiveDockable is IDock targetWindowOwner)
                             {
                                 if (bExecute)
                                 {
@@ -309,7 +309,7 @@ namespace Dock.Model
 
         internal bool DockDockableIntoDockVisible(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            var visible = sourceDock.Visible.ToList();
+            var visible = sourceDock.VisibleDockables.ToList();
             foreach (var dockable in visible)
             {
                 if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
@@ -322,7 +322,7 @@ namespace Dock.Model
 
         internal bool DockDockIntoDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            var visible = sourceDock.Visible.ToList();
+            var visible = sourceDock.VisibleDockables.ToList();
             if (visible.Count == 1)
             {
                 if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)

@@ -76,8 +76,8 @@ namespace Dock.Model
                 Title = "MainLayout",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
-                CurrentDockable = null,
-                Visible = CreateList<IDockable>
+                AvtiveDockable = null,
+                VisibleDockables = CreateList<IDockable>
                 (
                     new ProportionalDock
                     {
@@ -85,16 +85,16 @@ namespace Dock.Model
                         Title = "LeftPane",
                         Proportion = double.NaN,
                         Orientation = Orientation.Vertical,
-                        CurrentDockable = null,
-                        Visible = CreateList<IDockable>
+                        AvtiveDockable = null,
+                        VisibleDockables = CreateList<IDockable>
                         (
                             new ToolDock
                             {
                                 Id = "LeftPaneTop",
                                 Title = "LeftPaneTop",
                                 Proportion = double.NaN,
-                                CurrentDockable = leftTopTool1,
-                                Visible = CreateList<IDockable>
+                                AvtiveDockable = leftTopTool1,
+                                VisibleDockables = CreateList<IDockable>
                                 (
                                     leftTopTool1,
                                     leftTopTool2
@@ -110,8 +110,8 @@ namespace Dock.Model
                                 Id = "LeftPaneBottom",
                                 Title = "LeftPaneBottom",
                                 Proportion = double.NaN,
-                                CurrentDockable = leftBottomTool1,
-                                Visible = CreateList<IDockable>
+                                AvtiveDockable = leftBottomTool1,
+                                VisibleDockables = CreateList<IDockable>
                                 (
                                     leftBottomTool1,
                                     leftBottomTool2
@@ -129,8 +129,8 @@ namespace Dock.Model
                         Id = "DocumentsPane",
                         Title = "DocumentsPane",
                         Proportion = double.NaN,
-                        CurrentDockable = document1,
-                        Visible = CreateList<IDockable>
+                        AvtiveDockable = document1,
+                        VisibleDockables = CreateList<IDockable>
                         (
                             document1,
                             document2
@@ -147,16 +147,16 @@ namespace Dock.Model
                         Title = "RightPane",
                         Proportion = double.NaN,
                         Orientation = Orientation.Vertical,
-                        CurrentDockable = null,
-                        Visible = CreateList<IDockable>
+                        AvtiveDockable = null,
+                        VisibleDockables = CreateList<IDockable>
                         (
                             new ToolDock
                             {
                                 Id = "RightPaneTop",
                                 Title = "RightPaneTop",
                                 Proportion = double.NaN,
-                                CurrentDockable = rightTopTool1,
-                                Visible = CreateList<IDockable>
+                                AvtiveDockable = rightTopTool1,
+                                VisibleDockables = CreateList<IDockable>
                                 (
                                     rightTopTool1,
                                     rightTopTool2
@@ -172,8 +172,8 @@ namespace Dock.Model
                                 Id = "RightPaneBottom",
                                 Title = "RightPaneBottom",
                                 Proportion = double.NaN,
-                                CurrentDockable = rightBottomTool1,
-                                Visible = CreateList<IDockable>
+                                AvtiveDockable = rightBottomTool1,
+                                VisibleDockables = CreateList<IDockable>
                                 (
                                     rightBottomTool1,
                                     rightBottomTool2
@@ -194,17 +194,17 @@ namespace Dock.Model
             {
                 Id = "Home",
                 Title = "Home",
-                CurrentDockable = mainLayout,
-                Visible = CreateList<IDockable>(mainLayout)
+                AvtiveDockable = mainLayout,
+                VisibleDockables = CreateList<IDockable>(mainLayout)
             };
 
             var root = CreateRootDock();
 
             root.Id = "Root";
             root.Title = "Root";
-            root.CurrentDockable = dashboardView;
+            root.AvtiveDockable = dashboardView;
             root.DefaultDockable = dashboardView;
-            root.Visible = CreateList<IDockable>(dashboardView, homeView);
+            root.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
             root.Top = CreatePinDock();
             root.Top.Alignment = Alignment.Top;
             root.Bottom = CreatePinDock();

@@ -117,14 +117,14 @@ namespace Dock.Model
         void UpdateDockable(IDockable dockable, IDockable owner);
 
         /// <summary>
-        /// Adds <see cref="IDockable"/> into dock <see cref="IDock.Visible"/> collection.
+        /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dock">The owner dock.</param>
         /// <param name="dockable">The dockable to add.</param>
         void AddDockable(IDock dock, IDockable dockable);
 
         /// <summary>
-        /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.Visible"/> collection.
+        /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dock">The owner dock.</param>
         /// <param name="dockable">The dockable to add.</param>
@@ -145,11 +145,11 @@ namespace Dock.Model
         void RemoveWindow(IDockWindow window);
 
         /// <summary>
-        /// Sets a currently selected dockable. If the dockable is contained inside an dock it
+        /// Sets an avtive dockable. If the dockable is contained inside an dock it
         /// will become the selected dockable.
         /// </summary>
         /// <param name="dockable">The dockable to select.</param>
-        void SetCurrentDockable(IDockable dockable);
+        void SetAvtiveDockable(IDockable dockable);
 
         /// <summary>
         /// Sets the currently focused dockable updating IsActive flags.
@@ -171,28 +171,28 @@ namespace Dock.Model
         /// <param name="dock">The dock.</param>
         /// <param name="predicate">The predicate to filter dockables.</param>
         /// <returns>The dockable instance or null if dockable was not found.</returns>
-        IDockable FindDockable(IDock dock, Func< IDockable, bool> predicate);
+        IDockable FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
         /// <summary>
-        /// Pins visible.
+        /// Pins dockable.
         /// </summary>
         /// <param name="dockable">The dockable to pin.</param>
         void PinDockable(IDockable dockable);
 
         /// <summary>
-        /// Removes dockable from owner <see cref="IDock.Visible"/> collection.
+        /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dockable">The dockable to remove.</param>
         void RemoveDockable(IDockable dockable);
 
         /// <summary>
-        /// Removes dockable from owner <see cref="IDock.Visible"/> collection, and call IDockable.OnClose.
+        /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
         /// </summary>
         /// <param name="dockable">The dockable to remove.</param>
         void CloseDockable(IDockable dockable);
 
         /// <summary>
-        /// Moves dockable inside <see cref="IDock.Visible"/> collection.
+        /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dock">The dock.</param>
         /// <param name="sourceDockable">The source dockable.</param>
@@ -200,7 +200,7 @@ namespace Dock.Model
         void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Moves dockable into another <see cref="IDock.Visible"/> collection.
+        /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="sourceDock">The source dock.</param>
         /// <param name="targetDock">The target dock.</param>
@@ -209,21 +209,21 @@ namespace Dock.Model
         void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Moves dockable into another <see cref="IDock.Visible"/> collection.
+        /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="first">The first dockable.</param>
         /// <param name="second">The second dockable.</param>
         void Move(IDockable first, IDockable second);
 
         /// <summary>
-        /// Swaps dockable in owners <see cref="IDock.Visible"/> collection.
+        /// Swaps dockable in owners <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="first">The first dockable.</param>
         /// <param name="second">The second dockable.</param>
         void Swap(IDockable first, IDockable second);
 
         /// <summary>
-        /// Swaps dockable in inside <see cref="IDock.Visible"/> collections.
+        /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
         /// </summary>
         /// <param name="dock">The dock.</param>
         /// <param name="sourceDockable">The source dockable.</param>
@@ -231,7 +231,7 @@ namespace Dock.Model
         void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Swaps dockable into between <see cref="IDock.Visible"/> collections.
+        /// Swaps dockable into between <see cref="IDock.VisibleDockables"/> collections.
         /// </summary>
         /// <param name="sourceDock">The source dock.</param>
         /// <param name="targetDock">The target dock.</param>
@@ -240,7 +240,7 @@ namespace Dock.Model
         void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Replaces source dockable with destination dockable in source dockable owner <see cref="IDock.Visible"/> collection.
+        /// Replaces source dockable with destination dockable in source dockable owner <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="source">The source dockable.</param>
         /// <param name="destination">The destination dockable.</param>

@@ -19,8 +19,8 @@
                 <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
                 <TextBlock Text="Owner" Grid.Row="3" Grid.Column="0"/>
                 <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
-                <TextBlock Text="CurrentDockable:" Grid.Row="4" Grid.Column="0"/>
-                <TextBox Text="{Binding CurrentDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="4" Grid.Column="1"/>
+                <TextBlock Text="AvtiveDockable:" Grid.Row="4" Grid.Column="0"/>
+                <TextBox Text="{Binding AvtiveDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="4" Grid.Column="1"/>
                 <TextBlock Text="DefaultDockable:" Grid.Row="5" Grid.Column="0"/>
                 <TextBox Text="{Binding DefaultDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
                 <TextBlock Text="FocusedDockable:" Grid.Row="6" Grid.Column="0"/>
@@ -52,29 +52,29 @@
     </UserControl.DataTemplates>
     <TabControl>
         <TabItem Header="Layout">
-            <TreeView x:Name="visible" Items="{Binding Visible}" Grid.Column="0" Grid.Row="0">
+            <TreeView x:Name="visible" Items="{Binding VisibleDockables}" Grid.Column="0" Grid.Row="0">
                 <TreeView.Styles>
                     <Style Selector="TreeViewItem">
                         <Setter Property="IsExpanded" Value="True"/>
                     </Style>
                 </TreeView.Styles>
                 <TreeView.DataTemplates>
-                    <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IToolDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IToolDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IDocumentDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IDocumentDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
                     <DataTemplate DataType="Dock:IDockable">
@@ -94,28 +94,28 @@
                     </Style>
                 </TreeView.Styles>
                 <TreeView.DataTemplates>
-                    <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IToolDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IToolDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IDocumentDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Controls:IDocumentDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding Visible}">
+                    <TreeDataTemplate DataType="Dock:IDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
                     <DataTemplate DataType="Dock:IDockable">
                         <TextBlock Text="{Binding Title}"/>
                     </DataTemplate>
-                    <TreeDataTemplate DataType="Dock:IDockWindow" ItemsSource="{Binding Layout.Visible}">
+                    <TreeDataTemplate DataType="Dock:IDockWindow" ItemsSource="{Binding Layout.VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
                 </TreeView.DataTemplates>

@@ -12,10 +12,10 @@ namespace Dock.Model
     public abstract class DockBase : DockableBase, IDock
     {
         private INavigateAdapter _navigateAdapter;
-        private IList<IDockable> _visible;
-        private IList<IDockable> _hidden;
-        private IList<IDockable> _pinned;
-        private IDockable _currentDockable;
+        private IList<IDockable> _visibleDockables;
+        private IList<IDockable> _hiddenDockables;
+        private IList<IDockable> _pinnedDockables;
+        private IDockable _avtiveDockable;
         private IDockable _defaultDockable;
         private IDockable _focusedDockable;
         private double _proportion = double.NaN;
@@ -34,36 +34,36 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IList<IDockable> Visible
+        public IList<IDockable> VisibleDockables
         {
-            get => _visible;
-            set => this.RaiseAndSetIfChanged(ref _visible, value);
+            get => _visibleDockables;
+            set => this.RaiseAndSetIfChanged(ref _visibleDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IList<IDockable> Hidden
+        public IList<IDockable> HiddenDockables
         {
-            get => _hidden;
-            set => this.RaiseAndSetIfChanged(ref _hidden, value);
+            get => _hiddenDockables;
+            set => this.RaiseAndSetIfChanged(ref _hiddenDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IList<IDockable> Pinned
+        public IList<IDockable> PinnedDockables
         {
-            get => _pinned;
-            set => this.RaiseAndSetIfChanged(ref _pinned, value);
+            get => _pinnedDockables;
+            set => this.RaiseAndSetIfChanged(ref _pinnedDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IDockable CurrentDockable
+        public IDockable AvtiveDockable
         {
-            get => _currentDockable;
+            get => _avtiveDockable;
             set
             {
-                this.RaiseAndSetIfChanged(ref _currentDockable, value);
+                this.RaiseAndSetIfChanged(ref _avtiveDockable, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
                 _factory?.SetFocusedDockable(this, value);

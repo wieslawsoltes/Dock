@@ -28,7 +28,7 @@
                             </idc:DockToolChrome>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IProportionalDock">
-                            <ItemsControl Items="{Binding Visible}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <ItemsControl Items="{Binding VisibleDockables}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <!--
                                 <ItemsControl.Styles>
                                     <Style Selector="ItemsControl > ContentPresenter">
@@ -45,7 +45,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
                             <DockPanel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
-                                <TabStrip Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+                                <TabStrip Items="{Binding VisibleDockables}" SelectedItem="{Binding AvtiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
                                     <TabStrip.Styles>
                                         <Style Selector="TabStrip:empty">
                                             <Setter Property="IsVisible" Value="False" />
@@ -62,7 +62,7 @@
                                         </DataTemplate>
                                     </TabStrip.DataTemplates>
                                 </TabStrip>
-                                <ContentControl Content="{Binding CurrentDockable}" IsVisible="{Binding IsExpanded}"/>
+                                <ContentControl Content="{Binding AvtiveDockable}" IsVisible="{Binding IsExpanded}"/>
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
@@ -71,7 +71,7 @@
                                 <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
                                 <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
                                 <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
-                                <Carousel Items="{Binding Visible}" SelectedItem="{Binding CurrentDockable, Mode=TwoWay}" IsVirtualized="False"/>
+                                <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding AvtiveDockable, Mode=TwoWay}" IsVirtualized="False"/>
                             </DockPanel>
                         </DataTemplate>
                     </ContentControl.DataTemplates>

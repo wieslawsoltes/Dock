@@ -13,22 +13,22 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets visible dockables.
         /// </summary>
-        IList<IDockable> Visible { get; set; }
+        IList<IDockable> VisibleDockables { get; set; }
 
         /// <summary>
         /// Gets or sets hidden dockables.
         /// </summary>
-        IList<IDockable> Hidden { get; set; }
+        IList<IDockable> HiddenDockables { get; set; }
 
         /// <summary>
         /// Gets or sets pinned dockables.
         /// </summary>
-        IList<IDockable> Pinned { get; set; }
+        IList<IDockable> PinnedDockables { get; set; }
 
         /// <summary>
-        /// Gets or sets current dockable.
+        /// Gets or sets avtive dockable.
         /// </summary>
-        IDockable CurrentDockable { get; set; }
+        IDockable AvtiveDockable { get; set; }
 
         /// <summary>
         /// Gets or sets default dockable.

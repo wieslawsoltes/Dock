@@ -220,7 +220,10 @@ namespace Dock.Model
                     SetIsActive(root.FocusedDockable.Owner, false);
                 }
 
-                root.FocusedDockable = dockable;
+                if (dockable != null)
+                {
+                    root.FocusedDockable = dockable;
+                }
 
                 if (root.FocusedDockable != null)
                 {

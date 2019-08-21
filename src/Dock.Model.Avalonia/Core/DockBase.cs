@@ -128,10 +128,11 @@ namespace Dock.Model
             get { return GetValue(ActiveDockableProperty); }
             set
             {
+                Factory?.UpdateDockable(value, this);
+                Factory?.SetFocusedDockable(this, value);
                 SetValue(ActiveDockableProperty, value);
                 SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
                 SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
-                Factory?.SetFocusedDockable(this, value);
             }
         }
 

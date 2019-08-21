@@ -37,40 +37,29 @@ jobs:
         dotnet publish -c Release -f net461 -r win7-x64 -o ./artifacts/AvaloniaDemo-net461-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp2.2 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp2.2-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp3.0 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
-    - name: Archive Windows
-      if: github.event_name != 'pull_request' && matrix.os == 'windows-2019'
-      run: powershell.exe -nologo -noprofile -command "& { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::CreateFromDirectory('./artifacts/AvaloniaDemo-net461-win7-x64', './artifacts/AvaloniaDemo-net461-win7-x64.zip '); }"
-    - name: Upload Windows
+    - name: Artifacts Windows
       if: github.event_name != 'pull_request' && matrix.os == 'windows-2019'
       uses: actions/upload-artifact@master
       with:
         name: AvaloniaDemo-net461-win7-x64
-        path: ./artifacts/AvaloniaDemo-net461-win7-x64.zip
+        path: ./artifacts/AvaloniaDemo-net461-win7-x64
     - name: Publish Linux
       if: github.event_name != 'pull_request' && matrix.os == 'ubuntu-18.04'
       run: |
         dotnet publish -c Release -f netcoreapp3.0 -r debian.8-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-debian.8-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp3.0 -r ubuntu.14.04-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
-    - name: Archive Linux
-      if: github.event_name != 'pull_request' && matrix.os == 'ubuntu-18.04'
-      uses: montudor/action-zip@v0.1.0
-      with:
-        args: zip -r ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64.zip ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64
-    - name: Upload Linux
+    - name: Artifacts Linux
       if: github.event_name != 'pull_request' && matrix.os == 'ubuntu-18.04'
       uses: actions/upload-artifact@master
       with:
         name: AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64
-        path: ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64.zip
+        path: ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64
     - name: Publish macOS
       if: github.event_name != 'pull_request' && matrix.os == 'macOS-10.14'
       run: dotnet publish -c Release -f netcoreapp3.0 -r osx.10.12-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
-    - name: Archive macOS
-      if: github.event_name != 'pull_request' && matrix.os == 'macOS-10.14'
-      run: zip -r ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64.zip ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64
-    - name: Upload macOS
+    - name: Artifacts macOS
       if: github.event_name != 'pull_request' && matrix.os == 'macOS-10.14'
       uses: actions/upload-artifact@master
       with:
         name: AvaloniaDemo-netcoreapp3.0-osx.10.12-x64
-        path: ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64.zip
+        path: ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64

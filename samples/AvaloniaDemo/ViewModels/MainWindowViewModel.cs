@@ -77,6 +77,37 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
+        public void SaveWindowLayout(IDock layout)
+        {
+            if (layout != null && layout.Owner is IDock owner)
+            {
+                var clone = layout.Clone();
+                if (clone != null)
+                {
+                    owner.Factory.AddDockable(owner, clone);
+                    owner.Factory.SetActiveDockable(clone);
+                }
+            }
+        }
+
+        public void ApplyWindowLayout(IDock layout)
+        {
+            if (layout != null && layout.Owner is IDock owner)
+            {
+                owner.Factory.SetActiveDockable(layout);
+            }
+        }
+
+        public void ManageWindowLayouts(IDock dock)
+        {
+            // TODO:
+        }
+
+        public void ResetWindowLayout(IDock dock)
+        {
+            // TODO:
+        }
+
         private Window GetWindow()
         {
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)

@@ -31,6 +31,6 @@
                 </ListBox.DataTemplates>
             </ListBox>
             <TextBox DataContext="{Binding #dockControl}" Text="{Binding Layout.ActiveDockable.Title}" Margin="4" Grid.Row="2"/>
-        </Grid> 
+        </Grid>
     </Grid>
 </UserControl>

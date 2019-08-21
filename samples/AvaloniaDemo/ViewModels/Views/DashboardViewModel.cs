@@ -7,7 +7,11 @@ namespace AvaloniaDemo.ViewModels.Views
     {
         public override IDockable Clone()
         {
-            throw new NotImplementedException();
+            var dashboardViewModel = new HomeViewModel();
+
+            CloneHelper.CloneDockProperties(this, dashboardViewModel);
+
+            return dashboardViewModel;
         }
     }
 }

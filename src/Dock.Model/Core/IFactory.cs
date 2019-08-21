@@ -163,7 +163,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dockable">The dockable to find root for.</param>
         /// <returns>The root dockable instance or null if root dockable was not found.</returns>
-        IDockable FindRoot(IDockable dockable);
+        IRootDock FindRoot(IDockable dockable);
 
         /// <summary>
         /// Searches dock for dockable.

@@ -213,7 +213,7 @@ namespace Dock.Model
         /// <inheritdoc />
         public void SetFocusedDockable(IDock dock, IDockable dockable)
         {
-            if (dock.ActiveDockable != null && FindRoot(dock.ActiveDockable) is IDock root)
+            if (dock.ActiveDockable != null && FindRoot(dock.ActiveDockable) is IRootDock root)
             {
                 if (root.FocusedDockable != null)
                 {
@@ -230,11 +230,15 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockable FindRoot(IDockable dockable)
+        public virtual IRootDock FindRoot(IDockable dockable)
         {
-            if (dockable.Owner == null)
+            if (dockable?.Owner == null)
             {
-                return dockable;
+                return null;
+            }
+            if (dockable.Owner is IRootDock rootDock)
+            {
+                return rootDock;
             }
             return FindRoot(dockable.Owner);
         }
@@ -739,7 +743,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SplitToWindow(IDock dock)
         {
-            if (FindRoot(dock) is IDock root && root.ActiveDockable is IDock activeDockableRoot)
+            if (FindRoot(dock) is IRootDock root && root.ActiveDockable is IDock activeDockableRoot)
             {
                 if (dock?.Owner is IDock ownerDock && dock.VisibleDockables != null)
                 {
@@ -859,7 +863,7 @@ namespace Dock.Model
             root.DefaultDockable = target;
             root.VisibleDockables = CreateList<IDockable>();
             root.VisibleDockables.Add(target);
-            root.Owner = FindRoot(dockable);
+            root.Owner = null;
 
             var window = CreateDockWindow();
             window.Id = nameof(IDockWindow);

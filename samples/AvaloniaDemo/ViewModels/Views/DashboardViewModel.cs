@@ -1,5 +1,6 @@
 ﻿using System;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels.Views
 {
@@ -7,7 +8,7 @@ namespace AvaloniaDemo.ViewModels.Views
     {
         public override IDockable Clone()
         {
-            var dashboardViewModel = new HomeViewModel();
+            var dashboardViewModel = new DashboardViewModel();
 
             CloneHelper.CloneDockProperties(this, dashboardViewModel);
 

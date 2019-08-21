@@ -63,11 +63,14 @@ namespace Dock.Model
             get => _activeDockable;
             set
             {
-                _factory?.UpdateDockable(value, this);
-                _factory?.SetFocusedDockable(this, value);
                 this.RaiseAndSetIfChanged(ref _activeDockable, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
+                if (value != null)
+                {
+                    _factory?.UpdateDockable(value, this);
+                }
+                _factory?.SetFocusedDockable(this, value);
             }
         }
 

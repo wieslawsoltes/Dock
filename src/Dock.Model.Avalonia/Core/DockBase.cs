@@ -139,14 +139,25 @@ namespace Dock.Model
             get { return _activeDockable; }
             set
             {
-                SetAndRaise(ActiveDockableProperty, ref _activeDockable, value);
-                SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
-                SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
-                if (value != null)
+                if (_activeDockable != value)
                 {
-                    Factory?.UpdateDockable(value, this);
+                    if (_activeDockable is IDock previousDock)
+                    {
+                        previousDock.Close();
+                    }
+                    SetAndRaise(ActiveDockableProperty, ref _activeDockable, value);
+                    if (_activeDockable != null)
+                    {
+                        Factory?.UpdateDockable(_activeDockable, this);
+                    }
+                    if (_activeDockable is IDock nextDock)
+                    {
+                        nextDock.ShowWindows();
+                    }
+                    Factory?.SetFocusedDockable(this, _activeDockable);
+                    SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
+                    SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
                 }
-                Factory?.SetFocusedDockable(this, value);
             }
         }
 

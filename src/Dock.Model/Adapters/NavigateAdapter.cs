@@ -126,10 +126,10 @@ namespace Dock.Model
 
         private void NavigateTo(IDockable dockable, bool bSnapshot)
         {
-            if (_dock.ActiveDockable is IDock activeDockableWindows)
-            {
-                activeDockableWindows.Close();
-            }
+            //if (_dock.ActiveDockable is IDock previousDock)
+            //{
+            //    previousDock.Close();
+            //}
 
             if (dockable != null && _dock.ActiveDockable != dockable)
             {
@@ -137,14 +137,13 @@ namespace Dock.Model
                 {
                     PushBack(_dock.ActiveDockable);
                 }
-
                 _dock.ActiveDockable = dockable;
             }
 
-            if (dockable is IDock dockWindows)
-            {
-                dockWindows.ShowWindows();
-            }
+            //if (dockable is IDock nextDock)
+            //{
+            //    nextDock.ShowWindows();
+            //}
         }
 
         private void NavigateToUseVisible(string id, bool bSnapshot)

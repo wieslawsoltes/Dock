@@ -9,10 +9,11 @@
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="*,200" Background="Transparent">
+    <Grid RowDefinitions="Auto,Auto,*,25" ColumnDefinitions="*,200" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
-        <idc:DockControl x:Name="dockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="1" Grid.Column="0"/>
-        <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <idc:DockControl x:Name="dockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2" Grid.Column="0"/>
+        <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
         <Grid RowDefinitions="Auto,*,Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Grid.Row="0">
                 <Button Content="Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
@@ -20,14 +21,14 @@
                 <Button Content="Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding #dockControl.Layout}" Margin="4,2"/>
                 <Button Content="Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
             </StackPanel>
-            <ListBox DataContext="{Binding #dockControl}" Items="{Binding Layout.VisibleDockables}" SelectedItem="{Binding Layout.ActiveDockable, Mode=TwoWay}" Margin="4" Grid.Row="1">
+            <ListBox x:Name="visibleDockables" Items="{Binding #dockControl.Layout.VisibleDockables}" Margin="4" Grid.Row="1">
                 <ListBox.DataTemplates>
                     <DataTemplate>
                         <TextBlock Text="{Binding Title}"/>
                     </DataTemplate>
                 </ListBox.DataTemplates>
             </ListBox>
-            <TextBox DataContext="{Binding #dockControl}" Text="{Binding Layout.ActiveDockable.Title}" Margin="4" Grid.Row="2"/>
+            <TextBox Text="{Binding #visibleDockables.SelectedItem.Title}" Margin="4" Grid.Row="2"/>
         </Grid>
     </Grid>
 </UserControl>

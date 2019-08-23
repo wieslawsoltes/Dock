@@ -64,25 +64,14 @@ namespace Dock.Model
             get => _activeDockable;
             set
             {
-                if (_activeDockable != value)
+                this.RaiseAndSetIfChanged(ref _activeDockable, value);
+                if (value != null)
                 {
-                    if (_activeDockable is IDock previousDock)
-                    {
-                        previousDock.Close();
-                    }
-                    this.RaiseAndSetIfChanged(ref _activeDockable, value);
-                    if (value != null)
-                    {
-                        _factory?.UpdateDockable(value, this);
-                    }
-                    if (_activeDockable is IDock nextDock)
-                    {
-                        nextDock.ShowWindows();
-                    }
-                    _factory?.SetFocusedDockable(this, value);
-                    this.RaisePropertyChanged(nameof(CanGoBack));
-                    this.RaisePropertyChanged(nameof(CanGoForward));
+                    _factory?.UpdateDockable(value, this);
                 }
+                _factory?.SetFocusedDockable(this, value);
+                this.RaisePropertyChanged(nameof(CanGoBack));
+                this.RaisePropertyChanged(nameof(CanGoForward));
             }
         }
 

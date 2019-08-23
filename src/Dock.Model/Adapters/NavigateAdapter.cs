@@ -126,10 +126,10 @@ namespace Dock.Model
 
         private void NavigateTo(IDockable dockable, bool bSnapshot)
         {
-            //if (_dock.ActiveDockable is IDock previousDock)
-            //{
-            //    previousDock.Close();
-            //}
+            if (_dock.ActiveDockable is IDock previousDock)
+            {
+                previousDock.Close();
+            }
 
             if (dockable != null && _dock.ActiveDockable != dockable)
             {
@@ -140,10 +140,10 @@ namespace Dock.Model
                 _dock.ActiveDockable = dockable;
             }
 
-            //if (dockable is IDock nextDock)
-            //{
-            //    nextDock.ShowWindows();
-            //}
+            if (dockable is IDock nextDock)
+            {
+                nextDock.ShowWindows();
+            }
         }
 
         private void NavigateToUseVisible(string id, bool bSnapshot)
@@ -186,6 +186,10 @@ namespace Dock.Model
                     window.Present(false);
                 }
             }
+            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            {
+                activeDockableWindows.ShowWindows();
+            }
         }
 
         /// <inheritdoc/>
@@ -199,16 +203,16 @@ namespace Dock.Model
                     window.Exit();
                 }
             }
+            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            {
+                activeDockableWindows.ExitWindows();
+            }
         }
 
         /// <inheritdoc/>
         public void Close()
         {
             _dock.ExitWindows();
-            if (_dock.ActiveDockable is IDock activeDockableWindows)
-            {
-                activeDockableWindows.ExitWindows();
-            }
         }
     }
 }

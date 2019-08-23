@@ -94,7 +94,7 @@ namespace AvaloniaDemo.ViewModels
         {
             if (layout != null && layout.Owner is IDock owner)
             {
-                owner.Factory.SetActiveDockable(layout);
+                owner.Navigate(layout);
             }
         }
 

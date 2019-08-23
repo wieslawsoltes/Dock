@@ -17,7 +17,7 @@
         <Grid RowDefinitions="Auto,*,Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Grid.Row="0">
                 <Button Content="Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
-                <Button Content="Apply Window Layout" Command="{Binding ApplyWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
+                <Button Content="Apply Window Layout" Command="{Binding ApplyWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2"/>
                 <Button Content="Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding #dockControl.Layout}" Margin="4,2"/>
                 <Button Content="Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding #dockControl.Layout.ActiveDockable}" Margin="4,2"/>
             </StackPanel>

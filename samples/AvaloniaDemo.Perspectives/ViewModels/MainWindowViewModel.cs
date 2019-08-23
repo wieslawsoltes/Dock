@@ -128,7 +128,6 @@ namespace AvaloniaDemo.ViewModels
                 if (clone != null)
                 {
                     owner.Factory.AddDockable(owner, clone);
-                    owner.Factory.SetActiveDockable(clone);
                 }
             }
         }

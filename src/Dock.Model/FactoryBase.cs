@@ -53,12 +53,11 @@ namespace Dock.Model
             UpdateDockable(layout, null);
             if (layout is IDock root)
             {
-                root.ShowWindows();
-                root.ActiveDockable = root.DefaultDockable;
-                if (root.ActiveDockable is IDock dock)
+                if (root.DefaultDockable != null)
                 {
-                    dock.ShowWindows();
+                    root.ActiveDockable = root.DefaultDockable;
                 }
+                root.ShowWindows();
             }
         }
 

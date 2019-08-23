@@ -91,7 +91,7 @@ namespace Dock.Model
 
             CloneDockProperties(source, rootDock);
 
-            rootDock.Window = source.Window?.Clone();
+            rootDock.Window = null;
             rootDock.Top = (IPinDock)source.Top?.Clone();
             rootDock.Bottom = (IPinDock)source.Bottom?.Clone();
             rootDock.Left = (IPinDock)source.Left?.Clone();
@@ -183,6 +183,8 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IDockWindow"/> class.</returns>
         public static IDockWindow CloneDockWindow(IDockWindow source)
         {
+            source.Save();
+
             var dockWindow = source.Factory.CreateDockWindow();
 
             dockWindow.Id = source.Id;
@@ -192,7 +194,11 @@ namespace Dock.Model
             dockWindow.Height = source.Height;
             dockWindow.Topmost = source.Topmost;
             dockWindow.Title = source.Title;
-            dockWindow.Layout = (IDock)source.Layout?.Clone();
+            dockWindow.Layout = (IRootDock)source.Layout?.Clone();
+            if (dockWindow.Layout is IRootDock rootDock)
+            {
+                rootDock.Window = dockWindow;
+            }
 
             return dockWindow;
         }

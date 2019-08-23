@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using Dock.Model.Controls;
 
 namespace Dock.Model
 {
@@ -27,7 +28,7 @@ namespace Dock.Model
 
         public IFactory Factory { get; set; }
 
-        public IDock Layout { get; set; }
+        public IRootDock Layout { get; set; }
 
         public IHostWindow Host { get; set; }
 

@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Avalonia;
 using Avalonia.Metadata;
+using Dock.Model.Controls;
 
 namespace Dock.Model
 {
@@ -71,8 +72,8 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDock> LayoutProperty =
-            AvaloniaProperty.Register<DockWindow, IDock>(nameof(Layout));
+        public static readonly StyledProperty<IRootDock> LayoutProperty =
+            AvaloniaProperty.Register<DockWindow, IRootDock>(nameof(Layout));
 
         /// <summary>
         /// Defines the <see cref="Host"/> property.
@@ -155,7 +156,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         [Content]
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IDock Layout
+        public IRootDock Layout
         {
             get { return GetValue(LayoutProperty); }
             set { SetValue(LayoutProperty, value); }

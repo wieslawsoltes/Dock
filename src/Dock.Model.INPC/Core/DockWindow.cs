@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Runtime.Serialization;
+using Dock.Model.Controls;
 
 namespace Dock.Model
 {
@@ -20,7 +21,7 @@ namespace Dock.Model
         private string _title;
         private IDockable _owner;
         private IFactory _factory;
-        private IDock _layout;
+        private IRootDock _layout;
         private IHostWindow _host;
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IDock Layout
+        public IRootDock Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);

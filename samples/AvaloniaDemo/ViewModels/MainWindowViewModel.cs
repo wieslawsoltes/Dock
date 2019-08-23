@@ -90,11 +90,14 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void ApplyWindowLayout(IDock layout)
+        public void ApplyWindowLayout(IDock dock)
         {
-            if (layout != null && layout.Owner is IDock owner)
+            if (dock != null)
             {
-                owner.Navigate(layout);
+                if (Layout is IDock root)
+                {
+                    root.Navigate(dock);
+                }
             }
         }
 

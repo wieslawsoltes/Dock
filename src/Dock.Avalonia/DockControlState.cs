@@ -159,7 +159,7 @@ namespace Dock.Avalonia
             return Enumerable.Empty<IVisual>();
         }
 
-        private IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
+        internal IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement> inputElements = null;
             try

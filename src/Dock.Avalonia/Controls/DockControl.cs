@@ -16,8 +16,8 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockControl : TemplatedControl
     {
-        private static List<IVisual> s_dockControls = new List<IVisual>();
-        private DockControlState _dockControlState = new DockControlState();
+        internal static List<IVisual> s_dockControls = new List<IVisual>();
+        internal DockControlState _dockControlState = new DockControlState();
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.

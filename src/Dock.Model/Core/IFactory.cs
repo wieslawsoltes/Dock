@@ -200,6 +200,14 @@ namespace Dock.Model
         void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
+        /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
+        /// </summary>
+        /// <param name="dock">The dock.</param>
+        /// <param name="sourceDockable">The source dockable.</param>
+        /// <param name="targetDockable">The target dockable.</param>
+        void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
+
+        /// <summary>
         /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="sourceDock">The source dock.</param>
@@ -207,14 +215,6 @@ namespace Dock.Model
         /// <param name="sourceDockable">The source dockable.</param>
         /// <param name="targetDockable">The target dockable.</param>
         void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
-
-        /// <summary>
-        /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
-        /// </summary>
-        /// <param name="dock">The dock.</param>
-        /// <param name="sourceDockable">The source dockable.</param>
-        /// <param name="targetDockable">The target dockable.</param>
-        void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
         /// Swaps dockable into between <see cref="IDock.VisibleDockables"/> collections.

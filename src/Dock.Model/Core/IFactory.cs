@@ -83,21 +83,21 @@ namespace Dock.Model
         IDock CreateLayout();
 
         /// <summary>
-        /// Gets context.
+        /// Gets registered context.
         /// </summary>
         /// <param name="id">The object id.</param>
         /// <returns>The located context.</returns>
         object GetContext(string id);
 
         /// <summary>
-        /// Gets host.
+        /// Gets registered host window.
         /// </summary>
         /// <param name="id">The host id.</param>
         /// <returns>The located host.</returns>
         IHostWindow GetHostWindow(string id);
 
         /// <summary>
-        /// Gets dockable.
+        /// Gets registered dockable.
         /// </summary>
         /// <param name="id">The host id.</param>
         /// <returns>The located dockable.</returns>

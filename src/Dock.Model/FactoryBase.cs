@@ -191,7 +191,6 @@ namespace Dock.Model
             if (dockable.Owner is IDock dock)
             {
                 dock.ActiveDockable = dockable;
-
                 dockable.OnSelected();
             }
         }
@@ -709,7 +708,7 @@ namespace Dock.Model
 
             return window;
         }
-        
+
         /// <inheritdoc/>
         public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {

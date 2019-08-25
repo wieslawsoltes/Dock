@@ -19,7 +19,6 @@ namespace Dock.Avalonia.Controls
     public class HostWindow : Window, IStyleable, IHostWindow
     {
         private Control _titleBar;
-
         private Grid _bottomHorizontalGrip;
         private Grid _bottomLeftGrip;
         private Grid _bottomRightGrip;

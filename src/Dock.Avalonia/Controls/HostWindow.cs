@@ -9,6 +9,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -18,6 +19,11 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class HostWindow : Window, IStyleable, IHostWindow
     {
+        private bool _pointerPressed = false;
+        private Point _pointerPressedPoint = default;
+        private Point _targetPoint = default;
+        private IVisual _targetDockControl = null;
+
         private Control _titleBar;
         private Grid _bottomHorizontalGrip;
         private Grid _bottomLeftGrip;
@@ -84,58 +90,105 @@ namespace Dock.Avalonia.Controls
             AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerCaptureLostEvent, CaptureLost, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
-            PositionChanged += (sender, e) =>
-            {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
-                }
-            };
+            PositionChanged += HostWindow_PositionChanged;
+            LayoutUpdated += HostWindow_LayoutUpdated;
+            Closing += HostWindow_Closing;
+        }
 
-            LayoutUpdated += (sender, e) =>
+        private void HostWindow_PositionChanged(object sender, PixelPointEventArgs e)
+        {
+            if (Window != null && IsTracked == true)
             {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
-                }
-            };
+                Window.Save();
+            }
 
-            Closing += (sender, e) =>
+            DragPositionChanged();
+        }
+
+        private void HostWindow_LayoutUpdated(object sender, EventArgs e)
+        {
+            if (Window != null && IsTracked == true)
             {
-                if (Window != null && IsTracked == true)
-                {
-                    Window.Save();
+                Window.Save();
+            }
+        }
 
-                    if (Window.Layout is IDock root)
-                    {
-                        root.Close();
-                    }
+        private void HostWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Window != null && IsTracked == true)
+            {
+                Window.Save();
+
+                if (Window.Layout is IDock root)
+                {
+                    root.Close();
                 }
-            };
+            }
         }
 
         private void Pressed(object sender, PointerPressedEventArgs e)
         {
+            _pointerPressed = true;
+            _pointerPressedPoint = e.GetPosition(this);
+            _targetPoint = default;
+            _targetDockControl = null;
             // TODO:
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(Pressed)} {e.GetPosition(this)}");
         }
 
         private void Released(object sender, PointerReleasedEventArgs e)
         {
+            _pointerPressed = false;
+            _pointerPressedPoint = default;
+            _targetPoint = default;
+            _targetDockControl = null;
             // TODO:
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(Released)} {e.GetPosition(this)}");
         }
 
         private void Moved(object sender, PointerEventArgs e)
         {
-            // TODO:
-            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Moved)} {e.GetPosition(this)}");
         }
 
         private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
+            _pointerPressed = false;
+            _pointerPressedPoint = default;
+            _targetPoint = default;
+            _targetDockControl = null;
             // TODO:
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(CaptureLost)}");
+        }
+
+        private void DragPositionChanged()
+        {
+            if (_pointerPressed == true)
+            {
+                foreach (var visual in DockControl.s_dockControls)
+                {
+                    if (visual is DockControl dockControl)
+                    {
+                        if (dockControl.Layout != Window.Layout)
+                        {
+                            var position = this.Position.ToPoint(1.0) + _pointerPressedPoint;
+                            var screenPoint = new PixelPoint((int)position.X, (int)position.Y);
+                            var dockControlPoint = dockControl.PointToClient(screenPoint);
+                            if (dockControlPoint == null)
+                            {
+                                continue;
+                            }
+
+                            var dropControl = dockControl._dockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                            if (dropControl != null)
+                            {
+                                _targetPoint = dockControlPoint;
+                                _targetDockControl = dropControl;
+                                Debug.WriteLine($"Window Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

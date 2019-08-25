@@ -18,8 +18,8 @@ namespace Dock.Avalonia
     /// </summary>
     internal class DockControlState
     {
-        private readonly IDockManager _dockManager = new DockManager();
-        private readonly AdornerHelper _adornerHelper = new AdornerHelper();
+        internal readonly IDockManager _dockManager = new DockManager();
+        internal readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private IControl _dragControl = null;
         private IControl _dropControl = null;
         private Point _dragStartPoint = default;
@@ -38,12 +38,12 @@ namespace Dock.Avalonia
         /// </summary>
         public static double MinimumVerticalDragDistance = 4;
 
-        private DockPoint ToDockPoint(Point point)
+        internal static DockPoint ToDockPoint(Point point)
         {
             return new DockPoint(point.X, point.Y);
         }
 
-        private void ShowWindows(IDockable dockable)
+        internal void ShowWindows(IDockable dockable)
         {
             if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
             {
@@ -54,7 +54,7 @@ namespace Dock.Avalonia
             }
         }
 
-        private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
+        internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
@@ -64,7 +64,7 @@ namespace Dock.Avalonia
             }
         }
 
-        private void Over(Point point, DragAction dragAction, IVisual relativeTo)
+        internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
         {
             var operation = DockOperation.Fill;
 
@@ -76,7 +76,7 @@ namespace Dock.Avalonia
             Validate(point, operation, dragAction, relativeTo);
         }
 
-        private void Drop(Point point, DragAction dragAction, IVisual relativeTo)
+        internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
         {
             var operation = DockOperation.Window;
 
@@ -93,7 +93,7 @@ namespace Dock.Avalonia
             Execute(point, operation, dragAction, relativeTo);
         }
 
-        private void Leave()
+        internal void Leave()
         {
             if (_dropControl is DockPanel)
             {
@@ -101,7 +101,7 @@ namespace Dock.Avalonia
             }
         }
 
-        private bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        internal bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
         {
             if (_dragControl == null || _dropControl == null)
             {
@@ -118,7 +118,7 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        internal bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
         {
             if (_dragControl == null || _dropControl == null)
             {

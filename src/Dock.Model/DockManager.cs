@@ -160,7 +160,7 @@ namespace Dock.Model
                             {
                                 if (bExecute)
                                 {
-                                    DockDockableIntoWindow(sourceDockable, targetWindowOwner);
+                                    factory.SplitToWindow(targetWindowOwner, sourceDockable, ScreenPosition.X, ScreenPosition.Y, 300, 400);
                                 }
                                 return true;
                             }
@@ -186,25 +186,6 @@ namespace Dock.Model
                 }
             }
             return false;
-        }
-
-        internal void DockDockableIntoWindow(IDockable sourceDockable, IDock targetWindowOwner)
-        {
-            if (targetWindowOwner.Factory is IFactory factory)
-            {
-                factory.RemoveDockable(sourceDockable);
-                var window = factory.CreateWindowFrom(sourceDockable);
-                if (window != null)
-                {
-                    factory.AddWindow(targetWindowOwner, window);
-
-                    window.X = ScreenPosition.X;
-                    window.Y = ScreenPosition.Y;
-                    window.Width = 300;
-                    window.Height = 400;
-                    window.Present(false);
-                }
-            }
         }
 
         internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, DragAction action, bool bExecute)

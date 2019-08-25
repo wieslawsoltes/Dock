@@ -713,78 +713,18 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SplitToFill(IDock dock)
+        public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {
-            // TODO: Split to fill.
-        }
-
-        /// <inheritdoc/>
-        public virtual void SplitToLeft(IDock dock)
-        {
-            Split(dock, null, DockOperation.Left);
-        }
-
-        /// <inheritdoc/>
-        public virtual void SplitToRight(IDock dock)
-        {
-            Split(dock, null, DockOperation.Right);
-        }
-
-        /// <inheritdoc/>
-        public virtual void SplitToTop(IDock dock)
-        {
-            Split(dock, null, DockOperation.Top);
-        }
-
-        /// <inheritdoc/>
-        public virtual void SplitToBottom(IDock dock)
-        {
-            Split(dock, null, DockOperation.Bottom);
-        }
-
-        /// <inheritdoc/>
-        public virtual void SplitToWindow(IDock dock)
-        {
-            if (FindRoot(dock) is IRootDock root && root.ActiveDockable is IDock activeDockableRoot)
+            RemoveDockable(dockable);
+            var window = CreateWindowFrom(dockable);
+            if (window != null)
             {
-                if (dock?.Owner is IDock ownerDock && dock.VisibleDockables != null)
-                {
-                    int index = ownerDock.VisibleDockables.IndexOf(dock);
-                    if (index >= 0)
-                    {
-                        ownerDock.VisibleDockables.Remove(dock);
-                        int activeDockableIndex = index > 0 ? index - 1 : 0;
-                        if (activeDockableIndex < 0)
-                        {
-                            return;
-                        }
-                        if (ownerDock.VisibleDockables.Count > 0)
-                        {
-                            ownerDock.ActiveDockable = ownerDock.VisibleDockables[activeDockableIndex];
-                        }
-                        else
-                        {
-                            ownerDock.ActiveDockable = null;
-                        }
-                        Collapse(ownerDock);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-
-                var window = CreateWindowFrom(dock);
-                if (window != null)
-                {
-                    AddWindow(activeDockableRoot, window);
-
-                    window.X = 0;
-                    window.Y = 0;
-                    window.Width = 300;
-                    window.Height = 400;
-                    window.Present(false);
-                }
+                AddWindow(dock, window);
+                window.X = x;
+                window.Y = y;
+                window.Width = width;
+                window.Height = height;
+                window.Present(false);
             }
         }
 

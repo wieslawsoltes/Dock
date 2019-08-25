@@ -264,40 +264,15 @@ namespace Dock.Model
         void Split(IDock dock, IDockable dockable, DockOperation operation);
 
         /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Fill"/> and updates <see cref="IDockable.Owner"/> layout.
-        /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToFill(IDock dock);
-
-        /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Left"/> and updates <see cref="IDockable.Owner"/> layout.
-        /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToLeft(IDock dock);
-
-        /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Right"/> and updates <see cref="IDockable.Owner"/> layout.
-        /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToRight(IDock dock);
-
-        /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Top"/> and updates <see cref="IDockable.Owner"/> layout.
-        /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToTop(IDock dock);
-
-        /// <summary>
-        /// Splits dock to the <see cref="DockOperation.Bottom"/> and updates <see cref="IDockable.Owner"/> layout.
-        /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToBottom(IDock dock);
-
-        /// <summary>
         /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.
         /// </summary>
-        /// <param name="dock">The dock to perform operation on.</param>
-        void SplitToWindow(IDock dock);
+        /// <param name="dock">The window owner.</param>
+        /// <param name="dockable">The dockable to add to splitted window.</param>
+        /// <param name="x">The window X coordinate.</param>
+        /// <param name="y">The window Y coordinate.</param>
+        /// <param name="width">The window width.</param>
+        /// <param name="height">The window height.</param>
+        void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height);
 
         /// <summary>
         /// Creates dock window from source dockable.

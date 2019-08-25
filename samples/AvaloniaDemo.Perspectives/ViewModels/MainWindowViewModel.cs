@@ -120,14 +120,15 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void SaveWindowLayout(IDock layout)
+        public void SaveWindowLayout(IDock dock)
         {
-            if (layout != null && layout.Owner is IDock owner)
+            if (dock != null && dock.Owner is IDock owner)
             {
-                var clone = layout.Clone();
+                var clone = (IDock)dock.Clone();
                 if (clone != null)
                 {
                     owner.Factory.AddDockable(owner, clone);
+                    ApplyWindowLayout(clone);
                 }
             }
         }

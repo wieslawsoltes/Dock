@@ -21,8 +21,10 @@ namespace Dock.Avalonia.Controls
     {
         private bool _pointerPressed = false;
         private Point _pointerPressedPoint = default;
+        private DockControl _targetDockControl = null;
         private Point _targetPoint = default;
-        private IVisual _targetDockControl = null;
+        private IControl _targetDropControl = null;
+        private DragAction _dragAction = default;
 
         private Control _titleBar;
         private Grid _bottomHorizontalGrip;
@@ -102,7 +104,7 @@ namespace Dock.Avalonia.Controls
                 Window.Save();
             }
 
-            DragPositionChanged();
+            Process();
         }
 
         private void HostWindow_LayoutUpdated(object sender, EventArgs e)
@@ -130,19 +132,29 @@ namespace Dock.Avalonia.Controls
         {
             _pointerPressed = true;
             _pointerPressedPoint = e.GetPosition(this);
-            _targetPoint = default;
             _targetDockControl = null;
-            // TODO:
+            _targetPoint = default;
+            _targetDropControl = null;
+            _dragAction = DragAction.Move;
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(Pressed)} {e.GetPosition(this)}");
         }
 
         private void Released(object sender, PointerReleasedEventArgs e)
         {
+            if (_targetDockControl != null)
+            {
+                if (_targetDropControl != null)
+                {
+                    _targetDockControl._dockControlState.Drop(_targetPoint, _dragAction, _targetDropControl);
+                }
+                _targetDockControl._dockControlState.Leave();
+            }
             _pointerPressed = false;
             _pointerPressedPoint = default;
-            _targetPoint = default;
             _targetDockControl = null;
-            // TODO:
+            _targetPoint = default;
+            _targetDropControl = null;
+            _dragAction = DragAction.Move;
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(Released)} {e.GetPosition(this)}");
         }
 
@@ -154,13 +166,99 @@ namespace Dock.Avalonia.Controls
         {
             _pointerPressed = false;
             _pointerPressedPoint = default;
-            _targetPoint = default;
             _targetDockControl = null;
+            _targetPoint = default;
+            _targetDropControl = null;
+            _dragAction = default;
             // TODO:
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(CaptureLost)}");
         }
 
-        private void DragPositionChanged()
+        internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+
+            if (isValid == true && _targetDropControl is DockPanel)
+            {
+                _targetDockControl._dockControlState._adornerHelper.AddAdorner(_targetDropControl);
+            }
+        }
+
+        internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var operation = DockOperation.Fill;
+
+            if (_targetDockControl._dockControlState._adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            }
+
+            Validate(point, operation, dragAction, relativeTo);
+        }
+
+        internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var operation = DockOperation.Window;
+
+            if (_targetDockControl._dockControlState._adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            }
+
+            if (_targetDropControl is DockPanel)
+            {
+                _targetDockControl._dockControlState._adornerHelper.RemoveAdorner(_targetDropControl);
+            }
+
+            Execute(point, operation, dragAction, relativeTo);
+
+            Debug.WriteLine($"Drop");
+        }
+
+        internal void Leave()
+        {
+            if (_targetDropControl is DockPanel)
+            {
+                _targetDockControl._dockControlState._adornerHelper.RemoveAdorner(_targetDropControl);
+            }
+        }
+
+        internal bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        {
+            if (_targetDropControl == null)
+            {
+                return false;
+            }
+
+            if (Window.Layout is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            {
+                _targetDockControl._dockControlState._dockManager.Position = DockControlState.ToDockPoint(point);
+                _targetDockControl._dockControlState._dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return _targetDockControl._dockControlState._dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+            }
+
+            return false;
+        }
+
+        internal bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        {
+            if (_targetDropControl == null)
+            {
+                return false;
+            }
+
+            if (Window.Layout is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            {
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
+                _targetDockControl._dockControlState._dockManager.Position = DockControlState.ToDockPoint(point);
+                _targetDockControl._dockControlState._dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return _targetDockControl._dockControlState._dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+            }
+
+            return false;
+        }
+
+        private void Process()
         {
             if (_pointerPressed == true)
             {
@@ -181,9 +279,38 @@ namespace Dock.Avalonia.Controls
                             var dropControl = dockControl._dockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                             if (dropControl != null)
                             {
-                                _targetPoint = dockControlPoint;
-                                _targetDockControl = dropControl;
-                                Debug.WriteLine($"Window Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                //Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                if (_targetDropControl == dropControl)
+                                {
+                                    _targetDockControl = dockControl;
+                                    _targetPoint = dockControlPoint;
+                                    _targetDropControl = dropControl;
+                                    _dragAction = DragAction.Move;
+                                    Over(_targetPoint, _dragAction, _targetDockControl);
+                                }
+                                else
+                                {
+                                    if (_targetDropControl != null)
+                                    {
+                                        Leave();
+                                        _targetDropControl = null;
+                                    }
+
+                                    _targetDockControl = dockControl;
+                                    _targetPoint = dockControlPoint;
+                                    _targetDropControl = dropControl;
+                                    _dragAction = DragAction.Move;
+
+                                    Enter(_targetPoint, _dragAction, _targetDockControl);
+                                }
+                            }
+                            else
+                            {
+                                Leave();
+                                _targetDockControl = null;
+                                _targetPoint = default;
+                                _targetDropControl = null;
+                                _dragAction = DragAction.Move;
                             }
                         }
                     }
@@ -232,6 +359,8 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            base.OnPointerPressed(e);
+
             if (_topHorizontalGrip != null && _topHorizontalGrip.IsPointerOver)
             {
                 BeginResizeDrag(WindowEdge.North);
@@ -273,27 +402,27 @@ namespace Dock.Avalonia.Controls
             {
                 _mouseDown = false;
             }
-
-            base.OnPointerPressed(e);
         }
 
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            _mouseDown = false;
             base.OnPointerReleased(e);
+
+            _mouseDown = false;
         }
 
         /// <inheritdoc/>
         protected override void OnPointerMoved(PointerEventArgs e)
         {
+            base.OnPointerMoved(e);
+
             if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
             {
                 WindowState = WindowState.Normal;
                 BeginMoveDrag();
                 _mouseDown = false;
             }
-            base.OnPointerMoved(e);
         }
 
         /// <inheritdoc/>

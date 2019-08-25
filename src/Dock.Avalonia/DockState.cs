@@ -146,12 +146,27 @@ namespace Dock.Avalonia
                    element.IsAttachedToVisualTree;
         }
 
+        private IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
+        {
+            var root = visual.GetVisualRoot();
+            var rootPoint = visual.TranslatePoint(p, root);
+
+            if (rootPoint.HasValue)
+            {
+                return root.Renderer.HitTest(rootPoint.Value, visual, filter);
+            }
+
+            return Enumerable.Empty<IVisual>();
+        }
+
         private IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement> inputElements = null;
             try
             {
-                inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
+                inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
+                // TODO: GetVisualsAt can throw.
+                //inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
                 // TODO: GetInputElementsAt can throw.
                 // inputElements = input.GetInputElementsAt(point);
             }

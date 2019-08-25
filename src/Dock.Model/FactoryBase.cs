@@ -308,7 +308,7 @@ namespace Dock.Model
 
         private void PinDockable(IPinDock pinDock, IDockable dockable)
         {
-            RemoveDockable(dockable);
+            RemoveDockable(dockable, true);
 
             if (pinDock.VisibleDockables == null)
             {
@@ -366,7 +366,7 @@ namespace Dock.Model
 
                         foreach (var removeVisible in toRemove)
                         {
-                            RemoveDockable(removeVisible);
+                            RemoveDockable(removeVisible, true);
                         }
                     }
                     else
@@ -381,13 +381,13 @@ namespace Dock.Model
                 }
                 else
                 {
-                    RemoveDockable(dock);
+                    RemoveDockable(dock, true);
                 }
             }
         }
 
         /// <inheritdoc/>
-        public virtual void RemoveDockable(IDockable dockable)
+        public virtual void RemoveDockable(IDockable dockable, bool collapse)
         {
             if (dockable?.Owner is IDock dock && dock.VisibleDockables != null)
             {
@@ -410,7 +410,10 @@ namespace Dock.Model
                 {
                     dock.ActiveDockable = null;
                 }
-                Collapse(dock);
+                if (collapse == true)
+                {
+                    Collapse(dock);
+                }
             }
         }
 
@@ -419,7 +422,7 @@ namespace Dock.Model
         {
             if (dockable.OnClose())
             {
-                RemoveDockable(dockable);
+                RemoveDockable(dockable, true);
             }
         }
 
@@ -459,29 +462,7 @@ namespace Dock.Model
         {
             if (sourceDockable?.Owner is IDock dock && dock.VisibleDockables != null)
             {
-                int index = dock.VisibleDockables.IndexOf(sourceDockable);
-                if (index < 0)
-                {
-                    return;
-                }
-                dock.VisibleDockables.Remove(sourceDockable);
-                int indexActiveDockable = index > 0 ? index - 1 : 0;
-                if (indexActiveDockable < 0)
-                {
-                    return;
-                }
-                if (dock.VisibleDockables.Count > 0)
-                {
-                    dock.ActiveDockable = dock.VisibleDockables[indexActiveDockable];
-                }
-                else
-                {
-                    dock.ActiveDockable = null;
-                }
-                if (sourceDock != targetDock)
-                {
-                    Collapse(dock);
-                }
+                RemoveDockable(sourceDockable, sourceDock != targetDock);
             }
 
             if (targetDock.VisibleDockables == null)
@@ -504,7 +485,6 @@ namespace Dock.Model
                 return;
             }
 
-            // TODO: Fix crash.
             targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
             UpdateDockable(sourceDockable, targetDock);
             targetDock.ActiveDockable = sourceDockable;
@@ -733,7 +713,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {
-            RemoveDockable(dockable);
+            RemoveDockable(dockable, true);
             var window = CreateWindowFrom(dockable);
             if (window != null)
             {

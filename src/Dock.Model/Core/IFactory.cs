@@ -183,7 +183,8 @@ namespace Dock.Model
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dockable">The dockable to remove.</param>
-        void RemoveDockable(IDockable dockable);
+        /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
+        void RemoveDockable(IDockable dockable, bool collapse);
 
         /// <summary>
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.

@@ -76,7 +76,7 @@ namespace Dock.Model
         {
             if (targetDock.Factory is IFactory factory)
             {
-                factory.RemoveDockable(sourceDockable);
+                factory.RemoveDockable(sourceDockable, true);
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);

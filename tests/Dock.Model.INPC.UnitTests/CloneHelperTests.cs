@@ -79,7 +79,7 @@ namespace Dock.Model.INPC.UnitTests
         {
             var factory = new TestFactory();
             var source = factory.CreateDockWindow();
-            factory.UpdateDockable(source, null);
+            factory.UpdateDockWindow(source, null);
             var actual = source.Clone();
             Assert.NotNull(actual);
             Assert.IsType<DockWindow>(actual);

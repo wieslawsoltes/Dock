@@ -19,7 +19,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets <see cref="IHostWindow"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<IHostWindow>> HostLocator { get; set; }
+        IDictionary<string, Func<IHostWindow>> HostWindowLocator { get; set; }
 
         /// <summary>
         /// Gets or sets <see cref="IDockable"/> locator registry.
@@ -83,12 +83,6 @@ namespace Dock.Model
         IDock CreateLayout();
 
         /// <summary>
-        /// Initialize layout.
-        /// </summary>
-        /// <param name="layout">The layout to initialize.</param>
-        void InitLayout(IDockable layout);
-
-        /// <summary>
         /// Gets context.
         /// </summary>
         /// <param name="id">The object id.</param>
@@ -103,14 +97,27 @@ namespace Dock.Model
         IHostWindow GetHostWindow(string id);
 
         /// <summary>
-        /// Updates window.
+        /// Gets dockable.
+        /// </summary>
+        /// <param name="id">The host id.</param>
+        /// <returns>The located dockable.</returns>
+        IDockable GetDockable(string id);
+
+        /// <summary>
+        /// Initialize layout.
+        /// </summary>
+        /// <param name="layout">The layout to initialize.</param>
+        void InitLayout(IDockable layout);
+
+        /// <summary>
+        /// Updates dock window.
         /// </summary>
         /// <param name="window">The window to update.</param>
         /// <param name="owner">The window owner dockable.</param>
-        void UpdateDockable(IDockWindow window, IDockable owner);
+        void UpdateDockWindow(IDockWindow window, IDockable owner);
 
         /// <summary>
-        /// Update dockable.
+        /// Updates dockable.
         /// </summary>
         /// <param name="dockable">The dockable to update.</param>
         /// <param name="owner">The owner dockable.</param>

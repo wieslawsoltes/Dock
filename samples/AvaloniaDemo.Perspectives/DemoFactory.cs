@@ -32,7 +32,7 @@ namespace AvaloniaDemo
                 ["RightBottom2"] = () => new RightBottomTool2()
             };
 
-            this.HostLocator = new Dictionary<string, Func<IHostWindow>>
+            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () =>
                 {

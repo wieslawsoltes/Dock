@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -15,7 +16,7 @@ namespace Dock.Model
         public virtual IDictionary<string, Func<object>> ContextLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, Func<IHostWindow>> HostLocator { get; set; }
+        public virtual IDictionary<string, Func<IHostWindow>> HostWindowLocator { get; set; }
 
         /// <inheritdoc/>
         public virtual IDictionary<string, Func<IDockable>> DockableLocator { get; set; }
@@ -48,6 +49,51 @@ namespace Dock.Model
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>
+        public virtual object GetContext(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                Func<object> locator = null;
+                if (ContextLocator?.TryGetValue(id, out locator) == true)
+                {
+                    return locator?.Invoke();
+                }
+            }
+            Debug.WriteLine($"Context with provided id={id} is not registered.");
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public virtual IHostWindow GetHostWindow(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                Func<IHostWindow> locator = null;
+                if (HostWindowLocator?.TryGetValue(id, out locator) == true)
+                {
+                    return locator?.Invoke();
+                }
+            }
+            Debug.WriteLine($"Host window with provided id={id} is not registered.");
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public virtual IDockable GetDockable(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                Func<IDockable> locator = null;
+                if (DockableLocator?.TryGetValue(id, out locator) == true)
+                {
+                    return locator?.Invoke();
+                }
+            }
+            Debug.WriteLine($"Dockable with provided id={id} is not registered.");
+            return null;
+        }
+
+        /// <inheritdoc/>
         public virtual void InitLayout(IDockable layout)
         {
             UpdateDockable(layout, null);
@@ -62,35 +108,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual object GetContext(string id)
-        {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Func<object> locator = null;
-                if (ContextLocator?.TryGetValue(id, out locator) == true)
-                {
-                    return locator?.Invoke();
-                }
-            }
-            return null;
-        }
-
-        /// <inheritdoc/>
-        public virtual IHostWindow GetHostWindow(string id)
-        {
-            if (!string.IsNullOrEmpty(id))
-            {
-                Func<IHostWindow> locator = null;
-                if (HostLocator?.TryGetValue(id, out locator) == true)
-                {
-                    return locator?.Invoke();
-                }
-            }
-            return null; // Dock host window with provided id is not registered.
-        }
-
-        /// <inheritdoc/>
-        public virtual void UpdateDockable(IDockWindow window, IDockable owner)
+        public virtual void UpdateDockWindow(IDockWindow window, IDockable owner)
         {
             window.Host = GetHostWindow(window.Id);
             if (window.Host != null)
@@ -133,7 +151,7 @@ namespace Dock.Model
                 {
                     foreach (var child in dock.Windows)
                     {
-                        UpdateDockable(child, dockable);
+                        UpdateDockWindow(child, dockable);
                     }
                 }
             }
@@ -172,7 +190,7 @@ namespace Dock.Model
                 dock.Windows = CreateList<IDockWindow>();
             }
             dock.Windows.Add(window);
-            UpdateDockable(window, dock);
+            UpdateDockWindow(window, dock);
         }
 
         /// <inheritdoc/>

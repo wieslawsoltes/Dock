@@ -271,7 +271,7 @@ namespace AvaloniaDemo
                 ["Home"] = () => _context
             };
 
-            this.HostLocator = new Dictionary<string, Func<IHostWindow>>
+            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () =>
                 {

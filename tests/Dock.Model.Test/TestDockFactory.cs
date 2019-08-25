@@ -259,7 +259,7 @@ namespace Dock.Model
                 ["Main"] = () => context
             };
 
-            this.HostLocator = new Dictionary<string, Func<IHostWindow>>
+            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };

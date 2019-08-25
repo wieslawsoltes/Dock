@@ -97,6 +97,7 @@ namespace AvaloniaDemo.ViewModels
                 if (Layout is IDock root)
                 {
                     root.Navigate(dock);
+                    root.Factory.SetFocusedDockable(root, dock);
                     root.DefaultDockable = dock;
                 }
             }

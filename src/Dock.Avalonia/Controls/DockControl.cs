@@ -64,7 +64,7 @@ namespace Dock.Avalonia.Controls
             s_dockControls.Remove(this);
         }
 
-        private DragAction ToDragAction(PointerEventArgs e)
+        internal static DragAction ToDragAction(PointerEventArgs e)
         {
             if (e.InputModifiers.HasFlag(InputModifiers.Alt))
             {

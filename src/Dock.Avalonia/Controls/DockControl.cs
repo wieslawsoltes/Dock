@@ -32,8 +32,8 @@ namespace Dock.Avalonia.Controls
         [Content]
         public IDock Layout
         {
-            get { return GetValue(LayoutProperty); }
-            set { SetValue(LayoutProperty, value); }
+            get => GetValue(LayoutProperty);
+            set => SetValue(LayoutProperty, value);
         }
 
         /// <summary>

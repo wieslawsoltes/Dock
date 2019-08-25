@@ -19,8 +19,8 @@ namespace AvaloniaDemo.ViewModels
 
         public DockControl DockControl
         {
-            get { return GetValue(DockControlProperty); }
-            set { SetValue(DockControlProperty, value); }
+            get => GetValue(DockControlProperty);
+            set => SetValue(DockControlProperty, value);
         }
 
         public void AttachDockControl(DockControl dockControl)

@@ -34,26 +34,26 @@ namespace AvaloniaDemo.ViewModels
 
         public DockControl DockControl
         {
-            get { return _dockControl; }
-            set { SetAndRaise(DockControlProperty, ref _dockControl, value); }
+            get => _dockControl;
+            set => SetAndRaise(DockControlProperty, ref _dockControl, value);
         }
 
         public IFactory Factory
         {
-            get { return _factory; }
-            set { SetAndRaise(FactoryProperty, ref _factory, value); }
+            get => _factory;
+            set => SetAndRaise(FactoryProperty, ref _factory, value);
         }
 
         public IDockSerializer Serializer
         {
-            get { return _serializer; }
-            set { SetAndRaise(SerializerProperty, ref _serializer, value); }
+            get => _serializer;
+            set => SetAndRaise(SerializerProperty, ref _serializer, value);
         }
 
         public string Path
         {
-            get { return _path; }
-            set { SetAndRaise(PathProperty, ref _path, value); }
+            get => _path;
+            set => SetAndRaise(PathProperty, ref _path, value);
         }
 
         public MainWindowViewModel()

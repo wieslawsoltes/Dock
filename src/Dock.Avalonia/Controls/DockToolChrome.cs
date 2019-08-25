@@ -38,8 +38,8 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public string Title
         {
-            get { return GetValue(TitleProprty); }
-            set { SetValue(TitleProprty, value); }
+            get => GetValue(TitleProprty);
+            set => SetValue(TitleProprty, value);
         }
 
         /// <summary>

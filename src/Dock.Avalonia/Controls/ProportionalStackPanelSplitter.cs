@@ -73,8 +73,8 @@ namespace Dock.Avalonia.Controls
         /// <value>The thickness.</value>
         public double Thickness
         {
-            get { return GetValue(ThicknessProperty); }
-            set { SetValue(ThicknessProperty, value); }
+            get => GetValue(ThicknessProperty);
+            set => SetValue(ThicknessProperty, value);
         }
 
         /// <summary>

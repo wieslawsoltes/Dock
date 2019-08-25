@@ -196,11 +196,6 @@ namespace Dock.Model
             }
         }
 
-        /// <summary>
-        /// Sets the IsActive flag.
-        /// </summary>
-        /// <param name="dockable">the dockable to try and set IsActive on.</param>
-        /// <param name="active">value to set</param>
         private void SetIsActive(IDockable dockable, bool active)
         {
             if (dockable is IDock dock)

@@ -14,15 +14,17 @@ namespace Dock.Model.Controls
         /// <summary>
         /// Defines the <see cref="Orientation"/> property.
         /// </summary>
-        public static readonly StyledProperty<Orientation> OrientationProperty =
-            AvaloniaProperty.Register<ProportionalDock, Orientation>(nameof(Orientation));
+        public static readonly DirectProperty<ProportionalDock, Orientation> OrientationProperty =
+            AvaloniaProperty.RegisterDirect<ProportionalDock, Orientation>(nameof(Orientation), o => o.Orientation, (o, v) => o.Orientation = v);
+
+        private Orientation _orientation;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public Orientation Orientation
         {
-            get { return GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => _orientation;
+            set => SetAndRaise(OrientationProperty, ref _orientation, value);
         }
 
         /// <inheritdoc/>

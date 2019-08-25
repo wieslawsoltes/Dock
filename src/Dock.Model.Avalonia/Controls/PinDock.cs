@@ -14,45 +14,49 @@ namespace Dock.Model.Controls
         /// <summary>
         /// Defines the <see cref="Alignment"/> property.
         /// </summary>
-        public static readonly StyledProperty<Alignment> AlignmentProperty =
-            AvaloniaProperty.Register<PinDock, Alignment>(nameof(Alignment), Alignment.Unset);
+        public static readonly DirectProperty<PinDock, Alignment> AlignmentProperty =
+            AvaloniaProperty.RegisterDirect<PinDock, Alignment>(nameof(Alignment), o => o.Alignment, (o, v) => o.Alignment = v, Alignment.Unset);
 
         /// <summary>
         /// Defines the <see cref="IsExpanded"/> property.
         /// </summary>
-        public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<PinDock, bool>(nameof(IsExpanded), false);
+        public static readonly DirectProperty<PinDock, bool> IsExpandedProperty =
+            AvaloniaProperty.RegisterDirect<PinDock, bool>(nameof(IsExpanded), o => o.IsExpanded, (o, v) => o.IsExpanded = v, false);
 
         /// <summary>
         /// Defines the <see cref="AutoHide"/> property.
         /// </summary>
-        public static readonly StyledProperty<bool> AutoHideProperty =
-            AvaloniaProperty.Register<PinDock, bool>(nameof(AutoHide), true);
+        public static readonly DirectProperty<PinDock, bool> AutoHideProperty =
+            AvaloniaProperty.RegisterDirect<PinDock, bool>(nameof(AutoHide), o => o.AutoHide, (o, v) => o.AutoHide = v, true);
+
+        private Alignment _alignment = Alignment.Unset;
+        private bool _isExpanded = false;
+        private bool _autoHide = true;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public Alignment Alignment
         {
-            get { return GetValue(AlignmentProperty); }
-            set { SetValue(AlignmentProperty, value); }
+            get => _alignment;
+            set => SetAndRaise(AlignmentProperty, ref _alignment, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool IsExpanded
         {
-            get { return GetValue(IsExpandedProperty); }
-            set { SetValue(IsExpandedProperty, value); }
+            get => _isExpanded;
+            set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool AutoHide
         {
-            get { return GetValue(AutoHideProperty); }
-            set { SetValue(AutoHideProperty, value); }
+            get => _autoHide;
+            set => SetAndRaise(AutoHideProperty, ref _autoHide, value);
         }
-        
+
         /// <inheritdoc/>
         public override IDockable Clone()
         {

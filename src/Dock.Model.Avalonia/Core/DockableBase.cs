@@ -14,7 +14,7 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="Id"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockableBase, string> IdProperty = 
+        public static readonly DirectProperty<DockableBase, string> IdProperty =
             AvaloniaProperty.RegisterDirect<DockableBase, string>(nameof(Id), o => o.Id, (o, v) => o.Id = v);
 
         /// <summary>
@@ -44,32 +44,32 @@ namespace Dock.Model
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Id
         {
-            get { return _id; }
-            set { SetAndRaise(IdProperty, ref _id, value); }
+            get => _id;
+            set => SetAndRaise(IdProperty, ref _id, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Title
         {
-            get { return _title; }
-            set { SetAndRaise(TitleProperty, ref _title, value); }
+            get => _title;
+            set => SetAndRaise(TitleProperty, ref _title, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public object Context
         {
-            get { return _context; }
-            set { SetAndRaise(ContextProperty, ref _context, value); }
+            get => _context;
+            set => SetAndRaise(ContextProperty, ref _context, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public IDockable Owner
         {
-            get { return _owner; }
-            set { SetAndRaise(OwnerProperty, ref _owner, value); }
+            get => _owner;
+            set => SetAndRaise(OwnerProperty, ref _owner, value);
         }
 
         /// <inheritdoc/>

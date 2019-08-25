@@ -112,31 +112,31 @@ namespace Dock.Model
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IDockable> VisibleDockables
         {
-            get { return _visibleDockables; }
-            set { SetAndRaise(VisibleDockablesProperty, ref _visibleDockables, value); }
+            get => _visibleDockables;
+            set => SetAndRaise(VisibleDockablesProperty, ref _visibleDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IDockable> HiddenDockables
         {
-            get { return _hiddenDockables; }
-            set { SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value); }
+            get => _hiddenDockables;
+            set => SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IDockable> PinnedDockables
         {
-            get { return _pinnedDockables; }
-            set { SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value); }
+            get => _pinnedDockables;
+            set => SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IDockable ActiveDockable
         {
-            get { return _activeDockable; }
+            get => _activeDockable;
             set
             {
                 SetAndRaise(ActiveDockableProperty, ref _activeDockable, value);
@@ -154,72 +154,72 @@ namespace Dock.Model
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IDockable DefaultDockable
         {
-            get { return _defaultDockable; }
-            set { SetAndRaise(DefaultDockableProperty, ref _defaultDockable, value); }
+            get => _defaultDockable;
+            set => SetAndRaise(DefaultDockableProperty, ref _defaultDockable, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IDockable FocusedDockable
         {
-            get { return _focusedDockable; }
-            set { SetAndRaise(FocusedDockableProperty, ref _focusedDockable, value); }
+            get => _focusedDockable;
+            set => SetAndRaise(FocusedDockableProperty, ref _focusedDockable, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public double Proportion
         {
-            get { return _proportion; }
-            set { SetAndRaise(ProportionProperty, ref _proportion, value); }
+            get => _proportion;
+            set => SetAndRaise(ProportionProperty, ref _proportion, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool IsActive
         {
-            get { return _isActive; }
-            set { SetAndRaise(IsActiveProperty, ref _isActive, value); }
+            get => _isActive;
+            set => SetAndRaise(IsActiveProperty, ref _isActive, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public bool IsCollapsable
         {
-            get { return _isCollapsable; }
-            set { SetAndRaise(IsCollapsableProperty, ref _isCollapsable, value); }
+            get => _isCollapsable;
+            set => SetAndRaise(IsCollapsableProperty, ref _isCollapsable, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public bool CanGoBack
         {
-            get { return _navigateAdapter?.CanGoBack ?? false; }
-            private set { SetAndRaise(CanGoBackProperty, ref _canGoBack, value); }
+            get => _navigateAdapter?.CanGoBack ?? false;
+            private set => SetAndRaise(CanGoBackProperty, ref _canGoBack, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public bool CanGoForward
         {
-            get { return _navigateAdapter?.CanGoForward ?? false; }
-            private set { SetAndRaise(CanGoForwardProperty, ref _canGoForward, value); }
+            get => _navigateAdapter?.CanGoForward ?? false;
+            private set => SetAndRaise(CanGoForwardProperty, ref _canGoForward, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public IList<IDockWindow> Windows
         {
-            get { return _windows; }
-            set { SetAndRaise(WindowsProperty, ref _windows, value); }
+            get => _windows;
+            set => SetAndRaise(WindowsProperty, ref _windows, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public IFactory Factory
         {
-            get { return _factory; }
-            set { SetAndRaise(FactoryProperty, ref _factory, value); }
+            get => _factory;
+            set => SetAndRaise(FactoryProperty, ref _factory, value);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Dock.Model
         public DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
-            VisibleDockables = new AvaloniaList<IDockable>();
+            _visibleDockables = new AvaloniaList<IDockable>();
         }
 
         /// <inheritdoc/>

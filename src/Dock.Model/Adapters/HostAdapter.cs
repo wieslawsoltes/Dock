@@ -40,7 +40,10 @@ namespace Dock.Model
             if (_window.Host == null)
             {
                 _window.Host = _window.Factory?.GetHostWindow(_window.Id);
-                _window.Host.Window = this._window;
+                if (_window.Host != null)
+                {
+                    _window.Host.Window = this._window;
+                }
             }
 
             if (_window.Host != null)

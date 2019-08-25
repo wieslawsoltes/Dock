@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using AvaloniaDemo.Models;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -15,53 +14,13 @@ namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : StyledElement
     {
-        public static readonly DirectProperty<MainWindowViewModel, DockControl> DockControlProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, DockControl>(nameof(DockControl), o => o.DockControl, (o, v) => o.DockControl = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, IFactory> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, IDockSerializer> SerializerProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IDockSerializer>(nameof(Serializer), o => o.Serializer, (o, v) => o.Serializer = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, string> PathProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, string>(nameof(Path), o => o.Path, (o, v) => o.Path = v);
-
-        private DockControl _dockControl;
-        private IFactory _factory;
-        private IDockSerializer _serializer;
-        private string _path;
+        public static readonly StyledProperty<DockControl> DockControlProperty =
+            AvaloniaProperty.Register<MainWindowViewModel, DockControl>(nameof(DockControl));
 
         public DockControl DockControl
         {
-            get { return _dockControl; }
-            set { SetAndRaise(DockControlProperty, ref _dockControl, value); }
-        }
-
-        public IFactory Factory
-        {
-            get { return _factory; }
-            set { SetAndRaise(FactoryProperty, ref _factory, value); }
-        }
-
-        public IDockSerializer Serializer
-        {
-            get { return _serializer; }
-            set { SetAndRaise(SerializerProperty, ref _serializer, value); }
-        }
-
-        public string Path
-        {
-            get { return _path; }
-            set { SetAndRaise(PathProperty, ref _path, value); }
-        }
-
-        public MainWindowViewModel()
-        {
-            DockControl = null;
-            Factory = new DemoFactory();
-            Serializer = new DockSerializer(typeof(AvaloniaList<>));
-            Path = System.IO.Path.Combine(AppContext.BaseDirectory, "Layout.json");
+            get => GetValue(DockControlProperty);
+            set => SetValue(DockControlProperty, value);
         }
 
         public void AttachDockControl(DockControl dockControl)
@@ -70,32 +29,32 @@ namespace AvaloniaDemo.ViewModels
             {
                 DockControl = dockControl;
 
-                if (File.Exists(Path))
+                var path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
+                if (File.Exists(path))
                 {
-                    var layout = Serializer.Load<RootDock>(Path);
-                    if (layout != null)
+                    var root = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
+                    if (root != null)
                     {
-                        DockControl.Layout = layout;
+                        DockControl.Layout = root;
                     }
                 }
 
-                if (DockControl.Layout != null)
+                var layout = DockControl.Layout;
+                if (layout != null)
                 {
-                    Factory.InitLayout(DockControl.Layout);
+                    var factory = new DemoFactory();
+                    factory.InitLayout(layout);
                 }
             }
         }
 
         public void DetachDockControl()
         {
-            if (DockControl != null)
+            if (DockControl?.Layout is IDock layout)
             {
-                if (DockControl.Layout != null)
-                {
-                    DockControl.Layout.Close();
-                    Serializer.Save(Path, DockControl.Layout);
-                }
-
+                layout.Close();
+                var path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
+                new DockSerializer(typeof(AvaloniaList<>)).Save(path, DockControl.Layout);
                 DockControl = null;
             }
         }
@@ -108,9 +67,10 @@ namespace AvaloniaDemo.ViewModels
                 {
                     root.Close();
                 }
-                Factory = new DemoFactory();
-                DockControl.Layout = Factory.CreateLayout();
-                Factory.InitLayout(DockControl.Layout);
+                var factory = new DemoFactory();
+                var layout = factory.CreateLayout();
+                factory.InitLayout(layout);
+                DockControl.Layout = layout;
             }
         }
 
@@ -124,13 +84,21 @@ namespace AvaloniaDemo.ViewModels
                 var result = await dlg.ShowAsync(GetWindow());
                 if (result != null)
                 {
-                    IDock layout = Serializer?.Load<RootDock>(result.FirstOrDefault());
-                    if (DockControl.Layout is IDock root)
+                    var path = result.FirstOrDefault();
+                    if (path != null)
                     {
-                        root.Close();
+                        var layout = new DockSerializer(typeof(AvaloniaList<>)).Load<RootDock>(path);
+                        if (layout != null)
+                        {
+                            if (DockControl.Layout is IDock root)
+                            {
+                                root.Close();
+                            }
+                            var factory = new DemoFactory();
+                            factory.InitLayout(layout);
+                            DockControl.Layout = layout;
+                        }
                     }
-                    DockControl.Layout = layout;
-                    Factory.InitLayout(DockControl.Layout);
                 }
             }
         }
@@ -147,34 +115,43 @@ namespace AvaloniaDemo.ViewModels
                 var result = await dlg.ShowAsync(GetWindow());
                 if (result != null)
                 {
-                    Serializer.Save(result, DockControl.Layout);
+                    new DockSerializer(typeof(AvaloniaList<>)).Save(result, DockControl.Layout);
                 }
             }
         }
 
-        public void SaveWindowLayout()
+        public void SaveWindowLayout(IDock dock)
         {
-            // TODO:
-            if (DockControl != null)
+            if (dock != null && dock.Owner is IDock owner)
             {
-                if (DockControl.Layout != null && DockControl.Layout.AvtiveDockable != null)
+                var clone = (IDock)dock.Clone();
+                if (clone != null)
                 {
-                    var dockable = DockControl.Layout.AvtiveDockable.Clone();
-                    if (dockable != null)
-                    {
-                        Factory.AddDockable(DockControl.Layout, dockable);
-                        Factory.SetAvtiveDockable(dockable);
-                    }
+                    owner.Factory.AddDockable(owner, clone);
+                    ApplyWindowLayout(clone);
                 }
             }
         }
 
-        public void ManageWindowLayouts()
+        public void ApplyWindowLayout(IDock dock)
+        {
+            if (dock != null)
+            {
+                if (DockControl.Layout is IDock root)
+                {
+                    root.Navigate(dock);
+                    root.Factory.SetFocusedDockable(root, dock);
+                    root.DefaultDockable = dock;
+                }
+            }
+        }
+
+        public void ManageWindowLayouts(IDock dock)
         {
             // TODO:
         }
 
-        public void ResetWindowLayout()
+        public void ResetWindowLayout(IDock dock)
         {
             // TODO:
         }

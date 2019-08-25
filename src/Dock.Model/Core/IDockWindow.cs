@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Dock.Model.Controls;
+
 namespace Dock.Model
 {
     /// <summary>
@@ -56,7 +58,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets layout.
         /// </summary>
-        IDock Layout { get; set; }
+        IRootDock Layout { get; set; }
 
         /// <summary>
         /// Gets or sets dock window.

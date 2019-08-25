@@ -53,9 +53,9 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (_dock.AvtiveDockable != null)
+                if (_dock.ActiveDockable != null)
                 {
-                    _forward.Push(_dock.AvtiveDockable);
+                    _forward.Push(_dock.ActiveDockable);
                 }
                 Navigate(root, false);
             }
@@ -67,9 +67,9 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (_dock.AvtiveDockable != null)
+                if (_dock.ActiveDockable != null)
                 {
-                    _back.Push(_dock.AvtiveDockable);
+                    _back.Push(_dock.ActiveDockable);
                 }
                 Navigate(root, false);
             }
@@ -81,7 +81,7 @@ namespace Dock.Model
             switch (root)
             {
                 case null:
-                    ResetAvtiveDockable();
+                    ResetActiveDockable();
                     ResetBack();
                     break;
                 case IDockable dockable:
@@ -95,12 +95,12 @@ namespace Dock.Model
             }
         }
 
-        private void ResetAvtiveDockable()
+        private void ResetActiveDockable()
         {
-            if (_dock.AvtiveDockable is IDock avtiveDockableWindows)
+            if (_dock.ActiveDockable is IDock activeDockableWindows)
             {
-                avtiveDockableWindows.Close();
-                _dock.AvtiveDockable = null;
+                activeDockableWindows.Close();
+                _dock.ActiveDockable = null;
             }
         }
 
@@ -126,24 +126,23 @@ namespace Dock.Model
 
         private void NavigateTo(IDockable dockable, bool bSnapshot)
         {
-            if (_dock.AvtiveDockable is IDock avtiveDockableWindows)
+            if (_dock.ActiveDockable is IDock previousDock)
             {
-                avtiveDockableWindows.Close();
+                previousDock.Close();
             }
 
-            if (dockable != null && _dock.AvtiveDockable != dockable)
+            if (dockable != null && _dock.ActiveDockable != dockable)
             {
-                if (_dock.AvtiveDockable != null && bSnapshot == true)
+                if (_dock.ActiveDockable != null && bSnapshot == true)
                 {
-                    PushBack(_dock.AvtiveDockable);
+                    PushBack(_dock.ActiveDockable);
                 }
-
-                _dock.AvtiveDockable = dockable;
+                _dock.ActiveDockable = dockable;
             }
 
-            if (dockable is IDock dockWindows)
+            if (dockable is IDock nextDock)
             {
-                dockWindows.ShowWindows();
+                nextDock.ShowWindows();
             }
         }
 
@@ -187,6 +186,10 @@ namespace Dock.Model
                     window.Present(false);
                 }
             }
+            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            {
+                activeDockableWindows.ShowWindows();
+            }
         }
 
         /// <inheritdoc/>
@@ -200,16 +203,16 @@ namespace Dock.Model
                     window.Exit();
                 }
             }
+            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            {
+                activeDockableWindows.ExitWindows();
+            }
         }
 
         /// <inheritdoc/>
         public void Close()
         {
             _dock.ExitWindows();
-            if (_dock.AvtiveDockable is IDock avtiveDockableWindows)
-            {
-                avtiveDockableWindows.ExitWindows();
-            }
         }
     }
 }

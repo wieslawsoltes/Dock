@@ -47,7 +47,7 @@ namespace Dock.Avalonia
         {
             if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
             {
-                if (factory.FindRoot(dock) is IDock root && root.AvtiveDockable is IDock avtiveRootDockable)
+                if (factory.FindRoot(dock) is IDock root && root.ActiveDockable is IDock avtiveRootDockable)
                 {
                     avtiveRootDockable.ShowWindows();
                 }
@@ -127,6 +127,7 @@ namespace Dock.Avalonia
 
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
                 _dockManager.Position = ToDockPoint(point);
                 _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
@@ -135,12 +136,24 @@ namespace Dock.Avalonia
             return false;
         }
 
+        private bool IsHitTestVisible(IVisual visual)
+        {
+            var element = visual as IInputElement;
+            return element != null &&
+                   element.IsVisible &&
+                   element.IsHitTestVisible &&
+                   element.IsEffectivelyEnabled &&
+                   element.IsAttachedToVisualTree;
+        }
+
         private IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement> inputElements = null;
             try
             {
-                inputElements = input.GetInputElementsAt(point);
+                inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
+                // TODO: GetInputElementsAt can throw.
+                // inputElements = input.GetInputElementsAt(point);
             }
             catch (Exception ex)
             {

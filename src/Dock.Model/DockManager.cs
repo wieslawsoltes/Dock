@@ -25,7 +25,7 @@ namespace Dock.Model
                     return false;
                 }
             }
-            var targetDockable = targetDock.AvtiveDockable;
+            var targetDockable = targetDock.ActiveDockable;
             if (targetDockable == null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
@@ -53,7 +53,7 @@ namespace Dock.Model
 
         internal bool SwapDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
         {
-            var targetDockable = targetDock.AvtiveDockable;
+            var targetDockable = targetDock.ActiveDockable;
             if (targetDockable == null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
@@ -80,10 +80,10 @@ namespace Dock.Model
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.AvtiveDockable = sourceDockable;
+                toolDock.ActiveDockable = sourceDockable;
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();
                 toolDock.VisibleDockables.Add(sourceDockable);
-                factory.Split(targetDock, toolDock, operation);
+                factory.SplitToDock(targetDock, toolDock, operation);
             }
         }
 
@@ -94,10 +94,10 @@ namespace Dock.Model
                 IDock documentDock = factory.CreateDocumentDock();
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
-                documentDock.AvtiveDockable = sourceDockable;
+                documentDock.ActiveDockable = sourceDockable;
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
-                factory.Split(targetDock, documentDock, operation);
+                factory.SplitToDock(targetDock, documentDock, operation);
             }
         }
 
@@ -156,11 +156,11 @@ namespace Dock.Model
                         //}
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (factory.FindRoot(sourceDockable) is IDock root && root.AvtiveDockable is IDock targetWindowOwner)
+                            if (factory.FindRoot(sourceDockable) is IRootDock root && root.ActiveDockable is IDock targetWindowOwner)
                             {
                                 if (bExecute)
                                 {
-                                    DockDockableIntoWindow(sourceDockable, targetWindowOwner);
+                                    factory.SplitToWindow(targetWindowOwner, sourceDockable, ScreenPosition.X, ScreenPosition.Y, 300, 400);
                                 }
                                 return true;
                             }
@@ -186,25 +186,6 @@ namespace Dock.Model
                 }
             }
             return false;
-        }
-
-        internal void DockDockableIntoWindow(IDockable sourceDockable, IDock targetWindowOwner)
-        {
-            if (targetWindowOwner.Factory is IFactory factory)
-            {
-                factory.RemoveDockable(sourceDockable);
-                var window = factory.CreateWindowFrom(sourceDockable);
-                if (window != null)
-                {
-                    factory.AddWindow(targetWindowOwner, window);
-
-                    window.X = ScreenPosition.X;
-                    window.Y = ScreenPosition.Y;
-                    window.Width = 300;
-                    window.Height = 400;
-                    window.Present(false);
-                }
-            }
         }
 
         internal bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDockable targetDockable, DragAction action, bool bExecute)

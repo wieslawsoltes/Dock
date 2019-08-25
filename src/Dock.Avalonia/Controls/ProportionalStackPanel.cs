@@ -27,8 +27,8 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public Orientation Orientation
         {
-            get { return GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         internal IList<IControl> GetChildren()

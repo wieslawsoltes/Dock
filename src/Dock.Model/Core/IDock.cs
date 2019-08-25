@@ -28,7 +28,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets avtive dockable.
         /// </summary>
-        IDockable AvtiveDockable { get; set; }
+        IDockable ActiveDockable { get; set; }
 
         /// <summary>
         /// Gets or sets default dockable.

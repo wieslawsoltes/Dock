@@ -22,8 +22,8 @@ namespace Dock.Model.Avalonia.UnitTests
 
         public object Test
         {
-            get { return GetValue(TestProperty); }
-            set { SetValue(TestProperty, value); }
+            get => GetValue(TestProperty);
+            set => SetValue(TestProperty, value);
         }
     }
 }

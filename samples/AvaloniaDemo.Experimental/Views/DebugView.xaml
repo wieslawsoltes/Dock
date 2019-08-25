@@ -19,8 +19,8 @@
                 <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="2" Grid.Column="1"/>
                 <TextBlock Text="Owner" Grid.Row="3" Grid.Column="0"/>
                 <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="3" Grid.Column="1"/>
-                <TextBlock Text="AvtiveDockable:" Grid.Row="4" Grid.Column="0"/>
-                <TextBox Text="{Binding AvtiveDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="4" Grid.Column="1"/>
+                <TextBlock Text="ActiveDockable:" Grid.Row="4" Grid.Column="0"/>
+                <TextBox Text="{Binding ActiveDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="4" Grid.Column="1"/>
                 <TextBlock Text="DefaultDockable:" Grid.Row="5" Grid.Column="0"/>
                 <TextBox Text="{Binding DefaultDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="5" Grid.Column="1"/>
                 <TextBlock Text="FocusedDockable:" Grid.Row="6" Grid.Column="0"/>

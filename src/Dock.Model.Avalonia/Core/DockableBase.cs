@@ -14,57 +14,62 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="Id"/> property.
         /// </summary>
-        public static readonly StyledProperty<string> IdProperty = 
-            AvaloniaProperty.Register<DockableBase, string>(nameof(Id));
+        public static readonly DirectProperty<DockableBase, string> IdProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, string>(nameof(Id), o => o.Id, (o, v) => o.Id = v);
 
         /// <summary>
         /// Defines the <see cref="Title"/> property.
         /// </summary>
-        public static readonly StyledProperty<string> TitleProperty =
-            AvaloniaProperty.Register<DockableBase, string>(nameof(Title));
+        public static readonly DirectProperty<DockableBase, string> TitleProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, string>(nameof(Title), o => o.Title, (o, v) => o.Title = v);
 
         /// <summary>
         /// Defines the <see cref="Context"/> property.
         /// </summary>
-        public static readonly StyledProperty<object> ContextProperty =
-            AvaloniaProperty.Register<DockableBase, object>(nameof(Context));
+        public static readonly DirectProperty<DockableBase, object> ContextProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, object>(nameof(Context), o => o.Context, (o, v) => o.Context = v);
 
         /// <summary>
         /// Defines the <see cref="Owner"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDockable> OwnerProperty =
-            AvaloniaProperty.Register<DockableBase, IDockable>(nameof(Owner));
+        public static readonly DirectProperty<DockableBase, IDockable> OwnerProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, IDockable>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
+
+        private string _id;
+        private string _title;
+        private object _context;
+        private IDockable _owner;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Id
         {
-            get { return GetValue(IdProperty); }
-            set { SetValue(IdProperty, value); }
+            get => _id;
+            set => SetAndRaise(IdProperty, ref _id, value);
         }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Title
         {
-            get { return GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
+            get => _title;
+            set => SetAndRaise(TitleProperty, ref _title, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public object Context
         {
-            get { return GetValue(ContextProperty); }
-            set { SetValue(ContextProperty, value); }
+            get => _context;
+            set => SetAndRaise(ContextProperty, ref _context, value);
         }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
         public IDockable Owner
         {
-            get { return GetValue(OwnerProperty); }
-            set { SetValue(OwnerProperty, value); }
+            get => _owner;
+            set => SetAndRaise(OwnerProperty, ref _owner, value);
         }
 
         /// <inheritdoc/>

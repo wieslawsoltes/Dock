@@ -16,7 +16,7 @@ namespace Dock.Model
         private IList<IDockable> _visibleDockables;
         private IList<IDockable> _hiddenDockables;
         private IList<IDockable> _pinnedDockables;
-        private IDockable avtiveDockable;
+        private IDockable _activeDockable;
         private IDockable _defaultDockable;
         private IDockable _focusedDockable;
         private double _proportion = double.NaN;
@@ -59,15 +59,19 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public IDockable AvtiveDockable
+        public IDockable ActiveDockable
         {
-            get => avtiveDockable;
+            get => _activeDockable;
             set
             {
-                this.RaiseAndSetIfChanged(ref avtiveDockable, value);
+                this.RaiseAndSetIfChanged(ref _activeDockable, value);
+                if (value != null)
+                {
+                    _factory?.UpdateDockable(value, this);
+                }
+                _factory?.SetFocusedDockable(this, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
-                _factory?.SetFocusedDockable(this, value);
             }
         }
 

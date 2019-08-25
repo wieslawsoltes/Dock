@@ -1,13 +1,18 @@
 ﻿using System;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels.Views
 {
-    public class HomeViewModel : DockBase
+    public class HomeViewModel : RootDock
     {
         public override IDockable Clone()
         {
-            throw new NotImplementedException();
+            var homeViewModel = new HomeViewModel();
+
+            CloneHelper.CloneDockProperties(this, homeViewModel);
+
+            return homeViewModel;
         }
     }
 }

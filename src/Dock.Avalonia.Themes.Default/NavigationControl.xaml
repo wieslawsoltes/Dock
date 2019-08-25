@@ -12,8 +12,8 @@
                     <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}" Grid.Column="2"/>
                     <TextBox x:Name="Id" Text="" Grid.Column="3"/>
                     <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
-                    <Button Content="ShowWindows" Command="{Binding AvtiveDockable.ShowWindows}" Grid.Column="5"/>
-                    <Button Content="ExitWindows" Command="{Binding AvtiveDockable.ExitWindows}" Grid.Column="6"/>
+                    <Button Content="ShowWindows" Command="{Binding ActiveDockable.ShowWindows}" Grid.Column="5"/>
+                    <Button Content="ExitWindows" Command="{Binding ActiveDockable.ExitWindows}" Grid.Column="6"/>
                 </Grid>
             </ControlTemplate>
         </Setter>

@@ -18,6 +18,9 @@ namespace Dock.Model
         {
             target.Id = source.Id;
             target.Title = source.Title;
+            target.Proportion = source.Proportion;
+            target.IsActive = source.IsActive;
+            target.IsCollapsable = source.IsCollapsable;
 
             if (source.VisibleDockables != null)
             {
@@ -48,34 +51,24 @@ namespace Dock.Model
 
             if (source.VisibleDockables != null)
             {
-                int indexAvtiveDockable = source.VisibleDockables.IndexOf(source.AvtiveDockable);
-                if (indexAvtiveDockable >= 0)
+                int indexActiveDockable = source.VisibleDockables.IndexOf(source.ActiveDockable);
+                if (indexActiveDockable >= 0)
                 {
-                    target.AvtiveDockable = target.VisibleDockables[indexAvtiveDockable];
+                    target.ActiveDockable = target.VisibleDockables[indexActiveDockable];
                 }
-            }
 
-            if (source.VisibleDockables != null)
-            {
                 int indexDefaultDockable = source.VisibleDockables.IndexOf(source.DefaultDockable);
                 if (indexDefaultDockable >= 0)
                 {
                     target.DefaultDockable = target.VisibleDockables[indexDefaultDockable];
                 }
-            }
 
-            if (source.VisibleDockables != null)
-            {
                 int indexFocusedDockable = source.VisibleDockables.IndexOf(source.FocusedDockable);
                 if (indexFocusedDockable >= 0)
                 {
                     target.FocusedDockable = target.VisibleDockables[indexFocusedDockable];
                 }
             }
-
-            target.Proportion = source.Proportion;
-            target.IsActive = source.IsActive;
-            target.IsCollapsable = source.IsCollapsable;
 
             if (source.Windows != null)
             {
@@ -98,7 +91,7 @@ namespace Dock.Model
 
             CloneDockProperties(source, rootDock);
 
-            rootDock.Window = source.Window?.Clone();
+            rootDock.Window = null;
             rootDock.Top = (IPinDock)source.Top?.Clone();
             rootDock.Bottom = (IPinDock)source.Bottom?.Clone();
             rootDock.Left = (IPinDock)source.Left?.Clone();
@@ -190,6 +183,8 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IDockWindow"/> class.</returns>
         public static IDockWindow CloneDockWindow(IDockWindow source)
         {
+            source.Save();
+
             var dockWindow = source.Factory.CreateDockWindow();
 
             dockWindow.Id = source.Id;
@@ -199,7 +194,11 @@ namespace Dock.Model
             dockWindow.Height = source.Height;
             dockWindow.Topmost = source.Topmost;
             dockWindow.Title = source.Title;
-            dockWindow.Layout = (IDock)source.Layout?.Clone();
+            dockWindow.Layout = (IRootDock)source.Layout?.Clone();
+            if (dockWindow.Layout is IRootDock rootDock)
+            {
+                rootDock.Window = dockWindow;
+            }
 
             return dockWindow;
         }

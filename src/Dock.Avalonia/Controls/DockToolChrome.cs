@@ -28,19 +28,19 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
 
         /// <summary>
-        /// Gets or sets chrome tool title.
-        /// </summary>
-        public string Title
-        {
-            get { return GetValue(TitleProprty); }
-            set { SetValue(TitleProprty, value); }
-        }
-
-        /// <summary>
         /// Define the <see cref="IsActive"/> property.
         /// </summary>
         public static readonly AvaloniaProperty<bool> IsActiveProperty =
             AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
+
+        /// <summary>
+        /// Gets or sets chrome tool title.
+        /// </summary>
+        public string Title
+        {
+            get => GetValue(TitleProprty);
+            set => SetValue(TitleProprty, value);
+        }
 
         /// <summary>
         /// Gets or sets if this is the currently active Tool.
@@ -75,12 +75,12 @@ namespace Dock.Avalonia.Controls
         {
             if (this.DataContext is IDock dock && dock.Factory is IFactory factory)
             {
-                if (dock.AvtiveDockable != null)
+                if (dock.ActiveDockable != null)
                 {
-                    if (factory.FindRoot(dock.AvtiveDockable) is IDock root)
+                    if (factory.FindRoot(dock.ActiveDockable) is IDock root)
                     {
-                        Debug.WriteLine($"{nameof(DockToolChrome)} SetFocusedDockable {dock.AvtiveDockable}");
-                        factory.SetFocusedDockable(root, dock.AvtiveDockable);
+                        Debug.WriteLine($"{nameof(DockToolChrome)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
+                        factory.SetFocusedDockable(root, dock.ActiveDockable);
                     }
                 }
             }

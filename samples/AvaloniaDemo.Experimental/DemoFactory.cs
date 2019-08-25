@@ -81,6 +81,10 @@ namespace AvaloniaDemo
                 }
             };
 
+            this.DockableLocator = new Dictionary<string, Func<IDockable>>
+            {
+            };
+
             base.InitLayout(layout);
         }
     }

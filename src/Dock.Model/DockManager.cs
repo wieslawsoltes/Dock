@@ -83,7 +83,7 @@ namespace Dock.Model
                 toolDock.ActiveDockable = sourceDockable;
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();
                 toolDock.VisibleDockables.Add(sourceDockable);
-                factory.Split(targetDock, toolDock, operation);
+                factory.SplitToDock(targetDock, toolDock, operation);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Dock.Model
                 documentDock.ActiveDockable = sourceDockable;
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
-                factory.Split(targetDock, documentDock, operation);
+                factory.SplitToDock(targetDock, documentDock, operation);
             }
         }
 

@@ -209,20 +209,6 @@ namespace Dock.Model
         void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
-        /// </summary>
-        /// <param name="first">The first dockable.</param>
-        /// <param name="second">The second dockable.</param>
-        void Move(IDockable first, IDockable second);
-
-        /// <summary>
-        /// Swaps dockable in owners <see cref="IDock.VisibleDockables"/> collection.
-        /// </summary>
-        /// <param name="first">The first dockable.</param>
-        /// <param name="second">The second dockable.</param>
-        void Swap(IDockable first, IDockable second);
-
-        /// <summary>
         /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
         /// </summary>
         /// <param name="dock">The dock.</param>
@@ -240,13 +226,6 @@ namespace Dock.Model
         void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
         /// <summary>
-        /// Replaces source dockable with destination dockable in source dockable owner <see cref="IDock.VisibleDockables"/> collection.
-        /// </summary>
-        /// <param name="source">The source dockable.</param>
-        /// <param name="destination">The destination dockable.</param>
-        void Replace(IDockable source, IDockable destination);
-
-        /// <summary>
         /// Creates a new split layout from source dockable.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
@@ -261,7 +240,14 @@ namespace Dock.Model
         /// <param name="dock">The dock to perform operation on.</param>
         /// <param name="dockable">The optional dockable to add to splitted side.</param>
         /// <param name="operation"> The dock operation to perform.</param>
-        void Split(IDock dock, IDockable dockable, DockOperation operation);
+        void SplitToDock(IDock dock, IDockable dockable, DockOperation operation);
+
+        /// <summary>
+        /// Creates dock window from source dockable.
+        /// </summary>
+        /// <param name="dockable">The dockable to embed into window.</param>
+        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+        IDockWindow CreateWindowFrom(IDockable dockable);
 
         /// <summary>
         /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.
@@ -273,12 +259,5 @@ namespace Dock.Model
         /// <param name="width">The window width.</param>
         /// <param name="height">The window height.</param>
         void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height);
-
-        /// <summary>
-        /// Creates dock window from source dockable.
-        /// </summary>
-        /// <param name="dockable">The dockable to embed into window.</param>
-        /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow CreateWindowFrom(IDockable dockable);
     }
 }

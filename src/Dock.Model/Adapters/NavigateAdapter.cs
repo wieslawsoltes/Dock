@@ -137,7 +137,14 @@ namespace Dock.Model
                 {
                     PushBack(_dock.ActiveDockable);
                 }
-                _dock.ActiveDockable = dockable;
+                if (_dock.Factory is IFactory factory)
+                {
+                    factory.SetActiveDockable(dockable);
+                }
+                else
+                {
+                    _dock.ActiveDockable = dockable;
+                }
             }
 
             if (dockable is IDock nextDock)

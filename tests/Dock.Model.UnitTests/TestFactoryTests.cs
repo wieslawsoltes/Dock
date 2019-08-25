@@ -31,7 +31,7 @@ namespace Dock.Model.UnitTests
             actual.InitLayout(layout);
             Assert.NotNull(actual);
             Assert.NotNull(actual.ContextLocator);
-            Assert.NotNull(actual.HostLocator);
+            Assert.NotNull(actual.HostWindowLocator);
         }
     }
 }

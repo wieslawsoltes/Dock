@@ -17,7 +17,7 @@ namespace Dock.Avalonia.Controls
     public class DockControl : TemplatedControl
     {
         private static List<IVisual> s_dockControls = new List<IVisual>();
-        private DockState _dockState = new DockState();
+        private DockControlState _dockControlState = new DockControlState();
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
@@ -86,37 +86,37 @@ namespace Dock.Avalonia.Controls
 
         private void Pressed(object sender, PointerPressedEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, s_dockControls);
         }
 
         private void Released(object sender, PointerReleasedEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, s_dockControls);
         }
 
         private void Moved(object sender, PointerEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, s_dockControls);
         }
 
         private void Enter(object sender, PointerEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, s_dockControls);
         }
 
         private void Leave(object sender, PointerEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, s_dockControls);
         }
 
         private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
-            _dockState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, s_dockControls);
+            _dockControlState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, s_dockControls);
         }
 
         private void WheelChanged(object sender, PointerWheelEventArgs e)
         {
-            _dockState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, s_dockControls);
+            _dockControlState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, s_dockControls);
         }
     }
 }

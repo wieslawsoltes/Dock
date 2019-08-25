@@ -14,9 +14,9 @@ using Dock.Model;
 namespace Dock.Avalonia
 {
     /// <summary>
-    /// Docking state.
+    /// Dock control state.
     /// </summary>
-    internal class DockState
+    internal class DockControlState
     {
         private readonly IDockManager _dockManager = new DockManager();
         private readonly AdornerHelper _adornerHelper = new AdornerHelper();

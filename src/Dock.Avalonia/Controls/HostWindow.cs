@@ -139,7 +139,6 @@ namespace Dock.Avalonia.Controls
             _targetPoint = default;
             _targetDropControl = null;
             _dragAction = DragAction.Move;
-            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Pressed)} {e.GetPosition(this)}");
         }
 
         private void Released(object sender, PointerReleasedEventArgs e)
@@ -158,7 +157,6 @@ namespace Dock.Avalonia.Controls
             _targetPoint = default;
             _targetDropControl = null;
             _dragAction = DragAction.Move;
-            Debug.WriteLine($"{nameof(HostWindow)} {nameof(Released)} {e.GetPosition(this)}");
         }
 
         private void Moved(object sender, PointerEventArgs e)
@@ -173,14 +171,11 @@ namespace Dock.Avalonia.Controls
             _targetPoint = default;
             _targetDropControl = null;
             _dragAction = default;
-            Debug.WriteLine($"{nameof(HostWindow)} {nameof(CaptureLost)}");
         }
 
         internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-
-            Debug.WriteLine($"Enter {isValid} : {point} : {relativeTo} : {_targetDropControl}");
 
             if (isValid == true && _targetDropControl is DockPanel)
             {
@@ -201,8 +196,6 @@ namespace Dock.Avalonia.Controls
             {
                 Validate(point, operation, dragAction, relativeTo);
             }
-
-            Debug.WriteLine($"Over {point} :  {operation} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
@@ -223,8 +216,6 @@ namespace Dock.Avalonia.Controls
             {
                 Execute(point, operation, dragAction, relativeTo);
             }
-
-            Debug.WriteLine($"Drop {point} : {operation} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Leave()
@@ -244,8 +235,6 @@ namespace Dock.Avalonia.Controls
 
             var layout = Window.Layout;
 
-            Debug.WriteLine($"Validate : {point} : {layout?.Title} : {layout?.ActiveDockable?.Title}");
-
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 _dockManager.Position = DockControlState.ToDockPoint(point);
@@ -264,8 +253,6 @@ namespace Dock.Avalonia.Controls
             }
 
             var layout = Window.Layout;
-
-            Debug.WriteLine($"Execute : {point} : {layout?.Title} : {layout?.ActiveDockable?.Title}");
 
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {

@@ -170,7 +170,6 @@ namespace Dock.Avalonia.Controls
             _targetPoint = default;
             _targetDropControl = null;
             _dragAction = default;
-            // TODO:
             Debug.WriteLine($"{nameof(HostWindow)} {nameof(CaptureLost)}");
         }
 
@@ -188,7 +187,7 @@ namespace Dock.Avalonia.Controls
 
         internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Enter {point} : {relativeTo} : {_targetDropControl}");
+            Debug.WriteLine($"Over {point} : {relativeTo} : {_targetDropControl}");
 
             var operation = DockOperation.Fill;
 

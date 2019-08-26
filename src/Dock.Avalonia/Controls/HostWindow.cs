@@ -145,7 +145,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (_targetDropControl != null)
                 {
-                    Drop(_targetPoint, _dragAction, _targetDropControl);
+                    Drop(_targetPoint, _dragAction, _targetDockControl);
                 }
                 _targetDockControl._dockControlState.Leave();
             }
@@ -194,9 +194,12 @@ namespace Dock.Avalonia.Controls
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            var isValid = Validate(point, operation, dragAction, relativeTo);
+            if (operation != DockOperation.Window)
+            {
+                Validate(point, operation, dragAction, relativeTo);
+            }
 
-            Debug.WriteLine($"Over {isValid} : {point} : {relativeTo} : {_targetDropControl}");
+            Debug.WriteLine($"Over {point} :  {operation} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
@@ -213,9 +216,12 @@ namespace Dock.Avalonia.Controls
                 _targetDockControl._dockControlState._adornerHelper.RemoveAdorner(_targetDropControl);
             }
 
-            var isValid = Execute(point, operation, dragAction, relativeTo);
+            if (operation != DockOperation.Window)
+            {
+                Execute(point, operation, dragAction, relativeTo);
+            }
 
-            Debug.WriteLine($"Drop {isValid} : {point} : {relativeTo} : {_targetDropControl}");
+            Debug.WriteLine($"Drop {point} : {operation} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Leave()

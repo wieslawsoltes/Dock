@@ -40,7 +40,6 @@ namespace Dock.Avalonia.Controls
         private Button _restoreButton;
         private Image _icon;
         private bool _mouseDown;
-        private Point _mouseDownPosition;
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -396,7 +395,6 @@ namespace Dock.Avalonia.Controls
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
-                _mouseDownPosition = e.GetPosition(this);
             }
             else
             {

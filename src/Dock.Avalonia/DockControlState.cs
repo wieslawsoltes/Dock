@@ -18,8 +18,8 @@ namespace Dock.Avalonia
     /// </summary>
     internal class DockControlState
     {
-        internal readonly IDockManager _dockManager = new DockManager();
-        internal readonly AdornerHelper _adornerHelper = new AdornerHelper();
+        private readonly IDockManager _dockManager = new DockManager();
+        private readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private IControl _dragControl = null;
         private IControl _dropControl = null;
         private Point _dragStartPoint = default;
@@ -38,105 +38,7 @@ namespace Dock.Avalonia
         /// </summary>
         public static double MinimumVerticalDragDistance = 4;
 
-        internal static DockPoint ToDockPoint(Point point)
-        {
-            return new DockPoint(point.X, point.Y);
-        }
-
-        internal void ShowWindows(IDockable dockable)
-        {
-            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
-            {
-                if (factory.FindRoot(dock) is IDock root && root.ActiveDockable is IDock avtiveRootDockable)
-                {
-                    avtiveRootDockable.ShowWindows();
-                }
-            }
-        }
-
-        internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-
-            if (isValid == true && _dropControl is DockPanel)
-            {
-                _adornerHelper.AddAdorner(_dropControl);
-            }
-        }
-
-        internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var operation = DockOperation.Fill;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-            }
-
-            Validate(point, operation, dragAction, relativeTo);
-        }
-
-        internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var operation = DockOperation.Window;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-            }
-
-            if (_dropControl is DockPanel)
-            {
-                _adornerHelper.RemoveAdorner(_dropControl);
-            }
-
-            Execute(point, operation, dragAction, relativeTo);
-        }
-
-        internal void Leave()
-        {
-            if (_dropControl is DockPanel)
-            {
-                _adornerHelper.RemoveAdorner(_dropControl);
-            }
-        }
-
-        internal bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
-        {
-            if (_dragControl == null || _dropControl == null)
-            {
-                return false;
-            }
-
-            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
-            {
-                _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
-            }
-
-            return false;
-        }
-
-        internal bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
-        {
-            if (_dragControl == null || _dropControl == null)
-            {
-                return false;
-            }
-
-            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
-            {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
-                _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
-            }
-
-            return false;
-        }
-
-        private bool IsHitTestVisible(IVisual visual)
+        internal static bool IsHitTestVisible(IVisual visual)
         {
             var element = visual as IInputElement;
             return element != null &&
@@ -146,7 +48,7 @@ namespace Dock.Avalonia
                    element.IsAttachedToVisualTree;
         }
 
-        private IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
+        internal static IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
         {
             var root = visual.GetVisualRoot();
             if (root != null)
@@ -160,7 +62,7 @@ namespace Dock.Avalonia
             return Enumerable.Empty<IVisual>();
         }
 
-        internal IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
+        internal static IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement> inputElements = null;
             try
@@ -200,6 +102,104 @@ namespace Dock.Avalonia
                 }
             }
             return null;
+        }
+
+        internal static DockPoint ToDockPoint(Point point)
+        {
+            return new DockPoint(point.X, point.Y);
+        }
+
+        internal static void ShowWindows(IDockable dockable)
+        {
+            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
+            {
+                if (factory.FindRoot(dock) is IDock root && root.ActiveDockable is IDock avtiveRootDockable)
+                {
+                    avtiveRootDockable.ShowWindows();
+                }
+            }
+        }
+
+        private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+
+            if (isValid == true && _dropControl is DockPanel)
+            {
+                _adornerHelper.AddAdorner(_dropControl);
+            }
+        }
+
+        private void Over(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var operation = DockOperation.Fill;
+
+            if (_adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            }
+
+            Validate(point, operation, dragAction, relativeTo);
+        }
+
+        private void Drop(Point point, DragAction dragAction, IVisual relativeTo)
+        {
+            var operation = DockOperation.Window;
+
+            if (_adornerHelper.Adorner is DockTarget target)
+            {
+                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            }
+
+            if (_dropControl is DockPanel)
+            {
+                _adornerHelper.RemoveAdorner(_dropControl);
+            }
+
+            Execute(point, operation, dragAction, relativeTo);
+        }
+
+        private void Leave()
+        {
+            if (_dropControl is DockPanel)
+            {
+                _adornerHelper.RemoveAdorner(_dropControl);
+            }
+        }
+
+        private bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        {
+            if (_dragControl == null || _dropControl == null)
+            {
+                return false;
+            }
+
+            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
+            {
+                _dockManager.Position = ToDockPoint(point);
+                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+            }
+
+            return false;
+        }
+
+        private bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        {
+            if (_dragControl == null || _dropControl == null)
+            {
+                return false;
+            }
+
+            if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
+            {
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
+                _dockManager.Position = ToDockPoint(point);
+                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+            }
+
+            return false;
         }
 
         /// <summary>

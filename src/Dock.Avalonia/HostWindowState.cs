@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
@@ -17,8 +18,9 @@ namespace Dock.Avalonia
         private readonly IDockManager _dockManager = new DockManager();
         private readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private readonly HostWindow _hostWindow;
+        private Point _dragStartPoint = default;
         private bool _pointerPressed = false;
-        private Point _pointerPressedPoint = default;
+        private bool _doDragDrop = false;
         private DockControl _targetDockControl = null;
         private Point _targetPoint = default;
         private IControl _targetDropControl = null;
@@ -93,8 +95,8 @@ namespace Dock.Avalonia
 
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
-                _dockManager.Position = DockControlState.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                _dockManager.Position = DockHelpers.ToDockPoint(point);
+                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
@@ -113,12 +115,18 @@ namespace Dock.Avalonia
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
-                _dockManager.Position = DockControlState.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                _dockManager.Position = DockHelpers.ToDockPoint(point);
+                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
 
             return false;
+        }
+
+        private bool IsMinimumDragDistance(Vector diff)
+        {
+            return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
+                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
         }
 
         /// <summary>
@@ -132,8 +140,9 @@ namespace Dock.Avalonia
             {
                 case EventType.Pressed:
                     {
+                        _dragStartPoint = point;
                         _pointerPressed = true;
-                        _pointerPressedPoint = point;
+                        _doDragDrop = false;
                         _targetDockControl = null;
                         _targetPoint = default;
                         _targetDropControl = null;
@@ -142,16 +151,17 @@ namespace Dock.Avalonia
                     break;
                 case EventType.Released:
                     {
-                        if (_targetDockControl != null)
+                        if (_doDragDrop == true)
                         {
-                            if (_targetDropControl != null)
+                            if (_targetDockControl != null && _targetDropControl != null)
                             {
                                 Drop(_targetPoint, _dragAction, _targetDockControl);
-                            }
-                            Leave();
+                            } 
                         }
+                        Leave();
+                        _dragStartPoint = default;
                         _pointerPressed = false;
-                        _pointerPressedPoint = default;
+                        _doDragDrop = false;
                         _targetDockControl = null;
                         _targetPoint = default;
                         _targetDropControl = null;
@@ -160,7 +170,22 @@ namespace Dock.Avalonia
                     break;
                 case EventType.Moved:
                     {
-                        if (_pointerPressed == true)
+                        if (_pointerPressed == false)
+                        {
+                            break;
+                        }
+
+                        if (_doDragDrop == false)
+                        {
+                            Vector diff = _dragStartPoint - point;
+                            bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                            if (haveMinimumDragDistance == true)
+                            {
+                                _doDragDrop = true;
+                            }
+                        }
+
+                        if (_doDragDrop == true)
                         {
                             foreach (var visual in DockControl.s_dockControls)
                             {
@@ -168,14 +193,14 @@ namespace Dock.Avalonia
                                 {
                                     if (dockControl.Layout != _hostWindow.Window.Layout)
                                     {
-                                        var position = point + _pointerPressedPoint;
+                                        var position = point + _dragStartPoint;
                                         var screenPoint = new PixelPoint((int)position.X, (int)position.Y);
                                         var dockControlPoint = dockControl.PointToClient(screenPoint);
                                         if (dockControlPoint == null)
                                         {
                                             continue;
                                         }
-                                        var dropControl = DockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                                        var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                                         if (dropControl != null)
                                         {
                                             Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
@@ -228,8 +253,9 @@ namespace Dock.Avalonia
                     break;
                 case EventType.CaptureLost:
                     {
+                        _dragStartPoint = default;
                         _pointerPressed = false;
-                        _pointerPressedPoint = default;
+                        _dragStartPoint = default;
                         _targetDockControl = null;
                         _targetPoint = default;
                         _targetDropControl = null;

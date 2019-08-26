@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -27,98 +26,6 @@ namespace Dock.Avalonia
         private bool _doDragDrop = false;
         private Point _targetPoint = default;
         private IVisual _targetDockControl = null;
-
-        /// <summary>
-        /// Minimum horizontal drag distance to initiate drag operation.
-        /// </summary>
-        public static double MinimumHorizontalDragDistance = 4;
-
-        /// <summary>
-        /// Minimum vertical drag distance to initiate drag operation.
-        /// </summary>
-        public static double MinimumVerticalDragDistance = 4;
-
-        internal static bool IsHitTestVisible(IVisual visual)
-        {
-            var element = visual as IInputElement;
-            return element != null &&
-                   element.IsVisible &&
-                   element.IsHitTestVisible &&
-                   element.IsEffectivelyEnabled &&
-                   element.IsAttachedToVisualTree;
-        }
-
-        internal static IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
-        {
-            var root = visual.GetVisualRoot();
-            if (root != null)
-            {
-                var rootPoint = visual.TranslatePoint(p, root);
-                if (rootPoint.HasValue)
-                {
-                    return root.Renderer?.HitTest(rootPoint.Value, visual, filter);
-                }
-            }
-            return Enumerable.Empty<IVisual>();
-        }
-
-        internal static IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
-        {
-            IEnumerable<IInputElement> inputElements = null;
-            try
-            {
-                inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
-                // TODO: GetVisualsAt can throw.
-                //inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
-                // TODO: GetInputElementsAt can throw.
-                // inputElements = input.GetInputElementsAt(point);
-            }
-            catch (Exception ex)
-            {
-                Print(ex);
-                void Print(Exception exception)
-                {
-                    Debug.WriteLine(ex.Message);
-                    Debug.WriteLine(ex.StackTrace);
-                    if (ex.InnerException != null)
-                    {
-                        Print(ex.InnerException);
-                    }
-                }
-            }
-            if (inputElements == null)
-            {
-                return null;
-            }
-            var controls = inputElements.OfType<IControl>().ToList();
-            if (controls != null)
-            {
-                foreach (var control in controls)
-                {
-                    if (control.GetValue(property) == true)
-                    {
-                        return control;
-                    }
-                }
-            }
-            return null;
-        }
-
-        internal static DockPoint ToDockPoint(Point point)
-        {
-            return new DockPoint(point.X, point.Y);
-        }
-
-        internal static void ShowWindows(IDockable dockable)
-        {
-            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
-            {
-                if (factory.FindRoot(dock) is IDock root && root.ActiveDockable is IDock avtiveRootDockable)
-                {
-                    avtiveRootDockable.ShowWindows();
-                }
-            }
-        }
 
         private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
@@ -176,8 +83,8 @@ namespace Dock.Avalonia
 
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
-                _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                _dockManager.Position = DockHelpers.ToDockPoint(point);
+                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
@@ -194,12 +101,18 @@ namespace Dock.Avalonia
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
-                _dockManager.Position = ToDockPoint(point);
-                _dockManager.ScreenPosition = ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                _dockManager.Position = DockHelpers.ToDockPoint(point);
+                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
 
             return false;
+        }
+
+        private bool IsMinimumDragDistance(Vector diff)
+        {
+            return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
+                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
         }
 
         /// <summary>
@@ -222,7 +135,7 @@ namespace Dock.Avalonia
             {
                 case EventType.Pressed:
                     {
-                        var dragControl = GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
+                        var dragControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
                         if (dragControl != null)
                         {
                             Debug.WriteLine($"Drag : {point} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
@@ -270,12 +183,12 @@ namespace Dock.Avalonia
                         if (_doDragDrop == false)
                         {
                             Vector diff = _dragStartPoint - point;
-                            bool haveMinimumDragDistance = (Math.Abs(diff.X) > MinimumHorizontalDragDistance || Math.Abs(diff.Y) > MinimumVerticalDragDistance);
+                            bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
                             if (haveMinimumDragDistance == true)
                             {
                                 if (_dragControl.DataContext is IDockable targetDockable)
                                 {
-                                    ShowWindows(targetDockable);
+                                    DockHelpers.ShowWindows(targetDockable);
                                 }
                                 _doDragDrop = true;
                             }
@@ -297,7 +210,7 @@ namespace Dock.Avalonia
                                     {
                                         continue;
                                     }
-                                    dropControl = GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                                    dropControl = DockHelpers.GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                                     if (dropControl != null)
                                     {
                                         targetPoint = dockControlPoint;
@@ -309,7 +222,7 @@ namespace Dock.Avalonia
 
                             if (dropControl == null)
                             {
-                                dropControl = GetControl(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
+                                dropControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
                                 if (dropControl != null)
                                 {
                                     targetPoint = point;

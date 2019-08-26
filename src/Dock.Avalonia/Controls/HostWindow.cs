@@ -18,6 +18,8 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class HostWindow : Window, IStyleable, IHostWindow
     {
+        internal static bool s_useCustomDrag = true;
+
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
@@ -245,16 +247,22 @@ namespace Dock.Avalonia.Controls
 
             if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
             {
-                // Using custom method because BeginMoveDrag is releasing pointer capture.
-                // WindowState = WindowState.Normal;
-                // BeginMoveDrag();
-                // _mouseDown = false;
-                var point = e.GetPosition(this);
-                var delta = point - _startPoint;
-                double x = this.Position.X + delta.X;
-                double y = this.Position.Y + delta.Y;
-                Position = this.Position.WithX((int)x).WithY((int)y);
-                _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
+                if (s_useCustomDrag)
+                {
+                    // Using custom method because BeginMoveDrag is releasing pointer capture on Windows.
+                    var point = e.GetPosition(this);
+                    var delta = point - _startPoint;
+                    double x = this.Position.X + delta.X;
+                    double y = this.Position.Y + delta.Y;
+                    Position = this.Position.WithX((int)x).WithY((int)y);
+                    _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
+                }
+                else
+                {
+                    WindowState = WindowState.Normal;
+                    BeginMoveDrag();
+                    _mouseDown = false;
+                }
             }
         }
 

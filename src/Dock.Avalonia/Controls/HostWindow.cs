@@ -299,7 +299,7 @@ namespace Dock.Avalonia.Controls
                             var dropControl = DockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                             if (dropControl != null)
                             {
-                                //Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
                                 if (_targetDropControl == dropControl)
                                 {
                                     _targetDockControl = dockControl;

@@ -617,17 +617,17 @@ namespace Dock.Model
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        var layout = CreateSplitLayout(dock, dockable, operation);
                         if (dock.Owner is IDock ownerDock)
                         {
+                            var layout = CreateSplitLayout(dock, dockable, operation);
                             int index = ownerDock.VisibleDockables.IndexOf(dock);
                             if (index >= 0)
                             {
                                 ownerDock.VisibleDockables.RemoveAt(index);
                                 ownerDock.VisibleDockables.Insert(index, layout);
                             }
+                            UpdateDockable(layout, ownerDock);
                         }
-                        UpdateDockable(layout, dock.Owner);
                     }
                     break;
                 default:

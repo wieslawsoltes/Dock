@@ -295,7 +295,6 @@ namespace Dock.Avalonia.Controls
                             {
                                 continue;
                             }
-
                             var dropControl = DockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                             if (dropControl != null)
                             {
@@ -307,6 +306,7 @@ namespace Dock.Avalonia.Controls
                                     _targetDropControl = dropControl;
                                     _dragAction = DragAction.Move;
                                     Over(_targetPoint, _dragAction, _targetDockControl);
+                                    break;
                                 }
                                 else
                                 {
@@ -315,13 +315,12 @@ namespace Dock.Avalonia.Controls
                                         Leave();
                                         _targetDropControl = null;
                                     }
-
                                     _targetDockControl = dockControl;
                                     _targetPoint = dockControlPoint;
                                     _targetDropControl = dropControl;
                                     _dragAction = DragAction.Move;
-
                                     Enter(_targetPoint, _dragAction, _targetDockControl);
+                                    break;
                                 }
                             }
                             else
@@ -331,6 +330,7 @@ namespace Dock.Avalonia.Controls
                                 _targetPoint = default;
                                 _targetDropControl = null;
                                 _dragAction = DragAction.Move;
+                                break;
                             }
                         }
                     }

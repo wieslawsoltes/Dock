@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -10,7 +9,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -20,31 +18,6 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class HostWindow : Window, IStyleable, IHostWindow
     {
-        private readonly IDockManager _dockManager = new DockManager();
-        private readonly AdornerHelper _adornerHelper = new AdornerHelper();
-        private bool _pointerPressed = false;
-        private Point _pointerPressedPoint = default;
-        private DockControl _targetDockControl = null;
-        private Point _targetPoint = default;
-        private IControl _targetDropControl = null;
-        private DragAction _dragAction = default;
-
-        private Control _titleBar;
-        private Grid _bottomHorizontalGrip;
-        private Grid _bottomLeftGrip;
-        private Grid _bottomRightGrip;
-        private Grid _leftVerticalGrip;
-        private Grid _rightVerticalGrip;
-        private Grid _topHorizontalGrip;
-        private Grid _topLeftGrip;
-        private Grid _topRightGrip;
-        private Button _closeButton;
-        private Button _minimiseButton;
-        private Button _restoreButton;
-        private Image _icon;
-        private bool _mouseDown;
-        private Point _startPoint;
-
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
@@ -77,6 +50,24 @@ namespace Dock.Avalonia.Controls
 
         Type IStyleable.StyleKey => typeof(HostWindow);
 
+        private HostWindowState _hostWindowState;
+
+        private Control _titleBar;
+        private Grid _bottomHorizontalGrip;
+        private Grid _bottomLeftGrip;
+        private Grid _bottomRightGrip;
+        private Grid _leftVerticalGrip;
+        private Grid _rightVerticalGrip;
+        private Grid _topHorizontalGrip;
+        private Grid _topLeftGrip;
+        private Grid _topRightGrip;
+        private Button _closeButton;
+        private Button _minimiseButton;
+        private Button _restoreButton;
+        private Image _icon;
+        private bool _mouseDown;
+        private Point _startPoint;
+
         /// <inheritdoc/>
         public bool IsTracked { get; set; }
 
@@ -98,6 +89,8 @@ namespace Dock.Avalonia.Controls
             PositionChanged += HostWindow_PositionChanged;
             LayoutUpdated += HostWindow_LayoutUpdated;
             Closing += HostWindow_Closing;
+
+            _hostWindowState = new HostWindowState(this);
         }
 
         private void HostWindow_PositionChanged(object sender, PixelPointEventArgs e)
@@ -107,7 +100,7 @@ namespace Dock.Avalonia.Controls
                 Window.Save();
             }
 
-            Process();
+            _hostWindowState.Process(this.Position.ToPoint(1.0), EventType.Moved);
         }
 
         private void HostWindow_LayoutUpdated(object sender, EventArgs e)
@@ -133,196 +126,22 @@ namespace Dock.Avalonia.Controls
 
         private void Pressed(object sender, PointerPressedEventArgs e)
         {
-            _pointerPressed = true;
-            _pointerPressedPoint = e.GetPosition(this);
-            _targetDockControl = null;
-            _targetPoint = default;
-            _targetDropControl = null;
-            _dragAction = DragAction.Move;
+            _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
         }
 
         private void Released(object sender, PointerReleasedEventArgs e)
         {
-            if (_targetDockControl != null)
-            {
-                if (_targetDropControl != null)
-                {
-                    Drop(_targetPoint, _dragAction, _targetDockControl);
-                }
-                Leave();
-            }
-            _pointerPressed = false;
-            _pointerPressedPoint = default;
-            _targetDockControl = null;
-            _targetPoint = default;
-            _targetDropControl = null;
-            _dragAction = DragAction.Move;
+            _hostWindowState.Process(e.GetPosition(this), EventType.Released);
         }
 
         private void Moved(object sender, PointerEventArgs e)
         {
+            // Using PositionChanged event instead of PointerMoved event.
         }
 
         private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
-            _pointerPressed = false;
-            _pointerPressedPoint = default;
-            _targetDockControl = null;
-            _targetPoint = default;
-            _targetDropControl = null;
-            _dragAction = default;
-        }
-
-        internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-
-            if (isValid == true && _targetDropControl is DockPanel)
-            {
-                _adornerHelper.AddAdorner(_targetDropControl);
-            }
-        }
-
-        internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var operation = DockOperation.Fill;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-            }
-
-            if (operation != DockOperation.Window)
-            {
-                Validate(point, operation, dragAction, relativeTo);
-            }
-        }
-
-        internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
-        {
-            var operation = DockOperation.Window;
-
-            if (_adornerHelper.Adorner is DockTarget target)
-            {
-                operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-            }
-
-            if (_targetDropControl is DockPanel)
-            {
-                _adornerHelper.RemoveAdorner(_targetDropControl);
-            }
-
-            if (operation != DockOperation.Window)
-            {
-                Execute(point, operation, dragAction, relativeTo);
-            }
-        }
-
-        internal void Leave()
-        {
-            if (_targetDropControl is DockPanel)
-            {
-                _adornerHelper.RemoveAdorner(_targetDropControl);
-            }
-        }
-
-        internal bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
-        {
-            if (_targetDropControl == null)
-            {
-                return false;
-            }
-
-            var layout = Window.Layout;
-
-            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
-            {
-                _dockManager.Position = DockControlState.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
-            }
-
-            return false;
-        }
-
-        internal bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
-        {
-            if (_targetDropControl == null)
-            {
-                return false;
-            }
-
-            var layout = Window.Layout;
-
-            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
-            {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
-                _dockManager.Position = DockControlState.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
-            }
-
-            return false;
-        }
-
-        private void Process()
-        {
-            if (_pointerPressed == true)
-            {
-                foreach (var visual in DockControl.s_dockControls)
-                {
-                    if (visual is DockControl dockControl)
-                    {
-                        if (dockControl.Layout != Window.Layout)
-                        {
-                            var position = this.Position.ToPoint(1.0) + _pointerPressedPoint;
-                            var screenPoint = new PixelPoint((int)position.X, (int)position.Y);
-                            var dockControlPoint = dockControl.PointToClient(screenPoint);
-                            if (dockControlPoint == null)
-                            {
-                                continue;
-                            }
-                            var dropControl = DockControlState.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
-                            if (dropControl != null)
-                            {
-                                Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
-                                if (_targetDropControl == dropControl)
-                                {
-                                    _targetDockControl = dockControl;
-                                    _targetPoint = dockControlPoint;
-                                    _targetDropControl = dropControl;
-                                    _dragAction = DragAction.Move;
-                                    Over(_targetPoint, _dragAction, _targetDockControl);
-                                    break;
-                                }
-                                else
-                                {
-                                    if (_targetDropControl != null)
-                                    {
-                                        Leave();
-                                        _targetDropControl = null;
-                                    }
-                                    _targetDockControl = dockControl;
-                                    _targetPoint = dockControlPoint;
-                                    _targetDropControl = dropControl;
-                                    _dragAction = DragAction.Move;
-                                    Enter(_targetPoint, _dragAction, _targetDockControl);
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                Leave();
-                                _targetDockControl = null;
-                                _targetPoint = default;
-                                _targetDropControl = null;
-                                _dragAction = DragAction.Move;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            _hostWindowState.Process(new Point(), EventType.CaptureLost);
         }
 
         /// <summary>

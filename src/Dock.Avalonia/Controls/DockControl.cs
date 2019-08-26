@@ -17,13 +17,14 @@ namespace Dock.Avalonia.Controls
     public class DockControl : TemplatedControl
     {
         internal static List<IVisual> s_dockControls = new List<IVisual>();
-        internal DockControlState _dockControlState = new DockControlState();
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
         public static readonly StyledProperty<IDock> LayoutProperty =
             AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
+
+        private DockControlState _dockControlState = new DockControlState();
 
         /// <summary>
         /// Gets or sets the dock layout.

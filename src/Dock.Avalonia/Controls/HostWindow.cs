@@ -145,7 +145,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (_targetDropControl != null)
                 {
-                    _targetDockControl._dockControlState.Drop(_targetPoint, _dragAction, _targetDropControl);
+                    Drop(_targetPoint, _dragAction, _targetDropControl);
                 }
                 _targetDockControl._dockControlState.Leave();
             }

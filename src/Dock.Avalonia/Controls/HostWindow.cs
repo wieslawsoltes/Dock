@@ -40,7 +40,7 @@ namespace Dock.Avalonia.Controls
         private Button _restoreButton;
         private Image _icon;
         private bool _mouseDown;
-        private Point _mouseDownPosition;
+        private Point _startPoint;
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -396,7 +396,7 @@ namespace Dock.Avalonia.Controls
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
-                _mouseDownPosition = e.GetPosition(this);
+                _startPoint = e.GetPosition(this);
             }
             else
             {
@@ -419,9 +419,17 @@ namespace Dock.Avalonia.Controls
 
             if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
             {
-                WindowState = WindowState.Normal;
-                BeginMoveDrag();
-                _mouseDown = false;
+                // NOTE: Using custom method because BeginMoveDrag is releasing pointer capture.
+                // WindowState = WindowState.Normal;
+                // BeginMoveDrag();
+                // _mouseDown = false;
+
+                var point = e.GetPosition(this);
+                var delta = point - _startPoint;
+                double x = this.Position.X + delta.X;
+                double y = this.Position.Y + delta.Y;
+                Position = this.Position.WithX((int)x).WithY((int)y);
+                _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
             }
         }
 

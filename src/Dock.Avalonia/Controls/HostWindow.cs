@@ -175,9 +175,9 @@ namespace Dock.Avalonia.Controls
 
         internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Enter {point} : {relativeTo} : {_targetDropControl}");
-
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+
+            Debug.WriteLine($"Enter {isValid} : {point} : {relativeTo} : {_targetDropControl}");
 
             if (isValid == true && _targetDropControl is DockPanel)
             {
@@ -187,8 +187,6 @@ namespace Dock.Avalonia.Controls
 
         internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Over {point} : {relativeTo} : {_targetDropControl}");
-
             var operation = DockOperation.Fill;
 
             if (_targetDockControl._dockControlState._adornerHelper.Adorner is DockTarget target)
@@ -196,13 +194,13 @@ namespace Dock.Avalonia.Controls
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            Validate(point, operation, dragAction, relativeTo);
+            var isValid = Validate(point, operation, dragAction, relativeTo);
+
+            Debug.WriteLine($"Over {isValid} : {point} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Drop {point} : {relativeTo} : {_targetDropControl}");
-
             var operation = DockOperation.Window;
 
             if (_targetDockControl._dockControlState._adornerHelper.Adorner is DockTarget target)
@@ -215,9 +213,9 @@ namespace Dock.Avalonia.Controls
                 _targetDockControl._dockControlState._adornerHelper.RemoveAdorner(_targetDropControl);
             }
 
-            Execute(point, operation, dragAction, relativeTo);
+            var isValid = Execute(point, operation, dragAction, relativeTo);
 
-            Debug.WriteLine($"Drop");
+            Debug.WriteLine($"Drop {isValid} : {point} : {relativeTo} : {_targetDropControl}");
         }
 
         internal void Leave()
@@ -235,7 +233,11 @@ namespace Dock.Avalonia.Controls
                 return false;
             }
 
-            if (Window.Layout is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            var layout = Window.Layout;
+
+            Debug.WriteLine($"Validate : {point} : {layout?.Title} : {layout?.ActiveDockable?.Title}");
+
+            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 _targetDockControl._dockControlState._dockManager.Position = DockControlState.ToDockPoint(point);
                 _targetDockControl._dockControlState._dockManager.ScreenPosition = DockControlState.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
@@ -252,7 +254,11 @@ namespace Dock.Avalonia.Controls
                 return false;
             }
 
-            if (Window.Layout is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            var layout = Window.Layout;
+
+            Debug.WriteLine($"Execute : {point} : {layout?.Title} : {layout?.ActiveDockable?.Title}");
+
+            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
                 _targetDockControl._dockControlState._dockManager.Position = DockControlState.ToDockPoint(point);

@@ -419,11 +419,10 @@ namespace Dock.Avalonia.Controls
 
             if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
             {
-                // NOTE: Using custom method because BeginMoveDrag is releasing pointer capture.
+                // Using custom method because BeginMoveDrag is releasing pointer capture.
                 // WindowState = WindowState.Normal;
                 // BeginMoveDrag();
                 // _mouseDown = false;
-
                 var point = e.GetPosition(this);
                 var delta = point - _startPoint;
                 double x = this.Position.X + delta.X;

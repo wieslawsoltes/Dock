@@ -15,7 +15,6 @@ namespace Dock.Avalonia.Controls
     public class MetroWindow : Window, IStyleable
     {
         private Grid _titleBar;
-
         private Grid _bottomHorizontalGrip;
         private Grid _bottomLeftGrip;
         private Grid _bottomRightGrip;
@@ -24,15 +23,11 @@ namespace Dock.Avalonia.Controls
         private Grid _topHorizontalGrip;
         private Grid _topLeftGrip;
         private Grid _topRightGrip;
-
         private Button _closeButton;
         private Button _minimiseButton;
         private Button _restoreButton;
-
         private Image _icon;
-
         private bool _mouseDown;
-        private Point _mouseDownPosition;
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -117,7 +112,6 @@ namespace Dock.Avalonia.Controls
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
-                _mouseDownPosition = e.GetPosition(this);
             }
             else
             {

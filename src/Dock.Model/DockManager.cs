@@ -404,6 +404,12 @@ namespace Dock.Model
                         return false;
                     }
                     return DockDockable(sourceDock, targetDockable, pinDock, action, operation, bExecute);
+                //case IProportionalDock proportionalDock:
+                //    if (sourceDock == proportionalDock)
+                //    {
+                //        return false;
+                //    }
+                //    return DockDockable(sourceDock, targetDockable, proportionalDock, action, operation, bExecute);
                 default:
                     return false;
             }
@@ -420,6 +426,8 @@ namespace Dock.Model
                     return ValidateDock(documentDock, targetDockable, action, operation, bExecute);
                 case IPinDock pinDock:
                     return ValidateDock(pinDock, targetDockable, action, operation, bExecute);
+                //case IProportionalDock proportionalDock:
+                //    return ValidateDock(proportionalDock, targetDockable, action, operation, bExecute);
                 case ITool tool:
                     return ValidateTool(tool, targetDockable, action, operation, bExecute);
                 case IDocument document:

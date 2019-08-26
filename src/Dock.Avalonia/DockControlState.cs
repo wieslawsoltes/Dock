@@ -149,13 +149,14 @@ namespace Dock.Avalonia
         private IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
         {
             var root = visual.GetVisualRoot();
-            var rootPoint = visual.TranslatePoint(p, root);
-
-            if (rootPoint.HasValue)
+            if (root != null)
             {
-                return root.Renderer.HitTest(rootPoint.Value, visual, filter);
+                var rootPoint = visual.TranslatePoint(p, root);
+                if (rootPoint.HasValue)
+                {
+                    return root.Renderer?.HitTest(rootPoint.Value, visual, filter);
+                }
             }
-
             return Enumerable.Empty<IVisual>();
         }
 

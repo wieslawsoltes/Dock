@@ -176,7 +176,7 @@ namespace Dock.Avalonia.Controls
 
         internal void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Enter {point} : {relativeTo}");
+            Debug.WriteLine($"Enter {point} : {relativeTo} : {_targetDropControl}");
 
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
@@ -188,7 +188,7 @@ namespace Dock.Avalonia.Controls
 
         internal void Over(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Enter {point} : {relativeTo}");
+            Debug.WriteLine($"Enter {point} : {relativeTo} : {_targetDropControl}");
 
             var operation = DockOperation.Fill;
 
@@ -202,7 +202,7 @@ namespace Dock.Avalonia.Controls
 
         internal void Drop(Point point, DragAction dragAction, IVisual relativeTo)
         {
-            Debug.WriteLine($"Drop {point} : {relativeTo}");
+            Debug.WriteLine($"Drop {point} : {relativeTo} : {_targetDropControl}");
 
             var operation = DockOperation.Window;
 

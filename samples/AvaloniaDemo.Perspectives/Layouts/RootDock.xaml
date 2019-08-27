@@ -1,6 +1,5 @@
 ﻿<dmc:RootDock xmlns="https://github.com/avaloniaui"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
               xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
               xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"

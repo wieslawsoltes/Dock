@@ -67,15 +67,15 @@ namespace Dock.Avalonia.Controls
 
         internal static DragAction ToDragAction(PointerEventArgs e)
         {
-            if (e.InputModifiers.HasFlag(InputModifiers.Alt))
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
             {
                 return DragAction.Link;
             }
-            else if (e.InputModifiers.HasFlag(InputModifiers.Shift))
+            else if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
                 return DragAction.Move;
             }
-            else if (e.InputModifiers.HasFlag(InputModifiers.Control))
+            else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
                 return DragAction.Copy;
             }

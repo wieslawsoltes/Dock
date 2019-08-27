@@ -81,7 +81,7 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindow()
         {
-            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
+            this.AttachDevTools();
 
             AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

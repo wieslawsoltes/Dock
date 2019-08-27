@@ -1,0 +1,91 @@
+﻿<dmc:RootDock xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+              xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
+              xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
+              xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
+              xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
+              x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}">
+    <dmc:RootDock.Top>
+        <dmc:PinDock Alignment="Top"/>
+    </dmc:RootDock.Top>
+    <dmc:RootDock.Bottom>
+        <dmc:PinDock Alignment="Bottom"/>
+    </dmc:RootDock.Bottom>
+    <dmc:RootDock.Left>
+        <dmc:PinDock Alignment="Left"/>
+    </dmc:RootDock.Left>
+    <dmc:RootDock.Right>
+        <dmc:PinDock Alignment="Right"/>
+    </dmc:RootDock.Right>
+    <dmc:RootDock.HiddenDockables>
+        <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1"/>
+        <vmt:LeftTopTool2ViewModel x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2"/>
+        <vmt:LeftBottomTool1ViewModel x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1"/>
+        <vmt:LeftBottomTool2ViewModel x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2"/>
+        <vmd:Document1ViewModel x:Name="Document1" Id="Document1" Title="Document1"/>
+        <vmd:Document2ViewModel x:Name="Document2" Id="Document2" Title="Document2"/>
+        <vmt:RightTopTool1ViewModel x:Name="RightTop1" Id="RightTop1" Title="RightTop1"/>
+        <vmt:RightTopTool2ViewModel x:Name="RightTop2" Id="RightTop2" Title="RightTop2"/>
+        <vmt:RightBottomTool1ViewModel x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1"/>
+        <vmt:RightBottomTool2ViewModel x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2"/>
+    </dmc:RootDock.HiddenDockables>
+    <dmc:RootDock x:Name="Perspective1" Title="Perspective1" ActiveDockable="{Binding #MainLayout1}">
+        <dmc:ProportionalDock x:Name="MainLayout1" Proportion="NaN" Orientation="Horizontal">
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
+                    <idc:Reference Name="LeftTop1"/>
+                    <idc:Reference Name="LeftTop2"/>
+                </dmc:ToolDock>
+                <dmc:SplitterDock/>
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftBottom1}">
+                    <idc:Reference Name="LeftBottom1"/>
+                    <idc:Reference Name="LeftBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+            <dmc:SplitterDock/>
+            <dmc:DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
+                <idc:Reference Name="Document1"/>
+                <idc:Reference Name="Document2"/>
+            </dmc:DocumentDock>
+            <dmc:SplitterDock/>
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
+                    <idc:Reference Name="RightTop1"/>
+                    <idc:Reference Name="RightTop2"/>
+                </dmc:ToolDock>
+                <dmc:SplitterDock/>
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #RightBottom1}">
+                    <idc:Reference Name="RightBottom1"/>
+                    <idc:Reference Name="RightBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+        </dmc:ProportionalDock>
+    </dmc:RootDock>
+    <dmc:RootDock x:Name="Perspective2" Title="Perspective2" ActiveDockable="{Binding #MainLayout2}">
+        <dmc:ProportionalDock x:Name="MainLayout2" Proportion="NaN" Orientation="Horizontal">
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
+                    <idc:Reference Name="LeftTop1"/>
+                    <idc:Reference Name="LeftTop2"/>
+                    <idc:Reference Name="LeftBottom1"/>
+                    <idc:Reference Name="LeftBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+            <dmc:SplitterDock/>
+            <dmc:DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
+                <idc:Reference Name="Document1"/>
+                <idc:Reference Name="Document2"/>
+            </dmc:DocumentDock>
+            <dmc:SplitterDock/>
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
+                    <idc:Reference Name="RightTop1"/>
+                    <idc:Reference Name="RightTop2"/>
+                    <idc:Reference Name="RightBottom1"/>
+                    <idc:Reference Name="RightBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+        </dmc:ProportionalDock>
+    </dmc:RootDock>
+</dmc:RootDock>

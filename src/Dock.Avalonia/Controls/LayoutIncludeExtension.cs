@@ -33,7 +33,7 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <summary>
-        /// Provides a <see cref="IDock"/> value.
+        /// Provides a new <see cref="IDock"/> instance.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <returns>The new <see cref="IDock"/> instance.</returns>

@@ -229,6 +229,7 @@ namespace Dock.Model
         {
             _navigateAdapter = new NavigateAdapter(this);
             _visibleDockables = new AvaloniaList<IDockable>();
+            _hiddenDockables = new AvaloniaList<IDockable>();
         }
 
         /// <inheritdoc/>

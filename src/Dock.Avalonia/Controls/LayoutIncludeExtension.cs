@@ -21,10 +21,10 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
         /// </summary>
-        /// <param name="uriString">The base uri string.</param>
-        public LayoutIncludeExtension(string uriString)
+        /// <param name="source">The source uri.</param>
+        public LayoutIncludeExtension(Uri source)
         {
-            Source = new Uri(uriString);
+            Source = source;
         }
 
         private Uri GetContextBaseUri(IServiceProvider serviceProvider)
@@ -47,6 +47,7 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Gets or sets the source URL.
         /// </summary>
+        [ConstructorArgument("source")]
         public Uri Source { get; set; }
     }
 }

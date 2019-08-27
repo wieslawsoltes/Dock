@@ -41,7 +41,8 @@ namespace Dock.Avalonia.Controls
         {
             var loader = new AvaloniaXamlLoader();
             var baseUri = GetContextBaseUri(serviceProvider);
-            return (IDock)loader.Load(Source, baseUri);
+            var dock = (IDock)loader.Load(Source, baseUri);
+            return dock;
         }
 
         /// <summary>

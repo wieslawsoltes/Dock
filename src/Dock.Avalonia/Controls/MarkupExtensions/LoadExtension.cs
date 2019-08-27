@@ -11,14 +11,14 @@ namespace Dock.Avalonia.Controls
     public class LoadExtension
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
+        /// Initializes a new instance of the <see cref="LoadExtension"/> class.
         /// </summary>
         public LoadExtension()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
+        /// Initializes a new instance of the <see cref="LoadExtension"/> class.
         /// </summary>
         /// <param name="source">The source uri.</param>
         public LoadExtension(Uri source)

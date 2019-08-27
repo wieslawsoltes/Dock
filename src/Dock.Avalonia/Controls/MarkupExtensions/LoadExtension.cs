@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using Avalonia.Markup.Xaml;
-using Dock.Model;
 
 namespace Dock.Avalonia.Controls
 {

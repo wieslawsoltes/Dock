@@ -40,9 +40,12 @@ namespace Dock.Avalonia.Controls
         /// <returns>The referenced <see cref="object"/> instance.</returns>
         public object ProvideValue(IServiceProvider serviceProvider)
         {
-            var nameScope = serviceProvider.GetService(typeof(INameScope)) as INameScope;
-            var element = nameScope.Find(Name);
-            return element;
+            if (serviceProvider.GetService(typeof(INameScope)) is INameScope nameScope)
+            {
+                var element = nameScope.Find(Name);
+                return element;
+            }
+            return null;
         }
     }
 }

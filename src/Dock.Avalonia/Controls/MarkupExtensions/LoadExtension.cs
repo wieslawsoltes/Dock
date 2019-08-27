@@ -7,14 +7,14 @@ using Dock.Model;
 namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Includes a <see cref="IDock"/> object from a URL.
+    /// Loads XAML <see cref="object"/> from a URI.
     /// </summary>
-    public class LayoutIncludeExtension
+    public class LoadExtension
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
         /// </summary>
-        public LayoutIncludeExtension()
+        public LoadExtension()
         {
         }
 
@@ -22,27 +22,26 @@ namespace Dock.Avalonia.Controls
         /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
         /// </summary>
         /// <param name="source">The source uri.</param>
-        public LayoutIncludeExtension(Uri source)
+        public LoadExtension(Uri source)
         {
             Source = source;
         }
 
-        private Uri GetContextBaseUri(IServiceProvider serviceProvider)
-        {
-            return ((IUriContext)(serviceProvider.GetService(typeof(IUriContext)))).BaseUri;
-        }
-
         /// <summary>
-        /// Provides a new <see cref="IDock"/> instance.
+        /// Provides a loaded <see cref="object"/> instance.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
-        /// <returns>The new <see cref="IDock"/> instance.</returns>
-        public IDock ProvideValue(IServiceProvider serviceProvider)
+        /// <returns>The loaded <see cref="object"/> instance.</returns>
+        public object ProvideValue(IServiceProvider serviceProvider)
         {
-            var loader = new AvaloniaXamlLoader();
-            var baseUri = GetContextBaseUri(serviceProvider);
-            var dock = (IDock)loader.Load(Source, baseUri);
-            return dock;
+            if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext)
+            {
+                var baseUri = uriContext.BaseUri;
+                var loader = new AvaloniaXamlLoader();
+                var obj = loader.Load(Source, baseUri);
+                return obj;
+            }
+            return null;
         }
 
         /// <summary>

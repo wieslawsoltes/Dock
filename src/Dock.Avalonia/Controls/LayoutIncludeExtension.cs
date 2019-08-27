@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls
     public class LayoutIncludeExtension
     {
         /// <summary>
-        ///  Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
+        /// Initializes a new instance of the <see cref="LayoutIncludeExtension"/> class.
         /// </summary>
         public LayoutIncludeExtension()
         {

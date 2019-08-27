@@ -1,6 +1,7 @@
 ﻿<dmc:RootDock xmlns="https://github.com/avaloniaui"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
               xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+              xmlns:dm="clr-namespace:Dock.Model;assembly=Dock.Model.Avalonia"
               xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
               xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
@@ -67,6 +68,40 @@
             <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
                 <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
                     <idc:Reference Name="LeftTop1"/>
+                    <idc:Reference Name="LeftTop2"/>
+                    <idc:Reference Name="LeftBottom1"/>
+                    <idc:Reference Name="LeftBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+            <dmc:SplitterDock/>
+            <dmc:DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
+                <idc:Reference Name="Document1"/>
+                <idc:Reference Name="Document2"/>
+            </dmc:DocumentDock>
+            <dmc:SplitterDock/>
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
+                    <idc:Reference Name="RightTop1"/>
+                    <idc:Reference Name="RightTop2"/>
+                    <idc:Reference Name="RightBottom1"/>
+                    <idc:Reference Name="RightBottom2"/>
+                </dmc:ToolDock>
+            </dmc:ProportionalDock>
+        </dmc:ProportionalDock>
+    </dmc:RootDock>
+    <dmc:RootDock x:Name="Perspective3" Title="Perspective3" ActiveDockable="{Binding #MainLayout3}">
+        <dmc:ProportionalDock x:Name="MainLayout3" Proportion="NaN" Orientation="Horizontal">
+            <dmc:ProportionalDock.Windows>
+                <dm:DockWindow x:Name="dockWindow" Id="IDockWindow" X="281" Y="233" Width="300" Height="400" Topmost="True">
+                    <dmc:RootDock ActiveDockable="{Binding #toolDock}" Window="{Binding #dockWindow}">
+                        <dmc:ToolDock x:Name="toolDock" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
+                            <idc:Reference Name="LeftTop1"/>
+                        </dmc:ToolDock>
+                    </dmc:RootDock>
+                </dm:DockWindow>
+            </dmc:ProportionalDock.Windows>
+            <dmc:ProportionalDock Proportion="NaN" Orientation="Vertical">
+                <dmc:ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftTop2}">
                     <idc:Reference Name="LeftTop2"/>
                     <idc:Reference Name="LeftBottom1"/>
                     <idc:Reference Name="LeftBottom2"/>

@@ -9,13 +9,14 @@
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <UserControl.Styles>
+    <!--<UserControl.Styles>
         <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.xaml"/>
-    </UserControl.Styles>
+    </UserControl.Styles>-->
     <Grid RowDefinitions="Auto,Auto,*,25" ColumnDefinitions="*,200" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
         <idc:NavigationControl DataContext="{Binding #dockControl.Layout}" Margin="4" Grid.Row="1"/>
-        <idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="2" Grid.Column="0"/>
+        <!--<idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="2" Grid.Column="0"/>-->
+        <idc:DockControl x:Name="dockControl" Layout="{idc:LayoutInclude avares://AvaloniaDemo/Layouts/RootDock.xaml}" Margin="4" Grid.Row="2" Grid.Column="0"/>
         <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
         <Grid RowDefinitions="Auto,*,Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Grid.Row="0">

@@ -10,7 +10,7 @@ namespace ProportionalStackPanelDemo.Views
         public MainWindow()
         {
             this.InitializeComponent();
-            this.AttachDevTools(new KeyGesture(Key.F12, InputModifiers.Control));
+            this.AttachDevTools();
         }
 
         private void InitializeComponent()

@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignWidth="400" d:DesignHeight="100">
-    <Grid>
-        <TextBlock Text="Find" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+             d:DesignWidth="400" d:DesignHeight="150">
+    <Grid RowDefinitions="Auto,Auto">
+        <TextBox Text="{Binding Find}" Margin="4" Grid.Row="0"/>
+        <Button Content="Find Next" Command="{Binding FindNext}" Margin="4" Grid.Row="1"/>
     </Grid>
 </UserControl>

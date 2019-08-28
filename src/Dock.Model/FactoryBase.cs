@@ -415,11 +415,7 @@ namespace Dock.Model
                 }
                 dock.VisibleDockables.Remove(dockable);
                 int indexActiveDockable = index > 0 ? index - 1 : 0;
-                if (indexActiveDockable < 0)
-                {
-                    return;
-                }
-                if (dock.VisibleDockables.Count > 0)
+                if (indexActiveDockable >= 0 && dock.VisibleDockables.Count > 0)
                 {
                     dock.ActiveDockable = dock.VisibleDockables[indexActiveDockable];
                 }

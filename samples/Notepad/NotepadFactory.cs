@@ -37,7 +37,6 @@ namespace Notepad
                 Title = "Main",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
-                ActiveDockable = null,
                 VisibleDockables = CreateList<IDockable>
                 (
                     new DocumentDock
@@ -45,7 +44,7 @@ namespace Notepad
                         Id = "Files",
                         Title = "Files",
                         IsCollapsable = false,
-                        Proportion = 0.8,
+                        Proportion = double.NaN,
                         ActiveDockable = untitledFileViewModel,
                         VisibleDockables = CreateList<IDockable>
                         (

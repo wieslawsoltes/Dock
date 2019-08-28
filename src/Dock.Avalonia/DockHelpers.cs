@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace Dock.Avalonia
 {
@@ -92,7 +93,7 @@ namespace Dock.Avalonia
         {
             if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
             {
-                if (factory.FindRoot(dock) is IDock root && root.ActiveDockable is IDock avtiveRootDockable)
+                if (factory.FindRoot(dock) is IRootDock root && root.ActiveDockable is IDock avtiveRootDockable)
                 {
                     avtiveRootDockable.ShowWindows();
                 }

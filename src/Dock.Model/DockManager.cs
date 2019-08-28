@@ -80,9 +80,9 @@ namespace Dock.Model
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.ActiveDockable = sourceDockable;
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();
                 toolDock.VisibleDockables.Add(sourceDockable);
+                toolDock.ActiveDockable = sourceDockable;
                 factory.SplitToDock(targetDock, toolDock, operation);
             }
         }
@@ -94,8 +94,9 @@ namespace Dock.Model
                 IDock documentDock = factory.CreateDocumentDock();
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
-                documentDock.ActiveDockable = sourceDockable;
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
+                //documentDock.VisibleDockables.Add(sourceDockable);
+                //documentDock.ActiveDockable = sourceDockable;
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
                 factory.SplitToDock(targetDock, documentDock, operation);
             }

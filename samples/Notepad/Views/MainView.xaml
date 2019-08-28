@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="Notepad.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:views="clr-namespace:Notepad.Views;assembly=Notepad"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="680">
+    <Grid RowDefinitions="Auto,*" Background="Transparent">
+        <views:MenuView Grid.Row="0"/>
+        <idc:DockControl  Layout="{Binding Layout}" Margin="4" Grid.Row="1"/>
+    </Grid>
+</UserControl>

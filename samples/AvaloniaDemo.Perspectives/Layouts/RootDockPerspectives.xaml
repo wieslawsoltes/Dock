@@ -6,7 +6,7 @@
               xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
               xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
-              x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}">
+              x:Name="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}">
     <dmc:RootDock.Top>
         <dmc:PinDock Alignment="Top"/>
     </dmc:RootDock.Top>

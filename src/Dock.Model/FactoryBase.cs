@@ -544,16 +544,16 @@ namespace Dock.Model
 
                 if (dockable != null)
                 {
-                    split.ActiveDockable = dockable;
                     split.VisibleDockables = CreateList<IDockable>();
                     split.VisibleDockables.Add(dockable);
+                    split.ActiveDockable = dockable;
                 }
             }
 
             var layout = CreateProportionalDock();
             layout.Id = nameof(IProportionalDock);
             layout.Title = nameof(IProportionalDock);
-            layout.ActiveDockable = null;
+            layout.VisibleDockables = CreateList<IDockable>();
             layout.Proportion = containerProportion;
 
             var splitter = CreateSplitterDock();
@@ -572,17 +572,19 @@ namespace Dock.Model
                     break;
             }
 
-            layout.VisibleDockables = CreateList<IDockable>();
+
 
             switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Top:
                     layout.VisibleDockables.Add(split);
+                    layout.ActiveDockable = split;
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
                     layout.VisibleDockables.Add(dock);
+                    layout.ActiveDockable = dock;
                     break;
             }
 
@@ -593,10 +595,12 @@ namespace Dock.Model
                 case DockOperation.Left:
                 case DockOperation.Top:
                     layout.VisibleDockables.Add(dock);
+                    layout.ActiveDockable = dock;
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
                     layout.VisibleDockables.Add(split);
+                    layout.ActiveDockable = split;
                     break;
             }
 
@@ -647,9 +651,9 @@ namespace Dock.Model
 
                         if (target is IDock dock)
                         {
-                            dock.ActiveDockable = dockable;
                             dock.VisibleDockables = CreateList<IDockable>();
                             dock.VisibleDockables.Add(dockable);
+                            dock.ActiveDockable = dockable;
                         }
 
                         topmost = true;
@@ -663,9 +667,9 @@ namespace Dock.Model
 
                         if (target is IDock dock)
                         {
-                            dock.ActiveDockable = dockable;
                             dock.VisibleDockables = CreateList<IDockable>();
                             dock.VisibleDockables.Add(dockable);
+                            dock.ActiveDockable = dockable;
                         }
 
                         topmost = false;
@@ -704,10 +708,10 @@ namespace Dock.Model
             var root = CreateRootDock();
             root.Id = nameof(IRootDock);
             root.Title = nameof(IRootDock);
-            root.ActiveDockable = target;
-            root.DefaultDockable = target;
             root.VisibleDockables = CreateList<IDockable>();
             root.VisibleDockables.Add(target);
+            root.ActiveDockable = target;
+            root.DefaultDockable = target;
             root.Owner = null;
 
             var window = CreateDockWindow();

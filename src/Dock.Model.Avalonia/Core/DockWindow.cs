@@ -186,6 +186,8 @@ namespace Dock.Model
         /// </summary>
         public DockWindow()
         {
+            _id = nameof(IDockWindow);
+            _title = nameof(IDockWindow);
             _hostAdapter = new HostAdapter(this);
         }
 

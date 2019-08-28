@@ -87,6 +87,15 @@ namespace Dock.Model.Controls
             set => SetAndRaise(RightProperty, ref _right, value);
         }
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="RootDock"/> class.
+        /// </summary>
+        public RootDock()
+        {
+            Id = nameof(IRootDock);
+            Title = nameof(IRootDock);
+        }
+
         /// <inheritdoc/>
         public override IDockable Clone()
         {

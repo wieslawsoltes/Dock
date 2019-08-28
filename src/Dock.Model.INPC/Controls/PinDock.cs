@@ -38,6 +38,15 @@ namespace Dock.Model.Controls
             set => this.RaiseAndSetIfChanged(ref _autoHide, value);
         }
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="PinDock"/> class.
+        /// </summary>
+        public PinDock()
+        {
+            Id = nameof(IPinDock);
+            Title = nameof(IPinDock);
+        }
+
         /// <inheritdoc/>
         public override IDockable Clone()
         {

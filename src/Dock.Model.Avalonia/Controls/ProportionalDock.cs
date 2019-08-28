@@ -27,6 +27,15 @@ namespace Dock.Model.Controls
             set => SetAndRaise(OrientationProperty, ref _orientation, value);
         }
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="ProportionalDock"/> class.
+        /// </summary>
+        public ProportionalDock()
+        {
+            Id = nameof(IProportionalDock);
+            Title = nameof(IProportionalDock);
+        }
+
         /// <inheritdoc/>
         public override IDockable Clone()
         {

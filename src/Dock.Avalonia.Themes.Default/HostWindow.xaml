@@ -39,4 +39,12 @@
     <Style Selector="idc|HostWindow:toolwindow /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Margin" Value="0" />
     </Style>
+    <!--
+    <Style Selector="idc|HostWindow">
+        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
+        <Setter Property="Content">
+            <idc:DockControl Layout="{Binding}"/>
+        </Setter>
+    </Style>
+    -->
 </Styles>

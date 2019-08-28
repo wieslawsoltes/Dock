@@ -155,6 +155,30 @@ namespace Notepad.ViewModels
             }
         }
 
+        public void WindowResetWindowLayout()
+        {
+            var layout = Factory.CreateLayout();
+
+            if (Factory.FindDockable(Layout, (d) => d.Id == "Files") is IDock sourceFiles)
+            {
+                if (Factory.FindDockable(layout, (d) => d.Id == "Files") is IDock targetFiles)
+                {
+                    targetFiles.VisibleDockables.Clear();
+                    targetFiles.ActiveDockable = null;
+
+                    foreach (var visible in sourceFiles.VisibleDockables)
+                    {
+                        targetFiles.VisibleDockables.Add(visible);
+                    }
+
+                    targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
+                }
+            }
+
+            Factory.InitLayout(layout);
+            Layout = layout;
+        }
+
         private Window GetWindow()
         {
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)

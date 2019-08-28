@@ -8,7 +8,7 @@ namespace Dock.Model
     /// <summary>
     /// Notifies clients that a property value has changed.
     /// </summary>
-    public abstract class ReactiveObject : INotifyPropertyChanged
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
         /// <summary>
         /// Occurs when a property value changes.

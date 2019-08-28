@@ -4,17 +4,17 @@ using Xunit;
 
 namespace Dock.Model.INPC.UnitTests
 {
-    public class ReactiveObjectTests
+    public class ObservableObjectTests
     {
         [Fact]
-        public void TestReactiveObject_Ctor()
+        public void TestObservableObject_Ctor()
         {
-            var actual = new TestReactiveObject();
+            var actual = new TestObservableObject();
             Assert.NotNull(actual);
         }
     }
 
-    public class TestReactiveObject : ReactiveObject
+    public class TestObservableObject : ObservableObject
     {
     }
 }

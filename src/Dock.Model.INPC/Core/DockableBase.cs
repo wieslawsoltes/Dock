@@ -8,7 +8,7 @@ namespace Dock.Model
     /// Dockable base class.
     /// </summary>
     [DataContract(IsReference = true)]
-    public abstract class DockableBase : ReactiveObject, IDockable
+    public abstract class DockableBase : ObservableObject, IDockable
     {
         private string _id;
         private string _title;

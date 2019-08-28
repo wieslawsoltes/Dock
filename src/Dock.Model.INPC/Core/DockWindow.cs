@@ -9,7 +9,7 @@ namespace Dock.Model
     /// Dock window.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class DockWindow : ReactiveObject, IDockWindow
+    public class DockWindow : ObservableObject, IDockWindow
     {
         private IHostAdapter _hostAdapter;
         private string _id;

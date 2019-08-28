@@ -77,7 +77,7 @@
                         </TabStrip.DataTemplates>
                     </TabStrip>
                     <Border Classes="panel" ZIndex="-1" Background="{DynamicResource ThemeControlBackgroundBrush}">
-                        <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                     </Border>
                 </DockPanel>
             </ControlTemplate>

@@ -445,7 +445,7 @@ namespace Dock.Model
             int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
             int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
 
-            if (sourceIndex >= 0 && targetIndex >= 0)
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
             {
                 dock.VisibleDockables.RemoveAt(sourceIndex);
                 dock.VisibleDockables.Insert(targetIndex, sourceDockable);
@@ -459,7 +459,7 @@ namespace Dock.Model
             int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
             int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
 
-            if (sourceIndex >= 0 && targetIndex >= 0)
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
             {
                 var originalSourceDockable = dock.VisibleDockables[sourceIndex];
                 var originalTargetDockable = dock.VisibleDockables[targetIndex];
@@ -473,6 +473,14 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable)
         {
+            int targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
+
+            targetIndex = targetIndex < 0 ? 0 : targetIndex + 1;
+            if (targetIndex < 0)
+            {
+                return;
+            }
+
             if (sourceDockable?.Owner is IDock dock && dock.VisibleDockables != null)
             {
                 RemoveDockable(sourceDockable, sourceDock != targetDock);
@@ -482,22 +490,6 @@ namespace Dock.Model
             {
                 targetDock.VisibleDockables = CreateList<IDockable>();
             }
-
-            int targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
-            if (targetIndex < 0)
-            {
-                targetIndex = 0;
-            }
-            else
-            {
-                targetIndex += 1;
-            }
-
-            if (targetIndex < 0)
-            {
-                return;
-            }
-
             targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
             UpdateDockable(sourceDockable, targetDock);
             targetDock.ActiveDockable = sourceDockable;

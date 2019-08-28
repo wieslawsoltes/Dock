@@ -18,5 +18,8 @@
             <Separator/>
             <MenuItem Header="E_xit" Command="{Binding FileExit}"/>
         </MenuItem>
+        <MenuItem Header="_Window">
+            <MenuItem Header="_Reset Window Layout" Command="{Binding WindowResetWindowLayout}"/>
+        </MenuItem>
     </Menu>
 </UserControl>

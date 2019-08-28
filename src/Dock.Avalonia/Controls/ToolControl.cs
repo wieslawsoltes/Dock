@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
+using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Controls
 {
@@ -37,7 +38,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (dock.ActiveDockable != null)
                 {
-                    if (factory.FindRoot(dock.ActiveDockable) is IDock root)
+                    if (factory.FindRoot(dock.ActiveDockable) is IRootDock root)
                     {
                         Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);

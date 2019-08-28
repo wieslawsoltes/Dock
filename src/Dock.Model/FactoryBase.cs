@@ -572,8 +572,6 @@ namespace Dock.Model
                     break;
             }
 
-
-
             switch (operation)
             {
                 case DockOperation.Left:

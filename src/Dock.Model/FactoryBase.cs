@@ -413,7 +413,6 @@ namespace Dock.Model
                 {
                     return;
                 }
-                dock.VisibleDockables.Remove(dockable);
                 int indexActiveDockable = index > 0 ? index - 1 : 0;
                 if (indexActiveDockable >= 0 && dock.VisibleDockables.Count > 0)
                 {
@@ -423,6 +422,7 @@ namespace Dock.Model
                 {
                     dock.ActiveDockable = null;
                 }
+                dock.VisibleDockables.Remove(dockable);
                 if (collapse == true)
                 {
                     Collapse(dock);

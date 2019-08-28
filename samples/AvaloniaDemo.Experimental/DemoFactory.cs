@@ -65,20 +65,7 @@ namespace AvaloniaDemo
 
             this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
-                [nameof(IDockWindow)] = () =>
-                {
-                    var hostWindow = new HostWindow()
-                    {
-                        [!HostWindow.TitleProperty] = new Binding("ActiveDockable.Title")
-                    };
-
-                    hostWindow.Content = new DockControl()
-                    {
-                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
-                    };
-
-                    return hostWindow;
-                }
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             this.DockableLocator = new Dictionary<string, Func<IDockable>>

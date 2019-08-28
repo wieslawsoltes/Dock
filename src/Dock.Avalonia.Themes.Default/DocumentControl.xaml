@@ -64,7 +64,6 @@
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 0 4 0" />
                                 <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-                                <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                             </Style>
                             <Style Selector="TabStripItem:pointerover">
                                 <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>

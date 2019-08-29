@@ -9,7 +9,7 @@ namespace Notepad.ViewModels.Documents
     {
         private string _path;
         private string _text;
-        private Encoding _encoding;
+        private string _encoding;
         private int _selectionStart;
         private int _selectionEnd;
         private int _caretIndex;
@@ -29,7 +29,7 @@ namespace Notepad.ViewModels.Documents
         }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
-        public Encoding Encoding
+        public string Encoding
         {
             get => _encoding;
             set => this.RaiseAndSetIfChanged(ref _encoding, value);

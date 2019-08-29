@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400">
-    <Grid RowDefinitions="*,Auto,Auto">
+    <Grid RowDefinitions="*,Auto">
         <TextBox BorderThickness="0" 
                  AcceptsReturn="True" 
                  AcceptsTab="True" 
@@ -18,15 +18,33 @@
                  TextWrapping="NoWrap"
                  Text="{Binding Text}"
                  Grid.Row="0"/>
-        <TextBlock Text="{Binding Path}"
-                   Margin="2"
-                   VerticalAlignment="Center"
-                   TextWrapping="Wrap"
-                   Grid.Row="1"/>
-        <TextBlock Text="{Binding Encoding.EncodingName}"
-                   Margin="2"
-                   VerticalAlignment="Center"
-                   TextWrapping="Wrap"
-                   Grid.Row="2"/>
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" Grid.Row="1">
+            <TextBlock Text="{Binding Path}"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Grid.Column="0"/>
+            <TextBlock Text="{Binding SelectionStart}"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Grid.Column="1"/>
+            <TextBlock Text="{Binding SelectionEnd}"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Grid.Column="2"/>
+            <TextBlock Text="{Binding CaretIndex}"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Grid.Column="3"/>
+
+            <TextBlock Text="{Binding Encoding}"
+                       Margin="2"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Grid.Column="4"/>
+        </Grid>
     </Grid>
 </UserControl>

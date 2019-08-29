@@ -58,13 +58,13 @@ namespace Notepad.ViewModels
                 Path = path,
                 Title = title,
                 Text = text,
-                Encoding = encoding
+                Encoding = encoding.EncodingName
             };
         }
 
         private void SaveFileViewModel(FileViewModel fileViewModel)
         {
-            File.WriteAllText(fileViewModel.Path, fileViewModel.Text, fileViewModel.Encoding);
+            File.WriteAllText(fileViewModel.Path, fileViewModel.Text, Encoding.GetEncoding(fileViewModel.Encoding));
         }
 
         private void UpdateFileViewModel(FileViewModel fileViewModel, string path)
@@ -99,7 +99,7 @@ namespace Notepad.ViewModels
                 Path = string.Empty,
                 Title = "Untitled",
                 Text = "",
-                Encoding = Encoding.Default
+                Encoding = Encoding.Default.EncodingName
             };
         }
 

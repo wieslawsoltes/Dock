@@ -155,10 +155,8 @@ namespace Notepad.ViewModels
             }
         }
 
-        public void WindowResetWindowLayout()
+        private void CopyFileViewModels(IDock layout)
         {
-            var layout = Factory.CreateLayout();
-
             if (Factory.FindDockable(Layout, (d) => d.Id == "Files") is IDock sourceFiles)
             {
                 if (Factory.FindDockable(layout, (d) => d.Id == "Files") is IDock targetFiles)
@@ -174,7 +172,30 @@ namespace Notepad.ViewModels
                     targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
                 }
             }
+        }
 
+        public void WindowSaveWindowLayout()
+        {
+            // TODO:
+        }
+
+        public void WindowApplyWindowLayout(IDock layout)
+        {
+            CopyFileViewModels(layout);
+            Factory.InitLayout(layout);
+            Layout.Close();
+            Layout = layout;
+        }
+
+        public void WindowManageWindowLayouts()
+        {
+            // TODO:
+        }
+
+        public void WindowResetWindowLayout()
+        {
+            var layout = Factory.CreateLayout();
+            CopyFileViewModels(layout);
             Factory.InitLayout(layout);
             Layout.Close();
             Layout = layout;

@@ -19,12 +19,12 @@
                  Text="{Binding Text}"
                  Grid.Row="0"/>
         <TextBlock Text="{Binding Path}"
-                   Margin="0,2,0,2"
+                   Margin="2"
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"
                    Grid.Row="1"/>
-        <TextBlock Text="{Binding Encoding}"
-                   Margin="0,2,0,2"
+        <TextBlock Text="{Binding Encoding.EncodingName}"
+                   Margin="2"
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"
                    Grid.Row="2"/>

@@ -10,13 +10,34 @@
     <Menu>
         <MenuItem Header="_File">
             <MenuItem Header="_New" Command="{Binding FileNew}"/>
-            <Separator/>
             <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
-            <Separator/>
             <MenuItem Header="Save" Command="{Binding FileSave}"/>
             <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
             <Separator/>
             <MenuItem Header="E_xit" Command="{Binding FileExit}"/>
+        </MenuItem>
+        <MenuItem Header="_Edit">
+            <MenuItem Header="_Undo"/>
+            <Separator/>
+            <MenuItem Header="Cu_t"/>
+            <MenuItem Header="_Copy"/>
+            <MenuItem Header="_Paste"/>
+            <MenuItem Header="_Delete"/>
+            <Separator/>
+            <MenuItem Header="_Find..."/>
+            <MenuItem Header="Find _Next"/>
+            <MenuItem Header="_Replace..."/>
+            <MenuItem Header="_Go to..."/>
+            <Separator/>
+            <MenuItem Header="Select _All"/>
+            <MenuItem Header="_Time/date"/>
+        </MenuItem>
+        <MenuItem Header="_Format">
+            <MenuItem Header="_Wrap lines"/>
+            <MenuItem Header="_Font..."/>
+        </MenuItem>
+        <MenuItem Header="_View">
+            <MenuItem Header="_Status bar"/>
         </MenuItem>
         <MenuItem Header="_Window">
             <MenuItem Header="_Save Window Layout" Command="{Binding WindowSaveWindowLayout}"/>
@@ -31,6 +52,10 @@
             </MenuItem>
             <MenuItem Header="_Manage Window Layouts" Command="{Binding WindowManageWindowLayouts}"/>
             <MenuItem Header="_Reset Window Layout" Command="{Binding WindowResetWindowLayout}"/>
+        </MenuItem>
+        <MenuItem Header="_Help">
+            <MenuItem Header="Get _Help"/>
+            <MenuItem Header="Notepad - _About"/>
         </MenuItem>
     </Menu>
 </UserControl>

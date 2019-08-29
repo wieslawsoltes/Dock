@@ -176,6 +176,7 @@ namespace Notepad.ViewModels
             }
 
             Factory.InitLayout(layout);
+            Layout.Close();
             Layout = layout;
         }
 

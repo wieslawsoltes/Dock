@@ -10,6 +10,9 @@ namespace Notepad.ViewModels.Documents
         private string _path;
         private string _text;
         private Encoding _encoding;
+        private int _selectionStart;
+        private int _selectionEnd;
+        private int _caretIndex;
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public string Path
@@ -30,6 +33,27 @@ namespace Notepad.ViewModels.Documents
         {
             get => _encoding;
             set => this.RaiseAndSetIfChanged(ref _encoding, value);
+        }
+
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public int SelectionStart
+        {
+            get => _selectionStart;
+            set => this.RaiseAndSetIfChanged(ref _selectionStart, value);
+        }
+
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public int SelectionEnd
+        {
+            get => _selectionEnd;
+            set => this.RaiseAndSetIfChanged(ref _selectionEnd, value);
+        }
+
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public int CaretIndex
+        {
+            get => _caretIndex;
+            set => this.RaiseAndSetIfChanged(ref _caretIndex, value);
         }
     }
 }

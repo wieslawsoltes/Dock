@@ -18,12 +18,12 @@
                  TextWrapping="NoWrap"
                  Text="{Binding Text}"
                  Grid.Row="0"/>
-        <TextBlock Text="{Binding Text}"
+        <TextBlock Text="{Binding Path}"
                    Margin="0,2,0,2"
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"
                    Grid.Row="1"/>
-        <TextBlock Text="{Binding Text}"
+        <TextBlock Text="{Binding Encoding}"
                    Margin="0,2,0,2"
                    VerticalAlignment="Center"
                    TextWrapping="Wrap"

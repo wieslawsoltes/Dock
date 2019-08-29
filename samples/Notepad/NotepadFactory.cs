@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using Dock.Avalonia.Controls;
 using Dock.Model;
@@ -16,7 +17,8 @@ namespace Notepad
             {
                 Path = string.Empty,
                 Title = "Untitled",
-                Text = ""
+                Text = "",
+                Encoding = Encoding.Default
             };
 
             var findViewModel = new FindViewModel

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -35,19 +36,35 @@ namespace Notepad.ViewModels
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
 
+        private Encoding GetEncoding(string path)
+        {
+            using (var reader = new StreamReader(path, Encoding.Default, true))
+            {
+                if (reader.Peek() >= 0)
+                {
+                    reader.Read();
+                }
+                return reader.CurrentEncoding;
+            }
+        }
+
         private FileViewModel OpenFileViewModel(string path)
         {
+            Encoding encoding = GetEncoding(path);
+            string text = File.ReadAllText(path, encoding);
+            string title = Path.GetFileName(path);
             return new FileViewModel()
             {
                 Path = path,
-                Title = Path.GetFileName(path),
-                Text = File.ReadAllText(path)
+                Title = title,
+                Text = text,
+                Encoding = encoding
             };
         }
 
         private void SaveFileViewModel(FileViewModel fileViewModel)
         {
-            File.WriteAllText(fileViewModel.Path, fileViewModel.Text);
+            File.WriteAllText(fileViewModel.Path, fileViewModel.Text, fileViewModel.Encoding);
         }
 
         private void UpdateFileViewModel(FileViewModel fileViewModel, string path)
@@ -75,15 +92,24 @@ namespace Notepad.ViewModels
             return null;
         }
 
-        public void FileNew()
+        private FileViewModel GetUntitledFileViewModel()
         {
-            var untitledFileViewModel = new FileViewModel()
+            return new FileViewModel()
             {
                 Path = string.Empty,
                 Title = "Untitled",
-                Text = ""
+                Text = "",
+                Encoding = Encoding.Default
             };
-            AddFileViewModel(untitledFileViewModel);
+        }
+
+        public void FileNew()
+        {
+            var untitledFileViewModel = GetUntitledFileViewModel();
+            if (untitledFileViewModel != null)
+            {
+                AddFileViewModel(untitledFileViewModel);
+            }
         }
 
         public async void FileOpen()

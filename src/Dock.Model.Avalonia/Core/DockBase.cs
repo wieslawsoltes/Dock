@@ -81,18 +81,12 @@ namespace Dock.Model
             AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoForward), (o) => o.CanGoForward);
 
         /// <summary>
-        /// Defines the <see cref="Windows"/> property.
-        /// </summary>
-        public static readonly DirectProperty<DockBase, IList<IDockWindow>> WindowsProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockWindow>>(nameof(Windows), o => o.Windows, (o, v) => o.Windows = v);
-
-        /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
         public static readonly DirectProperty<DockBase, IFactory> FactoryProperty =
             AvaloniaProperty.RegisterDirect<DockBase, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
 
-        private INavigateAdapter _navigateAdapter;
+        internal INavigateAdapter _navigateAdapter;
         private IList<IDockable> _visibleDockables;
         private IList<IDockable> _hiddenDockables;
         private IList<IDockable> _pinnedDockables;
@@ -104,7 +98,6 @@ namespace Dock.Model
         private bool _isCollapsable = true;
         private bool _canGoBack;
         private bool _canGoForward;
-        private IList<IDockWindow> _windows;
         private IFactory _factory;
 
         /// <inheritdoc/>
@@ -207,14 +200,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockWindow> Windows
-        {
-            get => _windows;
-            set => SetAndRaise(WindowsProperty, ref _windows, value);
-        }
-
-        /// <inheritdoc/>
         [IgnoreDataMember]
         public IFactory Factory
         {
@@ -230,7 +215,6 @@ namespace Dock.Model
             _navigateAdapter = new NavigateAdapter(this);
             _visibleDockables = new AvaloniaList<IDockable>();
             _hiddenDockables = new AvaloniaList<IDockable>();
-            _windows = new AvaloniaList<IDockWindow>();
         }
 
         /// <inheritdoc/>
@@ -249,18 +233,6 @@ namespace Dock.Model
         public virtual void Navigate(object root)
         {
             _navigateAdapter.Navigate(root, true);
-        }
-
-        /// <inheritdoc/>
-        public virtual void ShowWindows()
-        {
-            _navigateAdapter?.ShowWindows();
-        }
-
-        /// <inheritdoc/>
-        public virtual void ExitWindows()
-        {
-            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>

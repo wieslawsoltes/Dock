@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Dock.Model.Controls;
+
 namespace Dock.Model
 {
     /// <summary>
@@ -36,12 +38,12 @@ namespace Dock.Model
         void Navigate(object root, bool bSnapshot);
 
         /// <summary>
-        /// Implementation of the <see cref="IDock.ShowWindows()"/> method.
+        /// Implementation of the <see cref="IRootDock.ShowWindows()"/> method.
         /// </summary>
         void ShowWindows();
 
         /// <summary>
-        /// Implementation of the <see cref="IDock.ExitWindows()"/> method.
+        /// Implementation of the <see cref="IRootDock.ExitWindows()"/> method.
         /// </summary>
         void ExitWindows();
 

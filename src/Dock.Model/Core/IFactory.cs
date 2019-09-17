@@ -141,9 +141,9 @@ namespace Dock.Model
         /// <summary>
         /// Adds window into dock windows list.
         /// </summary>
-        /// <param name="dock">The window dock.</param>
+        /// <param name="rootDock">The root dock.</param>
         /// <param name="window">The window to add.</param>
-        void AddWindow(IDock dock, IDockWindow window);
+        void AddWindow(IRootDock rootDock, IDockWindow window);
 
         /// <summary>
         /// Removes window from owner windows list.

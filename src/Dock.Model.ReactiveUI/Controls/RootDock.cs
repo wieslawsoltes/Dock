@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using ReactiveUI;
 
@@ -12,6 +13,7 @@ namespace Dock.Model.Controls
     public class RootDock : DockBase, IRootDock
     {
         private IDockWindow _window;
+        private IList<IDockWindow> _windows;
         private IPinDock _top;
         private IPinDock _bottom;
         private IPinDock _left;
@@ -23,6 +25,14 @@ namespace Dock.Model.Controls
         {
             get => _window;
             set => this.RaiseAndSetIfChanged(ref _window, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public IList<IDockWindow> Windows
+        {
+            get => _windows;
+            set => this.RaiseAndSetIfChanged(ref _windows, value);
         }
 
         /// <inheritdoc/>
@@ -64,6 +74,18 @@ namespace Dock.Model.Controls
         {
             Id = nameof(IRootDock);
             Title = nameof(IRootDock);
+        }
+
+        /// <inheritdoc/>
+        public virtual void ShowWindows()
+        {
+            _navigateAdapter?.ShowWindows();
+        }
+
+        /// <inheritdoc/>
+        public virtual void ExitWindows()
+        {
+            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>

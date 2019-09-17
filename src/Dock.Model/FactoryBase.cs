@@ -97,13 +97,18 @@ namespace Dock.Model
         public virtual void InitLayout(IDockable layout)
         {
             UpdateDockable(layout, null);
-            if (layout is IDock root)
+
+            if (layout is IDock dock)
             {
-                if (root.DefaultDockable != null)
+                if (dock.DefaultDockable != null)
                 {
-                    root.ActiveDockable = root.DefaultDockable;
+                    dock.ActiveDockable = dock.DefaultDockable;
                 }
-                root.ShowWindows();
+            }
+
+            if (layout is IRootDock rootDock)
+            {
+                rootDock.ShowWindows();
             }
         }
 
@@ -146,10 +151,13 @@ namespace Dock.Model
                         UpdateDockable(child, dockable);
                     }
                 }
+            }
 
-                if (dock.Windows != null)
+            if (dockable is IRootDock rootDock)
+            {
+                if (rootDock.Windows != null)
                 {
-                    foreach (var child in dock.Windows)
+                    foreach (var child in rootDock.Windows)
                     {
                         UpdateDockWindow(child, dockable);
                     }
@@ -183,23 +191,23 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void AddWindow(IDock dock, IDockWindow window)
+        public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
         {
-            if (dock.Windows == null)
+            if (rootDock.Windows == null)
             {
-                dock.Windows = CreateList<IDockWindow>();
+                rootDock.Windows = CreateList<IDockWindow>();
             }
-            dock.Windows.Add(window);
-            UpdateDockWindow(window, dock);
+            rootDock.Windows.Add(window);
+            UpdateDockWindow(window, rootDock);
         }
 
         /// <inheritdoc/>
         public virtual void RemoveWindow(IDockWindow window)
         {
-            if (window?.Owner is IDock dock)
+            if (window?.Owner is IRootDock rootDock)
             {
                 window.Exit();
-                dock.Windows?.Remove(window);
+                rootDock.Windows?.Remove(window);
             }
         }
 
@@ -285,21 +293,24 @@ namespace Dock.Model
                 }
             }
 
-            if (dock.Windows != null)
+            if (dock is IRootDock rootDock)
             {
-                foreach (var window in dock.Windows)
+                if (rootDock.Windows != null)
                 {
-                    if (window.Layout != null)
+                    foreach (var window in rootDock.Windows)
                     {
-                        if (predicate(window.Layout) == true)
+                        if (window.Layout != null)
                         {
-                            return window.Layout;
-                        }
+                            if (predicate(window.Layout) == true)
+                            {
+                                return window.Layout;
+                            }
 
-                        var result = FindDockable(window.Layout, predicate);
-                        if (result != null)
-                        {
-                            return result;
+                            var result = FindDockable(window.Layout, predicate);
+                            if (result != null)
+                            {
+                                return result;
+                            }
                         }
                     }
                 }
@@ -749,11 +760,16 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {
+            var rootDock = FindRoot(dock);
+            if (rootDock == null)
+            {
+                return;
+            }
             RemoveDockable(dockable, true);
             var window = CreateWindowFrom(dockable);
             if (window != null)
             {
-                AddWindow(dock, window);
+                AddWindow(rootDock, window);
                 window.X = x;
                 window.Y = y;
                 window.Width = width;

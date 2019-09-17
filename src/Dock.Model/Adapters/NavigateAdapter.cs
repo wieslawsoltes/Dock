@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dock.Model.Controls;
 
 namespace Dock.Model
 {
@@ -147,7 +148,7 @@ namespace Dock.Model
                 }
             }
 
-            if (dockable is IDock nextDock)
+            if (dockable is IRootDock nextDock)
             {
                 nextDock.ShowWindows();
             }
@@ -186,40 +187,43 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ShowWindows()
         {
-            if (_dock.Windows != null)
+            if (_dock is IRootDock rootDock && rootDock.Windows != null)
             {
-                foreach (var window in _dock.Windows)
+                foreach (var window in rootDock.Windows)
                 {
                     window.Present(false);
                 }
             }
-            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeDockableWindows.ShowWindows();
+                activeRootDockWindows.ShowWindows();
             }
         }
 
         /// <inheritdoc/>
         public void ExitWindows()
         {
-            if (_dock.Windows != null)
+            if (_dock is IRootDock rootDock && rootDock.Windows != null)
             {
-                foreach (var window in _dock.Windows)
+                foreach (var window in rootDock.Windows)
                 {
                     window.Save();
                     window.Exit();
                 }
             }
-            if (_dock.ActiveDockable is IDock activeDockableWindows)
+            if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeDockableWindows.ExitWindows();
+                activeRootDockWindows.ExitWindows();
             }
         }
 
         /// <inheritdoc/>
         public void Close()
         {
-            _dock.ExitWindows();
+            if (_dock is IRootDock rootDock)
+            {
+                rootDock.ExitWindows();
+            }
         }
     }
 }

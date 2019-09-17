@@ -69,15 +69,6 @@ namespace Dock.Model
                     target.FocusedDockable = target.VisibleDockables[indexFocusedDockable];
                 }
             }
-
-            if (source.Windows != null)
-            {
-                target.Windows = source.Factory.CreateList<IDockWindow>();
-                foreach (var window in source.Windows)
-                {
-                    target.Windows.Add(window.Clone());
-                }
-            }
         }
 
         /// <summary>
@@ -96,6 +87,15 @@ namespace Dock.Model
             rootDock.Bottom = (IPinDock)source.Bottom?.Clone();
             rootDock.Left = (IPinDock)source.Left?.Clone();
             rootDock.Right = (IPinDock)source.Right?.Clone();
+
+            if (source.Windows != null)
+            {
+                rootDock.Windows = source.Factory.CreateList<IDockWindow>();
+                foreach (var window in source.Windows)
+                {
+                    rootDock.Windows.Add(window.Clone());
+                }
+            }
 
             return rootDock;
         }

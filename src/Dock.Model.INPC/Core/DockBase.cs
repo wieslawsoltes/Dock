@@ -11,7 +11,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockBase : DockableBase, IDock
     {
-        private INavigateAdapter _navigateAdapter;
+        internal INavigateAdapter _navigateAdapter;
         private IList<IDockable> _visibleDockables;
         private IList<IDockable> _hiddenDockables;
         private IList<IDockable> _pinnedDockables;
@@ -21,7 +21,6 @@ namespace Dock.Model
         private double _proportion = double.NaN;
         private bool _isActive;
         private bool _isCollapsable = true;
-        private IList<IDockWindow> _windows;
         private IFactory _factory;
 
         /// <summary>
@@ -123,14 +122,6 @@ namespace Dock.Model
         public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockWindow> Windows
-        {
-            get => _windows;
-            set => this.RaiseAndSetIfChanged(ref _windows, value);
-        }
-
-        /// <inheritdoc/>
         [IgnoreDataMember]
         public IFactory Factory
         {
@@ -154,18 +145,6 @@ namespace Dock.Model
         public virtual void Navigate(object root)
         {
             _navigateAdapter?.Navigate(root, true);
-        }
-
-        /// <inheritdoc/>
-        public virtual void ShowWindows()
-        {
-            _navigateAdapter?.ShowWindows();
-        }
-
-        /// <inheritdoc/>
-        public virtual void ExitWindows()
-        {
-            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>

@@ -25,7 +25,7 @@ namespace Dock.Model
         private IHostWindow _host;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Id
         {
             get => _id;
@@ -65,7 +65,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool Topmost
         {
             get => _topmost;
@@ -73,7 +73,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Title
         {
             get => _title;
@@ -97,7 +97,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IRootDock Layout
         {
             get => _layout;

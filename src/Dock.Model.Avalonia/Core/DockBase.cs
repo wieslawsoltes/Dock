@@ -109,7 +109,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [Content]
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IList<IDockable> VisibleDockables
         {
             get => _visibleDockables;
@@ -117,7 +117,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IList<IDockable> HiddenDockables
         {
             get => _hiddenDockables;
@@ -125,7 +125,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IList<IDockable> PinnedDockables
         {
             get => _pinnedDockables;
@@ -133,7 +133,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IDockable ActiveDockable
         {
             get => _activeDockable;
@@ -151,7 +151,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IDockable DefaultDockable
         {
             get => _defaultDockable;
@@ -159,7 +159,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IDockable FocusedDockable
         {
             get => _focusedDockable;
@@ -167,7 +167,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public double Proportion
         {
             get => _proportion;
@@ -175,7 +175,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool IsActive
         {
             get => _isActive;
@@ -183,7 +183,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool IsCollapsable
         {
             get => _isCollapsable;
@@ -207,7 +207,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IList<IDockWindow> Windows
         {
             get => _windows;

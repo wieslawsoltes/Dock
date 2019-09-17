@@ -20,7 +20,7 @@ namespace Dock.Model.Controls
         private Orientation _orientation;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public Orientation Orientation
         {
             get => _orientation;

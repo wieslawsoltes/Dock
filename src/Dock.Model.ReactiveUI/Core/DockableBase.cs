@@ -17,7 +17,7 @@ namespace Dock.Model
         private IDockable _owner;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Id
         {
             get => _id;
@@ -25,7 +25,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Title
         {
             get => _title;

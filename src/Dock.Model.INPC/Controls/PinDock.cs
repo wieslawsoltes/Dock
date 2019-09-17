@@ -15,7 +15,7 @@ namespace Dock.Model.Controls
         private bool _autoHide = true;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public Alignment Alignment
         {
             get => _alignment;
@@ -23,7 +23,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool IsExpanded
         {
             get => _isExpanded;
@@ -31,7 +31,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool AutoHide
         {
             get => _autoHide;

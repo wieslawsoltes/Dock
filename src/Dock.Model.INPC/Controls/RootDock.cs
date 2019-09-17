@@ -17,7 +17,7 @@ namespace Dock.Model.Controls
         private IPinDock _right;
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IDockWindow Window
         {
             get => _window;
@@ -25,7 +25,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IPinDock Top
         {
             get => _top;
@@ -33,7 +33,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IPinDock Bottom
         {
             get => _bottom;
@@ -41,7 +41,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IPinDock Left
         {
             get => _left;
@@ -49,7 +49,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public IPinDock Right
         {
             get => _right;

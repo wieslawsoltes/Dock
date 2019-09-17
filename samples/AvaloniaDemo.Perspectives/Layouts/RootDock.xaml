@@ -17,7 +17,7 @@
     <dmc:RootDock.Right>
         <dmc:PinDock Alignment="Right"/>
     </dmc:RootDock.Right>
-    <dmc:RootDock x:Name="Perspective" Title="Perspective" ActiveDockable="{Binding #MainLayout}">
+    <dmc:RootDock x:Name="Perspective" Title="Perspective" ActiveDockable="{Binding #MainLayout}" IsCollapsable="False">
         <dmc:ProportionalDock x:Name="MainLayout" Proportion="NaN" Orientation="Horizontal">
             <dmc:ProportionalDock x:Name="LeftPane" Proportion="NaN" Orientation="Vertical">
                 <dmc:ToolDock x:Name="LeftPaneTop" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">

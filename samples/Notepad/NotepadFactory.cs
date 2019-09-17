@@ -39,6 +39,7 @@ namespace Notepad
                 Title = "Main",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
+                IsCollapsable = false,
                 VisibleDockables = CreateList<IDockable>
                 (
                     new DocumentDock
@@ -86,6 +87,7 @@ namespace Notepad
 
             var root = CreateRootDock();
 
+            root.IsCollapsable = false;
             root.ActiveDockable = mainLayout;
             root.DefaultDockable = mainLayout;
             root.VisibleDockables = CreateList<IDockable>(mainLayout);

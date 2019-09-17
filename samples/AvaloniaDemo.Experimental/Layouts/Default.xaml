@@ -7,7 +7,7 @@
        xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
        Selector="idc|DockControl.Default">
     <Setter Property="Layout">
-        <dmc:RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #Dashboard}" DefaultDockable="{Binding #Dashboard}">
+        <dmc:RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #Dashboard}" DefaultDockable="{Binding #Dashboard}" IsCollapsable="False">
             <dmc:RootDock.Top>
                 <dmc:PinDock x:Name="PinDockTop" Alignment="Top"/>
             </dmc:RootDock.Top>

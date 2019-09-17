@@ -7,7 +7,7 @@
        xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
        Selector="idc|DockControl.Default">
     <Setter Property="Layout">
-        <dmc:RootDock ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}">
+        <dmc:RootDock ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}" IsCollapsable="False">
             <dmc:RootDock.Top>
                 <dmc:PinDock Alignment="Top"/>
             </dmc:RootDock.Top>

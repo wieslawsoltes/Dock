@@ -6,7 +6,7 @@ namespace Dock.Model
 {
     public abstract class DockBase : DockableBase, IDock
     {
-        private INavigateAdapter _navigateAdapter;
+        internal INavigateAdapter _navigateAdapter;
 
         public IList<IDockable> VisibleDockables { get; set; }
 
@@ -30,8 +30,6 @@ namespace Dock.Model
 
         public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
 
-        public IList<IDockWindow> Windows { get; set; }
-
         public IFactory Factory { get; set; }
 
         public DockBase()
@@ -52,16 +50,6 @@ namespace Dock.Model
         public virtual void Navigate(object root)
         {
             _navigateAdapter?.Navigate(root, true);
-        }
-
-        public virtual void ShowWindows()
-        {
-            _navigateAdapter?.ShowWindows();
-        }
-
-        public virtual void ExitWindows()
-        {
-            _navigateAdapter?.ExitWindows();
         }
 
         public virtual void Close()

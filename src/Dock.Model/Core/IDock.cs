@@ -66,11 +66,6 @@ namespace Dock.Model
         bool CanGoForward { get; }
 
         /// <summary>
-        /// Gets or sets windows.
-        /// </summary>
-        IList<IDockWindow> Windows { get; set; }
-
-        /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
         IFactory Factory { get; set; }
@@ -90,16 +85,6 @@ namespace Dock.Model
         /// </summary>
         /// <param name="root">An object that contains the content to navigate to.</param>
         void Navigate(object root);
-
-        /// <summary>
-        /// Show windows.
-        /// </summary>
-        void ShowWindows();
-
-        /// <summary>
-        /// Exit windows.
-        /// </summary>
-        void ExitWindows();
 
         /// <summary>
         /// Close layout.

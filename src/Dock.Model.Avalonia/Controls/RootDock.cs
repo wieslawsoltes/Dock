@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Avalonia;
+using Avalonia.Collections;
 
 namespace Dock.Model.Controls
 {
@@ -16,6 +18,12 @@ namespace Dock.Model.Controls
         /// </summary>
         public static readonly DirectProperty<RootDock, IDockWindow> WindowProperty =
             AvaloniaProperty.RegisterDirect<RootDock, IDockWindow>(nameof(Window), o => o.Window, (o, v) => o.Window = v);
+
+        /// <summary>
+        /// Defines the <see cref="Windows"/> property.
+        /// </summary>
+        public static readonly DirectProperty<RootDock, IList<IDockWindow>> WindowsProperty =
+            AvaloniaProperty.RegisterDirect<RootDock, IList<IDockWindow>>(nameof(Windows), o => o.Windows, (o, v) => o.Windows = v);
 
         /// <summary>
         /// Defines the <see cref="Top"/> property.
@@ -42,6 +50,7 @@ namespace Dock.Model.Controls
             AvaloniaProperty.RegisterDirect<RootDock, IPinDock>(nameof(Right), o => o.Right, (o, v) => o.Right = v);
 
         private IDockWindow _window;
+        private IList<IDockWindow> _windows;
         private IPinDock _top;
         private IPinDock _bottom;
         private IPinDock _left;
@@ -53,6 +62,14 @@ namespace Dock.Model.Controls
         {
             get => _window;
             set => SetAndRaise(WindowProperty, ref _window, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public IList<IDockWindow> Windows
+        {
+            get => _windows;
+            set => SetAndRaise(WindowsProperty, ref _windows, value);
         }
 
         /// <inheritdoc/>
@@ -92,8 +109,21 @@ namespace Dock.Model.Controls
         /// </summary>
         public RootDock()
         {
+            _windows = new AvaloniaList<IDockWindow>();
             Id = nameof(IRootDock);
             Title = nameof(IRootDock);
+        }
+
+        /// <inheritdoc/>
+        public virtual void ShowWindows()
+        {
+            _navigateAdapter?.ShowWindows();
+        }
+
+        /// <inheritdoc/>
+        public virtual void ExitWindows()
+        {
+            _navigateAdapter?.ExitWindows();
         }
 
         /// <inheritdoc/>

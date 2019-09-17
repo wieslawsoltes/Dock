@@ -10,7 +10,7 @@ namespace Notepad.ViewModels.Tools
     {
         private string _find;
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find
         {
             get => _find;

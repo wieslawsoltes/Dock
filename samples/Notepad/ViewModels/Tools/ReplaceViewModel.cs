@@ -11,14 +11,14 @@ namespace Notepad.ViewModels.Tools
         private string _find;
         private string _replace;
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find
         {
             get => _find;
             set => this.RaiseAndSetIfChanged(ref _find, value);
         }
 
-        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Replace
         {
             get => _replace;

@@ -427,6 +427,27 @@ namespace Dock.Model
                 {
                     Collapse(dock);
                 }
+                if (dock.VisibleDockables.Count == 1)
+                {
+                    var dockable0 = dock.VisibleDockables[0];
+                    if (dockable0 is ISplitterDock splitter0)
+                    {
+                        RemoveDockable(splitter0, collapse);
+                    }
+                }
+                if (dock.VisibleDockables.Count == 2)
+                {
+                    var dockable0 = dock.VisibleDockables[0];
+                    var dockable1 = dock.VisibleDockables[1];
+                    if (dockable0 is ISplitterDock splitter0)
+                    {
+                        RemoveDockable(splitter0, collapse);
+                    }
+                    if (dockable1 is ISplitterDock splitter1)
+                    {
+                        RemoveDockable(splitter1, collapse);
+                    }
+                }
             }
         }
 

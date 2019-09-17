@@ -10,10 +10,10 @@ namespace Dock.Model
     public static class CloneHelper
     {
         /// <summary>
-        /// Clones common dock properties.
+        /// Clones dock properties.
         /// </summary>
-        /// <param name="source">The source object.</param>
-        /// <param name="target">The target object.</param>
+        /// <param name="source">The source dock.</param>
+        /// <param name="target">The target dock.</param>
         public static void CloneDockProperties(IDock source, IDock target)
         {
             target.Id = source.Id;
@@ -72,32 +72,85 @@ namespace Dock.Model
         }
 
         /// <summary>
+        /// Clones root dock properties.
+        /// </summary>
+        /// <param name="source">The source root dock.</param>
+        /// <param name="target">The target root dock.</param>
+        public static void CloneRootDockProperties(IRootDock source, IRootDock target)
+        {
+            target.Window = null;
+            target.Top = (IPinDock)source.Top?.Clone();
+            target.Bottom = (IPinDock)source.Bottom?.Clone();
+            target.Left = (IPinDock)source.Left?.Clone();
+            target.Right = (IPinDock)source.Right?.Clone();
+
+            if (source.Windows != null)
+            {
+                target.Windows = source.Factory.CreateList<IDockWindow>();
+                foreach (var window in source.Windows)
+                {
+                    target.Windows.Add(window.Clone());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clones pin dock properties.
+        /// </summary>
+        /// <param name="source">The source pin dock.</param>
+        /// <param name="target">The target pin dock.</param>
+        public static void ClonePinDockProperties(IPinDock source, IPinDock target)
+        {
+            target.Alignment = source.Alignment;
+            target.IsExpanded = source.IsExpanded;
+            target.AutoHide = source.AutoHide;
+        }
+
+        /// <summary>
+        /// Clones proportional dock properties.
+        /// </summary>
+        /// <param name="source">The source proportional dock.</param>
+        /// <param name="target">The target proportional dock.</param>
+        public static void CloneProportionalDockProperties(IProportionalDock source, IProportionalDock target)
+        {
+            target.Orientation = source.Orientation;
+        }
+
+        /// <summary>
+        /// Clones dock window properties.
+        /// </summary>
+        /// <param name="source">The source dock window.</param>
+        /// <param name="target">The target dock window.</param>
+        public static void CloneDockWindowProperties(IDockWindow source, IDockWindow target)
+        {
+            target.Id = source.Id;
+            target.X = source.X;
+            target.Y = source.Y;
+            target.Width = source.Width;
+            target.Height = source.Height;
+            target.Topmost = source.Topmost;
+            target.Title = source.Title;
+
+            target.Layout = (IRootDock)source.Layout?.Clone();
+            if (target.Layout != null)
+            {
+                target.Layout.Window = target;
+            }
+        }
+
+        /// <summary>
         /// Clones <see cref="IRootDock"/> object.
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IRootDock"/> class.</returns>
         public static IRootDock CloneRootDock(IRootDock source)
         {
-            var rootDock = source.Factory.CreateRootDock();
+            var target = source.Factory.CreateRootDock();
 
-            CloneDockProperties(source, rootDock);
+            CloneDockProperties(source, target);
+            CloneRootDockProperties(source, target);
 
-            rootDock.Window = null;
-            rootDock.Top = (IPinDock)source.Top?.Clone();
-            rootDock.Bottom = (IPinDock)source.Bottom?.Clone();
-            rootDock.Left = (IPinDock)source.Left?.Clone();
-            rootDock.Right = (IPinDock)source.Right?.Clone();
-
-            if (source.Windows != null)
-            {
-                rootDock.Windows = source.Factory.CreateList<IDockWindow>();
-                foreach (var window in source.Windows)
-                {
-                    rootDock.Windows.Add(window.Clone());
-                }
-            }
-
-            return rootDock;
+            return target;
         }
 
         /// <summary>
@@ -107,15 +160,12 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IPinDock"/> class.</returns>
         public static IPinDock ClonePinDock(IPinDock source)
         {
-            var pinDock = source.Factory.CreatePinDock();
+            var target = source.Factory.CreatePinDock();
 
-            CloneDockProperties(source, pinDock);
+            CloneDockProperties(source, target);
+            ClonePinDockProperties(source, target);
 
-            pinDock.Alignment = source.Alignment;
-            pinDock.IsExpanded = source.IsExpanded;
-            pinDock.AutoHide = source.AutoHide;
-
-            return pinDock;
+            return target;
         }
 
         /// <summary>
@@ -125,13 +175,12 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IProportionalDock"/> class.</returns>
         public static IProportionalDock CloneProportionalDock(IProportionalDock source)
         {
-            var proportionalDock = source.Factory.CreateProportionalDock();
+            var target = source.Factory.CreateProportionalDock();
 
-            CloneDockProperties(source, proportionalDock);
+            CloneDockProperties(source, target);
+            CloneProportionalDockProperties(source, target);
 
-            proportionalDock.Orientation = source.Orientation;
-
-            return proportionalDock;
+            return target;
         }
 
         /// <summary>
@@ -141,11 +190,11 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="ISplitterDock"/> class.</returns>
         public static ISplitterDock CloneSplitterDock(ISplitterDock source)
         {
-            var splitterDock = source.Factory.CreateSplitterDock();
+            var target = source.Factory.CreateSplitterDock();
 
-            CloneDockProperties(source, splitterDock);
+            CloneDockProperties(source, target);
 
-            return splitterDock;
+            return target;
         }
 
         /// <summary>
@@ -155,11 +204,11 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IToolDock"/> class.</returns>
         public static IToolDock CloneToolDock(IToolDock source)
         {
-            var toolDock = source.Factory.CreateToolDock();
+            var target = source.Factory.CreateToolDock();
 
-            CloneDockProperties(source, toolDock);
+            CloneDockProperties(source, target);
 
-            return toolDock;
+            return target;
         }
 
         /// <summary>
@@ -169,11 +218,11 @@ namespace Dock.Model
         /// <returns>TThe new instance or reference of the <see cref="IDocumentDock"/> class.</returns>
         public static IDocumentDock CloneDocumentDock(IDocumentDock source)
         {
-            var documentDock = source.Factory.CreateDocumentDock();
+            var target = source.Factory.CreateDocumentDock();
 
-            CloneDockProperties(source, documentDock);
+            CloneDockProperties(source, target);
 
-            return documentDock;
+            return target;
         }
 
         /// <summary>
@@ -185,22 +234,11 @@ namespace Dock.Model
         {
             source.Save();
 
-            var dockWindow = source.Factory.CreateDockWindow();
+            var target = source.Factory.CreateDockWindow();
 
-            dockWindow.Id = source.Id;
-            dockWindow.X = source.X;
-            dockWindow.Y = source.Y;
-            dockWindow.Width = source.Width;
-            dockWindow.Height = source.Height;
-            dockWindow.Topmost = source.Topmost;
-            dockWindow.Title = source.Title;
-            dockWindow.Layout = (IRootDock)source.Layout?.Clone();
-            if (dockWindow.Layout is IRootDock rootDock)
-            {
-                rootDock.Window = dockWindow;
-            }
+            CloneDockWindowProperties(source, target);
 
-            return dockWindow;
+            return target;
         }
     }
 }

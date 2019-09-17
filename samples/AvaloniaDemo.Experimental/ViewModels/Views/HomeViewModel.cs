@@ -11,6 +11,7 @@ namespace AvaloniaDemo.ViewModels.Views
             var homeViewModel = new HomeViewModel();
 
             CloneHelper.CloneDockProperties(this, homeViewModel);
+            CloneHelper.CloneRootDockProperties(this, homeViewModel);
 
             return homeViewModel;
         }

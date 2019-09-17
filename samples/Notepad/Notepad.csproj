@@ -32,7 +32,7 @@
   <PropertyGroup>
     <PublishTrimmed>True</PublishTrimmed>
     <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>True</PublishReadyToRun>
+    <PublishReadyToRun>False</PublishReadyToRun>
   </PropertyGroup>
 
   <ItemGroup>

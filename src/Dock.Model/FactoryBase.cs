@@ -417,22 +417,26 @@ namespace Dock.Model
                 int indexActiveDockable = index > 0 ? index - 1 : 0;
                 if (indexActiveDockable >= 0 && dock.VisibleDockables.Count > 0)
                 {
-                    dock.ActiveDockable = dock.VisibleDockables[indexActiveDockable];
+                    var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
+                    if (!(nextActiveDockable is ISplitterDock))
+                    {
+                        dock.ActiveDockable = nextActiveDockable;
+                    }
+                    else
+                    {
+                        dock.ActiveDockable = null;
+                    }
                 }
                 else
                 {
                     dock.ActiveDockable = null;
-                }
-                if (collapse == true)
-                {
-                    Collapse(dock);
                 }
                 if (dock.VisibleDockables.Count == 1)
                 {
                     var dockable0 = dock.VisibleDockables[0];
                     if (dockable0 is ISplitterDock splitter0)
                     {
-                        RemoveDockable(splitter0, collapse);
+                        RemoveDockable(splitter0, false);
                     }
                 }
                 if (dock.VisibleDockables.Count == 2)
@@ -441,12 +445,16 @@ namespace Dock.Model
                     var dockable1 = dock.VisibleDockables[1];
                     if (dockable0 is ISplitterDock splitter0)
                     {
-                        RemoveDockable(splitter0, collapse);
+                        RemoveDockable(splitter0, false);
                     }
                     if (dockable1 is ISplitterDock splitter1)
                     {
-                        RemoveDockable(splitter1, collapse);
+                        RemoveDockable(splitter1, false);
                     }
+                }
+                if (collapse == true)
+                {
+                    Collapse(dock);
                 }
             }
         }

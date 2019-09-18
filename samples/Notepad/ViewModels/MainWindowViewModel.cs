@@ -191,10 +191,10 @@ namespace Notepad.ViewModels
             }
         }
 
-        private void CopyDocuments(IDock source, IDock target, string documentsDockId)
+        private void CopyDocuments(IDock source, IDock target, string id)
         {
-            if (source.Factory.FindDockable(source, (d) => d.Id == documentsDockId) is IDock sourceFiles
-                && target.Factory.FindDockable(target, (d) => d.Id == documentsDockId) is IDock targetFiles)
+            if (source.Factory.FindDockable(source, (d) => d.Id == id) is IDock sourceFiles
+                && target.Factory.FindDockable(target, (d) => d.Id == id) is IDock targetFiles)
             {
                 targetFiles.VisibleDockables.Clear();
                 targetFiles.ActiveDockable = null;

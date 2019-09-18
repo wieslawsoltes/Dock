@@ -30,8 +30,6 @@ namespace Dock.Model
 
         public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
 
-        public IFactory Factory { get; set; }
-
         public DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);

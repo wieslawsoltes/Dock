@@ -13,6 +13,8 @@ namespace Dock.Model
 
         public IDockable Owner { get; set; }
 
+        public IFactory Factory { get; set; }
+
         public virtual bool OnClose()
         {
             return true;

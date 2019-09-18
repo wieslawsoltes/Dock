@@ -30,6 +30,11 @@ namespace Dock.Model
         IDockable Owner { get; set; }
 
         /// <summary>
+        /// Gets or sets dockable factory.
+        /// </summary>
+        IFactory Factory { get; set; }
+
+        /// <summary>
         /// Called when the dockable is closed.
         /// </summary>
         /// <returns>true to accept the close, and false to cancel the close.</returns>

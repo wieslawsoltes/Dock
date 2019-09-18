@@ -80,12 +80,6 @@ namespace Dock.Model
         public static readonly DirectProperty<DockBase, bool> CanGoForwardProperty =
             AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoForward), (o) => o.CanGoForward);
 
-        /// <summary>
-        /// Defines the <see cref="Factory"/> property.
-        /// </summary>
-        public static readonly DirectProperty<DockBase, IFactory> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
-
         internal INavigateAdapter _navigateAdapter;
         private IList<IDockable> _visibleDockables;
         private IList<IDockable> _hiddenDockables;
@@ -98,7 +92,6 @@ namespace Dock.Model
         private bool _isCollapsable = true;
         private bool _canGoBack;
         private bool _canGoForward;
-        private IFactory _factory;
 
         /// <inheritdoc/>
         [Content]
@@ -197,14 +190,6 @@ namespace Dock.Model
         {
             get => _navigateAdapter?.CanGoForward ?? false;
             private set => SetAndRaise(CanGoForwardProperty, ref _canGoForward, value);
-        }
-
-        /// <inheritdoc/>
-        [IgnoreDataMember]
-        public IFactory Factory
-        {
-            get => _factory;
-            set => SetAndRaise(FactoryProperty, ref _factory, value);
         }
 
         /// <summary>

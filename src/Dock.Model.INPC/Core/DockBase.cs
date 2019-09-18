@@ -21,7 +21,6 @@ namespace Dock.Model
         private double _proportion = double.NaN;
         private bool _isActive;
         private bool _isCollapsable = true;
-        private IFactory _factory;
 
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -65,9 +64,9 @@ namespace Dock.Model
                 this.RaiseAndSetIfChanged(ref _activeDockable, value);
                 if (value != null)
                 {
-                    _factory?.UpdateDockable(value, this);
+                    Factory?.UpdateDockable(value, this);
                 }
-                _factory?.SetFocusedDockable(this, value);
+                Factory?.SetFocusedDockable(this, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
             }
@@ -120,14 +119,6 @@ namespace Dock.Model
         /// <inheritdoc/>
         [IgnoreDataMember]
         public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
-
-        /// <inheritdoc/>
-        [IgnoreDataMember]
-        public IFactory Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
 
         /// <inheritdoc/>
         public virtual void GoBack()

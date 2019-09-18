@@ -6,6 +6,7 @@ using Dock.Model;
 using Dock.Model.Controls;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
+using Notepad.ViewModels;
 
 namespace Notepad
 {
@@ -44,8 +45,8 @@ namespace Notepad
                 (
                     new DocumentDock
                     {
-                        Id = "Files",
-                        Title = "Files",
+                        Id = MainWindowViewModel.FilesId,
+                        Title = MainWindowViewModel.FilesId,
                         IsCollapsable = false,
                         Proportion = double.NaN,
                         ActiveDockable = untitledFileViewModel,

@@ -35,10 +35,17 @@ namespace Dock.Model
         public static readonly DirectProperty<DockableBase, IDockable> OwnerProperty =
             AvaloniaProperty.RegisterDirect<DockableBase, IDockable>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
 
+        /// <summary>
+        /// Defines the <see cref="Factory"/> property.
+        /// </summary>
+        public static readonly DirectProperty<DockableBase, IFactory> FactoryProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
+
         private string _id;
         private string _title;
         private object _context;
         private IDockable _owner;
+        private IFactory _factory;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -70,6 +77,14 @@ namespace Dock.Model
         {
             get => _owner;
             set => SetAndRaise(OwnerProperty, ref _owner, value);
+        }
+
+        /// <inheritdoc/>
+        [IgnoreDataMember]
+        public IFactory Factory
+        {
+            get => _factory;
+            set => SetAndRaise(FactoryProperty, ref _factory, value);
         }
 
         /// <inheritdoc/>

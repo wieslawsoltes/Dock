@@ -66,11 +66,6 @@ namespace Dock.Model
         bool CanGoForward { get; }
 
         /// <summary>
-        /// Gets or sets dock factory.
-        /// </summary>
-        IFactory Factory { get; set; }
-
-        /// <summary>
         /// Navigates to the most recent entry in back navigation history, if there is one.
         /// </summary>
         void GoBack();

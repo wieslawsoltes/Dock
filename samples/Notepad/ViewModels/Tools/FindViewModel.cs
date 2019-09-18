@@ -21,7 +21,7 @@ namespace Notepad.ViewModels.Tools
         {
             if (this.Context is IRootDock root)
             {
-                if (root.Factory.FindDockable(root, (d) => d.Id == "Files") is IDock files)
+                if (root.Factory.FindDockable(root, (d) => d.Id == MainWindowViewModel.FilesId) is IDock files)
                 {
                     if (files.ActiveDockable is FileViewModel fileViewModel)
                     {

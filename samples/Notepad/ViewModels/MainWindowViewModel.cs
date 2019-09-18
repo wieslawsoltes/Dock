@@ -14,6 +14,8 @@ namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
+        public const string FilesId = "Files";
+
         private IDockSerializer _serializer;
         private IFactory _factory;
         private IDock _layout;
@@ -75,7 +77,7 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == "Files") is IDock files)
+            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock files)
             {
                 Factory.AddDockable(files, fileViewModel);
                 Factory.SetActiveDockable(fileViewModel);
@@ -85,7 +87,7 @@ namespace Notepad.ViewModels
 
         private FileViewModel GetFileViewModel()
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == "Files") is IDock files)
+            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock files)
             {
                 return files.ActiveDockable as FileViewModel;
             }
@@ -183,9 +185,9 @@ namespace Notepad.ViewModels
 
         private void CopyFileViewModels(IDock layout)
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == "Files") is IDock sourceFiles)
+            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock sourceFiles)
             {
-                if (Factory.FindDockable(layout, (d) => d.Id == "Files") is IDock targetFiles)
+                if (Factory.FindDockable(layout, (d) => d.Id == FilesId) is IDock targetFiles)
                 {
                     targetFiles.VisibleDockables.Clear();
                     targetFiles.ActiveDockable = null;

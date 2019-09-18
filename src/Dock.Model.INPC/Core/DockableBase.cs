@@ -14,6 +14,7 @@ namespace Dock.Model
         private string _title;
         private object _context;
         private IDockable _owner;
+        private IFactory _factory;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -45,6 +46,14 @@ namespace Dock.Model
         {
             get => _owner;
             set => this.RaiseAndSetIfChanged(ref _owner, value);
+        }
+
+        /// <inheritdoc/>
+        [IgnoreDataMember]
+        public IFactory Factory
+        {
+            get => _factory;
+            set => this.RaiseAndSetIfChanged(ref _factory, value);
         }
 
         /// <inheritdoc/>

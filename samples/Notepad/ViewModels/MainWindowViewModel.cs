@@ -209,13 +209,16 @@ namespace Notepad.ViewModels
             }
         }
 
-        public void WindowSaveWindowLayout()
+        public async void WindowSaveWindowLayout()
         {
-            var window = new SaveWindowLayoutWindow();
+            if (GetWindow() is Window onwer)
+            {
+                var window = new SaveWindowLayoutWindow();
 
-            // TODO:
+                // TODO:
 
-            window.Show();
+                await window.ShowDialog(onwer);
+            }
 
             // TODO:
 
@@ -243,13 +246,16 @@ namespace Notepad.ViewModels
             }
         }
 
-        public void WindowManageWindowLayouts()
+        public async void WindowManageWindowLayouts()
         {
-            var window = new ManageWindowLayoutsWindow();
+            if (GetWindow() is Window onwer)
+            {
+                var window = new ManageWindowLayoutsWindow();
 
-            // TODO:
+                // TODO:
 
-            window.Show();
+                await window.ShowDialog(onwer);
+            }
         }
 
         public void WindowResetWindowLayout()

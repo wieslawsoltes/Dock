@@ -36,8 +36,8 @@ namespace Notepad
 
             var files = new DocumentDock
             {
-                Id = MainWindowViewModel.FilesId,
-                Title = MainWindowViewModel.FilesId,
+                Id = MainWindowViewModel.DocumentsDockId,
+                Title = MainWindowViewModel.DocumentsDockId,
                 IsCollapsable = false,
                 Proportion = double.NaN,
                 ActiveDockable = untitledFileViewModel,

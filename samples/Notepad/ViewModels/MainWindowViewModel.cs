@@ -13,7 +13,7 @@ namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        public const string FilesId = "Files";
+        public const string DocumentsDockId = "Files";
 
         private IDockSerializer _serializer;
         private IFactory _factory;
@@ -78,7 +78,7 @@ namespace Notepad.ViewModels
         {
             if (Layout.ActiveDockable is IDock active)
             {
-                if (active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock files)
+                if (active.Factory.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
                 {
                     Factory.AddDockable(files, fileViewModel);
                     Factory.SetActiveDockable(fileViewModel);
@@ -91,7 +91,7 @@ namespace Notepad.ViewModels
         {
             if (Layout.ActiveDockable is IDock active)
             {
-                if (active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock files)
+                if (active.Factory.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
                 {
                     return files.ActiveDockable as FileViewModel;
                 }
@@ -227,7 +227,7 @@ namespace Notepad.ViewModels
             if (Layout.ActiveDockable is IDock active && dock != active)
             {
                 active.Close();
-                CopyDocuments(active, dock, FilesId);
+                CopyDocuments(active, dock, DocumentsDockId);
                 Layout.Navigate(dock);
                 Layout.Factory.SetFocusedDockable(Layout, dock);
                 Layout.DefaultDockable = dock;
@@ -245,7 +245,7 @@ namespace Notepad.ViewModels
             {
                 var layout = Factory.CreateLayout();
                 Factory.InitLayout(layout);
-                CopyDocuments(active, layout, FilesId);
+                CopyDocuments(active, layout, DocumentsDockId);
                 Layout.Close();
                 Layout = layout;
             }

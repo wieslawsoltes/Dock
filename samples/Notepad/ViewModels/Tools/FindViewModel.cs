@@ -19,9 +19,9 @@ namespace Notepad.ViewModels.Tools
 
         public void FindNext()
         {
-            if (this.Context is IRootDock root)
+            if (this.Context is IRootDock root && root.ActiveDockable is IDock active)
             {
-                if (root.Factory.FindDockable(root, (d) => d.Id == MainWindowViewModel.FilesId) is IDock files)
+                if (active.Factory.FindDockable(active, (d) => d.Id == MainWindowViewModel.FilesId) is IDock files)
                 {
                     if (files.ActiveDockable is FileViewModel fileViewModel)
                     {

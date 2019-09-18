@@ -214,6 +214,7 @@ namespace Notepad.ViewModels
             if (Layout.ActiveDockable is IDock active)
             {
                 var clone = (IDock)active.Clone();
+                clone.Title = clone.Title + "-copy";
                 active.Close();
                 Layout.Factory.AddDockable(Layout, clone);
                 Layout.Navigate(clone);
@@ -242,8 +243,8 @@ namespace Notepad.ViewModels
         public void WindowResetWindowLayout()
         {
             var layout = Factory.CreateLayout();
-            CopyFileViewModels(layout);
             Factory.InitLayout(layout);
+            CopyFileViewModels(layout);
             Layout.Close();
             Layout = layout;
         }

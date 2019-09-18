@@ -34,26 +34,5 @@ namespace Notepad.ViewModels.Documents
             get => _encoding;
             set => this.RaiseAndSetIfChanged(ref _encoding, value);
         }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public int SelectionStart
-        {
-            get => _selectionStart;
-            set => this.RaiseAndSetIfChanged(ref _selectionStart, value);
-        }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public int SelectionEnd
-        {
-            get => _selectionEnd;
-            set => this.RaiseAndSetIfChanged(ref _selectionEnd, value);
-        }
-
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public int CaretIndex
-        {
-            get => _caretIndex;
-            set => this.RaiseAndSetIfChanged(ref _caretIndex, value);
-        }
     }
 }

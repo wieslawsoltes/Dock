@@ -66,6 +66,7 @@ namespace Dock.Model
                 if (value != null)
                 {
                     _factory?.UpdateDockable(value, this);
+                    value.OnSelected();
                 }
                 _factory?.SetFocusedDockable(this, value);
                 this.RaisePropertyChanged(nameof(CanGoBack));

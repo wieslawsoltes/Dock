@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Avalonia;
@@ -136,6 +137,7 @@ namespace Dock.Model
                 if (value != null)
                 {
                     Factory?.UpdateDockable(value, this);
+                    value.OnSelected();
                 }
                 Factory?.SetFocusedDockable(this, value);
                 SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);

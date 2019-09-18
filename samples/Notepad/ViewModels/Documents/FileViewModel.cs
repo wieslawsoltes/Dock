@@ -10,9 +10,6 @@ namespace Notepad.ViewModels.Documents
         private string _path;
         private string _text;
         private string _encoding;
-        private int _selectionStart;
-        private int _selectionEnd;
-        private int _caretIndex;
 
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Path

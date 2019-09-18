@@ -34,6 +34,47 @@ namespace Notepad
                 Title = "Replace"
             };
 
+            var files = new DocumentDock
+            {
+                Id = MainWindowViewModel.FilesId,
+                Title = MainWindowViewModel.FilesId,
+                IsCollapsable = false,
+                Proportion = double.NaN,
+                ActiveDockable = untitledFileViewModel,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    untitledFileViewModel
+                )
+            };
+
+            var tools = new ProportionalDock
+            {
+                Proportion = 0.2,
+                Orientation = Orientation.Vertical,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    new ToolDock
+                    {
+                        Proportion = double.NaN,
+                        ActiveDockable = findViewModel,
+                        VisibleDockables = CreateList<IDockable>
+                        (
+                            findViewModel
+                        )
+                    },
+                    new SplitterDock(),
+                    new ToolDock
+                    {
+                        Proportion = double.NaN,
+                        ActiveDockable = replaceViewModel,
+                        VisibleDockables = CreateList<IDockable>
+                        (
+                            replaceViewModel
+                        )
+                    }
+                )
+            };
+
             var mainLayout = new ProportionalDock
             {
                 Id = "Main",
@@ -43,46 +84,9 @@ namespace Notepad
                 IsCollapsable = false,
                 VisibleDockables = CreateList<IDockable>
                 (
-                    new DocumentDock
-                    {
-                        Id = MainWindowViewModel.FilesId,
-                        Title = MainWindowViewModel.FilesId,
-                        IsCollapsable = false,
-                        Proportion = double.NaN,
-                        ActiveDockable = untitledFileViewModel,
-                        VisibleDockables = CreateList<IDockable>
-                        (
-                            untitledFileViewModel
-                        )
-                    },
+                    files,
                     new SplitterDock(),
-                    new ProportionalDock
-                    {
-                        Proportion = 0.2,
-                        Orientation = Orientation.Vertical,
-                        VisibleDockables = CreateList<IDockable>
-                        (
-                            new ToolDock
-                            {
-                                Proportion = double.NaN,
-                                ActiveDockable = findViewModel,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    findViewModel
-                                )
-                            },
-                            new SplitterDock(),
-                            new ToolDock
-                            {
-                                Proportion = double.NaN,
-                                ActiveDockable = replaceViewModel,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    replaceViewModel
-                                )
-                            }
-                        )
-                    }
+                    tools
                 )
             };
 

@@ -59,7 +59,7 @@ namespace Notepad.ViewModels
                 Path = path,
                 Title = title,
                 Text = text,
-                Encoding = encoding.EncodingName
+                Encoding = encoding.WebName
             };
         }
 
@@ -106,7 +106,7 @@ namespace Notepad.ViewModels
                 Path = string.Empty,
                 Title = "Untitled",
                 Text = "",
-                Encoding = Encoding.Default.EncodingName
+                Encoding = Encoding.Default.WebName
             };
         }
 

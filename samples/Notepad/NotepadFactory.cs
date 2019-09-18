@@ -19,7 +19,7 @@ namespace Notepad
                 Path = string.Empty,
                 Title = "Untitled",
                 Text = "",
-                Encoding = Encoding.Default.EncodingName
+                Encoding = Encoding.Default.WebName
             };
 
             var findViewModel = new FindViewModel

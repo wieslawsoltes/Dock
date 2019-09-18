@@ -7,6 +7,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Dock.Model;
 using Dock.Serializer;
 using Notepad.ViewModels.Documents;
+using Notepad.Views.Layouts;
 using ReactiveUI;
 
 namespace Notepad.ViewModels
@@ -210,6 +211,14 @@ namespace Notepad.ViewModels
 
         public void WindowSaveWindowLayout()
         {
+            var window = new SaveWindowLayoutWindow();
+
+            // TODO:
+
+            window.Show();
+
+            // TODO:
+
             if (Layout.ActiveDockable is IDock active)
             {
                 var clone = (IDock)active.Clone();
@@ -236,7 +245,11 @@ namespace Notepad.ViewModels
 
         public void WindowManageWindowLayouts()
         {
+            var window = new ManageWindowLayoutsWindow();
+
             // TODO:
+
+            window.Show();
         }
 
         public void WindowResetWindowLayout()

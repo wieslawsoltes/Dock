@@ -258,8 +258,19 @@ namespace Notepad.ViewModels
             }
         }
 
-        public void WindowResetWindowLayout()
+        public async void WindowResetWindowLayout()
         {
+            if (GetWindow() is Window onwer)
+            {
+                var window = new ResetWindowLayoutWindow();
+
+                // TODO:
+
+                await window.ShowDialog(onwer);
+            }
+
+            // TODO:
+
             if (Layout.ActiveDockable is IDock active)
             {
                 var layout = Factory.CreateLayout();

@@ -77,19 +77,25 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock files)
+            if (Layout.ActiveDockable is IDock active)
             {
-                Factory.AddDockable(files, fileViewModel);
-                Factory.SetActiveDockable(fileViewModel);
-                Factory.SetFocusedDockable(Layout, fileViewModel);
+                if (active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock files)
+                {
+                    Factory.AddDockable(files, fileViewModel);
+                    Factory.SetActiveDockable(fileViewModel);
+                    Factory.SetFocusedDockable(Layout, fileViewModel);
+                }
             }
         }
 
         private FileViewModel GetFileViewModel()
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock files)
+            if (Layout.ActiveDockable is IDock active)
             {
-                return files.ActiveDockable as FileViewModel;
+                if (active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock files)
+                {
+                    return files.ActiveDockable as FileViewModel;
+                }
             }
             return null;
         }
@@ -186,36 +192,47 @@ namespace Notepad.ViewModels
             }
         }
 
-        private void CopyFileViewModels(IDock layout)
+        private void CopyFileViewModels(IDock dock)
         {
-            if (Factory.FindDockable(Layout, (d) => d.Id == FilesId) is IDock sourceFiles)
+            if (Layout.ActiveDockable is IDock active 
+                && active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock activeFiles
+                && dock.Factory.FindDockable(dock, (d) => d.Id == FilesId) is IDock dockFiles)
             {
-                if (Factory.FindDockable(layout, (d) => d.Id == FilesId) is IDock targetFiles)
+                dockFiles.VisibleDockables.Clear();
+                dockFiles.ActiveDockable = null;
+
+                foreach (var visible in activeFiles.VisibleDockables)
                 {
-                    targetFiles.VisibleDockables.Clear();
-                    targetFiles.ActiveDockable = null;
-
-                    foreach (var visible in sourceFiles.VisibleDockables)
-                    {
-                        targetFiles.VisibleDockables.Add(visible);
-                    }
-
-                    targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
+                    dockFiles.VisibleDockables.Add(visible);
                 }
+
+                dockFiles.ActiveDockable = activeFiles.ActiveDockable;
             }
         }
 
         public void WindowSaveWindowLayout()
         {
-            // TODO:
+            if (Layout.ActiveDockable is IDock active)
+            {
+                var clone = (IDock)active.Clone();
+                active.Close();
+                Layout.Factory.AddDockable(Layout, clone);
+                Layout.Navigate(clone);
+                Layout.Factory.SetFocusedDockable(Layout, clone);
+                Layout.DefaultDockable = clone;
+            }
         }
 
-        public void WindowApplyWindowLayout(IDock layout)
+        public void WindowApplyWindowLayout(IDock dock)
         {
-            CopyFileViewModels(layout);
-            Factory.InitLayout(layout);
-            Layout.Close();
-            Layout = layout;
+            if (Layout.ActiveDockable is IDock active && dock != active)
+            {
+                active.Close();
+                CopyFileViewModels(dock);
+                Layout.Navigate(dock);
+                Layout.Factory.SetFocusedDockable(Layout, dock);
+                Layout.DefaultDockable = dock;
+            }
         }
 
         public void WindowManageWindowLayouts()

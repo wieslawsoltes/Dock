@@ -217,7 +217,6 @@ namespace Dock.Model
             if (dockable.Owner is IDock dock)
             {
                 dock.ActiveDockable = dockable;
-                dockable.OnSelected();
             }
         }
 

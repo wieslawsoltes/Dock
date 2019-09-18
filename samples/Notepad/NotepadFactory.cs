@@ -75,10 +75,10 @@ namespace Notepad
                 )
             };
 
-            var mainLayout = new ProportionalDock
+            var windowLayout = CreateRootDock();
+            windowLayout.Title = "Default";
+            var windowLayoutContent = new ProportionalDock
             {
-                Id = "Main",
-                Title = "Main",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
                 IsCollapsable = false,
@@ -89,13 +89,16 @@ namespace Notepad
                     tools
                 )
             };
+            windowLayout.IsCollapsable = false;
+            windowLayout.VisibleDockables = CreateList<IDockable>(windowLayoutContent);
+            windowLayout.ActiveDockable = windowLayoutContent;
 
             var root = CreateRootDock();
 
             root.IsCollapsable = false;
-            root.ActiveDockable = mainLayout;
-            root.DefaultDockable = mainLayout;
-            root.VisibleDockables = CreateList<IDockable>(mainLayout);
+            root.VisibleDockables = CreateList<IDockable>(windowLayout);
+            root.ActiveDockable = windowLayout;
+            root.DefaultDockable = windowLayout;
             root.Top = CreatePinDock();
             root.Top.Alignment = Alignment.Top;
             root.Bottom = CreatePinDock();

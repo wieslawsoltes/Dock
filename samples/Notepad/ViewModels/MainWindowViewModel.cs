@@ -191,21 +191,20 @@ namespace Notepad.ViewModels
             }
         }
 
-        private void CopyFileViewModels(IDock dock)
+        private void CopyDocuments(IDock source, IDock target, string documentsDockId)
         {
-            if (Layout.ActiveDockable is IDock active 
-                && active.Factory.FindDockable(active, (d) => d.Id == FilesId) is IDock activeFiles
-                && dock.Factory.FindDockable(dock, (d) => d.Id == FilesId) is IDock dockFiles)
+            if (source.Factory.FindDockable(source, (d) => d.Id == documentsDockId) is IDock sourceFiles
+                && target.Factory.FindDockable(target, (d) => d.Id == documentsDockId) is IDock targetFiles)
             {
-                dockFiles.VisibleDockables.Clear();
-                dockFiles.ActiveDockable = null;
+                targetFiles.VisibleDockables.Clear();
+                targetFiles.ActiveDockable = null;
 
-                foreach (var visible in activeFiles.VisibleDockables)
+                foreach (var visible in sourceFiles.VisibleDockables)
                 {
-                    dockFiles.VisibleDockables.Add(visible);
+                    targetFiles.VisibleDockables.Add(visible);
                 }
 
-                dockFiles.ActiveDockable = activeFiles.ActiveDockable;
+                targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
             }
         }
 
@@ -228,7 +227,7 @@ namespace Notepad.ViewModels
             if (Layout.ActiveDockable is IDock active && dock != active)
             {
                 active.Close();
-                CopyFileViewModels(dock);
+                CopyDocuments(active, dock, FilesId);
                 Layout.Navigate(dock);
                 Layout.Factory.SetFocusedDockable(Layout, dock);
                 Layout.DefaultDockable = dock;
@@ -242,11 +241,14 @@ namespace Notepad.ViewModels
 
         public void WindowResetWindowLayout()
         {
-            var layout = Factory.CreateLayout();
-            Factory.InitLayout(layout);
-            CopyFileViewModels(layout);
-            Layout.Close();
-            Layout = layout;
+            if (Layout.ActiveDockable is IDock active)
+            {
+                var layout = Factory.CreateLayout();
+                Factory.InitLayout(layout);
+                CopyDocuments(active, layout, FilesId);
+                Layout.Close();
+                Layout = layout;
+            }
         }
 
         private Window GetWindow()

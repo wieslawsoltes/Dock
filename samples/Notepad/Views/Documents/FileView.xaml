@@ -18,33 +18,17 @@
                  TextWrapping="NoWrap"
                  Text="{Binding Text}"
                  Grid.Row="0"/>
-        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" Grid.Row="1">
+        <Grid ColumnDefinitions="*,Auto" Grid.Row="1">
             <TextBlock Text="{Binding Path}"
                        Margin="2"
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
                        Grid.Column="0"/>
-            <TextBlock Text="{Binding SelectionStart}"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Grid.Column="1"/>
-            <TextBlock Text="{Binding SelectionEnd}"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Grid.Column="2"/>
-            <TextBlock Text="{Binding CaretIndex}"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Grid.Column="3"/>
-
             <TextBlock Text="{Binding Encoding}"
                        Margin="2"
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
-                       Grid.Column="4"/>
+                       Grid.Column="1"/>
         </Grid>
     </Grid>
 </UserControl>

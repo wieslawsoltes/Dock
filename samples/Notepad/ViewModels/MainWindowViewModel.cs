@@ -119,16 +119,19 @@ namespace Notepad.ViewModels
             var dlg = new OpenFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
             dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
+            dlg.AllowMultiple = true;
             var result = await dlg.ShowAsync(GetWindow());
-            if (result != null)
+            if (result != null && result.Length > 0)
             {
-                var path = result.FirstOrDefault();
-                if (!string.IsNullOrEmpty(path))
+                foreach (var path in result)
                 {
-                    var untitledFileViewModel = OpenFileViewModel(path);
-                    if (untitledFileViewModel != null)
+                    if (!string.IsNullOrEmpty(path))
                     {
-                        AddFileViewModel(untitledFileViewModel);
+                        var untitledFileViewModel = OpenFileViewModel(path);
+                        if (untitledFileViewModel != null)
+                        {
+                            AddFileViewModel(untitledFileViewModel);
+                        }
                     }
                 }
             }

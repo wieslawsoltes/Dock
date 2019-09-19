@@ -9,6 +9,6 @@
              d:DesignWidth="1280" d:DesignHeight="680">
     <Grid RowDefinitions="Auto,*" Background="Transparent">
         <views:MenuView Grid.Row="0"/>
-        <idc:DockControl  Layout="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="1"/>
     </Grid>
 </UserControl>

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using Dock.Model;
 using Dock.Serializer;
 using Notepad.ViewModels.Documents;
@@ -12,7 +13,13 @@ using ReactiveUI;
 
 namespace Notepad.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject
+    public interface IDropTarget
+    {
+        void DragOver(object sender, DragEventArgs e);
+        void Drop(object sender, DragEventArgs e);
+    }
+
+    public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
         public const string DocumentsDockId = "Files";
 
@@ -189,6 +196,37 @@ namespace Notepad.ViewModels
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
                 desktopLifetime.Shutdown();
+            }
+        }
+
+        public void DragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.Contains(DataFormats.FileNames))
+            {
+                e.DragEffects = DragDropEffects.None; 
+                e.Handled = true;
+            }
+        }
+
+        public void Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.Contains(DataFormats.FileNames))
+            {
+                var result = e.Data.GetFileNames();
+
+                foreach (var path in result)
+                {
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        var untitledFileViewModel = OpenFileViewModel(path);
+                        if (untitledFileViewModel != null)
+                        {
+                            AddFileViewModel(untitledFileViewModel);
+                        }
+                    }
+                }
+
+                e.Handled = true;
             }
         }
 

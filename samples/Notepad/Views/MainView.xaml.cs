@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Notepad.ViewModels;
 
 namespace Notepad.Views
 {
@@ -8,6 +10,24 @@ namespace Notepad.Views
         public MainView()
         {
             this.InitializeComponent();
+            AddHandler(DragDrop.DropEvent, Drop);
+            AddHandler(DragDrop.DragOverEvent, DragOver);
+        }
+
+        private void DragOver(object sender, DragEventArgs e)
+        {
+            if (this.DataContext is IDropTarget dropTarget)
+            {
+                dropTarget.DragOver(sender, e);
+            }
+        }
+
+        private void Drop(object sender, DragEventArgs e)
+        {
+            if (this.DataContext is IDropTarget dropTarget)
+            {
+                dropTarget.Drop(sender, e);
+            }
         }
 
         private void InitializeComponent()

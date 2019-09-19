@@ -13,12 +13,6 @@ using ReactiveUI;
 
 namespace Notepad.ViewModels
 {
-    public interface IDropTarget
-    {
-        void DragOver(object sender, DragEventArgs e);
-        void Drop(object sender, DragEventArgs e);
-    }
-
     public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
         public const string DocumentsDockId = "Files";

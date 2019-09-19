@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PublishTrimmed>False</PublishTrimmed>
+    <PublishTrimmed>True</PublishTrimmed>
     <PublishSingleFile>False</PublishSingleFile>
     <PublishReadyToRun>True</PublishReadyToRun>
   </PropertyGroup>

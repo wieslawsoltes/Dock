@@ -23,7 +23,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100-preview7-012821
+        dotnet-version: 3.0.100
     - name: Build
       run: dotnet build -c Release
     - name: Test
@@ -46,7 +46,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100-preview7-012821
+        dotnet-version: 3.0.100
     - name: Publish
       if: github.event_name != 'pull_request'
       run: |
@@ -87,7 +87,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100-preview7-012821
+        dotnet-version: 3.0.100
     - name: Publish
       if: github.event_name != 'pull_request'
       run: |
@@ -114,7 +114,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.100-preview7-012821
+        dotnet-version: 3.0.100
     - name: Publish
       if: github.event_name != 'pull_request'
       run: dotnet publish -c Release -f netcoreapp3.0 -r osx.10.12-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.0-osx.10.12-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj

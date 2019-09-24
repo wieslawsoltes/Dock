@@ -10,7 +10,7 @@ namespace Dock.Avalonia
 {
     internal class AdornerHelper
     {
-        public Control Adorner;
+        public Control? Adorner;
 
         public void AddAdorner(IVisual visual)
         {

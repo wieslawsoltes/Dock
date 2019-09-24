@@ -74,7 +74,7 @@ namespace Dock.Avalonia.Controls
         public bool IsTracked { get; set; }
 
         /// <inheritdoc/>
-        public IDockWindow Window { get; set; }
+        public IDockWindow? Window { get; set; }
 
         /// <summary>
         /// Initializes new instance of the <see cref="HostWindow"/> class.

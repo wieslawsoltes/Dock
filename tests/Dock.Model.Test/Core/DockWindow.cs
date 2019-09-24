@@ -24,16 +24,18 @@ namespace Dock.Model
 
         public string Title { get; set; }
 
-        public IDockable Owner { get; set; }
+        public IDockable? Owner { get; set; }
 
-        public IFactory Factory { get; set; }
+        public IFactory? Factory { get; set; }
 
-        public IRootDock Layout { get; set; }
+        public IRootDock? Layout { get; set; }
 
-        public IHostWindow Host { get; set; }
+        public IHostWindow? Host { get; set; }
 
         public DockWindow()
         {
+            Id = nameof(IDockWindow);
+            Title = nameof(IDockWindow);
             _hostAdapter = new HostAdapter(this);
         }
 

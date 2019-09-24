@@ -20,7 +20,7 @@ namespace Dock.Model
         {
             if (sourceDockableOwner == targetDock)
             {
-                if (targetDock.VisibleDockables.Count == 1)
+                if (targetDock.VisibleDockables?.Count == 1)
                 {
                     return false;
                 }
@@ -109,7 +109,7 @@ namespace Dock.Model
                 case ITool _:
                     if (sourceDockableOwner == targetDock)
                     {
-                        if (targetDock.VisibleDockables.Count == 1)
+                        if (targetDock.VisibleDockables?.Count == 1)
                         {
                             return false;
                         }
@@ -122,7 +122,7 @@ namespace Dock.Model
                 case IDocument _:
                     if (sourceDockableOwner == targetDock)
                     {
-                        if (targetDock.VisibleDockables.Count == 1)
+                        if (targetDock.VisibleDockables?.Count == 1)
                         {
                             return false;
                         }
@@ -150,7 +150,7 @@ namespace Dock.Model
                     {
                         //if (sourceDockableOwner is IDocumentDock)
                         //{
-                        //    if (sourceDockableOwner.VisibleDockables.Count == 1)
+                        //    if (sourceDockableOwner.VisibleDockables?.Count == 1)
                         //    {
                         //        return false;
                         //    }

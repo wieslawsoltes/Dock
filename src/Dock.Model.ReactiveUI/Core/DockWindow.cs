@@ -20,10 +20,10 @@ namespace Dock.Model
         private double _height;
         private bool _topmost;
         private string _title;
-        private IDockable _owner;
-        private IFactory _factory;
-        private IRootDock _layout;
-        private IHostWindow _host;
+        private IDockable? _owner;
+        private IFactory? _factory;
+        private IRootDock? _layout;
+        private IHostWindow? _host;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -83,7 +83,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockable Owner
+        public IDockable? Owner
         {
             get => _owner;
             set => this.RaiseAndSetIfChanged(ref _owner, value);
@@ -91,7 +91,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IFactory Factory
+        public IFactory? Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
@@ -99,7 +99,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IRootDock Layout
+        public IRootDock? Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
@@ -107,7 +107,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IHostWindow Host
+        public IHostWindow? Host
         {
             get => _host;
             set => this.RaiseAndSetIfChanged(ref _host, value);

@@ -21,18 +21,18 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets dockable context.
         /// </summary>
-        object Context { get; set; }
+        object? Context { get; set; }
 
         /// <summary>
         /// Gets or sets dockable owner.
         /// </summary>
         /// <remarks>If owner is null than dockable is root.</remarks>
-        IDockable Owner { get; set; }
+        IDockable? Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dockable factory.
         /// </summary>
-        IFactory Factory { get; set; }
+        IFactory? Factory { get; set; }
 
         /// <summary>
         /// Called when the dockable is closed.

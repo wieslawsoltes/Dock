@@ -12,16 +12,16 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class RootDock : DockBase, IRootDock
     {
-        private IDockWindow _window;
-        private IList<IDockWindow> _windows;
-        private IPinDock _top;
-        private IPinDock _bottom;
-        private IPinDock _left;
-        private IPinDock _right;
+        private IDockWindow? _window;
+        private IList<IDockWindow>? _windows;
+        private IPinDock? _top;
+        private IPinDock? _bottom;
+        private IPinDock? _left;
+        private IPinDock? _right;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockWindow Window
+        public IDockWindow? Window
         {
             get => _window;
             set => this.RaiseAndSetIfChanged(ref _window, value);
@@ -29,7 +29,7 @@ namespace Dock.Model.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockWindow> Windows
+        public IList<IDockWindow>? Windows
         {
             get => _windows;
             set => this.RaiseAndSetIfChanged(ref _windows, value);
@@ -37,7 +37,7 @@ namespace Dock.Model.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock Top
+        public IPinDock? Top
         {
             get => _top;
             set => this.RaiseAndSetIfChanged(ref _top, value);
@@ -45,7 +45,7 @@ namespace Dock.Model.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock Bottom
+        public IPinDock? Bottom
         {
             get => _bottom;
             set => this.RaiseAndSetIfChanged(ref _bottom, value);
@@ -53,7 +53,7 @@ namespace Dock.Model.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock Left
+        public IPinDock? Left
         {
             get => _left;
             set => this.RaiseAndSetIfChanged(ref _left, value);
@@ -61,7 +61,7 @@ namespace Dock.Model.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock Right
+        public IPinDock? Right
         {
             get => _right;
             set => this.RaiseAndSetIfChanged(ref _right, value);

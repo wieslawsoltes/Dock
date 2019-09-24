@@ -37,6 +37,11 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Present(bool isDialog)
         {
+            if (_window.Layout == null)
+            {
+                return;
+            }
+
             if (_window.Host == null)
             {
                 _window.Host = _window.Factory?.GetHostWindow(_window.Id);

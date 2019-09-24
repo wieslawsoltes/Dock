@@ -13,32 +13,32 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets visible dockables.
         /// </summary>
-        IList<IDockable> VisibleDockables { get; set; }
+        IList<IDockable>? VisibleDockables { get; set; }
 
         /// <summary>
         /// Gets or sets hidden dockables.
         /// </summary>
-        IList<IDockable> HiddenDockables { get; set; }
+        IList<IDockable>? HiddenDockables { get; set; }
 
         /// <summary>
         /// Gets or sets pinned dockables.
         /// </summary>
-        IList<IDockable> PinnedDockables { get; set; }
+        IList<IDockable>? PinnedDockables { get; set; }
 
         /// <summary>
         /// Gets or sets avtive dockable.
         /// </summary>
-        IDockable ActiveDockable { get; set; }
+        IDockable? ActiveDockable { get; set; }
 
         /// <summary>
         /// Gets or sets default dockable.
         /// </summary>
-        IDockable DefaultDockable { get; set; }
+        IDockable? DefaultDockable { get; set; }
 
         /// <summary>
         /// Gets or sets the focused dockable.
         /// </summary>
-        IDockable FocusedDockable { get; set; }
+        IDockable? FocusedDockable { get; set; }
 
         /// <summary> 
         /// Gets or sets splitter proportion. 

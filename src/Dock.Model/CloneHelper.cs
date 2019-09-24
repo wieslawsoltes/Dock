@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using System;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -24,49 +25,64 @@ namespace Dock.Model
 
             if (source.VisibleDockables != null)
             {
-                target.VisibleDockables = source.Factory.CreateList<IDockable>();
-                foreach (var visible in source.VisibleDockables)
+                target.VisibleDockables = source.Factory?.CreateList<IDockable>();
+                if (target.VisibleDockables != null)
                 {
-                    target.VisibleDockables.Add(visible.Clone());
+                    foreach (var visible in source.VisibleDockables)
+                    {
+                        target.VisibleDockables.Add(visible.Clone());
+                    }
                 }
             }
 
             if (source.HiddenDockables != null)
             {
-                target.HiddenDockables = source.Factory.CreateList<IDockable>();
-                foreach (var hidden in source.HiddenDockables)
+                target.HiddenDockables = source.Factory?.CreateList<IDockable>();
+                if (target.HiddenDockables != null)
                 {
-                    target.HiddenDockables.Add(hidden.Clone());
+                    foreach (var hidden in source.HiddenDockables)
+                    {
+                        target.HiddenDockables.Add(hidden.Clone());
+                    }
                 }
             }
 
             if (source.PinnedDockables != null)
             {
-                target.PinnedDockables = source.Factory.CreateList<IDockable>();
-                foreach (var pinned in source.PinnedDockables)
+                target.PinnedDockables = source.Factory?.CreateList<IDockable>();
+                if (target.PinnedDockables != null)
                 {
-                    target.PinnedDockables.Add(pinned.Clone());
+                    foreach (var pinned in source.PinnedDockables)
+                    {
+                        target.PinnedDockables.Add(pinned.Clone());
+                    }
                 }
             }
 
-            if (source.VisibleDockables != null)
+            if (source.ActiveDockable != null && source.VisibleDockables != null)
             {
                 int indexActiveDockable = source.VisibleDockables.IndexOf(source.ActiveDockable);
                 if (indexActiveDockable >= 0)
                 {
-                    target.ActiveDockable = target.VisibleDockables[indexActiveDockable];
+                    target.ActiveDockable = target.VisibleDockables?[indexActiveDockable];
                 }
+            }
 
+            if (source.DefaultDockable != null && source.VisibleDockables != null)
+            {
                 int indexDefaultDockable = source.VisibleDockables.IndexOf(source.DefaultDockable);
                 if (indexDefaultDockable >= 0)
                 {
-                    target.DefaultDockable = target.VisibleDockables[indexDefaultDockable];
+                    target.DefaultDockable = target.VisibleDockables?[indexDefaultDockable];
                 }
+            }
 
+            if (source.FocusedDockable != null && source.VisibleDockables != null)
+            {
                 int indexFocusedDockable = source.VisibleDockables.IndexOf(source.FocusedDockable);
                 if (indexFocusedDockable >= 0)
                 {
-                    target.FocusedDockable = target.VisibleDockables[indexFocusedDockable];
+                    target.FocusedDockable = target.VisibleDockables?[indexFocusedDockable];
                 }
             }
         }
@@ -87,6 +103,11 @@ namespace Dock.Model
             if (source.Windows != null)
             {
                 target.Windows = source.Factory.CreateList<IDockWindow>();
+                if (target.Windows == null)
+                {
+                    throw new Exception($"Could not create {nameof(target.Windows)} list.");
+                }
+
                 foreach (var window in source.Windows)
                 {
                     target.Windows.Add(window.Clone());

@@ -9,7 +9,7 @@ namespace Dock.Model
 {
     internal static class EnumerableExtensions
     {
-        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
+        public static IEnumerable<T>? Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>?> f)
         {
             return e.SelectMany(c =>
             {
@@ -169,6 +169,11 @@ namespace Dock.Model
 
         private void NavigateToUseAllVisible(string id, bool bSnapshot)
         {
+            if (_dock.VisibleDockables == null)
+            {
+                return;
+            }
+
             var visible = _dock.VisibleDockables.Flatten(v =>
             {
                 if (v is IDock n)
@@ -177,7 +182,8 @@ namespace Dock.Model
                 }
                 return null;
             });
-            var result = visible.FirstOrDefault(v => v.Id == id);
+
+            var result = visible?.FirstOrDefault(v => v.Id == id);
             if (result != null)
             {
                 Navigate(result, bSnapshot);

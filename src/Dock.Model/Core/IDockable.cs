@@ -49,6 +49,6 @@ namespace Dock.Model
         /// Clones <see cref="IDockable"/> object.
         /// </summary>
         /// <returns>The new instance or reference of the <see cref="IDockable"/> class.</returns>
-        IDockable Clone();
+        IDockable? Clone();
     }
 }

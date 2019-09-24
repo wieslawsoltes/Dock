@@ -13,7 +13,7 @@ namespace Dock.Model.Controls
 
         public bool AutoHide { get; set; } = true;
 
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

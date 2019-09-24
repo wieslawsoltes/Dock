@@ -17,7 +17,7 @@ namespace Dock.Model.Avalonia.UnitTests
 
     public class TestDockableBase : DockableBase
     {
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

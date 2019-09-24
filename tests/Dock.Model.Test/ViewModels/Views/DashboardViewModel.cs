@@ -5,7 +5,7 @@ namespace Dock.Model
 {
     public class DashboardViewModel : DockBase
     {
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

@@ -24,6 +24,6 @@ namespace Dock.Model
         {
         }
 
-        public abstract IDockable Clone();
+        public abstract IDockable? Clone();
     }
 }

@@ -30,7 +30,7 @@ namespace Dock.Model.Controls
             _navigateAdapter?.ExitWindows();
         }
 
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

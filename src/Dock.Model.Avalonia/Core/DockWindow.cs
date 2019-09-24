@@ -210,7 +210,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public IDockWindow Clone()
+        public IDockWindow? Clone()
         {
             return CloneHelper.CloneDockWindow(this);
         }

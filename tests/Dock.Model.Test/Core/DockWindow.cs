@@ -52,7 +52,7 @@ namespace Dock.Model
             _hostAdapter.Exit();
         }
 
-        public IDockWindow Clone()
+        public IDockWindow? Clone()
         {
             throw new NotImplementedException();
         }

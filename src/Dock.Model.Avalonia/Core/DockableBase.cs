@@ -99,6 +99,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public abstract IDockable Clone();
+        public abstract IDockable? Clone();
     }
 }

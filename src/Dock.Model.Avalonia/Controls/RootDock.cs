@@ -127,7 +127,7 @@ namespace Dock.Model.Controls
         }
 
         /// <inheritdoc/>
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             return CloneHelper.CloneRootDock(this);
         }

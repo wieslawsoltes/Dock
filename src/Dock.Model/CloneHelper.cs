@@ -23,38 +23,50 @@ namespace Dock.Model
             target.IsActive = source.IsActive;
             target.IsCollapsable = source.IsCollapsable;
 
-            if (source.VisibleDockables != null)
+            if (!(source.VisibleDockables is null))
             {
                 target.VisibleDockables = source.Factory?.CreateList<IDockable>();
-                if (target.VisibleDockables != null)
+                if (!(target.VisibleDockables is null))
                 {
                     foreach (var visible in source.VisibleDockables)
                     {
-                        target.VisibleDockables.Add(visible.Clone());
+                        var clone = visible.Clone();
+                        if (!(clone is null))
+                        {
+                            target.VisibleDockables.Add(clone);
+                        }
                     }
                 }
             }
 
-            if (source.HiddenDockables != null)
+            if (!(source.HiddenDockables is null))
             {
                 target.HiddenDockables = source.Factory?.CreateList<IDockable>();
                 if (target.HiddenDockables != null)
                 {
                     foreach (var hidden in source.HiddenDockables)
                     {
-                        target.HiddenDockables.Add(hidden.Clone());
+                        var clone = hidden.Clone();
+                        if (!(clone is null))
+                        {
+                            target.HiddenDockables.Add(clone);
+                        }
                     }
                 }
             }
 
-            if (source.PinnedDockables != null)
+            if (!(source.PinnedDockables is null))
             {
                 target.PinnedDockables = source.Factory?.CreateList<IDockable>();
-                if (target.PinnedDockables != null)
+                 if (!(target.PinnedDockables is null))
                 {
                     foreach (var pinned in source.PinnedDockables)
                     {
-                        target.PinnedDockables.Add(pinned.Clone());
+                        var clone = pinned.Clone();
+                        if (!(clone is null))
+                        {
+                            target.PinnedDockables.Add(clone);
+                        }
                     }
                 }
             }

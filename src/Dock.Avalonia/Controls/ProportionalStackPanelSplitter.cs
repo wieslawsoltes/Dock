@@ -235,7 +235,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private ProportionalStackPanel GetPanel()
+        private ProportionalStackPanel? GetPanel()
         {
             if (Parent is ContentPresenter presenter)
             {
@@ -252,7 +252,7 @@ namespace Dock.Avalonia.Controls
             return null;
         }
 
-        private Control GetTargetElement()
+        private Control? GetTargetElement()
         {
             if (Parent is ContentPresenter presenter)
             {

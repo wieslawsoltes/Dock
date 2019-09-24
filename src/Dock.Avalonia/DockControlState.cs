@@ -19,13 +19,13 @@ namespace Dock.Avalonia
     {
         private readonly IDockManager _dockManager = new DockManager();
         private readonly AdornerHelper _adornerHelper = new AdornerHelper();
-        private IControl _dragControl = null;
-        private IControl _dropControl = null;
+        private IControl? _dragControl = null;
+        private IControl? _dropControl = null;
         private Point _dragStartPoint = default;
         private bool _pointerPressed = false;
         private bool _doDragDrop = false;
         private Point _targetPoint = default;
-        private IVisual _targetDockControl = null;
+        private IVisual? _targetDockControl = null;
 
         private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
         {
@@ -100,7 +100,7 @@ namespace Dock.Avalonia
 
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
                 _dockManager.Position = DockHelpers.ToDockPoint(point);
                 _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);

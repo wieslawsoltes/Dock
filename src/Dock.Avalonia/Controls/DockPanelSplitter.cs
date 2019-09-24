@@ -14,7 +14,7 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockPanelSplitter : Thumb
     {
-        private Control _element;
+        private Control? _element;
 
         /// <summary>
         /// Defines the <see cref="Thickness"/> property.
@@ -94,6 +94,11 @@ namespace Dock.Avalonia.Controls
 
         private void SetTargetHeight(double dy)
         {
+            if (_element == null)
+            {
+                return;
+            }
+
             double height = _element.DesiredSize.Height + dy;
 
             if (height < _element.MinHeight)
@@ -107,17 +112,25 @@ namespace Dock.Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = GetDock(this);
-            if (dock == global::Avalonia.Controls.Dock.Top && height > panel.DesiredSize.Height - Thickness)
+            if (panel != null)
             {
-                height = panel.DesiredSize.Height - Thickness;
-            }
+                var dock = GetDock(this);
+                if (dock == global::Avalonia.Controls.Dock.Top && height > panel.DesiredSize.Height - Thickness)
+                {
+                    height = panel.DesiredSize.Height - Thickness;
+                }
 
+            }
             _element.Height = height;
         }
 
         private void SetTargetWidth(double dx)
         {
+            if (_element == null)
+            {
+                return;
+            }
+
             double width = _element.DesiredSize.Width + dx;
 
             if (width < _element.MinWidth)
@@ -131,10 +144,13 @@ namespace Dock.Avalonia.Controls
             }
 
             var panel = GetPanel();
-            var dock = GetDock(this);
-            if (dock == global::Avalonia.Controls.Dock.Left && width > panel.DesiredSize.Width - Thickness)
+            if (panel != null)
             {
-                width = panel.DesiredSize.Width - Thickness;
+                var dock = GetDock(this);
+                if (dock == global::Avalonia.Controls.Dock.Left && width > panel.DesiredSize.Width - Thickness)
+                {
+                    width = panel.DesiredSize.Width - Thickness;
+                } 
             }
 
             _element.Width = width;
@@ -167,7 +183,7 @@ namespace Dock.Avalonia.Controls
             return DockPanel.GetDock(control);
         }
 
-        private Panel GetPanel()
+        private Panel? GetPanel()
         {
             if (this.Parent is ContentPresenter presenter)
             {
@@ -199,7 +215,10 @@ namespace Dock.Avalonia.Controls
                 int index = panel.Children.IndexOf(this.Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
-                    _element = (panel.Children[index - 1] as ContentPresenter).Child as Control;
+                    if (panel.Children[index - 1] is ContentPresenter contentPresenter)
+                    {
+                        _element = contentPresenter.Child as Control;
+                    }
                 }
             }
             else

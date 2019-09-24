@@ -219,21 +219,21 @@ namespace Dock.Avalonia.UnitTests.Controls
             target1.Arrange(new Rect(target1.DesiredSize));
 
             var items1 = target1.Items as List<IControl>;
-            var target2 = items1[4] as ItemsControl;
-            var items2 = target2.Items as List<IControl>;
+            var target2 = items1?[4] as ItemsControl;
+            var items2 = target2?.Items as List<IControl>;
 
             Assert.Equal(new Size(1000, 500), target1.Bounds.Size);
-            Assert.Equal(new Rect(0, 0, 0, 0), items1[0].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items1[1].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items1[2].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items1[3].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items1[4].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items1?[0].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items1?[1].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items1?[2].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items1?[3].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items1?[4].Bounds);
 
-            Assert.Equal(new Size(0, 0), target2.Bounds.Size);
-            Assert.Equal(new Rect(0, 0, 0, 0), items2[0].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items2[1].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items2[2].Bounds);
-            Assert.Equal(new Rect(0, 0, 0, 0), items2[3].Bounds);
+            Assert.Equal(new Size(0, 0), target2?.Bounds.Size);
+            Assert.Equal(new Rect(0, 0, 0, 0), items2?[0].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items2?[1].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items2?[2].Bounds);
+            Assert.Equal(new Rect(0, 0, 0, 0), items2?[3].Bounds);
         }
     }
 }

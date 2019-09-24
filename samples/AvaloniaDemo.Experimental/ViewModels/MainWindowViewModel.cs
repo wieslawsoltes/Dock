@@ -81,7 +81,7 @@ namespace AvaloniaDemo.ViewModels
 
                 if (DockControl.Layout != null)
                 {
-                    Factory.InitLayout(DockControl.Layout);
+                    Factory?.InitLayout(DockControl.Layout);
                 }
             }
         }
@@ -109,8 +109,8 @@ namespace AvaloniaDemo.ViewModels
                     root.Close();
                 }
                 Factory = new DemoFactory(new DemoData());
-                DockControl.Layout = Factory.CreateLayout();
-                Factory.InitLayout(DockControl.Layout);
+                DockControl.Layout = Factory?.CreateLayout();
+                Factory?.InitLayout(DockControl.Layout);
             }
         }
 
@@ -130,7 +130,7 @@ namespace AvaloniaDemo.ViewModels
                         root.Close();
                     }
                     DockControl.Layout = layout;
-                    Factory.InitLayout(DockControl.Layout);
+                    Factory?.InitLayout(DockControl.Layout);
                 }
             }
         }

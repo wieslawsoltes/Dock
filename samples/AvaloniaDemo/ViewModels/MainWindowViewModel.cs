@@ -41,8 +41,8 @@ namespace AvaloniaDemo.ViewModels
                 root.Close();
             }
             Factory = new DemoFactory(new DemoData());
-            Layout = Factory.CreateLayout();
-            Factory.InitLayout(Layout);
+            Layout = Factory?.CreateLayout();
+            Factory?.InitLayout(Layout);
         }
 
         public async void FileOpen()
@@ -59,7 +59,7 @@ namespace AvaloniaDemo.ViewModels
                     root.Close();
                 }
                 Layout = layout;
-                Factory.InitLayout(Layout);
+                Factory?.InitLayout(Layout);
             }
         }
 
@@ -84,7 +84,7 @@ namespace AvaloniaDemo.ViewModels
                 var clone = (IDock)dock.Clone();
                 if (clone != null)
                 {
-                    owner.Factory.AddDockable(owner, clone);
+                    owner.Factory?.AddDockable(owner, clone);
                     ApplyWindowLayout(clone);
                 }
             }
@@ -97,7 +97,7 @@ namespace AvaloniaDemo.ViewModels
                 if (Layout is IDock root)
                 {
                     root.Navigate(dock);
-                    root.Factory.SetFocusedDockable(root, dock);
+                    root.Factory?.SetFocusedDockable(root, dock);
                     root.DefaultDockable = dock;
                 }
             }

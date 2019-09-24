@@ -46,8 +46,8 @@ namespace Notepad
                 // TODO: Restore main window position, size and state.
 
                 mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory.CreateLayout();
-                mainWindowViewModel.Factory.InitLayout(mainWindowViewModel.Layout);
+                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
 
                 mainWindow.Closing += (sender, e) =>
                 {
@@ -77,8 +77,8 @@ namespace Notepad
                 };
 
                 mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory.CreateLayout();
-                mainWindowViewModel.Factory.InitLayout(mainWindowViewModel.Layout);
+                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
 
                 singleViewLifetime.MainView = mainView;
             }

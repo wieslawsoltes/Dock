@@ -102,7 +102,7 @@ namespace Dock.Model
 
             if (source.Windows != null)
             {
-                target.Windows = source.Factory.CreateList<IDockWindow>();
+                target.Windows = source.Factory?.CreateList<IDockWindow>();
                 if (target.Windows == null)
                 {
                     throw new Exception($"Could not create {nameof(target.Windows)} list.");
@@ -164,12 +164,15 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IRootDock"/> class.</returns>
-        public static IRootDock CloneRootDock(IRootDock source)
+        public static IRootDock? CloneRootDock(IRootDock source)
         {
-            var target = source.Factory.CreateRootDock();
+            var target = source.Factory?.CreateRootDock();
 
-            CloneDockProperties(source, target);
-            CloneRootDockProperties(source, target);
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+                CloneRootDockProperties(source, target);
+            }
 
             return target;
         }
@@ -179,12 +182,15 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IPinDock"/> class.</returns>
-        public static IPinDock ClonePinDock(IPinDock source)
+        public static IPinDock? ClonePinDock(IPinDock source)
         {
-            var target = source.Factory.CreatePinDock();
+            var target = source.Factory?.CreatePinDock();
 
-            CloneDockProperties(source, target);
-            ClonePinDockProperties(source, target);
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+                ClonePinDockProperties(source, target);
+            }
 
             return target;
         }
@@ -194,12 +200,15 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IProportionalDock"/> class.</returns>
-        public static IProportionalDock CloneProportionalDock(IProportionalDock source)
+        public static IProportionalDock? CloneProportionalDock(IProportionalDock source)
         {
-            var target = source.Factory.CreateProportionalDock();
+            var target = source.Factory?.CreateProportionalDock();
 
-            CloneDockProperties(source, target);
-            CloneProportionalDockProperties(source, target);
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+                CloneProportionalDockProperties(source, target);
+            }
 
             return target;
         }
@@ -209,11 +218,15 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="ISplitterDock"/> class.</returns>
-        public static ISplitterDock CloneSplitterDock(ISplitterDock source)
+        public static ISplitterDock? CloneSplitterDock(ISplitterDock source)
         {
-            var target = source.Factory.CreateSplitterDock();
+            var target = source.Factory?.CreateSplitterDock();
 
-            CloneDockProperties(source, target);
+
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+            }
 
             return target;
         }
@@ -223,11 +236,14 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IToolDock"/> class.</returns>
-        public static IToolDock CloneToolDock(IToolDock source)
+        public static IToolDock? CloneToolDock(IToolDock source)
         {
-            var target = source.Factory.CreateToolDock();
+            var target = source.Factory?.CreateToolDock();
 
-            CloneDockProperties(source, target);
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+            }
 
             return target;
         }
@@ -237,11 +253,14 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IDocumentDock"/> class.</returns>
-        public static IDocumentDock CloneDocumentDock(IDocumentDock source)
+        public static IDocumentDock? CloneDocumentDock(IDocumentDock source)
         {
-            var target = source.Factory.CreateDocumentDock();
+            var target = source.Factory?.CreateDocumentDock();
 
-            CloneDockProperties(source, target);
+            if (target != null)
+            {
+                CloneDockProperties(source, target);
+            }
 
             return target;
         }
@@ -251,13 +270,15 @@ namespace Dock.Model
         /// </summary>
         /// <param name="source">The source object.</param>
         /// <returns>TThe new instance or reference of the <see cref="IDockWindow"/> class.</returns>
-        public static IDockWindow CloneDockWindow(IDockWindow source)
+        public static IDockWindow? CloneDockWindow(IDockWindow source)
         {
             source.Save();
 
-            var target = source.Factory.CreateDockWindow();
-
-            CloneDockWindowProperties(source, target);
+            var target = source.Factory?.CreateDockWindow();
+            if (target != null)
+            {
+                CloneDockWindowProperties(source, target);
+            }
 
             return target;
         }

@@ -12,7 +12,7 @@
     <PackageTags>dock;docking;layout;avalonia</PackageTags>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>

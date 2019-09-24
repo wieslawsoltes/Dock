@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PublishTrimmed>False</PublishTrimmed>
+    <PublishTrimmed>True</PublishTrimmed>
     <PublishSingleFile>False</PublishSingleFile>
     <PublishReadyToRun>False</PublishReadyToRun>
   </PropertyGroup>
@@ -30,7 +30,7 @@
   <Import Project="..\..\build\EmbedXaml.props" />
 
   <PropertyGroup>
-    <PublishTrimmed>True</PublishTrimmed>
+    <PublishTrimmed>False</PublishTrimmed>
     <PublishSingleFile>False</PublishSingleFile>
     <PublishReadyToRun>True</PublishReadyToRun>
   </PropertyGroup>

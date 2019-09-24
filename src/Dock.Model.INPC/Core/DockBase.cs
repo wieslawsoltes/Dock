@@ -12,12 +12,12 @@ namespace Dock.Model
     public abstract class DockBase : DockableBase, IDock
     {
         internal INavigateAdapter _navigateAdapter;
-        private IList<IDockable> _visibleDockables;
-        private IList<IDockable> _hiddenDockables;
-        private IList<IDockable> _pinnedDockables;
-        private IDockable _activeDockable;
-        private IDockable _defaultDockable;
-        private IDockable _focusedDockable;
+        private IList<IDockable>? _visibleDockables;
+        private IList<IDockable>? _hiddenDockables;
+        private IList<IDockable>? _pinnedDockables;
+        private IDockable? _activeDockable;
+        private IDockable? _defaultDockable;
+        private IDockable? _focusedDockable;
         private double _proportion = double.NaN;
         private bool _isActive;
         private bool _isCollapsable = true;
@@ -32,7 +32,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> VisibleDockables
+        public IList<IDockable>? VisibleDockables
         {
             get => _visibleDockables;
             set => this.RaiseAndSetIfChanged(ref _visibleDockables, value);
@@ -40,7 +40,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> HiddenDockables
+        public IList<IDockable>? HiddenDockables
         {
             get => _hiddenDockables;
             set => this.RaiseAndSetIfChanged(ref _hiddenDockables, value);
@@ -48,7 +48,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> PinnedDockables
+        public IList<IDockable>? PinnedDockables
         {
             get => _pinnedDockables;
             set => this.RaiseAndSetIfChanged(ref _pinnedDockables, value);
@@ -56,7 +56,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable ActiveDockable
+        public IDockable? ActiveDockable
         {
             get => _activeDockable;
             set
@@ -75,7 +75,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable DefaultDockable
+        public IDockable? DefaultDockable
         {
             get => _defaultDockable;
             set => this.RaiseAndSetIfChanged(ref _defaultDockable, value);
@@ -83,7 +83,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable FocusedDockable
+        public IDockable? FocusedDockable
         {
             get => _focusedDockable;
             set => this.RaiseAndSetIfChanged(ref _focusedDockable, value);

@@ -21,9 +21,9 @@ namespace Dock.Avalonia
         private Point _dragStartPoint = default;
         private bool _pointerPressed = false;
         private bool _doDragDrop = false;
-        private DockControl _targetDockControl = null;
+        private DockControl? _targetDockControl = null;
         private Point _targetPoint = default;
-        private IControl _targetDropControl = null;
+        private IControl? _targetDropControl = null;
         private DragAction _dragAction = default;
 
         public HostWindowState(HostWindow hostWindow)

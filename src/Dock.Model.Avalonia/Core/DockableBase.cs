@@ -41,8 +41,8 @@ namespace Dock.Model
         public static readonly DirectProperty<DockableBase, IFactory?> FactoryProperty =
             AvaloniaProperty.RegisterDirect<DockableBase, IFactory?>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
 
-        private string _id;
-        private string _title;
+        private string _id = string.Empty;
+        private string _title = string.Empty;
         private object? _context;
         private IDockable? _owner;
         private IFactory? _factory;

@@ -68,7 +68,10 @@ namespace Dock.Model
                     Factory?.UpdateDockable(value, this);
                     value.OnSelected();
                 }
-                Factory?.SetFocusedDockable(this, value);
+                if (value != null)
+                {
+                    Factory?.SetFocusedDockable(this, value);
+                }
                 this.RaisePropertyChanged(nameof(CanGoBack));
                 this.RaisePropertyChanged(nameof(CanGoForward));
             }

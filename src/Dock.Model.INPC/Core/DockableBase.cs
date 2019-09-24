@@ -10,8 +10,8 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockableBase : ObservableObject, IDockable
     {
-        private string _id;
-        private string _title;
+        private string _id = string.Empty;
+        private string _title = string.Empty;
         private object? _context;
         private IDockable? _owner;
         private IFactory? _factory;

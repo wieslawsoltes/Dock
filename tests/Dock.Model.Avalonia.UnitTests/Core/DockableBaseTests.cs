@@ -12,6 +12,8 @@ namespace Dock.Model.Avalonia.UnitTests
         {
             var actual = new TestDockableBase();
             Assert.NotNull(actual);
+            Assert.Equal(string.Empty, actual.Id);
+            Assert.Equal(string.Empty, actual.Title);
         }
     }
 

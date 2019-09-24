@@ -31,7 +31,7 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <returns>The loaded <see cref="object"/> instance.</returns>
-        public object ProvideValue(IServiceProvider serviceProvider)
+        public object? ProvideValue(IServiceProvider serviceProvider)
         {
             if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext)
             {
@@ -40,13 +40,13 @@ namespace Dock.Avalonia.Controls
                 var obj = loader.Load(Source, baseUri);
                 return obj;
             }
-            return null;
+            return default;
         }
 
         /// <summary>
         /// Gets or sets the source URL.
         /// </summary>
         [ConstructorArgument("source")]
-        public Uri Source { get; set; }
+        public Uri? Source { get; set; }
     }
 }

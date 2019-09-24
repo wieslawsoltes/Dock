@@ -186,7 +186,7 @@ namespace Dock.Avalonia
                             bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
                             if (haveMinimumDragDistance == true)
                             {
-                                if (_dragControl.DataContext is IDockable targetDockable)
+                                if (_dragControl?.DataContext is IDockable targetDockable)
                                 {
                                     DockHelpers.ShowWindows(targetDockable);
                                 }
@@ -197,8 +197,8 @@ namespace Dock.Avalonia
                         if (_doDragDrop == true)
                         {
                             Point targetPoint = default;
-                            IVisual targetDockControl = null;
-                            IControl dropControl = null;
+                            IVisual? targetDockControl = null;
+                            IControl? dropControl = null;
 
                             foreach (var dockControl in dockControls)
                             {

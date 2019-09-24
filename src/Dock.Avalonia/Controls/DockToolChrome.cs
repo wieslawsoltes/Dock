@@ -52,11 +52,11 @@ namespace Dock.Avalonia.Controls
             set => SetValue(IsActiveProperty, value);
         }
 
-        internal Control Grip { get; private set; }
+        internal Control? Grip { get; private set; }
 
-        internal Button CloseButton { get; private set; }
+        internal Button? CloseButton { get; private set; }
 
-        private IDisposable _disposable;
+        private IDisposable? _disposable;
 
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -69,7 +69,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
-            _disposable.Dispose();
+            _disposable?.Dispose();
         }
 
         private void Pressed(object sender, PointerPressedEventArgs e)

@@ -16,7 +16,7 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DocumentControl : TemplatedControl
     {
-        private IDisposable _disposable;
+        private IDisposable? _disposable;
 
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -29,7 +29,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
-            _disposable.Dispose();
+            _disposable?.Dispose();
         }
 
         private void Pressed(object sender, PointerPressedEventArgs e)

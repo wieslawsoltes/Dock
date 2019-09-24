@@ -42,7 +42,7 @@ namespace Dock.Model
             if (!(source.HiddenDockables is null))
             {
                 target.HiddenDockables = source.Factory?.CreateList<IDockable>();
-                if (target.HiddenDockables != null)
+                if (!(target.HiddenDockables is null))
                 {
                     foreach (var hidden in source.HiddenDockables)
                     {
@@ -58,7 +58,7 @@ namespace Dock.Model
             if (!(source.PinnedDockables is null))
             {
                 target.PinnedDockables = source.Factory?.CreateList<IDockable>();
-                 if (!(target.PinnedDockables is null))
+                if (!(target.PinnedDockables is null))
                 {
                     foreach (var pinned in source.PinnedDockables)
                     {
@@ -71,7 +71,7 @@ namespace Dock.Model
                 }
             }
 
-            if (source.ActiveDockable != null && source.VisibleDockables != null)
+            if (!(source.ActiveDockable is null) && !(source.VisibleDockables is null))
             {
                 int indexActiveDockable = source.VisibleDockables.IndexOf(source.ActiveDockable);
                 if (indexActiveDockable >= 0)
@@ -80,7 +80,7 @@ namespace Dock.Model
                 }
             }
 
-            if (source.DefaultDockable != null && source.VisibleDockables != null)
+            if (!(source.DefaultDockable is null) && !(source.VisibleDockables is null))
             {
                 int indexDefaultDockable = source.VisibleDockables.IndexOf(source.DefaultDockable);
                 if (indexDefaultDockable >= 0)
@@ -89,7 +89,7 @@ namespace Dock.Model
                 }
             }
 
-            if (source.FocusedDockable != null && source.VisibleDockables != null)
+            if (!(source.FocusedDockable is null) && !(source.VisibleDockables is null))
             {
                 int indexFocusedDockable = source.VisibleDockables.IndexOf(source.FocusedDockable);
                 if (indexFocusedDockable >= 0)
@@ -108,37 +108,39 @@ namespace Dock.Model
         {
             target.Window = null;
 
-            if (source.Top != null)
+            if (!(source.Top is null))
             {
-                target.Top = (IPinDock)source.Top.Clone();
+                target.Top = (IPinDock?)source.Top.Clone();
             }
 
-            if (source.Bottom != null)
+            if (!(source.Bottom is null))
             {
-                target.Bottom = (IPinDock)source.Bottom.Clone();
+                target.Bottom = (IPinDock?)source.Bottom.Clone();
             }
 
-            if (source.Left != null)
+            if (!(source.Left is null))
             {
-                target.Left = (IPinDock)source.Left.Clone();
+                target.Left = (IPinDock?)source.Left.Clone();
             }
 
-            if (source.Right != null)
+            if (!(source.Right is null))
             {
-                target.Right = (IPinDock)source.Right.Clone();
+                target.Right = (IPinDock?)source.Right.Clone();
             }
 
-            if (source.Windows != null)
+            if (!(source.Windows is null))
             {
                 target.Windows = source.Factory?.CreateList<IDockWindow>();
-                if (target.Windows == null)
+                if (!(target.Windows is null))
                 {
-                    throw new Exception($"Could not create {nameof(target.Windows)} list.");
-                }
-
-                foreach (var window in source.Windows)
-                {
-                    target.Windows.Add(window.Clone());
+                    foreach (var window in source.Windows)
+                    {
+                        var clone = window.Clone();
+                        if (!(clone is null))
+                        {
+                            target.Windows.Add(clone);
+                        }
+                    }
                 }
             }
         }
@@ -180,12 +182,12 @@ namespace Dock.Model
             target.Topmost = source.Topmost;
             target.Title = source.Title;
 
-            if (source.Layout != null)
+            if (!(source.Layout is null))
             {
-                target.Layout = (IRootDock)source.Layout.Clone();
+                target.Layout = (IRootDock?)source.Layout.Clone();
             }
 
-            if (target.Layout != null)
+            if (!(target.Layout is null))
             {
                 target.Layout.Window = target;
             }
@@ -200,7 +202,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateRootDock();
 
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
                 CloneRootDockProperties(source, target);
@@ -218,7 +220,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreatePinDock();
 
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
                 ClonePinDockProperties(source, target);
@@ -236,7 +238,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateProportionalDock();
 
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
                 CloneProportionalDockProperties(source, target);
@@ -254,8 +256,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateSplitterDock();
 
-
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
             }
@@ -272,7 +273,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateToolDock();
 
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
             }
@@ -289,7 +290,7 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateDocumentDock();
 
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockProperties(source, target);
             }
@@ -307,7 +308,7 @@ namespace Dock.Model
             source.Save();
 
             var target = source.Factory?.CreateDockWindow();
-            if (target != null)
+            if (!(target is null))
             {
                 CloneDockWindowProperties(source, target);
             }

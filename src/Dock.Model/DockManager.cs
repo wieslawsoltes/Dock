@@ -26,10 +26,10 @@ namespace Dock.Model
                 }
             }
             var targetDockable = targetDock.ActiveDockable;
-            if (targetDockable == null)
+            if (targetDockable is null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
-                if (targetDockable == null)
+                if (targetDockable is null)
                 {
                     if (bExecute)
                     {
@@ -54,10 +54,10 @@ namespace Dock.Model
         internal bool SwapDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
         {
             var targetDockable = targetDock.ActiveDockable;
-            if (targetDockable == null)
+            if (targetDockable is null)
             {
                 targetDockable = targetDock.VisibleDockables.LastOrDefault();
-                if (targetDockable == null)
+                if (targetDockable is null)
                 {
                     return false;
                 }

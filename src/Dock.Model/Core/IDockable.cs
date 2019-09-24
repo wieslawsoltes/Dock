@@ -26,7 +26,6 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets dockable owner.
         /// </summary>
-        /// <remarks>If owner is null than dockable is root.</remarks>
         IDockable? Owner { get; set; }
 
         /// <summary>

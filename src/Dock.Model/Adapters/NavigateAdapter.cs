@@ -14,7 +14,7 @@ namespace Dock.Model
             return e.SelectMany(c =>
             {
                 var r = f(c);
-                if (r == null)
+                if (r is null)
                     return Enumerable.Empty<T>();
                 else
                     return r.Flatten(f);
@@ -54,7 +54,7 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (_dock.ActiveDockable != null)
+                if (!(_dock.ActiveDockable is null))
                 {
                     _forward.Push(_dock.ActiveDockable);
                 }
@@ -68,7 +68,7 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (_dock.ActiveDockable != null)
+                if (!(_dock.ActiveDockable is null))
                 {
                     _back.Push(_dock.ActiveDockable);
                 }
@@ -132,9 +132,9 @@ namespace Dock.Model
                 previousDock.Close();
             }
 
-            if (dockable != null && _dock.ActiveDockable != dockable)
+            if (!(dockable is null) && _dock.ActiveDockable != dockable)
             {
-                if (_dock.ActiveDockable != null && bSnapshot == true)
+                if (!(_dock.ActiveDockable is null) && bSnapshot == true)
                 {
                     PushBack(_dock.ActiveDockable);
                 }
@@ -157,7 +157,7 @@ namespace Dock.Model
         private void NavigateToUseVisible(string id, bool bSnapshot)
         {
             var result = _dock.VisibleDockables.FirstOrDefault(v => v.Id == id);
-            if (result != null)
+            if (!(result is null))
             {
                 Navigate(result, bSnapshot);
             }
@@ -169,7 +169,7 @@ namespace Dock.Model
 
         private void NavigateToUseAllVisible(string id, bool bSnapshot)
         {
-            if (_dock.VisibleDockables == null)
+            if (_dock.VisibleDockables is null)
             {
                 return;
             }
@@ -184,7 +184,7 @@ namespace Dock.Model
             });
 
             var result = visible?.FirstOrDefault(v => v.Id == id);
-            if (result != null)
+            if (!(result is null))
             {
                 Navigate(result, bSnapshot);
             }
@@ -193,7 +193,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ShowWindows()
         {
-            if (_dock is IRootDock rootDock && rootDock.Windows != null)
+            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
             {
                 foreach (var window in rootDock.Windows)
                 {
@@ -209,7 +209,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ExitWindows()
         {
-            if (_dock is IRootDock rootDock && rootDock.Windows != null)
+            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
             {
                 foreach (var window in rootDock.Windows)
                 {

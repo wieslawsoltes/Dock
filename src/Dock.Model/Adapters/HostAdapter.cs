@@ -22,7 +22,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Save()
         {
-            if (_window.Host != null)
+            if (!(_window.Host is null))
             {
                 _window.Host.GetPosition(out double x, out double y);
                 _window.X = x;
@@ -37,21 +37,21 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Present(bool isDialog)
         {
-            if (_window.Layout == null)
+            if (_window.Layout is null)
             {
                 return;
             }
 
-            if (_window.Host == null)
+            if (_window.Host is null)
             {
                 _window.Host = _window.Factory?.GetHostWindow(_window.Id);
-                if (_window.Host != null)
+                if (!(_window.Host is null))
                 {
                     _window.Host.Window = this._window;
                 }
             }
 
-            if (_window.Host != null)
+            if (!(_window.Host is null))
             {
                 _window.Host.Present(isDialog);
                 _window.Host.SetPosition(_window.X, _window.Y);
@@ -66,7 +66,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Exit()
         {
-            if (_window.Host != null)
+            if (!(_window.Host is null))
             {
                 Save();
                 _window.Host.IsTracked = false;

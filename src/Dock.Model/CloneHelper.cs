@@ -95,10 +95,26 @@ namespace Dock.Model
         public static void CloneRootDockProperties(IRootDock source, IRootDock target)
         {
             target.Window = null;
-            target.Top = (IPinDock)source.Top?.Clone();
-            target.Bottom = (IPinDock)source.Bottom?.Clone();
-            target.Left = (IPinDock)source.Left?.Clone();
-            target.Right = (IPinDock)source.Right?.Clone();
+
+            if (source.Top != null)
+            {
+                target.Top = (IPinDock)source.Top.Clone();
+            }
+
+            if (source.Bottom != null)
+            {
+                target.Bottom = (IPinDock)source.Bottom.Clone();
+            }
+
+            if (source.Left != null)
+            {
+                target.Left = (IPinDock)source.Left.Clone();
+            }
+
+            if (source.Right != null)
+            {
+                target.Right = (IPinDock)source.Right.Clone();
+            }
 
             if (source.Windows != null)
             {
@@ -152,7 +168,11 @@ namespace Dock.Model
             target.Topmost = source.Topmost;
             target.Title = source.Title;
 
-            target.Layout = (IRootDock)source.Layout?.Clone();
+            if (source.Layout != null)
+            {
+                target.Layout = (IRootDock)source.Layout.Clone();
+            }
+
             if (target.Layout != null)
             {
                 target.Layout.Window = target;

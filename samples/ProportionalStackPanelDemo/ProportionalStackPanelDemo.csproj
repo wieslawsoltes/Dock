@@ -9,6 +9,12 @@
     <IsPackable>False</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PublishTrimmed>True</PublishTrimmed>
+    <PublishSingleFile>False</PublishSingleFile>
+    <PublishReadyToRun>True</PublishReadyToRun>
+  </PropertyGroup>
+
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Rx.props" />
@@ -20,12 +26,6 @@
   </ItemGroup>
 
   <Import Project="..\..\build\EmbedXaml.props" />
-
-  <PropertyGroup>
-    <PublishTrimmed>True</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>True</PublishReadyToRun>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />

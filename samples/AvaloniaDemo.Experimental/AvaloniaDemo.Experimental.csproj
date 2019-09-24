@@ -14,9 +14,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PublishTrimmed>False</PublishTrimmed>
+    <PublishTrimmed>True</PublishTrimmed>
     <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>False</PublishReadyToRun>
+    <PublishReadyToRun>True</PublishReadyToRun>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -31,12 +31,6 @@
   </ItemGroup>
 
   <Import Project="..\..\build\EmbedXaml.props" />
-
-  <PropertyGroup>
-    <PublishTrimmed>True</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>True</PublishReadyToRun>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Metro\Dock.Avalonia.Themes.Metro.csproj" />

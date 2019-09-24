@@ -29,12 +29,6 @@
 
   <Import Project="..\..\build\EmbedXaml.props" />
 
-  <PropertyGroup>
-    <PublishTrimmed>True</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>False</PublishReadyToRun>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Metro\Dock.Avalonia.Themes.Metro.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

@@ -7,9 +7,9 @@ namespace Notepad.ViewModels.Documents
 {
     public class FileViewModel : Document
     {
-        private string _path;
-        private string _text;
-        private string _encoding;
+        private string _path = string.Empty;
+        private string _text = string.Empty;
+        private string _encoding = string.Empty;
 
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Path

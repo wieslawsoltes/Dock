@@ -14,7 +14,7 @@ namespace Notepad.Views
             AddHandler(DragDrop.DragOverEvent, DragOver);
         }
 
-        private void DragOver(object sender, DragEventArgs e)
+        private void DragOver(object? sender, DragEventArgs e)
         {
             if (this.DataContext is IDropTarget dropTarget)
             {
@@ -22,7 +22,7 @@ namespace Notepad.Views
             }
         }
 
-        private void Drop(object sender, DragEventArgs e)
+        private void Drop(object? sender, DragEventArgs e)
         {
             if (this.DataContext is IDropTarget dropTarget)
             {

@@ -8,8 +8,8 @@ namespace Notepad.ViewModels.Tools
 {
     public class ReplaceViewModel : Tool
     {
-        private string _find;
-        private string _replace;
+        private string _find = string.Empty;
+        private string _replace = string.Empty;
 
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find

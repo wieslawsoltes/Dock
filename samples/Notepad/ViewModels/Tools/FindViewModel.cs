@@ -8,7 +8,7 @@ namespace Notepad.ViewModels.Tools
 {
     public class FindViewModel : Tool
     {
-        private string _find;
+        private string _find = string.Empty;
 
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find

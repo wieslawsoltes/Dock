@@ -28,7 +28,7 @@ namespace Notepad
 #pragma warning restore CS0618 // Type or member is obsolete
 
             var factory = new NotepadFactory();
-            IDock layout = null;
+            IDock? layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
@@ -47,7 +47,11 @@ namespace Notepad
 
                 mainWindowViewModel.Factory = factory;
                 mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+
+                if (mainWindowViewModel.Layout != null)
+                {
+                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                }
 
                 mainWindow.Closing += (sender, e) =>
                 {
@@ -78,7 +82,11 @@ namespace Notepad
 
                 mainWindowViewModel.Factory = factory;
                 mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+
+                if (mainWindowViewModel.Layout != null)
+                {
+                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                }
 
                 singleViewLifetime.MainView = mainView;
             }

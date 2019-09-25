@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

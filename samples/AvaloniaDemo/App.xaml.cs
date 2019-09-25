@@ -29,7 +29,7 @@ namespace AvaloniaDemo
 #pragma warning restore CS0618 // Type or member is obsolete
 
             var factory = new DemoFactory(new DemoData());
-            IDock layout = null;
+            IDock? layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
@@ -48,7 +48,11 @@ namespace AvaloniaDemo
 
                 mainWindowViewModel.Factory = factory;
                 mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+
+                if (mainWindowViewModel.Layout != null)
+                {
+                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                }
 
                 mainWindow.Closing += (sender, e) =>
                 {
@@ -79,7 +83,11 @@ namespace AvaloniaDemo
 
                 mainWindowViewModel.Factory = factory;
                 mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-                mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+
+                if (mainWindowViewModel.Layout != null)
+                {
+                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                }
 
                 singleViewLifetime.MainView = mainView;
             }

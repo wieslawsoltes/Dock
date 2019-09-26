@@ -695,14 +695,15 @@ namespace Dock.Model
                     {
                         if (dock.Owner is IDock ownerDock && !(ownerDock.VisibleDockables is null))
                         {
-                            var layout = CreateSplitLayout(dock, dockable, operation);
                             int index = ownerDock.VisibleDockables.IndexOf(dock);
                             if (index >= 0)
                             {
+                                var layout = CreateSplitLayout(dock, dockable, operation);
                                 ownerDock.VisibleDockables.RemoveAt(index);
                                 ownerDock.VisibleDockables.Insert(index, layout);
+                                UpdateDockable(layout, ownerDock);
+                                ownerDock.ActiveDockable = layout;
                             }
-                            UpdateDockable(layout, ownerDock);
                         }
                     }
                     break;

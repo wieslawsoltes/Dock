@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Collections.Generic;
@@ -511,12 +511,19 @@ namespace Dock.Model
 
             int targetIndex = 0;
 
-            if (!(targetDockable is null) && !(targetDock.VisibleDockables is null))
+            if (!(targetDock.VisibleDockables is null))
             {
-                targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
-                if (targetIndex >= 0)
+                if (!(targetDockable is null))
                 {
-                    targetIndex += 1;
+                    targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
+                    if (targetIndex >= 0)
+                    {
+                        targetIndex += 1;
+                    }
+                    else
+                    {
+                        targetIndex = targetDock.VisibleDockables.Count;
+                    }
                 }
                 else
                 {

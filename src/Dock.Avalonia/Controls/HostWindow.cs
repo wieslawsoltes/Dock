@@ -54,19 +54,19 @@ namespace Dock.Avalonia.Controls
 
         private HostWindowState _hostWindowState;
 
-        private Control _titleBar;
-        private Grid _bottomHorizontalGrip;
-        private Grid _bottomLeftGrip;
-        private Grid _bottomRightGrip;
-        private Grid _leftVerticalGrip;
-        private Grid _rightVerticalGrip;
-        private Grid _topHorizontalGrip;
-        private Grid _topLeftGrip;
-        private Grid _topRightGrip;
-        private Button _closeButton;
-        private Button _minimiseButton;
-        private Button _restoreButton;
-        private Image _icon;
+        private Control? _titleBar;
+        private Grid? _bottomHorizontalGrip;
+        private Grid? _bottomLeftGrip;
+        private Grid? _bottomRightGrip;
+        private Grid? _leftVerticalGrip;
+        private Grid? _rightVerticalGrip;
+        private Grid? _topHorizontalGrip;
+        private Grid? _topLeftGrip;
+        private Grid? _topRightGrip;
+        private Button? _closeButton;
+        private Button? _minimiseButton;
+        private Button? _restoreButton;
+        private Image? _icon;
         private bool _mouseDown;
         private Point _startPoint;
 
@@ -74,7 +74,7 @@ namespace Dock.Avalonia.Controls
         public bool IsTracked { get; set; }
 
         /// <inheritdoc/>
-        public IDockWindow Window { get; set; }
+        public IDockWindow? Window { get; set; }
 
         /// <summary>
         /// Initializes new instance of the <see cref="HostWindow"/> class.

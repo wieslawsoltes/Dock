@@ -5,15 +5,15 @@ namespace Dock.Model
 {
     public abstract class DockableBase : IDockable
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
-        public object Context { get; set; }
+        public object? Context { get; set; }
 
-        public IDockable Owner { get; set; }
+        public IDockable? Owner { get; set; }
 
-        public IFactory Factory { get; set; }
+        public IFactory? Factory { get; set; }
 
         public virtual bool OnClose()
         {
@@ -24,6 +24,6 @@ namespace Dock.Model
         {
         }
 
-        public abstract IDockable Clone();
+        public abstract IDockable? Clone();
     }
 }

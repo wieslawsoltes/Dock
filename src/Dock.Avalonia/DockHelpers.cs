@@ -28,7 +28,7 @@ namespace Dock.Avalonia
                    element.IsAttachedToVisualTree;
         }
 
-        public static IEnumerable<IVisual> GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
+        public static IEnumerable<IVisual>? GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
         {
             var root = visual.GetVisualRoot();
             if (root != null)
@@ -42,9 +42,9 @@ namespace Dock.Avalonia
             return Enumerable.Empty<IVisual>();
         }
 
-        public static IControl GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
+        public static IControl? GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
         {
-            IEnumerable<IInputElement> inputElements = null;
+            IEnumerable<IInputElement>? inputElements = null;
             try
             {
                 inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();

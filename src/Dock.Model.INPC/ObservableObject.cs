@@ -13,13 +13,14 @@ namespace Dock.Model
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
+#pragma warning disable CS8618
         public event PropertyChangedEventHandler PropertyChanged;
-
+#pragma warning restore CS8618
         /// <summary>
         /// Notify observers about property changes.
         /// </summary>
         /// <param name="propertyName">The property name that changed.</param>
-        public void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        public void RaisePropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -32,7 +33,7 @@ namespace Dock.Model
         /// <param name="value">The new field value.</param>
         /// <param name="propertyName">The property name that changed.</param>
         /// <returns>True if backing field value changed.</returns>
-        public bool RaiseAndSetIfChanged<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        public bool RaiseAndSetIfChanged<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
         {
             if (!Equals(field, value))
             {

@@ -58,26 +58,26 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="Owner"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockWindow, IDockable> OwnerProperty =
-            AvaloniaProperty.RegisterDirect<DockWindow, IDockable>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
+        public static readonly DirectProperty<DockWindow, IDockable?> OwnerProperty =
+            AvaloniaProperty.RegisterDirect<DockWindow, IDockable?>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
 
         /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockWindow, IFactory> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<DockWindow, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
+        public static readonly DirectProperty<DockWindow, IFactory?> FactoryProperty =
+            AvaloniaProperty.RegisterDirect<DockWindow, IFactory?>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockWindow, IRootDock> LayoutProperty =
-            AvaloniaProperty.RegisterDirect<DockWindow, IRootDock>(nameof(Layout), o => o.Layout, (o, v) => o.Layout = v);
+        public static readonly DirectProperty<DockWindow, IRootDock?> LayoutProperty =
+            AvaloniaProperty.RegisterDirect<DockWindow, IRootDock?>(nameof(Layout), o => o.Layout, (o, v) => o.Layout = v);
 
         /// <summary>
         /// Defines the <see cref="Host"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockWindow, IHostWindow> HostProperty =
-            AvaloniaProperty.RegisterDirect<DockWindow, IHostWindow>(nameof(Host), o => o.Host, (o, v) => o.Host = v);
+        public static readonly DirectProperty<DockWindow, IHostWindow?> HostProperty =
+            AvaloniaProperty.RegisterDirect<DockWindow, IHostWindow?>(nameof(Host), o => o.Host, (o, v) => o.Host = v);
 
         private IHostAdapter _hostAdapter;
         private string _id;
@@ -87,10 +87,10 @@ namespace Dock.Model
         private double _height;
         private bool _topmost;
         private string _title;
-        private IDockable _owner;
-        private IFactory _factory;
-        private IRootDock _layout;
-        private IHostWindow _host;
+        private IDockable? _owner;
+        private IFactory? _factory;
+        private IRootDock? _layout;
+        private IHostWindow? _host;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -150,7 +150,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockable Owner
+        public IDockable? Owner
         {
             get => _owner;
             set => SetAndRaise(OwnerProperty, ref _owner, value);
@@ -158,7 +158,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IFactory Factory
+        public IFactory? Factory
         {
             get => _factory;
             set => SetAndRaise(FactoryProperty, ref _factory, value);
@@ -167,7 +167,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         [Content]
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IRootDock Layout
+        public IRootDock? Layout
         {
             get => _layout;
             set => SetAndRaise(LayoutProperty, ref _layout, value);
@@ -175,7 +175,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IHostWindow Host
+        public IHostWindow? Host
         {
             get => _host;
             set => SetAndRaise(HostProperty, ref _host, value);
@@ -210,7 +210,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public IDockWindow Clone()
+        public IDockWindow? Clone()
         {
             return CloneHelper.CloneDockWindow(this);
         }

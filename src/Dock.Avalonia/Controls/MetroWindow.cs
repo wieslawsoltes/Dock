@@ -14,19 +14,19 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class MetroWindow : Window, IStyleable
     {
-        private Grid _titleBar;
-        private Grid _bottomHorizontalGrip;
-        private Grid _bottomLeftGrip;
-        private Grid _bottomRightGrip;
-        private Grid _leftVerticalGrip;
-        private Grid _rightVerticalGrip;
-        private Grid _topHorizontalGrip;
-        private Grid _topLeftGrip;
-        private Grid _topRightGrip;
-        private Button _closeButton;
-        private Button _minimiseButton;
-        private Button _restoreButton;
-        private Image _icon;
+        private Grid? _titleBar;
+        private Grid? _bottomHorizontalGrip;
+        private Grid? _bottomLeftGrip;
+        private Grid? _bottomRightGrip;
+        private Grid? _leftVerticalGrip;
+        private Grid? _rightVerticalGrip;
+        private Grid? _topHorizontalGrip;
+        private Grid? _topLeftGrip;
+        private Grid? _topRightGrip;
+        private Button? _closeButton;
+        private Button? _minimiseButton;
+        private Button? _restoreButton;
+        private Image? _icon;
         private bool _mouseDown;
 
         /// <summary>

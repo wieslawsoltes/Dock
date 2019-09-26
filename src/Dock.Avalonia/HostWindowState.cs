@@ -21,9 +21,9 @@ namespace Dock.Avalonia
         private Point _dragStartPoint = default;
         private bool _pointerPressed = false;
         private bool _doDragDrop = false;
-        private DockControl _targetDockControl = null;
+        private DockControl? _targetDockControl = null;
         private Point _targetPoint = default;
-        private IControl _targetDropControl = null;
+        private IControl? _targetDropControl = null;
         private DragAction _dragAction = default;
 
         public HostWindowState(HostWindow hostWindow)
@@ -91,7 +91,7 @@ namespace Dock.Avalonia
                 return false;
             }
 
-            var layout = _hostWindow.Window.Layout;
+            var layout = _hostWindow.Window?.Layout;
 
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
@@ -110,11 +110,11 @@ namespace Dock.Avalonia
                 return false;
             }
 
-            var layout = _hostWindow.Window.Layout;
+            var layout = _hostWindow.Window?.Layout;
 
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable?.Title} -> {targetDockable?.Title}");
+                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
                 _dockManager.Position = DockHelpers.ToDockPoint(point);
                 _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
@@ -191,7 +191,7 @@ namespace Dock.Avalonia
                             {
                                 if (visual is DockControl dockControl)
                                 {
-                                    if (dockControl.Layout != _hostWindow.Window.Layout)
+                                    if (dockControl.Layout != _hostWindow.Window?.Layout)
                                     {
                                         var position = point + _dragStartPoint;
                                         var screenPoint = new PixelPoint((int)position.X, (int)position.Y);

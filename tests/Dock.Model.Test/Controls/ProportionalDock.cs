@@ -9,7 +9,7 @@ namespace Dock.Model.Controls
     {
         public Orientation Orientation { get; set; }
 
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

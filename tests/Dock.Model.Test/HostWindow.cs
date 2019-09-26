@@ -8,7 +8,7 @@ namespace Dock.Model
     {
         public bool IsTracked { get; set; }
 
-        public IDockWindow Window { get; set; }
+        public IDockWindow? Window { get; set; }
 
         public void Present(bool isDialog)
         {

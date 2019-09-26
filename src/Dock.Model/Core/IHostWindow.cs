@@ -16,7 +16,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets dock window.
         /// </summary>
-        IDockWindow Window { get; set; }
+        IDockWindow? Window { get; set; }
 
         /// <summary>
         /// Presents host.

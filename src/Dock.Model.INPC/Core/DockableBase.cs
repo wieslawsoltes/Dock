@@ -10,11 +10,11 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockableBase : ObservableObject, IDockable
     {
-        private string _id;
-        private string _title;
-        private object _context;
-        private IDockable _owner;
-        private IFactory _factory;
+        private string _id = string.Empty;
+        private string _title = string.Empty;
+        private object? _context;
+        private IDockable? _owner;
+        private IFactory? _factory;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -34,7 +34,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public object Context
+        public object? Context
         {
             get => _context;
             set => this.RaiseAndSetIfChanged(ref _context, value);
@@ -42,7 +42,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockable Owner
+        public IDockable? Owner
         {
             get => _owner;
             set => this.RaiseAndSetIfChanged(ref _owner, value);
@@ -50,7 +50,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IFactory Factory
+        public IFactory? Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
@@ -68,6 +68,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public abstract IDockable Clone();
+        public abstract IDockable? Clone();
     }
 }

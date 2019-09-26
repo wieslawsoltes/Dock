@@ -8,8 +8,8 @@ namespace Notepad.ViewModels.Tools
 {
     public class ReplaceViewModel : Tool
     {
-        private string _find;
-        private string _replace;
+        private string _find = string.Empty;
+        private string _replace = string.Empty;
 
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find
@@ -29,7 +29,7 @@ namespace Notepad.ViewModels.Tools
         {
             if (this.Context is IRootDock root && root.ActiveDockable is IDock active)
             {
-                if (active.Factory.FindDockable(active, (d) => d.Id == MainWindowViewModel.DocumentsDockId) is IDock files)
+                if (active.Factory?.FindDockable(active, (d) => d.Id == MainWindowViewModel.DocumentsDockId) is IDock files)
                 {
                     if (files.ActiveDockable is FileViewModel fileViewModel)
                     {

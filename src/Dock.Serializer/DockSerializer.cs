@@ -72,11 +72,7 @@ namespace Dock.Serializer
             using (var streamReader = new System.IO.StreamReader(stream, Encoding.UTF8))
             {
                 var text = streamReader.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(text))
-                {
-                    return Deserialize<T>(text);
-                }
-                return default;
+                return Deserialize<T>(text);
             }
         }
 

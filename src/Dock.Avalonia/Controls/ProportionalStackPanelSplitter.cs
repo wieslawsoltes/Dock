@@ -87,13 +87,16 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            if (GetPanel().Orientation == Orientation.Vertical)
+            if (GetPanel() is ProportionalStackPanel panel)
             {
-                SetTargetProportion(e.Vector.Y);
-            }
-            else
-            {
-                SetTargetProportion(e.Vector.X);
+                if (panel.Orientation == Orientation.Vertical)
+                {
+                    SetTargetProportion(e.Vector.Y);
+                }
+                else
+                {
+                    SetTargetProportion(e.Vector.X);
+                }
             }
         }
 
@@ -103,6 +106,10 @@ namespace Dock.Avalonia.Controls
             base.OnAttachedToVisualTree(e);
 
             var panel = GetPanel();
+            if (panel == null)
+            {
+                return;
+            }
 
             _previousParentSize = panel.Bounds.Size;
 
@@ -141,6 +148,11 @@ namespace Dock.Avalonia.Controls
         {
             var target = GetTargetElement();
             var panel = GetPanel();
+            if (target == null || panel == null)
+            {
+                return;
+            }
+
             var children = panel.GetChildren();
 
             int index = children.IndexOf(this) + 1;
@@ -219,23 +231,26 @@ namespace Dock.Avalonia.Controls
 
         private void UpdateHeightOrWidth()
         {
-            if (GetPanel().Orientation == Orientation.Vertical)
+            if (GetPanel() is ProportionalStackPanel panel)
             {
-                Height = Thickness;
-                Width = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeNorthSouth);
-                PseudoClasses.Add(":horizontal");
-            }
-            else
-            {
-                Width = Thickness;
-                Height = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeWestEast);
-                PseudoClasses.Add(":vertical");
+                if (panel.Orientation == Orientation.Vertical)
+                {
+                    Height = Thickness;
+                    Width = double.NaN;
+                    Cursor = new Cursor(StandardCursorType.SizeNorthSouth);
+                    PseudoClasses.Add(":horizontal");
+                }
+                else
+                {
+                    Width = Thickness;
+                    Height = double.NaN;
+                    Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                    PseudoClasses.Add(":vertical");
+                }
             }
         }
 
-        private ProportionalStackPanel GetPanel()
+        private ProportionalStackPanel? GetPanel()
         {
             if (Parent is ContentPresenter presenter)
             {
@@ -252,7 +267,7 @@ namespace Dock.Avalonia.Controls
             return null;
         }
 
-        private Control GetTargetElement()
+        private Control? GetTargetElement()
         {
             if (Parent is ContentPresenter presenter)
             {
@@ -264,17 +279,26 @@ namespace Dock.Avalonia.Controls
                 int index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
-                    return (panel.Children[index - 1] as ContentPresenter).Child as Control;
+                    if (panel.Children[index - 1] is ContentPresenter contentPresenter)
+                    {
+                        return contentPresenter.Child as Control;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
             }
             else
             {
                 var panel = GetPanel();
-
-                int index = panel.Children.IndexOf(this);
-                if (index > 0 && panel.Children.Count > 0)
+                if (panel != null)
                 {
-                    return panel.Children[index - 1] as Control;
+                    int index = panel.Children.IndexOf(this);
+                    if (index > 0 && panel.Children.Count > 0)
+                    {
+                        return panel.Children[index - 1] as Control;
+                    }
                 }
             }
 

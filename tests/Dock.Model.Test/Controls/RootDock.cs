@@ -8,17 +8,17 @@ namespace Dock.Model.Controls
 {
     public class RootDock : DockBase, IRootDock
     {
-        public IDockWindow Window { get; set; }
+        public IDockWindow? Window { get; set; }
 
-        public IList<IDockWindow> Windows { get; set; }
+        public IList<IDockWindow>? Windows { get; set; }
 
-        public IPinDock Top { get; set; }
+        public IPinDock? Top { get; set; }
 
-        public IPinDock Bottom { get; set; }
+        public IPinDock? Bottom { get; set; }
 
-        public IPinDock Left { get; set; }
+        public IPinDock? Left { get; set; }
 
-        public IPinDock Right { get; set; }
+        public IPinDock? Right { get; set; }
 
         public virtual void ShowWindows()
         {
@@ -30,7 +30,7 @@ namespace Dock.Model.Controls
             _navigateAdapter?.ExitWindows();
         }
 
-        public override IDockable Clone()
+        public override IDockable? Clone()
         {
             throw new NotImplementedException();
         }

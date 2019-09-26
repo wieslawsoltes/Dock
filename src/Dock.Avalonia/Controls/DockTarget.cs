@@ -15,17 +15,17 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockTarget : TemplatedControl
     {
-        private Grid _topIndicator;
-        private Grid _bottomIndicator;
-        private Grid _leftIndicator;
-        private Grid _rightIndicator;
-        private Grid _centerIndicator;
+        private Grid? _topIndicator;
+        private Grid? _bottomIndicator;
+        private Grid? _leftIndicator;
+        private Grid? _rightIndicator;
+        private Grid? _centerIndicator;
 
-        private Control _topSelector;
-        private Control _bottomSelector;
-        private Control _leftSelector;
-        private Control _rightSelector;
-        private Control _centerSelector;
+        private Control? _topSelector;
+        private Control? _bottomSelector;
+        private Control? _leftSelector;
+        private Control? _rightSelector;
+        private Control? _centerSelector;
 
         static DockTarget()
         {
@@ -82,9 +82,9 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control selector, Grid indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
+        private bool InvalidateIndicator(Control? selector, Grid? indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
         {
-            if (selector != null)
+            if (selector != null && indicator != null)
             {
                 var selectorPoint = relativeTo.TranslatePoint(point, selector);
                 if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo) == true)

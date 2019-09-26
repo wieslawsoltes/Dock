@@ -18,38 +18,38 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="VisibleDockables"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IList<IDockable>> VisibleDockablesProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>>(nameof(VisibleDockables), o => o.VisibleDockables, (o, v) => o.VisibleDockables = v);
+        public static readonly DirectProperty<DockBase, IList<IDockable>?> VisibleDockablesProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(VisibleDockables), o => o.VisibleDockables, (o, v) => o.VisibleDockables = v);
 
         /// <summary>
         /// Defines the <see cref="HiddenDockables"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IList<IDockable>> HiddenDockablesProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>>(nameof(HiddenDockables), o => o.HiddenDockables, (o, v) => o.HiddenDockables = v);
+        public static readonly DirectProperty<DockBase, IList<IDockable>?> HiddenDockablesProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(HiddenDockables), o => o.HiddenDockables, (o, v) => o.HiddenDockables = v);
 
         /// <summary>
         /// Defines the <see cref="PinnedDockables"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IList<IDockable>> PinnedDockablesProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>>(nameof(PinnedDockables), o => o.PinnedDockables, (o, v) => o.PinnedDockables = v);
+        public static readonly DirectProperty<DockBase, IList<IDockable>?> PinnedDockablesProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(PinnedDockables), o => o.PinnedDockables, (o, v) => o.PinnedDockables = v);
 
         /// <summary>
         /// Defines the <see cref="ActiveDockable"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IDockable> ActiveDockableProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IDockable>(nameof(ActiveDockable), o => o.ActiveDockable, (o, v) => o.ActiveDockable = v);
+        public static readonly DirectProperty<DockBase, IDockable?> ActiveDockableProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IDockable?>(nameof(ActiveDockable), o => o.ActiveDockable, (o, v) => o.ActiveDockable = v);
 
         /// <summary>
         /// Defines the <see cref="DefaultDockable"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IDockable> DefaultDockableProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IDockable>(nameof(DefaultDockable), o => o.DefaultDockable, (o, v) => o.DefaultDockable = v);
+        public static readonly DirectProperty<DockBase, IDockable?> DefaultDockableProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IDockable?>(nameof(DefaultDockable), o => o.DefaultDockable, (o, v) => o.DefaultDockable = v);
 
         /// <summary>
         /// Defines the <see cref="FocusedDockable"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockBase, IDockable> FocusedDockableProperty =
-            AvaloniaProperty.RegisterDirect<DockBase, IDockable>(nameof(FocusedDockable), o => o.FocusedDockable, (o, v) => o.FocusedDockable = v);
+        public static readonly DirectProperty<DockBase, IDockable?> FocusedDockableProperty =
+            AvaloniaProperty.RegisterDirect<DockBase, IDockable?>(nameof(FocusedDockable), o => o.FocusedDockable, (o, v) => o.FocusedDockable = v);
 
         /// <summary>
         /// Defines the <see cref="Proportion"/> property.
@@ -82,12 +82,12 @@ namespace Dock.Model
             AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanGoForward), (o) => o.CanGoForward);
 
         internal INavigateAdapter _navigateAdapter;
-        private IList<IDockable> _visibleDockables;
-        private IList<IDockable> _hiddenDockables;
-        private IList<IDockable> _pinnedDockables;
-        private IDockable _activeDockable;
-        private IDockable _defaultDockable;
-        private IDockable _focusedDockable;
+        private IList<IDockable>? _visibleDockables;
+        private IList<IDockable>? _hiddenDockables;
+        private IList<IDockable>? _pinnedDockables;
+        private IDockable? _activeDockable;
+        private IDockable? _defaultDockable;
+        private IDockable? _focusedDockable;
         private double _proportion = double.NaN;
         private bool _isActive;
         private bool _isCollapsable = true;
@@ -97,7 +97,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         [Content]
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> VisibleDockables
+        public IList<IDockable>? VisibleDockables
         {
             get => _visibleDockables;
             set => SetAndRaise(VisibleDockablesProperty, ref _visibleDockables, value);
@@ -105,7 +105,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> HiddenDockables
+        public IList<IDockable>? HiddenDockables
         {
             get => _hiddenDockables;
             set => SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value);
@@ -113,7 +113,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IList<IDockable> PinnedDockables
+        public IList<IDockable>? PinnedDockables
         {
             get => _pinnedDockables;
             set => SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value);
@@ -121,7 +121,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable ActiveDockable
+        public IDockable? ActiveDockable
         {
             get => _activeDockable;
             set
@@ -132,7 +132,10 @@ namespace Dock.Model
                     Factory?.UpdateDockable(value, this);
                     value.OnSelected();
                 }
-                Factory?.SetFocusedDockable(this, value);
+                if (value != null)
+                {
+                    Factory?.SetFocusedDockable(this, value);
+                }
                 SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
                 SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
             }
@@ -140,7 +143,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable DefaultDockable
+        public IDockable? DefaultDockable
         {
             get => _defaultDockable;
             set => SetAndRaise(DefaultDockableProperty, ref _defaultDockable, value);
@@ -148,7 +151,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IDockable FocusedDockable
+        public IDockable? FocusedDockable
         {
             get => _focusedDockable;
             set => SetAndRaise(FocusedDockableProperty, ref _focusedDockable, value);

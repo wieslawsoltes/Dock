@@ -7,6 +7,13 @@
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishTrimmed>False</PublishTrimmed>
+    <PublishSingleFile>False</PublishSingleFile>
+    <PublishReadyToRun>True</PublishReadyToRun>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -20,12 +27,6 @@
   </ItemGroup>
 
   <Import Project="..\..\build\EmbedXaml.props" />
-
-  <PropertyGroup>
-    <PublishTrimmed>True</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>True</PublishReadyToRun>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />

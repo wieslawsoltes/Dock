@@ -48,22 +48,22 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets window owner dockable.
         /// </summary>
-        IDockable Owner { get; set; }
+        IDockable? Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
-        IFactory Factory { get; set; }
+        IFactory? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets layout.
         /// </summary>
-        IRootDock Layout { get; set; }
+        IRootDock? Layout { get; set; }
 
         /// <summary>
         /// Gets or sets dock window.
         /// </summary>
-        IHostWindow Host { get; set; }
+        IHostWindow? Host { get; set; }
 
         /// <summary>
         /// Saves window properties.
@@ -85,6 +85,6 @@ namespace Dock.Model
         /// Clones <see cref="IDockWindow"/> object.
         /// </summary>
         /// <returns>The new instance or reference of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow Clone();
+        IDockWindow? Clone();
     }
 }

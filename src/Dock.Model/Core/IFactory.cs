@@ -14,17 +14,17 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets <see cref="IDockable.Context"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<object>> ContextLocator { get; set; }
+        IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <summary>
         /// Gets or sets <see cref="IHostWindow"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<IHostWindow>> HostWindowLocator { get; set; }
+        IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
 
         /// <summary>
         /// Gets or sets <see cref="IDockable"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<IDockable>> DockableLocator { get; set; }
+        IDictionary<string, Func<IDockable>>? DockableLocator { get; set; }
 
         /// <summary>
         /// Creates list of type <see cref="IList{T}"/>.
@@ -87,21 +87,21 @@ namespace Dock.Model
         /// </summary>
         /// <param name="id">The object id.</param>
         /// <returns>The located context.</returns>
-        object GetContext(string id);
+        object? GetContext(string id);
 
         /// <summary>
         /// Gets registered host window.
         /// </summary>
         /// <param name="id">The host id.</param>
         /// <returns>The located host.</returns>
-        IHostWindow GetHostWindow(string id);
+        IHostWindow? GetHostWindow(string id);
 
         /// <summary>
         /// Gets registered dockable.
         /// </summary>
         /// <param name="id">The host id.</param>
         /// <returns>The located dockable.</returns>
-        IDockable GetDockable(string id);
+        IDockable? GetDockable(string id);
 
         /// <summary>
         /// Initialize layout.
@@ -114,14 +114,14 @@ namespace Dock.Model
         /// </summary>
         /// <param name="window">The window to update.</param>
         /// <param name="owner">The window owner dockable.</param>
-        void UpdateDockWindow(IDockWindow window, IDockable owner);
+        void UpdateDockWindow(IDockWindow window, IDockable? owner);
 
         /// <summary>
         /// Updates dockable.
         /// </summary>
         /// <param name="dockable">The dockable to update.</param>
         /// <param name="owner">The owner dockable.</param>
-        void UpdateDockable(IDockable dockable, IDockable owner);
+        void UpdateDockable(IDockable dockable, IDockable? owner);
 
         /// <summary>
         /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
@@ -170,7 +170,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dockable">The dockable to find root for.</param>
         /// <returns>The root dockable instance or null if root dockable was not found.</returns>
-        IRootDock FindRoot(IDockable dockable);
+        IRootDock? FindRoot(IDockable dockable);
 
         /// <summary>
         /// Searches dock for dockable.
@@ -178,7 +178,7 @@ namespace Dock.Model
         /// <param name="dock">The dock.</param>
         /// <param name="predicate">The predicate to filter dockables.</param>
         /// <returns>The dockable instance or null if dockable was not found.</returns>
-        IDockable FindDockable(IDock dock, Func<IDockable, bool> predicate);
+        IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
         /// <summary>
         /// Pins dockable.
@@ -222,7 +222,7 @@ namespace Dock.Model
         /// <param name="targetDock">The target dock.</param>
         /// <param name="sourceDockable">The source dockable.</param>
         /// <param name="targetDockable">The target dockable.</param>
-        void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
+        void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable);
 
         /// <summary>
         /// Swaps dockable into between <see cref="IDock.VisibleDockables"/> collections.
@@ -255,7 +255,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dockable">The dockable to embed into window.</param>
         /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow CreateWindowFrom(IDockable dockable);
+        IDockWindow? CreateWindowFrom(IDockable dockable);
 
         /// <summary>
         /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.

@@ -31,21 +31,21 @@ namespace Dock.Avalonia.Controls
         /// Gets or sets referenced object name.
         /// </summary>
         [ConstructorArgument("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Provides a referenced object <see cref="object"/> instance.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <returns>The referenced <see cref="object"/> instance.</returns>
-        public object ProvideValue(IServiceProvider serviceProvider)
+        public object? ProvideValue(IServiceProvider serviceProvider)
         {
             if (serviceProvider.GetService(typeof(INameScope)) is INameScope nameScope)
             {
                 var element = nameScope.Find(Name);
                 return element;
             }
-            return null;
+            return default;
         }
     }
 }

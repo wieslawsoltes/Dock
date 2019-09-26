@@ -14,10 +14,10 @@ namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : StyledElement
     {
-        public static readonly StyledProperty<DockControl> DockControlProperty =
-            AvaloniaProperty.Register<MainWindowViewModel, DockControl>(nameof(DockControl));
+        public static readonly StyledProperty<DockControl?> DockControlProperty =
+            AvaloniaProperty.Register<MainWindowViewModel, DockControl?>(nameof(DockControl));
 
-        public DockControl DockControl
+        public DockControl? DockControl
         {
             get => GetValue(DockControlProperty);
             set => SetValue(DockControlProperty, value);
@@ -43,7 +43,7 @@ namespace AvaloniaDemo.ViewModels
                 if (layout != null)
                 {
                     var factory = new DemoFactory();
-                    factory.InitLayout(layout);
+                    factory?.InitLayout(layout);
                 }
             }
         }
@@ -68,9 +68,12 @@ namespace AvaloniaDemo.ViewModels
                     root.Close();
                 }
                 var factory = new DemoFactory();
-                var layout = factory.CreateLayout();
-                factory.InitLayout(layout);
-                DockControl.Layout = layout;
+                var layout = factory?.CreateLayout();
+                if (layout != null)
+                {
+                    factory?.InitLayout(layout);
+                    DockControl.Layout = layout;
+                }
             }
         }
 
@@ -95,7 +98,7 @@ namespace AvaloniaDemo.ViewModels
                                 root.Close();
                             }
                             var factory = new DemoFactory();
-                            factory.InitLayout(layout);
+                            factory?.InitLayout(layout);
                             DockControl.Layout = layout;
                         }
                     }
@@ -124,10 +127,10 @@ namespace AvaloniaDemo.ViewModels
         {
             if (dock != null && dock.Owner is IDock owner)
             {
-                var clone = (IDock)dock.Clone();
+                var clone = (IDock?)dock.Clone();
                 if (clone != null)
                 {
-                    owner.Factory.AddDockable(owner, clone);
+                    owner.Factory?.AddDockable(owner, clone);
                     ApplyWindowLayout(clone);
                 }
             }
@@ -137,10 +140,10 @@ namespace AvaloniaDemo.ViewModels
         {
             if (dock != null)
             {
-                if (DockControl.Layout is IDock root)
+                if (DockControl?.Layout is IDock root)
                 {
                     root.Navigate(dock);
-                    root.Factory.SetFocusedDockable(root, dock);
+                    root.Factory?.SetFocusedDockable(root, dock);
                     root.DefaultDockable = dock;
                 }
             }
@@ -156,7 +159,7 @@ namespace AvaloniaDemo.ViewModels
             // TODO:
         }
 
-        private Window GetWindow()
+        private Window? GetWindow()
         {
             if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {

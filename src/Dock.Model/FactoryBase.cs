@@ -13,13 +13,13 @@ namespace Dock.Model
     public abstract class FactoryBase : IFactory
     {
         /// <inheritdoc/>
-        public virtual IDictionary<string, Func<object>> ContextLocator { get; set; }
+        public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, Func<IHostWindow>> HostWindowLocator { get; set; }
+        public virtual IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, Func<IDockable>> DockableLocator { get; set; }
+        public virtual IDictionary<string, Func<IDockable>>? DockableLocator { get; set; }
 
         /// <inheritdoc/>
         public abstract IList<T> CreateList<T>(params T[] items);
@@ -49,11 +49,11 @@ namespace Dock.Model
         public abstract IDock CreateLayout();
 
         /// <inheritdoc/>
-        public virtual object GetContext(string id)
+        public virtual object? GetContext(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Func<object> locator = null;
+                Func<object>? locator = null;
                 if (ContextLocator?.TryGetValue(id, out locator) == true)
                 {
                     return locator?.Invoke();
@@ -64,11 +64,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IHostWindow GetHostWindow(string id)
+        public virtual IHostWindow? GetHostWindow(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Func<IHostWindow> locator = null;
+                Func<IHostWindow>? locator = null;
                 if (HostWindowLocator?.TryGetValue(id, out locator) == true)
                 {
                     return locator?.Invoke();
@@ -79,11 +79,11 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockable GetDockable(string id)
+        public virtual IDockable? GetDockable(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Func<IDockable> locator = null;
+                Func<IDockable>? locator = null;
                 if (DockableLocator?.TryGetValue(id, out locator) == true)
                 {
                     return locator?.Invoke();
@@ -100,7 +100,7 @@ namespace Dock.Model
 
             if (layout is IDock dock)
             {
-                if (dock.DefaultDockable != null)
+                if (!(dock.DefaultDockable is null))
                 {
                     dock.ActiveDockable = dock.DefaultDockable;
                 }
@@ -113,10 +113,10 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void UpdateDockWindow(IDockWindow window, IDockable owner)
+        public virtual void UpdateDockWindow(IDockWindow window, IDockable? owner)
         {
             window.Host = GetHostWindow(window.Id);
-            if (window.Host != null)
+            if (!(window.Host is null))
             {
                 window.Host.Window = window;
             }
@@ -124,14 +124,14 @@ namespace Dock.Model
             window.Owner = owner;
             window.Factory = this;
 
-            if (window.Layout != null)
+            if (!(window.Layout is null))
             {
                 UpdateDockable(window.Layout, window.Layout.Owner);
             }
         }
 
         /// <inheritdoc/>
-        public virtual void UpdateDockable(IDockable dockable, IDockable owner)
+        public virtual void UpdateDockable(IDockable dockable, IDockable? owner)
         {
             if (GetContext(dockable.Id) is object context)
             {
@@ -144,7 +144,7 @@ namespace Dock.Model
             {
                 dock.Factory = this;
 
-                if (dock.VisibleDockables != null)
+                if (!(dock.VisibleDockables is null))
                 {
                     foreach (var child in dock.VisibleDockables)
                     {
@@ -155,7 +155,7 @@ namespace Dock.Model
 
             if (dockable is IRootDock rootDock)
             {
-                if (rootDock.Windows != null)
+                if (!(rootDock.Windows is null))
                 {
                     foreach (var child in rootDock.Windows)
                     {
@@ -169,7 +169,7 @@ namespace Dock.Model
         public virtual void AddDockable(IDock dock, IDockable dockable)
         {
             UpdateDockable(dockable, dock);
-            if (dock.VisibleDockables == null)
+            if (dock.VisibleDockables is null)
             {
                 dock.VisibleDockables = CreateList<IDockable>();
             }
@@ -182,7 +182,7 @@ namespace Dock.Model
             if (index >= 0)
             {
                 UpdateDockable(dockable, dock);
-                if (dock.VisibleDockables == null)
+                if (dock.VisibleDockables is null)
                 {
                     dock.VisibleDockables = CreateList<IDockable>();
                 }
@@ -193,7 +193,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
         {
-            if (rootDock.Windows == null)
+            if (rootDock.Windows is null)
             {
                 rootDock.Windows = CreateList<IDockWindow>();
             }
@@ -231,19 +231,19 @@ namespace Dock.Model
         /// <inheritdoc />
         public void SetFocusedDockable(IDock dock, IDockable dockable)
         {
-            if (dock.ActiveDockable != null && FindRoot(dock.ActiveDockable) is IRootDock root)
+            if (!(dock.ActiveDockable is null) && FindRoot(dock.ActiveDockable) is IRootDock root)
             {
-                if (root.FocusedDockable != null)
+                if (!(root.FocusedDockable?.Owner is null))
                 {
                     SetIsActive(root.FocusedDockable.Owner, false);
                 }
 
-                if (dockable != null)
+                if (!(dockable is null))
                 {
                     root.FocusedDockable = dockable;
                 }
 
-                if (root.FocusedDockable != null)
+                if (!(root.FocusedDockable?.Owner is null))
                 {
                     SetIsActive(root.FocusedDockable.Owner, true);
                 }
@@ -251,9 +251,9 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IRootDock FindRoot(IDockable dockable)
+        public virtual IRootDock? FindRoot(IDockable dockable)
         {
-            if (dockable?.Owner == null)
+            if (dockable.Owner is null)
             {
                 return null;
             }
@@ -265,14 +265,14 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockable FindDockable(IDock dock, Func<IDockable, bool> predicate)
+        public virtual IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate)
         {
             if (predicate(dock) == true)
             {
                 return dock;
             }
 
-            if (dock.VisibleDockables != null)
+            if (!(dock.VisibleDockables is null))
             {
                 foreach (var dockable in dock.VisibleDockables)
                 {
@@ -284,7 +284,7 @@ namespace Dock.Model
                     if (dockable is IDock childDock)
                     {
                         var result = FindDockable(childDock, predicate);
-                        if (result != null)
+                        if (!(result is null))
                         {
                             return result;
                         }
@@ -294,11 +294,11 @@ namespace Dock.Model
 
             if (dock is IRootDock rootDock)
             {
-                if (rootDock.Windows != null)
+                if (!(rootDock.Windows is null))
                 {
                     foreach (var window in rootDock.Windows)
                     {
-                        if (window.Layout != null)
+                        if (!(window.Layout is null))
                         {
                             if (predicate(window.Layout) == true)
                             {
@@ -306,7 +306,7 @@ namespace Dock.Model
                             }
 
                             var result = FindDockable(window.Layout, predicate);
-                            if (result != null)
+                            if (!(result is null))
                             {
                                 return result;
                             }
@@ -322,7 +322,7 @@ namespace Dock.Model
         {
             // TODO: Find closest pin dock to the dockable (Top, Bottom, Left or Right).
 
-            if (root.Left == null)
+            if (root.Left is null)
             {
                 root.Left = CreatePinDock();
                 root.Left.Alignment = Alignment.Left;
@@ -337,7 +337,7 @@ namespace Dock.Model
         {
             RemoveDockable(dockable, true);
 
-            if (pinDock.VisibleDockables == null)
+            if (pinDock.VisibleDockables is null)
             {
                 pinDock.VisibleDockables = CreateList<IDockable>();
             }
@@ -351,7 +351,7 @@ namespace Dock.Model
         {
             // TODO: Implement dockable pinning.
 
-            if (dockable != null && FindRoot(dockable) is IRootDock root)
+            if (FindRoot(dockable) is IRootDock root)
             {
                 if (PinClosestPinDock(root, dockable) is IPinDock pinDock)
                 {
@@ -362,9 +362,9 @@ namespace Dock.Model
 
         private void Collapse(IDock dock)
         {
-            if (dock.IsCollapsable && dock.VisibleDockables.Count == 0)
+            if (dock.IsCollapsable && !(dock.VisibleDockables is null) && dock.VisibleDockables.Count == 0)
             {
-                if (dock.Owner is IDock ownerDock)
+                if (dock.Owner is IDock ownerDock && !(ownerDock.VisibleDockables is null))
                 {
                     var toRemove = new List<IDockable>();
                     var dockIndex = ownerDock.VisibleDockables.IndexOf(dock);
@@ -402,7 +402,7 @@ namespace Dock.Model
                     }
                 }
 
-                if (dock is IRootDock rootDock && rootDock.Window != null)
+                if (dock is IRootDock rootDock && !(rootDock.Window is null))
                 {
                     RemoveWindow(rootDock.Window);
                 }
@@ -416,7 +416,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void RemoveDockable(IDockable dockable, bool collapse)
         {
-            if (dockable?.Owner is IDock dock && dock.VisibleDockables != null)
+            if (dockable?.Owner is IDock dock && !(dock.VisibleDockables is null))
             {
                 int index = dock.VisibleDockables.IndexOf(dockable);
                 if (index < 0)
@@ -481,6 +481,11 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
         {
+            if (dock.VisibleDockables is null)
+            {
+                return;
+            }
+
             int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
             int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
 
@@ -495,6 +500,11 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
         {
+            if (dock.VisibleDockables is null)
+            {
+                return;
+            }
+
             int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
             int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
 
@@ -510,33 +520,53 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable)
+        public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)
         {
-            int targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
-
-            targetIndex = targetIndex < 0 ? 0 : targetIndex + 1;
-            if (targetIndex < 0)
+            if (targetDock.VisibleDockables is null)
             {
-                return;
+                targetDock.VisibleDockables = CreateList<IDockable>();
+                if (targetDock.VisibleDockables is null)
+                {
+                    return;
+                }
             }
 
-            if (sourceDockable?.Owner is IDock dock && dock.VisibleDockables != null)
+            int targetIndex = 0;
+
+            if (!(targetDockable is null) && !(targetDock.VisibleDockables is null))
+            {
+                targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
+                if (targetIndex >= 0)
+                {
+                    targetIndex += 1;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (sourceDockable?.Owner is IDock dock && !(dock.VisibleDockables is null))
             {
                 RemoveDockable(sourceDockable, sourceDock != targetDock);
             }
 
-            if (targetDock.VisibleDockables == null)
+            if (!(targetDock.VisibleDockables is null) && !(sourceDockable is null))
             {
-                targetDock.VisibleDockables = CreateList<IDockable>();
+                targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
+                UpdateDockable(sourceDockable, targetDock);
+                targetDock.ActiveDockable = sourceDockable;
             }
-            targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
-            UpdateDockable(sourceDockable, targetDock);
-            targetDock.ActiveDockable = sourceDockable;
         }
 
         /// <inheritdoc/>
         public virtual void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable)
         {
+            if (sourceDock.VisibleDockables is null || targetDock.VisibleDockables is null)
+            {
+                return;
+            }
+
             int sourceIndex = sourceDock.VisibleDockables.IndexOf(sourceDockable);
             int targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
 
@@ -558,10 +588,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual IDock CreateSplitLayout(IDock dock, IDockable dockable, DockOperation operation)
         {
-            IDock split = null;
-
-            var containerProportion = dock.Proportion;
-            dock.Proportion = double.NaN;
+            IDock? split;
 
             if (dockable is IDock dockableDock)
             {
@@ -570,16 +597,21 @@ namespace Dock.Model
             else
             {
                 split = CreateProportionalDock();
-                split.Id = nameof(IProportionalDock);
-                split.Title = nameof(IProportionalDock);
-
-                if (dockable != null)
+                if (!(split is null))
                 {
+                    split.Id = nameof(IProportionalDock);
+                    split.Title = nameof(IProportionalDock);
                     split.VisibleDockables = CreateList<IDockable>();
-                    split.VisibleDockables.Add(dockable);
-                    split.ActiveDockable = dockable;
+                    if (!(split.VisibleDockables is null))
+                    {
+                        split.VisibleDockables.Add(dockable);
+                        split.ActiveDockable = dockable;
+                    }
                 }
             }
+
+            var containerProportion = dock.Proportion;
+            dock.Proportion = double.NaN;
 
             var layout = CreateProportionalDock();
             layout.Id = nameof(IProportionalDock);
@@ -607,29 +639,44 @@ namespace Dock.Model
             {
                 case DockOperation.Left:
                 case DockOperation.Top:
-                    layout.VisibleDockables.Add(split);
-                    layout.ActiveDockable = split;
+                    if (!(layout.VisibleDockables is null) && !(split is null))
+                    {
+                        layout.VisibleDockables.Add(split);
+                        layout.ActiveDockable = split;
+                    }
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
-                    layout.VisibleDockables.Add(dock);
-                    layout.ActiveDockable = dock;
+                    if (!(layout.VisibleDockables is null))
+                    {
+                        layout.VisibleDockables.Add(dock);
+                        layout.ActiveDockable = dock;
+                    }
                     break;
             }
 
-            layout.VisibleDockables.Add(splitter);
+            if (!(layout.VisibleDockables is null))
+            {
+                layout.VisibleDockables.Add(splitter);
+            }
 
             switch (operation)
             {
                 case DockOperation.Left:
                 case DockOperation.Top:
-                    layout.VisibleDockables.Add(dock);
-                    layout.ActiveDockable = dock;
+                    if (!(layout.VisibleDockables is null))
+                    {
+                        layout.VisibleDockables.Add(dock);
+                        layout.ActiveDockable = dock;
+                    }
                     break;
                 case DockOperation.Right:
                 case DockOperation.Bottom:
-                    layout.VisibleDockables.Add(split);
-                    layout.ActiveDockable = split;
+                    if (!(layout.VisibleDockables is null) && !(split is null))
+                    {
+                        layout.VisibleDockables.Add(split);
+                        layout.ActiveDockable = split;
+                    }
                     break;
             }
 
@@ -646,7 +693,7 @@ namespace Dock.Model
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        if (dock.Owner is IDock ownerDock)
+                        if (dock.Owner is IDock ownerDock && !(ownerDock.VisibleDockables is null))
                         {
                             var layout = CreateSplitLayout(dock, dockable, operation);
                             int index = ownerDock.VisibleDockables.IndexOf(dock);
@@ -665,9 +712,9 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockWindow CreateWindowFrom(IDockable dockable)
+        public virtual IDockWindow? CreateWindowFrom(IDockable dockable)
         {
-            IDockable target = null;
+            IDockable? target;
             bool topmost = false;
 
             switch (dockable)
@@ -675,33 +722,41 @@ namespace Dock.Model
                 case ITool tool:
                     {
                         target = CreateToolDock();
-                        target.Id = nameof(IToolDock);
-                        target.Title = nameof(IToolDock);
-
-                        if (target is IDock dock)
+                        if (!(target is null))
                         {
-                            dock.VisibleDockables = CreateList<IDockable>();
-                            dock.VisibleDockables.Add(dockable);
-                            dock.ActiveDockable = dockable;
+                            target.Id = nameof(IToolDock);
+                            target.Title = nameof(IToolDock);
+                            if (target is IDock dock)
+                            {
+                                dock.VisibleDockables = CreateList<IDockable>();
+                                if (!(dock.VisibleDockables is null))
+                                {
+                                    dock.VisibleDockables.Add(dockable);
+                                    dock.ActiveDockable = dockable;
+                                }
+                            }
+                            topmost = true;
                         }
-
-                        topmost = true;
                     }
                     break;
                 case IDocument document:
                     {
                         target = CreateDocumentDock();
-                        target.Id = nameof(IDocumentDock);
-                        target.Title = nameof(IDocumentDock);
-
-                        if (target is IDock dock)
+                        if (!(target is null))
                         {
-                            dock.VisibleDockables = CreateList<IDockable>();
-                            dock.VisibleDockables.Add(dockable);
-                            dock.ActiveDockable = dockable;
+                            target.Id = nameof(IDocumentDock);
+                            target.Title = nameof(IDocumentDock);
+                            if (target is IDock dock)
+                            {
+                                dock.VisibleDockables = CreateList<IDockable>();
+                                if (!(dock.VisibleDockables is null))
+                                {
+                                    dock.VisibleDockables.Add(dockable);
+                                    dock.ActiveDockable = dockable;
+                                }
+                            }
+                            topmost = false;
                         }
-
-                        topmost = false;
                     }
                     break;
                 case IToolDock tooolDock:
@@ -738,9 +793,12 @@ namespace Dock.Model
             root.Id = nameof(IRootDock);
             root.Title = nameof(IRootDock);
             root.VisibleDockables = CreateList<IDockable>();
-            root.VisibleDockables.Add(target);
-            root.ActiveDockable = target;
-            root.DefaultDockable = target;
+            if (!(root.VisibleDockables is null) && !(target is null))
+            {
+                root.VisibleDockables.Add(target);
+                root.ActiveDockable = target;
+                root.DefaultDockable = target;
+            }
             root.Owner = null;
 
             var window = CreateDockWindow();
@@ -760,13 +818,13 @@ namespace Dock.Model
         public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {
             var rootDock = FindRoot(dock);
-            if (rootDock == null)
+            if (rootDock is null)
             {
                 return;
             }
             RemoveDockable(dockable, true);
             var window = CreateWindowFrom(dockable);
-            if (window != null)
+            if (!(window is null))
             {
                 AddWindow(rootDock, window);
                 window.X = x;

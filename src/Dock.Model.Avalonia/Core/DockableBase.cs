@@ -26,26 +26,26 @@ namespace Dock.Model
         /// <summary>
         /// Defines the <see cref="Context"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockableBase, object> ContextProperty =
-            AvaloniaProperty.RegisterDirect<DockableBase, object>(nameof(Context), o => o.Context, (o, v) => o.Context = v);
+        public static readonly DirectProperty<DockableBase, object?> ContextProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, object?>(nameof(Context), o => o.Context, (o, v) => o.Context = v);
 
         /// <summary>
         /// Defines the <see cref="Owner"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockableBase, IDockable> OwnerProperty =
-            AvaloniaProperty.RegisterDirect<DockableBase, IDockable>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
+        public static readonly DirectProperty<DockableBase, IDockable?> OwnerProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, IDockable?>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
 
         /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
-        public static readonly DirectProperty<DockableBase, IFactory> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<DockableBase, IFactory>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
+        public static readonly DirectProperty<DockableBase, IFactory?> FactoryProperty =
+            AvaloniaProperty.RegisterDirect<DockableBase, IFactory?>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
 
-        private string _id;
-        private string _title;
-        private object _context;
-        private IDockable _owner;
-        private IFactory _factory;
+        private string _id = string.Empty;
+        private string _title = string.Empty;
+        private object? _context;
+        private IDockable? _owner;
+        private IFactory? _factory;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -65,7 +65,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public object Context
+        public object? Context
         {
             get => _context;
             set => SetAndRaise(ContextProperty, ref _context, value);
@@ -73,7 +73,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IDockable Owner
+        public IDockable? Owner
         {
             get => _owner;
             set => SetAndRaise(OwnerProperty, ref _owner, value);
@@ -81,7 +81,7 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public IFactory Factory
+        public IFactory? Factory
         {
             get => _factory;
             set => SetAndRaise(FactoryProperty, ref _factory, value);
@@ -99,6 +99,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public abstract IDockable Clone();
+        public abstract IDockable? Clone();
     }
 }

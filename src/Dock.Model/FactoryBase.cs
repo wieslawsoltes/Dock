@@ -511,7 +511,7 @@ namespace Dock.Model
 
             int targetIndex = 0;
 
-            if (!(targetDock.VisibleDockables is null))
+            if (!(targetDock.VisibleDockables is null) && targetDock.VisibleDockables.Count > 0)
             {
                 if (!(targetDockable is null))
                 {
@@ -522,12 +522,12 @@ namespace Dock.Model
                     }
                     else
                     {
-                        targetIndex = targetDock.VisibleDockables.Count;
+                        targetIndex = targetDock.VisibleDockables.Count - 1;
                     }
                 }
                 else
                 {
-                    targetIndex = targetDock.VisibleDockables.Count;
+                    targetIndex = targetDock.VisibleDockables.Count - 1;
                 }
             }
 

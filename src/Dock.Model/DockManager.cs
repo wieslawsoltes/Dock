@@ -72,22 +72,20 @@ namespace Dock.Model
             return true;
         }
 
-        internal void SplitRemoveDockable(IDockable sourceDockable, IDock targetDock, DockOperation operation)
+        internal void SplitToolDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
         {
             if (targetDock.Factory is IFactory factory)
             {
-                factory.RemoveDockable(sourceDockable, true);
                 IDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();
-                toolDock.VisibleDockables.Add(sourceDockable);
-                toolDock.ActiveDockable = sourceDockable;
+                factory.MoveDockable(sourceDockableOwner, toolDock, sourceDockable, null);
                 factory.SplitToDock(targetDock, toolDock, operation);
             }
         }
 
-        internal void SplitMoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
+        internal void SplitDocumentDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
         {
             if (targetDock.Factory is IFactory factory)
             {
@@ -95,9 +93,7 @@ namespace Dock.Model
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
-                //documentDock.VisibleDockables.Add(sourceDockable);
-                //documentDock.ActiveDockable = sourceDockable;
-                factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, sourceDockable);
+                factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, null);
                 factory.SplitToDock(targetDock, documentDock, operation);
             }
         }
@@ -116,7 +112,7 @@ namespace Dock.Model
                     }
                     if (bExecute)
                     {
-                        SplitRemoveDockable(sourceDockable, targetDock, operation);
+                        SplitToolDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                     }
                     return true;
                 case IDocument _:
@@ -129,7 +125,7 @@ namespace Dock.Model
                     }
                     if (bExecute)
                     {
-                        SplitMoveDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
+                        SplitDocumentDockable(sourceDockable, sourceDockableOwner, targetDock, operation);
                     }
                     return true;
                 default:

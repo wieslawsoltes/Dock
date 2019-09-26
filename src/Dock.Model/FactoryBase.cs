@@ -542,7 +542,7 @@ namespace Dock.Model
                 }
                 else
                 {
-                    return;
+                    targetIndex = targetDock.VisibleDockables.Count;
                 }
             }
 

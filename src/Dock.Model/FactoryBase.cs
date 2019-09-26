@@ -498,28 +498,6 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
-        {
-            if (dock.VisibleDockables is null)
-            {
-                return;
-            }
-
-            int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
-            int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
-
-            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
-            {
-                var originalSourceDockable = dock.VisibleDockables[sourceIndex];
-                var originalTargetDockable = dock.VisibleDockables[targetIndex];
-
-                dock.VisibleDockables[targetIndex] = originalSourceDockable;
-                dock.VisibleDockables[sourceIndex] = originalTargetDockable;
-                dock.ActiveDockable = originalTargetDockable;
-            }
-        }
-
-        /// <inheritdoc/>
         public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)
         {
             if (targetDock.VisibleDockables is null)
@@ -556,6 +534,28 @@ namespace Dock.Model
                 targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
                 UpdateDockable(sourceDockable, targetDock);
                 targetDock.ActiveDockable = sourceDockable;
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
+        {
+            if (dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
+            int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
+
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
+            {
+                var originalSourceDockable = dock.VisibleDockables[sourceIndex];
+                var originalTargetDockable = dock.VisibleDockables[targetIndex];
+
+                dock.VisibleDockables[targetIndex] = originalSourceDockable;
+                dock.VisibleDockables[sourceIndex] = originalTargetDockable;
+                dock.ActiveDockable = originalTargetDockable;
             }
         }
 

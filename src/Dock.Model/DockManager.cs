@@ -144,13 +144,6 @@ namespace Dock.Model
                     }
                     if (sourceDockable.Owner is IDock sourceDockableOwner)
                     {
-                        //if (sourceDockableOwner is IDocumentDock)
-                        //{
-                        //    if (sourceDockableOwner.VisibleDockables?.Count == 1)
-                        //    {
-                        //        return false;
-                        //    }
-                        //}
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
                             if (factory.FindRoot(sourceDockable) is IRootDock root && root.ActiveDockable is IDock targetWindowOwner)
@@ -196,7 +189,7 @@ namespace Dock.Model
                     {
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
+                            factory.SwapDockable(sourceDockableOwner, sourceDockable, targetDockable);
                         }
                     }
                     return true;

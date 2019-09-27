@@ -509,38 +509,78 @@ namespace Dock.Model
                 }
             }
 
+            bool isSameOwner = sourceDock == targetDock;
+
             int targetIndex = 0;
 
-            if (!(targetDock.VisibleDockables is null) && targetDock.VisibleDockables.Count > 0)
+            if (!(sourceDock.VisibleDockables is null) && !(targetDock.VisibleDockables is null) && targetDock.VisibleDockables.Count > 0)
             {
-                if (!(targetDockable is null))
+                if (isSameOwner)
                 {
-                    targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
-                    if (targetIndex >= 0)
+                    int sourceIndex = sourceDock.VisibleDockables.IndexOf(sourceDockable);
+
+                    if (!(targetDockable is null))
                     {
-                        targetIndex += 1;
+                        targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
+                    }
+                    else
+                    {
+                        targetIndex = targetDock.VisibleDockables.Count - 1;
+                    }
+
+                    if (sourceIndex == targetIndex)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    if (!(targetDockable is null))
+                    {
+                        targetIndex = targetDock.VisibleDockables.IndexOf(targetDockable);
+                        if (targetIndex >= 0)
+                        {
+                            targetIndex += 1;
+                        }
+                        else
+                        {
+                            targetIndex = targetDock.VisibleDockables.Count - 1;
+                        }
                     }
                     else
                     {
                         targetIndex = targetDock.VisibleDockables.Count - 1;
                     }
                 }
+            }
+
+            if (!(sourceDock.VisibleDockables is null) && !(targetDock.VisibleDockables is null))
+            {
+                if (isSameOwner)
+                {
+                    int sourceIndex = sourceDock.VisibleDockables.IndexOf(sourceDockable);
+                    if (sourceIndex < targetIndex)
+                    {
+                        targetDock.VisibleDockables.Insert(targetIndex + 1, sourceDockable);
+                        targetDock.VisibleDockables.RemoveAt(sourceIndex);
+                    }
+                    else
+                    {
+                        int removeIndex = sourceIndex + 1;
+                        if (targetDock.VisibleDockables.Count + 1 > removeIndex)
+                        {
+                            targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
+                            targetDock.VisibleDockables.RemoveAt(removeIndex);
+                        }
+                    }
+                }
                 else
                 {
-                    targetIndex = targetDock.VisibleDockables.Count - 1;
+                    RemoveDockable(sourceDockable, true);
+                    targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
+                    UpdateDockable(sourceDockable, targetDock);
+                    targetDock.ActiveDockable = sourceDockable;
                 }
-            }
-
-            if (sourceDockable?.Owner is IDock dock && !(dock.VisibleDockables is null))
-            {
-                RemoveDockable(sourceDockable, sourceDock != targetDock);
-            }
-
-            if (!(targetDock.VisibleDockables is null) && !(sourceDockable is null))
-            {
-                targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
-                UpdateDockable(sourceDockable, targetDock);
-                targetDock.ActiveDockable = sourceDockable;
             }
         }
 

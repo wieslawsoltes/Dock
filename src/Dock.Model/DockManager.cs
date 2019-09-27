@@ -189,7 +189,7 @@ namespace Dock.Model
                     {
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            factory.SwapDockable(sourceDockableOwner, sourceDockable, targetDockable);
+                            factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
                         }
                     }
                     return true;

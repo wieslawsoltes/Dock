@@ -200,6 +200,14 @@ namespace Dock.Model
         void CloseDockable(IDockable dockable);
 
         /// <summary>
+        /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.
+        /// </summary>
+        /// <param name="dock">The dock.</param>
+        /// <param name="sourceDockable">The source dockable.</param>
+        /// <param name="targetDockable">The target dockable.</param>
+        void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
+
+        /// <summary>
         /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="sourceDock">The source dock.</param>

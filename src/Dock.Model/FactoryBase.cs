@@ -479,6 +479,25 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
+        public virtual void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
+        {
+            if (dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            int sourceIndex = dock.VisibleDockables.IndexOf(sourceDockable);
+            int targetIndex = dock.VisibleDockables.IndexOf(targetDockable);
+
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
+            {
+                dock.VisibleDockables.RemoveAt(sourceIndex);
+                dock.VisibleDockables.Insert(targetIndex, sourceDockable);
+                dock.ActiveDockable = sourceDockable;
+            }
+        }
+
+        /// <inheritdoc/>
         public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)
         {
             if (targetDock.VisibleDockables is null)

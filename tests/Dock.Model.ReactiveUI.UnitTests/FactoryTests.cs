@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
+using System.Collections.ObjectModel;
 using Dock.Model.Controls;
 using ReactiveUI.Legacy;
 using Xunit;
@@ -22,9 +23,7 @@ namespace Dock.Model.ReactiveUI.UnitTests
             var factory = new TestFactory();
             var actual = factory.CreateList<IDockable>();
             Assert.NotNull(actual);
-#pragma warning disable CS0618 // Type or member is obsolete
-            Assert.IsType<ReactiveList<IDockable>>(actual);
-#pragma warning restore CS0618 // Type or member is obsolete
+            Assert.IsType<ObservableCollection<IDockable>>(actual);
             Assert.Equal(0, actual.Count);
         }
 

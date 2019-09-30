@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -23,9 +24,7 @@ namespace Notepad
         {
             var mainWindowViewModel = new MainWindowViewModel();
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            mainWindowViewModel.Serializer = new DockSerializer(typeof(ReactiveList<>));
-#pragma warning restore CS0618 // Type or member is obsolete
+            mainWindowViewModel.Serializer = new DockSerializer(typeof(ObservableCollection<>));
 
             var factory = new NotepadFactory();
             IDock? layout = null;

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Dock.Model.Controls;
 using ReactiveUI.Legacy;
 
@@ -14,9 +15,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            return new ReactiveList<T>(items);
-#pragma warning restore CS0618 // Type or member is obsolete
+            return new ObservableCollection<T>(items);
         }
 
         /// <inheritdoc/>

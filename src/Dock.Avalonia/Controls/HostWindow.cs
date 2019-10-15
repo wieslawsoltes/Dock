@@ -191,40 +191,46 @@ namespace Dock.Avalonia.Controls
 
             if (_topHorizontalGrip != null && _topHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.North);
+                BeginResizeDrag(WindowEdge.North, e);
             }
             else if (_bottomHorizontalGrip != null && _bottomHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.South);
+                BeginResizeDrag(WindowEdge.South, e);
             }
             else if (_leftVerticalGrip != null && _leftVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.West);
+                BeginResizeDrag(WindowEdge.West, e);
             }
             else if (_rightVerticalGrip != null && _rightVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.East);
+                BeginResizeDrag(WindowEdge.East, e);
             }
             else if (_topLeftGrip != null && _topLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthWest);
+                BeginResizeDrag(WindowEdge.NorthWest, e);
             }
             else if (_bottomLeftGrip != null && _bottomLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthWest);
+                BeginResizeDrag(WindowEdge.SouthWest, e);
             }
             else if (_topRightGrip != null && _topRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthEast);
+                BeginResizeDrag(WindowEdge.NorthEast, e);
             }
             else if (_bottomRightGrip != null && _bottomRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthEast);
+                BeginResizeDrag(WindowEdge.SouthEast, e);
             }
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
                 _startPoint = e.GetPosition(this);
+
+                if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && !s_useCustomDrag)
+                {
+                    BeginMoveDrag(e);
+                    _mouseDown = false;
+                }
             }
             else
             {
@@ -256,12 +262,6 @@ namespace Dock.Avalonia.Controls
                     double y = this.Position.Y + delta.Y;
                     Position = this.Position.WithX((int)x).WithY((int)y);
                     _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
-                }
-                else
-                {
-                    WindowState = WindowState.Normal;
-                    BeginMoveDrag();
-                    _mouseDown = false;
                 }
             }
         }

@@ -79,39 +79,45 @@ namespace Dock.Avalonia.Controls
         {
             if (_topHorizontalGrip != null && _topHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.North);
+                BeginResizeDrag(WindowEdge.North, e);
             }
             else if (_bottomHorizontalGrip != null && _bottomHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.South);
+                BeginResizeDrag(WindowEdge.South, e);
             }
             else if (_leftVerticalGrip != null && _leftVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.West);
+                BeginResizeDrag(WindowEdge.West, e);
             }
             else if (_rightVerticalGrip != null && _rightVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.East);
+                BeginResizeDrag(WindowEdge.East, e);
             }
             else if (_topLeftGrip != null && _topLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthWest);
+                BeginResizeDrag(WindowEdge.NorthWest, e);
             }
             else if (_bottomLeftGrip != null && _bottomLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthWest);
+                BeginResizeDrag(WindowEdge.SouthWest, e);
             }
             else if (_topRightGrip != null && _topRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthEast);
+                BeginResizeDrag(WindowEdge.NorthEast, e);
             }
             else if (_bottomRightGrip != null && _bottomRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthEast);
+                BeginResizeDrag(WindowEdge.SouthEast, e);
             }
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
                 _mouseDown = true;
+
+                if(e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+                {
+                    BeginMoveDrag(e);
+                    _mouseDown = false;
+                }
             }
             else
             {
@@ -126,18 +132,6 @@ namespace Dock.Avalonia.Controls
         {
             _mouseDown = false;
             base.OnPointerReleased(e);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnPointerMoved(PointerEventArgs e)
-        {
-            if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
-            {
-                WindowState = WindowState.Normal;
-                BeginMoveDrag();
-                _mouseDown = false;
-            }
-            base.OnPointerMoved(e);
         }
 
         /// <inheritdoc/>

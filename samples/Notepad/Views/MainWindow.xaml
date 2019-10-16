@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:views="clr-namespace:Notepad.Views;assembly=Notepad"
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
@@ -10,6 +11,7 @@
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource ThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
-        Title="Notepad" Height="600" Width="900">
+        Title="Notepad" Height="600" Width="900"
+        id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
     <views:MainView/>
 </Window>

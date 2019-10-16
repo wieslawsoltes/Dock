@@ -7,8 +7,7 @@
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="680"
-             id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
+             d:DesignWidth="1280" d:DesignHeight="680">
     <!--<UserControl.Styles>
         <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.xaml"/>
     </UserControl.Styles>-->

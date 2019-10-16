@@ -25,13 +25,13 @@
         <MenuItem Header="_Options">
             <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $self.(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
                 </MenuItem.Icon>
             </MenuItem>
             <Separator/>
             <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $self.(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>

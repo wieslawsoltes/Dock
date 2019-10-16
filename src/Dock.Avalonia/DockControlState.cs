@@ -138,6 +138,11 @@ namespace Dock.Avalonia
                         var dragControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
                         if (dragControl != null)
                         {
+                            bool isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
+                            if (isDragEnabled != true)
+                            {
+                                break;
+                            }
                             Debug.WriteLine($"Drag : {point} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
                             _dragControl = dragControl;
                             _dropControl = null;
@@ -156,7 +161,17 @@ namespace Dock.Avalonia
                         {
                             if (_dropControl != null && _targetDockControl != null)
                             {
-                                Drop(_targetPoint, dragAction, _targetDockControl);
+                                bool isDropEnabled = true;
+
+                                if (_targetDockControl is IControl targetControl)
+                                {
+                                    isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                                }
+
+                                if (isDropEnabled == true)
+                                {
+                                    Drop(_targetPoint, dragAction, _targetDockControl);
+                                }
                             }
                             else
                             {
@@ -232,12 +247,37 @@ namespace Dock.Avalonia
 
                             if (dropControl != null && targetDockControl != null)
                             {
-                                Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
-                                if (_dropControl == dropControl)
+                                bool isDropEnabled = true;
+
+                                if (targetDockControl is IControl targetControl)
                                 {
-                                    _targetPoint = targetPoint;
-                                    _targetDockControl = targetDockControl;
-                                    Over(targetPoint, dragAction, targetDockControl);
+                                    isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                                }
+
+                                Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                
+                                if (isDropEnabled)
+                                {
+                                    if (_dropControl == dropControl)
+                                    {
+                                        _targetPoint = targetPoint;
+                                        _targetDockControl = targetDockControl;
+                                        Over(targetPoint, dragAction, targetDockControl);
+                                    }
+                                    else
+                                    {
+                                        if (_dropControl != null)
+                                        {
+                                            Leave();
+                                            _dropControl = null;
+                                        }
+
+                                        _dropControl = dropControl;
+                                        _targetPoint = targetPoint;
+                                        _targetDockControl = targetDockControl;
+
+                                        Enter(targetPoint, dragAction, targetDockControl);
+                                    }
                                 }
                                 else
                                 {
@@ -245,13 +285,9 @@ namespace Dock.Avalonia
                                     {
                                         Leave();
                                         _dropControl = null;
+                                        _targetPoint = default;
+                                        _targetDockControl = null;
                                     }
-
-                                    _dropControl = dropControl;
-                                    _targetPoint = targetPoint;
-                                    _targetDockControl = targetDockControl;
-
-                                    Enter(targetPoint, dragAction, targetDockControl);
                                 }
                             }
                             else

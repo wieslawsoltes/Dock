@@ -17,7 +17,6 @@ namespace Dock.Avalonia.Controls
     public class ProportionalStackPanelSplitter : Thumb
     {
         private Size _previousParentSize;
-        private bool _initialised;
 
         /// <summary>
         /// Defines the Proportion attached property.
@@ -50,22 +49,6 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
             AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(Thickness), 4.0);
-
-        /// <summary>
-        /// Defines the <see cref="ProportionalResize"/> property.
-        /// </summary>
-        public static readonly StyledProperty<bool> ProportionalResizeProperty =
-            AvaloniaProperty.Register<ProportionalStackPanelSplitter, bool>(nameof(ProportionalResize), true);
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to resize elements proportionally.
-        /// </summary>
-        /// <remarks>Set to <c>false</c> if you don't want the element to be resized when the parent is resized.</remarks>
-        public bool ProportionalResize
-        {
-            get => GetValue(ProportionalResizeProperty);
-            set => SetValue(ProportionalResizeProperty, value);
-        }
 
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
@@ -113,34 +96,6 @@ namespace Dock.Avalonia.Controls
 
             _previousParentSize = panel.Bounds.Size;
 
-            panel.LayoutUpdated += (sender, ee) =>
-            {
-                if (!this.ProportionalResize)
-                {
-                    return;
-                }
-
-                var target = GetTargetElement();
-
-                if (_initialised && target != null && target.IsArrangeValid && target.IsMeasureValid)
-                {
-                    var dSize = new Size(panel.Bounds.Size.Width / _previousParentSize.Width, panel.Bounds.Size.Height / _previousParentSize.Height);
-
-                    if (!double.IsNaN(dSize.Width) && !double.IsInfinity(dSize.Width))
-                    {
-                        SetTargetWidth((target.DesiredSize.Width * dSize.Width) - target.DesiredSize.Width, panel, target);
-                    }
-
-                    if (!double.IsInfinity(dSize.Height) && !double.IsNaN(dSize.Height))
-                    {
-                        SetTargetHeight((target.DesiredSize.Height * dSize.Height) - target.DesiredSize.Height, panel, target);
-                    }
-                }
-
-                _previousParentSize = panel.Bounds.Size;
-                _initialised = true;
-            };
-
             UpdateHeightOrWidth();
         }
 
@@ -177,56 +132,28 @@ namespace Dock.Avalonia.Controls
             targetElementProportion += dProportion;
             neighbourProportion -= dProportion;
 
+            var minProportion = GetValue(DockProperties.MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+
+            if (targetElementProportion < minProportion)
+            {
+                dProportion = targetElementProportion - minProportion;
+                neighbourProportion += dProportion;
+                targetElementProportion -= dProportion;
+
+            }
+            else if (neighbourProportion < minProportion)
+            {
+                dProportion = neighbourProportion - minProportion;
+                neighbourProportion -= dProportion;
+                targetElementProportion += dProportion;
+            }
+
             SetProportion(target, targetElementProportion);
 
             SetProportion(child, neighbourProportion);
 
             panel.InvalidateMeasure();
             panel.InvalidateArrange();
-        }
-
-        private void SetTargetHeight(double dy, ProportionalStackPanel panel, Control target)
-        {
-            double height = target.Height + dy;
-
-            if (height < target.MinHeight)
-            {
-                height = target.MinHeight;
-            }
-
-            if (height > target.MaxHeight)
-            {
-                height = target.MaxHeight;
-            }
-
-            if (panel.Orientation == Orientation.Vertical && height > panel.DesiredSize.Height - Thickness)
-            {
-                height = panel.DesiredSize.Height - Thickness;
-            }
-
-            target.Height = height;
-        }
-
-        private void SetTargetWidth(double dx, ProportionalStackPanel panel, Control target)
-        {
-            double width = target.Width + dx;
-
-            if (width < target.MinWidth)
-            {
-                width = target.MinWidth;
-            }
-
-            if (width > target.MaxWidth)
-            {
-                width = target.MaxWidth;
-            }
-
-            if (panel.Orientation == Orientation.Horizontal && width > panel.DesiredSize.Width - Thickness)
-            {
-                width = panel.DesiredSize.Width - Thickness;
-            }
-
-            target.Width = width;
         }
 
         private void UpdateHeightOrWidth()

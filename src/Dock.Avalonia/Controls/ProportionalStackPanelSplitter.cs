@@ -1,4 +1,4 @@
-// Copyright (c) Wiesław Šoltés. All rights reserved.
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using Avalonia;
 using Avalonia.Controls;
@@ -48,7 +48,7 @@ namespace Dock.Avalonia.Controls
         /// Defines the <see cref="Thickness"/> property.
         /// </summary>
         public static readonly StyledProperty<double> ThicknessProperty =
-            AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(Thickness), 4.0);        
+            AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(Thickness), 4.0);
 
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
@@ -131,6 +131,22 @@ namespace Dock.Avalonia.Controls
 
             targetElementProportion += dProportion;
             neighbourProportion -= dProportion;
+
+            var minProportion = 75 / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+
+            if (targetElementProportion < minProportion)
+            {
+                dProportion = targetElementProportion - minProportion;
+                neighbourProportion += dProportion;
+                targetElementProportion -= dProportion;
+
+            }
+            else if (neighbourProportion < minProportion)
+            {
+                dProportion = neighbourProportion - minProportion;
+                neighbourProportion -= dProportion;
+                targetElementProportion += dProportion;
+            }
 
             SetProportion(target, targetElementProportion);
 

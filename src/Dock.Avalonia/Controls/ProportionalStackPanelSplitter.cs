@@ -61,32 +61,6 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <summary>
-        /// Defines the MinimumProportionSize attached property.
-        /// </summary>
-        public static readonly AttachedProperty<double> MinimumProportionSizeProperty =
-            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("MinimumProportionSize", 75, true);
-
-        /// <summary>
-        /// Gets the value of the MinimumProportion attached property on the specified control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <returns>The minimum size a proportion can be resized to.</returns>
-        public static double GetMinimumProportionSize(IControl control)
-        {
-            return control.GetValue(MinimumProportionSizeProperty);
-        }
-
-        /// <summary>
-        /// Sets the value of the MinimumProportionSize attached property on the specified control.
-        /// </summary>
-        /// <param name="control">The control.</param>
-        /// <param name="value">The minimum size a proportion can be resized to.</param>
-        public static void SetMinimumProportionSize(IControl control, double value)
-        {
-            control.SetValue(MinimumProportionSizeProperty, value);
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ProportionalStackPanelSplitter" /> class.
         /// </summary>
         public ProportionalStackPanelSplitter()
@@ -158,7 +132,7 @@ namespace Dock.Avalonia.Controls
             targetElementProportion += dProportion;
             neighbourProportion -= dProportion;
 
-            var minProportion = this.GetValue(MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+            var minProportion = GetValue(DockProperties.MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
             if (targetElementProportion < minProportion)
             {

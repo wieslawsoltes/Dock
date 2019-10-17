@@ -36,6 +36,32 @@ namespace Dock.Avalonia
             AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
         /// <summary>
+        /// Defines the MinimumProportionSize attached property.
+        /// </summary>
+        public static readonly AttachedProperty<double> MinimumProportionSizeProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, IControl, double>("MinimumProportionSize", 75, true);
+
+        /// <summary>
+        /// Gets the value of the MinimumProportion attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The minimum size a proportion can be resized to.</returns>
+        public static double GetMinimumProportionSize(IControl control)
+        {
+            return control.GetValue(MinimumProportionSizeProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the MinimumProportionSize attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The minimum size a proportion can be resized to.</param>
+        public static void SetMinimumProportionSize(IControl control, double value)
+        {
+            control.SetValue(MinimumProportionSizeProperty, value);
+        }
+
+        /// <summary>
         /// Gets the value of the IsDragArea attached property on the specified control.
         /// </summary>
         /// <param name="control">The control.</param>

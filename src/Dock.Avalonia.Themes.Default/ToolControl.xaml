@@ -17,7 +17,6 @@
                         </Style>
                         <Style Selector="Border.panel">
                             <Setter Property="Margin" Value="0" />
-                            <Setter Property="Padding" Value="4" />
                             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                             <Setter Property="BorderThickness" Value="1 0 1 1" />
                         </Style>

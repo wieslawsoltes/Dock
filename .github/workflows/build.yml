@@ -15,7 +15,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-2019, ubuntu-18.04, macOS-10.14]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,8 +39,8 @@ jobs:
         path: ./artifacts/NuGet
 
   publish-windows:
-    name: Publish windows-2019
-    runs-on: windows-2019
+    name: Publish windows-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
@@ -80,8 +80,8 @@ jobs:
         path: ./artifacts/Notepad-netcoreapp3.0-win7-x64
 
   publish-ubuntu:
-    name: Publish ubuntu-18.04
-    runs-on: ubuntu-18.04
+    name: Publish ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
@@ -107,8 +107,8 @@ jobs:
         path: ./artifacts/AvaloniaDemo-netcoreapp3.0-ubuntu.14.04-x64
 
   publish-macOS:
-    name: Publish macOS-10.14
-    runs-on: macOS-10.14
+    name: Publish macOS-latest
+    runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core

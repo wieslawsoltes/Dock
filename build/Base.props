@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionPrefix>0.9.2</VersionPrefix>
+    <VersionPrefix>0.9.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>
     <Description>A docking layout system.</Description>
-    <Copyright>Copyright © Wiesław Šoltés 2019</Copyright>
+    <Copyright>Copyright © Wiesław Šoltés 2020</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
     <PackageTags>dock;docking;layout;avalonia</PackageTags>

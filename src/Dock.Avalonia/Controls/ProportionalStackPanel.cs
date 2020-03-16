@@ -133,7 +133,17 @@ namespace Dock.Avalonia.Controls
         {
             if (constraint == Size.Infinity)
             {
-                throw new Exception("Proportional StackPanel cannot be inside a component of unlimited size (like ScrollViewer or ListBox).");
+                AssignProportions();
+
+                foreach (Control element in GetChildren())
+                {
+                    if (element is ProportionalStackPanelSplitter)
+                    {
+                        element.Measure(Size.Infinity);
+                    }
+                }
+
+                return new Size();
             }
 
             double usedWidth = 0.0;

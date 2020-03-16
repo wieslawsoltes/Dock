@@ -131,84 +131,17 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
-            if (constraint == Size.Infinity)
-            {
-                throw new Exception("Proportional StackPanel cannot be inside a component of unlimited size (like ScrollViewer or ListBox).");
-            }
-
-            double usedWidth = 0.0;
-            double usedHeight = 0.0;
-            double maximumWidth = 0.0;
-            double maximumHeight = 0.0;
-
-            var splitterThickness = GetTotalSplitterThickness();
-
             AssignProportions();
 
-            // Measure each of the Children
             foreach (Control element in GetChildren())
             {
-                // Get the child's desired size
-                Size remainingSize = new Size(
-                    Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
-                    Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
-
-                var proportion = ProportionalStackPanelSplitter.GetProportion(element);
-
-                if (!(element is ProportionalStackPanelSplitter))
+                if (element is ProportionalStackPanelSplitter)
                 {
-                    switch (Orientation)
-                    {
-                        case Orientation.Horizontal:
-                            element.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterThickness) * proportion)));
-                            break;
-
-                        case Orientation.Vertical:
-                            element.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterThickness) * proportion)));
-                            break;
-                    }
-                }
-                else
-                {
-                    element.Measure(remainingSize);
-                }
-
-                var desiredSize = element.DesiredSize;
-
-                // Decrease the remaining space for the rest of the children
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                        maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
-
-                        if (element is ProportionalStackPanelSplitter)
-                        {
-                            usedWidth += desiredSize.Width;
-                        }
-                        else
-                        {
-                            usedWidth += Math.Max(0, (constraint.Width - splitterThickness) * proportion);
-                        }
-                        break;
-                    case Orientation.Vertical:
-                        maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
-
-                        if (element is ProportionalStackPanelSplitter)
-                        {
-                            usedHeight += desiredSize.Height;
-                        }
-                        else
-                        {
-                            usedHeight += Math.Max(0, (constraint.Height - splitterThickness) * proportion);
-                        }
-                        break;
+                    element.Measure(Size.Infinity);
                 }
             }
 
-            maximumWidth = Math.Max(maximumWidth, usedWidth);
-            maximumHeight = Math.Max(maximumHeight, usedHeight);
-            return new Size(maximumWidth, maximumHeight);
-
+            return new Size();
         }
 
         /// <inheritdoc/>

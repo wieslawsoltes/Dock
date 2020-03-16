@@ -42,8 +42,8 @@ namespace Dock.Avalonia.UnitTests.Controls
 
             Assert.Equal(new Size(300, 100), target.Bounds.Size);
             Assert.Equal(new Rect(0, 0, 148, 100), target.Children[0].Bounds);
-            Assert.Equal(new Rect(148, 0, 0, 100), target.Children[1].Bounds);
-            Assert.Equal(new Rect(148, 0, 148, 100), target.Children[2].Bounds);
+            Assert.Equal(new Rect(148, 0, 4, 100), target.Children[1].Bounds);
+            Assert.Equal(new Rect(152, 0, 148, 100), target.Children[2].Bounds);
         }
 
         [Fact]
@@ -67,8 +67,8 @@ namespace Dock.Avalonia.UnitTests.Controls
 
             Assert.Equal(new Size(100, 300), target.Bounds.Size);
             Assert.Equal(new Rect(0, 0, 100, 148), target.Children[0].Bounds);
-            Assert.Equal(new Rect(0, 148, 100, 0), target.Children[1].Bounds);
-            Assert.Equal(new Rect(0, 148, 100, 148), target.Children[2].Bounds);
+            Assert.Equal(new Rect(0, 148, 100, 4), target.Children[1].Bounds);
+            Assert.Equal(new Rect(0, 152, 100, 148), target.Children[2].Bounds);
         }
 
         [Fact]
@@ -153,10 +153,10 @@ namespace Dock.Avalonia.UnitTests.Controls
 
             Assert.Equal(new Size(1000, 500), target.Bounds.Size);
             Assert.Equal(new Rect(0, 0, 331, 500), target.Children[0].Bounds);
-            Assert.Equal(new Rect(330, 0, 0, 500), target.Children[1].Bounds);
-            Assert.Equal(new Rect(330, 0, 331, 500), target.Children[2].Bounds);
-            Assert.Equal(new Rect(661, 0, 0, 500), target.Children[3].Bounds);
-            Assert.Equal(new Rect(661, 0, 331, 500), target.Children[4].Bounds);
+            Assert.Equal(new Rect(330, 0, 4, 500), target.Children[1].Bounds);
+            Assert.Equal(new Rect(334, 0, 331, 500), target.Children[2].Bounds);
+            Assert.Equal(new Rect(665, 0, 4, 500), target.Children[3].Bounds);
+            Assert.Equal(new Rect(669, 0, 331, 500), target.Children[4].Bounds);
         }
 
         [Fact]

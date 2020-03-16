@@ -83,6 +83,23 @@ namespace Dock.Avalonia.Controls
             }
         }
 
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (GetPanel() is ProportionalStackPanel panel)
+            {
+                if (panel.Orientation == Orientation.Vertical)
+                {
+                    return new Size(0, Thickness);
+                }
+                else
+                {
+                    return new Size(Thickness, 0);
+                }
+            }
+
+            return new Size();
+        }
+
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {

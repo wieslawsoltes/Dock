@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <VersionPrefix>0.9.4</VersionPrefix>
+    <VersionPrefix>0.9.4.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>

@@ -83,6 +83,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         protected override Size MeasureOverride(Size availableSize)
         {
             if (GetPanel() is ProportionalStackPanel panel)

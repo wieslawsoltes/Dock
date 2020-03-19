@@ -23,13 +23,13 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsChromeVisibleProperty =
+        public static readonly StyledProperty<bool> IsChromeVisibleProperty =
             AvaloniaProperty.Register<HostWindow, bool>(nameof(IsChromeVisible), true);
 
         /// <summary>
         /// Defines the <see cref="TitleBarContent"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+        public static readonly StyledProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<HostWindow, Control>(nameof(TitleBarContent));
 
         /// <summary>
@@ -81,8 +81,6 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindow()
         {
-            this.AttachDevTools();
-
             AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

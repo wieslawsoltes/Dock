@@ -26,13 +26,13 @@ namespace Dock.Avalonia
         /// <summary>
         /// Define IsDragEnabled attached property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsDragEnabledProperty =
+        public static readonly StyledProperty<bool> IsDragEnabledProperty =
             AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
 
         /// <summary>
         /// Define IsDropEnabled attached property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsDropEnabledProperty =
+        public static readonly StyledProperty<bool> IsDropEnabledProperty =
             AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
         /// <summary>

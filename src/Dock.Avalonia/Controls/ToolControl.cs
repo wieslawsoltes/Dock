@@ -16,20 +16,17 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class ToolControl : TemplatedControl
     {
-        private IDisposable? _disposable;
-
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            _disposable = AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         /// <inheritdoc/>
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
-            _disposable?.Dispose();
         }
 
         private void Pressed(object sender, PointerPressedEventArgs e)

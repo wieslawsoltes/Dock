@@ -32,13 +32,13 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsChromeVisibleProperty =
+        public static readonly StyledProperty<bool> IsChromeVisibleProperty =
             AvaloniaProperty.Register<MetroWindow, bool>(nameof(IsChromeVisible), true);
 
         /// <summary>
         /// Defines the <see cref="TitleBarContent"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+        public static readonly StyledProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
         /// <summary>

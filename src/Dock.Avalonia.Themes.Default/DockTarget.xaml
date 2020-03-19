@@ -14,11 +14,11 @@
                     <Grid Background="Purple" ColumnSpan="2" RowSpan="2" Opacity="0" Name="PART_CenterIndicator" />
                     <Grid RowSpan="2" ColumnSpan="2">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
-                            <Image Name="PART_TopSelector" Source="avares://Dock.Avalonia.Themes.Default/Assets/DockAnchorableTop.png" Height="40" Width="40" Grid.Column="1" />
-                            <Image Name="PART_BottomSelector" Source="avares://Dock.Avalonia.Themes.Default/Assets/DockAnchorableBottom.png" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
-                            <Image Name="PART_LeftSelector" Source="avares://Dock.Avalonia.Themes.Default/Assets/DockAnchorableLeft.png" Height="40" Width="40" Grid.Row="1" />
-                            <Image Name="PART_RightSelector" Source="avares://Dock.Avalonia.Themes.Default/Assets/DockAnchorableRight.png" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
-                            <Image Name="PART_CenterSelector" Source="avares://Dock.Avalonia.Themes.Default/Assets/DockDocumentInside.png" Height="40" Width="40" Grid.Row="1" Grid.Column="1" />
+                            <Image Name="PART_TopSelector" Source="/Assets/DockAnchorableTop.png" Height="40" Width="40" Grid.Column="1" />
+                            <Image Name="PART_BottomSelector" Source="/Assets/DockAnchorableBottom.png" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
+                            <Image Name="PART_LeftSelector" Source="/Assets/DockAnchorableLeft.png" Height="40" Width="40" Grid.Row="1" />
+                            <Image Name="PART_RightSelector" Source="/Assets/DockAnchorableRight.png" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
+                            <Image Name="PART_CenterSelector" Source="/Assets/DockDocumentInside.png" Height="40" Width="40" Grid.Row="1" Grid.Column="1" />
                         </Grid>
                     </Grid>
                 </Grid>

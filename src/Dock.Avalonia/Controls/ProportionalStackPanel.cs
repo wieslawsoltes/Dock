@@ -37,6 +37,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (c is ContentPresenter cp)
                 {
+                    cp.UpdateChild();
                     return cp.Child;
                 }
                 else

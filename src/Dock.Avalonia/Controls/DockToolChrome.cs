@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
@@ -17,22 +18,25 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockToolChrome : ContentControl
     {
-        static DockToolChrome()
-        {
-            PseudoClass<DockToolChrome>(IsActiveProperty, ":active");
-        }
-
         /// <summary>
         /// Define <see cref="Title"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<string> TitleProprty =
+        public static readonly StyledProperty<string> TitleProprty =
             AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
 
         /// <summary>
         /// Define the <see cref="IsActive"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsActiveProperty =
+        public static readonly StyledProperty<bool> IsActiveProperty =
             AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
+
+        /// <summary>
+        /// Initialize the new instance of the <see cref="DockToolChrome"/>.
+        /// </summary>
+        public DockToolChrome()
+        {
+            UpdatePseudoClasses(IsActive);
+        }
 
         /// <summary>
         /// Gets or sets chrome tool title.
@@ -56,20 +60,17 @@ namespace Dock.Avalonia.Controls
 
         internal Button? CloseButton { get; private set; }
 
-        private IDisposable? _disposable;
-
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            _disposable = AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         /// <inheritdoc/>
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
-            _disposable?.Dispose();
         }
 
         private void Pressed(object sender, PointerPressedEventArgs e)
@@ -101,6 +102,26 @@ namespace Dock.Avalonia.Controls
 
                 this.PseudoClasses.Set(":floating", true);
             }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged<T>(
+            AvaloniaProperty<T> property,
+            Optional<T> oldValue,
+            BindingValue<T> newValue,
+            BindingPriority priority)
+        {
+            base.OnPropertyChanged(property, oldValue, newValue, priority);
+
+            if (property == IsActiveProperty)
+            {
+                UpdatePseudoClasses(newValue.GetValueOrDefault<bool>());
+            }
+        }
+
+        private void UpdatePseudoClasses(bool isActive)
+        {
+            PseudoClasses.Set(":active", isActive);
         }
     }
 }

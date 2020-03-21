@@ -9,6 +9,7 @@
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
         <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
         <Setter Property="HasSystemDecorations" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="WindowState" Value="Normal" />

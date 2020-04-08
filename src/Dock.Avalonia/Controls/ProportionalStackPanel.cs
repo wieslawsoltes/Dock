@@ -140,10 +140,6 @@ namespace Dock.Avalonia.Controls
                 {
                     element.Measure(Size.Infinity);
                 }
-                else
-                {
-                    element.Measure(constraint);
-                }
             }
 
             return new Size();

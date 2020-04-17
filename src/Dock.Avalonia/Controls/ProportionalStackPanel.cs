@@ -131,19 +131,13 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
-            if (constraint == Size.Infinity)
+            var horizontal = Orientation == Orientation.Horizontal;
+
+            if (constraint == Size.Infinity 
+                || (horizontal && double.IsInfinity(constraint.Width)) 
+                || (!horizontal && double.IsInfinity(constraint.Height)))
             {
-                AssignProportions();
-
-                foreach (Control element in GetChildren())
-                {
-                    if (element is ProportionalStackPanelSplitter)
-                    {
-                        element.Measure(Size.Infinity);
-                    }
-                }
-
-                return new Size();
+                throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");                
             }
 
             double usedWidth = 0.0;
@@ -213,16 +207,12 @@ namespace Dock.Avalonia.Controls
                         }
                         break;
                 }
-                else
-                {
-                    element.Measure(constraint);
-                }
             }
 
             maximumWidth = Math.Max(maximumWidth, usedWidth);
             maximumHeight = Math.Max(maximumHeight, usedHeight);
-            return new Size(maximumWidth, maximumHeight);
 
+            return new Size(maximumWidth, maximumHeight);
         }
 
         /// <inheritdoc/>

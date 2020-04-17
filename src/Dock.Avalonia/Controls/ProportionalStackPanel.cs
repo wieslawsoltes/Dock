@@ -131,21 +131,88 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size constraint)
         {
+            var horizontal = Orientation == Orientation.Horizontal;
+
+            if (constraint == Size.Infinity 
+                || (horizontal && double.IsInfinity(constraint.Width)) 
+                || (!horizontal && double.IsInfinity(constraint.Height)))
+            {
+                throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");                
+            }
+
+            double usedWidth = 0.0;
+            double usedHeight = 0.0;
+            double maximumWidth = 0.0;
+            double maximumHeight = 0.0;
+
+            var splitterThickness = GetTotalSplitterThickness();
+
             AssignProportions();
 
+            // Measure each of the Children
             foreach (Control element in GetChildren())
             {
-                if (element is ProportionalStackPanelSplitter)
+                // Get the child's desired size
+                Size remainingSize = new Size(
+                    Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
+                    Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
+
+                var proportion = ProportionalStackPanelSplitter.GetProportion(element);
+
+                if (!(element is ProportionalStackPanelSplitter))
                 {
-                    element.Measure(Size.Infinity);
+                    switch (Orientation)
+                    {
+                        case Orientation.Horizontal:
+                            element.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterThickness) * proportion)));
+                            break;
+
+                        case Orientation.Vertical:
+                            element.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterThickness) * proportion)));
+                            break;
+                    }
                 }
                 else
                 {
-                    element.Measure(constraint);
+                    element.Measure(remainingSize);
+                }
+
+                var desiredSize = element.DesiredSize;
+
+                // Decrease the remaining space for the rest of the children
+                switch (Orientation)
+                {
+                    case Orientation.Horizontal:
+                        maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
+
+                        if (element is ProportionalStackPanelSplitter)
+                        {
+                            usedWidth += desiredSize.Width;
+                        }
+                        else
+                        {
+                            usedWidth += Math.Max(0, (constraint.Width - splitterThickness) * proportion);
+                        }
+                        break;
+                    case Orientation.Vertical:
+                        maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
+
+                        if (element is ProportionalStackPanelSplitter)
+                        {
+                            usedHeight += desiredSize.Height;
+                        }
+                        else
+                        {
+                            usedHeight += Math.Max(0, (constraint.Height - splitterThickness) * proportion);
+                        }
+                        break;
                 }
             }
 
-            return new Size();
+            maximumWidth = Math.Max(maximumWidth, usedWidth);
+            maximumHeight = Math.Max(maximumHeight, usedHeight);
+
+            return new Size(maximumWidth, maximumHeight);
         }
 
         /// <inheritdoc/>

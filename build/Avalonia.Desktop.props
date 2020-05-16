@@ -3,6 +3,5 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="0.9.999-cibuild*" />
     <PackageReference Include="Avalonia.Angle.Windows.Natives" Version="2.1.0.2019013001" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="1.68.1" />
   </ItemGroup>
 </Project>

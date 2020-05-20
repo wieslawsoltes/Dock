@@ -135,9 +135,9 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
 
             _titleBar = e.NameScope.Find<Grid>("PART_TitleBar");
             _minimiseButton = e.NameScope.Find<Button>("PART_MinimiseButton");

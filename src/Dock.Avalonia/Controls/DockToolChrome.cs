@@ -89,9 +89,9 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
 
             if (VisualRoot is HostWindow window)
             {
@@ -105,17 +105,13 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(
-            AvaloniaProperty<T> property,
-            Optional<T> oldValue,
-            BindingValue<T> newValue,
-            BindingPriority priority)
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);
+            base.OnPropertyChanged(change);
 
-            if (property == IsActiveProperty)
+            if (change.Property == IsActiveProperty)
             {
-                UpdatePseudoClasses(newValue.GetValueOrDefault<bool>());
+                UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
             }
         }
 

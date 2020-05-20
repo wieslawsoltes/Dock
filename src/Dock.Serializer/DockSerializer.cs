@@ -63,7 +63,7 @@ namespace Dock.Serializer
 
         public T Deserialize<T>(string text)
         {
-            return JsonConvert.DeserializeObject<T>(text, _settings);
+            return JsonConvert.DeserializeObject<T>(text, _settings)!;
         }
 
         public T Load<T>(string path)

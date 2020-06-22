@@ -153,8 +153,8 @@ namespace Dock.Avalonia.UnitTests.Controls
 
             Assert.Equal(new Size(1000, 500), target.Bounds.Size);
             Assert.Equal(new Rect(0, 0, 331, 500), target.Children[0].Bounds);
-            Assert.Equal(new Rect(330, 0, 4, 500), target.Children[1].Bounds);
-            Assert.Equal(new Rect(334, 0, 331, 500), target.Children[2].Bounds);
+            Assert.Equal(new Rect(331, 0, 4, 500), target.Children[1].Bounds);
+            Assert.Equal(new Rect(335, 0, 331, 500), target.Children[2].Bounds);
             Assert.Equal(new Rect(665, 0, 4, 500), target.Children[3].Bounds);
             Assert.Equal(new Rect(669, 0, 331, 500), target.Children[4].Bounds);
         }

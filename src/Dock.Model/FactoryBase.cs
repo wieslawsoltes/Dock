@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Dock.Model.Controls;
 
 namespace Dock.Model
@@ -153,6 +154,23 @@ namespace Dock.Model
 
             if (dockable is IRootDock rootDock)
             {
+                if(rootDock.Top != null)
+                {
+                    UpdateDockable(rootDock.Top, dockable);
+                }
+                if (rootDock.Left != null)
+                {
+                    UpdateDockable(rootDock.Left, dockable);
+                }
+                if (rootDock.Right != null)
+                {
+                    UpdateDockable(rootDock.Right, dockable);
+                }
+                if (rootDock.Bottom != null)
+                {
+                    UpdateDockable(rootDock.Bottom, dockable);
+                }
+
                 if (!(rootDock.Windows is null))
                 {
                     foreach (var child in rootDock.Windows)
@@ -316,19 +334,27 @@ namespace Dock.Model
             return null;
         }
 
-        private IPinDock PinClosestPinDock(IRootDock root, IDockable dockable)
+        private IPinDock? FindClosestPinDock(IDockable dockable)
         {
-            // TODO: Find closest pin dock to the dockable (Top, Bottom, Left or Right).
-
-            if (root.Left is null)
+            while (dockable.Owner != null)
             {
-                root.Left = CreatePinDock();
-                root.Left.Alignment = Alignment.Left;
-                root.Left.IsExpanded = false;
-                root.Left.AutoHide = true;
+                if (dockable.Owner is IRootDock dock)
+                {
+                    // TODO: Choose most revelant dock, currently random for demonstration purposes
+                    var docks = new[] { dock.Left, dock.Right, dock.Top, dock.Bottom }.Where(n => n != null).ToArray();
+                    if(docks.Length > 0)
+                    {
+                        IPinDock? pinDock = docks[new Random().Next(0, docks.Length)];
+                        if (pinDock != null)
+                        {
+                            return pinDock;
+                        }
+                    }
+                }
+                dockable = dockable.Owner;
             }
 
-            return root.Left;
+            return null;
         }
 
         private void PinDockable(IPinDock pinDock, IDockable dockable)
@@ -347,14 +373,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void PinDockable(IDockable dockable)
         {
-            // TODO: Implement dockable pinning.
-
-            if (FindRoot(dockable) is IRootDock root)
+            if (dockable.Owner is IPinDock pinContainer)
             {
-                if (PinClosestPinDock(root, dockable) is IPinDock pinDock)
-                {
-                    PinDockable(pinDock, dockable);
-                }
+                pinContainer.AutoHide = !pinContainer.AutoHide;
+            }
+            else if (FindClosestPinDock(dockable) is IPinDock pinDock)
+            {
+                PinDockable(pinDock, dockable);
             }
         }
 

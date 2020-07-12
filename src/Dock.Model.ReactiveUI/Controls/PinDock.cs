@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using ReactiveUI;
+using System;
 
 namespace Dock.Model.Controls
 {
@@ -44,6 +45,28 @@ namespace Dock.Model.Controls
         {
             Id = nameof(IPinDock);
             Title = nameof(IPinDock);
+
+            this.ObservableForProperty(n => n.IsActive)
+                .Subscribe(isActive =>
+                {
+                    if(AutoHide)
+                    {
+                        IsExpanded = isActive.Value;
+                    }
+                });
+            this.ObservableForProperty(n => n.AutoHide)
+                .Subscribe(autoHide =>
+                {
+                    IsExpanded = true;
+                });
+            this.ObservableForProperty(n => n.ActiveDockable)
+                .Subscribe(activeDockable =>
+                {
+                    if(VisibleDockables?.Count == 0)
+                    {
+                        IsActive = false;
+                    }
+                });
         }
 
         /// <inheritdoc/>

@@ -9,6 +9,8 @@
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/ToolControl.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/NavigationControl.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockControl.xaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/PinDockControl.xaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/PinHostControl.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/HostWindow.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/MetroWindow.xaml"/>
     <Style>

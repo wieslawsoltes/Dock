@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using System.Reactive.Disposables;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
@@ -22,7 +23,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            _disposable = AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            _disposable = this.AddDisposableHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         /// <inheritdoc/>

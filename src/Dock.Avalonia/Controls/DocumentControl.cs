@@ -22,7 +22,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            _disposable = AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            _disposable = this.AddDisposableHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         /// <inheritdoc/>

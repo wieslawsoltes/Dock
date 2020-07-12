@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 using System;
 using System.Diagnostics;
+using System.Reactive.Linq;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -9,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
 using Dock.Model.Controls;
+using System.Reactive;
 
 namespace Dock.Avalonia.Controls
 {
@@ -17,21 +20,24 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockToolChrome : ContentControl
     {
-        static DockToolChrome()
+        public DockToolChrome()
         {
-            PseudoClass<DockToolChrome>(IsActiveProperty, ":active");
+            this.GetObservable(IsActiveProperty).Select(x => {
+                PseudoClasses.Set(":active", x);
+                return new Unit();
+                }).Subscribe();
         }
 
         /// <summary>
         /// Define <see cref="Title"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<string> TitleProprty =
+        public static readonly StyledProperty<string> TitleProprty =
             AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
 
         /// <summary>
         /// Define the <see cref="IsActive"/> property.
         /// </summary>
-        public static readonly AvaloniaProperty<bool> IsActiveProperty =
+        public static readonly StyledProperty<bool> IsActiveProperty =
             AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
 
         /// <summary>
@@ -62,7 +68,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            _disposable = AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            _disposable = this.AddDisposableHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         /// <inheritdoc/>

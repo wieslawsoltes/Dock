@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Dock.Model.Controls
 {
@@ -17,7 +18,7 @@ namespace Dock.Model.Controls
         public Alignment Alignment
         {
             get => _alignment;
-            set => this.RaiseAndSetIfChanged(ref _alignment, value);
+            set => RaiseAndSetIfChanged(ref _alignment, value);
         }
 
         /// <inheritdoc/>
@@ -25,7 +26,7 @@ namespace Dock.Model.Controls
         public bool IsExpanded
         {
             get => _isExpanded;
-            set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
+            set => RaiseAndSetIfChanged(ref _isExpanded, value);
         }
 
         /// <inheritdoc/>
@@ -33,7 +34,7 @@ namespace Dock.Model.Controls
         public bool AutoHide
         {
             get => _autoHide;
-            set => this.RaiseAndSetIfChanged(ref _autoHide, value);
+            set => RaiseAndSetIfChanged(ref _autoHide, value);
         }
 
         /// <summary>
@@ -43,6 +44,30 @@ namespace Dock.Model.Controls
         {
             Id = nameof(IPinDock);
             Title = nameof(IPinDock);
+
+            PropertyChanged += PinDock_PropertyChanged;
+        }
+
+        private void PinDock_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(IsActive):
+                    if (AutoHide)
+                    {
+                        IsExpanded = IsActive;
+                    }
+                    break;
+                case nameof(AutoHide):
+                    IsExpanded = true;
+                    break;
+                case nameof(ActiveDockable):
+                    if (VisibleDockables?.Count == 0)
+                    {
+                        IsActive = false;
+                    }
+                    break;
+            }
         }
 
         /// <inheritdoc/>

@@ -1,0 +1,107 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+
+    <Style Selector="idc|PinHostControl">
+        <Style.Resources>
+            <converters:PinDockToGridLengthConverter x:Key="PinDockToGridLengthConverter"/>
+        </Style.Resources>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel Background="Transparent">
+                    <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
+                    <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
+                    <Grid>
+                        <Panel x:Name="LeftPanel"
+                               HorizontalAlignment="Left" DataContext="{Binding Left}" IsVisible="{Binding IsExpanded, FallbackValue=False}"
+                               Background="White" ZIndex="100">
+                            <idc:DockToolChrome IsActive="{Binding IsActive}" Content="{Binding ActiveDockable}"/>
+                        </Panel>
+                        <Panel x:Name="RightPanel"
+                               HorizontalAlignment="Right" DataContext="{Binding Right}" IsVisible="{Binding IsExpanded, FallbackValue=False}"
+                               Background="White" ZIndex="100">
+                            <idc:DockToolChrome IsActive="{Binding IsActive}" Content="{Binding ActiveDockable}"/>
+                        </Panel>
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition>
+                                    <ColumnDefinition.Width>
+                                        <MultiBinding Converter="{StaticResource PinDockToGridLengthConverter}">
+                                            <Binding Path="#LeftPanel.Bounds.Width"/>
+                                            <Binding Path="Left.IsExpanded"/>
+                                            <Binding Path="Left.AutoHide"/>
+                                        </MultiBinding>
+                                    </ColumnDefinition.Width>
+                                </ColumnDefinition>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition>
+                                    <ColumnDefinition.Width>
+                                        <MultiBinding Converter="{StaticResource PinDockToGridLengthConverter}">
+                                            <Binding Path="#RightPanel.Bounds.Width"/>
+                                            <Binding Path="Right.IsExpanded"/>
+                                            <Binding Path="Right.AutoHide"/>
+                                        </MultiBinding>
+                                    </ColumnDefinition.Width>
+                                </ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Panel Grid.Column="1">
+                                <DockPanel id:DockProperties.IsDropArea="False" Background="Transparent">
+                                    <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
+                                    <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
+                                    <Grid>
+                                        <Panel x:Name="TopPanel"
+                                               VerticalAlignment="Top" DataContext="{Binding Top}" IsVisible="{Binding IsExpanded, FallbackValue=False}"
+                                               Background="White" ZIndex="100">
+                                            <idc:DockToolChrome IsActive="{Binding IsActive}" Content="{Binding ActiveDockable}"/>
+                                        </Panel>
+                                        <Panel x:Name="BottomPanel"
+                                               VerticalAlignment="Bottom" DataContext="{Binding Bottom}" IsVisible="{Binding IsExpanded, FallbackValue=False}"
+                                               Background="White" ZIndex="100">
+                                            <idc:DockToolChrome IsActive="{Binding IsActive}" Content="{Binding ActiveDockable}"/>
+                                        </Panel>
+                                        <Grid Background="Transparent">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition>
+                                                    <RowDefinition.Height>
+                                                        <MultiBinding Converter="{StaticResource PinDockToGridLengthConverter}">
+                                                            <Binding Path="#TopPanel.Bounds.Height"/>
+                                                            <Binding Path="Top.IsExpanded"/>
+                                                            <Binding Path="Top.AutoHide"/>
+                                                        </MultiBinding>
+                                                    </RowDefinition.Height>
+                                                </RowDefinition>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition>
+                                                    <RowDefinition.Height>
+                                                        <MultiBinding Converter="{StaticResource PinDockToGridLengthConverter}">
+                                                            <Binding Path="#BottomPanel.Bounds.Height"/>
+                                                            <Binding Path="Bottom.IsExpanded"/>
+                                                            <Binding Path="Bottom.AutoHide"/>
+                                                        </MultiBinding>
+                                                    </RowDefinition.Height>
+                                                </RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Panel Name="ContentRoot" Grid.Row="1">
+                                                <ContentPresenter
+                                                                  Name="PART_ContentPresenter"
+                                                                  Background="{DynamicResource ThemeBackgroundBrush}"
+                                                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  Padding="{TemplateBinding Padding}" />
+                                            </Panel>
+                                        </Grid>
+                                    </Grid>
+                                </DockPanel>
+                            </Panel>
+                        </Grid>
+                    </Grid>
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

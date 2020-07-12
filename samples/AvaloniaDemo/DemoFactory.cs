@@ -209,7 +209,11 @@ namespace AvaloniaDemo
                 Id = "Home",
                 Title = "Home",
                 ActiveDockable = mainLayout,
-                VisibleDockables = CreateList<IDockable>(mainLayout)
+                VisibleDockables = CreateList<IDockable>(mainLayout),
+                Left = CreatePinDock(),
+                Right = CreatePinDock(),
+                Top = CreatePinDock(),
+                Bottom = CreatePinDock()
             };
 
             var root = CreateRootDock();

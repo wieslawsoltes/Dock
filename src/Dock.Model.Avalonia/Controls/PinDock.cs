@@ -62,6 +62,30 @@ namespace Dock.Model.Controls
         {
             Id = nameof(IPinDock);
             Title = nameof(IPinDock);
+
+            PropertyChanged += PinDock_PropertyChanged;
+        }
+
+        private void PinDock_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            switch (e.Property.Name)
+            {
+                case nameof(IsActive):
+                    if (AutoHide)
+                    {
+                        IsExpanded = IsActive;
+                    }
+                    break;
+                case nameof(AutoHide):
+                    IsExpanded = true;
+                    break;
+                case nameof(ActiveDockable):
+                    if (VisibleDockables?.Count == 0)
+                    {
+                        IsActive = false;
+                    }
+                    break;
+            }
         }
 
         /// <inheritdoc/>

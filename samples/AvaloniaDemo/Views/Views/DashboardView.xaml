@@ -12,7 +12,7 @@
             <TextBlock Text="{Binding Id}"/>
             <TextBlock Text="{Binding Title}"/>
             <TextBlock Text="{Binding Context}"/>
-            <Button Content="Home" Command="{Binding Context.Navigate}" CommandParameter="Home"/>
+            <Button Content="Home" Command="{Binding Context.Navigate}" CommandParameter="Home" x:CompileBindings="False"/>
         </StackPanel>
     </Grid>
 </UserControl>

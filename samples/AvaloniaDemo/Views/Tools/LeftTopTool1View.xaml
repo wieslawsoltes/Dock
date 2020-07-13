@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
+             xmlns:vm="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
              mc:Ignorable="d"
-             d:DesignWidth="300" d:DesignHeight="400">
+             d:DesignWidth="300" d:DesignHeight="400"
+             x:DataType="vm:LeftTopTool1ViewModel" x:CompileBindings="True">
     <Grid Focusable="True" Background="WhiteSmoke">
         <StackPanel>
             <TextBlock Text="{Binding Id}"/>

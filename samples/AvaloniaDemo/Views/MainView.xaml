@@ -29,7 +29,7 @@
                     </DataTemplate>
                 </ListBox.DataTemplates>
             </ListBox>
-            <TextBox Text="{Binding #visibleDockables.SelectedItem.Title}" Margin="4" Grid.Row="2"/>
+            <TextBox Text="{Binding #visibleDockables.SelectedItem.Title}" Margin="4" Grid.Row="2" x:CompileBindings="False"/>
         </Grid>
     </Grid>
 </UserControl>

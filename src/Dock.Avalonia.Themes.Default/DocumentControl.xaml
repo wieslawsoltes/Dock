@@ -9,7 +9,7 @@
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
+                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>
@@ -83,9 +83,9 @@
                                 <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
-                                        <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" />
+                                        <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
                                     </StackPanel>
-                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton">
+                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
                                         <Button.Styles>
                                             <Style Selector="Button">
                                                 <Setter Property="BorderThickness" Value="0"/>
@@ -99,7 +99,7 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+                    <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" x:CompileBindings="False" />
                     <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </Border>

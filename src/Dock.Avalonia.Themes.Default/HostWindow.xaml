@@ -17,7 +17,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{TemplateBinding Background}">
+                <Border Background="{TemplateBinding Background}" x:DataType="Dock:IHostWindow" x:CompileBindings="True">
                     <VisualLayerManager>
                         <ContentPresenter Name="PART_ContentPresenter"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -41,10 +41,10 @@
         <Setter Property="Margin" Value="0" />
     </Style>
     <Style Selector="idc|HostWindow">
-        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
+        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" x:CompileBindings="False" />
         <Setter Property="Content">
             <Template>
-                <idc:DockControl Layout="{Binding}"/>
+                <idc:DockControl Layout="{Binding}" x:DataType="Dock:IHostWindow" x:CompileBindings="True"/>
             </Template>
         </Setter>
     </Style>

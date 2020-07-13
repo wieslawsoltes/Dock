@@ -2,18 +2,19 @@
 <!-- Licensed under the MIT license. See LICENSE file in the project root for full license information. -->
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
     <Style Selector="idc|NavigationControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
-                    <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"/>
-                    <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"/>
-                    <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}" Grid.Column="2"/>
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" x:DataType="Dock:IDock" x:CompileBindings="True">
+                    <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" x:CompileBindings="False"/>
+                    <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1" x:CompileBindings="False"/>
+                    <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}" Grid.Column="2" x:CompileBindings="False"/>
                     <TextBox x:Name="Id" Text="" Grid.Column="3"/>
-                    <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4"/>
-                    <Button Content="ShowWindows" Command="{Binding ActiveDockable.ShowWindows}" Grid.Column="5"/>
-                    <Button Content="ExitWindows" Command="{Binding ActiveDockable.ExitWindows}" Grid.Column="6"/>
+                    <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="4" x:CompileBindings="False"/>
+                    <Button Content="ShowWindows" Command="{Binding ActiveDockable.ShowWindows}" Grid.Column="5" x:CompileBindings="False"/>
+                    <Button Content="ExitWindows" Command="{Binding ActiveDockable.ExitWindows}" Grid.Column="6" x:CompileBindings="False"/>
                 </Grid>
             </ControlTemplate>
         </Setter>

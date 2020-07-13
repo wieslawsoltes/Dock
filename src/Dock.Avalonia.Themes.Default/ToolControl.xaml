@@ -4,11 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="idc|ToolControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1">
+                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IToolDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent" />

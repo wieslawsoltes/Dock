@@ -3,7 +3,8 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
     <Style Selector="Button.chromeButton">
         <Setter Property="Margin" Value="2 0 0 0" />
         <Setter Property="Padding" Value="0" />
@@ -15,15 +16,15 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="25,*">
+                <Grid RowDefinitions="25,*" x:DataType="Dock:IDock" x:CompileBindings="True">
                     <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left" Text="{Binding ActiveDockable.Title}" HorizontalAlignment="Left" TextAlignment="Left" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" />
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding ActiveDockable}">
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding ActiveDockable.Title}" HorizontalAlignment="Left" TextAlignment="Left" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" x:CompileBindings="False" />
+                                <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding ActiveDockable}" x:CompileBindings="False">
                                     <Image Source="avares://Dock.Avalonia.Themes.Default/Assets/PinClose_Dark.png" Height="13" Width="13" Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Owner.Factory.PinDockable}" CommandParameter="{Binding ActiveDockable}">
+                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Owner.Factory.PinDockable}" CommandParameter="{Binding ActiveDockable}" x:CompileBindings="False">
                                     <Image Source="avares://Dock.Avalonia.Themes.Default/Assets/PinAutoHide_Dark.png" Height="13" Width="13" Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">

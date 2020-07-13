@@ -11,45 +11,45 @@
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Menu>
         <MenuItem Header="_File">
-            <MenuItem Header="_New" Command="{Binding FileNew}"/>
+            <MenuItem Header="_New" Command="{Binding FileNew}" x:CompileBindings="False"/>
             <Separator/>
-            <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
+            <MenuItem Header="_Open..." Command="{Binding FileOpen}" x:CompileBindings="False"/>
             <Separator/>
-            <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
+            <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}" x:CompileBindings="False"/>
         </MenuItem>
         <MenuItem Header="_View">
             <MenuItem Header="_Windows">
-                <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}"/>
+                <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
                 <Separator/>
-                <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}"/>
+                <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
             </MenuItem>
         </MenuItem>
         <MenuItem Header="_Options">
             <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False" x:CompileBindings="False"/>
                 </MenuItem.Icon>
             </MenuItem>
             <Separator/>
             <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False" x:CompileBindings="False"/>
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>
         <MenuItem Header="_Window">
-            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}"/>
-            <MenuItem Header="_Apply Window Layout" Items="{Binding Layout.VisibleDockables}">
+            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}" x:CompileBindings="False"/>
+            <MenuItem Header="_Apply Window Layout" Items="{Binding Layout.VisibleDockables}" x:CompileBindings="False">
                 <MenuItem.Styles>
                     <Style Selector="MenuItem">
                         <Setter Property="Header" Value="{Binding Title}"/>
-                        <Setter Property="Command" Value="{Binding $parent.DataContext.ApplyWindowLayout}"/>
+                        <Setter Property="Command" Value="{Binding $parent.DataContext.ApplyWindowLayout}" x:CompileBindings="False"/>
                         <Setter Property="CommandParameter" Value="{Binding}"/>
                     </Style>
                 </MenuItem.Styles>
             </MenuItem>
-            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding Layout}"/>
-            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}"/>
+            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding Layout}" x:CompileBindings="False"/>
+            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}" x:CompileBindings="False"/>
         </MenuItem>
     </Menu>
 </UserControl>

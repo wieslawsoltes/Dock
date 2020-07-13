@@ -6,19 +6,21 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
+             xmlns:vm="clr-namespace:AvaloniaDemo.ViewModels;assembly=AvaloniaDemo"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="680">
+             d:DesignWidth="1280" d:DesignHeight="680"
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Grid RowDefinitions="Auto,Auto,*,25" ColumnDefinitions="*,200" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
         <idc:DockControl x:Name="dockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2" Grid.Column="0"/>
-        <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:CompileBindings="False"/>
         <Grid RowDefinitions="Auto,*,Auto" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
             <StackPanel Grid.Row="0">
-                <Button Content="Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2"/>
-                <Button Content="Apply Window Layout" Command="{Binding ApplyWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2"/>
-                <Button Content="Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding #dockControl.Layout}" Margin="4,2"/>
-                <Button Content="Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2"/>
+                <Button Content="Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2" x:CompileBindings="False"/>
+                <Button Content="Apply Window Layout" Command="{Binding ApplyWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2" x:CompileBindings="False"/>
+                <Button Content="Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding #dockControl.Layout}" Margin="4,2" x:CompileBindings="False"/>
+                <Button Content="Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding #visibleDockables.SelectedItem}" Margin="4,2" x:CompileBindings="False"/>
             </StackPanel>
             <ListBox x:Name="visibleDockables" Items="{Binding #dockControl.Layout.VisibleDockables}" Margin="4" Grid.Row="1">
                 <ListBox.DataTemplates>

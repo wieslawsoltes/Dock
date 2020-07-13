@@ -17,7 +17,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" x:CompileBindings="True">
+                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" x:DataType="Dock:IHostWindow" x:CompileBindings="True">
                     <VisualLayerManager>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
@@ -97,10 +97,10 @@
         <Setter Property="Margin" Value="0" />
     </Style>
     <Style Selector="idc|HostWindow">
-        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" x:CompileBindings="True"/>
+        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" x:CompileBindings="False"/>
         <Setter Property="Content">
             <Template>
-                <idc:DockControl Layout="{Binding}" x:CompileBindings="True"/>
+                <idc:DockControl Layout="{Binding}" x:DataType="Dock:IHostWindow" x:CompileBindings="True"/>
             </Template>
         </Setter>
     </Style>

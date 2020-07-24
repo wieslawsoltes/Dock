@@ -26,8 +26,8 @@ namespace Dock.Avalonia.Controls
         private Button? _closeButton;
         private Button? _minimiseButton;
         private Button? _restoreButton;
-        private Image? _icon;
-        private bool _mouseDown;
+        //private Image? _icon;
+        //private bool _mouseDown;
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -111,17 +111,17 @@ namespace Dock.Avalonia.Controls
             }
             else if (_titleBar != null && _titleBar.IsPointerOver)
             {
-                _mouseDown = true;
+                //_mouseDown = true;
 
                 if(e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                 {
                     BeginMoveDrag(e);
-                    _mouseDown = false;
+                    //_mouseDown = false;
                 }
             }
             else
             {
-                _mouseDown = false;
+                //_mouseDown = false;
             }
 
             base.OnPointerPressed(e);
@@ -130,7 +130,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            _mouseDown = false;
+            //_mouseDown = false;
             base.OnPointerReleased(e);
         }
 
@@ -143,7 +143,7 @@ namespace Dock.Avalonia.Controls
             _minimiseButton = e.NameScope.Find<Button>("PART_MinimiseButton");
             _restoreButton = e.NameScope.Find<Button>("PART_RestoreButton");
             _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
-            _icon = e.NameScope.Find<Image>("PART_Icon");
+            //_icon = e.NameScope.Find<Image>("PART_Icon");
 
             _topHorizontalGrip = e.NameScope.Find<Grid>("PART_TopHorizontalGrip");
             _bottomHorizontalGrip = e.NameScope.Find<Grid>("PART_BottomHorizontalGrip");

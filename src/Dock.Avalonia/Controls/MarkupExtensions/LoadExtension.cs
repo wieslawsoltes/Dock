@@ -36,8 +36,7 @@ namespace Dock.Avalonia.Controls
             if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext)
             {
                 var baseUri = uriContext.BaseUri;
-                var loader = new AvaloniaXamlLoader();
-                var obj = loader.Load(Source, baseUri);
+                var obj = AvaloniaXamlLoader.Load(Source, baseUri);
                 return obj;
             }
             return default;

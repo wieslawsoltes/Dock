@@ -1,26 +1,26 @@
 ﻿using System.Runtime.Serialization;
 using Avalonia;
 using Avalonia.Metadata;
-using Dock.Model.Controls;
 
-namespace AvaloniaDemo.Controls
+namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Static tool.
+    /// Static document.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class StaticTool : Tool
+    public class StaticDocument : Document
     {
         /// <summary>
         /// Defines the <see cref="Content"/> property.
         /// </summary>
         public static readonly StyledProperty<object> ContentProperty =
-            AvaloniaProperty.Register<Tool, object>(nameof(Content));
+            AvaloniaProperty.Register<Document, object>(nameof(Content));
 
         /// <summary>
         /// Gets or sets the content to display.
         /// </summary>
         [Content]
+        [IgnoreDataMember]
         public object Content
         {
             get { return GetValue(ContentProperty); }

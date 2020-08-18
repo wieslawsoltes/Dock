@@ -25,7 +25,6 @@
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
-  <Import Project="..\..\build\Newtonsoft.Json.props" />
 
   <ItemGroup>
     <Compile Include="**\*.cs" Exclude="obj\**" />
@@ -37,12 +36,9 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Metro\Dock.Avalonia.Themes.Metro.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Avalonia.Static\Dock.Model.Avalonia.Static.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\" />
   </ItemGroup>
 
 </Project>

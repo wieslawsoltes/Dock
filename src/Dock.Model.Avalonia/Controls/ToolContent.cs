@@ -5,16 +5,16 @@ using Avalonia.Metadata;
 namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Static tool.
+    /// Tool content.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class StaticTool : Tool
+    public class ToolContent : Tool, IToolContent
     {
         /// <summary>
         /// Defines the <see cref="Content"/> property.
         /// </summary>
         public static readonly StyledProperty<object> ContentProperty =
-            AvaloniaProperty.Register<Tool, object>(nameof(Content));
+            AvaloniaProperty.Register<ToolContent, object>(nameof(Content));
 
         /// <summary>
         /// Gets or sets the content to display.

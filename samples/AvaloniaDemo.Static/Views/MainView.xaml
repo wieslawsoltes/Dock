@@ -6,7 +6,6 @@
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
-             xmlns:static="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia.Static"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680">
     <idc:DockControl x:Name="dockControl" Classes="Default">
@@ -26,7 +25,7 @@
             <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
                 <dmc:ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
                     <dmc:ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
-                        <static:StaticTool x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1">
+                        <dmc:ToolContent x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -34,8 +33,8 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
-                        <static:StaticTool x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2">
+                        </dmc:ToolContent>
+                        <dmc:ToolContent x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -43,11 +42,11 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
+                        </dmc:ToolContent>
                     </dmc:ToolDock>
                     <dmc:SplitterDock x:Name="LeftPaneTopSplitter" Id="LeftPaneTopSplitter" Title="LeftPaneTopSplitter" />
                     <dmc:ToolDock x:Name="LeftPaneBottom" Id="LeftPaneBottom" Title="LeftPaneBottom" Proportion="NaN" ActiveDockable="{Binding #LeftBottom1}">
-                        <static:StaticTool x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1">
+                        <dmc:ToolContent x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -55,8 +54,8 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
-                        <static:StaticTool x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2">
+                        </dmc:ToolContent>
+                        <dmc:ToolContent x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -64,12 +63,12 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
+                        </dmc:ToolContent>
                     </dmc:ToolDock>
                 </dmc:ProportionalDock>
                 <dmc:SplitterDock x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
                 <dmc:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
-                    <static:StaticDocument x:Name="Document1" Id="Document1" Title="Document1">
+                    <dmc:DocumentContent x:Name="Document1" Id="Document1" Title="Document1">
                         <Grid Background="WhiteSmoke">
                             <StackPanel>
                                 <TextBlock Text="{Binding Id}"/>
@@ -77,8 +76,8 @@
                                 <TextBlock Text="{Binding Context}"/>
                             </StackPanel>
                         </Grid>
-                    </static:StaticDocument>
-                    <static:StaticDocument x:Name="Document2" Id="Document2" Title="Document2">
+                    </dmc:DocumentContent>
+                    <dmc:DocumentContent x:Name="Document2" Id="Document2" Title="Document2">
                         <Grid Background="WhiteSmoke">
                             <StackPanel>
                                 <TextBlock Text="{Binding Id}"/>
@@ -86,12 +85,12 @@
                                 <TextBlock Text="{Binding Context}"/>
                             </StackPanel>
                         </Grid>
-                    </static:StaticDocument>
+                    </dmc:DocumentContent>
                 </dmc:DocumentDock>
                 <dmc:SplitterDock x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter"/>
                 <dmc:ProportionalDock x:Name="RightPane" Id="RightPane" Title="RightPane" Proportion="NaN" Orientation="Vertical">
                     <dmc:ToolDock x:Name="RightPaneTop" Id="RightPaneTop" Title="RightPaneTop" Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
-                        <static:StaticTool x:Name="RightTop1" Id="RightTop1" Title="RightTop1">
+                        <dmc:ToolContent x:Name="RightTop1" Id="RightTop1" Title="RightTop1">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -99,8 +98,8 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
-                        <static:StaticTool x:Name="RightTop2" Id="RightTop2" Title="RightTop2">
+                        </dmc:ToolContent>
+                        <dmc:ToolContent x:Name="RightTop2" Id="RightTop2" Title="RightTop2">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -108,11 +107,11 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
+                        </dmc:ToolContent>
                     </dmc:ToolDock>
                     <dmc:SplitterDock x:Name="RightPaneTopSplitter" Id="RightPaneTopSplitter" Title="RightPaneTopSplitter"/>
                     <dmc:ToolDock x:Name="RightPaneBottom" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="NaN" ActiveDockable="{Binding #RightBottom1}">
-                        <static:StaticTool x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1">
+                        <dmc:ToolContent x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -120,8 +119,8 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
-                        <static:StaticTool x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2">
+                        </dmc:ToolContent>
+                        <dmc:ToolContent x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2">
                             <Grid Background="WhiteSmoke">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Id}"/>
@@ -129,7 +128,7 @@
                                     <TextBlock Text="{Binding Context}"/>
                                 </StackPanel>
                             </Grid>
-                        </static:StaticTool>
+                        </dmc:ToolContent>
                     </dmc:ToolDock>
                 </dmc:ProportionalDock>
             </dmc:ProportionalDock>

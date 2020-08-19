@@ -5,16 +5,16 @@ using Avalonia.Metadata;
 namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Static document.
+    /// Document content.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class StaticDocument : Document
+    public class DocumentContent : Document, IDocumentContent
     {
         /// <summary>
         /// Defines the <see cref="Content"/> property.
         /// </summary>
         public static readonly StyledProperty<object> ContentProperty =
-            AvaloniaProperty.Register<Document, object>(nameof(Content));
+            AvaloniaProperty.Register<DocumentContent, object>(nameof(Content));
 
         /// <summary>
         /// Gets or sets the content to display.

@@ -37,7 +37,6 @@
                                         <WrapPanel ClipToBounds="False" />
                                     </ItemsPanelTemplate>
                                 </Setter>
-                                <Setter Property="MaxHeight" Value="24" />
                             </Style>
                             <Style Selector="TabStripItem">
                                 <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />

@@ -22,7 +22,7 @@ namespace Dock.Avalonia.Controls
         public static readonly StyledProperty<IDock> LayoutProperty =
             AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
 
-        private DockControlState _dockControlState = new DockControlState();
+        private readonly DockControlState _dockControlState = new DockControlState();
 
         /// <summary>
         /// Gets or sets the dock layout.

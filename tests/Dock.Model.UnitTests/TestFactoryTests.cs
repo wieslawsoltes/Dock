@@ -1,5 +1,6 @@
-﻿using Xunit;
+﻿using System;
 using Dock.Model.Controls;
+using Xunit;
 
 namespace Dock.Model.UnitTests
 {
@@ -26,6 +27,11 @@ namespace Dock.Model.UnitTests
         {
             var actual = new TestFactory();
             var layout = actual.CreateLayout();
+            Assert.NotNull(layout);
+            if (layout == null)
+            {
+                throw new Exception("The CreateLayout method returned null.");
+            }
             actual.InitLayout(layout);
             Assert.NotNull(actual);
             Assert.NotNull(actual.ContextLocator);

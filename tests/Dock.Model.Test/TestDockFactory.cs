@@ -6,7 +6,7 @@ namespace Dock.Model
 {
     public class TestFactory : Factory
     {
-        public override IDock CreateLayout()
+        public override IDock? CreateLayout()
         {
             var document1 = new Document1ViewModel
             {

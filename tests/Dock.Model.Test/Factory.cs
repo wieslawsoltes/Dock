@@ -4,11 +4,17 @@ using Dock.Model.Controls;
 
 namespace Dock.Model
 {
-    public abstract class Factory : FactoryBase
+    public class Factory : FactoryBase
     {
         public override IList<T> CreateList<T>(params T[] items) => new List<T>(items);
 
-        public override IRootDock CreateRootDock() => new RootDock();
+        public override IRootDock CreateRootDock() => new RootDock()
+        {
+            Top = new PinDock() { Alignment = Alignment.Top },
+            Bottom = new PinDock() { Alignment = Alignment.Bottom },
+            Left = new PinDock() { Alignment = Alignment.Left },
+            Right = new PinDock() { Alignment = Alignment.Right }
+        };
 
         public override IPinDock CreatePinDock() => new PinDock();
 
@@ -21,5 +27,7 @@ namespace Dock.Model
         public override IDocumentDock CreateDocumentDock() => new DocumentDock();
 
         public override IDockWindow CreateDockWindow() => new DockWindow();
+
+        public override IDock? CreateLayout() => CreateRootDock();
     }
 }

@@ -99,14 +99,6 @@ namespace Notepad
             root.VisibleDockables = CreateList<IDockable>(windowLayout);
             root.ActiveDockable = windowLayout;
             root.DefaultDockable = windowLayout;
-            root.Top = CreatePinDock();
-            root.Top.Alignment = Alignment.Top;
-            root.Bottom = CreatePinDock();
-            root.Bottom.Alignment = Alignment.Bottom;
-            root.Left = CreatePinDock();
-            root.Left.Alignment = Alignment.Left;
-            root.Right = CreatePinDock();
-            root.Right.Alignment = Alignment.Right;
 
             return root;
         }

@@ -40,15 +40,15 @@ namespace Dock.Model.INPC.UnitTests
 
             Assert.NotNull(rootDock?.Bottom);
             Assert.IsType<PinDock>(rootDock?.Bottom);
-            Assert.Equal(Alignment.Bottom, rootDock?.Top?.Alignment);
+            Assert.Equal(Alignment.Bottom, rootDock?.Bottom?.Alignment);
 
             Assert.NotNull(rootDock?.Left);
             Assert.IsType<PinDock>(rootDock?.Left);
-            Assert.Equal(Alignment.Left, rootDock?.Top?.Alignment);
+            Assert.Equal(Alignment.Left, rootDock?.Left?.Alignment);
 
             Assert.NotNull(rootDock?.Right);
             Assert.IsType<PinDock>(rootDock?.Right);
-            Assert.Equal(Alignment.Right, rootDock?.Top?.Alignment);
+            Assert.Equal(Alignment.Right, rootDock?.Right?.Alignment);
         }
 
         [Fact]

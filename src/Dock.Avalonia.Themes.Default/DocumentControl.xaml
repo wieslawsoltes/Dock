@@ -45,7 +45,6 @@
                     <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
-                                <Setter Property="MaxHeight" Value="24" />
                                 <Setter Property="ItemsPanel">
                                     <ItemsPanelTemplate>
                                         <WrapPanel ClipToBounds="False" />

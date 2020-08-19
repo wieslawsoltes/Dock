@@ -40,6 +40,6 @@ namespace Dock.Model
         public override IDockWindow CreateDockWindow() => new DockWindow();
 
         /// <inheritdoc/>
-        public override IDock? CreateLayout() => new RootDock();
+        public override IDock? CreateLayout() => CreateRootDock();
     }
 }

@@ -31,6 +31,24 @@ namespace Dock.Model.INPC.UnitTests
             var actual = factory.CreateRootDock();
             Assert.NotNull(actual);
             Assert.IsType<RootDock>(actual);
+
+            var rootDock = actual as IRootDock;
+
+            Assert.NotNull(rootDock?.Top);
+            Assert.IsType<PinDock>(rootDock?.Top);
+            Assert.Equal(Alignment.Top, rootDock?.Top?.Alignment);
+
+            Assert.NotNull(rootDock?.Bottom);
+            Assert.IsType<PinDock>(rootDock?.Bottom);
+            Assert.Equal(Alignment.Bottom, rootDock?.Top?.Alignment);
+
+            Assert.NotNull(rootDock?.Left);
+            Assert.IsType<PinDock>(rootDock?.Left);
+            Assert.Equal(Alignment.Left, rootDock?.Top?.Alignment);
+
+            Assert.NotNull(rootDock?.Right);
+            Assert.IsType<PinDock>(rootDock?.Right);
+            Assert.Equal(Alignment.Right, rootDock?.Top?.Alignment);
         }
 
         [Fact]
@@ -94,24 +112,6 @@ namespace Dock.Model.INPC.UnitTests
             var actual = factory.CreateLayout();
             Assert.NotNull(actual);
             Assert.IsType<RootDock>(actual);
-
-            var rootDock = actual as IRootDock;
-
-            Assert.NotNull(rootDock?.Top);
-            Assert.IsType<PinDock>(rootDock?.Top);
-            Assert.Equal(Alignment.Top, rootDock?.Top?.Alignment);
-
-            Assert.NotNull(rootDock?.Bottom);
-            Assert.IsType<PinDock>(rootDock?.Bottom);
-            Assert.Equal(Alignment.Bottom, rootDock?.Top?.Alignment);
-
-            Assert.NotNull(rootDock?.Left);
-            Assert.IsType<PinDock>(rootDock?.Left);
-            Assert.Equal(Alignment.Left, rootDock?.Top?.Alignment);
-
-            Assert.NotNull(rootDock?.Right);
-            Assert.IsType<PinDock>(rootDock?.Right);
-            Assert.Equal(Alignment.Right, rootDock?.Top?.Alignment);
         }
     }
 

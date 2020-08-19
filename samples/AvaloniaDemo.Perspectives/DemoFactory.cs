@@ -11,7 +11,7 @@ namespace AvaloniaDemo
 {
     public class DemoFactory : Factory
     {
-        public override IDock CreateLayout()
+        public override IDock? CreateLayout()
         {
             return new RootDock();
         }

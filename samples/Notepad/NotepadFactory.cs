@@ -12,7 +12,7 @@ namespace Notepad
 {
     public class NotepadFactory : Factory
     {
-        public override IDock CreateLayout()
+        public override IDock? CreateLayout()
         {
             var untitledFileViewModel = new FileViewModel()
             {

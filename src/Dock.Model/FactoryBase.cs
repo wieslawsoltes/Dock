@@ -44,7 +44,7 @@ namespace Dock.Model
         public abstract IDockWindow CreateDockWindow();
 
         /// <inheritdoc/>
-        public abstract IDock CreateLayout();
+        public abstract IDock? CreateLayout();
 
         /// <inheritdoc/>
         public virtual object? GetContext(string id)

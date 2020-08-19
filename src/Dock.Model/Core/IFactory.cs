@@ -78,7 +78,7 @@ namespace Dock.Model
         /// Creates layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock CreateLayout();
+        IDock? CreateLayout();
 
         /// <summary>
         /// Gets registered context.

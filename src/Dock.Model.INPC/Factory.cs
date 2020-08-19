@@ -7,13 +7,10 @@ namespace Dock.Model
     /// <summary>
     /// Factory.
     /// </summary>
-    public abstract class Factory : FactoryBase
+    public class Factory : FactoryBase
     {
         /// <inheritdoc/>
-        public override IList<T> CreateList<T>(params T[] items)
-        {
-            return new ObservableCollection<T>(items);
-        }
+        public override IList<T> CreateList<T>(params T[] items) => new ObservableCollection<T>(items);
 
         /// <inheritdoc/>
         public override IRootDock CreateRootDock() => new RootDock();
@@ -35,5 +32,8 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         public override IDockWindow CreateDockWindow() => new DockWindow();
+
+        /// <inheritdoc/>
+        public override IDock? CreateLayout() => new RootDock();
     }
 }

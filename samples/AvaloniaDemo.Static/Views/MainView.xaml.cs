@@ -5,39 +5,29 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
 using Dock.Model;
-using Dock.Model.Controls;
 
 namespace AvaloniaDemo.Views
 {
-    public class EmptyFactory : Factory
-    {
-        public override IDock CreateLayout()
-        {
-            return new RootDock();
-        }
-
-        public override void InitLayout(IDockable layout)
-        {
-            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
-            {
-                [nameof(IDockWindow)] = () => new HostWindow()
-            };
-
-            base.InitLayout(layout);
-        }
-    }
-
     public class MainView : UserControl
     {
-        private DockControl? _dockControl;
-        private IFactory? _factory;
+        private readonly DockControl? _dockControl;
+        private readonly IFactory? _factory;
 
         public MainView()
         {
             this.InitializeComponent();
 
             _dockControl = this.FindControl<DockControl>("dockControl");
-            _factory = new EmptyFactory();
+
+            _factory = new Factory()
+            {
+                ContextLocator = new Dictionary<string, Func<object>>(),
+                HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+                {
+                    [nameof(IDockWindow)] = () => new HostWindow()
+                },
+                DockableLocator = new Dictionary<string, Func<IDockable>>()
+            };
         }
 
         private void InitializeComponent()
@@ -61,7 +51,7 @@ namespace AvaloniaDemo.Views
 
             if (_dockControl?.Layout is IDock layout)
             {
-                    layout.Close();
+                layout.Close();
             }
         }
     }

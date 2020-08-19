@@ -86,6 +86,15 @@ namespace Dock.Model.Avalonia.UnitTests
             Assert.NotNull(actual);
             Assert.IsType<DockWindow>(actual);
         }
+
+        [Fact]
+        public void CreateLayout_Creates_RootDock()
+        {
+            var factory = new TestFactory();
+            var actual = factory.CreateLayout();
+            Assert.NotNull(actual);
+            Assert.IsType<RootDock>(actual);
+        }
     }
 
     public class TestDocument : Document
@@ -98,9 +107,5 @@ namespace Dock.Model.Avalonia.UnitTests
 
     public class TestFactory : Factory
     {
-        public override IDock CreateLayout()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

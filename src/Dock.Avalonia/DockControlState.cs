@@ -29,7 +29,7 @@ namespace Dock.Avalonia
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-            if (isValid == true && _dropControl is DockPanel)
+            if (isValid == true && _dropControl is Panel)
             {
                 _adornerHelper.AddAdorner(_dropControl);
             }
@@ -56,7 +56,7 @@ namespace Dock.Avalonia
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            if (_dropControl is DockPanel)
+            if (_dropControl is Panel)
             {
                 _adornerHelper.RemoveAdorner(_dropControl);
             }
@@ -66,7 +66,7 @@ namespace Dock.Avalonia
 
         private void Leave()
         {
-            if (_dropControl is DockPanel)
+            if (_dropControl is Panel)
             {
                 _adornerHelper.RemoveAdorner(_dropControl);
             }

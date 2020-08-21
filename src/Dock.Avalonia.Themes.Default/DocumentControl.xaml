@@ -48,7 +48,7 @@
                             <Setter Property="Padding" Value="8"/>
                             <Setter Property="Template">
                                 <ControlTemplate>
-                                    <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                    <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="{TemplateBinding Background}" Orientation="Horizontal" Spacing="2">
                                         <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                             <TextBlock Text="{Binding Title}" />
                                             <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
@@ -94,47 +94,49 @@
 
                     </Panel.Styles>
 
-                    <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
+                    <Panel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
+                        <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
 
-                        <TabControl.ItemTemplate>
-                            <DataTemplate DataType="Dock:IDockable">
-
-
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
-                        <TabControl.ContentTemplate>
-                            <DataTemplate>
-                                <ContentControl Content="{Binding .}" x:CompileBindings="False"/>
-                            </DataTemplate>
-                        </TabControl.ContentTemplate>
-
-                        <!-- <TabItem Header="Arch">
-                            <StackPanel Orientation="Vertical" Spacing="8">
-                                <TextBlock>This is the first page in the TabControl.</TextBlock>
-                                <Image Source="/Assets/delicate-arch-896885_640.jpg" Width="300"/>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="Leaf">
-                            <StackPanel Orientation="Vertical" Spacing="8">
-                                <TextBlock>This is the second page in the TabControl.</TextBlock>
-                                <Image Source="/Assets/maple-leaf-888807_640.jpg" Width="300"/>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="Disabled" IsEnabled="False">
-                            <TextBlock>You should not see this.</TextBlock>
-                        </TabItem>
- -->
-                        <!-- 
-
-                        <TabControl.DataTemplates>
-                            <DataTemplate DataType="Dock:IDockable">
-                                <TabItem Header="{Binding Title}"/> -->
+                            <TabControl.ItemTemplate>
+                                <DataTemplate DataType="Dock:IDockable">
 
 
+                                </DataTemplate>
+                            </TabControl.ItemTemplate>
+                            <TabControl.ContentTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding .}" x:CompileBindings="False"/>
+                                </DataTemplate>
+                            </TabControl.ContentTemplate>
 
-                        <!-- </DataTemplate> -->
-                        <!-- </TabControl.DataTemplates> -->
-                    </TabControl>
+                            <!-- <TabItem Header="Arch">
+                                <StackPanel Orientation="Vertical" Spacing="8">
+                                    <TextBlock>This is the first page in the TabControl.</TextBlock>
+                                    <Image Source="/Assets/delicate-arch-896885_640.jpg" Width="300"/>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Leaf">
+                                <StackPanel Orientation="Vertical" Spacing="8">
+                                    <TextBlock>This is the second page in the TabControl.</TextBlock>
+                                    <Image Source="/Assets/maple-leaf-888807_640.jpg" Width="300"/>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Disabled" IsEnabled="False">
+                                <TextBlock>You should not see this.</TextBlock>
+                            </TabItem>
+     -->
+                            <!-- 
+
+                            <TabControl.DataTemplates>
+                                <DataTemplate DataType="Dock:IDockable">
+                                    <TabItem Header="{Binding Title}"/> -->
+
+
+
+                            <!-- </DataTemplate> -->
+                            <!-- </TabControl.DataTemplates> -->
+                        </TabControl>
+                    </Panel>
                     <!-- 
                     <TabStrip Name="PART_TabStrip" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>

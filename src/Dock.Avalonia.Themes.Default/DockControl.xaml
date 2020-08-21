@@ -1,10 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+    xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+    xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
+    xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+    xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="idc|DockControl">
         <Style.Resources>
             <converters:OrientationConverter x:Key="OrientationConverter"/>
@@ -41,26 +41,21 @@
                             </ItemsControl>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
-                            <DockPanel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
-                                <TabStrip Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
-                                    <TabStrip.Styles>
-                                        <Style Selector="TabStrip:empty">
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </Style>
-                                        <Style Selector="TabStrip /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
-                                            <Setter Property="Orientation" Value="Vertical"/>
-                                        </Style>
-                                    </TabStrip.Styles>
-                                    <TabStrip.DataTemplates>
-                                        <DataTemplate DataType="Dock:IDockable">
-                                            <StackPanel Name="DragPin" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                                <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </TabStrip.DataTemplates>
-                                </TabStrip>
-                                <ContentControl Content="{Binding ActiveDockable}" IsVisible="{Binding IsExpanded}"/>
-                            </DockPanel>
+                            <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
+ 
+                                <TabControl.ItemTemplate>
+                                    <DataTemplate DataType="Dock:IDockable">
+                                        <StackPanel Name="DragPin" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                            <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <ContentControl Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                            </TabControl>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
                             <DockPanel Name="DropRoot" id:DockProperties.IsDropArea="False" Background="Transparent">

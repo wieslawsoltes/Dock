@@ -1,14 +1,14 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+    xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+    xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+    xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
-                    <DockPanel.Styles>
+                <Panel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
+                    <Panel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="VerticalAlignment" Value="Stretch"/>
@@ -35,14 +35,108 @@
                         <Style Selector="Button.documentTabButton:pointerover">
                             <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushHigh}" />
                         </Style>
-                        <Style Selector="TabStripItem:selected Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+
+                        <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
+                            <Setter Property="(id:DockProperties.IsDropArea)" Value="True" />
                         </Style>
-                        <Style Selector="TabStripItem:pointerover Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+
+                        <Style Selector="TabItem">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundLowBrush}"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="Padding" Value="8"/>
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                        <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
+                                            <TextBlock Text="{Binding Title}" />
+                                            <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
+                                        </StackPanel>
+                                        <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
+                                            <Button.Styles>
+                                                <Style Selector="Button">
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Padding" Value="0"/>
+                                                    <Setter Property="Margin" Value="0"/>
+                                                </Style>
+                                            </Button.Styles>
+                                            <Path Margin="2" Stretch="Uniform" UseLayoutRounding="False" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                        </Button>
+                                    </StackPanel>
+
+
+                                </ControlTemplate>
+                            </Setter>
                         </Style>
-                    </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
+
+                        <Style Selector="TabItem:disabled">
+                            <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}"/>
+                        </Style>
+                        <Style Selector="TabItem:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource ThemeControlHighlightMidBrush}"/>
+                        </Style>
+                        <Style Selector="TabItem:selected">
+                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush4}"/>
+                        </Style>
+                        <Style Selector="TabItem:selected:focus">
+                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush3}"/>
+                        </Style>
+                        <Style Selector="TabItem:selected:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush3}"/>
+                        </Style>
+                        <Style Selector="TabItem:selected:focus:pointerover">
+                            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush2}"/>
+                        </Style>
+                        <Style Selector="TabItem[TabStripPlacement=Right]">
+                            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                        </Style>
+
+                    </Panel.Styles>
+
+                    <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
+
+                        <TabControl.ItemTemplate>
+                            <DataTemplate DataType="Dock:IDockable">
+
+
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding .}" x:CompileBindings="False"/>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+
+                        <!-- <TabItem Header="Arch">
+                            <StackPanel Orientation="Vertical" Spacing="8">
+                                <TextBlock>This is the first page in the TabControl.</TextBlock>
+                                <Image Source="/Assets/delicate-arch-896885_640.jpg" Width="300"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Leaf">
+                            <StackPanel Orientation="Vertical" Spacing="8">
+                                <TextBlock>This is the second page in the TabControl.</TextBlock>
+                                <Image Source="/Assets/maple-leaf-888807_640.jpg" Width="300"/>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Disabled" IsEnabled="False">
+                            <TextBlock>You should not see this.</TextBlock>
+                        </TabItem>
+ -->
+                        <!-- 
+
+                        <TabControl.DataTemplates>
+                            <DataTemplate DataType="Dock:IDockable">
+                                <TabItem Header="{Binding Title}"/> -->
+
+
+
+                        <!-- </DataTemplate> -->
+                        <!-- </TabControl.DataTemplates> -->
+                    </TabControl>
+                    <!-- 
+                    <TabStrip Name="PART_TabStrip" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="ItemsPanel">
@@ -75,32 +169,15 @@
                                 <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                             </Style>
                         </TabStrip.Styles>
-                        <TabStrip.DataTemplates>
-                            <DataTemplate DataType="Dock:IDockable">
-                                <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                    <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
-                                        <TextBlock Text="{Binding Title}" />
-                                        <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
-                                    </StackPanel>
-                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
-                                        <Button.Styles>
-                                            <Style Selector="Button">
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="Padding" Value="0"/>
-                                                <Setter Property="Margin" Value="0"/>
-                                            </Style>
-                                        </Button.Styles>
-                                        <Path Margin="2" Stretch="Uniform" UseLayoutRounding="False" Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </TabStrip.DataTemplates>
+
                     </TabStrip>
+
+
                     <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" x:CompileBindings="False" />
                     <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    </Border>
-                </DockPanel>
+                    </Border> -->
+                </Panel>
             </ControlTemplate>
         </Setter>
     </Style>

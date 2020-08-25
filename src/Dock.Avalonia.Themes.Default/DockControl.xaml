@@ -15,10 +15,10 @@
                 <ContentControl Content="{TemplateBinding Layout}" x:DataType="Dock:IDock" x:CompileBindings="True">
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="Controls:IDocumentContent">
-                            <ContentControl Content="{Binding Id}" ContentTemplate="{Binding Content}"/>
+                            <Decorator Child="{Binding Content}"/>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IToolContent">
-                            <ContentControl Content="{Binding Id}" ContentTemplate="{Binding Content}"/>
+                            <Decorator Child="{Binding Content}"/>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:ISplitterDock">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>

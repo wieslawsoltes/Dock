@@ -29,10 +29,10 @@ namespace Dock.Avalonia
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-            if (isValid == true && _dropControl is Panel)
+            if (isValid == true && _dropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Enter] {_dropControl}");
-                _adornerHelper.AddAdorner(_dropControl);
+                Debug.WriteLine($"[Enter] {panel}");
+                _adornerHelper.AddAdorner(panel);
             }
         }
 
@@ -57,10 +57,10 @@ namespace Dock.Avalonia
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            if (_dropControl is Panel)
+            if (_dropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Drop] {_dropControl}");
-                _adornerHelper.RemoveAdorner(_dropControl);
+                Debug.WriteLine($"[Drop] {panel}");
+                _adornerHelper.RemoveAdorner(panel);
             }
 
             Execute(point, operation, dragAction, relativeTo);
@@ -68,10 +68,10 @@ namespace Dock.Avalonia
 
         private void Leave()
         {
-            if (_dropControl is Panel)
+            if (_dropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Leave] {_dropControl}");
-                _adornerHelper.RemoveAdorner(_dropControl);
+                Debug.WriteLine($"[Leave] {panel}");
+                _adornerHelper.RemoveAdorner(panel);
             }
         }
 
@@ -255,7 +255,7 @@ namespace Dock.Avalonia
                                     isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                                 }
 
-                                Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                //Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
                                 
                                 if (isDropEnabled)
                                 {

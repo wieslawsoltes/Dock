@@ -50,7 +50,7 @@
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
                         <Style Selector="TabItem:selected">
-                            <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
+                            <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushMed}" />
                             <Setter Property="BorderThickness" Value="1 0 1 1" />
                             <Setter Property="Margin" Value="0 -1 0 0" />

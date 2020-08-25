@@ -18,7 +18,7 @@ namespace Dock.Avalonia
             {
                 if (Adorner?.Parent is Panel panel)
                 {
-                    Debug.WriteLine($"[AddAdorner] {panel}");
+                    Debug.WriteLine($"[AddAdorner] {Adorner?.Parent}");
                     layer.Children.Remove(Adorner);
                     Adorner = null;
                 }
@@ -41,7 +41,7 @@ namespace Dock.Avalonia
             {
                 if (Adorner?.Parent is Panel panel)
                 {
-                    Debug.WriteLine($"[AddAdorner] {panel}");
+                    Debug.WriteLine($"[RemoveAdorner] {Adorner?.Parent}");
                     layer.Children.Remove(Adorner);
                     ((ISetLogicalParent)Adorner).SetParent(null);
                     Adorner = null;

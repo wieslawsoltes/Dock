@@ -255,7 +255,7 @@ namespace Dock.Avalonia
                                     isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                                 }
 
-                                //Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
+                                Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
                                 
                                 if (isDropEnabled)
                                 {

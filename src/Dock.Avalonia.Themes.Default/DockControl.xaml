@@ -42,7 +42,6 @@
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IPinDock">
                             <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
- 
                                 <TabControl.ItemTemplate>
                                     <DataTemplate DataType="Dock:IDockable">
                                         <StackPanel Name="DragPin" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">

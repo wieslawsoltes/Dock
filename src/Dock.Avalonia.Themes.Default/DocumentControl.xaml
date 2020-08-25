@@ -99,7 +99,7 @@
                             </TabControl.ItemTemplate>
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
-                                    <Border BorderThickness="0,4,0,0" BorderBrush="{DynamicResource ApplicationAccentBrushLow}">
+                                    <Border ZIndex="-1" BorderThickness="0,4,0,0" BorderBrush="{DynamicResource ApplicationAccentBrushLow}">
                                         <ContentControl Content="{Binding .}" x:CompileBindings="False"/>
                                     </Border>
                                 </DataTemplate>

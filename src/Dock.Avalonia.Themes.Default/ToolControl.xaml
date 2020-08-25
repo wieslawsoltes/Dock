@@ -9,7 +9,12 @@
             <ControlTemplate>
                 <Panel>
                     <Panel.Styles>
-
+                        <Style Selector="TabControl /template/ DockPanel > ItemsPresenter">
+                            <Setter Property="ZIndex" Value="1"/>
+                        </Style>
+                        <Style Selector="TabControl /template/ DockPanel > ContentPresenter">
+                            <Setter Property="ZIndex" Value="-1"/>
+                        </Style>
                         <Style Selector="TabItem">
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
@@ -19,11 +24,14 @@
                             <Setter Property="Padding" Value="8"/>
                             <Setter Property="Template">
                                 <ControlTemplate>
-                                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                                        <StackPanel Name="DragTool" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                            <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
-                                        </StackPanel>
-                                    </Border>
+                                    <Panel>
+                                        <Border Background="Transparent" BorderBrush="White" BorderThickness="0,1,0,0" Padding="{TemplateBinding Padding}"/>
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                            <StackPanel Name="DragTool" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                                <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Panel>
                                 </ControlTemplate>
                             </Setter>
                         </Style>
@@ -58,7 +66,7 @@
                         <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" TabStripPlacement="Bottom">
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
-                                    <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}" >
+                                    <Border Margin="0,0,0,-4" BorderThickness="1,0,1,1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                                         <ContentControl id:DockProperties.IsDropArea="True" Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
                                     </Border>
                                 </DataTemplate>

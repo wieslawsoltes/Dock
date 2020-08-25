@@ -76,6 +76,16 @@ namespace Dock.Avalonia
         }
 
         /// <summary>
+        /// Sets the value of the IsDockTarget attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The value of the IsDockTarget property.</param>
+        public static void SetIsDockTarget(IControl control, bool value)
+        {
+            control.SetValue(IsDockTargetProperty, value);
+        }
+
+        /// <summary>
         /// Gets the value of the IsDragArea attached property on the specified control.
         /// </summary>
         /// <param name="control">The control.</param>

@@ -35,18 +35,15 @@
                         <Style Selector="Button.documentTabButton:pointerover">
                             <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushHigh}" />
                         </Style>
-
                         <Style Selector="TabItem:selected Button.documentTabButton Path">
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                         <Style Selector="TabItem:pointerover Button.documentTabButton Path">
                             <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
-
                         <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
                             <Setter Property="(id:DockProperties.IsDropArea)" Value="True" />
                         </Style>
-
                         <Style Selector="TabItem">
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
@@ -77,7 +74,6 @@
                                 </ControlTemplate>
                             </Setter>
                         </Style>
-
                         <Style Selector="TabItem:pointerover">
                             <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>
                             <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
@@ -91,7 +87,6 @@
                             <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </Panel.Styles>
-
                     <Panel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
                         <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
                             <TabControl.ItemTemplate>

@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
@@ -37,6 +38,12 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeLayout), false);
 
         /// <summary>
+        /// Defines the <see cref="InitializeFactory"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> InitializeFactoryProperty =
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory), false);
+
+        /// <summary>
         /// Gets or sets the dock layout.
         /// </summary>
         /// <value>The layout.</value>
@@ -67,6 +74,15 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <summary>
+        /// Gets or sets the flag indicating whether to initialize factory.
+        /// </summary>
+        public bool InitializeFactory
+        {
+            get => GetValue(InitializeFactoryProperty);
+            set => SetValue(InitializeFactoryProperty, value);
+        }
+
+        /// <summary>
         /// Initialize the new instance of the <see cref="DockControl"/>.
         /// </summary>
         public DockControl()
@@ -87,9 +103,21 @@ namespace Dock.Avalonia.Controls
 
             s_dockControls.Add(this);
 
-            if (InitializeLayout == true && Layout != null)
+            if (InitializeFactory == true && Factory != null)
             {
-                Factory?.InitLayout(Layout);
+                Factory.ContextLocator = new Dictionary<string, Func<object>>();
+
+                Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+                {
+                    [nameof(IDockWindow)] = () => new HostWindow()
+                };
+
+                Factory.DockableLocator = new Dictionary<string, Func<IDockable>>();
+            }
+
+            if (InitializeLayout == true && Factory != null && Layout != null)
+            {
+                Factory.InitLayout(Layout);
             }
         }
 

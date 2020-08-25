@@ -53,6 +53,7 @@ jobs:
         dotnet publish -c Release -f netcoreapp3.1 -r win7-x64 -o ./artifacts/AvaloniaDemo-netcoreapp3.1-win7-x64 ./samples/AvaloniaDemo/AvaloniaDemo.csproj
         dotnet publish -c Release -f netcoreapp3.1 -r win7-x64 -o ./artifacts/AvaloniaDemo.Experimental-netcoreapp3.1-win7-x64 ./samples/AvaloniaDemo.Experimental/AvaloniaDemo.Experimental.csproj
         dotnet publish -c Release -f netcoreapp3.1 -r win7-x64 -o ./artifacts/AvaloniaDemo.Perspectives-netcoreapp3.1-win7-x64 ./samples/AvaloniaDemo.Perspectives/AvaloniaDemo.Perspectives.csproj
+        dotnet publish -c Release -f netcoreapp3.1 -r win7-x64 -o ./artifacts/AvaloniaDemo.Static-netcoreapp3.1-win7-x64 ./samples/AvaloniaDemo.Static/AvaloniaDemo.Static.csproj
         dotnet publish -c Release -f netcoreapp3.1 -r win7-x64 -o ./artifacts/Notepad-netcoreapp3.1-win7-x64 ./samples/Notepad/Notepad.csproj
     - name: Artifacts
       if: github.event_name != 'pull_request'
@@ -72,6 +73,12 @@ jobs:
       with:
         name: AvaloniaDemo.Perspectives-netcoreapp3.1-win7-x64
         path: ./artifacts/AvaloniaDemo.Perspectives-netcoreapp3.1-win7-x64
+    - name: Artifacts
+      if: github.event_name != 'pull_request'
+      uses: actions/upload-artifact@master
+      with:
+        name: AvaloniaDemo.Static-netcoreapp3.1-win7-x64
+        path: ./artifacts/AvaloniaDemo.Static-netcoreapp3.1-win7-x64
     - name: Artifacts
       if: github.event_name != 'pull_request'
       uses: actions/upload-artifact@master

@@ -5,11 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+             xmlns:dm="clr-namespace:Dock.Model;assembly=Dock.Model.Avalonia"
              xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680">
-    <idc:DockControl x:Name="dockControl" Classes="Default">
+    <idc:DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True">
+        <idc:DockControl.Factory>
+            <dm:Factory/>
+        </idc:DockControl.Factory>
         <dmc:RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
+            <dmc:RootDock.Top>
+                <dmc:PinDock x:Name="PinDockTop" Alignment="Top"/>
+            </dmc:RootDock.Top>
+            <dmc:RootDock.Bottom>
+                <dmc:PinDock x:Name="PinDockBottom" Alignment="Bottom"/>
+            </dmc:RootDock.Bottom>
+            <dmc:RootDock.Left>
+                <dmc:PinDock x:Name="PinDockLeft" Alignment="Left"/>
+            </dmc:RootDock.Left>
+            <dmc:RootDock.Right>
+                <dmc:PinDock x:Name="PinDockRight" Alignment="Right"/>
+            </dmc:RootDock.Right>
             <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
                 <dmc:ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
                     <dmc:ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">

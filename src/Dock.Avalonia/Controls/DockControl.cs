@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
@@ -16,13 +17,31 @@ namespace Dock.Avalonia.Controls
     {
         internal static List<IVisual> s_dockControls = new List<IVisual>();
 
+        private readonly DockControlState _dockControlState = new DockControlState();
+
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
         public static readonly StyledProperty<IDock> LayoutProperty =
             AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
 
-        private readonly DockControlState _dockControlState = new DockControlState();
+        /// <summary>
+        /// Defines the <see cref="Factory"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IFactory> FactoryProperty =
+            AvaloniaProperty.Register<DockControl, IFactory>(nameof(Factory));
+
+        /// <summary>
+        /// Defines the <see cref="InitializeLayout"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> InitializeLayoutProperty =
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeLayout), false);
+
+        /// <summary>
+        /// Defines the <see cref="InitializeFactory"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> InitializeFactoryProperty =
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory), false);
 
         /// <summary>
         /// Gets or sets the dock layout.
@@ -33,6 +52,34 @@ namespace Dock.Avalonia.Controls
         {
             get => GetValue(LayoutProperty);
             set => SetValue(LayoutProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the dock factory.
+        /// </summary>
+        /// <value>The factory.</value>
+        public IFactory Factory
+        {
+            get => GetValue(FactoryProperty);
+            set => SetValue(FactoryProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating whether to initialize layout.
+        /// </summary>
+        public bool InitializeLayout
+        {
+            get => GetValue(InitializeLayoutProperty);
+            set => SetValue(InitializeLayoutProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating whether to initialize factory.
+        /// </summary>
+        public bool InitializeFactory
+        {
+            get => GetValue(InitializeFactoryProperty);
+            set => SetValue(InitializeFactoryProperty, value);
         }
 
         /// <summary>
@@ -53,14 +100,38 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
+
             s_dockControls.Add(this);
+
+            if (InitializeFactory == true && Factory != null)
+            {
+                Factory.ContextLocator = new Dictionary<string, Func<object>>();
+
+                Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+                {
+                    [nameof(IDockWindow)] = () => new HostWindow()
+                };
+
+                Factory.DockableLocator = new Dictionary<string, Func<IDockable>>();
+            }
+
+            if (InitializeLayout == true && Factory != null && Layout != null)
+            {
+                Factory.InitLayout(Layout);
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
+
             s_dockControls.Remove(this);
+
+            if (InitializeLayout == true && Layout != null)
+            {
+                Layout.Close();
+            }
         }
 
         internal static DragAction ToDragAction(PointerEventArgs e)

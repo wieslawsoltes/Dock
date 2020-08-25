@@ -83,7 +83,7 @@
                             <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
                         </Style>
                     </Panel.Styles>
-                    <Panel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
+                    <Panel Name="DropPin" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent">
                         <TabControl id:DockProperties.IsDropArea="True" Padding="0" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
                             <TabControl.ItemTemplate>
                                 <DataTemplate DataType="Dock:IDockable"/>
@@ -91,7 +91,7 @@
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <Border ZIndex="-1" BorderThickness="0,4,0,0" BorderBrush="{DynamicResource ApplicationAccentBrushLow}">
-                                        <ContentControl id:DockProperties.IsDockTarget="True" Content="{Binding .}" x:CompileBindings="False"/>
+                                        <ContentControl Content="{Binding .}" x:CompileBindings="False"/>
                                     </Border>
                                 </DataTemplate>
                             </TabControl.ContentTemplate>

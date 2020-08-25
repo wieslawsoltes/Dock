@@ -33,10 +33,10 @@ namespace Dock.Avalonia
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-            if (isValid == true && _targetDropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
+            if (isValid == true && _targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Enter] {panel}");
-                _adornerHelper.AddAdorner(panel);
+                Debug.WriteLine($"[Enter] {control}");
+                _adornerHelper.AddAdorner(control);
             }
         }
 
@@ -64,10 +64,10 @@ namespace Dock.Avalonia
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            if (_targetDropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
+            if (_targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Drop] {panel}");
-                _adornerHelper.RemoveAdorner(panel);
+                Debug.WriteLine($"[Drop] {control}");
+                _adornerHelper.RemoveAdorner(control);
             }
 
             if (operation != DockOperation.Window)
@@ -78,10 +78,10 @@ namespace Dock.Avalonia
 
         private void Leave()
         {
-            if (_targetDropControl is Panel panel && panel.GetValue(DockProperties.IsDockTargetProperty))
+            if (_targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Leave] {panel}");
-                _adornerHelper.RemoveAdorner(panel);
+                Debug.WriteLine($"[Leave] {control}");
+                _adornerHelper.RemoveAdorner(control);
             }
         }
 

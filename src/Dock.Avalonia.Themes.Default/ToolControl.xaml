@@ -46,9 +46,10 @@
                         <Style Selector="TabItem:pointerover">
                             <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}" />
                         </Style>
-                        <Style Selector="TabControl:singleitem /template/ ItemsPresenter#PART_ItemsPresenter">
+                        <!-- TODO: Fix signleitem display -->
+                        <!--<Style Selector="TabControl:singleitem /template/ ItemsPresenter#PART_ItemsPresenter">
                             <Setter Property="IsVisible" Value="False" />
-                        </Style>
+                        </Style>-->
                         <Style Selector="TabItem:selected">
                             <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushMed}" />

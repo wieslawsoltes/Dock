@@ -1,10 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-    xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-    xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
-    xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-    xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+        xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
+        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
+        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
     <Style Selector="idc|DockControl">
         <Style.Resources>
             <converters:OrientationConverter x:Key="OrientationConverter"/>

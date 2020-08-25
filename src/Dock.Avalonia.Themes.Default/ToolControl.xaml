@@ -66,7 +66,7 @@
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <Border Margin="0,0,0,-4" BorderThickness="1,0,1,1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                                        <ContentControl id:DockProperties.IsDropArea="True" Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
+                                        <ContentControl id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
                                     </Border>
                                 </DataTemplate>
                             </TabControl.ContentTemplate>

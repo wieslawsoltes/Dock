@@ -13,12 +13,12 @@ namespace Dock.Avalonia
 
         public void AddAdorner(IVisual visual)
         {
+            Debug.WriteLine($"[AddAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {
-                if (Adorner?.Parent is Panel panel)
+                if (Adorner != null)
                 {
-                    Debug.WriteLine($"[AddAdorner] {panel}");
                     layer.Children.Remove(Adorner);
                     Adorner = null;
                 }
@@ -36,12 +36,12 @@ namespace Dock.Avalonia
 
         public void RemoveAdorner(IVisual visual)
         {
+            Debug.WriteLine($"[RemoveAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {
-                if (Adorner?.Parent is Panel panel)
+                if (Adorner != null)
                 {
-                    Debug.WriteLine($"[RemoveAdorner] {panel}");
                     layer.Children.Remove(Adorner);
                     ((ISetLogicalParent)Adorner).SetParent(null);
                     Adorner = null;

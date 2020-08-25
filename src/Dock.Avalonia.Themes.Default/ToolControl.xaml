@@ -61,12 +61,12 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                         </Style>
                     </Panel.Styles>
-                    <Panel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
+                    <Panel Name="DropPin" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent">
                         <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" TabStripPlacement="Bottom">
                             <TabControl.ContentTemplate>
                                 <DataTemplate>
                                     <Border Margin="0,0,0,-4" BorderThickness="1,0,1,1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                                        <ContentControl id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
+                                        <ContentControl id:DockProperties.IsDropArea="True" Content="{Binding .}" IsVisible="{Binding IsExpanded}" x:CompileBindings="False"/>
                                     </Border>
                                 </DataTemplate>
                             </TabControl.ContentTemplate>

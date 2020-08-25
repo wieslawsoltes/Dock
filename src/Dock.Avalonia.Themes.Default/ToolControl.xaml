@@ -17,11 +17,10 @@
                         </Style>
                         <Style Selector="TabItem">
                             <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+                            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
                             <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundLowBrush}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                            <Setter Property="Padding" Value="8"/>
                             <Setter Property="Template">
                                 <ControlTemplate>
                                     <Panel>
@@ -41,7 +40,7 @@
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="Margin" Value="0" />
                             <Setter Property="Padding" Value="4 1 4 0" />
-                            <Setter Property="FontSize" Value="12" />
+                            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
                             <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
                         </Style>
                         <Style Selector="TabItem:pointerover">

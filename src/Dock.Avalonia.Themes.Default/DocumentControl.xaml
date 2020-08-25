@@ -46,18 +46,14 @@
                         </Style>
                         <Style Selector="TabItem">
                             <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}"/>
+                            <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}"/>
                             <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                            <Setter Property="Height" Value="20" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Margin" Value="0,0,0,-6" />
-                            <Setter Property="Padding" Value="4 0 4 0" />
                             <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
                             <Setter Property="Template">
                                 <ControlTemplate>
                                     <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="{TemplateBinding Background}" Orientation="Horizontal" Spacing="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
-                                            <TextBlock Text="{Binding Title}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}" Padding="4,2,4,2" />
                                             <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
                                         </StackPanel>
                                         <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
@@ -88,7 +84,7 @@
                         </Style>
                     </Panel.Styles>
                     <Panel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
-                        <TabControl id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
+                        <TabControl id:DockProperties.IsDropArea="True" Padding="0" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}">
                             <TabControl.ItemTemplate>
                                 <DataTemplate DataType="Dock:IDockable"/>
                             </TabControl.ItemTemplate>

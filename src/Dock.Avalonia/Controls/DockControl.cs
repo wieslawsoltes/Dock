@@ -25,6 +25,18 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
 
         /// <summary>
+        /// Defines the <see cref="Factory"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IFactory> FactoryProperty =
+            AvaloniaProperty.Register<DockControl, IFactory>(nameof(Factory));
+
+        /// <summary>
+        /// Defines the <see cref="InitializeLayout"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> InitializeLayoutProperty =
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeLayout), false);
+
+        /// <summary>
         /// Gets or sets the dock layout.
         /// </summary>
         /// <value>The layout.</value>
@@ -33,6 +45,25 @@ namespace Dock.Avalonia.Controls
         {
             get => GetValue(LayoutProperty);
             set => SetValue(LayoutProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the dock factory.
+        /// </summary>
+        /// <value>The factory.</value>
+        public IFactory Factory
+        {
+            get => GetValue(FactoryProperty);
+            set => SetValue(FactoryProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the flag indicating whether to initialize layout.
+        /// </summary>
+        public bool InitializeLayout
+        {
+            get => GetValue(InitializeLayoutProperty);
+            set => SetValue(InitializeLayoutProperty, value);
         }
 
         /// <summary>
@@ -53,14 +84,26 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
+
             s_dockControls.Add(this);
+
+            if (InitializeLayout == true && Layout != null)
+            {
+                Factory?.InitLayout(Layout);
+            }
         }
 
         /// <inheritdoc/>
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
+
             s_dockControls.Remove(this);
+
+            if (InitializeLayout == true && Layout != null)
+            {
+                Layout.Close();
+            }
         }
 
         internal static DragAction ToDragAction(PointerEventArgs e)

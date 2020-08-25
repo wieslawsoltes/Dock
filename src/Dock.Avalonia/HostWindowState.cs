@@ -35,6 +35,7 @@ namespace Dock.Avalonia
 
             if (isValid == true && _targetDropControl is Panel)
             {
+                Debug.WriteLine($"[Enter] {_targetDropControl}");
                 _adornerHelper.AddAdorner(_targetDropControl);
             }
         }
@@ -65,6 +66,7 @@ namespace Dock.Avalonia
 
             if (_targetDropControl is Panel)
             {
+                Debug.WriteLine($"[Drop] {_targetDropControl}");
                 _adornerHelper.RemoveAdorner(_targetDropControl);
             }
 
@@ -78,6 +80,7 @@ namespace Dock.Avalonia
         {
             if (_targetDropControl is Panel)
             {
+                Debug.WriteLine($"[Leave] {_targetDropControl}");
                 _adornerHelper.RemoveAdorner(_targetDropControl);
             }
         }

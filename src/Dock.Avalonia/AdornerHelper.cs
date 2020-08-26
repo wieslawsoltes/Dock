@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Diagnostics;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
@@ -12,10 +13,11 @@ namespace Dock.Avalonia
 
         public void AddAdorner(IVisual visual)
         {
+            Debug.WriteLine($"[AddAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {
-                if (Adorner?.Parent is Panel)
+                if (Adorner != null)
                 {
                     layer.Children.Remove(Adorner);
                     Adorner = null;
@@ -34,10 +36,11 @@ namespace Dock.Avalonia
 
         public void RemoveAdorner(IVisual visual)
         {
+            Debug.WriteLine($"[RemoveAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {
-                if (Adorner?.Parent is Panel panel)
+                if (Adorner != null)
                 {
                     layer.Children.Remove(Adorner);
                     ((ISetLogicalParent)Adorner).SetParent(null);

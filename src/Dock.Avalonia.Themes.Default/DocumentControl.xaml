@@ -7,7 +7,7 @@
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
+                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>

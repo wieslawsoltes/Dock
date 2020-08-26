@@ -10,6 +10,12 @@ namespace Dock.Avalonia
     public class DockProperties : AvaloniaObject
     {
         /// <summary>
+        /// Defines the IsDockTarget attached property.
+        /// </summary>
+        public static readonly AttachedProperty<bool> IsDockTargetProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
+
+        /// <summary>
         /// Defines the IsDragArea attached property.
         /// </summary>
         public static readonly AttachedProperty<bool> IsDragAreaProperty =
@@ -57,6 +63,26 @@ namespace Dock.Avalonia
         public static void SetMinimumProportionSize(IControl control, double value)
         {
             control.SetValue(MinimumProportionSizeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets the value of the IsDockTarget attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The IsDockTarget attached property.</returns>
+        public static bool GetIsDockTarget(IControl control)
+        {
+            return control.GetValue(IsDockTargetProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the IsDockTarget attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The value of the IsDockTarget property.</param>
+        public static void SetIsDockTarget(IControl control, bool value)
+        {
+            control.SetValue(IsDockTargetProperty, value);
         }
 
         /// <summary>

@@ -7,7 +7,7 @@
     <Style Selector="idc|ToolControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IToolDock" x:CompileBindings="True">
+                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IToolDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent" />

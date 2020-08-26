@@ -65,10 +65,10 @@
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
-        <Setter Property="id:DockProperties.IsDragArea" Value="True" />
+        <Setter Property="(id:DockProperties.IsDragArea)" Value="True" />
     </Style>
     <Style Selector="idc|DockToolChrome:floating /template/ Grid#PART_Grip">
-        <Setter Property="id:DockProperties.IsDragArea" Value="False" />
+        <Setter Property="(id:DockProperties.IsDragArea)" Value="False" />
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />

@@ -229,7 +229,7 @@ namespace Dock.Model
         /// <inheritdoc />
         public void SetFocusedDockable(IDock dock, IDockable dockable)
         {
-            if (!(dock.ActiveDockable is null) && FindRoot(dock.ActiveDockable) is IRootDock root)
+            if (!(dock.ActiveDockable is null) && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is IRootDock root)
             {
                 if (!(root.FocusedDockable?.Owner is null))
                 {
@@ -249,17 +249,17 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IRootDock? FindRoot(IDockable dockable)
+        public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> filter)
         {
             if (dockable.Owner is null)
             {
                 return null;
             }
-            if (dockable.Owner is IRootDock rootDock)
+            if (dockable.Owner is IRootDock rootDock && filter(rootDock) == true)
             {
                 return rootDock;
             }
-            return FindRoot(dockable.Owner);
+            return FindRoot(dockable.Owner, filter);
         }
 
         /// <inheritdoc/>
@@ -349,7 +349,7 @@ namespace Dock.Model
         {
             // TODO: Implement dockable pinning.
 
-            if (FindRoot(dockable) is IRootDock root)
+            if (FindRoot(dockable, x => true) is IRootDock root)
             {
                 if (PinClosestPinDock(root, dockable) is IPinDock pinDock)
                 {
@@ -863,7 +863,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
         {
-            var rootDock = FindRoot(dock);
+            var rootDock = FindRoot(dock, x => true);
             if (rootDock is null)
             {
                 return;

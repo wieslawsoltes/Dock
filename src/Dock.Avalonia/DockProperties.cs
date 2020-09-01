@@ -164,6 +164,5 @@ namespace Dock.Avalonia
         {
             control.SetValue(IsDropEnabledProperty, value);
         }
-
     }
 }

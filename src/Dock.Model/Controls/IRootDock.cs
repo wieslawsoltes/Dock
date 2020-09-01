@@ -9,6 +9,11 @@ namespace Dock.Model.Controls
     public interface IRootDock : IDock
     {
         /// <summary>
+        /// Gets or sets if root dock is focusable.
+        /// </summary>
+        bool IsFocusableRoot { get; set; }
+
+        /// <summary>
         /// Gets or sets owner window.
         /// </summary>
         IDockWindow? Window { get; set; }

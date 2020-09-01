@@ -104,6 +104,8 @@ namespace Dock.Model
         /// <param name="target">The target root dock.</param>
         public static void CloneRootDockProperties(IRootDock source, IRootDock target)
         {
+            target.IsFocusableRoot = source.IsFocusableRoot;
+
             target.Window = null;
 
             if (!(source.Top is null))

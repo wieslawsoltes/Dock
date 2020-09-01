@@ -340,8 +340,11 @@ namespace Dock.Model
                         toolDock.PinnedDockables = CreateList<IDockable>();
                     }
 
-                    toolDock.VisibleDockables.Remove(dockable);
-                    toolDock.PinnedDockables.Add(dockable);
+                    if (!(toolDock.VisibleDockables is null) && !(toolDock.PinnedDockables is null))
+                    {
+                        toolDock.VisibleDockables.Remove(dockable);
+                        toolDock.PinnedDockables.Add(dockable);
+                    }
 
                     // TODO: Handle ActiveDockable state.
                     // TODO: Handle IsExpanded property of IToolDock.
@@ -356,8 +359,11 @@ namespace Dock.Model
                         toolDock.VisibleDockables = CreateList<IDockable>();
                     }
 
-                    toolDock.PinnedDockables.Remove(dockable);
-                    toolDock.VisibleDockables.Add(dockable);
+                    if (!(toolDock.VisibleDockables is null) && !(toolDock.PinnedDockables is null))
+                    {
+                        toolDock.PinnedDockables.Remove(dockable);
+                        toolDock.VisibleDockables.Add(dockable);
+                    }
 
                     // TODO: Handle ActiveDockable state.
                     // TODO: Handle IsExpanded property of IToolDock.

@@ -223,12 +223,12 @@ namespace Dock.Model
         {
             var target = source.Factory?.CreateToolDock();
 
-            target.Alignment = source.Alignment;
-            target.IsExpanded = source.IsExpanded;
-            target.AutoHide = source.AutoHide;
-
             if (!(target is null))
             {
+                target.Alignment = source.Alignment;
+                target.IsExpanded = source.IsExpanded;
+                target.AutoHide = source.AutoHide;
+
                 CloneDockProperties(source, target);
             }
 

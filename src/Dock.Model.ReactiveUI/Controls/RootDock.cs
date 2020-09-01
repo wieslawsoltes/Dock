@@ -13,10 +13,6 @@ namespace Dock.Model.Controls
         private bool _isFocusableRoot = true;
         private IDockWindow? _window;
         private IList<IDockWindow>? _windows;
-        private IPinDock? _top;
-        private IPinDock? _bottom;
-        private IPinDock? _left;
-        private IPinDock? _right;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -40,38 +36,6 @@ namespace Dock.Model.Controls
         {
             get => _windows;
             set => this.RaiseAndSetIfChanged(ref _windows, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock? Top
-        {
-            get => _top;
-            set => this.RaiseAndSetIfChanged(ref _top, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock? Bottom
-        {
-            get => _bottom;
-            set => this.RaiseAndSetIfChanged(ref _bottom, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock? Left
-        {
-            get => _left;
-            set => this.RaiseAndSetIfChanged(ref _left, value);
-        }
-
-        /// <inheritdoc/>
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
-        public IPinDock? Right
-        {
-            get => _right;
-            set => this.RaiseAndSetIfChanged(ref _right, value);
         }
 
         /// <summary>

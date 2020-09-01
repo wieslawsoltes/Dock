@@ -7,18 +7,6 @@
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
               xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
               x:Name="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}" IsCollapsable="False">
-    <dmc:RootDock.Top>
-        <dmc:PinDock Alignment="Top"/>
-    </dmc:RootDock.Top>
-    <dmc:RootDock.Bottom>
-        <dmc:PinDock Alignment="Bottom"/>
-    </dmc:RootDock.Bottom>
-    <dmc:RootDock.Left>
-        <dmc:PinDock Alignment="Left"/>
-    </dmc:RootDock.Left>
-    <dmc:RootDock.Right>
-        <dmc:PinDock Alignment="Right"/>
-    </dmc:RootDock.Right>
     <dmc:RootDock.HiddenDockables>
         <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1"/>
         <vmt:LeftTopTool2ViewModel x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2"/>

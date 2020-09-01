@@ -108,26 +108,6 @@ namespace Dock.Model
 
             target.Window = null;
 
-            if (!(source.Top is null))
-            {
-                target.Top = (IPinDock?)source.Top.Clone();
-            }
-
-            if (!(source.Bottom is null))
-            {
-                target.Bottom = (IPinDock?)source.Bottom.Clone();
-            }
-
-            if (!(source.Left is null))
-            {
-                target.Left = (IPinDock?)source.Left.Clone();
-            }
-
-            if (!(source.Right is null))
-            {
-                target.Right = (IPinDock?)source.Right.Clone();
-            }
-
             if (!(source.Windows is null))
             {
                 target.Windows = source.Factory?.CreateList<IDockWindow>();
@@ -143,18 +123,6 @@ namespace Dock.Model
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Clones pin dock properties.
-        /// </summary>
-        /// <param name="source">The source pin dock.</param>
-        /// <param name="target">The target pin dock.</param>
-        public static void ClonePinDockProperties(IPinDock source, IPinDock target)
-        {
-            target.Alignment = source.Alignment;
-            target.IsExpanded = source.IsExpanded;
-            target.AutoHide = source.AutoHide;
         }
 
         /// <summary>
@@ -212,24 +180,6 @@ namespace Dock.Model
         }
 
         /// <summary>
-        /// Clones <see cref="IPinDock"/> object.
-        /// </summary>
-        /// <param name="source">The source object.</param>
-        /// <returns>TThe new instance or reference of the <see cref="IPinDock"/> class.</returns>
-        public static IPinDock? ClonePinDock(IPinDock source)
-        {
-            var target = source.Factory?.CreatePinDock();
-
-            if (!(target is null))
-            {
-                CloneDockProperties(source, target);
-                ClonePinDockProperties(source, target);
-            }
-
-            return target;
-        }
-
-        /// <summary>
         /// Clones <see cref="IProportionalDock"/> object.
         /// </summary>
         /// <param name="source">The source object.</param>
@@ -275,6 +225,10 @@ namespace Dock.Model
 
             if (!(target is null))
             {
+                target.Alignment = source.Alignment;
+                target.IsExpanded = source.IsExpanded;
+                target.AutoHide = source.AutoHide;
+
                 CloneDockProperties(source, target);
             }
 

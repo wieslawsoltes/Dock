@@ -26,7 +26,7 @@ namespace Dock.Avalonia
                    element.IsAttachedToVisualTree;
         }
 
-        public static IEnumerable<IVisual>? GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> filter)
+        public static IEnumerable<IVisual>? GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> predicate)
         {
             var root = visual.GetVisualRoot();
             if (root != null)
@@ -34,7 +34,7 @@ namespace Dock.Avalonia
                 var rootPoint = visual.TranslatePoint(p, root);
                 if (rootPoint.HasValue)
                 {
-                    return root.Renderer?.HitTest(rootPoint.Value, visual, filter);
+                    return root.Renderer?.HitTest(rootPoint.Value, visual, predicate);
                 }
             }
             return Enumerable.Empty<IVisual>();

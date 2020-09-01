@@ -21,7 +21,6 @@ namespace AvaloniaDemo
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => layout,
-                [nameof(IPinDock)] = () => layout,
                 [nameof(IProportionalDock)] = () => layout,
                 [nameof(IDocumentDock)] = () => layout,
                 [nameof(IToolDock)] = () => layout,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Dock.Model.Controls;
@@ -24,9 +24,6 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         public abstract IRootDock CreateRootDock();
-
-        /// <inheritdoc/>
-        public abstract IPinDock CreatePinDock();
 
         /// <inheritdoc/>
         public abstract IProportionalDock CreateProportionalDock();
@@ -249,17 +246,17 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> filter)
+        public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate)
         {
             if (dockable.Owner is null)
             {
                 return null;
             }
-            if (dockable.Owner is IRootDock rootDock && filter(rootDock) == true)
+            if (dockable.Owner is IRootDock rootDock && predicate(rootDock) == true)
             {
                 return rootDock;
             }
-            return FindRoot(dockable.Owner, filter);
+            return FindRoot(dockable.Owner, predicate);
         }
 
         /// <inheritdoc/>
@@ -316,44 +313,65 @@ namespace Dock.Model
             return null;
         }
 
-        private IPinDock PinClosestPinDock(IRootDock root, IDockable dockable)
-        {
-            // TODO: Find closest pin dock to the dockable (Top, Bottom, Left or Right).
-
-            if (root.Left is null)
-            {
-                root.Left = CreatePinDock();
-                root.Left.Alignment = Alignment.Left;
-                root.Left.IsExpanded = false;
-                root.Left.AutoHide = true;
-            }
-
-            return root.Left;
-        }
-
-        private void PinDockable(IPinDock pinDock, IDockable dockable)
-        {
-            RemoveDockable(dockable, true);
-
-            if (pinDock.VisibleDockables is null)
-            {
-                pinDock.VisibleDockables = CreateList<IDockable>();
-            }
-
-            pinDock.VisibleDockables.Add(dockable);
-            pinDock.ActiveDockable = dockable;
-        }
-
         /// <inheritdoc/>
         public virtual void PinDockable(IDockable dockable)
         {
-            // TODO: Implement dockable pinning.
-
-            if (FindRoot(dockable, x => true) is IRootDock root)
+            if (dockable?.Owner is IToolDock toolDock)
             {
-                if (PinClosestPinDock(root, dockable) is IPinDock pinDock)
+                bool isVisible = false;
+                bool isPinned = false;
+
+                if (!(toolDock.VisibleDockables is null))
                 {
-                    PinDockable(pinDock, dockable);
+                    isVisible = toolDock.VisibleDockables.Contains(dockable);
+                }
+                
+                if (!(toolDock.PinnedDockables is null))
+                {
+                    isPinned = toolDock.PinnedDockables.Contains(dockable);
+                }
+
+                if (isVisible && !isPinned)
+                {
+                    // Pin dockable.
+
+                    if (toolDock.PinnedDockables is null)
+                    {
+                        toolDock.PinnedDockables = CreateList<IDockable>();
+                    }
+
+                    if (!(toolDock.VisibleDockables is null) && !(toolDock.PinnedDockables is null))
+                    {
+                        toolDock.VisibleDockables.Remove(dockable);
+                        toolDock.PinnedDockables.Add(dockable);
+                    }
+
+                    // TODO: Handle ActiveDockable state.
+                    // TODO: Handle IsExpanded property of IToolDock.
+                    // TODO: Handle AutoHide property of IToolDock.
+                }
+                else if (!isVisible && isPinned)
+                {
+                    // Unpin dockable.
+
+                    if (toolDock.VisibleDockables is null)
+                    {
+                        toolDock.VisibleDockables = CreateList<IDockable>();
+                    }
+
+                    if (!(toolDock.VisibleDockables is null) && !(toolDock.PinnedDockables is null))
+                    {
+                        toolDock.PinnedDockables.Remove(dockable);
+                        toolDock.VisibleDockables.Add(dockable);
+                    }
+
+                    // TODO: Handle ActiveDockable state.
+                    // TODO: Handle IsExpanded property of IToolDock.
+                    // TODO: Handle AutoHide property of IToolDock.
+                }
+                else
+                {
+                    // TODO: Handle invalid state.
                 }
             }
         }

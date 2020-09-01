@@ -8,15 +8,7 @@ namespace Dock.Model
     {
         public override IList<T> CreateList<T>(params T[] items) => new List<T>(items);
 
-        public override IRootDock CreateRootDock() => new RootDock()
-        {
-            Top = new PinDock() { Alignment = Alignment.Top },
-            Bottom = new PinDock() { Alignment = Alignment.Bottom },
-            Left = new PinDock() { Alignment = Alignment.Left },
-            Right = new PinDock() { Alignment = Alignment.Right }
-        };
-
-        public override IPinDock CreatePinDock() => new PinDock();
+        public override IRootDock CreateRootDock() => new RootDock();
 
         public override IProportionalDock CreateProportionalDock() => new ProportionalDock();
 

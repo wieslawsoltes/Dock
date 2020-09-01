@@ -39,12 +39,6 @@ namespace Dock.Model
         IRootDock CreateRootDock();
 
         /// <summary>
-        /// Creates <see cref="IPinDock"/>.
-        /// </summary>
-        /// <returns>The new instance of the <see cref="IPinDock"/> class.</returns>
-        IPinDock CreatePinDock();
-
-        /// <summary>
         /// Creates <see cref="IProportionalDock"/>.
         /// </summary>
         /// <returns>The new instance of the <see cref="IProportionalDock"/> class.</returns>
@@ -167,9 +161,9 @@ namespace Dock.Model
         /// Searches for root dockable.
         /// </summary>
         /// <param name="dockable">The dockable to find root for.</param>
-        /// <param name="filter">The root dock filter.</param>
+        /// <param name="predicate">The predicate to filter root docks.</param>
         /// <returns>The root dockable instance or null if root dockable was not found.</returns>
-        IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> filter);
+        IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate);
 
         /// <summary>
         /// Searches dock for dockable.

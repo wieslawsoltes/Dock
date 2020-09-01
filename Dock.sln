@@ -76,7 +76,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia.UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.Themes.Default", "src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj", "{7B8F87B5-FAB8-4191-A09F-9100727E056D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Experimental", "samples\AvaloniaDemo.Experimental\AvaloniaDemo.Experimental.csproj", "{89E990CD-1206-4F39-8353-03A580F4570E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Debug", "samples\AvaloniaDemo.Debug\AvaloniaDemo.Debug.csproj", "{89E990CD-1206-4F39-8353-03A580F4570E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Test", "tests\Dock.Model.Test\Dock.Model.Test.csproj", "{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}"
 EndProject

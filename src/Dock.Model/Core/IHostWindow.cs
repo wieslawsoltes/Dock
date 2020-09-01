@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace Dock.Model
 {
     /// <summary>
@@ -6,6 +7,11 @@ namespace Dock.Model
     /// </summary>
     public interface IHostWindow
     {
+        /// <summary>
+        /// Gets dock controls.
+        /// </summary>
+        IList<IHostWindow>? HostWindows { get; }
+
         /// <summary>
         /// Gets dock manager.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using Avalonia;
@@ -17,6 +18,8 @@ namespace Dock.Avalonia.Controls
     public class HostWindow : Window, IStyleable, IHostWindow
     {
         internal static bool s_useCustomDrag = true;
+
+        internal static List<IHostWindow> s_hostWindows = new List<IHostWindow>();
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -71,6 +74,9 @@ namespace Dock.Avalonia.Controls
         private Point _startPoint;
 
         /// <inheritdoc/>
+        public IList<IHostWindow>? HostWindows => s_hostWindows;
+
+        /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
 
         /// <inheritdoc/>
@@ -98,6 +104,22 @@ namespace Dock.Avalonia.Controls
 
             _dockManager = new DockManager();
             _hostWindowState = new HostWindowState(_dockManager, this);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            s_hostWindows.Add(this);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+
+            s_hostWindows.Remove(this);
         }
 
         private void HostWindow_PositionChanged(object sender, PixelPointEventArgs e)

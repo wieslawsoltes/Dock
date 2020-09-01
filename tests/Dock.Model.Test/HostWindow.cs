@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dock.Model
 {
     public class HostWindow : IHostWindow
     {
+        public IList<IHostWindow>? HostWindows { get; }
+
         public IDockManager? DockManager { get; }
 
         public IHostWindowState? HostWindowState { get; }

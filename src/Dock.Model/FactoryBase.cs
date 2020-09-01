@@ -325,7 +325,7 @@ namespace Dock.Model
                 {
                     isVisible = toolDock.VisibleDockables.Contains(dockable);
                 }
-                
+
                 if (!(toolDock.PinnedDockables is null))
                 {
                     isPinned = toolDock.PinnedDockables.Contains(dockable);

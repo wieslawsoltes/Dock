@@ -25,15 +25,6 @@ namespace Dock.Model.UnitTests
         }
 
         [Fact]
-        public void CreatePinDock_Creates_PinDock()
-        {
-            var factory = new TestFactory();
-            var actual = factory.CreatePinDock();
-            Assert.NotNull(actual);
-            Assert.IsType<PinDock>(actual);
-        }
-
-        [Fact]
         public void CreateProportionalDock_Creates_ProportionalDock()
         {
             var factory = new TestFactory();

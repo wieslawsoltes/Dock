@@ -62,9 +62,6 @@
                     <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding VisibleDockables}">
-                        <TextBlock Text="{Binding Title}"/>
-                    </TreeDataTemplate>
                     <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
@@ -95,9 +92,6 @@
                 </TreeView.Styles>
                 <TreeView.DataTemplates>
                     <TreeDataTemplate DataType="Controls:IRootDock" ItemsSource="{Binding VisibleDockables}">
-                        <TextBlock Text="{Binding Title}"/>
-                    </TreeDataTemplate>
-                    <TreeDataTemplate DataType="Controls:IPinDock" ItemsSource="{Binding VisibleDockables}">
                         <TextBlock Text="{Binding Title}"/>
                     </TreeDataTemplate>
                     <TreeDataTemplate DataType="Controls:IProportionalDock" ItemsSource="{Binding VisibleDockables}">

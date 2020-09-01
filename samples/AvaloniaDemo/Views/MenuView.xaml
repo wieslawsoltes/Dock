@@ -37,19 +37,5 @@
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>
-        <MenuItem Header="_Window">
-            <MenuItem Header="_Save Window Layout" Command="{Binding SaveWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}" x:CompileBindings="False"/>
-            <MenuItem Header="_Apply Window Layout" Items="{Binding Layout.VisibleDockables}" x:CompileBindings="False">
-                <MenuItem.Styles>
-                    <Style Selector="MenuItem">
-                        <Setter Property="Header" Value="{Binding Title}"/>
-                        <Setter Property="Command" Value="{Binding $parent.DataContext.ApplyWindowLayout}" x:CompileBindings="False"/>
-                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                    </Style>
-                </MenuItem.Styles>
-            </MenuItem>
-            <MenuItem Header="_Manage Window Layouts" Command="{Binding ManageWindowLayouts}" CommandParameter="{Binding Layout}" x:CompileBindings="False"/>
-            <MenuItem Header="_Reset Window Layout" Command="{Binding ResetWindowLayout}" CommandParameter="{Binding Layout.ActiveDockable}" x:CompileBindings="False"/>
-        </MenuItem>
     </Menu>
 </UserControl>

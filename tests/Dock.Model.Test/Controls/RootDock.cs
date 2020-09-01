@@ -6,6 +6,8 @@ namespace Dock.Model.Controls
 {
     public class RootDock : DockBase, IRootDock
     {
+        public bool IsFocusableRoot { get; set; } = true;
+
         public IDockWindow? Window { get; set; }
 
         public IList<IDockWindow>? Windows { get; set; }

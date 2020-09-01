@@ -144,7 +144,7 @@ namespace Dock.Model
                     {
                         if (sourceDockableOwner.Factory is IFactory factory)
                         {
-                            if (factory.FindRoot(sourceDockable) is IRootDock root && root.ActiveDockable is IDock targetWindowOwner)
+                            if (factory.FindRoot(sourceDockable, (x) => true) is IRootDock root && root.ActiveDockable is IDock targetWindowOwner)
                             {
                                 if (bExecute)
                                 {

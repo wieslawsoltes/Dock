@@ -91,7 +91,7 @@ namespace Dock.Avalonia
         {
             if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
             {
-                if (factory.FindRoot(dock) is IRootDock root && root.ActiveDockable is IRootDock avtiveRootDockable)
+                if (factory.FindRoot(dock, (x) => true) is IRootDock root && root.ActiveDockable is IRootDock avtiveRootDockable)
                 {
                     avtiveRootDockable.ShowWindows();
                 }

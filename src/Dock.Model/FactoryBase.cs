@@ -249,17 +249,17 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> filter)
+        public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate)
         {
             if (dockable.Owner is null)
             {
                 return null;
             }
-            if (dockable.Owner is IRootDock rootDock && filter(rootDock) == true)
+            if (dockable.Owner is IRootDock rootDock && predicate(rootDock) == true)
             {
                 return rootDock;
             }
-            return FindRoot(dockable.Owner, filter);
+            return FindRoot(dockable.Owner, predicate);
         }
 
         /// <inheritdoc/>

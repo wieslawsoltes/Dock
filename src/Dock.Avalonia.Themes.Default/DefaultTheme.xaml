@@ -10,7 +10,6 @@
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/NavigationControl.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockControl.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/HostWindow.xaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/MetroWindow.xaml"/>
     <Style>
         <Style.Resources>
             <SolidColorBrush x:Key="ApplicationAccentBrushLow">#007ACC</SolidColorBrush>

@@ -1,11 +1,10 @@
 ﻿using Avalonia;
-using Avalonia.Input;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Controls;
 
 namespace AvaloniaDemo.Views
 {
-    public class MainWindow : MetroWindow
+    public class MainWindow : Window
     {
         public MainWindow()
         {

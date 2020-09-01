@@ -50,7 +50,9 @@ namespace Dock.Avalonia.Controls
 
         Type IStyleable.StyleKey => typeof(HostWindow);
 
-        private HostWindowState _hostWindowState;
+        private readonly DockManager _dockManager;
+
+        private readonly HostWindowState _hostWindowState;
 
         private Control? _titleBar;
         private Grid? _bottomHorizontalGrip;
@@ -67,6 +69,12 @@ namespace Dock.Avalonia.Controls
         private Image? _icon;
         private bool _mouseDown;
         private Point _startPoint;
+
+        /// <inheritdoc/>
+        public IDockManager DockManager => _dockManager;
+
+        /// <inheritdoc/>
+        public IHostWindowState HostWindowState => _hostWindowState;
 
         /// <inheritdoc/>
         public bool IsTracked { get; set; }
@@ -88,7 +96,8 @@ namespace Dock.Avalonia.Controls
             LayoutUpdated += HostWindow_LayoutUpdated;
             Closing += HostWindow_Closing;
 
-            _hostWindowState = new HostWindowState(this);
+            _dockManager = new DockManager();
+            _hostWindowState = new HostWindowState(_dockManager, this);
         }
 
         private void HostWindow_PositionChanged(object sender, PixelPointEventArgs e)

@@ -12,11 +12,13 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Interaction logic for <see cref="DockControl"/> xaml.
     /// </summary>
-    public class DockControl : TemplatedControl
+    public class DockControl : TemplatedControl, IDockControl
     {
-        internal static List<IVisual> s_dockControls = new List<IVisual>();
+        internal static List<IDockControl> s_dockControls = new List<IDockControl>();
 
-        private readonly DockControlState _dockControlState = new DockControlState();
+        private readonly DockManager _dockManager;
+
+        private readonly DockControlState _dockControlState;
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
@@ -42,10 +44,16 @@ namespace Dock.Avalonia.Controls
         public static readonly StyledProperty<bool> InitializeFactoryProperty =
             AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory), false);
 
-        /// <summary>
-        /// Gets or sets the dock layout.
-        /// </summary>
-        /// <value>The layout.</value>
+        /// <inheritdoc/>
+        public IList<IDockControl>? DockControls => s_dockControls;
+
+        /// <inheritdoc/>
+        public IDockManager? DockManager => _dockManager;
+
+        /// <inheritdoc/>
+        public IDockControlState? DockControlState => _dockControlState;
+
+        /// <inheritdoc/>
         [Content]
         public IDock Layout
         {
@@ -53,28 +61,21 @@ namespace Dock.Avalonia.Controls
             set => SetValue(LayoutProperty, value);
         }
 
-        /// <summary>
-        /// Gets or sets the dock factory.
-        /// </summary>
-        /// <value>The factory.</value>
+        /// <inheritdoc/>
         public IFactory Factory
         {
             get => GetValue(FactoryProperty);
             set => SetValue(FactoryProperty, value);
         }
 
-        /// <summary>
-        /// Gets or sets the flag indicating whether to initialize layout.
-        /// </summary>
+        /// <inheritdoc/>
         public bool InitializeLayout
         {
             get => GetValue(InitializeLayoutProperty);
             set => SetValue(InitializeLayoutProperty, value);
         }
 
-        /// <summary>
-        /// Gets or sets the flag indicating whether to initialize factory.
-        /// </summary>
+        /// <inheritdoc/>
         public bool InitializeFactory
         {
             get => GetValue(InitializeFactoryProperty);
@@ -86,6 +87,9 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public DockControl()
         {
+            _dockManager = new DockManager();
+            _dockControlState = new DockControlState(_dockManager);
+
             AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

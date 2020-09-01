@@ -11,9 +11,8 @@ namespace Dock.Avalonia
     /// <summary>
     /// Host window state.
     /// </summary>
-    internal class HostWindowState
+    internal class HostWindowState : IHostWindowState
     {
-        private readonly IDockManager _dockManager = new DockManager();
         private readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private readonly HostWindow _hostWindow;
         private Point _dragStartPoint = default;
@@ -24,8 +23,12 @@ namespace Dock.Avalonia
         private IControl? _targetDropControl = null;
         private DragAction _dragAction = default;
 
-        public HostWindowState(HostWindow hostWindow)
+        /// <inheritdoc/>
+        public IDockManager DockManager { get; set; }
+
+        public HostWindowState(IDockManager dockManager, HostWindow hostWindow)
         {
+            DockManager = dockManager;
             _hostWindow = hostWindow;
         }
 
@@ -96,9 +99,9 @@ namespace Dock.Avalonia
 
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
-                _dockManager.Position = DockHelpers.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+                DockManager.Position = DockHelpers.ToDockPoint(point);
+                DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
             return false;
@@ -116,9 +119,9 @@ namespace Dock.Avalonia
             if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
-                _dockManager.Position = DockHelpers.ToDockPoint(point);
-                _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+                DockManager.Position = DockHelpers.ToDockPoint(point);
+                DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+                return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
 
             return false;

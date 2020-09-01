@@ -7,6 +7,16 @@ namespace Dock.Model
     public interface IHostWindow
     {
         /// <summary>
+        /// Gets dock manager.
+        /// </summary>
+        IDockManager? DockManager { get; }
+
+        /// <summary>
+        /// Gets host window state.
+        /// </summary>
+        IHostWindowState? HostWindowState { get; }
+
+        /// <summary>
         /// Gets or sets value that indicates whether host size and position is tracked.
         /// </summary>
         bool IsTracked { get; set; }

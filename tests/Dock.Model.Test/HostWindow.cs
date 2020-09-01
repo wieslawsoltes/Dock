@@ -4,6 +4,10 @@ namespace Dock.Model
 {
     public class HostWindow : IHostWindow
     {
+        public IDockManager? DockManager { get; }
+
+        public IHostWindowState? HostWindowState { get; }
+
         public bool IsTracked { get; set; }
 
         public IDockWindow? Window { get; set; }

@@ -31,13 +31,6 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DockPanelSplitter" /> class.
-        /// </summary>
-        public DockPanelSplitter()
-        {
-        }
-
-        /// <summary>
         /// Gets a value indicating whether this splitter is horizontal.
         /// </summary>
         public bool IsHorizontal
@@ -47,6 +40,13 @@ namespace Dock.Avalonia.Controls
                 var dock = GetDock(this);
                 return dock == global::Avalonia.Controls.Dock.Top || dock == global::Avalonia.Controls.Dock.Bottom;
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DockPanelSplitter" /> class.
+        /// </summary>
+        public DockPanelSplitter()
+        {
         }
 
         /// <inheritdoc/>

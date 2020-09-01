@@ -1,6 +1,0 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="Dock.Avalonia.Themes.Metro.DefaultTheme">
-    <StyleInclude Source="avares://Dock.Avalonia.Themes.Metro/HostWindow.xaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia.Themes.Metro/MetroWindow.xaml"/>
-</Styles>

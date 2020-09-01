@@ -18,7 +18,6 @@ namespace Dock.Avalonia.Controls
         private Grid? _leftIndicator;
         private Grid? _rightIndicator;
         private Grid? _centerIndicator;
-
         private Control? _topSelector;
         private Control? _bottomSelector;
         private Control? _leftSelector;

@@ -40,34 +40,8 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IPinDock">
-                            <DockPanel Name="DropPin" id:DockProperties.IsDropArea="True" Background="Transparent">
-                                <TabStrip Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" DockPanel.Dock="{Binding Alignment, Converter={StaticResource AlignmentConverter}}">
-                                    <TabStrip.Styles>
-                                        <Style Selector="TabStrip:empty">
-                                            <Setter Property="IsVisible" Value="False" />
-                                        </Style>
-                                        <Style Selector="TabStrip /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
-                                            <Setter Property="Orientation" Value="Vertical"/>
-                                        </Style>
-                                    </TabStrip.Styles>
-                                    <TabStrip.DataTemplates>
-                                        <DataTemplate DataType="Dock:IDockable">
-                                            <StackPanel Name="DragPin" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                                <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </TabStrip.DataTemplates>
-                                </TabStrip>
-                                <ContentControl Content="{Binding ActiveDockable}" IsVisible="{Binding IsExpanded}"/>
-                            </DockPanel>
-                        </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
                             <DockPanel Name="DropRoot" id:DockProperties.IsDropArea="False" Background="Transparent">
-                                <ContentControl Content="{Binding Top}" DockPanel.Dock="Top"/>
-                                <ContentControl Content="{Binding Bottom}" DockPanel.Dock="Bottom"/>
-                                <ContentControl Content="{Binding Left}" DockPanel.Dock="Left"/>
-                                <ContentControl Content="{Binding Right}" DockPanel.Dock="Right"/>
                                 <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" IsVirtualized="False"/>
                             </DockPanel>
                         </DataTemplate>

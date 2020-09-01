@@ -12,14 +12,6 @@ namespace Dock.Model.Controls
 
         public IList<IDockWindow>? Windows { get; set; }
 
-        public IPinDock? Top { get; set; }
-
-        public IPinDock? Bottom { get; set; }
-
-        public IPinDock? Left { get; set; }
-
-        public IPinDock? Right { get; set; }
-
         public virtual void ShowWindows()
         {
             _navigateAdapter?.ShowWindows();

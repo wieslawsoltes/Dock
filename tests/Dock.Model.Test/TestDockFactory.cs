@@ -203,14 +203,6 @@ namespace Dock.Model
             root.ActiveDockable = dashboardView;
             root.DefaultDockable = dashboardView;
             root.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
-            root.Top = CreatePinDock();
-            root.Top.Alignment = Alignment.Top;
-            root.Bottom = CreatePinDock();
-            root.Bottom.Alignment = Alignment.Bottom;
-            root.Left = CreatePinDock();
-            root.Left.Alignment = Alignment.Left;
-            root.Right = CreatePinDock();
-            root.Right.Alignment = Alignment.Right;
 
             return root;
         }
@@ -222,7 +214,6 @@ namespace Dock.Model
             this.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => context,
-                [nameof(IPinDock)] = () => context,
                 [nameof(IProportionalDock)] = () => context,
                 [nameof(IDocumentDock)] = () => context,
                 [nameof(IToolDock)] = () => context,

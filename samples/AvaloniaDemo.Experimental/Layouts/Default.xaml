@@ -8,18 +8,6 @@
        Selector="idc|DockControl.Default">
     <Setter Property="Layout">
         <dmc:RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #Dashboard}" DefaultDockable="{Binding #Dashboard}" IsCollapsable="False">
-            <dmc:RootDock.Top>
-                <dmc:PinDock x:Name="PinDockTop" Alignment="Top"/>
-            </dmc:RootDock.Top>
-            <dmc:RootDock.Bottom>
-                <dmc:PinDock x:Name="PinDockBottom" Alignment="Bottom"/>
-            </dmc:RootDock.Bottom>
-            <dmc:RootDock.Left>
-                <dmc:PinDock x:Name="PinDockLeft" Alignment="Left"/>
-            </dmc:RootDock.Left>
-            <dmc:RootDock.Right>
-                <dmc:PinDock x:Name="PinDockRight" Alignment="Right"/>
-            </dmc:RootDock.Right>
             <vmv:DashboardViewModel x:Name="Dashboard" Id="Dashboard" Title="Dashboard"/>
             <vmv:HomeViewModel x:Name="Home" Id="Home" Title="Home" ActiveDockable="{Binding #MainLayout}">
                 <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">

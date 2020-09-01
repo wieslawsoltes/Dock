@@ -18,17 +18,6 @@ namespace Dock.Model.ReactiveUI.UnitTests
         }
 
         [Fact]
-        public void ClonePinDock_Clone_Returns_PinDock()
-        {
-            var factory = new TestFactory();
-            var source = factory.CreatePinDock();
-            factory.UpdateDockable(source, null);
-            var actual = source.Clone();
-            Assert.NotNull(actual);
-            Assert.IsType<PinDock>(actual);
-        }
-
-        [Fact]
         public void CloneProportionalDock_Clone_Returns_ProportionalDock()
         {
             var factory = new TestFactory();

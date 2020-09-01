@@ -31,7 +31,6 @@
   <Import Project="..\..\build\EmbedXaml.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Metro\Dock.Avalonia.Themes.Metro.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />

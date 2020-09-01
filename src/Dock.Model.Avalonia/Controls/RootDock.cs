@@ -12,6 +12,12 @@ namespace Dock.Model.Controls
     public class RootDock : DockBase, IRootDock
     {
         /// <summary>
+        /// Defines the <see cref="IsFocusableRoot"/> property.
+        /// </summary>
+        public static readonly DirectProperty<RootDock, bool> IsFocusableRootProperty =
+            AvaloniaProperty.RegisterDirect<RootDock, bool>(nameof(IsFocusableRoot), o => o.IsFocusableRoot, (o, v) => o.IsFocusableRoot = v, true);
+
+        /// <summary>
         /// Defines the <see cref="Window"/> property.
         /// </summary>
         public static readonly DirectProperty<RootDock, IDockWindow?> WindowProperty =
@@ -47,12 +53,21 @@ namespace Dock.Model.Controls
         public static readonly DirectProperty<RootDock, IPinDock?> RightProperty =
             AvaloniaProperty.RegisterDirect<RootDock, IPinDock?>(nameof(Right), o => o.Right, (o, v) => o.Right = v);
 
+        private bool _isFocusableRoot = true;
         private IDockWindow? _window;
         private IList<IDockWindow>? _windows;
         private IPinDock? _top;
         private IPinDock? _bottom;
         private IPinDock? _left;
         private IPinDock? _right;
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool IsFocusableRoot
+        {
+            get => _isFocusableRoot;
+            set => SetAndRaise(IsFocusableRootProperty, ref _isFocusableRoot, value);
+        }
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -107,6 +122,7 @@ namespace Dock.Model.Controls
         /// </summary>
         public RootDock()
         {
+            _isFocusableRoot = true;
             _windows = new AvaloniaList<IDockWindow>();
             Id = nameof(IRootDock);
             Title = nameof(IRootDock);

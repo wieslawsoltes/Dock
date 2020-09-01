@@ -107,17 +107,17 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        protected override void OnOpened(EventArgs e)
         {
-            base.OnAttachedToVisualTree(e);
+            base.OnOpened(e);
 
             s_hostWindows.Add(this);
         }
 
         /// <inheritdoc/>
-        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-            base.OnDetachedFromVisualTree(e);
+            base.OnClosed(e);
 
             s_hostWindows.Remove(this);
         }

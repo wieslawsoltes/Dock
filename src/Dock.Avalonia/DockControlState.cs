@@ -263,7 +263,7 @@ namespace Dock.Avalonia
                                 }
 
                                 Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
-                                
+
                                 if (isDropEnabled)
                                 {
                                     if (_dropControl == dropControl)

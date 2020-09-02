@@ -15,10 +15,10 @@
                 <ContentControl Content="{TemplateBinding Layout}" x:DataType="Dock:IDock" x:CompileBindings="True">
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="Controls:IDocumentContent">
-                            <Decorator Child="{Binding Content}"/>
+                            <ContentControl Content="{Binding Content}"/>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IToolContent">
-                            <Decorator Child="{Binding Content}"/>
+                            <ContentControl Content="{Binding Content}"/>
                         </DataTemplate>
                         <DataTemplate DataType="Controls:ISplitterDock">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
@@ -42,7 +42,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="Controls:IRootDock">
                             <DockPanel Name="DropRoot" id:DockProperties.IsDropArea="False" Background="Transparent">
-                                <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" IsVirtualized="False"/>
+                                <ContentControl Content="{Binding ActiveDockable}"/>
                             </DockPanel>
                         </DataTemplate>
                     </ContentControl.DataTemplates>

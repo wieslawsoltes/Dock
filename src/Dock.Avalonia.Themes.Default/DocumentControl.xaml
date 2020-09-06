@@ -98,7 +98,7 @@
                     </TabStrip>
                     <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" x:CompileBindings="False" />
                     <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
-                        <Carousel Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}" IsVirtualized="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        <ContentControl Content="{Binding ActiveDockable}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </Border>
                 </DockPanel>
             </ControlTemplate>

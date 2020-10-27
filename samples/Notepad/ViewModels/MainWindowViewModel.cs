@@ -207,19 +207,20 @@ namespace Notepad.ViewModels
             if (e.Data.Contains(DataFormats.FileNames))
             {
                 var result = e.Data.GetFileNames();
-
-                foreach (var path in result)
+                if (result is {})
                 {
-                    if (!string.IsNullOrEmpty(path))
+                    foreach (var path in result)
                     {
-                        var untitledFileViewModel = OpenFileViewModel(path);
-                        if (untitledFileViewModel != null)
+                        if (!string.IsNullOrEmpty(path))
                         {
-                            AddFileViewModel(untitledFileViewModel);
+                            var untitledFileViewModel = OpenFileViewModel(path);
+                            if (untitledFileViewModel != null)
+                            {
+                                AddFileViewModel(untitledFileViewModel);
+                            }
                         }
                     }
                 }
-
                 e.Handled = true;
             }
         }

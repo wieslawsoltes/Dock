@@ -29,9 +29,9 @@ namespace Dock.Avalonia.UnitTests.Controls
                 Orientation = Orientation.Horizontal,
                 Children =
                 {
-                    new Rectangle(),
+                    new Border(),
                     new ProportionalStackPanelSplitter(),
-                    new Rectangle()
+                    new Border()
                 }
             };
 
@@ -54,9 +54,9 @@ namespace Dock.Avalonia.UnitTests.Controls
                 Orientation = Orientation.Vertical,
                 Children =
                 {
-                    new Rectangle(),
+                    new Border(),
                     new ProportionalStackPanelSplitter(),
-                    new Rectangle()
+                    new Border()
                 }
             };
 
@@ -83,20 +83,20 @@ namespace Dock.Avalonia.UnitTests.Controls
                     {
                         Children =
                         {
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Red,
+                                Background = Brushes.Red,
                                 [ProportionalStackPanelSplitter.ProportionProperty] = 0.5
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Green
+                                Background = Brushes.Green
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill=Brushes.Blue
+                                Background = Brushes.Blue
                             }
                         }
                     },
@@ -105,19 +105,19 @@ namespace Dock.Avalonia.UnitTests.Controls
                     {
                         Children =
                         {
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Blue,
+                                Background = Brushes.Blue,
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Red
+                                Background = Brushes.Red
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill=Brushes.Green
+                                Background=Brushes.Green
                             }
                         }
                     },
@@ -126,19 +126,19 @@ namespace Dock.Avalonia.UnitTests.Controls
                     {
                         Children =
                         {
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Green,
+                                Background = Brushes.Green,
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Blue
+                                Background = Brushes.Blue
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill=Brushes.Red,
+                                Background=Brushes.Red,
                                 [ProportionalStackPanelSplitter.ProportionProperty] = 0.5
                             }
                         }
@@ -173,14 +173,14 @@ namespace Dock.Avalonia.UnitTests.Controls
                 },
                 Items = new List<IControl>()
                 {
-                    new Rectangle()
+                    new Border()
                     {
-                        Fill = Brushes.Green
+                        Background = Brushes.Green
                     },
                     new ProportionalStackPanelSplitter(),
-                    new Rectangle()
+                    new Border()
                     {
-                        Fill = Brushes.Blue
+                        Background = Brushes.Blue
                     },
                     new ProportionalStackPanelSplitter(),
                     new ItemsControl()
@@ -194,18 +194,18 @@ namespace Dock.Avalonia.UnitTests.Controls
                         },
                         Items = new List<IControl>()
                         {
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Green
+                                Background = Brushes.Green
                             },
                             new ProportionalStackPanelSplitter(),
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Blue
+                                Background = Brushes.Blue
                             },
-                            new Rectangle()
+                            new Border()
                             {
-                                Fill = Brushes.Red
+                                Background = Brushes.Red
                             }
                         }
                     }

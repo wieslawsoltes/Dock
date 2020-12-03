@@ -5,7 +5,6 @@
               xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
               xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
-              xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
               x:Name="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}" IsCollapsable="False">
     <dmc:RootDock.HiddenDockables>
         <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1"/>

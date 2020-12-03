@@ -4,7 +4,6 @@
        xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
        xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
        xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
-       xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
        Selector="idc|DockControl.Default">
     <Setter Property="Layout">
         <dmc:RootDock ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}" IsCollapsable="False">

@@ -3,7 +3,6 @@
               xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
               xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
               xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
-              xmlns:vmv="clr-namespace:AvaloniaDemo.ViewModels.Views;assembly=AvaloniaDemo"
               ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}">
     <dmc:RootDock x:Name="Perspective" Title="Perspective" ActiveDockable="{Binding #MainLayout}" IsCollapsable="False">
         <dmc:ProportionalDock x:Name="MainLayout" Proportion="NaN" Orientation="Horizontal">

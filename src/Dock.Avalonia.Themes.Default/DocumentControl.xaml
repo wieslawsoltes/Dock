@@ -82,7 +82,7 @@
                                         <TextBlock Text="{Binding Title}" />
                                         <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
                                     </StackPanel>
-                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
+                                    <Button Height="14" Width="14" IsVisible="{Binding CanClose, FallbackValue=True}" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
                                         <Button.Styles>
                                             <Style Selector="Button">
                                                 <Setter Property="BorderThickness" Value="0"/>

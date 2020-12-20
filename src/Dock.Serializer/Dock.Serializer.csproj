@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net461;net5.0</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

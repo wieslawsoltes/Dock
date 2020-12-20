@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net461;net5.0</TargetFrameworks>
     <OutputType>WinExe</OutputType>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
@@ -26,12 +24,6 @@
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
   <Import Project="..\..\build\Newtonsoft.Json.props" />
-
-  <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="obj\**" />
-  </ItemGroup>
-
-  <Import Project="..\..\build\EmbedXaml.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

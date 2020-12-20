@@ -1,0 +1,21 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Dock.Avalonia.Themes.Default.DefaultTheme">
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockPanelSplitter.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/ProportionalStackPanelSplitter.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockTarget.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockToolChrome.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DocumentControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/ToolControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/NavigationControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DockControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/HostWindow.axaml"/>
+    <Style>
+        <Style.Resources>
+            <SolidColorBrush x:Key="ApplicationAccentBrushLow">#007ACC</SolidColorBrush>
+            <SolidColorBrush x:Key="ApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
+            <SolidColorBrush x:Key="ApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
+            <SolidColorBrush x:Key="ApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
+        </Style.Resources>
+    </Style>
+</Styles>

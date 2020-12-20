@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680">
     <UserControl.Styles>
-        <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.xaml"/>
+        <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.axaml"/>
     </UserControl.Styles>
     <Grid ColumnDefinitions="*,Auto,250" RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <views:DebugView DataContext="{Binding #dockControl.Layout}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"/>

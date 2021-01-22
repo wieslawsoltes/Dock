@@ -69,7 +69,7 @@ namespace Dock.Avalonia.Controls
             base.OnDetachedFromVisualTree(e);
         }
 
-        private void Pressed(object sender, PointerPressedEventArgs e)
+        private void Pressed(object? sender, PointerPressedEventArgs e)
         {
             if (this.DataContext is IDock dock && dock.Factory is IFactory factory)
             {

@@ -157,37 +157,37 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Pressed(object sender, PointerPressedEventArgs e)
+        private void Pressed(object? sender, PointerPressedEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, s_dockControls);
         }
 
-        private void Released(object sender, PointerReleasedEventArgs e)
+        private void Released(object? sender, PointerReleasedEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, s_dockControls);
         }
 
-        private void Moved(object sender, PointerEventArgs e)
+        private void Moved(object? sender, PointerEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, s_dockControls);
         }
 
-        private void Enter(object sender, PointerEventArgs e)
+        private void Enter(object? sender, PointerEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, s_dockControls);
         }
 
-        private void Leave(object sender, PointerEventArgs e)
+        private void Leave(object? sender, PointerEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, s_dockControls);
         }
 
-        private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
+        private void CaptureLost(object? sender, PointerCaptureLostEventArgs e)
         {
             _dockControlState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, s_dockControls);
         }
 
-        private void WheelChanged(object sender, PointerWheelEventArgs e)
+        private void WheelChanged(object? sender, PointerWheelEventArgs e)
         {
             _dockControlState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, s_dockControls);
         }

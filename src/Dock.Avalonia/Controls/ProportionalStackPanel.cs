@@ -46,16 +46,19 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        protected override void ChildrenChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             base.ChildrenChanged(sender, e);
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems.OfType<IControl>())
+                    if (e.NewItems is not null)
                     {
-                        ProportionalStackPanelSplitter.SetProportion(item as IControl, double.NaN);
+                        foreach (var item in e.NewItems.OfType<IControl>())
+                        {
+                            ProportionalStackPanelSplitter.SetProportion(item as IControl, double.NaN);
+                        }
                     }
                     break;
             }

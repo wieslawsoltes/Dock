@@ -215,10 +215,6 @@ namespace Dock.Avalonia
                                         var position = point + _dragStartPoint;
                                         var screenPoint = new PixelPoint((int)position.X, (int)position.Y);
                                         var dockControlPoint = dockControl.PointToClient(screenPoint);
-                                        if (dockControlPoint == null)
-                                        {
-                                            continue;
-                                        }
                                         var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                                         if (dropControl != null)
                                         {

@@ -122,7 +122,7 @@ namespace Dock.Avalonia.Controls
             s_hostWindows.Remove(this);
         }
 
-        private void HostWindow_PositionChanged(object sender, PixelPointEventArgs e)
+        private void HostWindow_PositionChanged(object? sender, PixelPointEventArgs e)
         {
             if (Window != null && IsTracked == true)
             {
@@ -132,7 +132,7 @@ namespace Dock.Avalonia.Controls
             _hostWindowState.Process(this.Position.ToPoint(1.0), EventType.Moved);
         }
 
-        private void HostWindow_LayoutUpdated(object sender, EventArgs e)
+        private void HostWindow_LayoutUpdated(object? sender, EventArgs e)
         {
             if (Window != null && IsTracked == true)
             {
@@ -140,7 +140,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void HostWindow_Closing(object sender, CancelEventArgs e)
+        private void HostWindow_Closing(object? sender, CancelEventArgs e)
         {
             if (Window != null && IsTracked == true)
             {
@@ -153,22 +153,22 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Pressed(object sender, PointerPressedEventArgs e)
+        private void Pressed(object? sender, PointerPressedEventArgs e)
         {
             _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
         }
 
-        private void Released(object sender, PointerReleasedEventArgs e)
+        private void Released(object? sender, PointerReleasedEventArgs e)
         {
             _hostWindowState.Process(e.GetPosition(this), EventType.Released);
         }
 
-        private void Moved(object sender, PointerEventArgs e)
+        private void Moved(object? sender, PointerEventArgs e)
         {
             // Using PositionChanged event instead of PointerMoved event.
         }
 
-        private void CaptureLost(object sender, PointerCaptureLostEventArgs e)
+        private void CaptureLost(object? sender, PointerCaptureLostEventArgs e)
         {
             _hostWindowState.Process(new Point(), EventType.CaptureLost);
         }
@@ -179,10 +179,13 @@ namespace Dock.Avalonia.Controls
         /// <param name="chrome">The chrome control.</param>
         public void AttachGrip(DockToolChrome chrome)
         {
-            Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
+            if (chrome.CloseButton is not null)
             {
-                Close();
-            });
+                Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
+                {
+                    Close();
+                });
+            }
 
             //Observable.FromEventPattern(chrome.MinimiseButton, nameof(Button.Click)).Subscribe(o =>
             //{

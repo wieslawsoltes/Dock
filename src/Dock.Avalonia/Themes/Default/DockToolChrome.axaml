@@ -14,9 +14,7 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="Auto,*" 
-                      x:DataType="core:IDock" 
-                      x:CompileBindings="True">
+                <Grid RowDefinitions="Auto,*" x:DataType="core:IDock" x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
                             BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <Grid x:Name="PART_Grip">

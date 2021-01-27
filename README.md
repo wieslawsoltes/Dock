@@ -63,7 +63,6 @@ and install the package like this:
 ### Packages
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
-* [Dock.Model.INPC](https://www.nuget.org/packages/Dock.Model.INPC/) - Core docking library implementation using INPC.
 * [Dock.Model.ReactiveUI](https://www.nuget.org/packages/Dock.Model.ReactiveUI/) - Core docking library implementation using ReactiveUI.
 * [Dock.Model.Avalonia](https://www.nuget.org/packages/Dock.Model.Avalonia/) - Core docking library implementation using Avalonia.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.

@@ -1,8 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model">
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:idc="using:Dock.Avalonia.Controls"
+        xmlns:dm="using:Dock.Model">
     <Style Selector="Button.chromeButton">
         <Setter Property="Margin" Value="2 0 0 0" />
         <Setter Property="Padding" Value="0" />
@@ -14,7 +14,7 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="25,*" x:DataType="Dock:IDock" x:CompileBindings="True">
+                <Grid RowDefinitions="25,*" x:DataType="dm:IDock" x:CompileBindings="True">
                     <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">

@@ -1,13 +1,13 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:idc="using:Dock.Avalonia.Controls"
+        xmlns:dm="using:Dock.Model"
+        xmlns:dmc="using:Dock.Model.Controls">
     <Style Selector="idc|ToolControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IToolDock" x:CompileBindings="True">
+                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" ZIndex="1" x:DataType="dmc:IToolDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent" />
@@ -66,7 +66,7 @@
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
-                            <DataTemplate DataType="Dock:IDockable">
+                            <DataTemplate DataType="dm:IDockable">
                                 <StackPanel Name="DragTool" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
                                 </StackPanel>

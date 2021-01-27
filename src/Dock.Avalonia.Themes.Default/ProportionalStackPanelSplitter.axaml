@@ -1,6 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+        xmlns:idc="using:Dock.Avalonia.Controls">
     <Style Selector="idc|ProportionalStackPanelSplitter">
         <Setter Property="Template">
             <ControlTemplate>

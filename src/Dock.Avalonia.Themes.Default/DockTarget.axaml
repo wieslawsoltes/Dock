@@ -1,20 +1,20 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia">
+        xmlns:idc="using:Dock.Avalonia.Controls">
     <Style Selector="idc|DockTarget">
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*" x:CompileBindings="True">
                     <Grid Background="Red" ColumnSpan="2" Opacity="0" Name="PART_TopIndicator" />
-                    <Grid Background="Blue" Grid.Row="1" ColumnSpan="2" Opacity="0" Name="PART_BottomIndicator" />
-                    <Grid Background="Green" RowSpan="2" Opacity="0" Name="PART_LeftIndicator" />
-                    <Grid Background="Orange" Grid.Column="1" RowSpan="2" Opacity="0" Name="PART_RightIndicator" />
-                    <Grid Background="Purple" ColumnSpan="2" RowSpan="2" Opacity="0" Name="PART_CenterIndicator" />
-                    <Grid RowSpan="2" ColumnSpan="2">
+                    <Grid Background="Blue" Grid.Row="1" ColumnSpan="2" Grid.Column="0" Opacity="0" Name="PART_BottomIndicator" />
+                    <Grid Background="Green" Grid.Row="0" RowSpan="2" Grid.Column="0" Opacity="0" Name="PART_LeftIndicator" />
+                    <Grid Background="Orange" Grid.Column="1" Grid.Row="0" RowSpan="2" Opacity="0" Name="PART_RightIndicator" />
+                    <Grid Background="Purple" ColumnSpan="2" Grid.Column="0" Grid.Row="0" RowSpan="2" Opacity="0" Name="PART_CenterIndicator" />
+                    <Grid Grid.Row="0" RowSpan="2" ColumnSpan="2" Grid.Column="0">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
                             <Image Name="PART_TopSelector" Source="/Assets/DockAnchorableTop.png" Height="40" Width="40" Grid.Column="1" />
                             <Image Name="PART_BottomSelector" Source="/Assets/DockAnchorableBottom.png" Height="40" Width="40" Grid.Row="2" Grid.Column="1" />
-                            <Image Name="PART_LeftSelector" Source="/Assets/DockAnchorableLeft.png" Height="40" Width="40" Grid.Row="1" />
+                            <Image Name="PART_LeftSelector" Source="/Assets/DockAnchorableLeft.png" Height="40" Width="40" Grid.Row="1" Grid.Column="0" />
                             <Image Name="PART_RightSelector" Source="/Assets/DockAnchorableRight.png" Height="40" Width="40" Grid.Row="1" Grid.Column="2" />
                             <Image Name="PART_CenterSelector" Source="/Assets/DockDocumentInside.png" Height="40" Width="40" Grid.Row="1" Grid.Column="1" />
                         </Grid>

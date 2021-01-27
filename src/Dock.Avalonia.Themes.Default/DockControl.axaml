@@ -1,10 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:converters="clr-namespace:Dock.Avalonia.Converters;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:idc="using:Dock.Avalonia.Controls"
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:dm="using:Dock.Model"
+        xmlns:dmc="using:Dock.Model.Controls">
     <Style Selector="idc|DockControl">
         <Style.Resources>
             <converters:OrientationConverter x:Key="OrientationConverter"/>
@@ -12,26 +12,26 @@
         </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentControl Content="{TemplateBinding Layout}" x:DataType="Dock:IDock" x:CompileBindings="True">
+                <ContentControl Content="{TemplateBinding Layout}" x:DataType="dm:IDock" x:CompileBindings="True">
                     <ContentControl.DataTemplates>
-                        <DataTemplate DataType="Controls:IDocumentContent">
+                        <DataTemplate DataType="dmc:IDocumentContent">
                             <ContentControl Content="{Binding Content}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IToolContent">
+                        <DataTemplate DataType="dmc:IToolContent">
                             <ContentControl Content="{Binding Content}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:ISplitterDock">
+                        <DataTemplate DataType="dmc:ISplitterDock">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IDocumentDock">
+                        <DataTemplate DataType="dmc:IDocumentDock">
                             <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IToolDock">
+                        <DataTemplate DataType="dmc:IToolDock">
                             <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <idc:ToolControl/>
                             </idc:DockToolChrome>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IProportionalDock">
+                        <DataTemplate DataType="dmc:IProportionalDock">
                             <ItemsControl Items="{Binding VisibleDockables}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -40,7 +40,7 @@
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </DataTemplate>
-                        <DataTemplate DataType="Controls:IRootDock">
+                        <DataTemplate DataType="dmc:IRootDock">
                             <DockPanel Name="DropRoot" id:DockProperties.IsDropArea="False" Background="Transparent">
                                 <ContentControl Content="{Binding ActiveDockable}"/>
                             </DockPanel>

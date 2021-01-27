@@ -1,6 +1,6 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AvaloniaDemo"
+             xmlns:local="using:AvaloniaDemo"
              x:Class="AvaloniaDemo.App">
     <Application.DataTemplates>
         <local:ViewLocator/>

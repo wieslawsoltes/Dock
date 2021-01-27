@@ -1,13 +1,13 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-        xmlns:Dock="clr-namespace:Dock.Model;assembly=Dock.Model"
-        xmlns:Controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:idc="using:Dock.Avalonia.Controls"
+        xmlns:dm="using:Dock.Model"
+        xmlns:dmc="using:Dock.Model.Controls">
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" Grid.Row="1" ZIndex="1" x:DataType="Controls:IDocumentDock" x:CompileBindings="True">
+                <DockPanel Name="DropDocumentDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" ZIndex="1" x:DataType="dmc:IDocumentDock" x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent"/>
@@ -76,11 +76,10 @@
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
-                            <DataTemplate DataType="Dock:IDockable">
+                            <DataTemplate DataType="dm:IDockable">
                                 <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />
-                                        <TextBlock Text="*" IsVisible="{Binding IsDirty, FallbackValue=False}" x:CompileBindings="False"/>
                                     </StackPanel>
                                     <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
                                         <Button.Styles>

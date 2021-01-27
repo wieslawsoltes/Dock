@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -9,8 +8,6 @@ using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
-using ReactiveUI.Legacy;
 
 namespace AvaloniaDemo
 {
@@ -25,25 +22,15 @@ namespace AvaloniaDemo
         {
             var mainWindowViewModel = new MainWindowViewModel();
 
-            mainWindowViewModel.Serializer = new DockSerializer(typeof(ObservableCollection<>));
-
             var factory = new DemoFactory(new DemoData());
             IDock? layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                string path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
-                if (File.Exists(path))
-                {
-                    layout = mainWindowViewModel.Serializer.Load<RootDock>(path);
-                }
-
                 var mainWindow = new MainWindow
                 {
                     DataContext = mainWindowViewModel
                 };
-
-                // TODO: Restore main window position, size and state.
 
                 mainWindowViewModel.Factory = factory;
                 mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
@@ -53,24 +40,22 @@ namespace AvaloniaDemo
                     mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
                 }
 
-                mainWindow.Closing += (sender, e) =>
+                mainWindow.Closing += (_, _) =>
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
                         dock.Close();
                     }
-                    // TODO: Save main window position, size and state.
                 };
 
                 desktopLifetime.MainWindow = mainWindow;
 
-                desktopLifetime.Exit += (sennder, e) =>
+                desktopLifetime.Exit += (_, _) =>
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
                         dock.Close();
                     }
-                    mainWindowViewModel.Serializer.Save(path, mainWindowViewModel.Layout);
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)

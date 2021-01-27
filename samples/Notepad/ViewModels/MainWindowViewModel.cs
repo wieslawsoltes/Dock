@@ -6,7 +6,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Dock.Model;
-using Dock.Serializer;
 using Notepad.ViewModels.Documents;
 using Notepad.Views.Layouts;
 using ReactiveUI;
@@ -17,15 +16,8 @@ namespace Notepad.ViewModels
     {
         public const string DocumentsDockId = "Files";
 
-        private IDockSerializer? _serializer;
         private IFactory? _factory;
         private IDock? _layout;
-
-        public IDockSerializer? Serializer
-        {
-            get => _serializer;
-            set => this.RaiseAndSetIfChanged(ref _serializer, value);
-        }
 
         public IFactory? Factory
         {

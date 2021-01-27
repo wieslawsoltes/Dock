@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
 using Notepad.ViewModels;
 using Notepad.Views;
-using ReactiveUI.Legacy;
 
 namespace Notepad
 {
@@ -24,19 +21,11 @@ namespace Notepad
         {
             var mainWindowViewModel = new MainWindowViewModel();
 
-            mainWindowViewModel.Serializer = new DockSerializer(typeof(ObservableCollection<>));
-
             var factory = new NotepadFactory();
             IDock? layout = null;
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
             {
-                string path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
-                if (File.Exists(path))
-                {
-                    layout = mainWindowViewModel.Serializer.Load<RootDock>(path);
-                }
-
                 var mainWindow = new MainWindow
                 {
                     DataContext = mainWindowViewModel
@@ -69,7 +58,6 @@ namespace Notepad
                     {
                         dock.Close();
                     }
-                    mainWindowViewModel.Serializer.Save(path, mainWindowViewModel.Layout);
                 };
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)

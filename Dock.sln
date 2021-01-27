@@ -35,7 +35,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.Diagnostics.props = build\Avalonia.Diagnostics.props
 		build\Avalonia.props = build\Avalonia.props
 		build\Base.props = build\Base.props
-		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\ReactiveUI.props = build\ReactiveUI.props
 		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
 		build\XUnit.props = build\XUnit.props
@@ -59,8 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71FD12F4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.UnitTests", "tests\Dock.Avalonia.UnitTests\Dock.Avalonia.UnitTests.csproj", "{2A9959DB-769C-4524-A817-507C554615EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\build\_build.csproj", "{D96A5888-05F6-482D-87EA-CC4608172F4D}"
@@ -70,12 +67,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{9FC6C15A-C513-4516-8AC5-568FA8F6DE24}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.Themes.Default", "src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj", "{7B8F87B5-FAB8-4191-A09F-9100727E056D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Test", "tests\Dock.Model.Test\Dock.Model.Test.csproj", "{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Perspectives", "samples\AvaloniaDemo.Perspectives\AvaloniaDemo.Perspectives.csproj", "{58567F3F-3B2D-4D5B-8E89-9F8C776A378F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad", "samples\Notepad\Notepad.csproj", "{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF}"
 EndProject
@@ -111,10 +102,6 @@ Global
 		{2A9959DB-769C-4524-A817-507C554615EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A9959DB-769C-4524-A817-507C554615EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A9959DB-769C-4524-A817-507C554615EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -135,18 +122,6 @@ Global
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B8F87B5-FAB8-4191-A09F-9100727E056D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58567F3F-3B2D-4D5B-8E89-9F8C776A378F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58567F3F-3B2D-4D5B-8E89-9F8C776A378F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58567F3F-3B2D-4D5B-8E89-9F8C776A378F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58567F3F-3B2D-4D5B-8E89-9F8C776A378F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -166,11 +141,7 @@ Global
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{5FF463E5-959B-45A3-B3D8-1B67A599D1C8} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{4B46A85D-102E-46F5-9B74-F1616E850605} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-		{B0D84C66-1CEA-4607-9C81-EAB34E7C01E7} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D96A5888-05F6-482D-87EA-CC4608172F4D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
-		{26B258D7-46F2-4B61-8BBF-9CED5EE1FEA4} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
-		{0B0E27B0-4FF1-4518-BDD0-E3FFC331C1F6} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-		{58567F3F-3B2D-4D5B-8E89-9F8C776A378F} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{DC7E8088-EA4D-4E42-9F89-A343475C50DA} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{686F0686-FB89-4F51-BA22-4529248745C9} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}

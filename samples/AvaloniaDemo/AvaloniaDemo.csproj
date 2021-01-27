@@ -1,17 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net461;net5.0</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PublishTrimmed>False</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>False</PublishReadyToRun>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -27,7 +21,6 @@
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
   </ItemGroup>
 
 </Project>

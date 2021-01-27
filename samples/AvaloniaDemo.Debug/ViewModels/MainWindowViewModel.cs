@@ -128,7 +128,12 @@ namespace AvaloniaDemo.ViewModels
                 var result = await dlg.ShowAsync(GetWindow());
                 if (result != null)
                 {
-                    IDock? layout = Serializer?.Load<RootDock>(result.FirstOrDefault());
+                    var path = result.FirstOrDefault();
+                    if (path is null)
+                    {
+                        return;
+                    }
+                    IDock? layout = Serializer?.Load<RootDock>(path);
                     if (layout != null)
                     {
                         if (DockControl.Layout is IDock root)

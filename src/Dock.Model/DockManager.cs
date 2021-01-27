@@ -26,7 +26,7 @@ namespace Dock.Model
             var targetDockable = targetDock.ActiveDockable;
             if (targetDockable is null)
             {
-                targetDockable = targetDock.VisibleDockables.LastOrDefault();
+                targetDockable = targetDock.VisibleDockables?.LastOrDefault();
                 if (targetDockable is null)
                 {
                     if (bExecute)
@@ -54,7 +54,7 @@ namespace Dock.Model
             var targetDockable = targetDock.ActiveDockable;
             if (targetDockable is null)
             {
-                targetDockable = targetDock.VisibleDockables.LastOrDefault();
+                targetDockable = targetDock.VisibleDockables?.LastOrDefault();
                 if (targetDockable is null)
                 {
                     return false;
@@ -278,12 +278,15 @@ namespace Dock.Model
 
         internal bool DockDockableIntoDockVisible(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            var visible = sourceDock.VisibleDockables.ToList();
-            foreach (var dockable in visible)
+            var visible = sourceDock.VisibleDockables?.ToList();
+            if (visible is not null)
             {
-                if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
+                foreach (var dockable in visible)
                 {
-                    return false;
+                    if (DockDockableIntoDock(dockable, targetDock, action, operation, bExecute) == false)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -291,25 +294,28 @@ namespace Dock.Model
 
         internal bool DockDockIntoDock(IDock sourceDock, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
         {
-            var visible = sourceDock.VisibleDockables.ToList();
-            if (visible.Count == 1)
+            var visible = sourceDock.VisibleDockables?.ToList();
+            if (visible is not null)
             {
-                if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                if (visible.Count == 1)
                 {
-                    return false;
-                }
-            }
-            else
-            {
-                if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
-                {
-                    return false;
-                }
-                foreach (var dockable in visible.Skip(1))
-                {
-                    if (DockDockableIntoDockable(dockable, visible.First(), action, bExecute) == false)
+                    if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
                     {
                         return false;
+                    }
+                }
+                else
+                {
+                    if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                    {
+                        return false;
+                    }
+                    foreach (var dockable in visible.Skip(1))
+                    {
+                        if (DockDockableIntoDockable(dockable, visible.First(), action, bExecute) == false)
+                        {
+                            return false;
+                        }
                     }
                 }
             }

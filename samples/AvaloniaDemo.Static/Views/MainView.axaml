@@ -9,10 +9,7 @@
              xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model.Avalonia"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680">
-    <idc:DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True">
-        <idc:DockControl.Factory>
-            <dm:Factory/>
-        </idc:DockControl.Factory>
+    <idc:DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True" Factory="{x:Static dm:Factory.Instance}">
         <dmc:RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
             <dmc:ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
                 <dmc:ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">

@@ -9,6 +9,11 @@ namespace Dock.Model
     /// </summary>
     public class Factory : FactoryBase
     {
+        /// <summary>
+        /// Gets the factory.
+        /// </summary>
+        public static readonly IFactory Instance = new Factory();
+
         /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items) => new AvaloniaList<T>(items);
 

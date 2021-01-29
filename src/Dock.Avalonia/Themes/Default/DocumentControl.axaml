@@ -55,12 +55,37 @@
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
                             <Style Selector="TabStripItem">
-                                <Setter Property="Height" Value="20" />
+                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="FontWeight" Value="Normal" />
+                                <Setter Property="MinHeight" Value="20" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
                                 <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 0 4 0" />
-                                <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
+                                <Setter Property="Height" Value="20" />
+                                <Setter Property="Template">
+                                    <ControlTemplate>
+                                        <Border Name="PART_LayoutRoot"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Padding="{TemplateBinding Padding}">
+                                            <Panel>
+                                                <ContentPresenter Name="PART_ContentPresenter"
+                                                                  Background="{TemplateBinding Background}"
+                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                  Content="{TemplateBinding Content}"
+                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                  TextBlock.FontFamily="{TemplateBinding FontFamily}"
+                                                                  TextBlock.FontSize="{TemplateBinding FontSize}"
+                                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}"/>
+                                            </Panel>
+                                        </Border> 
+                                    </ControlTemplate>
+                                </Setter>
                             </Style>
                             <Style Selector="TabStripItem:pointerover">
                                 <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>

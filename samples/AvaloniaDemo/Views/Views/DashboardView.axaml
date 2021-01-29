@@ -18,7 +18,7 @@
                     Command="{Binding Navigate}" 
                     CommandParameter="Home" 
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
                     x:DataType="idc:IRootDock"/>
         </StackPanel>
     </Grid>

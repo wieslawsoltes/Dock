@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Models;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace AvaloniaDemo
@@ -36,6 +37,10 @@ namespace AvaloniaDemo
                     if (mainWindowViewModel.Layout != null)
                     {
                         mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                        if (mainWindowViewModel.Layout is IRootDock root)
+                        {
+                            root.Navigate.Execute("Home");
+                        }
                     }
 
                     mainWindow.Closing += (_, _) =>

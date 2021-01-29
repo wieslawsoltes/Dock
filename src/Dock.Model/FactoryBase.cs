@@ -103,7 +103,10 @@ namespace Dock.Model
 
             if (layout is IRootDock rootDock)
             {
-                rootDock.ShowWindows();
+                if (rootDock.ShowWindows.CanExecute(null))
+                {
+                    rootDock.ShowWindows.Execute(null);
+                }
             }
         }
 

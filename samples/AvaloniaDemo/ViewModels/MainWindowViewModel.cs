@@ -25,7 +25,10 @@ namespace AvaloniaDemo.ViewModels
         {
             if (Layout is IDock root)
             {
-                root.Close();
+                if (root.Close.CanExecute(null))
+                {
+                    root.Close.Execute(null);
+                }
             }
             Factory = new DemoFactory(new DemoData());
             var layout = Factory?.CreateLayout();

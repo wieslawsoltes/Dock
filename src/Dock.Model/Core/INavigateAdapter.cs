@@ -29,24 +29,24 @@ namespace Dock.Model
         void GoForward();
 
         /// <summary>
-        /// Implementation of the <see cref="IDock.Navigate(object)"/> method.
+        /// Implementation of the <see cref="IDock.Navigate"/> method.
         /// </summary>
         /// <param name="root">An object that contains the content to navigate to.</param>
         /// <param name="bSnapshot">The flag indicating whether to make snapshot.</param>
         void Navigate(object root, bool bSnapshot);
 
         /// <summary>
-        /// Implementation of the <see cref="IRootDock.ShowWindows()"/> method.
+        /// Implementation of the <see cref="IRootDock.ShowWindows"/> method.
         /// </summary>
         void ShowWindows();
 
         /// <summary>
-        /// Implementation of the <see cref="IRootDock.ExitWindows()"/> method.
+        /// Implementation of the <see cref="IRootDock.ExitWindows"/> method.
         /// </summary>
         void ExitWindows();
 
         /// <summary>
-        /// Implementation of the <see cref="IDock.Close()"/> method.
+        /// Implementation of the <see cref="IDock.Close"/> method.
         /// </summary>
         void Close();
     }

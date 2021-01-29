@@ -255,9 +255,19 @@ namespace Notepad.ViewModels
                 if (clone != null)
                 {
                     clone.Title = clone.Title + "-copy";
-                    active.Close();
+                    
+                    if (active.Close.CanExecute(null))
+                    {
+                        active.Close.Execute(null);
+                    }
+                    
                     Layout.Factory?.AddDockable(Layout, clone);
-                    Layout.Navigate(clone);
+
+                    if (Layout.Navigate.CanExecute(clone))
+                    {
+                        Layout.Navigate.Execute(clone);
+                    }
+                    
                     Layout.Factory?.SetFocusedDockable(Layout, clone);
                     Layout.DefaultDockable = clone;
                 }
@@ -268,9 +278,18 @@ namespace Notepad.ViewModels
         {
             if (Layout?.ActiveDockable is IDock active && dock != active)
             {
-                active.Close();
+                if (active.Close.CanExecute(null))
+                {
+                    active.Close.Execute(null);
+                }
+                
                 CopyDocuments(active, dock, DocumentsDockId);
-                Layout.Navigate(dock);
+
+                if (Layout.Navigate.CanExecute(dock))
+                {
+                    Layout.Navigate.Execute(dock);
+                }
+                
                 Layout.Factory?.SetFocusedDockable(Layout, dock);
                 Layout.DefaultDockable = dock;
             }
@@ -307,8 +326,14 @@ namespace Notepad.ViewModels
                 if (layout != null)
                 {
                     Factory?.InitLayout(layout);
+
                     CopyDocuments(active, layout, DocumentsDockId);
-                    Layout?.Close();
+
+                    if (Layout?.Close.CanExecute(null) ?? false)
+                    {
+                        Layout.Close.Execute(null);
+                    }
+
                     Layout = layout;
                 }
             }

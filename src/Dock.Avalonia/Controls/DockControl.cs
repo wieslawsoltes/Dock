@@ -133,7 +133,10 @@ namespace Dock.Avalonia.Controls
 
             if (InitializeLayout == true && Layout != null)
             {
-                Layout.Close();
+                if (Layout.Close.CanExecute(null))
+                {
+                    Layout.Close.Execute(null);
+                }
             }
         }
 

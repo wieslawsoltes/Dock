@@ -96,7 +96,10 @@ namespace Dock.Model
         {
             if (_dock.ActiveDockable is IDock activeDockableWindows)
             {
-                activeDockableWindows.Close();
+                if (activeDockableWindows.Close.CanExecute(null))
+                {
+                    activeDockableWindows.Close.Execute(null);
+                }
                 _dock.ActiveDockable = null;
             }
         }
@@ -125,7 +128,7 @@ namespace Dock.Model
         {
             if (_dock.ActiveDockable is IDock previousDock)
             {
-                previousDock.Close();
+                previousDock.Close.Execute(null);
             }
 
             if (!(dockable is null) && _dock.ActiveDockable != dockable)
@@ -146,7 +149,10 @@ namespace Dock.Model
 
             if (dockable is IRootDock nextDock)
             {
-                nextDock.ShowWindows();
+                if (nextDock.ShowWindows.CanExecute(null))
+                {
+                    nextDock.ShowWindows.Execute(null);
+                }
             }
         }
 
@@ -198,7 +204,10 @@ namespace Dock.Model
             }
             if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeRootDockWindows.ShowWindows();
+                if (activeRootDockWindows.ShowWindows.CanExecute(null))
+                {
+                    activeRootDockWindows.ShowWindows.Execute(null);
+                }
             }
         }
 
@@ -215,7 +224,10 @@ namespace Dock.Model
             }
             if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeRootDockWindows.ExitWindows();
+                if (activeRootDockWindows.ExitWindows.CanExecute(null))
+                {
+                    activeRootDockWindows.ExitWindows.Execute(null);
+                }
             }
         }
 
@@ -224,7 +236,10 @@ namespace Dock.Model
         {
             if (_dock is IRootDock rootDock)
             {
-                rootDock.ExitWindows();
+                if (rootDock.ExitWindows.CanExecute(null))
+                {
+                    rootDock.ExitWindows.Execute(null);
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Windows.Input;
 
 namespace Dock.Model
 {
@@ -66,22 +67,21 @@ namespace Dock.Model
         /// <summary>
         /// Navigates to the most recent entry in back navigation history, if there is one.
         /// </summary>
-        void GoBack();
+        ICommand GoBack { get; }
 
         /// <summary>
         /// Navigate to the most recent entry in forward navigation history, if there is one.
         /// </summary>
-        void GoForward();
+        ICommand GoForward { get; }
 
         /// <summary>
         /// Navigate to content that is contained by an object.
         /// </summary>
-        /// <param name="root">An object that contains the content to navigate to.</param>
-        void Navigate(object root);
+        ICommand Navigate { get; }
 
         /// <summary>
         /// Close layout.
         /// </summary>
-        void Close();
+        ICommand Close { get; }
     }
 }

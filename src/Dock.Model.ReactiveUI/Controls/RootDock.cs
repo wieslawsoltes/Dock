@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Windows.Input;
 using ReactiveUI;
 
 namespace Dock.Model.Controls
@@ -45,19 +46,16 @@ namespace Dock.Model.Controls
         {
             Id = nameof(IRootDock);
             Title = nameof(IRootDock);
+            ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
+            ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
+            
         }
 
         /// <inheritdoc/>
-        public virtual void ShowWindows()
-        {
-            _navigateAdapter?.ShowWindows();
-        }
+        public ICommand ShowWindows { get; }
 
         /// <inheritdoc/>
-        public virtual void ExitWindows()
-        {
-            _navigateAdapter?.ExitWindows();
-        }
+        public ICommand ExitWindows { get; }
 
         /// <inheritdoc/>
         public override IDockable? Clone()

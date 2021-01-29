@@ -148,7 +148,10 @@ namespace Dock.Avalonia.Controls
 
                 if (Window.Layout is IDock root)
                 {
-                    root.Close();
+                    if (root.Close.CanExecute(null))
+                    {
+                        root.Close.Execute(null);
+                    }
                 }
             }
         }

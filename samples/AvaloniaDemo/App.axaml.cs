@@ -44,7 +44,10 @@ namespace AvaloniaDemo
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
-                        dock.Close();
+                        if (dock.Close.CanExecute(null))
+                        {
+                            dock.Close.Execute(null);
+                        }
                     }
                 };
 
@@ -54,7 +57,10 @@ namespace AvaloniaDemo
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
-                        dock.Close();
+                        if (dock.Close.CanExecute(null))
+                        {
+                            dock.Close.Execute(null);
+                        }
                     }
                 };
             }

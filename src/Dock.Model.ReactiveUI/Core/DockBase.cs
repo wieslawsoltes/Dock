@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Windows.Input;
+using Dock.Model.Controls;
 using ReactiveUI;
 
 namespace Dock.Model
@@ -10,7 +12,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockBase : DockableBase, IDock
     {
-        internal INavigateAdapter _navigateAdapter;
+        internal readonly INavigateAdapter _navigateAdapter;
         private IList<IDockable>? _visibleDockables;
         private IList<IDockable>? _hiddenDockables;
         private IList<IDockable>? _pinnedDockables;
@@ -24,9 +26,13 @@ namespace Dock.Model
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
         /// </summary>
-        public DockBase()
+        protected DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
+            GoBack = ReactiveCommand.Create(() => _navigateAdapter.GoBack());
+            GoForward = ReactiveCommand.Create(() => _navigateAdapter.GoForward());
+            Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));
+            Close = ReactiveCommand.Create(() => _navigateAdapter.Close());
         }
 
         /// <inheritdoc/>
@@ -124,27 +130,15 @@ namespace Dock.Model
         public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
 
         /// <inheritdoc/>
-        public virtual void GoBack()
-        {
-            _navigateAdapter?.GoBack();
-        }
+        public ICommand GoBack { get; }
 
         /// <inheritdoc/>
-        public virtual void GoForward()
-        {
-            _navigateAdapter?.GoForward();
-        }
+        public ICommand GoForward { get; }
 
         /// <inheritdoc/>
-        public virtual void Navigate(object root)
-        {
-            _navigateAdapter?.Navigate(root, true);
-        }
+        public ICommand Navigate { get; }
 
         /// <inheritdoc/>
-        public virtual void Close()
-        {
-            _navigateAdapter?.Close();
-        }
+        public ICommand Close { get; }
     }
 }

@@ -45,7 +45,10 @@ namespace Notepad
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
-                        dock.Close();
+                        if (dock.Close.CanExecute(null))
+                        {
+                            dock.Close.Execute(null);
+                        }
                     }
                     // TODO: Save main window position, size and state.
                 };
@@ -56,7 +59,10 @@ namespace Notepad
                 {
                     if (mainWindowViewModel.Layout is IDock dock)
                     {
-                        dock.Close();
+                        if (dock.Close.CanExecute(null))
+                        {
+                            dock.Close.Execute(null);
+                        }
                     }
                 };
             }

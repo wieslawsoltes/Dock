@@ -93,7 +93,10 @@ namespace Dock.Avalonia
             {
                 if (factory.FindRoot(dock, (x) => true) is IRootDock root && root.ActiveDockable is IRootDock avtiveRootDockable)
                 {
-                    avtiveRootDockable.ShowWindows();
+                    if (avtiveRootDockable.ShowWindows.CanExecute(null))
+                    {
+                        avtiveRootDockable.ShowWindows.Execute(null);
+                    }
                 }
             }
         }

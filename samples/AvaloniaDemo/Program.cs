@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.ReactiveUI;
 
 namespace AvaloniaDemo
 {
@@ -13,6 +14,7 @@ namespace AvaloniaDemo
 
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
+                         .UseReactiveUI()
                          .UsePlatformDetect()
                          .LogToTrace();
     }

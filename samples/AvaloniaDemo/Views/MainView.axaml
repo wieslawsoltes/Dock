@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:idc="using:Dock.Avalonia.Controls"
+             xmlns:dmc="using:Dock.Model.Controls"
              xmlns:views="using:AvaloniaDemo.Views"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
@@ -11,7 +12,53 @@
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
-        <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
+        <Panel Grid.Row="1" DataContext="{Binding Layout}">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="4" x:DataType="dmc:IRootDock" x:CompileBindings="True">
+                <Button Content="Back" 
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding GoBack}" 
+                        IsEnabled="{Binding CanGoBack}" 
+                        Grid.Column="0"/>
+                <Button Content="Forward"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding GoForward}" 
+                        IsEnabled="{Binding CanGoForward}" 
+                        Grid.Column="1"/>
+                <Button Content="Home"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding Navigate}" 
+                        CommandParameter="{Binding DefaultDockable}" 
+                        Grid.Column="2"/>
+                <TextBox x:Name="Id" 
+                         MinHeight="0" 
+                         Margin="0"
+                         Padding="4"
+                         Text="" 
+                         Watermark="Dashboard"
+                         UseFloatingWatermark="True"
+                         Grid.Column="3"/>
+                <Button Content="Navigate"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding Navigate}" 
+                        CommandParameter="{Binding #Id.Text}" 
+                        x:CompileBindings="False" 
+                        Grid.Column="4"/>
+                <Button Content="ShowWindows"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding ShowWindows}" 
+                        Grid.Column="5"/>
+                <Button Content="ExitWindows"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding ExitWindows}" 
+                        Grid.Column="6"/>
+            </Grid>
+        </Panel>
         <idc:DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
         <TextBlock Text="{Binding #DockControl.Layout.ActiveDockable.FocusedDockable, FallbackValue={}}" Margin="4" Grid.Row="3" x:CompileBindings="False"/>
     </Grid>

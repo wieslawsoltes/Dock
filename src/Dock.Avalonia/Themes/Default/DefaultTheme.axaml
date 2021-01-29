@@ -8,7 +8,6 @@
     <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/DockToolChrome.axaml"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/DocumentControl.axaml"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/ToolControl.axaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/NavigationControl.axaml"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/DockControl.axaml"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/HostWindow.axaml"/>
     <Style>

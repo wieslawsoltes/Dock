@@ -1,13 +1,10 @@
-﻿using System;
-using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Models;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
-using Dock.Model.Controls;
 
 namespace AvaloniaDemo
 {

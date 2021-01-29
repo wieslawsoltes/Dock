@@ -5,7 +5,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model;
-using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Controls
 {
@@ -65,11 +64,11 @@ namespace Dock.Avalonia.Controls
         
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            if (DataContext is IDock dock && dock.Factory is IFactory factory)
+            if (DataContext is IDock {Factory: { } factory} dock)
             {
                 if (dock.ActiveDockable != null)
                 {
-                    if (factory.FindRoot(dock.ActiveDockable, (x) => true) is IRootDock root)
+                    if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
                     {
                         Debug.WriteLine($"{nameof(DockToolChrome)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);

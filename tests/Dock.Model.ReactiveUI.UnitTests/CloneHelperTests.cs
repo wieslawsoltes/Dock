@@ -1,5 +1,4 @@
-﻿using System;
-using Dock.Model.Controls;
+﻿using Dock.Model.Controls;
 using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests

@@ -10,27 +10,27 @@ namespace Dock.Model
         /// <summary>
         /// Gets dock controls.
         /// </summary>
-        IList<IDockControl>? DockControls { get; }
+        IList<IDockControl> DockControls { get; }
 
         /// <summary>
         /// Gets dock manager.
         /// </summary>
-        IDockManager? DockManager { get; }
+        IDockManager DockManager { get; }
 
         /// <summary>
-        /// Gest dock control state.
+        /// Gets dock control state.
         /// </summary>
-        IDockControlState? DockControlState { get; }
+        IDockControlState DockControlState { get; }
 
         /// <summary>
         /// Gets or sets the dock layout.
         /// </summary>
-        IDock Layout { get; set; }
+        IDock? Layout { get; set; }
 
         /// <summary>
         /// Gets or sets the dock factory.
         /// </summary>
-        IFactory Factory { get; set; }
+        IFactory? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets the flag indicating whether to initialize layout.

@@ -42,13 +42,6 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DockPanelSplitter" /> class.
-        /// </summary>
-        public DockPanelSplitter()
-        {
-        }
-
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {

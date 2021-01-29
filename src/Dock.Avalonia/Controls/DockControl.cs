@@ -5,6 +5,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
+using Dock.Avalonia.Internal;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -14,7 +15,7 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockControl : TemplatedControl, IDockControl
     {
-        internal static List<IDockControl> s_dockControls = new List<IDockControl>();
+        internal static readonly List<IDockControl> s_dockControls = new();
 
         private readonly DockManager _dockManager;
 
@@ -23,46 +24,46 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDock> LayoutProperty =
-            AvaloniaProperty.Register<DockControl, IDock>(nameof(Layout));
+        public static readonly StyledProperty<IDock?> LayoutProperty =
+            AvaloniaProperty.Register<DockControl, IDock?>(nameof(Layout));
 
         /// <summary>
         /// Defines the <see cref="Factory"/> property.
         /// </summary>
-        public static readonly StyledProperty<IFactory> FactoryProperty =
-            AvaloniaProperty.Register<DockControl, IFactory>(nameof(Factory));
+        public static readonly StyledProperty<IFactory?> FactoryProperty =
+            AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
         /// <summary>
         /// Defines the <see cref="InitializeLayout"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> InitializeLayoutProperty =
-            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeLayout), false);
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeLayout));
 
         /// <summary>
         /// Defines the <see cref="InitializeFactory"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> InitializeFactoryProperty =
-            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory), false);
+            AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
         /// <inheritdoc/>
-        public IList<IDockControl>? DockControls => s_dockControls;
+        public IList<IDockControl> DockControls => s_dockControls;
 
         /// <inheritdoc/>
-        public IDockManager? DockManager => _dockManager;
+        public IDockManager DockManager => _dockManager;
 
         /// <inheritdoc/>
-        public IDockControlState? DockControlState => _dockControlState;
+        public IDockControlState DockControlState => _dockControlState;
 
         /// <inheritdoc/>
         [Content]
-        public IDock Layout
+        public IDock? Layout
         {
             get => GetValue(LayoutProperty);
             set => SetValue(LayoutProperty, value);
         }
 
         /// <inheritdoc/>
-        public IFactory Factory
+        public IFactory? Factory
         {
             get => GetValue(FactoryProperty);
             set => SetValue(FactoryProperty, value);
@@ -89,7 +90,6 @@ namespace Dock.Avalonia.Controls
         {
             _dockManager = new DockManager();
             _dockControlState = new DockControlState(_dockManager);
-
             AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
             AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -106,7 +106,7 @@ namespace Dock.Avalonia.Controls
 
             s_dockControls.Add(this);
 
-            if (InitializeFactory == true && Factory != null)
+            if (InitializeFactory && Factory != null)
             {
                 Factory.ContextLocator = new Dictionary<string, Func<object>>();
 
@@ -118,7 +118,7 @@ namespace Dock.Avalonia.Controls
                 Factory.DockableLocator = new Dictionary<string, Func<IDockable>>();
             }
 
-            if (InitializeLayout == true && Factory != null && Layout != null)
+            if (InitializeLayout && Factory != null && Layout != null)
             {
                 Factory.InitLayout(Layout);
             }
@@ -131,7 +131,7 @@ namespace Dock.Avalonia.Controls
 
             s_dockControls.Remove(this);
 
-            if (InitializeLayout == true && Layout != null)
+            if (InitializeLayout && Layout != null)
             {
                 if (Layout.Close.CanExecute(null))
                 {
@@ -140,24 +140,24 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        internal static DragAction ToDragAction(PointerEventArgs e)
+        private static DragAction ToDragAction(PointerEventArgs e)
         {
             if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
             {
                 return DragAction.Link;
             }
-            else if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
                 return DragAction.Move;
             }
-            else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
+
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
                 return DragAction.Copy;
             }
-            else
-            {
-                return DragAction.Move;
-            }
+
+            return DragAction.Move;
         }
 
         private void Pressed(object? sender, PointerPressedEventArgs e)

@@ -1,5 +1,5 @@
 ﻿
-namespace Dock.Avalonia
+namespace Dock.Avalonia.Internal
 {
     /// <summary>
     /// Pointer event type.

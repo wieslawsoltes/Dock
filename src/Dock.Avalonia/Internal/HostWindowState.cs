@@ -6,7 +6,7 @@ using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 
-namespace Dock.Avalonia
+namespace Dock.Avalonia.Internal
 {
     /// <summary>
     /// Host window state.
@@ -15,13 +15,13 @@ namespace Dock.Avalonia
     {
         private readonly AdornerHelper _adornerHelper = new AdornerHelper();
         private readonly HostWindow _hostWindow;
-        private Point _dragStartPoint = default;
-        private bool _pointerPressed = false;
-        private bool _doDragDrop = false;
-        private DockControl? _targetDockControl = null;
-        private Point _targetPoint = default;
-        private IControl? _targetDropControl = null;
-        private DragAction _dragAction = default;
+        private Point _dragStartPoint;
+        private bool _pointerPressed;
+        private bool _doDragDrop;
+        private DockControl? _targetDockControl;
+        private Point _targetPoint;
+        private IControl? _targetDropControl;
+        private DragAction _dragAction;
 
         /// <inheritdoc/>
         public IDockManager DockManager { get; set; }
@@ -36,7 +36,7 @@ namespace Dock.Avalonia
         {
             var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-            if (isValid == true && _targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
+            if (isValid && _targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
                 Debug.WriteLine($"[Enter] {control}");
                 _adornerHelper.AddAdorner(control);
@@ -67,7 +67,7 @@ namespace Dock.Avalonia
                 operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
             }
 
-            if (_targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
+            if (_targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
                 Debug.WriteLine($"[Drop] {control}");
                 _adornerHelper.RemoveAdorner(control);
@@ -81,7 +81,7 @@ namespace Dock.Avalonia
 
         private void Leave()
         {
-            if (_targetDropControl is IControl control && control.GetValue(DockProperties.IsDockTargetProperty))
+            if (_targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
                 Debug.WriteLine($"[Leave] {control}");
                 _adornerHelper.RemoveAdorner(control);
@@ -97,7 +97,7 @@ namespace Dock.Avalonia
 
             var layout = _hostWindow.Window?.Layout;
 
-            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            if (layout?.ActiveDockable is { } sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 DockManager.Position = DockHelpers.ToDockPoint(point);
                 DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
@@ -107,24 +107,22 @@ namespace Dock.Avalonia
             return false;
         }
 
-        private bool Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+        private void Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
         {
             if (_targetDropControl == null)
             {
-                return false;
+                return;
             }
 
             var layout = _hostWindow.Window?.Layout;
 
-            if (layout?.ActiveDockable is IDockable sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
+            if (layout?.ActiveDockable is { } sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
                 Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
                 DockManager.Position = DockHelpers.ToDockPoint(point);
                 DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
-                return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+                DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
             }
-
-            return false;
         }
 
         private bool IsMinimumDragDistance(Vector diff)
@@ -160,7 +158,7 @@ namespace Dock.Avalonia
                     break;
                 case EventType.Released:
                     {
-                        if (_doDragDrop == true)
+                        if (_doDragDrop)
                         {
                             if (_targetDockControl != null && _targetDropControl != null)
                             {
@@ -171,7 +169,7 @@ namespace Dock.Avalonia
                                     isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                                 }
 
-                                if (isDropEnabled == true)
+                                if (isDropEnabled)
                                 {
                                     Drop(_targetPoint, _dragAction, _targetDockControl);
                                 }
@@ -198,13 +196,13 @@ namespace Dock.Avalonia
                         {
                             Vector diff = _dragStartPoint - point;
                             bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
-                            if (haveMinimumDragDistance == true)
+                            if (haveMinimumDragDistance)
                             {
                                 _doDragDrop = true;
                             }
                         }
 
-                        if (_doDragDrop == true)
+                        if (_doDragDrop)
                         {
                             foreach (var visual in DockControl.s_dockControls)
                             {

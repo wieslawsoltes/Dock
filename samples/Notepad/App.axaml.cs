@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Dock.Model;
-using Dock.Model.Controls;
 using Notepad.ViewModels;
 using Notepad.Views;
 

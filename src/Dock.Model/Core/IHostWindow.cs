@@ -10,7 +10,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets dock controls.
         /// </summary>
-        IList<IHostWindow>? HostWindows { get; }
+        IList<IHostWindow> HostWindows { get; }
 
         /// <summary>
         /// Gets dock manager.

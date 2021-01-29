@@ -5,7 +5,7 @@ using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 
-namespace Dock.Avalonia
+namespace Dock.Avalonia.Internal
 {
     internal class AdornerHelper
     {
@@ -15,23 +15,25 @@ namespace Dock.Avalonia
         {
             Debug.WriteLine($"[AddAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
-            if (layer != null)
+            if (layer == null)
             {
-                if (Adorner != null)
-                {
-                    layer.Children.Remove(Adorner);
-                    Adorner = null;
-                }
-
-                Adorner = new DockTarget
-                {
-                    [AdornerLayer.AdornedElementProperty] = visual,
-                };
-
-                ((ISetLogicalParent)Adorner).SetParent(visual as ILogical);
-
-                layer.Children.Add(Adorner);
+                return;
             }
+            
+            if (Adorner != null)
+            {
+                layer.Children.Remove(Adorner);
+                Adorner = null;
+            }
+
+            Adorner = new DockTarget
+            {
+                [AdornerLayer.AdornedElementProperty] = visual,
+            };
+
+            ((ISetLogicalParent) Adorner).SetParent(visual as ILogical);
+
+            layer.Children.Add(Adorner);
         }
 
         public void RemoveAdorner(IVisual visual)
@@ -43,7 +45,7 @@ namespace Dock.Avalonia
                 if (Adorner != null)
                 {
                     layer.Children.Remove(Adorner);
-                    ((ISetLogicalParent)Adorner).SetParent(null);
+                    ((ISetLogicalParent) Adorner).SetParent(null);
                     Adorner = null;
                 }
             }

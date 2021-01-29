@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Windows.Input;
-using Dock.Model.Controls;
 using ReactiveUI;
 
 namespace Dock.Model

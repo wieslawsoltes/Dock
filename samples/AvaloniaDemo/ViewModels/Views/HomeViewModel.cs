@@ -1,5 +1,4 @@
-﻿using System;
-using Dock.Model;
+﻿using Dock.Model;
 using Dock.Model.Controls;
 
 namespace AvaloniaDemo.ViewModels.Views

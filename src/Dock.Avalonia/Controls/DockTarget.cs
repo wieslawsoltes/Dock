@@ -84,7 +84,7 @@ namespace Dock.Avalonia.Controls
             if (selector != null && indicator != null)
             {
                 var selectorPoint = relativeTo.TranslatePoint(point, selector);
-                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo) == true)
+                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo))
                 {
                     indicator.Opacity = 0.5;
                     return true;

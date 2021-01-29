@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Dock.Avalonia.Internal;
 using Dock.Model;
 
 namespace Dock.Avalonia.Controls
@@ -17,9 +18,8 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class HostWindow : Window, IStyleable, IHostWindow
     {
-        internal static bool s_useCustomDrag = true;
-
-        internal static List<IHostWindow> s_hostWindows = new List<IHostWindow>();
+        private static bool s_useCustomDrag = true;
+        private static readonly List<IHostWindow> s_hostWindows = new();
 
         /// <summary>
         /// Defines the <see cref="IsChromeVisible"/> property.
@@ -54,9 +54,7 @@ namespace Dock.Avalonia.Controls
         Type IStyleable.StyleKey => typeof(HostWindow);
 
         private readonly DockManager _dockManager;
-
         private readonly HostWindowState _hostWindowState;
-
         private Control? _titleBar;
         private Grid? _bottomHorizontalGrip;
         private Grid? _bottomLeftGrip;
@@ -69,12 +67,11 @@ namespace Dock.Avalonia.Controls
         private Button? _closeButton;
         private Button? _minimiseButton;
         private Button? _restoreButton;
-        private Image? _icon;
         private bool _mouseDown;
         private Point _startPoint;
 
         /// <inheritdoc/>
-        public IList<IHostWindow>? HostWindows => s_hostWindows;
+        public IList<IHostWindow> HostWindows => s_hostWindows;
 
         /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
@@ -124,7 +121,7 @@ namespace Dock.Avalonia.Controls
 
         private void HostWindow_PositionChanged(object? sender, PixelPointEventArgs e)
         {
-            if (Window != null && IsTracked == true)
+            if (Window != null && IsTracked)
             {
                 Window.Save();
             }
@@ -134,7 +131,7 @@ namespace Dock.Avalonia.Controls
 
         private void HostWindow_LayoutUpdated(object? sender, EventArgs e)
         {
-            if (Window != null && IsTracked == true)
+            if (Window != null && IsTracked)
             {
                 Window.Save();
             }
@@ -142,7 +139,7 @@ namespace Dock.Avalonia.Controls
 
         private void HostWindow_Closing(object? sender, CancelEventArgs e)
         {
-            if (Window != null && IsTracked == true)
+            if (Window != null && IsTracked)
             {
                 Window.Save();
 
@@ -184,7 +181,7 @@ namespace Dock.Avalonia.Controls
         {
             if (chrome.CloseButton is not null)
             {
-                Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(o =>
+                Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(_ =>
                 {
                     Close();
                 });
@@ -308,7 +305,6 @@ namespace Dock.Avalonia.Controls
             _minimiseButton = e.NameScope.Find<Button>("PART_MinimiseButton");
             _restoreButton = e.NameScope.Find<Button>("PART_RestoreButton");
             _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
-            _icon = e.NameScope.Find<Image>("PART_Icon");
 
             _topHorizontalGrip = e.NameScope.Find<Grid>("PART_TopHorizontalGrip");
             _bottomHorizontalGrip = e.NameScope.Find<Grid>("PART_BottomHorizontalGrip");
@@ -322,22 +318,22 @@ namespace Dock.Avalonia.Controls
 
             if (_minimiseButton != null)
             {
-                _minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
+                _minimiseButton.Click += (_, _) => { WindowState = WindowState.Minimized; };
             }
 
             if (_restoreButton != null)
             {
-                _restoreButton.Click += (sender, ee) => { ToggleWindowState(); };
+                _restoreButton.Click += (_, _) => { ToggleWindowState(); };
             }
 
             if (_titleBar != null)
             {
-                _titleBar.DoubleTapped += (sender, ee) => { ToggleWindowState(); };
+                _titleBar.DoubleTapped += (_, _) => { ToggleWindowState(); };
             }
 
             if (_closeButton != null)
             {
-                _closeButton.Click += (sender, ee) => { Close(); };
+                _closeButton.Click += (_, _) => { Close(); };
             }
 
             //if (_icon != null)

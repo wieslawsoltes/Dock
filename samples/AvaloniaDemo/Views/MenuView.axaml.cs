@@ -14,7 +14,7 @@ namespace AvaloniaDemo.Views
             {
                 if (VisualRoot is Window window)
                 {
-                    bool isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                    var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
                     window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
                 }
             };
@@ -23,7 +23,7 @@ namespace AvaloniaDemo.Views
             {
                 if (VisualRoot is Window window)
                 {
-                    bool isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                    var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
                     window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
                 }
             };

@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Avalonia.Internal;
 using Dock.Model;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls
 {

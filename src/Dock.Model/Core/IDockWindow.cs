@@ -1,7 +1,6 @@
-﻿
-using Dock.Model.Controls;
+﻿using Dock.Model.Controls;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock window contract.

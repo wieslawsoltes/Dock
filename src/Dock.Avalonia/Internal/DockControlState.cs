@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal
 {
@@ -144,7 +145,7 @@ namespace Dock.Avalonia.Internal
                         var dragControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
                         if (dragControl != null)
                         {
-                            bool isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
+                            var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
                             if (isDragEnabled != true)
                             {
                                 break;
@@ -166,7 +167,7 @@ namespace Dock.Avalonia.Internal
                         {
                             if (_dropControl != null && _targetDockControl != null)
                             {
-                                bool isDropEnabled = true;
+                                var isDropEnabled = true;
 
                                 if (_targetDockControl is IControl targetControl)
                                 {
@@ -203,7 +204,7 @@ namespace Dock.Avalonia.Internal
                         if (_doDragDrop == false)
                         {
                             Vector diff = _dragStartPoint - point;
-                            bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                            var haveMinimumDragDistance = IsMinimumDragDistance(diff);
                             if (haveMinimumDragDistance)
                             {
                                 if (_dragControl?.DataContext is IDockable targetDockable)
@@ -248,7 +249,7 @@ namespace Dock.Avalonia.Internal
 
                             if (dropControl != null && targetDockControl != null)
                             {
-                                bool isDropEnabled = true;
+                                var isDropEnabled = true;
 
                                 if (targetDockControl is IControl targetControl)
                                 {

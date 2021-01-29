@@ -1,5 +1,7 @@
 ﻿
-namespace Dock.Model
+using Dock.Model.Core;
+
+namespace Dock.Model.Adapters
 {
     /// <summary>
     /// Host adapter for the <see cref="IDockWindow"/>.
@@ -20,13 +22,13 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Save()
         {
-            if (!(_window.Host is null))
+            if (_window.Host is not null)
             {
-                _window.Host.GetPosition(out double x, out double y);
+                _window.Host.GetPosition(out var x, out var y);
                 _window.X = x;
                 _window.Y = y;
 
-                _window.Host.GetSize(out double width, out double height);
+                _window.Host.GetSize(out var width, out var height);
                 _window.Width = width;
                 _window.Height = height;
             }
@@ -43,13 +45,13 @@ namespace Dock.Model
             if (_window.Host is null)
             {
                 _window.Host = _window.Factory?.GetHostWindow(_window.Id);
-                if (!(_window.Host is null))
+                if (_window.Host is not null)
                 {
                     _window.Host.Window = _window;
                 }
             }
 
-            if (!(_window.Host is null))
+            if (_window.Host is not null)
             {
                 _window.Host.Present(isDialog);
                 _window.Host.SetPosition(_window.X, _window.Y);
@@ -64,7 +66,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void Exit()
         {
-            if (!(_window.Host is null))
+            if (_window.Host is not null)
             {
                 Save();
                 _window.Host.IsTracked = false;

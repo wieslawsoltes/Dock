@@ -90,7 +90,7 @@ namespace Dock.Avalonia.Controls
                 return;
             }
 
-            double height = _element.DesiredSize.Height + dy;
+            var height = _element.DesiredSize.Height + dy;
 
             if (height < _element.MinHeight)
             {
@@ -122,7 +122,7 @@ namespace Dock.Avalonia.Controls
                 return;
             }
 
-            double width = _element.DesiredSize.Width + dx;
+            var width = _element.DesiredSize.Width + dx;
 
             if (width < _element.MinWidth)
             {
@@ -203,7 +203,7 @@ namespace Dock.Avalonia.Controls
                     return;
                 }
 
-                int index = panel.Children.IndexOf(Parent);
+                var index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
                     if (panel.Children[index - 1] is ContentPresenter contentPresenter)
@@ -219,7 +219,7 @@ namespace Dock.Avalonia.Controls
                     return;
                 }
 
-                int index = panel.Children.IndexOf(this);
+                var index = panel.Children.IndexOf(this);
                 if (index > 0 && panel.Children.Count > 0)
                 {
                     _element = panel.Children[index - 1] as Control;

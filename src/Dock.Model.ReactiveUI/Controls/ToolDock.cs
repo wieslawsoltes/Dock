@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
     /// Tool dock.
@@ -10,7 +13,7 @@ namespace Dock.Model.Controls
     public class ToolDock : DockBase, IToolDock
     {
         private Alignment _alignment = Alignment.Unset;
-        private bool _isExpanded = false;
+        private bool _isExpanded;
         private bool _autoHide = true;
 
         /// <inheritdoc/>

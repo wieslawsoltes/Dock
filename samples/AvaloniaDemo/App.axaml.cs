@@ -5,6 +5,7 @@ using AvaloniaDemo.Models;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
+using Dock.Model.Core;
 
 namespace AvaloniaDemo
 {

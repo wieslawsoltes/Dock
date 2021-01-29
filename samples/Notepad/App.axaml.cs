@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Dock.Model;
+using Dock.Model.Core;
 using Notepad.ViewModels;
 using Notepad.Views;
 
@@ -38,9 +38,9 @@ namespace Notepad
                     mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
                 }
 
-                mainWindow.Closing += (sender, e) =>
+                mainWindow.Closing += (_, _) =>
                 {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    if (mainWindowViewModel.Layout is { } dock)
                     {
                         if (dock.Close.CanExecute(null))
                         {
@@ -52,9 +52,9 @@ namespace Notepad
 
                 desktopLifetime.MainWindow = mainWindow;
 
-                desktopLifetime.Exit += (sennder, e) =>
+                desktopLifetime.Exit += (_, _) =>
                 {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    if (mainWindowViewModel.Layout is { } dock)
                     {
                         if (dock.Close.CanExecute(null))
                         {

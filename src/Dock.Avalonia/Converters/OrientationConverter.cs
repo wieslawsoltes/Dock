@@ -7,7 +7,7 @@ using Avalonia.Layout;
 namespace Dock.Avalonia.Converters
 {
     /// <summary>
-    /// Converts model <see cref="Model.Orientation"/> enum to avalonia <see cref="Orientation"/> enum.
+    /// Converts model <see cref="Model.Core.Orientation"/> enum to avalonia <see cref="Orientation"/> enum.
     /// </summary>
     public class OrientationConverter : IValueConverter
     {
@@ -24,10 +24,10 @@ namespace Dock.Avalonia.Converters
             return value switch
             {
                 null => AvaloniaProperty.UnsetValue,
-                Model.Orientation orientation => orientation switch
+                Model.Core.Orientation orientation => orientation switch
                 {
-                    Model.Orientation.Horizontal => Orientation.Horizontal,
-                    Model.Orientation.Vertical => Orientation.Vertical,
+                    Model.Core.Orientation.Horizontal => Orientation.Horizontal,
+                    Model.Core.Orientation.Vertical => Orientation.Vertical,
                     _ => throw new NotSupportedException($"Provided orientation is not supported in Avalonia.")
                 },
                 _ => value
@@ -49,8 +49,8 @@ namespace Dock.Avalonia.Converters
                 null => AvaloniaProperty.UnsetValue,
                 Orientation orientation => orientation switch
                 {
-                    Orientation.Horizontal => Model.Orientation.Horizontal,
-                    Orientation.Vertical => Model.Orientation.Vertical,
+                    Orientation.Horizontal => Model.Core.Orientation.Horizontal,
+                    Orientation.Vertical => Model.Core.Orientation.Vertical,
                     _ => throw new NotSupportedException($"Provided orientation is not supported in Model.")
                 },
                 _ => value

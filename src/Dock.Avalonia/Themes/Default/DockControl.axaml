@@ -4,7 +4,8 @@
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:dm="using:Dock.Model"
-        xmlns:dmc="using:Dock.Model.Controls">
+        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
     <Style Selector="idc|DockControl">
         <Style.Resources>
             <converters:OrientationConverter x:Key="OrientationConverter"/>
@@ -12,7 +13,7 @@
         </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentControl Content="{TemplateBinding Layout}" x:DataType="dm:IDock" x:CompileBindings="True">
+                <ContentControl Content="{TemplateBinding Layout}" x:DataType="core:IDock" x:CompileBindings="True">
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="dmc:IDocumentContent">
                             <ContentControl Content="{Binding Content}"/>

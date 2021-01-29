@@ -10,6 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Dock.Avalonia.Internal;
 using Dock.Model;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls
 {
@@ -288,8 +289,8 @@ namespace Dock.Avalonia.Controls
                     // Using custom method because BeginMoveDrag is releasing pointer capture on Windows.
                     var point = e.GetPosition(this);
                     var delta = point - _startPoint;
-                    double x = Position.X + delta.X;
-                    double y = Position.Y + delta.Y;
+                    var x = Position.X + delta.X;
+                    var y = Position.Y + delta.Y;
                     Position = Position.WithX((int)x).WithY((int)y);
                     _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
                 }

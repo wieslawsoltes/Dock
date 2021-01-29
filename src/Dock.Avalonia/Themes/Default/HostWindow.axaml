@@ -1,7 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:idc="using:Dock.Avalonia.Controls"
-        xmlns:dm="using:Dock.Model">
+        xmlns:dm="using:Dock.Model"
+        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
     <Style Selector="idc|HostWindow">
         <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
         <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
@@ -14,7 +15,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" x:DataType="dm:IHostWindow" x:CompileBindings="True">
+                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" x:DataType="core:IHostWindow" x:CompileBindings="True">
                     <VisualLayerManager>
                         <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
@@ -97,7 +98,7 @@
         <Setter Property="Title" Value="{Binding ActiveDockable.Title}" x:CompileBindings="False"/>
         <Setter Property="Content">
             <Template>
-                <idc:DockControl Layout="{Binding}" x:DataType="dm:IHostWindow" x:CompileBindings="True"/>
+                <idc:DockControl Layout="{Binding}" x:DataType="core:IHostWindow" x:CompileBindings="True"/>
             </Template>
         </Setter>
     </Style>

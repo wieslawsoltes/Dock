@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
-namespace Dock.Model
+namespace Dock.Model.Adapters
 {
     internal static class EnumerableExtensions
     {
@@ -50,7 +51,7 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (!(_dock.ActiveDockable is null))
+                if (_dock.ActiveDockable is not null)
                 {
                     _forward.Push(_dock.ActiveDockable);
                 }
@@ -64,7 +65,7 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (!(_dock.ActiveDockable is null))
+                if (_dock.ActiveDockable is not null)
                 {
                     _back.Push(_dock.ActiveDockable);
                 }
@@ -124,20 +125,20 @@ namespace Dock.Model
             _back.Push(dockable);
         }
 
-        private void NavigateTo(IDockable dockable, bool bSnapshot)
+        private void NavigateTo(IDockable? dockable, bool bSnapshot)
         {
             if (_dock.ActiveDockable is IDock previousDock)
             {
                 previousDock.Close.Execute(null);
             }
 
-            if (!(dockable is null) && _dock.ActiveDockable != dockable)
+            if (dockable is not null && _dock.ActiveDockable != dockable)
             {
-                if (!(_dock.ActiveDockable is null) && bSnapshot == true)
+                if (_dock.ActiveDockable is not null && bSnapshot)
                 {
                     PushBack(_dock.ActiveDockable);
                 }
-                if (_dock.Factory is IFactory factory)
+                if (_dock.Factory is { } factory)
                 {
                     factory.SetActiveDockable(dockable);
                 }
@@ -159,7 +160,7 @@ namespace Dock.Model
         private void NavigateToUseVisible(string id, bool bSnapshot)
         {
             var result = _dock.VisibleDockables?.FirstOrDefault(v => v.Id == id);
-            if (!(result is null))
+            if (result is not null)
             {
                 Navigate(result, bSnapshot);
             }
@@ -185,8 +186,8 @@ namespace Dock.Model
                 return null;
             });
 
-            var result = visible?.FirstOrDefault(v => v.Id == id);
-            if (!(result is null))
+            var result = visible.FirstOrDefault(v => v.Id == id);
+            if (result is not null)
             {
                 Navigate(result, bSnapshot);
             }
@@ -195,7 +196,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ShowWindows()
         {
-            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
+            if (_dock is IRootDock {Windows: { }} rootDock)
             {
                 foreach (var window in rootDock.Windows)
                 {
@@ -214,7 +215,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ExitWindows()
         {
-            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
+            if (_dock is IRootDock {Windows: { }} rootDock)
             {
                 foreach (var window in rootDock.Windows)
                 {

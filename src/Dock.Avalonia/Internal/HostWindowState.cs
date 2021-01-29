@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal
 {
@@ -142,7 +143,7 @@ namespace Dock.Avalonia.Internal
             {
                 case EventType.Pressed:
                     {
-                        bool isDragEnabled = _hostWindow.GetValue(DockProperties.IsDragEnabledProperty);
+                        var isDragEnabled = _hostWindow.GetValue(DockProperties.IsDragEnabledProperty);
                         if (isDragEnabled != true)
                         {
                             break;
@@ -162,7 +163,7 @@ namespace Dock.Avalonia.Internal
                         {
                             if (_targetDockControl != null && _targetDropControl != null)
                             {
-                                bool isDropEnabled = true;
+                                var isDropEnabled = true;
 
                                 if (_targetDockControl is IControl targetControl)
                                 {
@@ -195,7 +196,7 @@ namespace Dock.Avalonia.Internal
                         if (_doDragDrop == false)
                         {
                             Vector diff = _dragStartPoint - point;
-                            bool haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                            var haveMinimumDragDistance = IsMinimumDragDistance(diff);
                             if (haveMinimumDragDistance)
                             {
                                 _doDragDrop = true;
@@ -216,7 +217,7 @@ namespace Dock.Avalonia.Internal
                                         var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                                         if (dropControl != null)
                                         {
-                                            bool isDropEnabled = dockControl.GetValue(DockProperties.IsDropEnabledProperty);
+                                            var isDropEnabled = dockControl.GetValue(DockProperties.IsDropEnabledProperty);
 
                                             Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
 

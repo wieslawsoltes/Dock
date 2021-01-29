@@ -144,10 +144,10 @@ namespace Dock.Avalonia.Controls
                 throw new Exception("Proportional StackPanel cannot be inside a control that offers infinite space.");                
             }
 
-            double usedWidth = 0.0;
-            double usedHeight = 0.0;
-            double maximumWidth = 0.0;
-            double maximumHeight = 0.0;
+            var usedWidth = 0.0;
+            var usedHeight = 0.0;
+            var maximumWidth = 0.0;
+            var maximumHeight = 0.0;
 
             var splitterThickness = GetTotalSplitterThickness();
 
@@ -232,7 +232,7 @@ namespace Dock.Avalonia.Controls
 
             // Arrange each of the Children
             var children = GetChildren();
-            int index = 0;
+            var index = 0;
 
             foreach (var element in children)
             {

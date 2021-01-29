@@ -108,7 +108,7 @@ namespace Dock.Avalonia.Controls
 
             var children = panel.GetChildren();
 
-            int index = children.IndexOf(this) + 1;
+            var index = children.IndexOf(this) + 1;
 
             var child = children[index];
 
@@ -201,7 +201,7 @@ namespace Dock.Avalonia.Controls
                     return null;
                 }
 
-                int index = panel.Children.IndexOf(Parent);
+                var index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
                     if (panel.Children[index - 1] is ContentPresenter contentPresenter)
@@ -219,7 +219,7 @@ namespace Dock.Avalonia.Controls
                 var panel = GetPanel();
                 if (panel != null)
                 {
-                    int index = panel.Children.IndexOf(this);
+                    var index = panel.Children.IndexOf(this);
                     if (index > 0 && panel.Children.Count > 0)
                     {
                         return panel.Children[index - 1] as Control;

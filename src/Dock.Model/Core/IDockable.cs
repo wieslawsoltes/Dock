@@ -1,5 +1,5 @@
 ﻿
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dockable contract.

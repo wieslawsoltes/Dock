@@ -1,8 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock contract.
@@ -25,7 +24,7 @@ namespace Dock.Model
         IList<IDockable>? PinnedDockables { get; set; }
 
         /// <summary>
-        /// Gets or sets avtive dockable.
+        /// Gets or sets active dockable.
         /// </summary>
         IDockable? ActiveDockable { get; set; }
 

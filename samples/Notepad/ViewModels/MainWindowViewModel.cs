@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Dock.Model;
+using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
 using Notepad.Views.Layouts;
 using ReactiveUI;

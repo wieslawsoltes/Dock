@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Core;
 
-namespace Dock.Model
+namespace Dock.Model.ReactiveUI
 {
     /// <summary>
     /// Factory.

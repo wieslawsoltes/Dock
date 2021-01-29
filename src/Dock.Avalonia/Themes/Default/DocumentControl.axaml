@@ -3,7 +3,8 @@
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:dm="using:Dock.Model"
-        xmlns:dmc="using:Dock.Model.Controls">
+        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
@@ -76,7 +77,7 @@
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
-                            <DataTemplate DataType="dm:IDockable">
+                            <DataTemplate DataType="core:IDockable">
                                 <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
                                         <TextBlock Text="{Binding Title}" />

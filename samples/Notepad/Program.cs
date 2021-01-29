@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.ReactiveUI;
 
 namespace Notepad
 {
@@ -14,6 +15,7 @@ namespace Notepad
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                          .UsePlatformDetect()
+                         .UseReactiveUI()
                          .LogToTrace();
     }
 }

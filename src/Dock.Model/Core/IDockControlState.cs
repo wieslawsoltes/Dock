@@ -1,8 +1,8 @@
 ﻿
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
-    /// Dock cotrol state contract.
+    /// Dock control state contract.
     /// </summary>
     public interface IDockControlState
     {

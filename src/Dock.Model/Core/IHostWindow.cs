@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Host window contract.

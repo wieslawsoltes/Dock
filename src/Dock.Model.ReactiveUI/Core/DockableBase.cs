@@ -1,7 +1,8 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Core;
 using ReactiveUI;
 
-namespace Dock.Model
+namespace Dock.Model.ReactiveUI.Core
 {
     /// <summary>
     /// Dockable base class.

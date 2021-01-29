@@ -3,11 +3,12 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Converters
 {
     /// <summary>
-    /// Converts model <see cref="Model.Alignment"/> enum to avalonia <see cref="Dock"/> enum.
+    /// Converts model <see cref="Alignment"/> enum to avalonia <see cref="Dock"/> enum.
     /// </summary>
     public class AlignmentConverter : IValueConverter
     {
@@ -24,13 +25,13 @@ namespace Dock.Avalonia.Converters
             return value switch
             {
                 null => AvaloniaProperty.UnsetValue,
-                Model.Alignment alignment => alignment switch
+                Alignment alignment => alignment switch
                 {
-                    Model.Alignment.Unset => AvaloniaProperty.UnsetValue,
-                    Model.Alignment.Left => global::Avalonia.Controls.Dock.Left,
-                    Model.Alignment.Bottom => global::Avalonia.Controls.Dock.Bottom,
-                    Model.Alignment.Right => global::Avalonia.Controls.Dock.Right,
-                    Model.Alignment.Top => global::Avalonia.Controls.Dock.Top,
+                    Alignment.Unset => AvaloniaProperty.UnsetValue,
+                    Alignment.Left => global::Avalonia.Controls.Dock.Left,
+                    Alignment.Bottom => global::Avalonia.Controls.Dock.Bottom,
+                    Alignment.Right => global::Avalonia.Controls.Dock.Right,
+                    Alignment.Top => global::Avalonia.Controls.Dock.Top,
                     _ => throw new NotSupportedException($"Provided dock is not supported in Avalonia.")
                 },
                 _ => value
@@ -52,11 +53,11 @@ namespace Dock.Avalonia.Converters
                 null => AvaloniaProperty.UnsetValue,
                 global::Avalonia.Controls.Dock dock => dock switch
                 {
-                    global::Avalonia.Controls.Dock.Left => Model.Alignment.Left,
-                    global::Avalonia.Controls.Dock.Bottom => Model.Alignment.Bottom,
-                    global::Avalonia.Controls.Dock.Right => Model.Alignment.Right,
-                    global::Avalonia.Controls.Dock.Top => Model.Alignment.Top,
-                    _ => Model.Alignment.Unset
+                    global::Avalonia.Controls.Dock.Left => Alignment.Left,
+                    global::Avalonia.Controls.Dock.Bottom => Alignment.Bottom,
+                    global::Avalonia.Controls.Dock.Right => Alignment.Right,
+                    global::Avalonia.Controls.Dock.Top => Alignment.Top,
+                    _ => Alignment.Unset
                 },
                 _ => value
             };

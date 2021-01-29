@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Core;
 using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests

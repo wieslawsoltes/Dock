@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Windows.Input;
+using Dock.Model.Adapters;
+using Dock.Model.Core;
 using ReactiveUI;
 
-namespace Dock.Model
+namespace Dock.Model.ReactiveUI.Core
 {
     /// <summary>
     /// Dock base class.
@@ -122,11 +124,11 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoBack => _navigateAdapter?.CanGoBack ?? false;
+        public bool CanGoBack => _navigateAdapter.CanGoBack;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
+        public bool CanGoForward => _navigateAdapter.CanGoForward;
 
         /// <inheritdoc/>
         public ICommand GoBack { get; }

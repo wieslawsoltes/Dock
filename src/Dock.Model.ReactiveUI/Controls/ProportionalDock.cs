@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
     /// Proportional dock.

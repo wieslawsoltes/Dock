@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dock.Model.Controls;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock factory contract.
@@ -144,7 +144,7 @@ namespace Dock.Model
         void RemoveWindow(IDockWindow window);
 
         /// <summary>
-        /// Sets an avtive dockable. If the dockable is contained inside an dock it
+        /// Sets an active dockable. If the dockable is contained inside an dock it
         /// will become the selected dockable.
         /// </summary>
         /// <param name="dockable">The dockable to select.</param>
@@ -155,7 +155,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dock">The dock to set the focused dockable on.</param>
         /// <param name="dockable">The dockable to set.</param>
-        void SetFocusedDockable(IDock dock, IDockable dockable);
+        void SetFocusedDockable(IDock dock, IDockable? dockable);
 
         /// <summary>
         /// Searches for root dockable.
@@ -230,7 +230,7 @@ namespace Dock.Model
         /// Creates a new split layout from source dockable.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
-        /// <param name="dockable">The optional dockable to add to splitted side.</param>
+        /// <param name="dockable">The optional dockable to add to a split side.</param>
         /// <param name="operation">The dock operation.</param>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
         IDock CreateSplitLayout(IDock dock, IDockable dockable, DockOperation operation);
@@ -239,7 +239,7 @@ namespace Dock.Model
         /// Splits dock and updates owner layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
-        /// <param name="dockable">The optional dockable to add to splitted side.</param>
+        /// <param name="dockable">The optional dockable to add to a split side.</param>
         /// <param name="operation"> The dock operation to perform.</param>
         void SplitToDock(IDock dock, IDockable dockable, DockOperation operation);
 
@@ -254,7 +254,7 @@ namespace Dock.Model
         /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.
         /// </summary>
         /// <param name="dock">The window owner.</param>
-        /// <param name="dockable">The dockable to add to splitted window.</param>
+        /// <param name="dockable">The dockable to add to a split window.</param>
         /// <param name="x">The window X coordinate.</param>
         /// <param name="y">The window Y coordinate.</param>
         /// <param name="width">The window width.</param>

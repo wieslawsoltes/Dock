@@ -11,7 +11,7 @@
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource ThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
-        Title="Dock Avalonia Demo" Height="680" Width="1200"
+        Title="Dock Avalonia Demo" Height="650" Width="1000"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
     <views:MainView/>
 </Window>

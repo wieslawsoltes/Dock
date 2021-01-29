@@ -7,7 +7,7 @@ namespace AvaloniaDemo.Views.Documents
     {
         public Document2View()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

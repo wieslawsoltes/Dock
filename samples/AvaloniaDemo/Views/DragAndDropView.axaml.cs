@@ -15,7 +15,7 @@ namespace AvaloniaDemo.Views
 
         public DragAndDrop()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             if (_DragMe != null)
             {
                 _DragMe.PointerPressed += DoDrag;
@@ -24,7 +24,7 @@ namespace AvaloniaDemo.Views
             AddHandler(DragDrop.DragOverEvent, DragOver);
         }
 
-        private async void DoDrag(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+        private async void DoDrag(object? sender, PointerPressedEventArgs e)
         {
             DataObject dragData = new DataObject();
             dragData.Set(DataFormats.Text, $"You have dragged text {++DragCount} times");

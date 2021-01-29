@@ -7,7 +7,7 @@ namespace AvaloniaDemo.Views.Views
     {
         public HomeView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

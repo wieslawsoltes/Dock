@@ -7,7 +7,7 @@ namespace Notepad.Views.Tools
     {
         public FindView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

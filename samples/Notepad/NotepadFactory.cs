@@ -105,18 +105,18 @@ namespace Notepad
 
         public override void InitLayout(IDockable layout)
         {
-            this.ContextLocator = new Dictionary<string, Func<object>>
+            ContextLocator = new Dictionary<string, Func<object>>
             {
                 ["Find"] = () => layout,
                 ["Replace"] = () => layout
             };
 
-            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.DockableLocator = new Dictionary<string, Func<IDockable>>
+            DockableLocator = new Dictionary<string, Func<IDockable>>
             {
             };
 

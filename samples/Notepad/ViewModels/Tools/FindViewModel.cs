@@ -19,7 +19,7 @@ namespace Notepad.ViewModels.Tools
 
         public void FindNext()
         {
-            if (this.Context is IRootDock root && root.ActiveDockable is IDock active)
+            if (Context is IRootDock root && root.ActiveDockable is IDock active)
             {
                 if (active.Factory?.FindDockable(active, (d) => d.Id == MainWindowViewModel.DocumentsDockId) is IDock files)
                 {

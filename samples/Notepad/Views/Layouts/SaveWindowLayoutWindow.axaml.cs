@@ -8,7 +8,7 @@ namespace Notepad.Views.Layouts
     {
         public SaveWindowLayoutWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.AttachDevTools();
         }
 

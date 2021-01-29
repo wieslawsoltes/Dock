@@ -8,7 +8,7 @@ namespace Notepad.Views.Layouts
     {
         public ResetWindowLayoutWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.AttachDevTools();
         }
 

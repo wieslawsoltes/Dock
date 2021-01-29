@@ -93,10 +93,10 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public HostWindow()
         {
-            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(InputElement.PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(InputElement.PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(InputElement.PointerCaptureLostEvent, CaptureLost, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerCaptureLostEvent, CaptureLost, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
             PositionChanged += HostWindow_PositionChanged;
             LayoutUpdated += HostWindow_LayoutUpdated;
@@ -129,7 +129,7 @@ namespace Dock.Avalonia.Controls
                 Window.Save();
             }
 
-            _hostWindowState.Process(this.Position.ToPoint(1.0), EventType.Moved);
+            _hostWindowState.Process(Position.ToPoint(1.0), EventType.Moved);
         }
 
         private void HostWindow_LayoutUpdated(object? sender, EventArgs e)
@@ -198,7 +198,7 @@ namespace Dock.Avalonia.Controls
             _titleBar = chrome.Grip;
 
             ((IPseudoClasses)chrome.Classes).Add(":floating");
-            this.PseudoClasses.Set(":toolwindow", true);
+            PseudoClasses.Set(":toolwindow", true);
         }
 
         /// <summary>
@@ -291,9 +291,9 @@ namespace Dock.Avalonia.Controls
                     // Using custom method because BeginMoveDrag is releasing pointer capture on Windows.
                     var point = e.GetPosition(this);
                     var delta = point - _startPoint;
-                    double x = this.Position.X + delta.X;
-                    double y = this.Position.Y + delta.Y;
-                    Position = this.Position.WithX((int)x).WithY((int)y);
+                    double x = Position.X + delta.X;
+                    double y = Position.Y + delta.Y;
+                    Position = Position.WithX((int)x).WithY((int)y);
                     _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
                 }
             }
@@ -351,16 +351,16 @@ namespace Dock.Avalonia.Controls
         {
             if (isDialog)
             {
-                if (!this.IsVisible)
+                if (!IsVisible)
                 {
-                    this.ShowDialog(null); // FIXME: Set correct parent window.
+                    ShowDialog(null); // FIXME: Set correct parent window.
                 }
             }
             else
             {
-                if (!this.IsVisible)
+                if (!IsVisible)
                 {
-                    this.Show();
+                    Show();
                 }
             }
         }
@@ -368,7 +368,7 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void Exit()
         {
-            this.Close();
+            Close();
         }
 
         /// <inheritdoc/>
@@ -383,8 +383,8 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void GetPosition(out double x, out double y)
         {
-            x = this.Position.X;
-            y = this.Position.Y;
+            x = Position.X;
+            y = Position.Y;
         }
 
         /// <inheritdoc/>
@@ -392,38 +392,38 @@ namespace Dock.Avalonia.Controls
         {
             if (!double.IsNaN(width))
             {
-                this.Width = width;
+                Width = width;
             }
 
             if (!double.IsNaN(height))
             {
-                this.Height = height;
+                Height = height;
             }
         }
 
         /// <inheritdoc/>
         public void GetSize(out double width, out double height)
         {
-            width = this.Width;
-            height = this.Height;
+            width = Width;
+            height = Height;
         }
 
         /// <inheritdoc/>
         public void SetTopmost(bool topmost)
         {
-            this.Topmost = topmost;
+            Topmost = topmost;
         }
 
         /// <inheritdoc/>
         public void SetTitle(string title)
         {
-            this.Title = title;
+            Title = title;
         }
 
         /// <inheritdoc/>
         public void SetLayout(IDock layout)
         {
-            this.DataContext = layout;
+            DataContext = layout;
         }
     }
 }

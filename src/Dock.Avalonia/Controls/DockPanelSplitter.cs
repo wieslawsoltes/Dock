@@ -174,7 +174,7 @@ namespace Dock.Avalonia.Controls
 
         private global::Avalonia.Controls.Dock GetDock(Control control)
         {
-            if (this.Parent is ContentPresenter presenter)
+            if (Parent is ContentPresenter presenter)
             {
                 return DockPanel.GetDock(presenter);
             }
@@ -183,7 +183,7 @@ namespace Dock.Avalonia.Controls
 
         private Panel? GetPanel()
         {
-            if (this.Parent is ContentPresenter presenter)
+            if (Parent is ContentPresenter presenter)
             {
                 if (presenter.GetVisualParent() is Panel panel)
                 {
@@ -192,7 +192,7 @@ namespace Dock.Avalonia.Controls
             }
             else
             {
-                if (this.Parent is Panel panel)
+                if (Parent is Panel panel)
                 {
                     return panel;
                 }
@@ -203,14 +203,14 @@ namespace Dock.Avalonia.Controls
 
         private void UpdateTargetElement()
         {
-            if (this.Parent is ContentPresenter presenter)
+            if (Parent is ContentPresenter presenter)
             {
                 if (!(presenter.GetVisualParent() is Panel panel))
                 {
                     return;
                 }
 
-                int index = panel.Children.IndexOf(this.Parent);
+                int index = panel.Children.IndexOf(Parent);
                 if (index > 0 && panel.Children.Count > 0)
                 {
                     if (panel.Children[index - 1] is ContentPresenter contentPresenter)
@@ -221,7 +221,7 @@ namespace Dock.Avalonia.Controls
             }
             else
             {
-                if (!(this.Parent is Panel panel))
+                if (!(Parent is Panel panel))
                 {
                     return;
                 }

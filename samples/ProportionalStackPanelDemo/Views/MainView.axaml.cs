@@ -7,7 +7,7 @@ namespace ProportionalStackPanelDemo.Views
     {
         public MainView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

@@ -8,7 +8,7 @@ namespace Notepad.Views.Layouts
     {
         public ManageWindowLayoutsWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.AttachDevTools();
         }
 

@@ -9,7 +9,7 @@ namespace ProportionalStackPanelDemo.Views
     {
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.AttachDevTools();
         }
 

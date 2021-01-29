@@ -11,7 +11,7 @@ using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 
-namespace AvaloniaDemo
+namespace AvaloniaDemo.ViewModels
 {
     public class DemoFactory : Factory
     {

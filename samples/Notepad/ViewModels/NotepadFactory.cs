@@ -7,9 +7,8 @@ using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
-using Notepad.ViewModels;
 
-namespace Notepad
+namespace Notepad.ViewModels
 {
     public class NotepadFactory : Factory
     {

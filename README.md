@@ -46,7 +46,6 @@ Dock is delivered as a NuGet package.
 You can find the packages here [NuGet](https://www.nuget.org/packages/Dock.Avalonia/) and install the package like this:
 
 `Install-Package Dock.Avalonia`
-`Install-Package Dock.Avalonia.Themes.Default`
 `Install-Package Dock.Model.ReactiveUI`
 
 or by using nightly build feed:
@@ -57,16 +56,13 @@ or by using nightly build feed:
 and install the package like this:
 
 `Install-Package Dock.Avalonia -Pre`
-`Install-Package Dock.Avalonia.Themes.Default -Pre`
 `Install-Package Dock.Model.ReactiveUI -Pre`
 
 ### Packages
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
 * [Dock.Model.ReactiveUI](https://www.nuget.org/packages/Dock.Model.ReactiveUI/) - Core docking library implementation using ReactiveUI.
-* [Dock.Model.Avalonia](https://www.nuget.org/packages/Dock.Model.Avalonia/) - Core docking library implementation using Avalonia.
 * [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
-* [Dock.Avalonia.Themes.Default](https://www.nuget.org/packages/Dock.Avalonia.Themes.Default/) - Default themes for Avalonia docking implementation.
 
 ## Resources
 

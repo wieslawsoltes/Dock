@@ -51,10 +51,7 @@
                                 <Setter Property="Padding" Value="4 1 4 0" />
                                 <Setter Property="Template">
                                     <ControlTemplate>
-                                        <Border Name="PART_LayoutRoot"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                Padding="{TemplateBinding Padding}">
+                                        <Border>
                                             <Panel>
                                                 <ContentPresenter Name="PART_ContentPresenter"
                                                                   Background="{TemplateBinding Background}"
@@ -64,8 +61,11 @@
                                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                                   TextBlock.FontFamily="{TemplateBinding FontFamily}"
                                                                   TextBlock.FontSize="{TemplateBinding FontSize}"
-                                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}"/>
-                                                    </Panel>
+                                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                                                  Padding="{TemplateBinding Padding}"/>
+                                            </Panel>
                                         </Border> 
                                     </ControlTemplate>
                                 </Setter>
@@ -79,6 +79,7 @@
                             <Style Selector="TabStripItem:selected">
                                 <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
                                 <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushMed}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="1 0 1 1" />
                                 <Setter Property="Margin" Value="0 -1 0 0" />
                                 <Setter Property="Padding" Value="4 2 4 0" />

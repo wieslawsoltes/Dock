@@ -17,7 +17,7 @@
                         <Style Selector="Border.panel">
                             <Setter Property="Margin" Value="0"/>
                             <Setter Property="Padding" Value="4"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
                             <Setter Property="BorderThickness" Value="1"/>
                         </Style>
                         <Style Selector="Button.chromeButton">
@@ -33,13 +33,13 @@
                             <Setter Property="Background" Value="Transparent" />
                         </Style>
                         <Style Selector="Button.documentTabButton:pointerover">
-                            <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushHigh}" />
+                            <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
                         </Style>
                         <Style Selector="TabStripItem:selected Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                            <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                         </Style>
                         <Style Selector="TabStripItem:pointerover Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                            <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
                     <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" Focusable="false" ClipToBounds="False" ZIndex="1" DockPanel.Dock="Top">
@@ -55,13 +55,13 @@
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
                             <Style Selector="TabStripItem">
-                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
                                 <Setter Property="FontWeight" Value="Normal" />
-                                <Setter Property="MinHeight" Value="20" />
+                                <Setter Property="MinHeight" Value="0" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-                                <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 0 4 0" />
@@ -87,22 +87,22 @@
                                 </Setter>
                             </Style>
                             <Style Selector="TabStripItem:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                             </Style>
                             <Style Selector="TabStripItem:selected">
-                                <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                             </Style>
                             <Style Selector="TabStripItem:selected:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentForegroundBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
                                 <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                    <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="12">
+                                    <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
                                         <TextBlock Text="{Binding Title}" />
                                     </StackPanel>
                                     <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
@@ -119,8 +119,8 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Grid Background="{DynamicResource ApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" x:CompileBindings="False" />
-                    <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+                    <Grid Background="{DynamicResource DockApplicationAccentBrushLow}" Height="2" DockPanel.Dock="Top" IsVisible="{Binding #PART_TabStrip.IsVisible}" x:CompileBindings="False" />
+                    <Border BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <ContentControl Content="{Binding ActiveDockable}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </Border>
                 </DockPanel>

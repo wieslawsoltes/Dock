@@ -15,7 +15,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*" x:DataType="core:IDock" x:CompileBindings="True">
-                    <Border Name="PART_Border" BorderBrush="{DynamicResource ThemeBorderLowBrush}">
+                    <Border Name="PART_Border" BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <TextBlock DockPanel.Dock="Left" Text="{Binding ActiveDockable.Title}" HorizontalAlignment="Left" TextAlignment="Left" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" x:CompileBindings="False" />
@@ -46,7 +46,7 @@
                     </Border>
                     <ContentPresenter Grid.Row="1"
                                       Name="PART_ContentPresenter"
-                                      Background="{DynamicResource ThemeBackgroundBrush}"
+                                      Background="{DynamicResource DockThemeBackgroundBrush}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       Content="{TemplateBinding Content}"
@@ -62,7 +62,7 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
-        <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="(id:DockProperties.IsDragArea)" Value="True" />
@@ -71,7 +71,7 @@
         <Setter Property="(id:DockProperties.IsDragArea)" Value="False" />
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
-        <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />
+        <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
         <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
     </Style>
 </Styles>

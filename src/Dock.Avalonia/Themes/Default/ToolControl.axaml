@@ -16,7 +16,7 @@
                         </Style>
                         <Style Selector="Border.panel">
                             <Setter Property="Margin" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                             <Setter Property="BorderThickness" Value="1 0 1 1" />
                         </Style>
                         <Style Selector="Button.chromeButton">
@@ -39,13 +39,13 @@
                                 </Setter>
                             </Style>
                             <Style Selector="TabStripItem">
-                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
                                 <Setter Property="FontWeight" Value="Normal" />
-                                <Setter Property="MinHeight" Value="20" />
+                                <Setter Property="MinHeight" Value="0" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-                                <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 1 4 0" />
@@ -71,22 +71,22 @@
                                 </Setter>
                             </Style>
                             <Style Selector="TabStripItem:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushMed}" />
+                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
                             </Style>
                             <Style Selector="TabStrip:singleitem">
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
                             <Style Selector="TabStripItem:selected">
-                                <Setter Property="Background" Value="{DynamicResource ThemeControlBackgroundBrush}" />
-                                <Setter Property="Foreground" Value="{DynamicResource ApplicationAccentBrushMed}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockThemeControlBackgroundBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="1 0 1 1" />
                                 <Setter Property="Margin" Value="0 -1 0 0" />
                                 <Setter Property="Padding" Value="4 2 4 0" />
                             </Style>
                             <Style Selector="TabStripItem:selected:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderLowBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                             </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
@@ -97,7 +97,7 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Border Classes="panel" ZIndex="-1" Background="{DynamicResource ThemeControlBackgroundBrush}">
+                    <Border Classes="panel" ZIndex="-1" Background="{DynamicResource DockThemeControlBackgroundBrush}">
                         <ContentControl Content="{Binding ActiveDockable}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                     </Border>
                 </DockPanel>

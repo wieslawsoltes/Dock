@@ -7,8 +7,8 @@
         d:DesignWidth="350" d:DesignHeight="140"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
-        Foreground="{DynamicResource ThemeForegroundBrush}"
-        BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
+        Foreground="{DynamicResource DockThemeForegroundBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         Title="Save Window Layout" Height="150" Width="350">
     <Grid RowDefinitions="Auto,Auto,Auto">
         <TextBlock Text="Layout name:" Margin="10" TextWrapping="Wrap" Grid.Row="0"/>

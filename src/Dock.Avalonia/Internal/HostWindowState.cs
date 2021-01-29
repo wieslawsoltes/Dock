@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
-using Dock.Model;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal

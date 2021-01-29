@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:id="using:Dock.Avalonia"
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:views="using:AvaloniaDemo.Views"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
@@ -13,7 +12,7 @@
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
         <idc:NavigationControl DataContext="{Binding Layout}" Margin="4" Grid.Row="1"/>
-        <idc:DockControl x:Name="dockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
-        <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Row="3" x:CompileBindings="False"/>
+        <idc:DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
+        <TextBlock Text="{Binding #DockControl.Layout.ActiveDockable.FocusedDockable, FallbackValue={}}" Margin="4" Grid.Row="3" x:CompileBindings="False"/>
     </Grid>
 </UserControl>

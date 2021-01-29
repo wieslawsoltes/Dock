@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="using:AvaloniaDemo.Views"
              xmlns:vm="using:AvaloniaDemo.ViewModels.Tools"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
@@ -13,7 +12,6 @@
             <TextBlock Text="{Binding Id}"/>
             <TextBlock Text="{Binding Title}"/>
             <TextBlock Text="{Binding Context}"/>
-            <!--<views:DragAndDropView/>-->
         </StackPanel>
     </Grid>
 </UserControl>

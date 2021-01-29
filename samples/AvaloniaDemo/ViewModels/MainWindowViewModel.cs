@@ -1,5 +1,4 @@
 ﻿using AvaloniaDemo.Models;
-using Dock.Model;
 using Dock.Model.Core;
 using ReactiveUI;
 
@@ -22,7 +21,7 @@ namespace AvaloniaDemo.ViewModels
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
 
-        public void FileNew()
+        public void NewLayout()
         {
             if (Layout is IDock root)
             {

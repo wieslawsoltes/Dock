@@ -4,18 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-             xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="20"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Menu>
         <MenuItem Header="_File">
-            <MenuItem Header="_New" Command="{Binding FileNew}" x:CompileBindings="False"/>
-            <Separator/>
-            <MenuItem Header="_Open..." Command="{Binding FileOpen}" x:CompileBindings="False"/>
-            <Separator/>
-            <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}" x:CompileBindings="False"/>
+            <MenuItem Header="_New" Command="{Binding NewLayout}" x:CompileBindings="False"/>
         </MenuItem>
         <MenuItem Header="_View">
             <MenuItem Header="_Windows">

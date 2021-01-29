@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;

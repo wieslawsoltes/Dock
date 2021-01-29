@@ -6,7 +6,7 @@ namespace AvaloniaDemo.ViewModels.Views
 {
     public class DashboardViewModel : DockBase
     {
-        public override IDockable? Clone()
+        public override IDockable Clone()
         {
             var dashboardViewModel = new DashboardViewModel();
 

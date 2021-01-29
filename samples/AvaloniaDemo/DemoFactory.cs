@@ -6,7 +6,6 @@ using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
 using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
-using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
@@ -16,7 +15,7 @@ namespace AvaloniaDemo
 {
     public class DemoFactory : Factory
     {
-        private object _context;
+        private readonly object _context;
 
         public DemoFactory(object context)
         {
@@ -270,9 +269,7 @@ namespace AvaloniaDemo
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            DockableLocator = new Dictionary<string, Func<IDockable>>
-            {
-            };
+            DockableLocator = new Dictionary<string, Func<IDockable>>();
 
             base.InitLayout(layout);
         }

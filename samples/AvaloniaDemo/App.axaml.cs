@@ -4,7 +4,6 @@ using Avalonia.Markup.Xaml;
 using AvaloniaDemo.Models;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
-using Dock.Model;
 using Dock.Model.Core;
 
 namespace AvaloniaDemo
@@ -19,65 +18,69 @@ namespace AvaloniaDemo
         public override void OnFrameworkInitializationCompleted()
         {
             var mainWindowViewModel = new MainWindowViewModel();
-
             var factory = new DemoFactory(new DemoData());
             IDock? layout = null;
 
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            switch (ApplicationLifetime)
             {
-                var mainWindow = new MainWindow
+                case IClassicDesktopStyleApplicationLifetime desktopLifetime:
                 {
-                    DataContext = mainWindowViewModel
-                };
-
-                mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-
-                if (mainWindowViewModel.Layout != null)
-                {
-                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                }
-
-                mainWindow.Closing += (_, _) =>
-                {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    var mainWindow = new MainWindow
                     {
-                        if (dock.Close.CanExecute(null))
-                        {
-                            dock.Close.Execute(null);
-                        }
-                    }
-                };
+                        DataContext = mainWindowViewModel
+                    };
 
-                desktopLifetime.MainWindow = mainWindow;
+                    mainWindowViewModel.Factory = factory;
+                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
 
-                desktopLifetime.Exit += (_, _) =>
-                {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    if (mainWindowViewModel.Layout != null)
                     {
-                        if (dock.Close.CanExecute(null))
-                        {
-                            dock.Close.Execute(null);
-                        }
+                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
                     }
-                };
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            {
-                var mainView = new MainView()
-                {
-                    DataContext = mainWindowViewModel
-                };
 
-                mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+                    mainWindow.Closing += (_, _) =>
+                    {
+                        if (mainWindowViewModel.Layout is IDock dock)
+                        {
+                            if (dock.Close.CanExecute(null))
+                            {
+                                dock.Close.Execute(null);
+                            }
+                        }
+                    };
 
-                if (mainWindowViewModel.Layout != null)
-                {
-                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                    desktopLifetime.MainWindow = mainWindow;
+
+                    desktopLifetime.Exit += (_, _) =>
+                    {
+                        if (mainWindowViewModel.Layout is IDock dock)
+                        {
+                            if (dock.Close.CanExecute(null))
+                            {
+                                dock.Close.Execute(null);
+                            }
+                        }
+                    };
+                    break;
                 }
+                case ISingleViewApplicationLifetime singleViewLifetime:
+                {
+                    var mainView = new MainView()
+                    {
+                        DataContext = mainWindowViewModel
+                    };
 
-                singleViewLifetime.MainView = mainView;
+                    mainWindowViewModel.Factory = factory;
+                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+
+                    if (mainWindowViewModel.Layout != null)
+                    {
+                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                    }
+
+                    singleViewLifetime.MainView = mainView;
+                    break;
+                }
             }
             base.OnFrameworkInitializationCompleted();
         }

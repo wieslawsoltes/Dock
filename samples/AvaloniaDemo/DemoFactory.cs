@@ -219,7 +219,7 @@ namespace AvaloniaDemo
             root.Title = "Root";
             root.IsCollapsable = false;
             root.ActiveDockable = dashboardView;
-            root.DefaultDockable = dashboardView;
+            root.DefaultDockable = homeView;
             root.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
 
             return root;

@@ -13,7 +13,7 @@
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
         <Panel Grid.Row="1" DataContext="{Binding Layout}">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="4" x:DataType="dmc:IRootDock" x:CompileBindings="True">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="4" x:DataType="dmc:IRootDock" x:CompileBindings="True">
                 <Button Content="Back" 
                         Margin="0"
                         Padding="4"
@@ -26,12 +26,18 @@
                         Command="{Binding GoForward}" 
                         IsEnabled="{Binding CanGoForward}" 
                         Grid.Column="1"/>
+                <Button Content="Dashboard"  
+                        Margin="0"
+                        Padding="4"
+                        Command="{Binding Navigate}" 
+                        CommandParameter="Dashboard" 
+                        Grid.Column="2"/>
                 <Button Content="Home"  
                         Margin="0"
                         Padding="4"
                         Command="{Binding Navigate}" 
                         CommandParameter="{Binding DefaultDockable}" 
-                        Grid.Column="2"/>
+                        Grid.Column="3"/>
                 <TextBox x:Name="Id" 
                          MinHeight="0" 
                          Margin="0"
@@ -39,24 +45,24 @@
                          Text="" 
                          Watermark="Dashboard"
                          UseFloatingWatermark="True"
-                         Grid.Column="3"/>
+                         Grid.Column="4"/>
                 <Button Content="Navigate"  
                         Margin="0"
                         Padding="4"
                         Command="{Binding Navigate}" 
                         CommandParameter="{Binding #Id.Text}" 
                         x:CompileBindings="False" 
-                        Grid.Column="4"/>
+                        Grid.Column="5"/>
                 <Button Content="ShowWindows"  
                         Margin="0"
                         Padding="4"
                         Command="{Binding ShowWindows}" 
-                        Grid.Column="5"/>
+                        Grid.Column="6"/>
                 <Button Content="ExitWindows"  
                         Margin="0"
                         Padding="4"
                         Command="{Binding ExitWindows}" 
-                        Grid.Column="6"/>
+                        Grid.Column="7"/>
             </Grid>
         </Panel>
         <idc:DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>

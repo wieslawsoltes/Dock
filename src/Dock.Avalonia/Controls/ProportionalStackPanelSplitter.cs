@@ -14,8 +14,6 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class ProportionalStackPanelSplitter : Thumb
     {
-        private Size _previousParentSize;
-
         /// <summary>
         /// Defines the Proportion attached property.
         /// </summary>
@@ -58,33 +56,19 @@ namespace Dock.Avalonia.Controls
             set => SetValue(ThicknessProperty, value);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProportionalStackPanelSplitter" /> class.
-        /// </summary>
-        public ProportionalStackPanelSplitter()
-        {
-        }
-
         /// <inheritdoc/>
         protected override void OnDragDelta(VectorEventArgs e)
         {
-            if (GetPanel() is ProportionalStackPanel panel)
+            if (GetPanel() is { } panel)
             {
-                if (panel.Orientation == Orientation.Vertical)
-                {
-                    SetTargetProportion(e.Vector.Y);
-                }
-                else
-                {
-                    SetTargetProportion(e.Vector.X);
-                }
+                SetTargetProportion(panel.Orientation == Orientation.Vertical ? e.Vector.Y : e.Vector.X);
             }
         }
 
         /// <inheritdoc/>
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (GetPanel() is ProportionalStackPanel panel)
+            if (GetPanel() is { } panel)
             {
                 if (panel.Orientation == Orientation.Vertical)
                 {
@@ -109,8 +93,6 @@ namespace Dock.Avalonia.Controls
             {
                 return;
             }
-
-            _previousParentSize = panel.Bounds.Size;
 
             UpdateHeightOrWidth();
         }
@@ -174,7 +156,7 @@ namespace Dock.Avalonia.Controls
 
         private void UpdateHeightOrWidth()
         {
-            if (GetPanel() is ProportionalStackPanel panel)
+            if (GetPanel() is { } panel)
             {
                 if (panel.Orientation == Orientation.Vertical)
                 {

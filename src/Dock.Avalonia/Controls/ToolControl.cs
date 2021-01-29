@@ -17,22 +17,16 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            AddHandler(InputElement.PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnDetachedFromVisualTree(e);
+            AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            if (this.DataContext is IDock dock && dock.Factory is IFactory factory)
+            if (DataContext is IDock dock && dock.Factory is { } factory)
             {
                 if (dock.ActiveDockable != null)
                 {
-                    if (factory.FindRoot(dock.ActiveDockable, (x) => true) is IRootDock root)
+                    if (factory.FindRoot(dock.ActiveDockable, (x) => true) is { } root)
                     {
                         Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);

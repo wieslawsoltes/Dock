@@ -10,7 +10,7 @@ namespace Notepad
     {
         public IControl Build(object data)
         {
-            var name = data.GetType()?.FullName?.Replace("ViewModel", "View");
+            var name = data.GetType().FullName?.Replace("ViewModel", "View");
             if (name == null)
             {
                 return new TextBlock { Text = "Invalid Data Type" };

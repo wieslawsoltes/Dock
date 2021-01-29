@@ -24,175 +24,65 @@ namespace AvaloniaDemo
 
         public override IDock CreateLayout()
         {
-            var document1 = new Document1ViewModel
-            {
-                Id = "Document1",
-                Title = "Document1"
-            };
-
-            var document2 = new Document2ViewModel
-            {
-                Id = "Document2",
-                Title = "Document2"
-            };
-
-            var leftTopTool1 = new LeftTopTool1ViewModel
-            {
-                Id = "LeftTop1",
-                Title = "LeftTop1"
-            };
-
-            var leftTopTool2 = new LeftTopTool2ViewModel
-            {
-                Id = "LeftTop2",
-                Title = "LeftTop2"
-            };
-
-            var leftBottomTool1 = new LeftBottomTool1ViewModel
-            {
-                Id = "LeftBottom1",
-                Title = "LeftBottom1"
-            };
-
-            var leftBottomTool2 = new LeftBottomTool2ViewModel
-            {
-                Id = "LeftBottom2",
-                Title = "LeftBottom2"
-            };
-
-            var rightTopTool1 = new RightTopTool1ViewModel
-            {
-                Id = "RightTop1",
-                Title = "RightTop1"
-            };
-
-            var rightTopTool2 = new RightTopTool2ViewModel
-            {
-                Id = "RightTop2",
-                Title = "RightTop2"
-            };
-
-            var rightBottomTool1 = new RightBottomTool1ViewModel
-            {
-                Id = "RightBottom1",
-                Title = "RightBottom1"
-            };
-
-            var rightBottomTool2 = new RightBottomTool2ViewModel
-            {
-                Id = "RightBottom2",
-                Title = "RightBottom2"
-            };
+            var document1 = new Document1ViewModel {Id = "Document1", Title = "Document1"};
+            var document2 = new Document2ViewModel {Id = "Document2", Title = "Document2"};
+            var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
+            var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
+            var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
+            var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4"};
+            var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5"};
+            var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6"};
+            var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7"};
+            var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8"};
 
             var mainLayout = new ProportionalDock
             {
-                Id = "MainLayout",
-                Title = "MainLayout",
-                Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
-                ActiveDockable = null,
                 VisibleDockables = CreateList<IDockable>
                 (
                     new ProportionalDock
                     {
-                        Id = "LeftPane",
-                        Title = "LeftPane",
-                        Proportion = double.NaN,
                         Orientation = Orientation.Vertical,
                         ActiveDockable = null,
                         VisibleDockables = CreateList<IDockable>
                         (
                             new ToolDock
                             {
-                                Id = "LeftPaneTop",
-                                Title = "LeftPaneTop",
-                                Proportion = double.NaN,
-                                ActiveDockable = leftTopTool1,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    leftTopTool1,
-                                    leftTopTool2
-                                )
+                                ActiveDockable = tool1,
+                                VisibleDockables = CreateList<IDockable>(tool1, tool2)
                             },
-                            new SplitterDock()
-                            {
-                                Id = "LeftPaneTopSplitter",
-                                Title = "LeftPaneTopSplitter"
-                            },
+                            new SplitterDock(),
                             new ToolDock
                             {
-                                Id = "LeftPaneBottom",
-                                Title = "LeftPaneBottom",
-                                Proportion = double.NaN,
-                                ActiveDockable = leftBottomTool1,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    leftBottomTool1,
-                                    leftBottomTool2
-                                )
+                                ActiveDockable = tool3,
+                                VisibleDockables = CreateList<IDockable>(tool3, tool4)
                             }
                         )
                     },
-                    new SplitterDock()
-                    {
-                        Id = "LeftSplitter",
-                        Title = "LeftSplitter"
-                    },
+                    new SplitterDock(),
                     new DocumentDock
                     {
-                        Id = "DocumentsPane",
-                        Title = "DocumentsPane",
                         IsCollapsable = false,
-                        Proportion = double.NaN,
                         ActiveDockable = document1,
-                        VisibleDockables = CreateList<IDockable>
-                        (
-                            document1,
-                            document2
-                        )
+                        VisibleDockables = CreateList<IDockable>(document1, document2)
                     },
-                    new SplitterDock()
-                    {
-                        Id = "RightSplitter",
-                        Title = "RightSplitter"
-                    },
+                    new SplitterDock(),
                     new ProportionalDock
                     {
-                        Id = "RightPane",
-                        Title = "RightPane",
-                        Proportion = double.NaN,
                         Orientation = Orientation.Vertical,
                         ActiveDockable = null,
                         VisibleDockables = CreateList<IDockable>
                         (
                             new ToolDock
                             {
-                                Id = "RightPaneTop",
-                                Title = "RightPaneTop",
-                                Proportion = double.NaN,
-                                ActiveDockable = rightTopTool1,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    rightTopTool1,
-                                    rightTopTool2
-                                )
+                                ActiveDockable = tool5,
+                                VisibleDockables = CreateList<IDockable>(tool5, tool6)
                             },
-                            new SplitterDock()
-                            {
-                                Id = "RightPaneTopSplitter",
-                                Title = "RightPaneTopSplitter"
-                            },
+                            new SplitterDock(),
                             new ToolDock
                             {
-                                Id = "RightPaneBottom",
-                                Title = "RightPaneBottom",
-                                Proportion = double.NaN,
-                                ActiveDockable = rightBottomTool1,
-                                VisibleDockables = CreateList<IDockable>
-                                (
-                                    rightBottomTool1,
-                                    rightBottomTool2
-                                )
+                                ActiveDockable = tool7,
+                                VisibleDockables = CreateList<IDockable>(tool7, tool8)
                             }
                         )
                     }
@@ -215,8 +105,6 @@ namespace AvaloniaDemo
 
             var root = CreateRootDock();
 
-            root.Id = "Root";
-            root.Title = "Root";
             root.IsCollapsable = false;
             root.ActiveDockable = dashboardView;
             root.DefaultDockable = homeView;
@@ -239,27 +127,14 @@ namespace AvaloniaDemo
                 [nameof(ITool)] = () => _context,
                 ["Document1"] = () => new Document1(),
                 ["Document2"] = () => new Document2(),
-                ["LeftTop1"] = () => new LeftTopTool1(),
-                ["LeftTop2"] = () => new LeftTopTool2(),
-                ["LeftBottom1"] = () => new LeftBottomTool1(),
-                ["LeftBottom2"] = () => new LeftBottomTool2(),
-                ["RightTop1"] = () => new RightTopTool1(),
-                ["RightTop2"] = () => new RightTopTool2(),
-                ["RightBottom1"] = () => new RightBottomTool1(),
-                ["RightBottom2"] = () => new RightBottomTool2(),
-                ["LeftPane"] = () => _context,
-                ["LeftPaneTop"] = () => _context,
-                ["LeftPaneTopSplitter"] = () => _context,
-                ["LeftPaneBottom"] = () => _context,
-                ["RightPane"] = () => _context,
-                ["RightPaneTop"] = () => _context,
-                ["RightPaneTopSplitter"] = () => _context,
-                ["RightPaneBottom"] = () => _context,
-                ["DocumentsPane"] = () => _context,
-                ["MainLayout"] = () => _context,
-                ["LeftSplitter"] = () => _context,
-                ["RightSplitter"] = () => _context,
-                ["MainLayout"] = () => _context,
+                ["Tool1"] = () => new Tool1(),
+                ["Tool2"] = () => new Tool2(),
+                ["Tool3"] = () => new Tool3(),
+                ["Tool4"] = () => new Tool4(),
+                ["Tool5"] = () => new Tool5(),
+                ["Tool6"] = () => new Tool6(),
+                ["Tool7"] = () => new Tool7(),
+                ["Tool8"] = () => new Tool8(),
                 ["Dashboard"] = () => layout,
                 ["Home"] = () => _context
             };

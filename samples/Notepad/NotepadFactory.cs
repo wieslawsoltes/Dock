@@ -13,7 +13,7 @@ namespace Notepad
 {
     public class NotepadFactory : Factory
     {
-        public override IDock? CreateLayout()
+        public override IDock CreateLayout()
         {
             var untitledFileViewModel = new FileViewModel()
             {
@@ -56,7 +56,6 @@ namespace Notepad
                 (
                     new ToolDock
                     {
-                        Proportion = double.NaN,
                         ActiveDockable = findViewModel,
                         VisibleDockables = CreateList<IDockable>
                         (
@@ -66,7 +65,6 @@ namespace Notepad
                     new SplitterDock(),
                     new ToolDock
                     {
-                        Proportion = double.NaN,
                         ActiveDockable = replaceViewModel,
                         VisibleDockables = CreateList<IDockable>
                         (
@@ -80,7 +78,6 @@ namespace Notepad
             windowLayout.Title = "Default";
             var windowLayoutContent = new ProportionalDock
             {
-                Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
                 IsCollapsable = false,
                 VisibleDockables = CreateList<IDockable>
@@ -117,9 +114,7 @@ namespace Notepad
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            DockableLocator = new Dictionary<string, Func<IDockable>>
-            {
-            };
+            DockableLocator = new Dictionary<string, Func<IDockable>>();
 
             base.InitLayout(layout);
         }

@@ -35,7 +35,7 @@ Open `Dock.sln` in selected IDE and run `Build` command.
 Open up a terminal prompt and execute the commands.
 
 Target framework `netstandard2.0`:
-```
+```bash
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
 ```
 
@@ -45,8 +45,10 @@ Dock is delivered as a NuGet package.
 
 You can find the packages here [NuGet](https://www.nuget.org/packages/Dock.Avalonia/) and install the package like this:
 
-`Install-Package Dock.Avalonia`
-`Install-Package Dock.Model.ReactiveUI`
+```powershell
+Install-Package Dock.Avalonia
+Install-Package Dock.Model.ReactiveUI
+```
 
 or by using nightly build feed:
 * Add `https://www.myget.org/F/dock-nightly/api/v2` to your package sources
@@ -55,14 +57,16 @@ or by using nightly build feed:
 
 and install the package like this:
 
-`Install-Package Dock.Avalonia -Pre`
-`Install-Package Dock.Model.ReactiveUI -Pre`
+```powershell
+Install-Package Dock.Avalonia -Pre
+Install-Package Dock.Model.ReactiveUI -Pre
+```
 
 ### Packages
 
 * [Dock.Model](https://www.nuget.org/packages/Dock.Model/) - Core docking library.
 * [Dock.Model.ReactiveUI](https://www.nuget.org/packages/Dock.Model.ReactiveUI/) - Core docking library implementation using ReactiveUI.
-* [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation.
+* [Dock.Avalonia](https://www.nuget.org/packages/Dock.Avalonia/) - Avalonia docking implementation with default theme.
 
 ## Resources
 

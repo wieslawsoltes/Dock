@@ -7,6 +7,10 @@
             <SolidColorBrush x:Key="DockApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
             <SolidColorBrush x:Key="DockApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
             <SolidColorBrush x:Key="DockApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
+        </Style.Resources>
+    </Style>
+    <Style>
+        <Style.Resources>
             <SolidColorBrush x:Key="DockThemeBorderLowBrush" Color="{DynamicResource ThemeBorderLowColor}"/>
             <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}"/>
             <SolidColorBrush x:Key="DockThemeAccentBrush" Color="{DynamicResource ThemeAccentColor}"/>

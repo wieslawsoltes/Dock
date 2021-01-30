@@ -7,6 +7,7 @@
             <SolidColorBrush x:Key="DockApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
             <SolidColorBrush x:Key="DockApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
             <SolidColorBrush x:Key="DockApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
+            <SolidColorBrush x:Key="DockApplicationAccentBrushIndicator">LightGray</SolidColorBrush>
         </Style.Resources>
     </Style>
     <Style>

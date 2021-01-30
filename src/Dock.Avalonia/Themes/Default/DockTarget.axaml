@@ -9,23 +9,23 @@
                       ColumnDefinitions="*,*" 
                       x:CompileBindings="True">
                     <Grid x:Name="PART_TopIndicator" 
-                          Background="Red" 
+                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
                           Opacity="0"
-                          Grid.ColumnSpan="2" />
+                          Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" />
                     <Grid x:Name="PART_BottomIndicator" 
-                          Background="Blue" 
+                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
                           Opacity="0"
                           Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"  />
                     <Grid x:Name="PART_LeftIndicator" 
-                          Background="Green" 
+                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
                           Opacity="0"
                           Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" />
                     <Grid x:Name="PART_RightIndicator" 
-                          Background="Orange" 
+                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
                           Opacity="0"
                           Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
                     <Grid x:Name="PART_CenterIndicator" 
-                          Background="Purple" 
+                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
                           Opacity="0"
                           Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                     <Grid Grid.Row="0" RowSpan="2" ColumnSpan="2" Grid.Column="0">

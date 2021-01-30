@@ -13,6 +13,11 @@ namespace Dock.Avalonia.Converters
     public class AlignmentConverter : IValueConverter
     {
         /// <summary>
+        /// Gets <see cref="AlignmentConverter"/> instance.
+        /// </summary>
+        public static readonly AlignmentConverter Instance = new AlignmentConverter();
+
+        /// <summary>
         /// Converts a value.
         /// </summary>
         /// <param name="value">The value to convert.</param>

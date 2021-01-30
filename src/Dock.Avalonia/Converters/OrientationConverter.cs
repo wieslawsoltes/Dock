@@ -12,6 +12,11 @@ namespace Dock.Avalonia.Converters
     public class OrientationConverter : IValueConverter
     {
         /// <summary>
+        /// Gets <see cref="OrientationConverter"/> instance.
+        /// </summary>
+        public static readonly OrientationConverter Instance = new OrientationConverter();
+
+        /// <summary>
         /// Converts a value.
         /// </summary>
         /// <param name="value">The value to convert.</param>

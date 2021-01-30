@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
-        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
+        xmlns:core="using:Dock.Model.Core">
     <Style Selector="Button.chromeButton">
         <Setter Property="Margin" Value="2 0 0 0" />
         <Setter Property="Padding" Value="0" />
@@ -15,10 +15,12 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="25,*" x:DataType="core:IDock" x:CompileBindings="True">
-                    <Border Name="PART_Border" BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
-                        <Grid Name="PART_Grip">
+                    <Border x:Name="PART_Border" 
+                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
+                        <Grid x:Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left" 
+                                <TextBlock x:Name="PART_Title"
+                                           DockPanel.Dock="Left" 
                                            Text="{Binding ActiveDockable.Title}"
                                            HorizontalAlignment="Left" 
                                            TextAlignment="Left" 
@@ -28,9 +30,9 @@
                                            Background="{Binding #Part_Grip.Background}" 
                                            FontSize="{DynamicResource DockFontSizeNormal}"
                                            x:CompileBindings="False" />
-                                <Button Classes="chromeButton" 
+                                <Button Name="PART_CloseButton" 
+                                        Classes="chromeButton" 
                                         DockPanel.Dock="Right"
-                                        Name="PART_CloseButton" 
                                         Command="{Binding Owner.Factory.CloseDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
                                         x:CompileBindings="False">
@@ -39,7 +41,8 @@
                                            Width="13" 
                                            Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" 
+                                <Button x:Name="PART_PinButton" 
+                                        Classes="chromeButton" 
                                         DockPanel.Dock="Right" 
                                         Command="{Binding Owner.Factory.PinDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
@@ -49,13 +52,17 @@
                                            Width="13" 
                                            Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" DockPanel.Dock="Right">
+                                <Button x:Name="PART_MenuButton" 
+                                        Classes="chromeButton" 
+                                        DockPanel.Dock="Right">
                                     <Image Source="avares://Dock.Avalonia/Assets/PinMenu_Dark.png" 
                                            Height="13" 
                                            Width="13" 
                                            Stretch="None" />
                                 </Button>
-                                <Grid Height="5" Margin="0 0 10 0">
+                                <Grid x:Name="PART_Grid"
+                                      Height="5" 
+                                      Margin="0 0 10 0">
                                     <Grid.Background>
                                         <VisualBrush SourceRect="0,0,4,5" 
                                                      DestinationRect="0,0,4,5" 
@@ -74,8 +81,8 @@
                             </DockPanel>
                         </Grid>
                     </Border>
-                    <ContentPresenter Grid.Row="1"
-                                      Name="PART_ContentPresenter"
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Grid.Row="1"
                                       Background="{DynamicResource DockThemeBackgroundBrush}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"

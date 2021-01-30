@@ -12,23 +12,27 @@
         <MenuItem Header="_File">
             <MenuItem Header="_New" Command="{Binding NewLayout}" x:CompileBindings="False"/>
         </MenuItem>
-        <MenuItem Header="_View">
-            <MenuItem Header="_Windows">
-                <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
-                <Separator/>
-                <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
-            </MenuItem>
+        <MenuItem Header="_Window">
+            <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
+            <Separator/>
+            <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
         </MenuItem>
         <MenuItem Header="_Options">
             <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False" x:CompileBindings="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" 
+                              BorderThickness="0" 
+                              IsHitTestVisible="False" 
+                              x:CompileBindings="False"/>
                 </MenuItem.Icon>
             </MenuItem>
             <Separator/>
             <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
                 <MenuItem.Icon>
-                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False" x:CompileBindings="False"/>
+                    <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" 
+                              BorderThickness="0" 
+                              IsHitTestVisible="False" 
+                              x:CompileBindings="False"/>
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>

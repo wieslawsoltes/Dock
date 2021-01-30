@@ -4,15 +4,14 @@
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:dmc="using:Dock.Model.Controls"
-        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
+        xmlns:core="using:Dock.Model.Core">
     <Style Selector="idc|DockControl">
-        <Style.Resources>
-            <converters:OrientationConverter x:Key="OrientationConverter"/>
-            <converters:AlignmentConverter x:Key="AlignmentConverter"/>
-        </Style.Resources>
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentControl Content="{TemplateBinding Layout}" x:DataType="core:IDock" x:CompileBindings="True">
+                <ContentControl x:Name="PART_ContentControl"
+                                Content="{TemplateBinding Layout}" 
+                                x:DataType="core:IDock" 
+                                x:CompileBindings="True">
                     <ContentControl.DataTemplates>
                         <DataTemplate DataType="dmc:IDocumentContent">
                             <ContentControl Content="{Binding Content}"/>
@@ -27,21 +26,27 @@
                             <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">
-                            <idc:DockToolChrome IsActive="{Binding IsActive}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockToolChrome IsActive="{Binding IsActive}" 
+                                                idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <idc:ToolControl/>
                             </idc:DockToolChrome>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">
-                            <ItemsControl Items="{Binding VisibleDockables}" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <ItemsControl Items="{Binding VisibleDockables}" 
+                                          idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <idc:ProportionalStackPanel Name="DropProportional" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="{Binding Orientation, Converter={StaticResource OrientationConverter}}"/>
+                                        <idc:ProportionalStackPanel x:Name="DropProportional" 
+                                                                    id:DockProperties.IsDropArea="True" 
+                                                                    Background="Transparent" 
+                                                                    Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}"/>
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IRootDock">
-                            <DockPanel Name="DropRoot" id:DockProperties.IsDropArea="False" Background="Transparent">
+                            <DockPanel id:DockProperties.IsDropArea="False" 
+                                       Background="Transparent">
                                 <ContentControl Content="{Binding ActiveDockable}"/>
                             </DockPanel>
                         </DataTemplate>

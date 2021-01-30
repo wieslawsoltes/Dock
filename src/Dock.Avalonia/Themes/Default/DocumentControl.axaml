@@ -3,11 +3,11 @@
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:dmc="using:Dock.Model.Controls"
-        xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model">
+        xmlns:core="using:Dock.Model.Core">
     <Style Selector="idc|DocumentControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropDocumentDock" 
+                <DockPanel x:Name="PART_DockPanel" 
                            id:DockProperties.IsDropArea="True" 
                            id:DockProperties.IsDockTarget="True" 
                            Background="Transparent" 
@@ -48,14 +48,14 @@
                             <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" 
-                              id:DockProperties.IsDropArea="True" 
+                    <TabStrip x:Name="PART_TabStrip" 
                               Background="Transparent" 
                               Items="{Binding VisibleDockables}" 
                               SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" 
                               Focusable="false" 
                               ClipToBounds="False" 
                               ZIndex="1" 
+                              id:DockProperties.IsDropArea="True" 
                               DockPanel.Dock="Top">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
@@ -83,7 +83,7 @@
                                     <ControlTemplate>
                                         <Border>
                                             <Panel>
-                                                <ContentPresenter Name="PART_ContentPresenter"
+                                                <ContentPresenter x:Name="PART_ContentPresenter"
                                                                   Background="{TemplateBinding Background}"
                                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
                                                                   Content="{TemplateBinding Content}"
@@ -115,12 +115,11 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
-                                <StackPanel Name="DragDocument" 
-                                            id:DockProperties.IsDragArea="True" 
-                                            id:DockProperties.IsDropArea="True" 
-                                            Background="Transparent" 
+                                <StackPanel Background="Transparent" 
                                             Orientation="Horizontal" 
-                                            Spacing="2">
+                                            Spacing="2"
+                                            id:DockProperties.IsDragArea="True" 
+                                            id:DockProperties.IsDropArea="True" >
                                     <StackPanel Orientation="Horizontal" 
                                                 Margin="2" 
                                                 TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
@@ -147,13 +146,17 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Grid Background="{DynamicResource DockApplicationAccentBrushLow}" 
-                          Height="2" 
-                          DockPanel.Dock="Top" 
-                          IsVisible="{Binding #PART_TabStrip.IsVisible}" 
-                          x:CompileBindings="False" />
-                    <Border BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
-                        <ContentControl Content="{Binding ActiveDockable}" 
+                    <Grid  x:Name="PART_Grid"
+                           Background="{DynamicResource DockApplicationAccentBrushLow}" 
+                           Height="2" 
+                           IsVisible="{Binding #PART_TabStrip.IsVisible}" 
+                           DockPanel.Dock="Top" 
+                           x:CompileBindings="False" />
+                    <Border x:Name="PART_Border"
+                            BorderThickness="1" 
+                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
+                        <ContentControl x:Name="PART_ContentPresenter"
+                                        Content="{Binding ActiveDockable}" 
                                         HorizontalAlignment="Stretch" 
                                         VerticalAlignment="Stretch"/>
                     </Border>

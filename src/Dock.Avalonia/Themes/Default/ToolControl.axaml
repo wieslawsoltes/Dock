@@ -7,7 +7,12 @@
     <Style Selector="idc|ToolControl">
         <Setter Property="Template">
             <ControlTemplate>
-                <DockPanel Name="DropToolDock" id:DockProperties.IsDropArea="True" id:DockProperties.IsDockTarget="True" Background="Transparent" ZIndex="1" x:DataType="dmc:IToolDock" x:CompileBindings="True">
+                <DockPanel Name="DropToolDock" 
+                           id:DockProperties.IsDropArea="True" 
+                           id:DockProperties.IsDockTarget="True" 
+                           Background="Transparent" ZIndex="1" 
+                           x:DataType="dmc:IToolDock" 
+                           x:CompileBindings="True">
                     <DockPanel.Styles>
                         <Style Selector="TextBlock.drag">
                             <Setter Property="Background" Value="Transparent" />
@@ -29,7 +34,15 @@
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
                     </DockPanel.Styles>
-                    <TabStrip Name="PART_TabStrip" id:DockProperties.IsDropArea="True" Background="Transparent" Items="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" DockPanel.Dock="Bottom" Focusable="false" ClipToBounds="False" ZIndex="1">
+                    <TabStrip Name="PART_TabStrip" 
+                              id:DockProperties.IsDropArea="True" 
+                              Background="Transparent" 
+                              Items="{Binding VisibleDockables}" 
+                              SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" 
+                              DockPanel.Dock="Bottom" 
+                              Focusable="false" 
+                              ClipToBounds="False"
+                              ZIndex="1">
                         <TabStrip.Styles>
                             <Style Selector="TabStrip">
                                 <Setter Property="ItemsPanel">
@@ -91,14 +104,23 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
-                                <StackPanel Name="DragTool" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
+                                <StackPanel Name="DragTool" 
+                                            id:DockProperties.IsDragArea="True" 
+                                            id:DockProperties.IsDropArea="True" 
+                                            Background="Transparent" 
+                                            Orientation="Horizontal" 
+                                            Spacing="2">
                                     <TextBlock Text="{Binding Title}" Classes="drag" Padding="2" Margin="2" />
                                 </StackPanel>
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Border Classes="panel" ZIndex="-1" Background="{DynamicResource DockThemeControlBackgroundBrush}">
-                        <ContentControl Content="{Binding ActiveDockable}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    <Border Classes="panel" 
+                            ZIndex="-1" 
+                            Background="{DynamicResource DockThemeControlBackgroundBrush}">
+                        <ContentControl Content="{Binding ActiveDockable}" 
+                                        HorizontalAlignment="Stretch" 
+                                        VerticalAlignment="Stretch" />
                     </Border>
                 </DockPanel>
             </ControlTemplate>

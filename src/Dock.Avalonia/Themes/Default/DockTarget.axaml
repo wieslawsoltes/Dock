@@ -4,7 +4,10 @@
     <Style Selector="idc|DockTarget">
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid x:Name="grid" RowDefinitions="*,*" ColumnDefinitions="*,*" x:CompileBindings="True">
+                <Grid x:Name="grid" 
+                      RowDefinitions="*,*" 
+                      ColumnDefinitions="*,*" 
+                      x:CompileBindings="True">
                     <Grid x:Name="PART_TopIndicator" 
                           Background="Red" 
                           Opacity="0"

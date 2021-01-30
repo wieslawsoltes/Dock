@@ -18,7 +18,16 @@
                     <Border Name="PART_Border" BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <Grid Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
-                                <TextBlock DockPanel.Dock="Left" Text="{Binding ActiveDockable.Title}" HorizontalAlignment="Left" TextAlignment="Left" VerticalAlignment="Center" Height="25"  Margin="0 8 8 0" Background="{Binding #Part_Grip.Background}" x:CompileBindings="False" />
+                                <TextBlock DockPanel.Dock="Left" 
+                                           Text="{Binding ActiveDockable.Title}"
+                                           HorizontalAlignment="Left" 
+                                           TextAlignment="Left" 
+                                           VerticalAlignment="Center" 
+                                           Height="25"  
+                                           Margin="0 8 8 0" 
+                                           Background="{Binding #Part_Grip.Background}" 
+                                           FontSize="{DynamicResource DockFontSizeNormal}"
+                                           x:CompileBindings="False" />
                                 <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding ActiveDockable}" x:CompileBindings="False">
                                     <Image Source="avares://Dock.Avalonia/Assets/PinClose_Dark.png" Height="13" Width="13" Stretch="None" />
                                 </Button>

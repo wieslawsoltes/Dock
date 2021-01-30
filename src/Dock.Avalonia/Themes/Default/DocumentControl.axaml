@@ -103,9 +103,13 @@
                             <DataTemplate DataType="core:IDockable">
                                 <StackPanel Name="DragDocument" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
                                     <StackPanel Orientation="Horizontal" Margin="2" TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
-                                        <TextBlock Text="{Binding Title}" />
+                                        <TextBlock Text="{Binding Title}" Padding="2" />
                                     </StackPanel>
-                                    <Button Height="14" Width="14" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding}" Classes="documentTabButton" x:CompileBindings="False">
+                                    <Button Height="14" 
+                                            Width="14" 
+                                            Command="{Binding Owner.Factory.CloseDockable}" 
+                                            CommandParameter="{Binding}" Classes="documentTabButton" 
+                                            x:CompileBindings="False">
                                         <Button.Styles>
                                             <Style Selector="Button">
                                                 <Setter Property="BorderThickness" Value="0"/>

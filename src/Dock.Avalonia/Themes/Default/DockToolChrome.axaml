@@ -100,10 +100,10 @@
         <Setter Property="BorderThickness" Value="0" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ TextBlock#PART_Title">
-        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ TextBlock#PART_Title">
-        <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">

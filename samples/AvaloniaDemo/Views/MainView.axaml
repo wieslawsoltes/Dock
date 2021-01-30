@@ -48,6 +48,7 @@
                          Text="" 
                          Watermark="Dashboard"
                          UseFloatingWatermark="True"
+                         VerticalContentAlignment="Center"
                          Grid.Column="4"/>
                 <Button Content="Navigate"  
                         Margin="0"

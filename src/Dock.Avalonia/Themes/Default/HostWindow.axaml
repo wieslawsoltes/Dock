@@ -178,9 +178,7 @@
         <Setter Property="Margin" Value="0" />
     </Style>
     <Style Selector="idc|HostWindow">
-        <Setter Property="Title" 
-                Value="{Binding ActiveDockable.Title}" 
-                x:CompileBindings="False"/>
+        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
         <Setter Property="Content">
             <Template>
                 <idc:DockControl Layout="{Binding}" 

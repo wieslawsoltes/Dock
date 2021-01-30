@@ -5,10 +5,4 @@
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-    <Application.Styles>
-        <!-- <StyleInclude Source="avares://AvaloniaDemo/Themes/DefaultLight.axaml"/> -->
-        <!-- <StyleInclude Source="avares://AvaloniaDemo/Themes/DefaultDark.axaml"/> -->
-        <StyleInclude Source="avares://AvaloniaDemo/Themes/FluentLight.axaml"/>
-        <!-- <StyleInclude Source="avares://AvaloniaDemo/Themes/FluentDark.axaml"/> -->
-    </Application.Styles>
 </Application>

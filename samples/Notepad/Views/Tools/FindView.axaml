@@ -7,6 +7,11 @@
              d:DesignWidth="400" d:DesignHeight="150">
     <Grid RowDefinitions="Auto,Auto">
         <TextBox Text="{Binding Find}" Margin="4" Grid.Row="0"/>
-        <Button Content="Find Next" Command="{Binding FindNext}" Margin="4" Grid.Row="1"/>
+        <Button Content="Find Next" 
+                Command="{Binding FindNext}" 
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Margin="4" 
+                Grid.Row="1"/>
     </Grid>
 </UserControl>

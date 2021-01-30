@@ -14,21 +14,21 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="Auto,*" x:DataType="core:IDock" x:CompileBindings="True">
+                <Grid RowDefinitions="Auto,*" 
+                      x:DataType="core:IDock" 
+                      x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
                             BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <Grid x:Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <Panel DockPanel.Dock="Left" >
                                     <TextBlock x:Name="PART_Title"
-                                               Text="{Binding ActiveDockable.Title}"
+                                               Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"
                                                HorizontalAlignment="Left"
                                                TextAlignment="Left"
                                                VerticalAlignment="Stretch"
                                                Margin="0 4 8 4"
-                                               Background="{Binding #Part_Grip.Background}"
-                                               FontSize="{DynamicResource DockFontSizeNormal}"
-                                               x:CompileBindings="False" />
+                                               FontSize="{DynamicResource DockFontSizeNormal}"/>
                                 </Panel>
                                 <Button Name="PART_CloseButton" 
                                         Classes="chromeButton" 
@@ -99,6 +99,13 @@
     <Style Selector="idc|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
     </Style>
+    <Style Selector="idc|DockToolChrome /template/ TextBlock#PART_Title">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:active /template/ TextBlock#PART_Title">
+        <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+        <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
+    </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     </Style>
@@ -110,6 +117,5 @@
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
-        <Setter Property="TextBlock.Foreground" Value="WhiteSmoke" />
     </Style>
 </Styles>

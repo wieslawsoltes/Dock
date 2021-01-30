@@ -1,4 +1,5 @@
-﻿using AvaloniaDemo.Models;
+﻿using System.Windows.Input;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using ReactiveUI;
 
@@ -7,7 +8,7 @@ namespace AvaloniaDemo.ViewModels
     public class MainWindowViewModel : ReactiveObject
     {
         private IFactory? _factory;
-        private IDockable? _layout;
+        private IRootDock? _layout;
 
         public IFactory? Factory
         {
@@ -15,27 +16,34 @@ namespace AvaloniaDemo.ViewModels
             set => this.RaiseAndSetIfChanged(ref _factory, value);
         }
 
-        public IDockable? Layout
+        public IRootDock? Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
 
-        public void NewLayout()
+        public ICommand NewLayout { get; }
+
+        public MainWindowViewModel()
         {
-            if (Layout is IDock root)
+            NewLayout = ReactiveCommand.Create(ResetLayout);
+        }
+        
+        private void ResetLayout()
+        {
+            if (Layout is not null)
             {
-                if (root.Close.CanExecute(null))
+                if (Layout.Close.CanExecute(null))
                 {
-                    root.Close.Execute(null);
+                    Layout.Close.Execute(null);
                 }
             }
-            Factory = new DemoFactory(new DemoData());
+
             var layout = Factory?.CreateLayout();
-            if (layout != null)
+            if (layout is not null)
             {
-                Layout = layout;
-                Factory?.InitLayout(Layout);
+                Layout = layout as IRootDock;
+                Factory?.InitLayout(layout);
             }
         }
     }

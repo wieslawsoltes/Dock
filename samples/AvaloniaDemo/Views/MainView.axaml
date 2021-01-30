@@ -13,7 +13,10 @@
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
         <views:MenuView Grid.Row="0" Grid.Column="0"/>
         <Panel Grid.Row="1" DataContext="{Binding Layout}">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto" Margin="4" x:DataType="dmc:IRootDock" x:CompileBindings="True">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" 
+                  Margin="4" 
+                  x:DataType="dmc:IRootDock" 
+                  x:CompileBindings="True">
                 <Button Content="Back" 
                         Margin="0"
                         Padding="4"
@@ -52,21 +55,11 @@
                         Command="{Binding Navigate}" 
                         CommandParameter="{Binding #Id.Text}" 
                         Grid.Column="5"/>
-                <Button Content="Show Windows"  
-                        Margin="0"
-                        Padding="4"
-                        Command="{Binding ShowWindows}" 
-                        Grid.Column="6"/>
-                <Button Content="Exit Windows"  
-                        Margin="0"
-                        Padding="4"
-                        Command="{Binding ExitWindows}" 
-                        Grid.Column="7"/>
                 <ComboBox x:Name="Themes" 
                           Margin="0"
                           Padding="4"
                           SelectedIndex="0"
-                          Grid.Column="8" >
+                          Grid.Column="6" >
                     <ComboBoxItem>Fluent Light</ComboBoxItem>
                     <ComboBoxItem>Fluent Dark</ComboBoxItem>
                     <ComboBoxItem>Default Light</ComboBoxItem>
@@ -74,7 +67,13 @@
                 </ComboBox>
             </Grid>
         </Panel>
-        <idc:DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4" Grid.Row="2"/>
-        <TextBlock Text="{Binding #DockControl.Layout.ActiveDockable.FocusedDockable, FallbackValue={}}" Margin="4" Grid.Row="3" x:CompileBindings="False"/>
+        <idc:DockControl x:Name="DockControl" 
+                         Layout="{Binding Layout}" 
+                         Margin="4" 
+                         Grid.Row="2"/>
+        <TextBlock Text="{Binding #DockControl.Layout.ActiveDockable.FocusedDockable, FallbackValue={}}" 
+                   Margin="4" 
+                   Grid.Row="3" 
+                   x:CompileBindings="False"/>
     </Grid>
 </UserControl>

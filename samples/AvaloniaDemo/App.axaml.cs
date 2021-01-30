@@ -57,7 +57,6 @@ namespace AvaloniaDemo
         {
             var mainWindowViewModel = new MainWindowViewModel();
             var factory = new DemoFactory(new DemoData());
-            IDock? layout = null;
 
             switch (ApplicationLifetime)
             {
@@ -69,12 +68,12 @@ namespace AvaloniaDemo
                     };
 
                     mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
 
                     if (mainWindowViewModel.Layout != null)
                     {
                         mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                        if (mainWindowViewModel.Layout is IRootDock root)
+                        if (mainWindowViewModel.Layout is { } root)
                         {
                             root.Navigate.Execute("Home");
                         }
@@ -113,8 +112,7 @@ namespace AvaloniaDemo
                     };
 
                     mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-
+                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
                     if (mainWindowViewModel.Layout != null)
                     {
                         mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);

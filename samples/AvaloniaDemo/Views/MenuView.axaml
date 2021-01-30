@@ -7,15 +7,16 @@
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="20"
-             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+             x:DataType="vm:MainWindowViewModel" 
+             x:CompileBindings="True">
     <Menu>
         <MenuItem Header="_File">
-            <MenuItem Header="_New Layout" Command="{Binding NewLayout}" x:CompileBindings="False"/>
+            <MenuItem Header="_New Layout" Command="{Binding NewLayout}"/>
         </MenuItem>
         <MenuItem Header="_Window">
-            <MenuItem Header="_Exit tWindows" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
+            <MenuItem Header="_Exit tWindows" Command="{Binding Layout.ExitWindows}"/>
             <Separator/>
-            <MenuItem Header="_Show Windows" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
+            <MenuItem Header="_Show Windows" Command="{Binding Layout.ShowWindows}"/>
         </MenuItem>
         <MenuItem Header="_Options">
             <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">

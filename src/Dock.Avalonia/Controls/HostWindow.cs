@@ -188,11 +188,6 @@ namespace Dock.Avalonia.Controls
                 });
             }
 
-            //Observable.FromEventPattern(chrome.MinimiseButton, nameof(Button.Click)).Subscribe(o =>
-            //{
-            //    WindowState = WindowState.Minimized;
-            //});
-
             _titleBar = chrome.Grip;
 
             ((IPseudoClasses)chrome.Classes).Add(":floating");
@@ -336,11 +331,6 @@ namespace Dock.Avalonia.Controls
             {
                 _closeButton.Click += (_, _) => { Close(); };
             }
-
-            //if (_icon != null)
-            //{
-            //    _icon.DoubleTapped += (sender, ee) => { Close(); };
-            //}
         }
 
         /// <inheritdoc/>

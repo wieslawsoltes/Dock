@@ -57,7 +57,7 @@
                         CommandParameter="{Binding #Id.Text}" 
                         Grid.Column="5"/>
                 <ComboBox x:Name="Themes" 
-                          Margin="0"
+                          Margin="4,0,0,0"
                           Padding="4"
                           SelectedIndex="0"
                           Grid.Column="6" >

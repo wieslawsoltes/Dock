@@ -6,11 +6,13 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
     <Application.Styles>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
-        <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+        <!-- <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/> -->
+        <!-- <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/> -->
         <!-- <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml"/> -->
-        <!-- <FluentTheme Mode="Light"/> -->
+        <FluentTheme Mode="Light"/>
         <!-- <FluentTheme Mode="Dark"/> -->
         <StyleInclude Source="avares://Dock.Avalonia/Themes/Default/DefaultTheme.axaml"/>
+        <!-- <StyleInclude Source="avares://Dock.Avalonia/Themes/Accents/Default.axaml"/> -->
+        <StyleInclude Source="avares://Dock.Avalonia/Themes/Accents/Fluent.axaml"/>
     </Application.Styles>
 </Application>

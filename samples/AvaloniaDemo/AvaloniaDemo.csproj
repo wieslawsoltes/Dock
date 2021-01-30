@@ -22,4 +22,11 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\ProportionalStackPanelView.axaml.cs">
+      <DependentUpon>ProportionalStackPanelView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

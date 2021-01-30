@@ -1,15 +1,13 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace ProportionalStackPanelDemo.Views
+namespace AvaloniaDemo.Views
 {
-    public class MainWindow : Window
+    public class ProportionalStackPanelView : UserControl
     {
-        public MainWindow()
+        public ProportionalStackPanelView()
         {
             InitializeComponent();
-            this.AttachDevTools();
         }
 
         private void InitializeComponent()

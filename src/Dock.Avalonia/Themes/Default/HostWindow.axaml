@@ -20,7 +20,9 @@
                         x:DataType="core:IHostWindow" 
                         x:CompileBindings="True">
                     <VisualLayerManager>
-                        <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
+                        <Grid ColumnDefinitions="Auto, *, Auto" 
+                              RowDefinitions="Auto,Auto,*,Auto,Auto" 
+                              Background="Transparent">
                             <Grid Grid.RowSpan="5" Grid.ColumnSpan="3">
                                 <Grid RowDefinitions="Auto, *">
                                     <Grid x:Name="PART_TitleBar"

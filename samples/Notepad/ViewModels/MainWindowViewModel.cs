@@ -33,14 +33,12 @@ namespace Notepad.ViewModels
 
         private Encoding GetEncoding(string path)
         {
-            using (var reader = new StreamReader(path, Encoding.Default, true))
+            using var reader = new StreamReader(path, Encoding.Default, true);
+            if (reader.Peek() >= 0)
             {
-                if (reader.Peek() >= 0)
-                {
-                    reader.Read();
-                }
-                return reader.CurrentEncoding;
+                reader.Read();
             }
+            return reader.CurrentEncoding;
         }
 
         private FileViewModel OpenFileViewModel(string path)
@@ -70,32 +68,26 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Layout?.ActiveDockable is IDock active)
+            if (Layout?.ActiveDockable is IDock active && active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
             {
-                if (active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
-                {
-                    Factory?.AddDockable(files, fileViewModel);
-                    Factory?.SetActiveDockable(fileViewModel);
-                    Factory?.SetFocusedDockable(Layout, fileViewModel);
-                }
+                Factory?.AddDockable(files, fileViewModel);
+                Factory?.SetActiveDockable(fileViewModel);
+                Factory?.SetFocusedDockable(Layout, fileViewModel);
             }
         }
 
         private FileViewModel? GetFileViewModel()
         {
-            if (Layout?.ActiveDockable is IDock active)
+            if (Layout?.ActiveDockable is IDock active && active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
             {
-                if (active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
-                {
-                    return files.ActiveDockable as FileViewModel;
-                }
+                return files.ActiveDockable as FileViewModel;
             }
             return null;
         }
 
         private FileViewModel GetUntitledFileViewModel()
         {
-            return new FileViewModel()
+            return new()
             {
                 Path = string.Empty,
                 Title = "Untitled",

@@ -10,12 +10,12 @@
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Menu>
         <MenuItem Header="_File">
-            <MenuItem Header="_New" Command="{Binding NewLayout}" x:CompileBindings="False"/>
+            <MenuItem Header="_New Layout" Command="{Binding NewLayout}" x:CompileBindings="False"/>
         </MenuItem>
         <MenuItem Header="_Window">
-            <MenuItem Header="_Exit" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
+            <MenuItem Header="_Exit tWindows" Command="{Binding Layout.ExitWindows}" x:CompileBindings="False"/>
             <Separator/>
-            <MenuItem Header="_Show" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
+            <MenuItem Header="_Show Windows" Command="{Binding Layout.ShowWindows}" x:CompileBindings="False"/>
         </MenuItem>
         <MenuItem Header="_Options">
             <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">

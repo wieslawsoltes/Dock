@@ -92,7 +92,7 @@
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
                                 <StackPanel Name="DragTool" id:DockProperties.IsDragArea="True" id:DockProperties.IsDropArea="True" Background="Transparent" Orientation="Horizontal" Spacing="2">
-                                    <TextBlock Text="{Binding Title}" Classes="drag" Margin="2" />
+                                    <TextBlock Text="{Binding Title}" Classes="drag" Padding="2" Margin="2" />
                                 </StackPanel>
                             </DataTemplate>
                         </TabStrip.DataTemplates>

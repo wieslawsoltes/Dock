@@ -176,10 +176,14 @@
         <Setter Property="Margin" Value="0" />
     </Style>
     <Style Selector="idc|HostWindow">
-        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" x:CompileBindings="False"/>
+        <Setter Property="Title" 
+                Value="{Binding ActiveDockable.Title}" 
+                x:CompileBindings="False"/>
         <Setter Property="Content">
             <Template>
-                <idc:DockControl Layout="{Binding}" x:DataType="core:IHostWindow" x:CompileBindings="True"/>
+                <idc:DockControl Layout="{Binding}" 
+                                 x:DataType="core:IHostWindow" 
+                                 x:CompileBindings="True"/>
             </Template>
         </Setter>
     </Style>

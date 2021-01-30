@@ -61,7 +61,7 @@
                                 <Grid x:Name="PART_Grid"
                                       Height="5" 
                                       VerticalAlignment="Center"
-                                      Margin="0 0 10 0">
+                                      Margin="0 0 2 0">
                                     <Grid.Background>
                                         <VisualBrush SourceRect="0,0,4,5" 
                                                      DestinationRect="0,0,4,5" 

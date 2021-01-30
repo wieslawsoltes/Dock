@@ -28,18 +28,39 @@
                                            Background="{Binding #Part_Grip.Background}" 
                                            FontSize="{DynamicResource DockFontSizeNormal}"
                                            x:CompileBindings="False" />
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Name="PART_CloseButton" Command="{Binding Owner.Factory.CloseDockable}" CommandParameter="{Binding ActiveDockable}" x:CompileBindings="False">
-                                    <Image Source="avares://Dock.Avalonia/Assets/PinClose_Dark.png" Height="13" Width="13" Stretch="None" />
+                                <Button Classes="chromeButton" 
+                                        DockPanel.Dock="Right"
+                                        Name="PART_CloseButton" 
+                                        Command="{Binding Owner.Factory.CloseDockable}" 
+                                        CommandParameter="{Binding ActiveDockable}" 
+                                        x:CompileBindings="False">
+                                    <Image Source="avares://Dock.Avalonia/Assets/PinClose_Dark.png" 
+                                           Height="13" 
+                                           Width="13" 
+                                           Stretch="None" />
                                 </Button>
-                                <Button Classes="chromeButton" DockPanel.Dock="Right" Command="{Binding Owner.Factory.PinDockable}" CommandParameter="{Binding ActiveDockable}" x:CompileBindings="False">
-                                    <Image Source="avares://Dock.Avalonia/Assets/PinAutoHide_Dark.png" Height="13" Width="13" Stretch="None" />
+                                <Button Classes="chromeButton" 
+                                        DockPanel.Dock="Right" 
+                                        Command="{Binding Owner.Factory.PinDockable}" 
+                                        CommandParameter="{Binding ActiveDockable}" 
+                                        x:CompileBindings="False">
+                                    <Image Source="avares://Dock.Avalonia/Assets/PinAutoHide_Dark.png" 
+                                           Height="13" 
+                                           Width="13" 
+                                           Stretch="None" />
                                 </Button>
                                 <Button Classes="chromeButton" DockPanel.Dock="Right">
-                                    <Image Source="avares://Dock.Avalonia/Assets/PinMenu_Dark.png" Height="13" Width="13" Stretch="None" />
+                                    <Image Source="avares://Dock.Avalonia/Assets/PinMenu_Dark.png" 
+                                           Height="13" 
+                                           Width="13" 
+                                           Stretch="None" />
                                 </Button>
                                 <Grid Height="5" Margin="0 0 10 0">
                                     <Grid.Background>
-                                        <VisualBrush SourceRect="0,0,4,5" DestinationRect="0,0,4,5" TileMode="Tile" Stretch="UniformToFill">
+                                        <VisualBrush SourceRect="0,0,4,5" 
+                                                     DestinationRect="0,0,4,5" 
+                                                     TileMode="Tile" 
+                                                     Stretch="UniformToFill">
                                             <VisualBrush.Visual>
                                                 <Canvas Width="4" Height="5"  Background="Transparent">
                                                     <Rectangle Height="1" Width="1" Fill="#474747" />

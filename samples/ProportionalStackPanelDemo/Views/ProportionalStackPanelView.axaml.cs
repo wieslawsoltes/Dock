@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace ProportionalStackPanelDemo.Views
 {
-    public class MainView : UserControl
+    public class ProportionalStackPanelView : UserControl
     {
-        public MainView()
+        public ProportionalStackPanelView()
         {
             InitializeComponent();
         }

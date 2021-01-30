@@ -9,5 +9,5 @@
          UseLayoutRounding="True"
          WindowState="Normal" WindowStartupLocation="CenterScreen"
          Title="ProportionalStackPanel Demo" Height="680" Width="1200">
-    <views:MainView/>
+    <views:ProportionalStackPanelView/>
 </Window>

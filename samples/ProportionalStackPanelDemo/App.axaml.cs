@@ -20,7 +20,7 @@ namespace ProportionalStackPanelDemo
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
             {
-                singleViewLifetime.MainView = new MainView();
+                singleViewLifetime.MainView = new ProportionalStackPanelView();
             }
             base.OnFrameworkInitializationCompleted();
         }

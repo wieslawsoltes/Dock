@@ -56,10 +56,7 @@
                                         </Viewbox>
                                     </Panel>
                                 </Button>
-                                <Grid x:Name="PART_Grid"
-                                      Height="5" 
-                                      VerticalAlignment="Center"
-                                      Margin="0 0 2 0">
+                                <Grid x:Name="PART_Grid" Height="5" VerticalAlignment="Center" Margin="0 0 2 0">
                                     <Grid.Background>
                                         <VisualBrush SourceRect="0,0,4,5" 
                                                      DestinationRect="0,0,4,5" 
@@ -88,12 +85,12 @@
                         </Grid>
                     </Border>
                     <ContentPresenter x:Name="PART_ContentPresenter"
-                                      Grid.Row="1"
                                       Background="{DynamicResource DockThemeBackgroundBrush}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}" />
+                                      Padding="{TemplateBinding Padding}"
+                                      Grid.Row="1" />
                 </Grid>
             </ControlTemplate>
         </Setter>

@@ -21,55 +21,13 @@ namespace Dock.Avalonia.Controls
     {
         private static bool s_useCustomDrag = true;
         private static readonly List<IHostWindow> s_hostWindows = new();
-
-        /// <summary>
-        /// Defines the <see cref="IsChromeVisible"/> property.
-        /// </summary>
-        public static readonly StyledProperty<bool> IsChromeVisibleProperty =
-            AvaloniaProperty.Register<HostWindow, bool>(nameof(IsChromeVisible), true);
-
-        /// <summary>
-        /// Defines the <see cref="TitleBarContent"/> property.
-        /// </summary>
-        public static readonly StyledProperty<Control> TitleBarContentProperty =
-            AvaloniaProperty.Register<HostWindow, Control>(nameof(TitleBarContent));
-
-        /// <summary>
-        ///  Gets or sets the flag indicating whether chrome is visible.
-        /// </summary>
-        public bool IsChromeVisible
-        {
-            get => GetValue(IsChromeVisibleProperty);
-            set => SetValue(IsChromeVisibleProperty, value);
-        }
-
-        /// <summary>
-        ///  Gets or sets the title bar content control.
-        /// </summary>
-        public Control TitleBarContent
-        {
-            get => GetValue(TitleBarContentProperty);
-            set => SetValue(TitleBarContentProperty, value);
-        }
-
-        Type IStyleable.StyleKey => typeof(HostWindow);
-
         private readonly DockManager _dockManager;
         private readonly HostWindowState _hostWindowState;
-        private Control? _titleBar;
-        private Grid? _bottomHorizontalGrip;
-        private Grid? _bottomLeftGrip;
-        private Grid? _bottomRightGrip;
-        private Grid? _leftVerticalGrip;
-        private Grid? _rightVerticalGrip;
-        private Grid? _topHorizontalGrip;
-        private Grid? _topLeftGrip;
-        private Grid? _topRightGrip;
-        private Button? _closeButton;
-        private Button? _minimiseButton;
-        private Button? _restoreButton;
+        private Control? _chromeGrip;
         private bool _mouseDown;
         private Point _startPoint;
+
+        Type IStyleable.StyleKey => typeof(HostWindow);
 
         /// <inheritdoc/>
         public IList<IHostWindow> HostWindows => s_hostWindows;
@@ -102,6 +60,9 @@ namespace Dock.Avalonia.Controls
 
             _dockManager = new DockManager();
             _hostWindowState = new HostWindowState(_dockManager, this);
+#if DEBUG
+            this.AttachDevTools();
+#endif
         }
 
         /// <inheritdoc/>
@@ -188,26 +149,10 @@ namespace Dock.Avalonia.Controls
                 });
             }
 
-            _titleBar = chrome.Grip;
+            _chromeGrip = chrome.Grip;
 
             ((IPseudoClasses)chrome.Classes).Add(":floating");
             PseudoClasses.Set(":toolwindow", true);
-        }
-
-        /// <summary>
-        /// Toggles window state.
-        /// </summary>
-        private void ToggleWindowState()
-        {
-            switch (WindowState)
-            {
-                case WindowState.Maximized:
-                    WindowState = WindowState.Normal;
-                    break;
-                case WindowState.Normal:
-                    WindowState = WindowState.Maximized;
-                    break;
-            }
         }
 
         /// <inheritdoc/>
@@ -215,39 +160,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnPointerPressed(e);
 
-            if (_topHorizontalGrip != null && _topHorizontalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.North, e);
-            }
-            else if (_bottomHorizontalGrip != null && _bottomHorizontalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.South, e);
-            }
-            else if (_leftVerticalGrip != null && _leftVerticalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.West, e);
-            }
-            else if (_rightVerticalGrip != null && _rightVerticalGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.East, e);
-            }
-            else if (_topLeftGrip != null && _topLeftGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.NorthWest, e);
-            }
-            else if (_bottomLeftGrip != null && _bottomLeftGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.SouthWest, e);
-            }
-            else if (_topRightGrip != null && _topRightGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.NorthEast, e);
-            }
-            else if (_bottomRightGrip != null && _bottomRightGrip.IsPointerOver)
-            {
-                BeginResizeDrag(WindowEdge.SouthEast, e);
-            }
-            else if (_titleBar != null && _titleBar.IsPointerOver)
+            if (_chromeGrip != null && _chromeGrip.IsPointerOver)
             {
                 _mouseDown = true;
                 _startPoint = e.GetPosition(this);
@@ -277,7 +190,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnPointerMoved(e);
 
-            if (_titleBar != null && _titleBar.IsPointerOver && _mouseDown)
+            if (_chromeGrip != null && _chromeGrip.IsPointerOver && _mouseDown)
             {
                 if (s_useCustomDrag)
                 {
@@ -289,47 +202,6 @@ namespace Dock.Avalonia.Controls
                     Position = Position.WithX((int)x).WithY((int)y);
                     _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
                 }
-            }
-        }
-
-        /// <inheritdoc/>
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-        {
-            base.OnApplyTemplate(e);
-
-            _titleBar = e.NameScope.Find<Control>("PART_TitleBar");
-            _minimiseButton = e.NameScope.Find<Button>("PART_MinimiseButton");
-            _restoreButton = e.NameScope.Find<Button>("PART_RestoreButton");
-            _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
-
-            _topHorizontalGrip = e.NameScope.Find<Grid>("PART_TopHorizontalGrip");
-            _bottomHorizontalGrip = e.NameScope.Find<Grid>("PART_BottomHorizontalGrip");
-            _leftVerticalGrip = e.NameScope.Find<Grid>("PART_LeftVerticalGrip");
-            _rightVerticalGrip = e.NameScope.Find<Grid>("PART_RightVerticalGrip");
-
-            _topLeftGrip = e.NameScope.Find<Grid>("PART_TopLeftGrip");
-            _bottomLeftGrip = e.NameScope.Find<Grid>("PART_BottomLeftGrip");
-            _topRightGrip = e.NameScope.Find<Grid>("PART_TopRightGrip");
-            _bottomRightGrip = e.NameScope.Find<Grid>("PART_BottomRightGrip");
-
-            if (_minimiseButton != null)
-            {
-                _minimiseButton.Click += (_, _) => { WindowState = WindowState.Minimized; };
-            }
-
-            if (_restoreButton != null)
-            {
-                _restoreButton.Click += (_, _) => { ToggleWindowState(); };
-            }
-
-            if (_titleBar != null)
-            {
-                _titleBar.DoubleTapped += (_, _) => { ToggleWindowState(); };
-            }
-
-            if (_closeButton != null)
-            {
-                _closeButton.Click += (_, _) => { Close(); };
             }
         }
 

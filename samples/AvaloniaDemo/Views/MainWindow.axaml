@@ -11,6 +11,7 @@
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Dock Avalonia Demo" Height="650" Width="1000"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
     <views:MainView/>

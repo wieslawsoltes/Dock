@@ -85,7 +85,7 @@
                                                 <Path x:Name="PART_PathCreate">
                                                     <Path.Styles>
                                                         <Style Selector="Path">
-                                                            <Setter Property="Margin" Value="7"/>
+                                                            <Setter Property="Margin" Value="5"/>
                                                             <Setter Property="Stretch" Value="Uniform"/>
                                                             <Setter Property="UseLayoutRounding" Value="False"/>
                                                             <Setter Property="Fill" Value="#474747"/>

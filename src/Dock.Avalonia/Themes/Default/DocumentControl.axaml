@@ -113,7 +113,7 @@
                             <Style Selector="TabStripItem">
                                 <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
                                 <Setter Property="FontWeight" Value="Normal" />
-                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="MinHeight" Value="24" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
                                 <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
                                 <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />

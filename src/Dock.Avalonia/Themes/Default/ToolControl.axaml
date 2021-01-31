@@ -62,28 +62,28 @@
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 1 4 0" />
-                                <!--<Setter Property="ContextMenu">
-                                    <ContextMenu>
-                                        <MenuItem Header="_Float" 
-                                                  Command="{Binding Owner.Factory.FloatDockable}" 
-                                                  CommandParameter="{Binding}" 
-                                                  IsVisible="{Binding CanFloat}"
-                                                  x:CompileBindings="False" />
-                                        <MenuItem Header="_Hide" 
-                                                  Command="{Binding Owner.Factory.PinDockable}" 
-                                                  CommandParameter="{Binding}" 
-                                                  IsVisible="{Binding CanPin}"
-                                                  x:CompileBindings="False" />
-                                        <MenuItem Header="_Close" 
-                                                  Command="{Binding Owner.Factory.CloseDockable}" 
-                                                  CommandParameter="{Binding}" 
-                                                  IsVisible="{Binding CanClose}"
-                                                  x:CompileBindings="False" />
-                                    </ContextMenu>
-                                </Setter>-->
                                 <Setter Property="Template">
                                     <ControlTemplate>
                                         <Border>
+                                            <Border.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="_Float" 
+                                                              Command="{Binding Owner.Factory.FloatDockable}" 
+                                                              CommandParameter="{Binding}" 
+                                                              IsVisible="{Binding CanFloat}"
+                                                              x:CompileBindings="False" />
+                                                    <MenuItem Header="_Hide" 
+                                                              Command="{Binding Owner.Factory.PinDockable}" 
+                                                              CommandParameter="{Binding}" 
+                                                              IsVisible="{Binding CanPin}"
+                                                              x:CompileBindings="False" />
+                                                    <MenuItem Header="_Close" 
+                                                              Command="{Binding Owner.Factory.CloseDockable}" 
+                                                              CommandParameter="{Binding}" 
+                                                              IsVisible="{Binding CanClose}"
+                                                              x:CompileBindings="False" />
+                                                </ContextMenu>
+                                            </Border.ContextMenu>
                                             <Panel>
                                                 <ContentPresenter x:Name="PART_ContentPresenter"
                                                                   Background="{TemplateBinding Background}"

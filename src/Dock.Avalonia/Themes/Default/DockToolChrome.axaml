@@ -12,6 +12,25 @@
                     <Border x:Name="PART_Border" 
                             BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
                             Grid.Row="0">
+                        <Border.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="_Float" 
+                                          Command="{Binding Owner.Factory.FloatDockable}" 
+                                          CommandParameter="{Binding ActiveDockable}" 
+                                          IsVisible="{Binding ActiveDockable.CanFloat}"
+                                          x:CompileBindings="False" />
+                                <MenuItem Header="_Hide" 
+                                          Command="{Binding Owner.Factory.PinDockable}" 
+                                          CommandParameter="{Binding ActiveDockable}" 
+                                          IsVisible="{Binding ActiveDockable.CanPin}"
+                                          x:CompileBindings="False" />
+                                <MenuItem Header="_Close" 
+                                          Command="{Binding Owner.Factory.CloseDockable}" 
+                                          CommandParameter="{Binding ActiveDockable}" 
+                                          IsVisible="{Binding ActiveDockable.CanClose}"
+                                          x:CompileBindings="False" />
+                            </ContextMenu>
+                        </Border.ContextMenu>
                         <Grid x:Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <Panel DockPanel.Dock="Left" >
@@ -73,25 +92,6 @@
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-        <!--<Setter Property="ContextMenu">
-            <ContextMenu>
-                <MenuItem Header="_Float" 
-                          Command="{Binding Owner.Factory.FloatDockable}" 
-                          CommandParameter="{Binding ActiveDockable}" 
-                          IsVisible="{Binding ActiveDockable.CanFloat}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Hide" 
-                          Command="{Binding Owner.Factory.PinDockable}" 
-                          CommandParameter="{Binding ActiveDockable}" 
-                          IsVisible="{Binding ActiveDockable.CanPin}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Close" 
-                          Command="{Binding Owner.Factory.CloseDockable}" 
-                          CommandParameter="{Binding ActiveDockable}" 
-                          IsVisible="{Binding ActiveDockable.CanClose}"
-                          x:CompileBindings="False" />
-            </ContextMenu>
-        </Setter>-->
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="(id:DockProperties.IsDragArea)" Value="True" />

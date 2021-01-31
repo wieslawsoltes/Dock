@@ -16,7 +16,8 @@
             <ControlTemplate>
                 <Grid RowDefinitions="Auto,*" x:DataType="core:IDock" x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
-                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
+                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                            Grid.Row="0">
                         <Grid x:Name="PART_Grip">
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <Panel DockPanel.Dock="Left" >

@@ -7,13 +7,20 @@
         xmlns:views="using:AvaloniaDemo.Views"
         mc:Ignorable="d"
         d:DesignWidth="1200" d:DesignHeight="680"
+        x:Name="MainWindow"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Dock Avalonia Demo" Height="650" Width="1000"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome, OSXThickTitleBar"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <views:MainView/>
-    <!-- <views:ProportionalStackPanelView/> -->
+    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+        <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+            <views:MainView/>
+            <!-- <views:ProportionalStackPanelView/> -->
+        </Panel>
+    </Panel>
 </Window>

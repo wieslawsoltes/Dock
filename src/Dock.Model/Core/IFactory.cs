@@ -180,6 +180,12 @@ namespace Dock.Model.Core
         void PinDockable(IDockable dockable);
 
         /// <summary>
+        /// Floats dockable.
+        /// </summary>
+        /// <param name="dockable">The dockable to float.</param>
+        void FloatDockable(IDockable dockable);
+
+        /// <summary>
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dockable">The dockable to remove.</param>

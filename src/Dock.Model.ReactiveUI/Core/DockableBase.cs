@@ -17,6 +17,7 @@ namespace Dock.Model.ReactiveUI.Core
         private IFactory? _factory;
         private bool _canClose = true;
         private bool _canPin = true;
+        private bool _canFloat = true;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -72,6 +73,14 @@ namespace Dock.Model.ReactiveUI.Core
         {
             get => _canPin;
             set => this.RaiseAndSetIfChanged(ref _canPin, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool CanFloat
+        {
+            get => _canFloat;
+            set => this.RaiseAndSetIfChanged(ref _canFloat, value);
         }
 
         /// <inheritdoc/>

@@ -42,6 +42,11 @@ namespace Dock.Model.Core
         bool CanPin { get; set; }
 
         /// <summary>
+        /// Gets or sets if the dockable can be floated.
+        /// </summary>
+        bool CanFloat { get; set; }
+
+        /// <summary>
         /// Called when the dockable is closed.
         /// </summary>
         /// <returns>true to accept the close, and false to cancel the close.</returns>

@@ -365,6 +365,12 @@ namespace Dock.Model
             }
         }
 
+        /// <inheritdoc/>
+        public virtual void FloatDockable(IDockable dockable)
+        {
+            // TODO: Float dockable.
+        }
+
         private void Collapse(IDock dock)
         {
             if (dock.IsCollapsable && dock.VisibleDockables is not null && dock.VisibleDockables.Count == 0)

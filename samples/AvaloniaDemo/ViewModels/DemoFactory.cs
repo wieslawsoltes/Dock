@@ -36,57 +36,63 @@ namespace AvaloniaDemo.ViewModels
             var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
             var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
 
+            var leftDock = new ProportionalDock
+            {
+                Orientation = Orientation.Vertical,
+                ActiveDockable = null,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    new ToolDock
+                    {
+                        ActiveDockable = tool1,
+                        VisibleDockables = CreateList<IDockable>(tool1, tool2)
+                    },
+                    new SplitterDock(),
+                    new ToolDock
+                    {
+                        ActiveDockable = tool3,
+                        VisibleDockables = CreateList<IDockable>(tool3, tool4)
+                    }
+                )
+            };
+
+            var rightDock = new ProportionalDock
+            {
+                Orientation = Orientation.Vertical,
+                ActiveDockable = null,
+                VisibleDockables = CreateList<IDockable>
+                (
+                    new ToolDock
+                    {
+                        ActiveDockable = tool5,
+                        VisibleDockables = CreateList<IDockable>(tool5, tool6)
+                    },
+                    new SplitterDock(),
+                    new ToolDock
+                    {
+                        ActiveDockable = tool7,
+                        VisibleDockables = CreateList<IDockable>(tool7, tool8)
+                    }
+                )
+            };
+
+            var documentDock = new DocumentDock
+            {
+                IsCollapsable = false,
+                ActiveDockable = document1,
+                VisibleDockables = CreateList<IDockable>(document1, document2, document3)
+            };
+
             var mainLayout = new ProportionalDock
             {
                 Orientation = Orientation.Horizontal,
                 VisibleDockables = CreateList<IDockable>
                 (
-                    new ProportionalDock
-                    {
-                        Orientation = Orientation.Vertical,
-                        ActiveDockable = null,
-                        VisibleDockables = CreateList<IDockable>
-                        (
-                            new ToolDock
-                            {
-                                ActiveDockable = tool1,
-                                VisibleDockables = CreateList<IDockable>(tool1, tool2)
-                            },
-                            new SplitterDock(),
-                            new ToolDock
-                            {
-                                ActiveDockable = tool3,
-                                VisibleDockables = CreateList<IDockable>(tool3, tool4)
-                            }
-                        )
-                    },
+                    leftDock,
                     new SplitterDock(),
-                    new DocumentDock
-                    {
-                        IsCollapsable = false,
-                        ActiveDockable = document1,
-                        VisibleDockables = CreateList<IDockable>(document1, document2, document3)
-                    },
+                    documentDock,
                     new SplitterDock(),
-                    new ProportionalDock
-                    {
-                        Orientation = Orientation.Vertical,
-                        ActiveDockable = null,
-                        VisibleDockables = CreateList<IDockable>
-                        (
-                            new ToolDock
-                            {
-                                ActiveDockable = tool5,
-                                VisibleDockables = CreateList<IDockable>(tool5, tool6)
-                            },
-                            new SplitterDock(),
-                            new ToolDock
-                            {
-                                ActiveDockable = tool7,
-                                VisibleDockables = CreateList<IDockable>(tool7, tool8)
-                            }
-                        )
-                    }
+                    rightDock
                 )
             };
 

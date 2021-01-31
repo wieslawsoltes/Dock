@@ -373,7 +373,10 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void FloatDockable(IDockable dockable)
         {
-            // TODO: Float dockable.
+            if (dockable.Owner is IDock dock)
+            {
+                SplitToWindow(dock, dockable, 0, 0, 300, 400);
+            }
         }
 
         private void Collapse(IDock dock)

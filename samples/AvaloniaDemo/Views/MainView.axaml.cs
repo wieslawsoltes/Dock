@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Dock.Avalonia;
 
 namespace AvaloniaDemo.Views
 {
@@ -11,6 +12,7 @@ namespace AvaloniaDemo.Views
         {
             InitializeComponent();
             InitializeThemes();
+            InitializeMenu();
         }
         private void InitializeComponent()
         {
@@ -31,6 +33,27 @@ namespace AvaloniaDemo.Views
                     3 => App.DefaultDark,
                     _ => throw new Exception("Not support theme.")
                 };
+            };
+        }
+
+        private void InitializeMenu()
+        {
+            this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (_, _) =>
+            {
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
+                }
+            };
+
+            this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (_, _) =>
+            {
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
+                }
             };
         }
     }

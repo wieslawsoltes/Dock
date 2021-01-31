@@ -3,16 +3,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:dmc="using:Dock.Model.Controls"
-             xmlns:views="using:AvaloniaDemo.Views"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Grid RowDefinitions="Auto,Auto,*,25" Background="Transparent">
-        <views:MenuView Grid.Row="0" Grid.Column="0"/>
-        <Panel Grid.Row="1" DataContext="{Binding Layout}">
+        <Menu Grid.Row="0" Grid.Column="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Layout" Command="{Binding NewLayout}"/>
+            </MenuItem>
+            <MenuItem Header="_Window" DataContext="{Binding Layout}">
+                <MenuItem Header="_Exit tWindows" Command="{Binding ExitWindows}"/>
+                <Separator/>
+                <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}"/>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
+                    <MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" 
+                                  BorderThickness="0" 
+                                  IsHitTestVisible="False" 
+                                  x:CompileBindings="False"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
+                    <MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" 
+                                  BorderThickness="0" 
+                                  IsHitTestVisible="False" 
+                                  x:CompileBindings="False"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Panel x:Name="ToolBar" Grid.Row="1" DataContext="{Binding Layout}">
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto" 
                   Margin="4" 
                   x:DataType="dmc:IRootDock" 

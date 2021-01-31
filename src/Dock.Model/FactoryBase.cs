@@ -851,7 +851,7 @@ namespace Dock.Model
 
             var window = CreateDockWindow();
             window.Id = nameof(IDockWindow);
-            window.Title = nameof(IDockWindow);
+            window.Title = "";
             window.Width = double.NaN;
             window.Height = double.NaN;
             window.Topmost = topmost;

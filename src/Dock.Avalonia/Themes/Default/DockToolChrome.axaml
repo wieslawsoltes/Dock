@@ -3,12 +3,6 @@
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:core="using:Dock.Model.Core">
-    <Style Selector="Button.chromeButton">
-        <Setter Property="Margin" Value="2 0 0 0" />
-        <Setter Property="Padding" Value="3" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Background" Value="Transparent" />
-    </Style>
     <Style Selector="idc|DockToolChrome">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />
@@ -22,68 +16,29 @@
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <Panel DockPanel.Dock="Left" >
                                     <TextBlock x:Name="PART_Title"
-                                               Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"
-                                               HorizontalAlignment="Left"
-                                               TextAlignment="Left"
-                                               VerticalAlignment="Stretch"
-                                               Margin="0 4 8 4"
-                                               FontSize="{DynamicResource DockFontSizeNormal}"/>
+                                               Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"/>
                                 </Panel>
                                 <Button Name="PART_CloseButton" 
-                                        Classes="chromeButton" 
-                                        DockPanel.Dock="Right"
                                         Command="{Binding Owner.Factory.CloseDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
                                         IsVisible="{Binding ActiveDockable.CanClose}"
+                                        DockPanel.Dock="Right"
                                         x:CompileBindings="False">
-                                    <Panel Height="11" Width="14">
-                                        <Viewbox>
-                                            <Path Stretch="UniformToFill" 
-                                                  Fill="#474747" 
-                                                  Data="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z" />
-                                        </Viewbox>
-                                    </Panel>
+                                    <Viewbox>
+                                        <Path x:Name="PART_ClosePath" />
+                                    </Viewbox>
                                 </Button>
                                 <Button x:Name="PART_PinButton" 
-                                        Classes="chromeButton" 
-                                        DockPanel.Dock="Right" 
                                         Command="{Binding Owner.Factory.PinDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
                                         IsVisible="{Binding ActiveDockable.CanPin}"
+                                        DockPanel.Dock="Right" 
                                         x:CompileBindings="False">
-                                    <Panel Height="11" Width="14">
-                                        <Viewbox>
-                                            <Path Stretch="UniformToFill" 
-                                                  Fill="#474747" 
-                                                  Data="M2048 1229v-205h-2048v205h2048z" />
-                                        </Viewbox>
-                                    </Panel>
+                                    <Viewbox>
+                                        <Path x:Name="PART_PinPath"/>
+                                    </Viewbox>
                                 </Button>
-                                <Grid x:Name="PART_Grid" Height="5" VerticalAlignment="Center" Margin="0 0 2 0">
-                                    <Grid.Background>
-                                        <VisualBrush SourceRect="0,0,4,5" 
-                                                     DestinationRect="0,0,4,5" 
-                                                     TileMode="Tile" 
-                                                     Stretch="UniformToFill">
-                                            <VisualBrush.Visual>
-                                                <Canvas Width="4" Height="5" Background="Transparent">
-                                                    <Rectangle Height="1" 
-                                                               Width="1" 
-                                                               Fill="#474747" />
-                                                    <Rectangle Height="1" 
-                                                               Width="1" 
-                                                               Fill="#474747"
-                                                               Canvas.Top="2" 
-                                                               Canvas.Left="2"  />
-                                                    <Rectangle Height="1" 
-                                                               Width="1" 
-                                                               Fill="#474747"
-                                                               Canvas.Top="4"  />
-                                                </Canvas>
-                                            </VisualBrush.Visual>
-                                        </VisualBrush>
-                                    </Grid.Background>
-                                </Grid>
+                                <Grid x:Name="PART_Grid"/>
                             </DockPanel>
                         </Grid>
                     </Border>
@@ -106,6 +61,11 @@
     </Style>
     <Style Selector="idc|DockToolChrome /template/ TextBlock#PART_Title">
         <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Margin" Value="0 4 8 4" />
+        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ TextBlock#PART_Title">
         <Setter Property="Background" Value="Transparent" />
@@ -122,5 +82,59 @@
     </Style>
     <Style Selector="idc|DockToolChrome:active /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grid">
+        <Setter Property="Height" Value="5" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0 0 2 0" />
+        <Setter Property="Background">
+            <VisualBrush SourceRect="0,0,4,5" 
+                         DestinationRect="0,0,4,5" 
+                         TileMode="Tile" 
+                         Stretch="UniformToFill">
+                <VisualBrush.Visual>
+                    <Canvas Width="4" Height="5" Background="Transparent">
+                        <Rectangle Height="1" 
+                                   Width="1" 
+                                   Fill="#474747" />
+                        <Rectangle Height="1" 
+                                   Width="1" 
+                                   Fill="#474747"
+                                   Canvas.Top="2" 
+                                   Canvas.Left="2"  />
+                        <Rectangle Height="1" 
+                                   Width="1" 
+                                   Fill="#474747"
+                                   Canvas.Top="4"  />
+                    </Canvas>
+                </VisualBrush.Visual>
+            </VisualBrush>
+        </Setter>
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Button#PART_CloseButton">
+        <Setter Property="Margin" Value="2 0 0 0" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="16"/>
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Button#PART_PinButton">
+        <Setter Property="Margin" Value="2 0 0 0" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="16"/>
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Path#PART_ClosePath">
+        <Setter Property="Stretch" Value="UniformToFill" />
+        <Setter Property="Fill" Value="#474747" />
+        <Setter Property="Data" Value="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z" />
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Path#PART_PinPath">
+        <Setter Property="Stretch" Value="UniformToFill" />
+        <Setter Property="Fill" Value="#474747" />
+        <Setter Property="Data" Value="M2048 1229v-205h-2048v205h2048z" />
     </Style>
 </Styles>

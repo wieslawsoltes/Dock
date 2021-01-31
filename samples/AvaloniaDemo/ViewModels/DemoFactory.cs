@@ -26,7 +26,7 @@ namespace AvaloniaDemo.ViewModels
         {
             var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
-            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = false};
+            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
             var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
             var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};

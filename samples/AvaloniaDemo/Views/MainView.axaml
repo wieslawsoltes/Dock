@@ -11,7 +11,7 @@
              d:DesignWidth="1280" d:DesignHeight="680"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
     <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
-        <Menu Grid.Row="0" Grid.Column="0">
+        <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_New Layout" Command="{Binding NewLayout}"/>
             </MenuItem>

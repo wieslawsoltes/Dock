@@ -83,7 +83,7 @@
                                                     </Style>
                                                 </Button.Styles>
                                                 <Path x:Name="PART_PathCreate">
-                                                <Path.Styles>
+                                                    <Path.Styles>
                                                         <Style Selector="Path">
                                                             <Setter Property="Margin" Value="7"/>
                                                             <Setter Property="Stretch" Value="Uniform"/>

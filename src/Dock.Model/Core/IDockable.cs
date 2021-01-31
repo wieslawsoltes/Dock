@@ -32,6 +32,16 @@ namespace Dock.Model.Core
         IFactory? Factory { get; set; }
 
         /// <summary>
+        /// Gets or sets if the dockable can be closed.
+        /// </summary>
+        bool CanClose { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the dockable can be pinned.
+        /// </summary>
+        bool CanPin { get; set; }
+
+        /// <summary>
         /// Called when the dockable is closed.
         /// </summary>
         /// <returns>true to accept the close, and false to cancel the close.</returns>

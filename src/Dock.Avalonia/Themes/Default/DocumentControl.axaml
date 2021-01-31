@@ -129,6 +129,7 @@
                                             Width="14" 
                                             Command="{Binding Owner.Factory.CloseDockable}" 
                                             CommandParameter="{Binding}" Classes="documentTabButton" 
+                                            IsVisible="{Binding CanClose}"
                                             x:CompileBindings="False">
                                         <Button.Styles>
                                             <Style Selector="Button">

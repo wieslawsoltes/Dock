@@ -15,6 +15,8 @@ namespace Dock.Model.ReactiveUI.Core
         private object? _context;
         private IDockable? _owner;
         private IFactory? _factory;
+        private bool _canClose = true;
+        private bool _canPin = true;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -54,6 +56,22 @@ namespace Dock.Model.ReactiveUI.Core
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool CanClose
+        {
+            get => _canClose;
+            set => this.RaiseAndSetIfChanged(ref _canClose, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool CanPin
+        {
+            get => _canPin;
+            set => this.RaiseAndSetIfChanged(ref _canPin, value);
         }
 
         /// <inheritdoc/>

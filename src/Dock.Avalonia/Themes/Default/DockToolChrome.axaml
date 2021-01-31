@@ -34,6 +34,7 @@
                                         DockPanel.Dock="Right"
                                         Command="{Binding Owner.Factory.CloseDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
+                                        IsVisible="{Binding ActiveDockable.CanClose}"
                                         x:CompileBindings="False">
                                     <Panel Height="11" Width="14">
                                         <Viewbox>
@@ -48,6 +49,7 @@
                                         DockPanel.Dock="Right" 
                                         Command="{Binding Owner.Factory.PinDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
+                                        IsVisible="{Binding ActiveDockable.CanPin}"
                                         x:CompileBindings="False">
                                     <Panel Height="11" Width="14">
                                         <Viewbox>

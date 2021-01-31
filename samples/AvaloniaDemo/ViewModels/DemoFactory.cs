@@ -26,14 +26,15 @@ namespace AvaloniaDemo.ViewModels
         {
             var document1 = new Document1ViewModel {Id = "Document1", Title = "Document1"};
             var document2 = new Document2ViewModel {Id = "Document2", Title = "Document2"};
+            var document3 = new Document2ViewModel {Id = "Document3", Title = "Document3", CanClose = false};
             var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
             var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
             var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
             var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4"};
             var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5"};
-            var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6"};
-            var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7"};
-            var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8"};
+            var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6", CanClose = true, CanPin = false};
+            var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
+            var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
 
             var mainLayout = new ProportionalDock
             {
@@ -64,7 +65,7 @@ namespace AvaloniaDemo.ViewModels
                     {
                         IsCollapsable = false,
                         ActiveDockable = document1,
-                        VisibleDockables = CreateList<IDockable>(document1, document2)
+                        VisibleDockables = CreateList<IDockable>(document1, document2, document3)
                     },
                     new SplitterDock(),
                     new ProportionalDock

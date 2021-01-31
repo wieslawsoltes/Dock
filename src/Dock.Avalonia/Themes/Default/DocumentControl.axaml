@@ -79,7 +79,7 @@
                                 <Setter Property="BorderThickness" Value="0" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="4 0 4 0" />
-                                <Setter Property="ContextMenu">
+                                <!--<Setter Property="ContextMenu">
                                     <ContextMenu>
                                         <MenuItem Header="_Float" 
                                                   Command="{Binding Owner.Factory.FloatDockable}" 
@@ -92,7 +92,7 @@
                                                   IsVisible="{Binding CanClose}"
                                                   x:CompileBindings="False" />
                                     </ContextMenu>
-                                </Setter>
+                                </Setter>-->
                                 <Setter Property="Template">
                                     <ControlTemplate>
                                         <Border>

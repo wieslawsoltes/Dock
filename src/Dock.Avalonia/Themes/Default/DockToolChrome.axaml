@@ -73,7 +73,7 @@
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-        <Setter Property="ContextMenu">
+        <!--<Setter Property="ContextMenu">
             <ContextMenu>
                 <MenuItem Header="_Float" 
                           Command="{Binding Owner.Factory.FloatDockable}" 
@@ -91,7 +91,7 @@
                           IsVisible="{Binding ActiveDockable.CanClose}"
                           x:CompileBindings="False" />
             </ContextMenu>
-        </Setter>
+        </Setter>-->
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Grid#PART_Grip">
         <Setter Property="(id:DockProperties.IsDragArea)" Value="True" />

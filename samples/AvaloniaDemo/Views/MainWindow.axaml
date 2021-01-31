@@ -13,7 +13,7 @@
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
-        Title="Dock Avalonia Demo" Height="650" Width="1000"
+        Title="Dock Avalonia Demo" Height="680" Width="1200"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome, OSXThickTitleBar"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">

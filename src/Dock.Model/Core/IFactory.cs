@@ -69,6 +69,12 @@ namespace Dock.Model.Core
         IDockWindow CreateDockWindow();
 
         /// <summary>
+        /// Creates <see cref="IDocument"/>.
+        /// </summary>
+        /// <param name="dock">The document dock.</param>
+        void CreateDocument(IDocumentDock dock);
+
+        /// <summary>
         /// Creates layout.
         /// </summary>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>

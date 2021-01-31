@@ -22,11 +22,23 @@ namespace AvaloniaDemo.ViewModels
             _context = context;
         }
 
+        public override void CreateDocument(IDocumentDock dock)
+        {
+            if (dock.CanCreateDocument)
+            {
+                var index = dock.VisibleDockables?.Count + 1;
+                var document = new DocumentViewModel {Id = $"Document{index}", Title = $"Document{index}"};
+                AddDockable(dock, document);
+                SetActiveDockable(document);
+                SetFocusedDockable(dock, document);
+            }
+        }
+
         public override IDock CreateLayout()
         {
             var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
-            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = false};
+            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
             var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
             var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
             var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
@@ -80,7 +92,8 @@ namespace AvaloniaDemo.ViewModels
             {
                 IsCollapsable = false,
                 ActiveDockable = document1,
-                VisibleDockables = CreateList<IDockable>(document1, document2, document3)
+                VisibleDockables = CreateList<IDockable>(document1, document2, document3),
+                CanCreateDocument = true
             };
 
             var mainLayout = new ProportionalDock

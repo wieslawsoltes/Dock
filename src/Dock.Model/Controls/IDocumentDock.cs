@@ -8,5 +8,9 @@ namespace Dock.Model.Controls
     /// </summary>
     public interface IDocumentDock : IDock
     {
+        /// <summary>
+        /// Gets or sets if document dock can create new documents.
+        /// </summary>
+        bool CanCreateDocument { get; set; }
     }
 }

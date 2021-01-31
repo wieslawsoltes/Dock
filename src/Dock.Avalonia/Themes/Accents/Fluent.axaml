@@ -17,7 +17,7 @@
             <SolidColorBrush x:Key="DockThemeAccentBrush" Color="{DynamicResource SystemAccentColor}"/>
             <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="{DynamicResource SystemBaseHighColor}"/>
             <SolidColorBrush x:Key="DockThemeControlBackgroundBrush" Color="{DynamicResource SystemAltHighColor}"/>
-            <sys:Double x:Key="DockFontSizeNormal">14</sys:Double>
+            <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
         </Style.Resources>
     </Style>
 </Styles>

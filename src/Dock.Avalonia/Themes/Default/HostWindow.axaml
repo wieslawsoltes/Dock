@@ -11,7 +11,7 @@
         <Setter Property="WindowState" Value="Normal" />
         <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome, OSXThickTitleBar" />
+        <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
         <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
         <Setter Property="Template">
             <ControlTemplate>

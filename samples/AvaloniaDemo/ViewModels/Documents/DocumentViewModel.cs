@@ -2,7 +2,7 @@
 
 namespace AvaloniaDemo.ViewModels.Documents
 {
-    public class Document1ViewModel : Document
+    public class DocumentViewModel : Document
     {
     }
 }

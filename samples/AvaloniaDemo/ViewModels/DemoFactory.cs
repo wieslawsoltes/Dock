@@ -24,9 +24,9 @@ namespace AvaloniaDemo.ViewModels
 
         public override IDock CreateLayout()
         {
-            var document1 = new Document1ViewModel {Id = "Document1", Title = "Document1"};
-            var document2 = new Document2ViewModel {Id = "Document2", Title = "Document2"};
-            var document3 = new Document2ViewModel {Id = "Document3", Title = "Document3", CanClose = false};
+            var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
+            var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
+            var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = false};
             var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
             var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
             var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
@@ -132,8 +132,9 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDockWindow)] = () => _context,
                 [nameof(IDocument)] = () => _context,
                 [nameof(ITool)] = () => _context,
-                ["Document1"] = () => new Document1(),
-                ["Document2"] = () => new Document2(),
+                ["Document1"] = () => new DemoDocument(),
+                ["Document2"] = () => new DemoDocument(),
+                ["Document3"] = () => new DemoDocument(),
                 ["Tool1"] = () => new Tool1(),
                 ["Tool2"] = () => new Tool2(),
                 ["Tool3"] = () => new Tool3(),

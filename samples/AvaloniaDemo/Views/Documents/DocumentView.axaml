@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AvaloniaDemo.Views.Documents.Document1View"
+﻿<UserControl x:Class="AvaloniaDemo.Views.Documents.DocumentView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
              xmlns:vm="using:AvaloniaDemo.ViewModels.Documents"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
-             x:DataType="vm:Document1ViewModel" x:CompileBindings="True">
+             x:DataType="vm:DocumentViewModel" x:CompileBindings="True">
     <Grid Focusable="True">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="{Binding Id}" Padding="2"/>

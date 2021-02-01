@@ -383,7 +383,7 @@ namespace Dock.Model
         {
             if (dock.IsCollapsable && dock.VisibleDockables is not null && dock.VisibleDockables.Count == 0)
             {
-                if (dock.Owner is IDock {VisibleDockables: { }} ownerDock)
+                if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
                 {
                     var toRemove = new List<IDockable>();
                     var dockIndex = ownerDock.VisibleDockables.IndexOf(dock);
@@ -421,7 +421,7 @@ namespace Dock.Model
                     }
                 }
 
-                if (dock is IRootDock {Window: { }} rootDock)
+                if (dock is IRootDock rootDock && rootDock.Window is { })
                 {
                     RemoveWindow(rootDock.Window);
                 }
@@ -435,7 +435,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual void RemoveDockable(IDockable dockable, bool collapse)
         {
-            if (dockable.Owner is IDock {VisibleDockables: { }} dock)
+            if (dockable.Owner is IDock dock && dock.VisibleDockables is { })
             {
                 var index = dock.VisibleDockables.IndexOf(dockable);
                 if (index < 0)
@@ -746,7 +746,7 @@ namespace Dock.Model
                 case DockOperation.Top:
                 case DockOperation.Bottom:
                     {
-                        if (dock.Owner is IDock {VisibleDockables: { }} ownerDock)
+                        if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
                         {
                             var index = ownerDock.VisibleDockables.IndexOf(dock);
                             if (index >= 0)

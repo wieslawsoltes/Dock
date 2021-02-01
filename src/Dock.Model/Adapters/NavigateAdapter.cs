@@ -196,7 +196,7 @@ namespace Dock.Model.Adapters
         /// <inheritdoc/>
         public void ShowWindows()
         {
-            if (_dock is IRootDock {Windows: { }} rootDock)
+            if (_dock is IRootDock rootDock && rootDock.Windows is { })
             {
                 foreach (var window in rootDock.Windows)
                 {
@@ -215,7 +215,7 @@ namespace Dock.Model.Adapters
         /// <inheritdoc/>
         public void ExitWindows()
         {
-            if (_dock is IRootDock {Windows: { }} rootDock)
+            if (_dock is IRootDock rootDock && rootDock.Windows is { })
             {
                 foreach (var window in rootDock.Windows)
                 {

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
@@ -12,6 +13,24 @@ namespace Notepad.ViewModels
 {
     public class NotepadFactory : Factory
     {
+        public override void CreateDocument(IDocumentDock dock)
+        {
+            if (dock.CanCreateDocument)
+            {
+                var index = dock.VisibleDockables?.Count + 1;
+                var document = new FileViewModel()
+                {
+                    Path = string.Empty,
+                    Title = "Untitled",
+                    Text = "",
+                    Encoding = Encoding.Default.WebName
+                };
+                AddDockable(dock, document);
+                SetActiveDockable(document);
+                SetFocusedDockable(dock, document);
+            }
+        }
+
         public override IDock CreateLayout()
         {
             var untitledFileViewModel = new FileViewModel()
@@ -44,7 +63,8 @@ namespace Notepad.ViewModels
                 VisibleDockables = CreateList<IDockable>
                 (
                     untitledFileViewModel
-                )
+                ),
+                CanCreateDocument = true
             };
 
             var tools = new ProportionalDock

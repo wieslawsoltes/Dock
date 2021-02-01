@@ -7,11 +7,27 @@
         xmlns:views="using:Notepad.Views"
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
+        x:Name="MainWindow"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Notepad" Height="600" Width="900"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome, OSXThickTitleBar"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <views:MainView/>
+    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+        <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Label Content="Notepad" 
+                   Margin="4,0,4,0" 
+                   FontSize="14" 
+                   FontWeight="Normal"
+                   VerticalAlignment="Center"
+                   VerticalContentAlignment="Center"/>
+        </Panel>
+        <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+            <views:MainView/>
+        </Panel>
+    </Panel>
 </Window>

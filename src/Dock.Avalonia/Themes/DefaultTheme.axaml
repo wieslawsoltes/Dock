@@ -1,6 +1,15 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=netstandard">
+        xmlns:sys="clr-namespace:System;assembly=netstandard"
+        x:Class="Dock.Avalonia.Themes.DefaultTheme">
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockToolChrome.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/DocumentControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/ToolControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml"/>
     <Style>
         <Style.Resources>
             <SolidColorBrush x:Key="DockApplicationAccentBrushLow">#007ACC</SolidColorBrush>

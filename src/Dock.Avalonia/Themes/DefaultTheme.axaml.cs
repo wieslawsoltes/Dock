@@ -1,9 +1,9 @@
 using Avalonia.Styling;
 
-namespace Dock.Avalonia.Themes.Default
+namespace Dock.Avalonia.Themes
 {
     /// <summary>
-    /// The default Dock theme.
+    /// The Dock default theme.
     /// </summary>
     public class DefaultTheme : Styles
     {

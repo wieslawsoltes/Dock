@@ -103,6 +103,10 @@ namespace Dock.Model
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();
+                if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
+                {
+                    documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                }
                 factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, null);
                 factory.SplitToDock(targetDock, documentDock, operation);
             }

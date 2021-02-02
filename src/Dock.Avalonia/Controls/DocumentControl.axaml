@@ -115,7 +115,9 @@
                                 <Setter Property="FontWeight" Value="Normal" />
                                 <Setter Property="MinHeight" Value="24" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+                                <!-- TODO: Background -->
+                                <Setter Property="Background" Value="Transparent" />
+                                <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
                                 <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />

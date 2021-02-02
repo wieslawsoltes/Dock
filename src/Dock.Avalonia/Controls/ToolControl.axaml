@@ -56,7 +56,9 @@
                                 <Setter Property="FontWeight" Value="Normal" />
                                 <Setter Property="MinHeight" Value="0" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+                                <!-- TODO: Background -->
+                                <Setter Property="Background" Value="Transparent" />
+                                <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
                                 <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="0" />
@@ -109,7 +111,7 @@
                                 <Setter Property="IsVisible" Value="False" />
                             </Style>
                             <Style Selector="TabStripItem:selected">
-                                <Setter Property="Background" Value="{DynamicResource DockThemeControlBackgroundBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
                                 <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                                 <Setter Property="BorderThickness" Value="1 0 1 1" />
@@ -140,7 +142,7 @@
                     <Border x:Name="PART_Border" 
                             Classes="panel" 
                             ZIndex="-1" 
-                            Background="{DynamicResource DockThemeControlBackgroundBrush}">
+                            Background="{DynamicResource DockThemeBackgroundBrush}">
                         <ContentControl x:Name="PART_ContentPresenter"
                                         Content="{Binding ActiveDockable}" 
                                         HorizontalAlignment="Stretch" 

@@ -1,5 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:idc="using:Dock.Avalonia.Controls">
     <Styles.Resources>
         <SolidColorBrush x:Key="TextControlBackground">#EFEFEF</SolidColorBrush>
         <SolidColorBrush x:Key="TextControlBackgroundFocused">#EFEFEF</SolidColorBrush>
@@ -13,4 +14,7 @@
     </Styles.Resources>
     <FluentTheme Mode="Light"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/FluentTheme.axaml"/>
+    <Style Selector="idc|DockToolChrome">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
 </Styles>

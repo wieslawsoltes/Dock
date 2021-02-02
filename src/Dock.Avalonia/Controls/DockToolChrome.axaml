@@ -4,13 +4,15 @@
         xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:core="using:Dock.Model.Core">
     <Style Selector="idc|DockToolChrome">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="Auto,*" x:DataType="core:IDock" x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
-                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
                             Grid.Row="0">
                         <Border.ContextMenu>
                             <ContextMenu>
@@ -62,7 +64,7 @@
                         </Grid>
                     </Border>
                     <ContentPresenter x:Name="PART_ContentPresenter"
-                                      Background="{DynamicResource DockThemeBackgroundBrush}"
+                                      Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
                                       BorderThickness="{TemplateBinding BorderThickness}"
                                       Content="{TemplateBinding Content}"

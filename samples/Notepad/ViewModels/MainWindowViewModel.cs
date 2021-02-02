@@ -15,19 +15,28 @@ namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
-        private NotepadFactory? _factory;
+        private IFactory? _factory;
+        private IDocumentDock? _files;
+        private IRootDock? _layout;
   
-        public NotepadFactory? Factory
+        public IFactory? Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
         }
 
-        public IDocumentDock? Files { get; set; }
+        public IDocumentDock? Files
+        {
+            get => _files;
+            set => this.RaiseAndSetIfChanged(ref _files, value);
+        }
 
-        public IRootDock? Layout { get; set; }
-
-
+        public IRootDock? Layout
+        {
+            get => _layout;
+            set => this.RaiseAndSetIfChanged(ref _layout, value);
+        }
+        
         private Encoding GetEncoding(string path)
         {
             using var reader = new StreamReader(path, Encoding.Default, true);
@@ -75,11 +84,7 @@ namespace Notepad.ViewModels
 
         private FileViewModel? GetFileViewModel()
         {
-            if (Files is { })
-            {
-                return Files.ActiveDockable as FileViewModel;
-            }
-            return null;
+            return Files?.ActiveDockable as FileViewModel;
         }
 
         private FileViewModel GetUntitledFileViewModel()
@@ -96,10 +101,7 @@ namespace Notepad.ViewModels
         public void FileNew()
         {
             var untitledFileViewModel = GetUntitledFileViewModel();
-            if (untitledFileViewModel != null)
-            {
-                AddFileViewModel(untitledFileViewModel);
-            }
+            AddFileViewModel(untitledFileViewModel);
         }
 
         public async void FileOpen()
@@ -116,10 +118,7 @@ namespace Notepad.ViewModels
                     if (!string.IsNullOrEmpty(path))
                     {
                         var untitledFileViewModel = OpenFileViewModel(path);
-                        if (untitledFileViewModel != null)
-                        {
-                            AddFileViewModel(untitledFileViewModel);
-                        }
+                        AddFileViewModel(untitledFileViewModel);
                     }
                 }
             }
@@ -127,7 +126,7 @@ namespace Notepad.ViewModels
 
         public async void FileSave()
         {
-            if (GetFileViewModel() is FileViewModel fileViewModel)
+            if (GetFileViewModel() is { } fileViewModel)
             {
                 if (string.IsNullOrEmpty(fileViewModel.Path))
                 {
@@ -142,13 +141,13 @@ namespace Notepad.ViewModels
 
         public async void FileSaveAs()
         {
-            if (GetFileViewModel() is FileViewModel fileViewModel)
+            if (GetFileViewModel() is { } fileViewModel)
             {
                 await FileSaveAsImpl(fileViewModel);
             }
         }
 
-        public async Task FileSaveAsImpl(FileViewModel fileViewModel)
+        private async Task FileSaveAsImpl(FileViewModel fileViewModel)
         {
             var dlg = new SaveFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
@@ -195,10 +194,7 @@ namespace Notepad.ViewModels
                         if (!string.IsNullOrEmpty(path))
                         {
                             var untitledFileViewModel = OpenFileViewModel(path);
-                            if (untitledFileViewModel != null)
-                            {
-                                AddFileViewModel(untitledFileViewModel);
-                            }
+                            AddFileViewModel(untitledFileViewModel);
                         }
                     }
                 }
@@ -227,13 +223,13 @@ namespace Notepad.ViewModels
 
         public async void WindowSaveWindowLayout()
         {
-            if (GetWindow() is Window onwer)
+            if (GetWindow() is { } owner)
             {
                 var window = new SaveWindowLayoutWindow();
 
                 // TODO:
 
-                await window.ShowDialog(onwer);
+                await window.ShowDialog(owner);
             }
 
             // TODO:
@@ -289,33 +285,32 @@ namespace Notepad.ViewModels
 
         public async void WindowManageWindowLayouts()
         {
-            if (GetWindow() is Window onwer)
+            if (GetWindow() is { } owner)
             {
                 var window = new ManageWindowLayoutsWindow();
 
                 // TODO:
 
-                await window.ShowDialog(onwer);
+                await window.ShowDialog(owner);
             }
         }
 
         public async void WindowResetWindowLayout()
         {
-            if (GetWindow() is Window onwer)
+            if (GetWindow() is { } owner)
             {
                 var window = new ResetWindowLayoutWindow();
 
                 // TODO:
 
-                await window.ShowDialog(onwer);
+                await window.ShowDialog(owner);
             }
 
             // TODO:
 
             if (Layout?.ActiveDockable is IDock active)
             {
-                var layout = Factory?.CreateLayout() as IRootDock;
-                if (layout != null)
+                if (Factory?.CreateLayout() is IRootDock layout)
                 {
                     Factory?.InitLayout(layout);
 
@@ -330,6 +325,7 @@ namespace Notepad.ViewModels
                     }
 
                     Layout = layout;
+                    Files = Factory?.FindDockable(Layout, (d) => d.Id == "Files") as IDocumentDock;
                 }
             }
         }

@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
 using Notepad.Views.Layouts;
@@ -14,22 +15,18 @@ namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
-        public const string DocumentsDockId = "Files";
-
-        private IFactory? _factory;
-        private IDock? _layout;
-
-        public IFactory? Factory
+        private NotepadFactory? _factory;
+  
+        public NotepadFactory? Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
         }
 
-        public IDock? Layout
-        {
-            get => _layout;
-            set => this.RaiseAndSetIfChanged(ref _layout, value);
-        }
+        public IDocumentDock? Files { get; set; }
+
+        public IRootDock? Layout { get; set; }
+
 
         private Encoding GetEncoding(string path)
         {
@@ -68,9 +65,9 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Layout?.ActiveDockable is IDock active && active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
+            if (Layout is { } && Files is { })
             {
-                Factory?.AddDockable(files, fileViewModel);
+                Factory?.AddDockable(Files, fileViewModel);
                 Factory?.SetActiveDockable(fileViewModel);
                 Factory?.SetFocusedDockable(Layout, fileViewModel);
             }
@@ -78,9 +75,9 @@ namespace Notepad.ViewModels
 
         private FileViewModel? GetFileViewModel()
         {
-            if (Layout?.ActiveDockable is IDock active && active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
+            if (Files is { })
             {
-                return files.ActiveDockable as FileViewModel;
+                return Files.ActiveDockable as FileViewModel;
             }
             return null;
         }
@@ -253,14 +250,14 @@ namespace Notepad.ViewModels
                         active.Close.Execute(null);
                     }
                     
-                    Layout.Factory?.AddDockable(Layout, clone);
+                    Factory?.AddDockable(Layout, clone);
 
                     if (Layout.Navigate.CanExecute(clone))
                     {
                         Layout.Navigate.Execute(clone);
                     }
-                    
-                    Layout.Factory?.SetFocusedDockable(Layout, clone);
+
+                    Factory?.SetFocusedDockable(Layout, clone);
                     Layout.DefaultDockable = clone;
                 }
             }
@@ -274,15 +271,18 @@ namespace Notepad.ViewModels
                 {
                     active.Close.Execute(null);
                 }
-                
-                CopyDocuments(active, dock, DocumentsDockId);
+
+                if (Files is { })
+                {
+                    CopyDocuments(active, dock, Files.Id);
+                }
 
                 if (Layout.Navigate.CanExecute(dock))
                 {
                     Layout.Navigate.Execute(dock);
                 }
                 
-                Layout.Factory?.SetFocusedDockable(Layout, dock);
+                Factory?.SetFocusedDockable(Layout, dock);
                 Layout.DefaultDockable = dock;
             }
         }
@@ -314,12 +314,15 @@ namespace Notepad.ViewModels
 
             if (Layout?.ActiveDockable is IDock active)
             {
-                var layout = Factory?.CreateLayout();
+                var layout = Factory?.CreateLayout() as IRootDock;
                 if (layout != null)
                 {
                     Factory?.InitLayout(layout);
 
-                    CopyDocuments(active, layout, DocumentsDockId);
+                    if (Files is { })
+                    {
+                        CopyDocuments(active, layout, Files.Id);
+                    }
 
                     if (Layout?.Close.CanExecute(null) ?? false)
                     {

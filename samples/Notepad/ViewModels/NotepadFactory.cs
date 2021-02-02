@@ -55,8 +55,8 @@ namespace Notepad.ViewModels
 
             var files = new DocumentDock
             {
-                Id = MainWindowViewModel.DocumentsDockId,
-                Title = MainWindowViewModel.DocumentsDockId,
+                Id = "Files",
+                Title = "Files",
                 IsCollapsable = false,
                 Proportion = double.NaN,
                 ActiveDockable = untitledFileViewModel,

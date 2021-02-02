@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Notepad.ViewModels;
 using Notepad.Views;
@@ -18,7 +19,6 @@ namespace Notepad
         {
             var mainWindowViewModel = new MainWindowViewModel();
             var factory = new NotepadFactory();
-            IDock? layout = null;
 
             switch (ApplicationLifetime)
             {
@@ -32,11 +32,11 @@ namespace Notepad
                     // TODO: Restore main window position, size and state.
 
                     mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-
-                    if (mainWindowViewModel.Layout != null)
+                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
+                    if (mainWindowViewModel.Layout is { })
                     {
                         mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                        mainWindowViewModel.Files = mainWindowViewModel.Factory?.FindDockable(mainWindowViewModel.Layout, (d) => d.Id == "Files") as IDocumentDock;
                     }
 
                     mainWindow.Closing += (_, _) =>
@@ -73,11 +73,11 @@ namespace Notepad
                     };
 
                     mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-
-                    if (mainWindowViewModel.Layout != null)
+                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
+                    if (mainWindowViewModel.Layout is { })
                     {
                         mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                        mainWindowViewModel.Files = mainWindowViewModel.Factory?.FindDockable(mainWindowViewModel.Layout, (d) => d.Id == "Files") as IDocumentDock;
                     }
 
                     singleViewLifetime.MainView = mainView;

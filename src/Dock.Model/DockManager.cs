@@ -86,7 +86,7 @@ namespace Dock.Model
         {
             if (targetDock.Factory is { } factory)
             {
-                IDock toolDock = factory.CreateToolDock();
+                IToolDock toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
                 toolDock.VisibleDockables = factory.CreateList<IDockable>();

@@ -13,8 +13,8 @@
     <Grid RowDefinitions="Auto,Auto">
         <TextBlock Text="Are you sure you want to restore the default window layout for the environment?" Margin="10" TextWrapping="Wrap" Grid.Row="0"/>
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Row="1">
-            <Button Content="Yes" Margin="0,10,5,10" Padding="10,5"/>
-            <Button Content="No" Margin="5,10,10,10" Padding="10,5"/>
+            <Button Content="Yes" IsDefault="True" Margin="0,10,5,10" Padding="10,5"/>
+            <Button Content="Cancel" IsCancel="True" Margin="5,10,10,10" Padding="10,5"/>
         </StackPanel>
     </Grid>
 </Window>

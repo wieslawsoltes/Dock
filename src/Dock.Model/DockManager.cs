@@ -99,7 +99,7 @@ namespace Dock.Model
         {
             if (targetDock.Factory is { } factory)
             {
-                IDock documentDock = factory.CreateDocumentDock();
+                IDocumentDock documentDock = factory.CreateDocumentDock();
                 documentDock.Id = nameof(IDocumentDock);
                 documentDock.Title = nameof(IDocumentDock);
                 documentDock.VisibleDockables = factory.CreateList<IDockable>();

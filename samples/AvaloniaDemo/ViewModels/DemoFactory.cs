@@ -57,13 +57,15 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         ActiveDockable = tool1,
-                        VisibleDockables = CreateList<IDockable>(tool1, tool2)
+                        VisibleDockables = CreateList<IDockable>(tool1, tool2),
+                        Alignment = Alignment.Left
                     },
                     new SplitterDock(),
                     new ToolDock
                     {
                         ActiveDockable = tool3,
-                        VisibleDockables = CreateList<IDockable>(tool3, tool4)
+                        VisibleDockables = CreateList<IDockable>(tool3, tool4),
+                        Alignment = Alignment.Left
                     }
                 )
             };
@@ -77,13 +79,15 @@ namespace AvaloniaDemo.ViewModels
                     new ToolDock
                     {
                         ActiveDockable = tool5,
-                        VisibleDockables = CreateList<IDockable>(tool5, tool6)
+                        VisibleDockables = CreateList<IDockable>(tool5, tool6),
+                        Alignment = Alignment.Right
                     },
                     new SplitterDock(),
                     new ToolDock
                     {
                         ActiveDockable = tool7,
-                        VisibleDockables = CreateList<IDockable>(tool7, tool8)
+                        VisibleDockables = CreateList<IDockable>(tool7, tool8),
+                        Alignment = Alignment.Right
                     }
                 )
             };

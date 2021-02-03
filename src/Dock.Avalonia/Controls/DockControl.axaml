@@ -36,8 +36,7 @@
                                           idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <idc:ProportionalStackPanel x:Name="DropProportional" 
-                                                                    id:DockProperties.IsDropArea="True" 
+                                        <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True" 
                                                                     Background="Transparent" 
                                                                     Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}"/>
                                     </ItemsPanelTemplate>

@@ -26,10 +26,35 @@
                             <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">
-                            <idc:DockToolChrome IsActive="{Binding IsActive}" 
-                                                idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                <idc:ToolControl/>
-                            </idc:DockToolChrome>
+                            <DockPanel>
+                                <ItemsControl Items="{Binding PinnedDockables}"
+                                              DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" 
+                                                        id:DockProperties.IsDropArea="True">
+                                            </StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.DataTemplates>
+                                        <DataTemplate>
+                                            <LayoutTransformControl Margin="4">
+                                                <LayoutTransformControl.LayoutTransform>
+                                                    <RotateTransform Angle="270"></RotateTransform>
+                                                </LayoutTransformControl.LayoutTransform>
+                                                <TextBlock Text="{Binding Title}"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Left"/>
+                                            </LayoutTransformControl>
+                                        </DataTemplate>
+                                    </ItemsControl.DataTemplates>
+                                </ItemsControl>
+                                <idc:DockToolChrome IsActive="{Binding IsActive}" 
+                                                    IsVisible="{Binding !!VisibleDockables.Count}"
+                                                    idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                    <idc:ToolControl/>
+                                </idc:DockToolChrome>
+                            </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">
                             <ItemsControl Items="{Binding VisibleDockables}" 

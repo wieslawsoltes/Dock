@@ -14,7 +14,6 @@
                 <Grid RowDefinitions="Auto,*" x:DataType="controls:IToolDock" x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            IsVisible="{Binding GripMode, Converter={x:Static converters:GripModeConverter.Instance}}"
                             Grid.Row="0">
                         <Border.ContextMenu>
                             <ContextMenu>
@@ -67,7 +66,6 @@
                     </Border>
                     <Panel x:Name="PART_Panel"
                            Background="{TemplateBinding BorderBrush}"
-                           IsVisible="{Binding !!GripMode, Converter={x:Static converters:GripModeConverter.Instance}}"
                            Height="1"
                            Grid.Row="0"/>
                     <ContentPresenter x:Name="PART_ContentPresenter"
@@ -86,6 +84,18 @@
     </Style>
     <Style Selector="idc|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Border#PART_Border">
+        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverter.Instance}}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:pointerover /template/ Border#PART_Border">
+        <Setter Property="IsVisible" Value="true" />
+    </Style>
+    <Style Selector="idc|DockToolChrome /template/ Panel#PART_Panel">
+        <Setter Property="IsVisible" Value="{Binding !!GripMode, Converter={x:Static converters:GripModeConverter.Instance}}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:pointerover /template/ Panel#PART_Panel">
+        <Setter Property="IsVisible" Value="false" />
     </Style>
     <Style Selector="idc|DockToolChrome:floating /template/ Panel#PART_Panel">
         <Setter Property="Height" Value="0" />

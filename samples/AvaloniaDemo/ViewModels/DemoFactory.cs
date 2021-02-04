@@ -88,7 +88,8 @@ namespace AvaloniaDemo.ViewModels
                     {
                         ActiveDockable = tool7,
                         VisibleDockables = CreateList<IDockable>(tool7, tool8),
-                        Alignment = Alignment.Right
+                        Alignment = Alignment.Right,
+                        GripMode = GripMode.AutoHide
                     }
                 )
             };

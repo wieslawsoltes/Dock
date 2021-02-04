@@ -22,5 +22,10 @@ namespace Dock.Model.Controls
         /// Gets or sets if the Dock auto hides dockable when pointer is not over.
         /// </summary>
         bool AutoHide { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the tool Dock grip mode.
+        /// </summary>
+        GripMode GripMode { get; set; }
     }
 }

@@ -2,7 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
-        xmlns:core="using:Dock.Model.Core">
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:controls="using:Dock.Model.Controls">
     <Style Selector="idc|DockToolChrome">
         <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
@@ -10,9 +11,10 @@
         <Setter Property="Padding" Value="0" />
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid RowDefinitions="Auto,*" x:DataType="core:IDock" x:CompileBindings="True">
+                <Grid RowDefinitions="Auto,*" x:DataType="controls:IToolDock" x:CompileBindings="True">
                     <Border x:Name="PART_Border" 
                             BorderBrush="{TemplateBinding BorderBrush}"
+                            IsVisible="{Binding GripMode, Converter={x:Static converters:GripModeConverter.Instance}}"
                             Grid.Row="0">
                         <Border.ContextMenu>
                             <ContextMenu>
@@ -33,7 +35,7 @@
                                           x:CompileBindings="False" />
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <Grid x:Name="PART_Grip">
+                        <Grid x:Name="PART_Grip" >
                             <DockPanel LastChildFill="True" Margin="8 0">
                                 <Panel DockPanel.Dock="Left" >
                                     <TextBlock x:Name="PART_Title"
@@ -63,6 +65,11 @@
                             </DockPanel>
                         </Grid>
                     </Border>
+                    <Panel x:Name="PART_Panel"
+                           Background="{TemplateBinding BorderBrush}"
+                           IsVisible="{Binding !!GripMode, Converter={x:Static converters:GripModeConverter.Instance}}"
+                           Height="1"
+                           Grid.Row="0"/>
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Background="{TemplateBinding Background}"
                                       BorderBrush="{TemplateBinding BorderBrush}"
@@ -79,6 +86,9 @@
     </Style>
     <Style Selector="idc|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:floating /template/ Panel#PART_Panel">
+        <Setter Property="Height" Value="0" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ TextBlock#PART_Title">
         <Setter Property="Background" Value="Transparent" />

@@ -80,7 +80,8 @@ namespace AvaloniaDemo.ViewModels
                     {
                         ActiveDockable = tool5,
                         VisibleDockables = CreateList<IDockable>(tool5, tool6),
-                        Alignment = Alignment.Right
+                        Alignment = Alignment.Right,
+                        GripMode = GripMode.Hidden
                     },
                     new SplitterDock(),
                     new ToolDock

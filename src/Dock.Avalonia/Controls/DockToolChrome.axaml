@@ -12,9 +12,17 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid RowDefinitions="Auto,*" x:DataType="controls:IToolDock" x:CompileBindings="True">
+                    <ContentPresenter x:Name="PART_ContentPresenter"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Content="{TemplateBinding Content}"
+                                      Padding="{TemplateBinding Padding}"
+                                      Grid.Row="1" />
                     <Border x:Name="PART_Border" 
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            Grid.Row="0">
+                            VerticalAlignment="Top"
+                            Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
                         <Border.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="_Float" 
@@ -67,38 +75,31 @@
                     <Panel x:Name="PART_Panel"
                            Background="{TemplateBinding BorderBrush}"
                            Height="1"
-                           Grid.Row="0"/>
-                    <ContentPresenter x:Name="PART_ContentPresenter"
-                                      Background="{TemplateBinding Background}"
-                                      BorderBrush="{TemplateBinding BorderBrush}"
-                                      BorderThickness="{TemplateBinding BorderThickness}"
-                                      Content="{TemplateBinding Content}"
-                                      Padding="{TemplateBinding Padding}"
-                                      Grid.Row="1" />
+                           VerticalAlignment="Top"
+                           Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}"/>
                 </Grid>
             </ControlTemplate>
         </Setter>
     </Style>
     <Style Selector="idc|DockToolChrome /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="1 1 1 0" />
+        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleConverter}}" />
+    </Style>
+    <Style Selector="idc|DockToolChrome:pointerover /template/ Border#PART_Border">
+        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrVisibleConverter}}" />
     </Style>
     <Style Selector="idc|DockToolChrome:floating /template/ Border#PART_Border">
         <Setter Property="BorderThickness" Value="0" />
     </Style>
-    <Style Selector="idc|DockToolChrome /template/ Border#PART_Border">
-        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverter.Instance}}" />
-    </Style>
-    <Style Selector="idc|DockToolChrome:pointerover /template/ Border#PART_Border">
-        <Setter Property="IsVisible" Value="true" />
-    </Style>
     <Style Selector="idc|DockToolChrome /template/ Panel#PART_Panel">
-        <Setter Property="IsVisible" Value="{Binding !!GripMode, Converter={x:Static converters:GripModeConverter.Instance}}" />
+        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrHiddenConverter}}" />
     </Style>
     <Style Selector="idc|DockToolChrome:pointerover /template/ Panel#PART_Panel">
-        <Setter Property="IsVisible" Value="false" />
+        <Setter Property="IsVisible" Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleOrHiddenConverter}}" />
     </Style>
-    <Style Selector="idc|DockToolChrome:floating /template/ Panel#PART_Panel">
+    <Style Selector="idc|DockToolChrome:floating:pointerover /template/ Panel#PART_Panel">
         <Setter Property="Height" Value="0" />
+        <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="idc|DockToolChrome /template/ TextBlock#PART_Title">
         <Setter Property="Background" Value="Transparent" />

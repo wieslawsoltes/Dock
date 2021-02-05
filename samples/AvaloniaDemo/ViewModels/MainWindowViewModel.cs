@@ -41,8 +41,19 @@ namespace AvaloniaDemo.ViewModels
                 }
             }
         }
-        
-        private void ResetLayout()
+
+        public void CloseLayout()
+        {
+            if (Layout is IDock dock)
+            {
+                if (dock.Close.CanExecute(null))
+                {
+                    dock.Close.Execute(null);
+                }
+            }
+        }
+
+        public void ResetLayout()
         {
             if (Layout is not null)
             {

@@ -35,7 +35,19 @@ namespace Notepad.ViewModels
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
-        
+
+        public MainWindowViewModel()
+        {
+            Factory = new NotepadFactory();
+
+            Layout = Factory?.CreateLayout() as IRootDock;
+            if (Layout is { })
+            {
+                Factory?.InitLayout(Layout);
+                Files = Factory?.FindDockable(Layout, (d) => d.Id == "Files") as IDocumentDock;
+            }
+        }
+
         private Encoding GetEncoding(string path)
         {
             using var reader = new StreamReader(path, Encoding.Default, true);
@@ -95,6 +107,17 @@ namespace Notepad.ViewModels
                 Text = "",
                 Encoding = Encoding.Default.WebName
             };
+        }
+
+        public void CloseLayout()
+        {
+            if (Layout is IDock dock)
+            {
+                if (dock.Close.CanExecute(null))
+                {
+                    dock.Close.Execute(null);
+                }
+            }
         }
 
         public void FileNew()

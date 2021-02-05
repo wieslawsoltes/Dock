@@ -131,15 +131,19 @@ namespace Dock.Model.ReactiveUI.Core
         public bool CanGoForward => _navigateAdapter.CanGoForward;
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand GoBack { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand GoForward { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand Navigate { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand Close { get; }
     }
 }

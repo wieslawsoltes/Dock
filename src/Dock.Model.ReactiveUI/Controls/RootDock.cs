@@ -52,9 +52,11 @@ namespace Dock.Model.ReactiveUI.Controls
         }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand ShowWindows { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
         public ICommand ExitWindows { get; }
     }
 }

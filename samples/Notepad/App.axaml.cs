@@ -17,7 +17,6 @@ namespace Notepad
         public override void OnFrameworkInitializationCompleted()
         {
             var mainWindowViewModel = new MainWindowViewModel();
-            var factory = new NotepadFactory();
 
             switch (ApplicationLifetime)
             {
@@ -28,40 +27,18 @@ namespace Notepad
                         DataContext = mainWindowViewModel
                     };
 
-                    // TODO: Restore main window position, size and state.
-
-                    mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
-                    if (mainWindowViewModel.Layout is { })
-                    {
-                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                        mainWindowViewModel.Files = mainWindowViewModel.Factory?.FindDockable(mainWindowViewModel.Layout, (d) => d.Id == "Files") as IDocumentDock;
-                    }
-
                     mainWindow.Closing += (_, _) =>
                     {
-                        if (mainWindowViewModel.Layout is { } dock)
-                        {
-                            if (dock.Close.CanExecute(null))
-                            {
-                                dock.Close.Execute(null);
-                            }
-                        }
-                        // TODO: Save main window position, size and state.
+                        mainWindowViewModel.CloseLayout();
                     };
 
                     desktopLifetime.MainWindow = mainWindow;
 
                     desktopLifetime.Exit += (_, _) =>
                     {
-                        if (mainWindowViewModel.Layout is { } dock)
-                        {
-                            if (dock.Close.CanExecute(null))
-                            {
-                                dock.Close.Execute(null);
-                            }
-                        }
+                        mainWindowViewModel.CloseLayout();
                     };
+
                     break;
                 }
                 case ISingleViewApplicationLifetime singleViewLifetime:
@@ -71,18 +48,12 @@ namespace Notepad
                         DataContext = mainWindowViewModel
                     };
 
-                    mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
-                    if (mainWindowViewModel.Layout is { })
-                    {
-                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                        mainWindowViewModel.Files = mainWindowViewModel.Factory?.FindDockable(mainWindowViewModel.Layout, (d) => d.Id == "Files") as IDocumentDock;
-                    }
-
                     singleViewLifetime.MainView = mainView;
+
                     break;
                 }
             }
+
             base.OnFrameworkInitializationCompleted();
         }
     }

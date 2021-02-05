@@ -4,10 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
-using AvaloniaDemo.Models;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
-using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace AvaloniaDemo
@@ -56,7 +54,6 @@ namespace AvaloniaDemo
         public override void OnFrameworkInitializationCompleted()
         {
             var mainWindowViewModel = new MainWindowViewModel();
-            var factory = new DemoFactory(new DemoData());
 
             switch (ApplicationLifetime)
             {
@@ -66,18 +63,6 @@ namespace AvaloniaDemo
                     {
                         DataContext = mainWindowViewModel
                     };
-
-                    mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
-
-                    if (mainWindowViewModel.Layout != null)
-                    {
-                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                        if (mainWindowViewModel.Layout is { } root)
-                        {
-                            root.Navigate.Execute("Home");
-                        }
-                    }
 
                     mainWindow.Closing += (_, _) =>
                     {
@@ -102,6 +87,7 @@ namespace AvaloniaDemo
                             }
                         }
                     };
+                    
                     break;
                 }
                 case ISingleViewApplicationLifetime singleViewLifetime:
@@ -111,14 +97,8 @@ namespace AvaloniaDemo
                         DataContext = mainWindowViewModel
                     };
 
-                    mainWindowViewModel.Factory = factory;
-                    mainWindowViewModel.Layout = mainWindowViewModel.Factory?.CreateLayout() as IRootDock;
-                    if (mainWindowViewModel.Layout != null)
-                    {
-                        mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                    }
-
                     singleViewLifetime.MainView = mainView;
+
                     break;
                 }
             }

@@ -8,8 +8,11 @@
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="680"
+             d:DesignWidth="1000" d:DesignHeight="550"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
     <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
         <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
             <MenuItem Header="_File">

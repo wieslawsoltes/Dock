@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using AvaloniaDemo.Models;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using ReactiveUI;
@@ -27,6 +28,18 @@ namespace AvaloniaDemo.ViewModels
         public MainWindowViewModel()
         {
             NewLayout = ReactiveCommand.Create(ResetLayout);
+
+            Factory = new DemoFactory(new DemoData());;
+            Layout = Factory?.CreateLayout() as IRootDock;
+
+            if (Layout != null)
+            {
+                Factory?.InitLayout(Layout);
+                if (Layout is { } root)
+                {
+                    root.Navigate.Execute("Home");
+                }
+            }
         }
         
         private void ResetLayout()

@@ -66,26 +66,14 @@ namespace AvaloniaDemo
 
                     mainWindow.Closing += (_, _) =>
                     {
-                        if (mainWindowViewModel.Layout is IDock dock)
-                        {
-                            if (dock.Close.CanExecute(null))
-                            {
-                                dock.Close.Execute(null);
-                            }
-                        }
+                        mainWindowViewModel.CloseLayout();
                     };
 
                     desktopLifetime.MainWindow = mainWindow;
 
                     desktopLifetime.Exit += (_, _) =>
                     {
-                        if (mainWindowViewModel.Layout is IDock dock)
-                        {
-                            if (dock.Close.CanExecute(null))
-                            {
-                                dock.Close.Execute(null);
-                            }
-                        }
+                        mainWindowViewModel.CloseLayout();
                     };
                     
                     break;
@@ -102,6 +90,7 @@ namespace AvaloniaDemo
                     break;
                 }
             }
+
             base.OnFrameworkInitializationCompleted();
         }
     }

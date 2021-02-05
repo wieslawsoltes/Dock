@@ -49,15 +49,6 @@ namespace Dock.Model.ReactiveUI.Controls
             set => this.RaiseAndSetIfChanged(ref _gripMode, value);
         }
 
-        /// <summary>
-        /// Initializes new instance of the <see cref="ToolDock"/> class.
-        /// </summary>
-        public ToolDock()
-        {
-            Id = nameof(IToolDock);
-            Title = nameof(IToolDock);
-        }
-
         /// <inheritdoc/>
         public override IDockable? Clone()
         {

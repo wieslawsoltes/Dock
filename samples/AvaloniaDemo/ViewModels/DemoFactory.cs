@@ -143,14 +143,6 @@ namespace AvaloniaDemo.ViewModels
         {
             ContextLocator = new Dictionary<string, Func<object>>
             {
-                [nameof(IRootDock)] = () => _context,
-                [nameof(IProportionalDock)] = () => _context,
-                [nameof(IDocumentDock)] = () => _context,
-                [nameof(IToolDock)] = () => _context,
-                [nameof(ISplitterDock)] = () => _context,
-                [nameof(IDockWindow)] = () => _context,
-                [nameof(IDocument)] = () => _context,
-                [nameof(ITool)] = () => _context,
                 ["Document1"] = () => new DemoDocument(),
                 ["Document2"] = () => new DemoDocument(),
                 ["Document3"] = () => new DemoDocument(),

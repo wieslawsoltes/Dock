@@ -21,16 +21,7 @@ namespace Dock.Model.ReactiveUI.Controls
             get => _canCreateDocument;
             set => this.RaiseAndSetIfChanged(ref _canCreateDocument, value);
         }
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="DocumentDock"/> class.
-        /// </summary>
-        public DocumentDock()
-        {
-            Id = nameof(IDocumentDock);
-            Title = nameof(IDocumentDock);
-        }
-
+        
         /// <inheritdoc/>
         public override IDockable? Clone()
         {

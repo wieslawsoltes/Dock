@@ -47,11 +47,8 @@ namespace Dock.Model.ReactiveUI.Controls
         /// </summary>
         public RootDock()
         {
-            Id = nameof(IRootDock);
-            Title = nameof(IRootDock);
             ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
             ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
-            
         }
 
         /// <inheritdoc/>

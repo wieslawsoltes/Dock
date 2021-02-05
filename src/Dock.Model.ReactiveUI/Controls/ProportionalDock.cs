@@ -22,15 +22,6 @@ namespace Dock.Model.ReactiveUI.Controls
             set => this.RaiseAndSetIfChanged(ref _orientation, value);
         }
 
-        /// <summary>
-        /// Initializes new instance of the <see cref="ProportionalDock"/> class.
-        /// </summary>
-        public ProportionalDock()
-        {
-            Id = nameof(IProportionalDock);
-            Title = nameof(IProportionalDock);
-        }
-
         /// <inheritdoc/>
         public override IDockable? Clone()
         {

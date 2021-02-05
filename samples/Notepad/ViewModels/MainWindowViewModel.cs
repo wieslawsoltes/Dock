@@ -8,7 +8,6 @@ using Avalonia.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
-using Notepad.Views.Layouts;
 using ReactiveUI;
 
 namespace Notepad.ViewModels
@@ -218,115 +217,6 @@ namespace Notepad.ViewModels
                 }
 
                 targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
-            }
-        }
-
-        public async void WindowSaveWindowLayout()
-        {
-            if (GetWindow() is { } owner)
-            {
-                var window = new SaveWindowLayoutWindow();
-
-                // TODO:
-
-                await window.ShowDialog(owner);
-            }
-
-            // TODO:
-
-            if (Layout?.ActiveDockable is IDock active)
-            {
-                var clone = (IDock?)active.Clone();
-                if (clone != null)
-                {
-                    clone.Title = clone.Title + "-copy";
-                    
-                    if (active.Close.CanExecute(null))
-                    {
-                        active.Close.Execute(null);
-                    }
-                    
-                    Factory?.AddDockable(Layout, clone);
-
-                    if (Layout.Navigate.CanExecute(clone))
-                    {
-                        Layout.Navigate.Execute(clone);
-                    }
-
-                    Factory?.SetFocusedDockable(Layout, clone);
-                    Layout.DefaultDockable = clone;
-                }
-            }
-        }
-
-        public void WindowApplyWindowLayout(IDock dock)
-        {
-            if (Layout?.ActiveDockable is IDock active && dock != active)
-            {
-                if (active.Close.CanExecute(null))
-                {
-                    active.Close.Execute(null);
-                }
-
-                if (Files is { })
-                {
-                    CopyDocuments(active, dock, Files.Id);
-                }
-
-                if (Layout.Navigate.CanExecute(dock))
-                {
-                    Layout.Navigate.Execute(dock);
-                }
-                
-                Factory?.SetFocusedDockable(Layout, dock);
-                Layout.DefaultDockable = dock;
-            }
-        }
-
-        public async void WindowManageWindowLayouts()
-        {
-            if (GetWindow() is { } owner)
-            {
-                var window = new ManageWindowLayoutsWindow();
-
-                // TODO:
-
-                await window.ShowDialog(owner);
-            }
-        }
-
-        public async void WindowResetWindowLayout()
-        {
-            if (GetWindow() is { } owner)
-            {
-                var window = new ResetWindowLayoutWindow();
-
-                // TODO:
-
-                await window.ShowDialog(owner);
-            }
-
-            // TODO:
-
-            if (Layout?.ActiveDockable is IDock active)
-            {
-                if (Factory?.CreateLayout() is IRootDock layout)
-                {
-                    Factory?.InitLayout(layout);
-
-                    if (Files is { })
-                    {
-                        CopyDocuments(active, layout, Files.Id);
-                    }
-
-                    if (Layout?.Close.CanExecute(null) ?? false)
-                    {
-                        Layout.Close.Execute(null);
-                    }
-
-                    Layout = layout;
-                    Files = Factory?.FindDockable(Layout, (d) => d.Id == "Files") as IDocumentDock;
-                }
             }
         }
 

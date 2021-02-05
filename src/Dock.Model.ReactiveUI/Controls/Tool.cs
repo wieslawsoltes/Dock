@@ -11,10 +11,5 @@ namespace Dock.Model.ReactiveUI.Controls
     [DataContract(IsReference = true)]
     public abstract class Tool : DockableBase, ITool, IDocument
     {
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return this;
-        }
     }
 }

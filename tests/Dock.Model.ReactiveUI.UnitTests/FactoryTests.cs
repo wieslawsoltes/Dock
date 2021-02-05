@@ -89,14 +89,6 @@ namespace Dock.Model.ReactiveUI.UnitTests
         }
     }
 
-    public class TestDocument : Document
-    {
-    }
-
-    public class TestTool : Tool
-    {
-    }
-
     public class TestFactory : Factory
     {
     }

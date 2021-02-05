@@ -11,10 +11,5 @@ namespace Dock.Model.ReactiveUI.Controls
     [DataContract(IsReference = true)]
     public class SplitterDock : DockBase, ISplitterDock
     {
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneSplitterDock(this);
-        }
     }
 }

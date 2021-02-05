@@ -48,11 +48,5 @@ namespace Dock.Model.ReactiveUI.Controls
             get => _gripMode;
             set => this.RaiseAndSetIfChanged(ref _gripMode, value);
         }
-
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneToolDock(this);
-        }
     }
 }

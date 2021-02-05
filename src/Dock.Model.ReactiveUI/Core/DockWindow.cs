@@ -140,11 +140,5 @@ namespace Dock.Model.ReactiveUI.Core
         {
             _hostAdapter.Exit();
         }
-
-        /// <inheritdoc/>
-        public IDockWindow? Clone()
-        {
-            return CloneHelper.CloneDockWindow(this);
-        }
     }
 }

@@ -21,11 +21,5 @@ namespace Dock.Model.ReactiveUI.Controls
             get => _orientation;
             set => this.RaiseAndSetIfChanged(ref _orientation, value);
         }
-
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneProportionalDock(this);
-        }
     }
 }

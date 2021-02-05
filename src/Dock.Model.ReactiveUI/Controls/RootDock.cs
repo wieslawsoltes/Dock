@@ -56,11 +56,5 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         public ICommand ExitWindows { get; }
-
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneRootDock(this);
-        }
     }
 }

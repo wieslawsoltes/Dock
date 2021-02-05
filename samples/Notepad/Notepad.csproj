@@ -22,4 +22,10 @@
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Layouts\ManageWindowLayoutsWindow.axaml" />
+    <UpToDateCheckInput Remove="Views\Layouts\ResetWindowLayoutWindow.axaml" />
+    <UpToDateCheckInput Remove="Views\Layouts\SaveWindowLayoutWindow.axaml" />
+  </ItemGroup>
+
 </Project>

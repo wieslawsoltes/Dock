@@ -93,8 +93,5 @@ namespace Dock.Model.ReactiveUI.Core
         public virtual void OnSelected()
         {
         }
-
-        /// <inheritdoc/>
-        public abstract IDockable? Clone();
     }
 }

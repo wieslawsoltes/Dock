@@ -56,11 +56,5 @@ namespace Dock.Model.Core
         /// Called when the dockable becomes the selected dockable.
         /// </summary>
         void OnSelected();
-
-        /// <summary>
-        /// Clones <see cref="IDockable"/> object.
-        /// </summary>
-        /// <returns>The new instance or reference of the <see cref="IDockable"/> class.</returns>
-        IDockable? Clone();
     }
 }

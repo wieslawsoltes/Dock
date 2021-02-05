@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Dock.Model.Controls;
+﻿using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
@@ -11,7 +10,6 @@ namespace Notepad.ViewModels.Tools
     {
         private string _find = string.Empty;
 
-        [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Find
         {
             get => _find;

@@ -8,14 +8,8 @@ namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IFactory? _factory;
+        private readonly IFactory? _factory;
         private IRootDock? _layout;
-
-        public IFactory? Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
 
         public IRootDock? Layout
         {
@@ -27,19 +21,19 @@ namespace AvaloniaDemo.ViewModels
 
         public MainWindowViewModel()
         {
-            NewLayout = ReactiveCommand.Create(ResetLayout);
+            _factory = new DemoFactory(new DemoData());
 
-            Factory = new DemoFactory(new DemoData());;
-            Layout = Factory?.CreateLayout();
-
+            Layout = _factory?.CreateLayout();
             if (Layout != null)
             {
-                Factory?.InitLayout(Layout);
+                _factory?.InitLayout(Layout);
                 if (Layout is { } root)
                 {
                     root.Navigate.Execute("Home");
                 }
             }
+
+            NewLayout = ReactiveCommand.Create(ResetLayout);
         }
 
         public void CloseLayout()
@@ -63,11 +57,11 @@ namespace AvaloniaDemo.ViewModels
                 }
             }
 
-            var layout = Factory?.CreateLayout();
+            var layout = _factory?.CreateLayout();
             if (layout is not null)
             {
                 Layout = layout as IRootDock;
-                Factory?.InitLayout(layout);
+                _factory?.InitLayout(layout);
             }
         }
     }

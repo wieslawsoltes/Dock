@@ -14,21 +14,8 @@ namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
-        private IFactory? _factory;
-        private IDocumentDock? _files;
+        private readonly IFactory? _factory;
         private IRootDock? _layout;
-  
-        public IFactory? Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
-
-        public IDocumentDock? Files
-        {
-            get => _files;
-            set => this.RaiseAndSetIfChanged(ref _files, value);
-        }
 
         public IRootDock? Layout
         {
@@ -38,13 +25,12 @@ namespace Notepad.ViewModels
 
         public MainWindowViewModel()
         {
-            Factory = new NotepadFactory();
+            _factory = new NotepadFactory();
 
-            Layout = Factory?.CreateLayout();
+            Layout = _factory?.CreateLayout();
             if (Layout is { })
             {
-                Factory?.InitLayout(Layout);
-                Files = Factory?.GetDockable<IDocumentDock>("Files");
+                _factory?.InitLayout(Layout);
             }
         }
 
@@ -85,17 +71,19 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Layout is { } && Files is { })
+            var files = _factory?.GetDockable<IDocumentDock>("Files");
+            if (Layout is { } && files is { })
             {
-                Factory?.AddDockable(Files, fileViewModel);
-                Factory?.SetActiveDockable(fileViewModel);
-                Factory?.SetFocusedDockable(Layout, fileViewModel);
+                _factory?.AddDockable(files, fileViewModel);
+                _factory?.SetActiveDockable(fileViewModel);
+                _factory?.SetFocusedDockable(Layout, fileViewModel);
             }
         }
 
         private FileViewModel? GetFileViewModel()
         {
-            return Files?.ActiveDockable as FileViewModel;
+            var files = _factory?.GetDockable<IDocumentDock>("Files");
+            return files?.ActiveDockable as FileViewModel;
         }
 
         private FileViewModel GetUntitledFileViewModel()

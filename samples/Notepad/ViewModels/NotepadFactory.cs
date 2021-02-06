@@ -66,7 +66,7 @@ namespace Notepad.ViewModels
                             findViewModel
                         )
                     },
-                    new SplitterDock(),
+                    new SplitterDockable(),
                     new ToolDock
                     {
                         ActiveDockable = replaceViewModel,
@@ -87,7 +87,7 @@ namespace Notepad.ViewModels
                 VisibleDockables = CreateList<IDockable>
                 (
                     files,
-                    new SplitterDock(),
+                    new SplitterDockable(),
                     tools
                 )
             };

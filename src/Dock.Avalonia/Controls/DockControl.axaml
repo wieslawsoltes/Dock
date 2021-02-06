@@ -22,7 +22,7 @@
                         <DataTemplate DataType="dmc:IToolContent">
                             <ContentControl Content="{Binding Content}"/>
                         </DataTemplate>
-                        <DataTemplate DataType="dmc:ISplitterDock">
+                        <DataTemplate DataType="dmc:ISplitterDockable">
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IDocumentDock">

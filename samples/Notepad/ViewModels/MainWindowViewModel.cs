@@ -44,7 +44,7 @@ namespace Notepad.ViewModels
             if (Layout is { })
             {
                 Factory?.InitLayout(Layout);
-                Files = Factory?.FindDockable(Layout, (d) => d.Id == "Files") as IDocumentDock;
+                Files = Factory?.GetDockable<IDocumentDock>("Files");
             }
         }
 
@@ -221,25 +221,6 @@ namespace Notepad.ViewModels
                     }
                 }
                 e.Handled = true;
-            }
-        }
-
-        private void CopyDocuments(IDock source, IDock target, string id)
-        {
-            if (source.Factory?.FindDockable(source, (d) => d.Id == id) is IDock sourceFiles
-                && target.Factory?.FindDockable(target, (d) => d.Id == id) is IDock targetFiles
-                && sourceFiles.VisibleDockables != null
-                && targetFiles.VisibleDockables != null)
-            {
-                targetFiles.VisibleDockables.Clear();
-                targetFiles.ActiveDockable = null;
-
-                foreach (var visible in sourceFiles.VisibleDockables)
-                {
-                    targetFiles.VisibleDockables.Add(visible);
-                }
-
-                targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
             }
         }
 

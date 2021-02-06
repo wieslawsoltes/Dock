@@ -75,18 +75,18 @@ namespace Dock.Model
         }
 
         /// <inheritdoc/>
-        public virtual IDockable? GetDockable(string id)
+        public virtual T? GetDockable<T>(string id) where T: class, IDockable
         {
             if (!string.IsNullOrEmpty(id))
             {
                 Func<IDockable?>? locator = null;
                 if (DockableLocator?.TryGetValue(id, out locator) == true)
                 {
-                    return locator?.Invoke();
+                    return locator?.Invoke() as T;
                 }
             }
             Debug.WriteLine($"Dockable with provided id={id} is not registered.");
-            return null;
+            return default(T);
         }
 
         /// <inheritdoc/>

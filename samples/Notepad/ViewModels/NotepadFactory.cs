@@ -16,6 +16,8 @@ namespace Notepad.ViewModels
     {
         private IRootDock? _rootDock;
         private IDocumentDock? _documentDock;
+        private ITool? _findTool;
+        private ITool? _replaceTool;
 
         public override IDocumentDock CreateDocumentDock() => new FilesDocumentDock();
 
@@ -107,6 +109,8 @@ namespace Notepad.ViewModels
 
             _documentDock = documentDock;
             _rootDock = rootDock;
+            _findTool = findViewModel;
+            _replaceTool = replaceViewModel;
 
             return rootDock;
         }
@@ -119,15 +123,17 @@ namespace Notepad.ViewModels
                 ["Replace"] = () => layout
             };
 
-            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
-            {
-                [nameof(IDockWindow)] = () => new HostWindow()
-            };
-
             DockableLocator = new Dictionary<string, Func<IDockable?>>()
             {
                 ["Root"] = () => _rootDock,
-                ["Documents"] = () => _documentDock
+                ["Files"] = () => _documentDock,
+                ["Find"] = () => _findTool,
+                ["Replace"] = () => _replaceTool
+            };
+
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            {
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             base.InitLayout(layout);

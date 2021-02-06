@@ -156,15 +156,15 @@ namespace AvaloniaDemo.ViewModels
                 ["Home"] = () => _context
             };
 
-            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
-            {
-                [nameof(IDockWindow)] = () => new HostWindow()
-            };
-
             DockableLocator = new Dictionary<string, Func<IDockable?>>()
             {
                 ["Root"] = () => _rootDock,
                 ["Documents"] = () => _documentDock
+            };
+
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            {
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             base.InitLayout(layout);

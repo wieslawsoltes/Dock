@@ -75,7 +75,7 @@ namespace Dock.Model.Core
         IRootDock? CreateLayout();
 
         /// <summary>
-        /// Gets registered context.
+        /// Gets registered context in <see cref="ContextLocator"/>.
         /// </summary>
         /// <param name="id">The object id.</param>
         /// <returns>The located context.</returns>
@@ -89,11 +89,12 @@ namespace Dock.Model.Core
         IHostWindow? GetHostWindow(string id);
 
         /// <summary>
-        /// Gets registered dockable.
+        /// Gets registered dockable in <see cref="DockableLocator"/>.
         /// </summary>
-        /// <param name="id">The host id.</param>
+        /// <param name="id">The dockable id.</param>
+        /// <typeparam name="T">The dockable return type.</typeparam>
         /// <returns>The located dockable.</returns>
-        IDockable? GetDockable(string id);
+        T? GetDockable<T>(string id) where T: class, IDockable;
 
         /// <summary>
         /// Initialize layout.

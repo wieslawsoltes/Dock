@@ -43,6 +43,7 @@ namespace AvaloniaDemo.ViewModels
 
             var leftDock = new ProportionalDock
             {
+                Proportion = 0.25,
                 Orientation = Orientation.Vertical,
                 ActiveDockable = null,
                 VisibleDockables = CreateList<IDockable>
@@ -65,6 +66,7 @@ namespace AvaloniaDemo.ViewModels
 
             var rightDock = new ProportionalDock
             {
+                Proportion = 0.25,
                 Orientation = Orientation.Vertical,
                 ActiveDockable = null,
                 VisibleDockables = CreateList<IDockable>

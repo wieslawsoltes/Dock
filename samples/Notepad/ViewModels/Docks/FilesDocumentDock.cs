@@ -1,17 +1,22 @@
 ﻿using System.Text;
-using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
+using ReactiveUI;
 
 namespace Notepad.ViewModels.Docks
 {
     public class FilesDocumentDock : DocumentDock
     {
-        public override IDocument? CreateDocument()
+        public FilesDocumentDock()
+        {
+            CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+        }
+
+        private void CreateNewDocument()
         {
             if (!CanCreateDocument)
             {
-                return base.CreateDocument();
+                return;
             }
 
             var document = new FileViewModel()
@@ -24,9 +29,7 @@ namespace Notepad.ViewModels.Docks
 
             Factory?.AddDockable(this, document);
             Factory?.SetActiveDockable(document);
-            Factory?.SetFocusedDockable(this, document);
-
-            return document;
+            Factory?.SetFocusedDockable(this, document);;
         }
     }
 }

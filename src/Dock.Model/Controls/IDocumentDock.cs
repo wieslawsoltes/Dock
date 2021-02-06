@@ -1,4 +1,5 @@
 ﻿
+using System.Windows.Input;
 using Dock.Model.Core;
 
 namespace Dock.Model.Controls
@@ -12,11 +13,10 @@ namespace Dock.Model.Controls
         /// Gets or sets if document dock can create new documents.
         /// </summary>
         bool CanCreateDocument { get; set; }
-        
+
         /// <summary>
-        /// Creates new <see cref="IDocument"/>.
+        /// Gets or sets command to create new document.
         /// </summary>
-        /// <returns>The new instance of the <see cref="IDocument"/> class.</returns>
-        IDocument? CreateDocument();
+        ICommand? CreateDocument { get; set; }
     }
 }

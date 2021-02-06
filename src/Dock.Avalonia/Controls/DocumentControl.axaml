@@ -66,13 +66,11 @@
                                     <ControlTemplate>
                                         <DockPanel Background="Transparent" ClipToBounds="False">
                                             <Button x:Name="PART_ButtonCreate"
-                                                    Command="{Binding CreateDocument}" 
-                                                    CommandParameter="{Binding}" 
+                                                    Command="{Binding CreateDocument}"
                                                     Classes="documentTabButton" 
                                                     IsVisible="{Binding CanCreateDocument}"
-                                                    DockPanel.Dock="Right"
-                                                    x:CompileBindings="False">
-                                                <Button.Styles>
+                                                    DockPanel.Dock="Right">
+                                            <Button.Styles>
                                                     <Style Selector="Button">
                                                         <Setter Property="BorderThickness" Value="0"/>
                                                         <Setter Property="Padding" Value="0"/>

@@ -1,16 +1,21 @@
 ﻿using AvaloniaDemo.ViewModels.Documents;
-using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Controls;
+using ReactiveUI;
 
 namespace AvaloniaDemo.ViewModels.Docks
 {
     public class CustomDocumentDock : DocumentDock
     {
-        public override IDocument? CreateDocument()
+        public CustomDocumentDock()
+        {
+            CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+        }
+
+        private void CreateNewDocument()
         {
             if (!CanCreateDocument)
             {
-                return base.CreateDocument();
+                return;
             }
 
             var index = VisibleDockables?.Count + 1;
@@ -19,8 +24,6 @@ namespace AvaloniaDemo.ViewModels.Docks
             Factory?.AddDockable(this, document);
             Factory?.SetActiveDockable(document);
             Factory?.SetFocusedDockable(this, document);
-
-            return document;
         }
     }
 }

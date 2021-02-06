@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
@@ -23,9 +24,7 @@ namespace Dock.Model.ReactiveUI.Controls
         }
 
         /// <inheritdoc/>
-        public virtual IDocument? CreateDocument()
-        {
-            return default;
-        }
+        [IgnoreDataMember]
+        public ICommand? CreateDocument { get; set; }
     }
 }

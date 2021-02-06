@@ -111,12 +111,12 @@ namespace Dock.Avalonia.Controls
             {
                 Factory.ContextLocator = new Dictionary<string, Func<object>>();
 
+                Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+
                 Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
                 {
                     [nameof(IDockWindow)] = () => new HostWindow()
                 };
-
-                Factory.DockableLocator = new Dictionary<string, Func<IDockable>>();
             }
 
             if (InitializeLayout && Factory != null && Layout != null)

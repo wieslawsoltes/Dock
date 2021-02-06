@@ -137,20 +137,20 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Attaches grip to chrome.
         /// </summary>
-        /// <param name="chrome">The chrome control.</param>
-        public void AttachGrip(DockToolChrome chrome)
+        /// <param name="chromeControl">The chrome control.</param>
+        public void AttachGrip(ToolChromeControl chromeControl)
         {
-            if (chrome.CloseButton is not null)
+            if (chromeControl.CloseButton is not null)
             {
-                Observable.FromEventPattern(chrome.CloseButton, nameof(Button.Click)).Subscribe(_ =>
+                Observable.FromEventPattern(chromeControl.CloseButton, nameof(Button.Click)).Subscribe(_ =>
                 {
                     Close();
                 });
             }
 
-            _chromeGrip = chrome.Grip;
+            _chromeGrip = chromeControl.Grip;
 
-            ((IPseudoClasses)chrome.Classes).Add(":floating");
+            ((IPseudoClasses)chromeControl.Classes).Add(":floating");
             PseudoClasses.Set(":toolwindow", true);
         }
 

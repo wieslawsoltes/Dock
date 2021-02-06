@@ -4,7 +4,7 @@
     <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
     <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DefaultTheme.axaml"/>
-    <Style Selector="idc|DockToolChrome">
+    <Style Selector="idc|ToolChromeControl">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 </Styles>

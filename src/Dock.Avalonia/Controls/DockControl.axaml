@@ -72,11 +72,11 @@
                                         </DataTemplate>
                                     </ItemsControl.DataTemplates>
                                 </ItemsControl>
-                                <idc:DockToolChrome IsActive="{Binding IsActive}" 
+                                <idc:ToolChromeControl IsActive="{Binding IsActive}" 
                                                     IsVisible="{Binding !!VisibleDockables.Count}"
                                                     idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                     <idc:ToolControl/>
-                                </idc:DockToolChrome>
+                                </idc:ToolChromeControl>
                             </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">

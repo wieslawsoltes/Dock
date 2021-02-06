@@ -14,7 +14,7 @@
     </Styles.Resources>
     <FluentTheme Mode="Dark"/>
     <StyleInclude Source="avares://Dock.Avalonia/Themes/FluentTheme.axaml"/>
-    <Style Selector="idc|DockToolChrome">
+    <Style Selector="idc|ToolChromeControl">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 </Styles>

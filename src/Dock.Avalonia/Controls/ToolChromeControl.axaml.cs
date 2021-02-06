@@ -11,24 +11,24 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Dock tool chrome content control.
     /// </summary>
-    public class DockToolChrome : ContentControl
+    public class ToolChromeControl : ContentControl
     {
         /// <summary>
         /// Define <see cref="Title"/> property.
         /// </summary>
         public static readonly StyledProperty<string> TitleProprty =
-            AvaloniaProperty.Register<DockToolChrome, string>(nameof(Title));
+            AvaloniaProperty.Register<ToolChromeControl, string>(nameof(Title));
 
         /// <summary>
         /// Define the <see cref="IsActive"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> IsActiveProperty =
-            AvaloniaProperty.Register<DockToolChrome, bool>(nameof(IsActive));
+            AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsActive));
 
         /// <summary>
-        /// Initialize the new instance of the <see cref="DockToolChrome"/>.
+        /// Initialize the new instance of the <see cref="ToolChromeControl"/>.
         /// </summary>
-        public DockToolChrome()
+        public ToolChromeControl()
         {
             UpdatePseudoClasses(IsActive);
         }
@@ -70,7 +70,7 @@ namespace Dock.Avalonia.Controls
                 {
                     if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
                     {
-                        Debug.WriteLine($"{nameof(DockToolChrome)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
+                        Debug.WriteLine($"{nameof(ToolChromeControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);
                     }
                 }

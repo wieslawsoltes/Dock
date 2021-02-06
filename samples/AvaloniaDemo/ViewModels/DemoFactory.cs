@@ -17,6 +17,8 @@ namespace AvaloniaDemo.ViewModels
     public class DemoFactory : Factory
     {
         private readonly object _context;
+        private IRootDock? _rootDock;
+        private IDocumentDock? _documentDock;
 
         public DemoFactory(object context)
         {
@@ -25,7 +27,7 @@ namespace AvaloniaDemo.ViewModels
 
         public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
-        public override IDock CreateLayout()
+        public override IRootDock CreateLayout()
         {
             var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
             var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
@@ -120,14 +122,17 @@ namespace AvaloniaDemo.ViewModels
                 VisibleDockables = CreateList<IDockable>(mainLayout)
             };
 
-            var root = CreateRootDock();
+            var rootDock = CreateRootDock();
 
-            root.IsCollapsable = false;
-            root.ActiveDockable = dashboardView;
-            root.DefaultDockable = homeView;
-            root.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
+            rootDock.IsCollapsable = false;
+            rootDock.ActiveDockable = dashboardView;
+            rootDock.DefaultDockable = homeView;
+            rootDock.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
 
-            return root;
+            _documentDock = documentDock;
+            _rootDock = rootDock;
+            
+            return rootDock;
         }
 
         public override void InitLayout(IDockable layout)
@@ -154,7 +159,11 @@ namespace AvaloniaDemo.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            DockableLocator = new Dictionary<string, Func<IDockable>>();
+            DockableLocator = new Dictionary<string, Func<IDockable?>>()
+            {
+                ["Root"] = () => _rootDock,
+                ["Documents"] = () => _documentDock
+            };
 
             base.InitLayout(layout);
         }

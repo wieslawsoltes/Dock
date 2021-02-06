@@ -14,9 +14,12 @@ namespace Notepad.ViewModels
 {
     public class NotepadFactory : Factory
     {
+        private IRootDock? _rootDock;
+        private IDocumentDock? _documentDock;
+
         public override IDocumentDock CreateDocumentDock() => new FilesDocumentDock();
 
-        public override IDock CreateLayout()
+        public override IRootDock CreateLayout()
         {
             var untitledFileViewModel = new FileViewModel()
             {
@@ -38,7 +41,7 @@ namespace Notepad.ViewModels
                 Title = "Replace"
             };
 
-            var files = new FilesDocumentDock()
+            var documentDock = new FilesDocumentDock()
             {
                 Id = "Files",
                 Title = "Files",
@@ -86,7 +89,7 @@ namespace Notepad.ViewModels
                 IsCollapsable = false,
                 VisibleDockables = CreateList<IDockable>
                 (
-                    files,
+                    documentDock,
                     new SplitterDockable(),
                     tools
                 )
@@ -95,14 +98,17 @@ namespace Notepad.ViewModels
             windowLayout.VisibleDockables = CreateList<IDockable>(windowLayoutContent);
             windowLayout.ActiveDockable = windowLayoutContent;
 
-            var root = CreateRootDock();
+            var rootDock = CreateRootDock();
 
-            root.IsCollapsable = false;
-            root.VisibleDockables = CreateList<IDockable>(windowLayout);
-            root.ActiveDockable = windowLayout;
-            root.DefaultDockable = windowLayout;
+            rootDock.IsCollapsable = false;
+            rootDock.VisibleDockables = CreateList<IDockable>(windowLayout);
+            rootDock.ActiveDockable = windowLayout;
+            rootDock.DefaultDockable = windowLayout;
 
-            return root;
+            _documentDock = documentDock;
+            _rootDock = rootDock;
+
+            return rootDock;
         }
 
         public override void InitLayout(IDockable layout)
@@ -118,7 +124,11 @@ namespace Notepad.ViewModels
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            DockableLocator = new Dictionary<string, Func<IDockable>>();
+            DockableLocator = new Dictionary<string, Func<IDockable?>>()
+            {
+                ["Root"] = () => _rootDock,
+                ["Documents"] = () => _documentDock
+            };
 
             base.InitLayout(layout);
         }

@@ -18,7 +18,7 @@ namespace Dock.Model
         public virtual IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, Func<IDockable>>? DockableLocator { get; set; }
+        public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
         /// <inheritdoc/>
         public abstract IList<T> CreateList<T>(params T[] items);
@@ -42,7 +42,7 @@ namespace Dock.Model
         public abstract IDockWindow CreateDockWindow();
 
         /// <inheritdoc/>
-        public abstract IDock? CreateLayout();
+        public abstract IRootDock? CreateLayout();
 
         /// <inheritdoc/>
         public virtual object? GetContext(string id)
@@ -79,7 +79,7 @@ namespace Dock.Model
         {
             if (!string.IsNullOrEmpty(id))
             {
-                Func<IDockable>? locator = null;
+                Func<IDockable?>? locator = null;
                 if (DockableLocator?.TryGetValue(id, out locator) == true)
                 {
                     return locator?.Invoke();

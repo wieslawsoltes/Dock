@@ -22,7 +22,7 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets or sets <see cref="IDockable"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<IDockable>>? DockableLocator { get; set; }
+        IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
         /// <summary>
         /// Creates list of type <see cref="IList{T}"/>.
@@ -71,8 +71,8 @@ namespace Dock.Model.Core
         /// <summary>
         /// Creates layout.
         /// </summary>
-        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock? CreateLayout();
+        /// <returns>The new instance of the <see cref="IRootDock"/> class.</returns>
+        IRootDock? CreateLayout();
 
         /// <summary>
         /// Gets registered context.

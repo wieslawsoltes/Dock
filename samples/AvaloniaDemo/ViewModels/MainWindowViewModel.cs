@@ -30,7 +30,7 @@ namespace AvaloniaDemo.ViewModels
             NewLayout = ReactiveCommand.Create(ResetLayout);
 
             Factory = new DemoFactory(new DemoData());;
-            Layout = Factory?.CreateLayout() as IRootDock;
+            Layout = Factory?.CreateLayout();
 
             if (Layout != null)
             {

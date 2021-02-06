@@ -40,7 +40,7 @@ namespace Notepad.ViewModels
         {
             Factory = new NotepadFactory();
 
-            Layout = Factory?.CreateLayout() as IRootDock;
+            Layout = Factory?.CreateLayout();
             if (Layout is { })
             {
                 Factory?.InitLayout(Layout);

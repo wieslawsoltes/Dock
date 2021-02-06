@@ -12,5 +12,11 @@ namespace Dock.Model.Controls
         /// Gets or sets if document dock can create new documents.
         /// </summary>
         bool CanCreateDocument { get; set; }
+        
+        /// <summary>
+        /// Creates new <see cref="IDocument"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDocument"/> class.</returns>
+        IDocument? CreateDocument();
     }
 }

@@ -6,6 +6,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using Notepad.ViewModels.Docks;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -13,23 +14,7 @@ namespace Notepad.ViewModels
 {
     public class NotepadFactory : Factory
     {
-        public override void CreateDocument(IDocumentDock dock)
-        {
-            if (dock.CanCreateDocument)
-            {
-                var index = dock.VisibleDockables?.Count + 1;
-                var document = new FileViewModel()
-                {
-                    Path = string.Empty,
-                    Title = "Untitled",
-                    Text = "",
-                    Encoding = Encoding.Default.WebName
-                };
-                AddDockable(dock, document);
-                SetActiveDockable(document);
-                SetFocusedDockable(dock, document);
-            }
-        }
+        public override IDocumentDock CreateDocumentDock() => new FilesDocumentDock();
 
         public override IDock CreateLayout()
         {
@@ -53,7 +38,7 @@ namespace Notepad.ViewModels
                 Title = "Replace"
             };
 
-            var files = new DocumentDock
+            var files = new FilesDocumentDock()
             {
                 Id = "Files",
                 Title = "Files",

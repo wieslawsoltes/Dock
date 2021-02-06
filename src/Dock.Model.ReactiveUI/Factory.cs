@@ -34,6 +34,6 @@ namespace Dock.Model.ReactiveUI
         public override IDockWindow CreateDockWindow() => new DockWindow();
 
         /// <inheritdoc/>
-        public override IDock? CreateLayout() => CreateRootDock();
+        public override IDock CreateLayout() => CreateRootDock();
     }
 }

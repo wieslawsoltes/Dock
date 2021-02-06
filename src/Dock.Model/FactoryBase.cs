@@ -45,11 +45,6 @@ namespace Dock.Model
         public abstract IDock? CreateLayout();
 
         /// <inheritdoc/>
-        public virtual void CreateDocument(IDocumentDock dock)
-        {
-        }
-
-        /// <inheritdoc/>
         public virtual object? GetContext(string id)
         {
             if (!string.IsNullOrEmpty(id))

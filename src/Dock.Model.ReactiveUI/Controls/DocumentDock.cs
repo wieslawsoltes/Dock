@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
@@ -19,6 +20,12 @@ namespace Dock.Model.ReactiveUI.Controls
         {
             get => _canCreateDocument;
             set => this.RaiseAndSetIfChanged(ref _canCreateDocument, value);
+        }
+
+        /// <inheritdoc/>
+        public virtual IDocument? CreateDocument()
+        {
+            return default;
         }
     }
 }

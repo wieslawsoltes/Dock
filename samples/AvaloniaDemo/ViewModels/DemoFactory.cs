@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AvaloniaDemo.Models.Documents;
 using AvaloniaDemo.Models.Tools;
+using AvaloniaDemo.ViewModels.Docks;
 using AvaloniaDemo.ViewModels.Documents;
 using AvaloniaDemo.ViewModels.Tools;
 using AvaloniaDemo.ViewModels.Views;
@@ -22,17 +23,7 @@ namespace AvaloniaDemo.ViewModels
             _context = context;
         }
 
-        public override void CreateDocument(IDocumentDock dock)
-        {
-            if (dock.CanCreateDocument)
-            {
-                var index = dock.VisibleDockables?.Count + 1;
-                var document = new DocumentViewModel {Id = $"Document{index}", Title = $"Document{index}"};
-                AddDockable(dock, document);
-                SetActiveDockable(document);
-                SetFocusedDockable(dock, document);
-            }
-        }
+        public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
         public override IDock CreateLayout()
         {
@@ -94,7 +85,7 @@ namespace AvaloniaDemo.ViewModels
                 )
             };
 
-            var documentDock = new DocumentDock
+            var documentDock = new CustomDocumentDock
             {
                 IsCollapsable = false,
                 ActiveDockable = document1,

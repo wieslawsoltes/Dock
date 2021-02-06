@@ -140,8 +140,8 @@
                 <VisualBrush.Visual>
                     <Canvas Width="4" Height="5" Background="Transparent">
                         <Rectangle Height="1" Width="1" Fill="#474747" />
-                        <Rectangle Height="1" Width="1" Fill="#474747"Canvas.Top="2" Canvas.Left="2"  />
-                        <Rectangle Height="1" Width="1" Fill="#474747"Canvas.Top="4"  />
+                        <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="2" Canvas.Left="2"  />
+                        <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="4"  />
                     </Canvas>
                 </VisualBrush.Visual>
             </VisualBrush>

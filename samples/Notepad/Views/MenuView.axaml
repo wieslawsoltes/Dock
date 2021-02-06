@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="20">
+             d:DesignWidth="600" d:DesignHeight="20">
     <Menu>
         <MenuItem Header="_File">
             <MenuItem Header="_New" Command="{Binding FileNew}"/>

@@ -29,7 +29,7 @@ namespace Notepad.ViewModels.Docks
 
             Factory?.AddDockable(this, document);
             Factory?.SetActiveDockable(document);
-            Factory?.SetFocusedDockable(this, document);;
+            Factory?.SetFocusedDockable(this, document);
         }
     }
 }

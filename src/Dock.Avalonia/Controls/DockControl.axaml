@@ -45,29 +45,37 @@
                                                 <LayoutTransformControl.LayoutTransform>
                                                     <RotateTransform Angle="270"></RotateTransform>
                                                 </LayoutTransformControl.LayoutTransform>
-                                                <TextBlock Text="{Binding Title}"
-                                                           VerticalAlignment="Center"
-                                                           HorizontalAlignment="Left">
-                                                    <TextBlock.ContextMenu>
-                                                        <ContextMenu>
-                                                            <MenuItem Header="_Float" 
-                                                                      Command="{Binding Owner.Factory.FloatDockable}" 
-                                                                      CommandParameter="{Binding}" 
-                                                                      IsVisible="{Binding CanFloat}"
-                                                                      x:CompileBindings="False" />
-                                                            <MenuItem Header="_Hide" 
-                                                                      Command="{Binding Owner.Factory.PinDockable}" 
-                                                                      CommandParameter="{Binding}" 
-                                                                      IsVisible="{Binding CanPin}"
-                                                                      x:CompileBindings="False" />
-                                                            <MenuItem Header="_Close" 
-                                                                      Command="{Binding Owner.Factory.CloseDockable}" 
-                                                                      CommandParameter="{Binding}" 
-                                                                      IsVisible="{Binding CanClose}"
-                                                                      x:CompileBindings="False" />
-                                                        </ContextMenu>
-                                                    </TextBlock.ContextMenu>
-                                                </TextBlock>
+                                                <Button Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        Command="{Binding Owner.Factory.PinDockable}" 
+                                                        CommandParameter="{Binding}" 
+                                                        IsVisible="{Binding CanPin}"
+                                                        x:CompileBindings="False">
+                                                    <TextBlock Text="{Binding Title}"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Left">
+                                                        <TextBlock.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="_Float" 
+                                                                          Command="{Binding Owner.Factory.FloatDockable}" 
+                                                                          CommandParameter="{Binding}" 
+                                                                          IsVisible="{Binding CanFloat}"
+                                                                          x:CompileBindings="False" />
+                                                                <MenuItem Header="_Show" 
+                                                                          Command="{Binding Owner.Factory.PinDockable}" 
+                                                                          CommandParameter="{Binding}" 
+                                                                          IsVisible="{Binding CanPin}"
+                                                                          x:CompileBindings="False" />
+                                                                <MenuItem Header="_Close" 
+                                                                          Command="{Binding Owner.Factory.CloseDockable}" 
+                                                                          CommandParameter="{Binding}" 
+                                                                          IsVisible="{Binding CanClose}"
+                                                                          x:CompileBindings="False" />
+                                                            </ContextMenu>
+                                                        </TextBlock.ContextMenu>
+                                                    </TextBlock>
+                                                </Button>
                                             </LayoutTransformControl>
                                         </DataTemplate>
                                     </ItemsControl.DataTemplates>

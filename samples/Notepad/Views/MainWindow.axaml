@@ -16,7 +16,7 @@
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Notepad" Height="600" Width="900"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome, OSXThickTitleBar"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
     <Design.DataContext>
         <vm:MainWindowViewModel/>

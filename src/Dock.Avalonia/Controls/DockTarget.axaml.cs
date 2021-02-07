@@ -13,11 +13,11 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockTarget : TemplatedControl
     {
-        private Grid? _topIndicator;
-        private Grid? _bottomIndicator;
-        private Grid? _leftIndicator;
-        private Grid? _rightIndicator;
-        private Grid? _centerIndicator;
+        private Panel? _topIndicator;
+        private Panel? _bottomIndicator;
+        private Panel? _leftIndicator;
+        private Panel? _rightIndicator;
+        private Panel? _centerIndicator;
         private Control? _topSelector;
         private Control? _bottomSelector;
         private Control? _leftSelector;
@@ -34,11 +34,11 @@ namespace Dock.Avalonia.Controls
         {
             base.OnApplyTemplate(e);
 
-            _topIndicator = e.NameScope.Find<Grid>("PART_TopIndicator");
-            _bottomIndicator = e.NameScope.Find<Grid>("PART_BottomIndicator");
-            _leftIndicator = e.NameScope.Find<Grid>("PART_LeftIndicator");
-            _rightIndicator = e.NameScope.Find<Grid>("PART_RightIndicator");
-            _centerIndicator = e.NameScope.Find<Grid>("PART_CenterIndicator");
+            _topIndicator = e.NameScope.Find<Panel>("PART_TopIndicator");
+            _bottomIndicator = e.NameScope.Find<Panel>("PART_BottomIndicator");
+            _leftIndicator = e.NameScope.Find<Panel>("PART_LeftIndicator");
+            _rightIndicator = e.NameScope.Find<Panel>("PART_RightIndicator");
+            _centerIndicator = e.NameScope.Find<Panel>("PART_CenterIndicator");
 
             _topSelector = e.NameScope.Find<Control>("PART_TopSelector");
             _bottomSelector = e.NameScope.Find<Control>("PART_BottomSelector");
@@ -79,22 +79,21 @@ namespace Dock.Avalonia.Controls
             return result;
         }
 
-        private bool InvalidateIndicator(Control? selector, Grid? indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
+        private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
         {
-            if (selector != null && indicator != null)
+            if (selector == null || indicator == null)
             {
-                var selectorPoint = relativeTo.TranslatePoint(point, selector);
-                if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo))
-                {
-                    indicator.Opacity = 0.5;
-                    return true;
-                }
-                else
-                {
-                    indicator.Opacity = 0;
-                    return false;
-                }
+                return false;
             }
+
+            var selectorPoint = relativeTo.TranslatePoint(point, selector);
+            if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo))
+            {
+                indicator.Opacity = 0.5;
+                return true;
+            }
+
+            indicator.Opacity = 0;
             return false;
         }
     }

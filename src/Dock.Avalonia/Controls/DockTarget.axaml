@@ -2,36 +2,36 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:idc="using:Dock.Avalonia.Controls">
     <Design.PreviewWith>
-        <idc:DockTarget Width="300" Height="300"/>
+        <Panel Width="300" Height="300" Background="White">
+            <idc:DockTarget>
+                <idc:DockTarget.Styles>
+                    <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">
+                        <Setter Property="Opacity" Value="0.5"/>
+                    </Style>
+                </idc:DockTarget.Styles>
+            </idc:DockTarget>
+        </Panel>
     </Design.PreviewWith>
     <Style Selector="idc|DockTarget">
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid x:Name="grid" 
-                      RowDefinitions="*,*" 
-                      ColumnDefinitions="*,*" 
-                      x:CompileBindings="True">
-                    <Grid x:Name="PART_TopIndicator" 
-                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
-                          Opacity="0"
-                          Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" />
-                    <Grid x:Name="PART_BottomIndicator" 
-                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
-                          Opacity="0"
-                          Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"  />
-                    <Grid x:Name="PART_LeftIndicator" 
-                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
-                          Opacity="0"
-                          Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" />
-                    <Grid x:Name="PART_RightIndicator" 
-                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
-                          Opacity="0"
-                          Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
-                    <Grid x:Name="PART_CenterIndicator" 
-                          Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
-                          Opacity="0"
-                          Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
-                    <Grid Grid.Row="0" RowSpan="2" ColumnSpan="2" Grid.Column="0">
+                <Grid x:Name="PART_Grid" RowDefinitions="*,*" ColumnDefinitions="*,*" x:CompileBindings="True">
+                    <Panel x:Name="PART_TopIndicator" 
+                           Background="{DynamicResource DockApplicationAccentBrushIndicator}"
+                           Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" />
+                    <Panel x:Name="PART_BottomIndicator" 
+                           Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
+                           Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"  />
+                    <Panel x:Name="PART_LeftIndicator" 
+                           Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
+                           Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" />
+                    <Panel x:Name="PART_RightIndicator" 
+                           Background="{DynamicResource DockApplicationAccentBrushIndicator}" 
+                           Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
+                    <Panel x:Name="PART_CenterIndicator" 
+                           Background="{DynamicResource DockApplicationAccentBrushIndicator}"
+                           Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
+                    <Panel x:Name="PART_SelectorPanel" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
                             <Image x:Name="PART_TopSelector" 
                                    Source="/Assets/DockAnchorableTop.png" 
@@ -54,9 +54,24 @@
                                    Height="40" Width="40" 
                                    Grid.Row="1" Grid.Column="1" />
                         </Grid>
-                    </Grid>
+                    </Panel>
                 </Grid>
             </ControlTemplate>
         </Setter>
+    </Style>
+    <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="idc|DockTarget /template/ Panel#PART_BottomIndicator">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="idc|DockTarget /template/ Panel#PART_LeftIndicator">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="idc|DockTarget /template/ Panel#PART_RightIndicator">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+    <Style Selector="idc|DockTarget /template/ Panel#PART_CenterIndicator">
+        <Setter Property="Opacity" Value="0"/>
     </Style>
 </Styles>

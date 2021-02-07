@@ -6,7 +6,19 @@
             <idc:DockTarget>
                 <idc:DockTarget.Styles>
                     <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">
-                        <Setter Property="Opacity" Value="0.5"/>
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </Style>
+                    <Style Selector="idc|DockTarget /template/ Panel#PART_BottomIndicator">
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </Style>
+                    <Style Selector="idc|DockTarget /template/ Panel#PART_LeftIndicator">
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </Style>
+                    <Style Selector="idc|DockTarget /template/ Panel#PART_RightIndicator">
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </Style>
+                    <Style Selector="idc|DockTarget /template/ Panel#PART_CenterIndicator">
+                        <Setter Property="Opacity" Value="0.0"/>
                     </Style>
                 </idc:DockTarget.Styles>
             </idc:DockTarget>

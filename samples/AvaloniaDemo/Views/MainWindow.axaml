@@ -36,7 +36,6 @@
         <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
             <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
                 <views:MainView/>
-                <!-- <views:ProportionalStackPanelView/> -->
             </Panel>
         </Panel>
     </Panel>

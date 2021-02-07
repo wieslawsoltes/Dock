@@ -34,23 +34,23 @@
                     <Panel x:Name="PART_SelectorPanel" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
                         <Grid MaxWidth="125" MaxHeight="125" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
                             <Image x:Name="PART_TopSelector" 
-                                   Source="/Assets/DockAnchorableTop.png" 
+                                   Source="avares://Dock.Avalonia/Assets/DockAnchorableTop.png" 
                                    Height="40" Width="40" 
                                    Grid.Row="0" Grid.Column="1" />
                             <Image x:Name="PART_BottomSelector" 
-                                   Source="/Assets/DockAnchorableBottom.png" 
+                                   Source="avares://Dock.Avalonia/Assets/DockAnchorableBottom.png" 
                                    Height="40" Width="40" 
                                    Grid.Row="2" Grid.Column="1" />
                             <Image x:Name="PART_LeftSelector" 
-                                   Source="/Assets/DockAnchorableLeft.png" 
+                                   Source="avares://Dock.Avalonia/Assets/DockAnchorableLeft.png" 
                                    Height="40" Width="40" 
                                    Grid.Row="1" Grid.Column="0" />
                             <Image x:Name="PART_RightSelector" 
-                                   Source="/Assets/DockAnchorableRight.png" 
+                                   Source="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" 
                                    Height="40" Width="40" 
                                    Grid.Row="1" Grid.Column="2" />
                             <Image x:Name="PART_CenterSelector" 
-                                   Source="/Assets/DockDocumentInside.png" 
+                                   Source="avares://Dock.Avalonia/Assets/DockDocumentInside.png" 
                                    Height="40" Width="40" 
                                    Grid.Row="1" Grid.Column="1" />
                         </Grid>

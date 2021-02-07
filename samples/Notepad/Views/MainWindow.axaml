@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:id="using:Dock.Avalonia"
+        xmlns:vm="using:Notepad.ViewModels"
         xmlns:views="using:Notepad.Views"
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
@@ -17,6 +18,9 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome, OSXThickTitleBar"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
     <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
         <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Label Content="Notepad" 

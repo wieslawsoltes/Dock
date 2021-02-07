@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:idc="using:Dock.Avalonia.Controls">
     <Design.PreviewWith>
-        <Panel Width="300" Height="300" Background="White">
+        <Panel Width="300" Height="300">
             <idc:DockTarget>
                 <idc:DockTarget.Styles>
                     <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">

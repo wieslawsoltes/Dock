@@ -160,16 +160,17 @@ namespace Dock.Model
                     {
                         if (bExecute)
                         {
-                            sourceDockable.GetVisibleBounds(out _, out _, out var width, out  var height);
+                            sourceDockableOwner.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
+                            sourceDockable.GetVisibleBounds(out _, out _, out var width, out var height);
                             var x = ScreenPosition.X;
                             var y = ScreenPosition.Y;
                             if (double.IsNaN(width))
                             {
-                                width = 300;
+                                width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
                             }
                             if (double.IsNaN(height))
                             {
-                                height = 400;
+                                height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
                             }
                             factory.SplitToWindow(targetWindowOwner, sourceDockable, x, y, width, height);
                         }

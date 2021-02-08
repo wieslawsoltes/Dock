@@ -370,16 +370,28 @@ namespace Dock.Model
         {
             if (dockable.Owner is IDock dock)
             {
-                dockable.GetPointerScreenPosition(out var pointerScreenX, out var pointerScreenY);
+                dock.GetPointerScreenPosition(out var dockPointerScreenX, out var dockPointerScreenY);
+                dockable.GetPointerScreenPosition(out var dockablePointerScreenX, out var dockablePointerScreenY);
+
+                if (double.IsNaN(dockablePointerScreenX))
+                {
+                    dockablePointerScreenX = dockPointerScreenX;
+                }
+                if (double.IsNaN(dockablePointerScreenY))
+                {
+                    dockablePointerScreenY = dockPointerScreenY;
+                }
+
                 dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
                 dockable.GetVisibleBounds(out var dockableX, out var dockableY, out var dockableWidth, out var dockableHeight);
-                if (double.IsNaN(pointerScreenX))
+
+                if (double.IsNaN(dockablePointerScreenX))
                 {
-                    pointerScreenX = !double.IsNaN(dockableX) ? dockableX : !double.IsNaN(ownerX) ? ownerX : 0;
+                    dockablePointerScreenX = !double.IsNaN(dockableX) ? dockableX : !double.IsNaN(ownerX) ? ownerX : 0;
                 }
-                if (double.IsNaN(pointerScreenY))
+                if (double.IsNaN(dockablePointerScreenY))
                 {
-                    pointerScreenY = !double.IsNaN(dockableY) ? dockableY : !double.IsNaN(ownerY) ? ownerY : 0;
+                    dockablePointerScreenY = !double.IsNaN(dockableY) ? dockableY : !double.IsNaN(ownerY) ? ownerY : 0;
                 }
                 if (double.IsNaN(dockableWidth))
                 {
@@ -389,7 +401,8 @@ namespace Dock.Model
                 {
                     dockableHeight = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
                 }
-                SplitToWindow(dock, dockable, pointerScreenX, pointerScreenY, dockableWidth, dockableHeight);
+
+                SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight);
             }
         }
 

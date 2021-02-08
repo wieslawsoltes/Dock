@@ -6,7 +6,6 @@ using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
-using Dock.Model.Core;
 
 namespace AvaloniaDemo
 {

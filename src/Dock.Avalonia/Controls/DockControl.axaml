@@ -98,16 +98,18 @@
                                 </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">
-                            <ItemsControl Items="{Binding VisibleDockables}" 
-                                          idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True" 
-                                                                    Background="Transparent" 
-                                                                    Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
+                            <idc:DockableControl TrackingMode="Visible" 
+                                                 idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <ItemsControl Items="{Binding VisibleDockables}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True" 
+                                                                        Background="Transparent" 
+                                                                        Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </idc:DockableControl>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IRootDock">
                             <idc:DockableControl TrackingMode="Visible">

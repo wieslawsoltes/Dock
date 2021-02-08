@@ -13,7 +13,6 @@ namespace Dock.Avalonia.Internal
 
         public void AddAdorner(IVisual visual)
         {
-            Debug.WriteLine($"[AddAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer == null)
             {
@@ -38,7 +37,6 @@ namespace Dock.Avalonia.Internal
 
         public void RemoveAdorner(IVisual visual)
         {
-            Debug.WriteLine($"[RemoveAdorner] {visual}");
             var layer = AdornerLayer.GetAdornerLayer(visual);
             if (layer != null)
             {

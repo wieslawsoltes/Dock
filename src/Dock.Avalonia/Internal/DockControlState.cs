@@ -38,7 +38,6 @@ namespace Dock.Avalonia.Internal
 
             if (isValid && _dropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Enter] {control}");
                 _adornerHelper.AddAdorner(control);
             }
         }
@@ -66,7 +65,6 @@ namespace Dock.Avalonia.Internal
 
             if (_dropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Drop] {control}");
                 _adornerHelper.RemoveAdorner(control);
             }
 
@@ -77,7 +75,6 @@ namespace Dock.Avalonia.Internal
         {
             if (_dropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Leave] {control}");
                 _adornerHelper.RemoveAdorner(control);
             }
         }
@@ -108,7 +105,6 @@ namespace Dock.Avalonia.Internal
 
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
                 DockManager.Position = DockHelpers.ToDockPoint(point);
                 DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, true);
@@ -149,7 +145,6 @@ namespace Dock.Avalonia.Internal
                             {
                                 break;
                             }
-                            Debug.WriteLine($"Drag : {point} : {eventType} : {dragControl.Name} : {dragControl.GetType().Name} : {dragControl.DataContext?.GetType().Name}");
                             _dragControl = dragControl;
                             _dropControl = null;
                             _dragStartPoint = point;
@@ -254,8 +249,6 @@ namespace Dock.Avalonia.Internal
                                 {
                                     isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                                 }
-
-                                Debug.WriteLine($"Drop : {targetPoint} : {eventType} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
 
                                 if (isDropEnabled)
                                 {

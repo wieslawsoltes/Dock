@@ -27,7 +27,6 @@ namespace Dock.Avalonia.Controls
                 {
                     if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
                     {
-                        Debug.WriteLine($"{nameof(DocumentControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
                         factory.SetFocusedDockable(root, dock.ActiveDockable);
                     }
                 }

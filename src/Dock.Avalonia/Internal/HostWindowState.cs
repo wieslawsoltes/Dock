@@ -38,7 +38,6 @@ namespace Dock.Avalonia.Internal
 
             if (isValid && _targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Enter] {control}");
                 _adornerHelper.AddAdorner(control);
             }
         }
@@ -69,7 +68,6 @@ namespace Dock.Avalonia.Internal
 
             if (_targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Drop] {control}");
                 _adornerHelper.RemoveAdorner(control);
             }
 
@@ -83,7 +81,6 @@ namespace Dock.Avalonia.Internal
         {
             if (_targetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
             {
-                Debug.WriteLine($"[Leave] {control}");
                 _adornerHelper.RemoveAdorner(control);
             }
         }
@@ -118,7 +115,6 @@ namespace Dock.Avalonia.Internal
 
             if (layout?.ActiveDockable is { } sourceDockable && _targetDropControl.DataContext is IDockable targetDockable)
             {
-                Debug.WriteLine($"Execute : {point} : {operation} : {dragAction} : {sourceDockable.Title} -> {targetDockable.Title}");
                 DockManager.Position = DockHelpers.ToDockPoint(point);
                 DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
                 DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
@@ -217,9 +213,6 @@ namespace Dock.Avalonia.Internal
                                         if (dropControl != null)
                                         {
                                             var isDropEnabled = dockControl.GetValue(DockProperties.IsDropEnabledProperty);
-
-                                            Debug.WriteLine($"Drop : {dockControlPoint} : {dropControl.Name} : {dropControl.GetType().Name} : {dropControl.DataContext?.GetType().Name}");
-
                                             if (isDropEnabled)
                                             {
                                                 if (_targetDropControl == dropControl)

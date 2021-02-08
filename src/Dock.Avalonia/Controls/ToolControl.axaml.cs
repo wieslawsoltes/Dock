@@ -21,15 +21,11 @@ namespace Dock.Avalonia.Controls
 
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            if (DataContext is IDock {Factory: { } factory} dock)
+            if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable != null)
             {
-                if (dock.ActiveDockable != null)
+                if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
                 {
-                    if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
-                    {
-                        Debug.WriteLine($"{nameof(ToolControl)} SetFocusedDockable {dock.ActiveDockable.GetType().Name}, owner: {dock.Title}");
-                        factory.SetFocusedDockable(root, dock.ActiveDockable);
-                    }
+                    factory.SetFocusedDockable(root, dock.ActiveDockable);
                 }
             }
         }

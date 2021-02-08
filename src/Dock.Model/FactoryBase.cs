@@ -55,7 +55,6 @@ namespace Dock.Model
                     return locator?.Invoke();
                 }
             }
-            Debug.WriteLine($"Context with provided id={id} is not registered.");
             return null;
         }
 
@@ -70,7 +69,6 @@ namespace Dock.Model
                     return locator?.Invoke();
                 }
             }
-            Debug.WriteLine($"Host window with provided id={id} is not registered.");
             return null;
         }
 
@@ -85,8 +83,7 @@ namespace Dock.Model
                     return locator?.Invoke() as T;
                 }
             }
-            Debug.WriteLine($"Dockable with provided id={id} is not registered.");
-            return default(T);
+            return default;
         }
 
         /// <inheritdoc/>

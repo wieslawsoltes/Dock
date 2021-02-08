@@ -370,22 +370,23 @@ namespace Dock.Model
         {
             if (dockable.Owner is IDock dock)
             {
-                dockable.GetVisibleBounds(out var x, out var y, out var width, out  var height);
+                dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
+                dockable.GetVisibleBounds(out var x, out var y, out var width, out var height);
                 if (double.IsNaN(x))
                 {
-                    x = 0;
+                    x = double.IsNaN(ownerX) ? 0 : ownerX;
                 }
                 if (double.IsNaN(y))
                 {
-                    y = 0;
+                    y = double.IsNaN(ownerY) ? 0 : ownerY;
                 }
                 if (double.IsNaN(width))
                 {
-                    width = 300;
+                    width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
                 }
                 if (double.IsNaN(height))
                 {
-                    height = 400;
+                    height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
                 }
                 SplitToWindow(dock, dockable, x, y, width, height);
             }

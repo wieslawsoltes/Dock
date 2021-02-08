@@ -51,23 +51,36 @@ namespace Dock.Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
  
-            _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe((x) =>
+            _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe((bounds) =>
             {
-                if (DataContext is IDockable dockable)
+                if (DataContext is not IDockable dockable)
                 {
-                    switch (TrackingMode)
-                    {
-                        case TrackingMode.Visible:
-                            dockable.SetVisibleBounds(x.X, x.Y, x.Width, x.Height);
-                            break;
-                        case TrackingMode.Pinned:
-                            dockable.SetPinnedBounds(x.X, x.Y, x.Width, x.Height);
-                            break;
-                        case TrackingMode.Tab:
-                            dockable.SetTabBounds(x.X, x.Y, x.Width, x.Height);
-                            break;
-                        
-                    }
+                    return;
+                }
+
+                var x = bounds.X;
+                var y = bounds.Y;
+                var width = bounds.Width;
+                var height = bounds.Height;
+
+                var translatedPosition = this.TranslatePoint(bounds.Position, VisualRoot);
+                if (translatedPosition.HasValue)
+                {
+                    x = translatedPosition.Value.X;
+                    y = translatedPosition.Value.Y;
+                }
+
+                switch (TrackingMode)
+                {
+                    case TrackingMode.Visible:
+                        dockable.SetVisibleBounds(x, y, width, height);
+                        break;
+                    case TrackingMode.Pinned:
+                        dockable.SetPinnedBounds(x, y, width, height);
+                        break;
+                    case TrackingMode.Tab:
+                        dockable.SetTabBounds(x, y, width, height);
+                        break;
                 }
             });
         }

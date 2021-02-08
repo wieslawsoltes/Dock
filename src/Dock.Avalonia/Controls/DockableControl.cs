@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -9,29 +10,14 @@ using Dock.Model.Core;
 namespace Dock.Avalonia.Controls
 {
     /// <summary>
-    /// Defines tracking mode.
-    /// </summary>
-    public enum TrackingMode
-    {
-        /// <summary>
-        /// Visible mode.
-        /// </summary>
-        Visible,
-        /// <summary>
-        /// Pinned mode.
-        /// </summary>
-        Pinned,
-        /// <summary>
-        /// Tab mode.
-        /// </summary>
-        Tab
-    }
-
-    /// <summary>
     /// Control used to track associated to <see cref="IDockable"/> control state.
     /// </summary>
-    public class DockableControl : Panel
+    public class DockableControl : Panel, IDockableControl
     {
+        private static readonly Dictionary<IDockable, IDockableControl> s_visibleDockableControls = new();
+        private static readonly Dictionary<IDockable, IDockableControl> s_pinnedDockableControls = new();
+        private static readonly Dictionary<IDockable, IDockableControl> s_tabDockableControls = new();
+
         private IDisposable? _boundsDisposable;
 
         /// <summary>
@@ -50,9 +36,20 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
+        public IDictionary<IDockable, IDockableControl> VisibleDockableControls => s_visibleDockableControls;
+  
+        /// <inheritdoc/>
+        public IDictionary<IDockable, IDockableControl> PinnedDockableControls => s_pinnedDockableControls;
+  
+        /// <inheritdoc/>
+        public IDictionary<IDockable, IDockableControl> TabDockableControls => s_tabDockableControls;
+
+        /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
+
+            Register();
 
             AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
             AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Tunnel);
@@ -73,9 +70,53 @@ namespace Dock.Avalonia.Controls
         {
             base.OnDetachedFromVisualTree(e);
 
+            UnRegister();
+
             RemoveHandler(PointerPressedEvent, Pressed);
 
             _boundsDisposable?.Dispose();
+        }
+
+        private void Register()
+        {
+            if (DataContext is not IDockable dockable)
+            {
+                return;
+            }
+
+            switch (TrackingMode)
+            {
+                case TrackingMode.Visible:
+                    s_visibleDockableControls.Add(dockable, this);
+                    break;
+                case TrackingMode.Pinned:
+                    s_pinnedDockableControls.Add(dockable, this);
+                    break;
+                case TrackingMode.Tab:
+                    s_tabDockableControls.Add(dockable, this);
+                    break;
+            }
+        }
+
+        private void UnRegister()
+        {
+            if (DataContext is not IDockable dockable)
+            {
+                return;
+            }
+
+            switch (TrackingMode)
+            {
+                case TrackingMode.Visible:
+                    s_visibleDockableControls.Remove(dockable);
+                    break;
+                case TrackingMode.Pinned:
+                    s_pinnedDockableControls.Remove(dockable);
+                    break;
+                case TrackingMode.Tab:
+                    s_tabDockableControls.Remove(dockable);
+                    break;
+            }
         }
 
         private void Pressed(object? sender, PointerPressedEventArgs e)

@@ -19,6 +19,8 @@ namespace Dock.Avalonia.Controls
         internal static readonly Dictionary<IDockable, IDockableControl> s_tabDockableControls = new();
 
         private IDisposable? _boundsDisposable;
+        private IDisposable? _dataContextDisposable;
+        private IDockable? _currentDockable;
 
         /// <summary>
         /// Defines the <see cref="TrackingMode"/> property.
@@ -49,20 +51,25 @@ namespace Dock.Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            Register();
+            _dataContextDisposable = this.GetObservable(DataContextProperty).Subscribe((dataContext) =>
+            {
+                if (_currentDockable is not null)
+                {
+                    UnRegister(_currentDockable);
+                    _currentDockable = null;
+                }
+
+                if (dataContext is IDockable dockableChanged)
+                {
+                    _currentDockable = dockableChanged;
+                    Register(dockableChanged);
+                }
+            });
 
             AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
             AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Tunnel);
 
-            _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe((bounds) =>
-            {
-                if (DataContext is not IDockable dockable)
-                {
-                    return;
-                }
-
-                SetBoundsTracking(dockable, bounds);
-            });
+            _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe(SetBoundsTracking);
         }
 
         /// <inheritdoc/>
@@ -70,20 +77,19 @@ namespace Dock.Avalonia.Controls
         {
             base.OnDetachedFromVisualTree(e);
 
-            UnRegister();
+            if (_currentDockable is not null)
+            {
+                UnRegister(_currentDockable);
+                _currentDockable = null;
+            }
 
             RemoveHandler(PointerPressedEvent, Pressed);
 
             _boundsDisposable?.Dispose();
         }
 
-        private void Register()
+        private void Register(IDockable dockable)
         {
-            if (DataContext is not IDockable dockable)
-            {
-                return;
-            }
-
             switch (TrackingMode)
             {
                 case TrackingMode.Visible:
@@ -98,13 +104,8 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void UnRegister()
+        private void UnRegister(IDockable dockable)
         {
-            if (DataContext is not IDockable dockable)
-            {
-                return;
-            }
-
             switch (TrackingMode)
             {
                 case TrackingMode.Visible:
@@ -121,26 +122,21 @@ namespace Dock.Avalonia.Controls
 
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            if (DataContext is not IDockable dockable)
-            {
-                return;
-            }
-
-            SetPointerTracking(dockable, e);
+            SetPointerTracking(e);
         }
 
         private void Moved(object? sender, PointerEventArgs e)
         {
+            SetPointerTracking(e);
+        }
+
+        private void SetBoundsTracking(Rect bounds)
+        {
             if (DataContext is not IDockable dockable)
             {
                 return;
             }
 
-            SetPointerTracking(dockable, e);
-        }
-
-        private void SetBoundsTracking(IDockable dockable, Rect bounds)
-        {
             var x = bounds.X;
             var y = bounds.Y;
             var width = bounds.Width;
@@ -167,8 +163,13 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void SetPointerTracking(IDockable dockable, PointerEventArgs e)
+        private void SetPointerTracking(PointerEventArgs e)
         {
+            if (DataContext is not IDockable dockable)
+            {
+                return;
+            }
+
             var position = e.GetPosition(this);
             var screenPosition = DockHelpers.ToDockPoint(this.PointToScreen(position).ToPoint(1.0));
 

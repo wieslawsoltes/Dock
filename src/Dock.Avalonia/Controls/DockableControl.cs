@@ -14,9 +14,9 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockableControl : Panel, IDockableControl
     {
-        private static readonly Dictionary<IDockable, IDockableControl> s_visibleDockableControls = new();
-        private static readonly Dictionary<IDockable, IDockableControl> s_pinnedDockableControls = new();
-        private static readonly Dictionary<IDockable, IDockableControl> s_tabDockableControls = new();
+        internal static readonly Dictionary<IDockable, IDockableControl> s_visibleDockableControls = new();
+        internal static readonly Dictionary<IDockable, IDockableControl> s_pinnedDockableControls = new();
+        internal static readonly Dictionary<IDockable, IDockableControl> s_tabDockableControls = new();
 
         private IDisposable? _boundsDisposable;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -371,7 +370,24 @@ namespace Dock.Model
         {
             if (dockable.Owner is IDock dock)
             {
-                SplitToWindow(dock, dockable, 0, 0, 300, 400);
+                dockable.GetVisibleBounds(out var x, out var y, out var width, out  var height);
+                if (double.IsNaN(x))
+                {
+                    x = 0;
+                }
+                if (double.IsNaN(y))
+                {
+                    y = 0;
+                }
+                if (double.IsNaN(width))
+                {
+                    width = 300;
+                }
+                if (double.IsNaN(height))
+                {
+                    height = 300;
+                }
+                SplitToWindow(dock, dockable, x, y, width, height);
             }
         }
 

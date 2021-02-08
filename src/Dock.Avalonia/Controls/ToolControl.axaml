@@ -128,17 +128,19 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
-                                <StackPanel x:Name="DragTool" 
-                                            id:DockProperties.IsDragArea="True" 
-                                            id:DockProperties.IsDropArea="True" 
-                                            Background="Transparent" 
-                                            Orientation="Horizontal" 
-                                            Spacing="2">
-                                    <TextBlock Text="{Binding Title}" 
-                                               Classes="drag" 
-                                               Padding="2" 
-                                               Margin="2" />
-                                </StackPanel>
+                                <idc:DockableControl TrackingMode="Tab">
+                                    <StackPanel x:Name="DragTool" 
+                                                id:DockProperties.IsDragArea="True" 
+                                                id:DockProperties.IsDropArea="True" 
+                                                Background="Transparent" 
+                                                Orientation="Horizontal" 
+                                                Spacing="2">
+                                        <TextBlock Text="{Binding Title}" 
+                                                   Classes="drag" 
+                                                   Padding="2" 
+                                                   Margin="2" />
+                                    </StackPanel>
+                                </idc:DockableControl>
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
@@ -146,10 +148,13 @@
                             Classes="panel" 
                             ZIndex="-1" 
                             Background="{DynamicResource DockThemeBackgroundBrush}">
-                        <ContentControl x:Name="PART_ContentPresenter"
-                                        Content="{Binding ActiveDockable}" 
-                                        HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch" />
+                        <idc:DockableControl DataContext="{Binding ActiveDockable}"
+                                             TrackingMode="Visible">
+                            <ContentControl x:Name="PART_ContentPresenter"
+                                            Content="{Binding}" 
+                                            HorizontalAlignment="Stretch" 
+                                            VerticalAlignment="Stretch" />
+                        </idc:DockableControl>
                     </Border>
                 </DockPanel>
             </ControlTemplate>

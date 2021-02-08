@@ -155,7 +155,7 @@
                                                                   BorderThickness="{TemplateBinding BorderThickness}"
                                                                   Padding="{TemplateBinding Padding}"/>
                                             </Panel>
-                                        </Border> 
+                                        </Border>
                                     </ControlTemplate>
                                 </Setter>
                             </Style>
@@ -174,35 +174,37 @@
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
-                                <StackPanel Background="Transparent" 
-                                            Orientation="Horizontal" 
-                                            Spacing="2"
-                                            id:DockProperties.IsDragArea="True" 
-                                            id:DockProperties.IsDropArea="True" >
-                                    <StackPanel Orientation="Horizontal" 
-                                                Margin="2" 
-                                                TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
-                                        <TextBlock Text="{Binding Title}" Padding="2" />
+                                <idc:DockableControl TrackingMode="Tab">
+                                    <StackPanel Background="Transparent" 
+                                                Orientation="Horizontal" 
+                                                Spacing="2"
+                                                id:DockProperties.IsDragArea="True" 
+                                                id:DockProperties.IsDropArea="True" >
+                                        <StackPanel Orientation="Horizontal" 
+                                                    Margin="2" 
+                                                    TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
+                                            <TextBlock Text="{Binding Title}" Padding="2" />
+                                        </StackPanel>
+                                        <Button Height="14" 
+                                                Width="14" 
+                                                Command="{Binding Owner.Factory.CloseDockable}" 
+                                                CommandParameter="{Binding}" Classes="documentTabButton" 
+                                                IsVisible="{Binding CanClose}"
+                                                x:CompileBindings="False">
+                                            <Button.Styles>
+                                                <Style Selector="Button">
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                    <Setter Property="Padding" Value="0"/>
+                                                    <Setter Property="Margin" Value="0"/>
+                                                </Style>
+                                            </Button.Styles>
+                                            <Path Margin="2" 
+                                                  Stretch="Uniform" 
+                                                  UseLayoutRounding="False" 
+                                                  Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                        </Button>
                                     </StackPanel>
-                                    <Button Height="14" 
-                                            Width="14" 
-                                            Command="{Binding Owner.Factory.CloseDockable}" 
-                                            CommandParameter="{Binding}" Classes="documentTabButton" 
-                                            IsVisible="{Binding CanClose}"
-                                            x:CompileBindings="False">
-                                        <Button.Styles>
-                                            <Style Selector="Button">
-                                                <Setter Property="BorderThickness" Value="0"/>
-                                                <Setter Property="Padding" Value="0"/>
-                                                <Setter Property="Margin" Value="0"/>
-                                            </Style>
-                                        </Button.Styles>
-                                        <Path Margin="2" 
-                                              Stretch="Uniform" 
-                                              UseLayoutRounding="False" 
-                                              Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                                    </Button>
-                                </StackPanel>
+                                </idc:DockableControl>
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
@@ -215,10 +217,13 @@
                     <Border x:Name="PART_Border"
                             BorderThickness="1" 
                             BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
-                        <ContentControl x:Name="PART_ContentPresenter"
-                                        Content="{Binding ActiveDockable}" 
-                                        HorizontalAlignment="Stretch" 
-                                        VerticalAlignment="Stretch"/>
+                        <idc:DockableControl DataContext="{Binding ActiveDockable}"
+                                             TrackingMode="Visible">
+                            <ContentControl x:Name="PART_ContentPresenter"
+                                            Content="{Binding}" 
+                                            HorizontalAlignment="Stretch" 
+                                            VerticalAlignment="Stretch"/>
+                        </idc:DockableControl>
                     </Border>
                 </DockPanel>
             </ControlTemplate>

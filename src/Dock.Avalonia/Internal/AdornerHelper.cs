@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;

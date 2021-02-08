@@ -9,17 +9,6 @@ namespace Dock.Model
     /// </summary>
     public class DockManager : IDockManager
     {
-        /// <summary>
-        /// Gets or sets dock manager settings.
-        /// </summary>
-        private static DockManagerSettings Settings { get; set; } = new();
-
-        /// <summary>
-        /// Set dock manager settings.
-        /// </summary>
-        /// <param name="settings">The dock manager settings.</param>
-        public static void SetSettings(DockManagerSettings settings) => Settings = settings;
-
         /// <inheritdoc/>
         public DockPoint Position { get; set; }
 
@@ -171,13 +160,18 @@ namespace Dock.Model
                     {
                         if (bExecute)
                         {
-                            factory.SplitToWindow(
-                                targetWindowOwner, 
-                                sourceDockable, 
-                                ScreenPosition.X, 
-                                ScreenPosition.Y, 
-                                Settings.SplitWindowWidth, 
-                                Settings.SplitWindowHeight);
+                            sourceDockable.GetVisibleBounds(out _, out _, out var width, out  var height);
+                            var x = ScreenPosition.X;
+                            var y = ScreenPosition.Y;
+                            if (double.IsNaN(width))
+                            {
+                                width = 300;
+                            }
+                            if (double.IsNaN(height))
+                            {
+                                height = 300;
+                            }
+                            factory.SplitToWindow(targetWindowOwner, sourceDockable, x, y, width, height);
                         }
                         return true;
                     }

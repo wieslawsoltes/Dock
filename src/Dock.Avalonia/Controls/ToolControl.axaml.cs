@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -16,6 +15,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
+ 
             AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 

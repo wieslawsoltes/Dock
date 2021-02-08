@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Adapters;
 using Dock.Model.Core;
 using ReactiveUI;
 
@@ -10,6 +11,7 @@ namespace Dock.Model.ReactiveUI.Core
     [DataContract(IsReference = true)]
     public abstract class DockableBase : ReactiveObject, IDockable
     {
+        private readonly TrackingAdapter _trackingAdapter;
         private string _id = string.Empty;
         private string _title = string.Empty;
         private object? _context;
@@ -83,6 +85,14 @@ namespace Dock.Model.ReactiveUI.Core
             set => this.RaiseAndSetIfChanged(ref _canFloat, value);
         }
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="DockableBase"/> class.
+        /// </summary>
+        protected DockableBase()
+        {
+            _trackingAdapter = new TrackingAdapter();
+        }
+
         /// <inheritdoc/>
         public virtual bool OnClose()
         {
@@ -91,6 +101,60 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         public virtual void OnSelected()
+        {
+        }
+
+        /// <inheritdoc/>
+        public void GetVisibleBounds(out double x, out double y, out double width, out double height)
+        {
+            _trackingAdapter.GetVisibleBounds(out x, out y, out width, out height);
+        }
+
+        /// <inheritdoc/>
+        public void SetVisibleBounds(double x, double y, double width, double height)
+        {
+            _trackingAdapter.SetVisibleBounds(x, y, width, height);
+            OnVisibleBoundsChanged(x, y, width, height);
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnVisibleBoundsChanged(double x, double y, double width, double height)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void GetPinnedBounds(out double x, out double y, out double width, out double height)
+        {
+            _trackingAdapter.GetPinnedBounds(out x, out y, out width, out height);
+        }
+
+        /// <inheritdoc/>
+        public void SetPinnedBounds(double x, double y, double width, double height)
+        {
+            _trackingAdapter.SetPinnedBounds(x, y, width, height);
+            OnPinnedBoundsChanged(x, y, width, height);
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnPinnedBoundsChanged(double x, double y, double width, double height)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void GetTabBounds(out double x, out double y, out double width, out double height)
+        {
+            _trackingAdapter.GetTabBounds(out x, out y, out width, out height);
+        }
+
+        /// <inheritdoc/>
+        public void SetTabBounds(double x, double y, double width, double height)
+        {
+            _trackingAdapter.SetTabBounds(x, y, width, height);
+            OnTabBoundsChanged(x, y, width, height);
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnTabBoundsChanged(double x, double y, double width, double height)
         {
         }
     }

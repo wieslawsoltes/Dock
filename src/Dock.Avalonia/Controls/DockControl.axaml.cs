@@ -16,10 +16,7 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockControl : TemplatedControl, IDockControl
     {
-        internal static readonly List<IDockControl> s_dockControls = new();
-
         private readonly DockManager _dockManager;
-
         private readonly DockControlState _dockControlState;
 
         /// <summary>
@@ -27,12 +24,6 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public static readonly StyledProperty<IDock?> LayoutProperty =
             AvaloniaProperty.Register<DockControl, IDock?>(nameof(Layout));
-
-        /// <summary>
-        /// Defines the <see cref="Factory"/> property.
-        /// </summary>
-        public static readonly StyledProperty<IFactory?> FactoryProperty =
-            AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
         /// <summary>
         /// Defines the <see cref="InitializeLayout"/> property.
@@ -47,9 +38,6 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
         /// <inheritdoc/>
-        public IList<IDockControl> DockControls => s_dockControls;
-
-        /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
 
         /// <inheritdoc/>
@@ -61,13 +49,6 @@ namespace Dock.Avalonia.Controls
         {
             get => GetValue(LayoutProperty);
             set => SetValue(LayoutProperty, value);
-        }
-
-        /// <inheritdoc/>
-        public IFactory? Factory
-        {
-            get => GetValue(FactoryProperty);
-            set => SetValue(FactoryProperty, value);
         }
 
         /// <inheritdoc/>
@@ -105,23 +86,28 @@ namespace Dock.Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            s_dockControls.Add(this);
-
-            if (InitializeFactory && Factory != null)
+            if (Layout?.Factory is null)
             {
-                Factory.ContextLocator = new Dictionary<string, Func<object>>();
+                return;
+            }
+ 
+            Layout.Factory.DockControls.Add(this);
 
-                Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+            if (InitializeFactory)
+            {
+                Layout.Factory.ContextLocator = new Dictionary<string, Func<object>>();
 
-                Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+                Layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+
+                Layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
                 {
                     [nameof(IDockWindow)] = () => new HostWindow()
                 };
             }
 
-            if (InitializeLayout && Factory != null && Layout != null)
+            if (InitializeLayout)
             {
-                Factory.InitLayout(Layout);
+                Layout.Factory.InitLayout(Layout);
             }
         }
 
@@ -130,7 +116,12 @@ namespace Dock.Avalonia.Controls
         {
             base.OnDetachedFromVisualTree(e);
 
-            s_dockControls.Remove(this);
+            if (Layout?.Factory is null)
+            {
+                return;
+            }
+
+            Layout.Factory.DockControls.Remove(this);
 
             if (InitializeLayout && Layout != null)
             {
@@ -163,37 +154,58 @@ namespace Dock.Avalonia.Controls
 
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
 
         private void Released(object? sender, PointerReleasedEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
 
         private void Moved(object? sender, PointerEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
 
         private void Enter(object? sender, PointerEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
 
         private void Leave(object? sender, PointerEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
 
         private void CaptureLost(object? sender, PointerCaptureLostEventArgs e)
         {
-            _dockControlState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, Layout.Factory.DockControls);
+            }
         }
 
         private void WheelChanged(object? sender, PointerWheelEventArgs e)
         {
-            _dockControlState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, s_dockControls);
+            if (Layout?.Factory?.DockControls is { })
+            {
+                _dockControlState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, Layout.Factory.DockControls);
+            }
         }
     }
 }

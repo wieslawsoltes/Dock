@@ -11,6 +11,18 @@ namespace Dock.Model
     public abstract class FactoryBase : IFactory
     {
         /// <inheritdoc/>
+        public abstract IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
+
+        /// <inheritdoc/>
+        public abstract IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
+
+        /// <inheritdoc/>
+        public abstract IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+        /// <inheritdoc/>
+        public abstract IList<IDockControl> DockControls { get; }
+
+        /// <inheritdoc/>
         public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <inheritdoc/>

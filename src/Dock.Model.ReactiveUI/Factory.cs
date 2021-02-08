@@ -13,6 +13,29 @@ namespace Dock.Model.ReactiveUI
     public class Factory : FactoryBase
     {
         /// <inheritdoc/>
+        public override IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
+
+        /// <inheritdoc/>
+        public override IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
+
+        /// <inheritdoc/>
+        public override IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+        /// <inheritdoc/>
+        public override IList<IDockControl> DockControls { get; }
+
+        /// <summary>
+        /// Initializes the new instance of <see cref="Factory"/> class.
+        /// </summary>
+        protected Factory()
+        {
+            VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
+            PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
+            TabDockableControls = new Dictionary<IDockable, IDockableControl>();
+            DockControls = new ObservableCollection<IDockControl>();
+        }
+
+        /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items) => new ObservableCollection<T>(items);
 
         /// <inheritdoc/>

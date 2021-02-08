@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -14,10 +13,6 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockableControl : Panel, IDockableControl
     {
-        internal static readonly Dictionary<IDockable, IDockableControl> s_visibleDockableControls = new();
-        internal static readonly Dictionary<IDockable, IDockableControl> s_pinnedDockableControls = new();
-        internal static readonly Dictionary<IDockable, IDockableControl> s_tabDockableControls = new();
-
         private IDisposable? _boundsDisposable;
         private IDisposable? _dataContextDisposable;
         private IDockable? _currentDockable;
@@ -36,15 +31,6 @@ namespace Dock.Avalonia.Controls
             get => GetValue(TrackingModeProperty);
             set => SetValue(TrackingModeProperty, value);
         }
-
-        /// <inheritdoc/>
-        public IDictionary<IDockable, IDockableControl> VisibleDockableControls => s_visibleDockableControls;
-  
-        /// <inheritdoc/>
-        public IDictionary<IDockable, IDockableControl> PinnedDockableControls => s_pinnedDockableControls;
-  
-        /// <inheritdoc/>
-        public IDictionary<IDockable, IDockableControl> TabDockableControls => s_tabDockableControls;
 
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -84,8 +70,10 @@ namespace Dock.Avalonia.Controls
             }
 
             RemoveHandler(PointerPressedEvent, Pressed);
+            RemoveHandler(PointerMovedEvent, Moved);
 
             _boundsDisposable?.Dispose();
+            _dataContextDisposable?.Dispose();
         }
 
         private void Register(IDockable dockable)
@@ -93,13 +81,13 @@ namespace Dock.Avalonia.Controls
             switch (TrackingMode)
             {
                 case TrackingMode.Visible:
-                    s_visibleDockableControls.Add(dockable, this);
+                    dockable.Factory?.VisibleDockableControls.Add(dockable, this);
                     break;
                 case TrackingMode.Pinned:
-                    s_pinnedDockableControls.Add(dockable, this);
+                    dockable.Factory?.PinnedDockableControls.Add(dockable, this);
                     break;
                 case TrackingMode.Tab:
-                    s_tabDockableControls.Add(dockable, this);
+                    dockable.Factory?.TabDockableControls.Add(dockable, this);
                     break;
             }
         }
@@ -109,13 +97,13 @@ namespace Dock.Avalonia.Controls
             switch (TrackingMode)
             {
                 case TrackingMode.Visible:
-                    s_visibleDockableControls.Remove(dockable);
+                    dockable.Factory?.VisibleDockableControls.Remove(dockable);
                     break;
                 case TrackingMode.Pinned:
-                    s_pinnedDockableControls.Remove(dockable);
+                    dockable.Factory?.PinnedDockableControls.Remove(dockable);
                     break;
                 case TrackingMode.Tab:
-                    s_tabDockableControls.Remove(dockable);
+                    dockable.Factory?.TabDockableControls.Remove(dockable);
                     break;
             }
         }

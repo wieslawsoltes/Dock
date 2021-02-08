@@ -10,6 +10,26 @@ namespace Dock.Model.Core
     public interface IFactory
     {
         /// <summary>
+        /// Gets visible dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
+
+        /// <summary>
+        /// Gets pinned dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
+
+        /// <summary>
+        /// Gets tab dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+        /// <summary>
+        /// Gets dock controls.
+        /// </summary>
+        IList<IDockControl> DockControls { get; }
+
+        /// <summary>
         /// Gets or sets <see cref="IDockable.Context"/> locator registry.
         /// </summary>
         IDictionary<string, Func<object>>? ContextLocator { get; set; }

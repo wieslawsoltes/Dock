@@ -169,7 +169,7 @@ namespace Dock.Model
                             }
                             if (double.IsNaN(height))
                             {
-                                height = 300;
+                                height = 400;
                             }
                             factory.SplitToWindow(targetWindowOwner, sourceDockable, x, y, width, height);
                         }

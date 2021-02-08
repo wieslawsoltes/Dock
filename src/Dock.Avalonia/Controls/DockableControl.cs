@@ -50,7 +50,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
- 
+
             _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe((bounds) =>
             {
                 if (DataContext is not IDockable dockable)

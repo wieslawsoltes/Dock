@@ -69,7 +69,9 @@ namespace Notepad.ViewModels
                         VisibleDockables = CreateList<IDockable>
                         (
                             findViewModel
-                        )
+                        ),
+                        Alignment = Alignment.Right,
+                        GripMode = GripMode.Visible
                     },
                     new SplitterDockable(),
                     new ToolDock
@@ -78,7 +80,9 @@ namespace Notepad.ViewModels
                         VisibleDockables = CreateList<IDockable>
                         (
                             replaceViewModel
-                        )
+                        ),
+                        Alignment = Alignment.Right,
+                        GripMode = GripMode.Visible
                     }
                 )
             };

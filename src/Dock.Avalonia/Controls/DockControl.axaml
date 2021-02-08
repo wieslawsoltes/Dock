@@ -81,8 +81,8 @@
                                     </ItemsControl.DataTemplates>
                                 </ItemsControl>
                                 <idc:ToolChromeControl IsActive="{Binding IsActive}" 
-                                                    IsVisible="{Binding !!VisibleDockables.Count}"
-                                                    idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                                       IsVisible="{Binding !!VisibleDockables.Count}"
+                                                       idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                     <idc:ToolControl/>
                                 </idc:ToolChromeControl>
                             </DockPanel>

@@ -19,6 +19,10 @@ namespace Dock.Model.Adapters
         private double _yTab;
         private double _widthTab;
         private double _heightTab;
+        private double _pointerX;
+        private double _pointerY;
+        private double _pointerScreenX;
+        private double _pointerScreenY;
 
         /// <summary>
         /// Initializes the new instance of <see cref="TrackingAdapter"/> class.
@@ -37,6 +41,10 @@ namespace Dock.Model.Adapters
             _yTab = double.NaN;
             _widthTab = double.NaN;
             _heightTab = double.NaN;
+            _pointerX = double.NaN;
+            _pointerY = double.NaN;
+            _pointerScreenX = double.NaN;
+            _pointerScreenY = double.NaN;
         }
         
         /// <summary>
@@ -127,6 +135,50 @@ namespace Dock.Model.Adapters
             _yTab = y;
             _widthTab = width;
             _heightTab = height;
+        }
+
+        /// <summary>
+        /// Gets dockable pointer position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        public void GetPointerPosition(out double x, out double y)
+        {
+            x = _pointerX;
+            y = _pointerY;
+        }
+
+        /// <summary>
+        /// Sets dockable pointer position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        public void SetPointerPosition(double x, double y)
+        {
+            _pointerX = x;
+            _pointerY = y;
+        }
+
+        /// <summary>
+        /// Gets dockable pointer screen position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        public void GetPointerScreenPosition(out double x, out double y)
+        {
+            x = _pointerScreenX;
+            y = _pointerScreenY;
+        }
+
+        /// <summary>
+        /// Sets dockable pointer screen position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        public void SetPointerScreenPosition(double x, double y)
+        {
+            _pointerScreenX = x;
+            _pointerScreenY = y;
         }
     }
 }

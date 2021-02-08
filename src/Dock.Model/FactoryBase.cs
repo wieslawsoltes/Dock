@@ -370,25 +370,26 @@ namespace Dock.Model
         {
             if (dockable.Owner is IDock dock)
             {
+                dockable.GetPointerScreenPosition(out var pointerScreenX, out var pointerScreenY);
                 dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
-                dockable.GetVisibleBounds(out var x, out var y, out var width, out var height);
-                if (double.IsNaN(x))
+                dockable.GetVisibleBounds(out var dockableX, out var dockableY, out var dockableWidth, out var dockableHeight);
+                if (double.IsNaN(pointerScreenX))
                 {
-                    x = double.IsNaN(ownerX) ? 0 : ownerX;
+                    pointerScreenX = !double.IsNaN(dockableX) ? dockableX : !double.IsNaN(ownerX) ? ownerX : 0;
                 }
-                if (double.IsNaN(y))
+                if (double.IsNaN(pointerScreenY))
                 {
-                    y = double.IsNaN(ownerY) ? 0 : ownerY;
+                    pointerScreenY = !double.IsNaN(dockableY) ? dockableY : !double.IsNaN(ownerY) ? ownerY : 0;
                 }
-                if (double.IsNaN(width))
+                if (double.IsNaN(dockableWidth))
                 {
-                    width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
+                    dockableWidth = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
                 }
-                if (double.IsNaN(height))
+                if (double.IsNaN(dockableHeight))
                 {
-                    height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
+                    dockableHeight = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
                 }
-                SplitToWindow(dock, dockable, x, y, width, height);
+                SplitToWindow(dock, dockable, pointerScreenX, pointerScreenY, dockableWidth, dockableHeight);
             }
         }
 

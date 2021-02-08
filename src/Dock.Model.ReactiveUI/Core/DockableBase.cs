@@ -157,5 +157,41 @@ namespace Dock.Model.ReactiveUI.Core
         public virtual void OnTabBoundsChanged(double x, double y, double width, double height)
         {
         }
+
+        /// <inheritdoc/>
+        public void GetPointerPosition(out double x, out double y)
+        {
+            _trackingAdapter.GetPointerPosition(out x, out y);
+        }
+
+        /// <inheritdoc/>
+        public void SetPointerPosition(double x, double y)
+        {
+            _trackingAdapter.SetPointerPosition(x, y);
+            OnPointerPositionChanged(x, y);
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnPointerPositionChanged(double x, double y)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void GetPointerScreenPosition(out double x, out double y)
+        {
+            _trackingAdapter.GetPointerScreenPosition(out x, out y);
+        }
+
+        /// <inheritdoc/>
+        public void SetPointerScreenPosition(double x, double y)
+        {
+            _trackingAdapter.SetPointerScreenPosition(x, y);
+            OnPointerScreenPositionChanged(x, y);
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnPointerScreenPositionChanged(double x, double y)
+        {
+        }
     }
 }

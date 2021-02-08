@@ -137,5 +137,47 @@ namespace Dock.Model.Core
         /// <param name="width">The dockable width.</param>
         /// <param name="height">The dockable height.</param>
         void OnTabBoundsChanged(double x, double y, double width, double height);
+
+        /// <summary>
+        /// Gets dockable pointer position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void GetPointerPosition(out double x, out double y);
+
+        /// <summary>
+        /// Sets dockable pointer position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void SetPointerPosition(double x, double y);
+
+        /// <summary>
+        /// Called when dockable pointer position changed.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void OnPointerPositionChanged(double x, double y);
+
+        /// <summary>
+        /// Gets dockable pointer screen position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void GetPointerScreenPosition(out double x, out double y);
+
+        /// <summary>
+        /// Sets dockable pointer screen position used for tracking.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void SetPointerScreenPosition(double x, double y);
+
+        /// <summary>
+        /// Called when dockable pointer screen position changed.
+        /// </summary>
+        /// <param name="x">The pointer x axis position.</param>
+        /// <param name="y">The pointer y axis position.</param>
+        void OnPointerScreenPositionChanged(double x, double y);
     }
 }

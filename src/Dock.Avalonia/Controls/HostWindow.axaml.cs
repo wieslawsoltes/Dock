@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using Avalonia;
@@ -19,7 +18,6 @@ namespace Dock.Avalonia.Controls
     public class HostWindow : Window, IStyleable, IHostWindow
     {
         private static bool s_useCustomDrag = true;
-        private static readonly List<IHostWindow> s_hostWindows = new();
         private readonly DockManager _dockManager;
         private readonly HostWindowState _hostWindowState;
         private Control? _chromeGrip;
@@ -27,9 +25,6 @@ namespace Dock.Avalonia.Controls
         private Point _startPoint;
 
         Type IStyleable.StyleKey => typeof(HostWindow);
-
-        /// <inheritdoc/>
-        public IList<IHostWindow> HostWindows => s_hostWindows;
 
         /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
@@ -69,7 +64,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnOpened(e);
 
-            s_hostWindows.Add(this);
+            Window?.Factory?.HostWindows.Add(this);
         }
 
         /// <inheritdoc/>
@@ -77,12 +72,12 @@ namespace Dock.Avalonia.Controls
         {
             base.OnClosed(e);
 
-            s_hostWindows.Remove(this);
+            Window?.Factory?.HostWindows.Remove(this);
         }
 
         private void HostWindow_PositionChanged(object? sender, PixelPointEventArgs e)
         {
-            if (Window != null && IsTracked)
+            if (Window is { } && IsTracked)
             {
                 Window.Save();
             }
@@ -92,7 +87,7 @@ namespace Dock.Avalonia.Controls
 
         private void HostWindow_LayoutUpdated(object? sender, EventArgs e)
         {
-            if (Window != null && IsTracked)
+            if (Window is { } && IsTracked)
             {
                 Window.Save();
             }
@@ -100,7 +95,7 @@ namespace Dock.Avalonia.Controls
 
         private void HostWindow_Closing(object? sender, CancelEventArgs e)
         {
-            if (Window != null && IsTracked)
+            if (Window is { } && IsTracked)
             {
                 Window.Save();
 

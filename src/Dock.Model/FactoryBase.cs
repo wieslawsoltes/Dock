@@ -23,6 +23,9 @@ namespace Dock.Model
         public abstract IList<IDockControl> DockControls { get; }
 
         /// <inheritdoc/>
+        public abstract IList<IHostWindow> HostWindows { get; }
+
+        /// <inheritdoc/>
         public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <inheritdoc/>

@@ -24,6 +24,9 @@ namespace Dock.Model.ReactiveUI
         /// <inheritdoc/>
         public override IList<IDockControl> DockControls { get; }
 
+        /// <inheritdoc/>
+        public override IList<IHostWindow> HostWindows { get; }
+
         /// <summary>
         /// Initializes the new instance of <see cref="Factory"/> class.
         /// </summary>
@@ -33,6 +36,7 @@ namespace Dock.Model.ReactiveUI
             PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
             TabDockableControls = new Dictionary<IDockable, IDockableControl>();
             DockControls = new ObservableCollection<IDockControl>();
+            HostWindows = new ObservableCollection<IHostWindow>();
         }
 
         /// <inheritdoc/>

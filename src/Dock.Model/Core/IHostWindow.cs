@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace Dock.Model.Core
+﻿namespace Dock.Model.Core
 {
     /// <summary>
     /// Host window contract.
     /// </summary>
     public interface IHostWindow
     {
-        /// <summary>
-        /// Gets dock controls.
-        /// </summary>
-        IList<IHostWindow> HostWindows { get; }
-
         /// <summary>
         /// Gets dock manager.
         /// </summary>

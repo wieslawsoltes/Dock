@@ -30,6 +30,11 @@ namespace Dock.Model.Core
         IList<IDockControl> DockControls { get; }
 
         /// <summary>
+        /// Gets host windows.
+        /// </summary>
+        IList<IHostWindow> HostWindows { get; }
+
+        /// <summary>
         /// Gets or sets <see cref="IDockable.Context"/> locator registry.
         /// </summary>
         IDictionary<string, Func<object>>? ContextLocator { get; set; }

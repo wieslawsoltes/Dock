@@ -172,10 +172,6 @@ namespace Dock.Avalonia.Internal
                                     Drop(_targetPoint, dragAction, _targetDockControl);
                                 }
                             }
-                            else
-                            {
-                                // TODO: Create window.
-                            }
                         }
                         Leave();
                         _dragControl = null;

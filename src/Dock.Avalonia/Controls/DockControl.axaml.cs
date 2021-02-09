@@ -156,7 +156,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Pressed, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = new Vector();
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.Pressed, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -164,7 +167,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Released, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = new Vector();
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.Released, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -172,7 +178,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Moved, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = new Vector();
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.Moved, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -180,7 +189,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Enter, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = new Vector();
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.Enter, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -188,7 +200,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), new Vector(), EventType.Leave, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = new Vector();
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.Leave, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -196,7 +211,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(new Point(), new Vector(), EventType.CaptureLost, DragAction.None, this, Layout.Factory.DockControls);
+                var position = new Point();
+                var delta = new Vector();
+                var action = DragAction.None;
+                _dockControlState.Process(position, delta, EventType.CaptureLost, action, this, Layout.Factory.DockControls);
             }
         }
 
@@ -204,7 +222,10 @@ namespace Dock.Avalonia.Controls
         {
             if (Layout?.Factory?.DockControls is { })
             {
-                _dockControlState.Process(e.GetPosition(this), e.Delta, EventType.WheelChanged, ToDragAction(e), this, Layout.Factory.DockControls);
+                var position = e.GetPosition(this);
+                var delta = e.Delta;
+                var action = ToDragAction(e);
+                _dockControlState.Process(position, delta, EventType.WheelChanged, action, this, Layout.Factory.DockControls);
             }
         }
     }

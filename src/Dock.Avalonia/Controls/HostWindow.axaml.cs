@@ -144,7 +144,6 @@ namespace Dock.Avalonia.Controls
             }
 
             _chromeGrip = chromeControl.Grip;
-
             ((IPseudoClasses)chromeControl.Classes).Add(":floating");
             PseudoClasses.Set(":toolwindow", true);
         }
@@ -184,18 +183,15 @@ namespace Dock.Avalonia.Controls
         {
             base.OnPointerMoved(e);
 
-            if (_chromeGrip is { } && _chromeGrip.IsPointerOver && _mouseDown)
+            if (_chromeGrip is { } && _chromeGrip.IsPointerOver && _mouseDown && s_useCustomDrag)
             {
-                if (s_useCustomDrag)
-                {
-                    // Using custom method because BeginMoveDrag is releasing pointer capture on Windows.
-                    var point = e.GetPosition(this);
-                    var delta = point - _startPoint;
-                    var x = Position.X + delta.X;
-                    var y = Position.Y + delta.Y;
-                    Position = Position.WithX((int)x).WithY((int)y);
-                    _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
-                }
+                // Using custom method because BeginMoveDrag is releasing pointer capture on Windows.
+                var point = e.GetPosition(this);
+                var delta = point - _startPoint;
+                var x = Position.X + delta.X;
+                var y = Position.Y + delta.Y;
+                Position = Position.WithX((int)x).WithY((int)y);
+                _startPoint = new Point(point.X - delta.X, point.Y - delta.Y);
             }
         }
 

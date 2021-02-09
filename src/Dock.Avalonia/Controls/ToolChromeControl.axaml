@@ -30,7 +30,7 @@
                             <ContextMenu>
                                 <MenuItem Header="_Float" 
                                           Command="{Binding Owner.Factory.FloatDockable}" 
-                                          CommandParameter="{Binding ActiveDockable}" 
+                                          CommandParameter="{Binding}" 
                                           IsVisible="{Binding ActiveDockable.CanFloat}"
                                           x:CompileBindings="False" />
                                 <MenuItem Header="_Hide" 

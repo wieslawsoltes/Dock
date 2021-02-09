@@ -9,6 +9,11 @@ namespace Dock.Model
     /// </summary>
     public class DockManager : IDockManager
     {
+        /// <summary>
+        /// Enable split into window on drag event.
+        /// </summary>
+        public static bool s_enableSplitToWindow = false;
+
         /// <inheritdoc/>
         public DockPoint Position { get; set; }
 
@@ -155,8 +160,8 @@ namespace Dock.Model
                     {
                         return false;
                     }
-                    
-                    if (factory.FindRoot(sourceDockable, _ => true) is {ActiveDockable: IDock targetWindowOwner})
+
+                    if (s_enableSplitToWindow && factory.FindRoot(sourceDockable, _ => true) is {ActiveDockable: IDock targetWindowOwner})
                     {
                         if (bExecute)
                         {
@@ -176,6 +181,7 @@ namespace Dock.Model
                         }
                         return true;
                     }
+
                     return false;
                 default:
                     return false;

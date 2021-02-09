@@ -89,7 +89,7 @@ namespace Dock.Avalonia.Controls
             base.OnAttachedToVisualTree(e);
 
             var panel = GetPanel();
-            if (panel == null)
+            if (panel is null)
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace Dock.Avalonia.Controls
         {
             var target = GetTargetElement();
             var panel = GetPanel();
-            if (target == null || panel == null)
+            if (target is null || panel is null)
             {
                 return;
             }
@@ -217,7 +217,7 @@ namespace Dock.Avalonia.Controls
             else
             {
                 var panel = GetPanel();
-                if (panel != null)
+                if (panel is { })
                 {
                     var index = panel.Children.IndexOf(this);
                     if (index > 0 && panel.Children.Count > 0)

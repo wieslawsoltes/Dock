@@ -30,7 +30,7 @@ namespace Dock.Avalonia.Internal
         private static IEnumerable<IVisual>? GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
         {
             var root = visual.GetVisualRoot();
-            if (root != null)
+            if (root is { })
             {
                 var rootPoint = visual.TranslatePoint(p, root);
                 if (rootPoint.HasValue)
@@ -54,7 +54,7 @@ namespace Dock.Avalonia.Internal
             }
 
             var controls = inputElements?.OfType<IControl>().ToList();
-            if (controls != null)
+            if (controls is { })
             {
                 foreach (var control in controls)
                 {
@@ -71,7 +71,7 @@ namespace Dock.Avalonia.Internal
         {
             Debug.WriteLine(ex.Message);
             Debug.WriteLine(ex.StackTrace);
-            if (ex.InnerException != null)
+            if (ex.InnerException is { })
             {
                 Print(ex.InnerException);
             }

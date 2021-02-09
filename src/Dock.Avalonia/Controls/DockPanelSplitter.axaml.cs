@@ -85,7 +85,7 @@ namespace Dock.Avalonia.Controls
 
         private void SetTargetHeight(double dy)
         {
-            if (_element == null)
+            if (_element is null)
             {
                 return;
             }
@@ -103,7 +103,7 @@ namespace Dock.Avalonia.Controls
             }
 
             var panel = GetPanel();
-            if (panel != null)
+            if (panel is { })
             {
                 var dock = GetDock(this);
                 if (dock == global::Avalonia.Controls.Dock.Top && height > panel.DesiredSize.Height - Thickness)
@@ -117,7 +117,7 @@ namespace Dock.Avalonia.Controls
 
         private void SetTargetWidth(double dx)
         {
-            if (_element == null)
+            if (_element is null)
             {
                 return;
             }
@@ -135,7 +135,7 @@ namespace Dock.Avalonia.Controls
             }
 
             var panel = GetPanel();
-            if (panel != null)
+            if (panel is { })
             {
                 var dock = GetDock(this);
                 if (dock == global::Avalonia.Controls.Dock.Left && width > panel.DesiredSize.Width - Thickness)

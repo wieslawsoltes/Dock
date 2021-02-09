@@ -68,12 +68,12 @@ namespace Dock.Model.ReactiveUI.Core
             set
             {
                 this.RaiseAndSetIfChanged(ref _activeDockable, value);
-                if (value != null)
+                if (value is { })
                 {
                     Factory?.UpdateDockable(value, this);
                     value.OnSelected();
                 }
-                if (value != null)
+                if (value is { })
                 {
                     Factory?.SetFocusedDockable(this, value);
                 }

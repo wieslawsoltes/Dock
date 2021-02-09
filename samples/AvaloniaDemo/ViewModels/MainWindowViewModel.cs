@@ -24,7 +24,7 @@ namespace AvaloniaDemo.ViewModels
             _factory = new DemoFactory(new DemoData());
 
             Layout = _factory?.CreateLayout();
-            if (Layout != null)
+            if (Layout is { })
             {
                 _factory?.InitLayout(Layout);
                 if (Layout is { } root)

@@ -11,15 +11,15 @@ namespace Notepad
         public IControl Build(object data)
         {
             var name = data.GetType().FullName?.Replace("ViewModel", "View");
-            if (name == null)
+            if (name is null)
             {
                 return new TextBlock { Text = "Invalid Data Type" };
             }
             var type = Type.GetType(name);
-            if (type != null)
+            if (type is { })
             {
                 var instance = Activator.CreateInstance(type);
-                if (instance != null)
+                if (instance is { })
                 {
                     return (Control)instance;
                 }

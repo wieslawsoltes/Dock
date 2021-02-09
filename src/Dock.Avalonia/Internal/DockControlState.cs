@@ -80,7 +80,7 @@ namespace Dock.Avalonia.Internal
 
         private bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
         {
-            if (_dragControl == null || _dropControl == null)
+            if (_dragControl is null || _dropControl is null)
             {
                 return false;
             }
@@ -97,7 +97,7 @@ namespace Dock.Avalonia.Internal
 
         private void Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
         {
-            if (_dragControl == null || _dropControl == null)
+            if (_dragControl is null || _dropControl is null)
             {
                 return;
             }
@@ -137,7 +137,7 @@ namespace Dock.Avalonia.Internal
                 case EventType.Pressed:
                     {
                         var dragControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDragAreaProperty);
-                        if (dragControl != null)
+                        if (dragControl is { })
                         {
                             var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
                             if (isDragEnabled != true)
@@ -158,7 +158,7 @@ namespace Dock.Avalonia.Internal
                     {
                         if (_doDragDrop)
                         {
-                            if (_dropControl != null && _targetDockControl != null)
+                            if (_dropControl is { } && _targetDockControl is { })
                             {
                                 var isDropEnabled = true;
 
@@ -221,7 +221,7 @@ namespace Dock.Avalonia.Internal
                                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                                     var dockControlPoint = inputDockControl.PointToClient(screenPoint);
                                     dropControl = DockHelpers.GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
-                                    if (dropControl != null)
+                                    if (dropControl is { })
                                     {
                                         targetPoint = dockControlPoint;
                                         targetDockControl = inputDockControl;
@@ -230,17 +230,17 @@ namespace Dock.Avalonia.Internal
                                 }
                             }
 
-                            if (dropControl == null)
+                            if (dropControl is null)
                             {
                                 dropControl = DockHelpers.GetControl(inputActiveDockControl, point, DockProperties.IsDropAreaProperty);
-                                if (dropControl != null)
+                                if (dropControl is { })
                                 {
                                     targetPoint = point;
                                     targetDockControl = inputActiveDockControl;
                                 }
                             }
 
-                            if (dropControl != null && targetDockControl != null)
+                            if (dropControl is { } && targetDockControl is { })
                             {
                                 var isDropEnabled = true;
 
@@ -259,7 +259,7 @@ namespace Dock.Avalonia.Internal
                                     }
                                     else
                                     {
-                                        if (_dropControl != null)
+                                        if (_dropControl is { })
                                         {
                                             Leave();
                                             _dropControl = null;
@@ -274,7 +274,7 @@ namespace Dock.Avalonia.Internal
                                 }
                                 else
                                 {
-                                    if (_dropControl != null)
+                                    if (_dropControl is { })
                                     {
                                         Leave();
                                         _dropControl = null;

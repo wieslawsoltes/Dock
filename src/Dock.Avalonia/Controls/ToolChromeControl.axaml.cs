@@ -63,7 +63,7 @@ namespace Dock.Avalonia.Controls
         
         private void Pressed(object? sender, PointerPressedEventArgs e)
         {
-            if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable != null)
+            if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
             {
                 if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
                 {

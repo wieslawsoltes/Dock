@@ -81,13 +81,13 @@ namespace Dock.Avalonia.Controls
 
         private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
         {
-            if (selector == null || indicator == null)
+            if (selector is null || indicator is null)
             {
                 return false;
             }
 
             var selectorPoint = relativeTo.TranslatePoint(point, selector);
-            if (selectorPoint != null && selector.InputHitTest(selectorPoint.Value) != null && validate(point, operation, dragAction, relativeTo))
+            if (selectorPoint is { } && selector.InputHitTest(selectorPoint.Value) is { } && validate(point, operation, dragAction, relativeTo))
             {
                 indicator.Opacity = 0.5;
                 return true;

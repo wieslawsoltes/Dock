@@ -121,7 +121,7 @@ namespace Notepad.ViewModels
             dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
             dlg.AllowMultiple = true;
             var result = await dlg.ShowAsync(GetWindow());
-            if (result != null && result.Length > 0)
+            if (result is { } && result.Length > 0)
             {
                 foreach (var path in result)
                 {
@@ -165,7 +165,7 @@ namespace Notepad.ViewModels
             dlg.InitialFileName = fileViewModel.Title;
             dlg.DefaultExtension = "txt";
             var result = await dlg.ShowAsync(GetWindow());
-            if (result != null)
+            if (result is { })
             {
                 if (!string.IsNullOrEmpty(result))
                 {

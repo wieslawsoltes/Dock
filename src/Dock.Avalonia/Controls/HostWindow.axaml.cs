@@ -154,7 +154,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnPointerPressed(e);
 
-            if (_chromeGrip != null && _chromeGrip.IsPointerOver)
+            if (_chromeGrip is { } && _chromeGrip.IsPointerOver)
             {
                 _mouseDown = true;
                 _startPoint = e.GetPosition(this);
@@ -184,7 +184,7 @@ namespace Dock.Avalonia.Controls
         {
             base.OnPointerMoved(e);
 
-            if (_chromeGrip != null && _chromeGrip.IsPointerOver && _mouseDown)
+            if (_chromeGrip is { } && _chromeGrip.IsPointerOver && _mouseDown)
             {
                 if (s_useCustomDrag)
                 {

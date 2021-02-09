@@ -123,7 +123,7 @@ namespace Dock.Avalonia.Controls
 
             Layout.Factory.DockControls.Remove(this);
 
-            if (InitializeLayout && Layout != null)
+            if (InitializeLayout && Layout is { })
             {
                 if (Layout.Close.CanExecute(null))
                 {

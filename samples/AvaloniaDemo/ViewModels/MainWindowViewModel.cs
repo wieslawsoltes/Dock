@@ -1,101 +1,68 @@
-﻿using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using System.Windows.Input;
 using AvaloniaDemo.Models;
-using Dock.Model;
 using Dock.Model.Controls;
-using Dock.Serializer;
+using Dock.Model.Core;
 using ReactiveUI;
 
 namespace AvaloniaDemo.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        private IDockSerializer? _serializer;
-        private IFactory? _factory;
-        private IDockable? _layout;
+        private readonly IFactory? _factory;
+        private IRootDock? _layout;
 
-        public IDockSerializer? Serializer
-        {
-            get => _serializer;
-            set => this.RaiseAndSetIfChanged(ref _serializer, value);
-        }
-
-        public IFactory? Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
-
-        public IDockable? Layout
+        public IRootDock? Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
 
-        public void FileNew()
+        public ICommand NewLayout { get; }
+
+        public MainWindowViewModel()
         {
-            if (Layout is IDock root)
+            _factory = new DemoFactory(new DemoData());
+
+            Layout = _factory?.CreateLayout();
+            if (Layout is { })
             {
-                root.Close();
+                _factory?.InitLayout(Layout);
+                if (Layout is { } root)
+                {
+                    root.Navigate.Execute("Home");
+                }
             }
-            Factory = new DemoFactory(new DemoData());
-            var layout = Factory?.CreateLayout();
-            if (layout != null)
-            {
-                Layout = layout;
-                Factory?.InitLayout(Layout);
-            }
+
+            NewLayout = ReactiveCommand.Create(ResetLayout);
         }
 
-        public async void FileOpen()
+        public void CloseLayout()
         {
-            var dlg = new OpenFileDialog();
-            dlg.Filters.Add(new FileDialogFilter() { Name = "Json", Extensions = { "json" } });
-            dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
-            var result = await dlg.ShowAsync(GetWindow());
-            if (result != null)
+            if (Layout is IDock dock)
             {
-                var path = result.FirstOrDefault();
-                if (path is null)
+                if (dock.Close.CanExecute(null))
                 {
-                    return;
-                }
-                IDock? layout = _serializer?.Load<RootDock>(path);
-                if (layout != null)
-                {
-                    if (Layout is IDock root)
-                    {
-                        root.Close();
-                    }
-                    Layout = layout;
-                    Factory?.InitLayout(Layout);
+                    dock.Close.Execute(null);
                 }
             }
         }
 
-        public async void FileSaveAs()
+        public void ResetLayout()
         {
-            var dlg = new SaveFileDialog();
-            dlg.Filters.Add(new FileDialogFilter() { Name = "Json", Extensions = { "json" } });
-            dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
-            dlg.InitialFileName = "Layout";
-            dlg.DefaultExtension = "json";
-            var result = await dlg.ShowAsync(GetWindow());
-            if (result != null)
+            if (Layout is not null)
             {
-                Serializer?.Save(result, Layout);
+                if (Layout.Close.CanExecute(null))
+                {
+                    Layout.Close.Execute(null);
+                }
             }
-        }
 
-        private Window? GetWindow()
-        {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            var layout = _factory?.CreateLayout();
+            if (layout is not null)
             {
-                return desktopLifetime.MainWindow;
+                Layout = layout as IRootDock;
+                _factory?.InitLayout(layout);
             }
-            return null;
         }
     }
 }

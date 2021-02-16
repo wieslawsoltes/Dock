@@ -1,6 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using System.Windows.Input;
+using Dock.Model.Controls;
+using Dock.Model.ReactiveUI.Core;
+using ReactiveUI;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
     /// Document dock.
@@ -8,19 +12,18 @@ namespace Dock.Model.Controls
     [DataContract(IsReference = true)]
     public class DocumentDock : DockBase, IDocumentDock
     {
-        /// <summary>
-        /// Initializes new instance of the <see cref="DocumentDock"/> class.
-        /// </summary>
-        public DocumentDock()
+        private bool _canCreateDocument;
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public bool CanCreateDocument
         {
-            Id = nameof(IDocumentDock);
-            Title = nameof(IDocumentDock);
+            get => _canCreateDocument;
+            set => this.RaiseAndSetIfChanged(ref _canCreateDocument, value);
         }
 
         /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneDocumentDock(this);
-        }
+        [IgnoreDataMember]
+        public ICommand? CreateDocument { get; set; }
     }
 }

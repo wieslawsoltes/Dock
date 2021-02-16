@@ -1,0 +1,127 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:idc="using:Dock.Avalonia.Controls"
+        xmlns:converters="using:Dock.Avalonia.Converters"
+        xmlns:dmc="using:Dock.Model.Controls"
+        xmlns:core="using:Dock.Model.Core">
+    <Design.PreviewWith>
+        <idc:DockControl Width="600" Height="400"/>
+    </Design.PreviewWith>
+    <Style Selector="idc|DockControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentControl x:Name="PART_ContentControl"
+                                Content="{TemplateBinding Layout}" 
+                                x:DataType="core:IDock" 
+                                x:CompileBindings="True">
+                    <ContentControl.DataTemplates>
+                        <DataTemplate DataType="dmc:IDocumentContent">
+                            <idc:DockableControl TrackingMode="Visible">
+                                <ContentControl Content="{Binding Content}"/>
+                            </idc:DockableControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:IToolContent">
+                            <idc:DockableControl TrackingMode="Visible">
+                                <ContentControl Content="{Binding Content}"/>
+                            </idc:DockableControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:ISplitterDockable">
+                            <idc:ProportionalStackPanelSplitter Background="Transparent"/>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:IDocumentDock">
+                            <idc:DockableControl TrackingMode="Visible">
+                                <idc:DocumentControl idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"/>
+                            </idc:DockableControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:IToolDock">
+                                <DockPanel>
+                                    <ItemsControl Items="{Binding PinnedDockables}"
+                                                  DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical" 
+                                                            id:DockProperties.IsDropArea="True">
+                                                </StackPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.DataTemplates>
+                                            <DataTemplate>
+                                                <idc:DockableControl TrackingMode="Pinned">
+                                                    <LayoutTransformControl Margin="4">
+                                                        <LayoutTransformControl.LayoutTransform>
+                                                            <RotateTransform Angle="270"></RotateTransform>
+                                                        </LayoutTransformControl.LayoutTransform>
+                                                        <Button Background="Transparent"
+                                                                BorderBrush="Transparent"
+                                                                BorderThickness="0"
+                                                                Command="{Binding Owner.Factory.PinDockable}" 
+                                                                CommandParameter="{Binding}" 
+                                                                IsVisible="{Binding CanPin}"
+                                                                x:CompileBindings="False">
+                                                            <TextBlock Text="{Binding Title}"
+                                                                       VerticalAlignment="Center"
+                                                                       HorizontalAlignment="Left">
+                                                                <TextBlock.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="_Float" 
+                                                                                  Command="{Binding Owner.Factory.FloatDockable}" 
+                                                                                  CommandParameter="{Binding}" 
+                                                                                  IsVisible="{Binding CanFloat}"
+                                                                                  x:CompileBindings="False" />
+                                                                        <MenuItem Header="_Show" 
+                                                                                  Command="{Binding Owner.Factory.PinDockable}" 
+                                                                                  CommandParameter="{Binding}" 
+                                                                                  IsVisible="{Binding CanPin}"
+                                                                                  x:CompileBindings="False" />
+                                                                        <MenuItem Header="_Close" 
+                                                                                  Command="{Binding Owner.Factory.CloseDockable}" 
+                                                                                  CommandParameter="{Binding}" 
+                                                                                  IsVisible="{Binding CanClose}"
+                                                                                  x:CompileBindings="False" />
+                                                                    </ContextMenu>
+                                                                </TextBlock.ContextMenu>
+                                                            </TextBlock>
+                                                        </Button>
+                                                    </LayoutTransformControl>
+                                                </idc:DockableControl>
+                                            </DataTemplate>
+                                        </ItemsControl.DataTemplates>
+                                    </ItemsControl>
+                                    <idc:DockableControl TrackingMode="Visible">
+                                        <idc:ToolChromeControl IsActive="{Binding IsActive}" 
+                                                               IsVisible="{Binding !!VisibleDockables.Count}"
+                                                               idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                            <idc:ToolControl/>
+                                        </idc:ToolChromeControl>
+                                    </idc:DockableControl>
+                                </DockPanel>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:IProportionalDock">
+                            <idc:DockableControl TrackingMode="Visible" 
+                                                 idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <ItemsControl Items="{Binding VisibleDockables}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True" 
+                                                                        Background="Transparent" 
+                                                                        Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </idc:DockableControl>
+                        </DataTemplate>
+                        <DataTemplate DataType="dmc:IRootDock">
+                            <idc:DockableControl TrackingMode="Visible">
+                                <DockPanel id:DockProperties.IsDropArea="False" 
+                                           Background="Transparent">
+                                    <ContentControl Content="{Binding ActiveDockable}"/>
+                                </DockPanel>
+                            </idc:DockableControl>
+                        </DataTemplate>
+                    </ContentControl.DataTemplates>
+                </ContentControl>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

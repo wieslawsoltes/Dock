@@ -1,23 +1,52 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using AvaloniaDemo.Models;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Styling;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
-using Dock.Model;
-using Dock.Model.Controls;
-using Dock.Serializer;
-using ReactiveUI.Legacy;
 
 namespace AvaloniaDemo
 {
     public class App : Application
-    {
+    {       
+        public static readonly Styles FluentDark = new Styles
+        {
+            new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+            {
+                Source = new Uri("avares://AvaloniaDemo/Themes/FluentDark.axaml")
+            }
+        };
+
+        public static readonly Styles FluentLight = new Styles
+        {
+            new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+            {
+                Source = new Uri("avares://AvaloniaDemo/Themes/FluentLight.axaml")
+            }
+        };
+
+        public static readonly Styles DefaultLight = new Styles
+        {
+            new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+            {
+                Source = new Uri("avares://AvaloniaDemo/Themes/DefaultLight.axaml")
+            }
+        };
+
+        public static readonly Styles DefaultDark = new Styles
+        {
+            new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+            {
+                Source = new Uri("avares://AvaloniaDemo/Themes/DefaultDark.axaml")
+            },
+        };
+
         public override void Initialize()
         {
+            Styles.Insert(0, FluentLight);
+
             AvaloniaXamlLoader.Load(this);
         }
 
@@ -25,71 +54,42 @@ namespace AvaloniaDemo
         {
             var mainWindowViewModel = new MainWindowViewModel();
 
-            mainWindowViewModel.Serializer = new DockSerializer(typeof(ObservableCollection<>));
-
-            var factory = new DemoFactory(new DemoData());
-            IDock? layout = null;
-
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            switch (ApplicationLifetime)
             {
-                string path = Path.Combine(AppContext.BaseDirectory, "Layout.json");
-                if (File.Exists(path))
+                case IClassicDesktopStyleApplicationLifetime desktopLifetime:
                 {
-                    layout = mainWindowViewModel.Serializer.Load<RootDock>(path);
-                }
-
-                var mainWindow = new MainWindow
-                {
-                    DataContext = mainWindowViewModel
-                };
-
-                // TODO: Restore main window position, size and state.
-
-                mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
-
-                if (mainWindowViewModel.Layout != null)
-                {
-                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
-                }
-
-                mainWindow.Closing += (sender, e) =>
-                {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    var mainWindow = new MainWindow
                     {
-                        dock.Close();
-                    }
-                    // TODO: Save main window position, size and state.
-                };
+                        DataContext = mainWindowViewModel
+                    };
 
-                desktopLifetime.MainWindow = mainWindow;
-
-                desktopLifetime.Exit += (sennder, e) =>
-                {
-                    if (mainWindowViewModel.Layout is IDock dock)
+                    mainWindow.Closing += (_, _) =>
                     {
-                        dock.Close();
-                    }
-                    mainWindowViewModel.Serializer.Save(path, mainWindowViewModel.Layout);
-                };
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewLifetime)
-            {
-                var mainView = new MainView()
-                {
-                    DataContext = mainWindowViewModel
-                };
+                        mainWindowViewModel.CloseLayout();
+                    };
 
-                mainWindowViewModel.Factory = factory;
-                mainWindowViewModel.Layout = layout ?? mainWindowViewModel.Factory?.CreateLayout();
+                    desktopLifetime.MainWindow = mainWindow;
 
-                if (mainWindowViewModel.Layout != null)
-                {
-                    mainWindowViewModel.Factory?.InitLayout(mainWindowViewModel.Layout);
+                    desktopLifetime.Exit += (_, _) =>
+                    {
+                        mainWindowViewModel.CloseLayout();
+                    };
+                    
+                    break;
                 }
+                case ISingleViewApplicationLifetime singleViewLifetime:
+                {
+                    var mainView = new MainView()
+                    {
+                        DataContext = mainWindowViewModel
+                    };
 
-                singleViewLifetime.MainView = mainView;
+                    singleViewLifetime.MainView = mainView;
+
+                    break;
+                }
             }
+
             base.OnFrameworkInitializationCompleted();
         }
     }

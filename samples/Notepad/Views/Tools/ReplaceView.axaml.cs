@@ -7,7 +7,7 @@ namespace Notepad.Views.Tools
     {
         public ReplaceView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

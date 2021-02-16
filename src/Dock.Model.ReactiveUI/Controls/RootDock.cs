@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Windows.Input;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
     /// Root dock.
@@ -43,26 +47,16 @@ namespace Dock.Model.Controls
         /// </summary>
         public RootDock()
         {
-            Id = nameof(IRootDock);
-            Title = nameof(IRootDock);
+            ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
+            ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
         }
 
         /// <inheritdoc/>
-        public virtual void ShowWindows()
-        {
-            _navigateAdapter?.ShowWindows();
-        }
+        [IgnoreDataMember]
+        public ICommand ShowWindows { get; }
 
         /// <inheritdoc/>
-        public virtual void ExitWindows()
-        {
-            _navigateAdapter?.ExitWindows();
-        }
-
-        /// <inheritdoc/>
-        public override IDockable? Clone()
-        {
-            return CloneHelper.CloneRootDock(this);
-        }
+        [IgnoreDataMember]
+        public ICommand ExitWindows { get; }
     }
 }

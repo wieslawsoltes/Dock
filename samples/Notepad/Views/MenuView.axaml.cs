@@ -7,7 +7,7 @@ namespace Notepad.Views
     {
         public MenuView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

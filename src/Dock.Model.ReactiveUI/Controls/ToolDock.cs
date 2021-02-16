@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
     /// Tool dock.
@@ -10,8 +13,9 @@ namespace Dock.Model.Controls
     public class ToolDock : DockBase, IToolDock
     {
         private Alignment _alignment = Alignment.Unset;
-        private bool _isExpanded = false;
+        private bool _isExpanded;
         private bool _autoHide = true;
+        private GripMode _gripMode = Model.Core.GripMode.Visible;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -37,19 +41,12 @@ namespace Dock.Model.Controls
             set => this.RaiseAndSetIfChanged(ref _autoHide, value);
         }
 
-        /// <summary>
-        /// Initializes new instance of the <see cref="ToolDock"/> class.
-        /// </summary>
-        public ToolDock()
-        {
-            Id = nameof(IToolDock);
-            Title = nameof(IToolDock);
-        }
-
         /// <inheritdoc/>
-        public override IDockable? Clone()
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public GripMode GripMode
         {
-            return CloneHelper.CloneToolDock(this);
+            get => _gripMode;
+            set => this.RaiseAndSetIfChanged(ref _gripMode, value);
         }
     }
 }

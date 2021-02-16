@@ -8,7 +8,7 @@ namespace Notepad.Views
     {
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             this.AttachDevTools();
         }
 

@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Windows.Input;
+using Dock.Model.Adapters;
+using Dock.Model.Core;
 using ReactiveUI;
 
-namespace Dock.Model
+namespace Dock.Model.ReactiveUI.Core
 {
     /// <summary>
     /// Dock base class.
@@ -10,7 +13,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public abstract class DockBase : DockableBase, IDock
     {
-        internal INavigateAdapter _navigateAdapter;
+        internal readonly INavigateAdapter _navigateAdapter;
         private IList<IDockable>? _visibleDockables;
         private IList<IDockable>? _hiddenDockables;
         private IList<IDockable>? _pinnedDockables;
@@ -24,9 +27,13 @@ namespace Dock.Model
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
         /// </summary>
-        public DockBase()
+        protected DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
+            GoBack = ReactiveCommand.Create(() => _navigateAdapter.GoBack());
+            GoForward = ReactiveCommand.Create(() => _navigateAdapter.GoForward());
+            Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));
+            Close = ReactiveCommand.Create(() => _navigateAdapter.Close());
         }
 
         /// <inheritdoc/>
@@ -61,12 +68,12 @@ namespace Dock.Model
             set
             {
                 this.RaiseAndSetIfChanged(ref _activeDockable, value);
-                if (value != null)
+                if (value is { })
                 {
                     Factory?.UpdateDockable(value, this);
                     value.OnSelected();
                 }
-                if (value != null)
+                if (value is { })
                 {
                     Factory?.SetFocusedDockable(this, value);
                 }
@@ -117,34 +124,26 @@ namespace Dock.Model
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoBack => _navigateAdapter?.CanGoBack ?? false;
+        public bool CanGoBack => _navigateAdapter.CanGoBack;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
-        public bool CanGoForward => _navigateAdapter?.CanGoForward ?? false;
+        public bool CanGoForward => _navigateAdapter.CanGoForward;
 
         /// <inheritdoc/>
-        public virtual void GoBack()
-        {
-            _navigateAdapter?.GoBack();
-        }
+        [IgnoreDataMember]
+        public ICommand GoBack { get; }
 
         /// <inheritdoc/>
-        public virtual void GoForward()
-        {
-            _navigateAdapter?.GoForward();
-        }
+        [IgnoreDataMember]
+        public ICommand GoForward { get; }
 
         /// <inheritdoc/>
-        public virtual void Navigate(object root)
-        {
-            _navigateAdapter?.Navigate(root, true);
-        }
+        [IgnoreDataMember]
+        public ICommand Navigate { get; }
 
         /// <inheritdoc/>
-        public virtual void Close()
-        {
-            _navigateAdapter?.Close();
-        }
+        [IgnoreDataMember]
+        public ICommand Close { get; }
     }
 }

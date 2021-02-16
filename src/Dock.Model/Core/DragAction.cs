@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Defines the available drag actions.

@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
-             xmlns:views="clr-namespace:Notepad.Views;assembly=Notepad"
+             xmlns:idc="using:Dock.Avalonia.Controls"
+             xmlns:views="using:Notepad.Views"
+             xmlns:vm="using:Notepad.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="680">
+             d:DesignWidth="700" d:DesignHeight="350">
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
     <Grid RowDefinitions="Auto,*" Background="Transparent" DragDrop.AllowDrop="True">
         <views:MenuView Grid.Row="0"/>
         <idc:DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="1"/>

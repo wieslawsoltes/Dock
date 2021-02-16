@@ -2,13 +2,38 @@
 using System.Collections.Generic;
 using Dock.Model.Controls;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock factory contract.
     /// </summary>
     public interface IFactory
     {
+        /// <summary>
+        /// Gets visible dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
+
+        /// <summary>
+        /// Gets pinned dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
+
+        /// <summary>
+        /// Gets tab dockable controls.
+        /// </summary>
+        IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+        /// <summary>
+        /// Gets dock controls.
+        /// </summary>
+        IList<IDockControl> DockControls { get; }
+
+        /// <summary>
+        /// Gets host windows.
+        /// </summary>
+        IList<IHostWindow> HostWindows { get; }
+
         /// <summary>
         /// Gets or sets <see cref="IDockable.Context"/> locator registry.
         /// </summary>
@@ -22,7 +47,7 @@ namespace Dock.Model
         /// <summary>
         /// Gets or sets <see cref="IDockable"/> locator registry.
         /// </summary>
-        IDictionary<string, Func<IDockable>>? DockableLocator { get; set; }
+        IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
         /// <summary>
         /// Creates list of type <see cref="IList{T}"/>.
@@ -45,10 +70,10 @@ namespace Dock.Model
         IProportionalDock CreateProportionalDock();
 
         /// <summary>
-        /// Creates <see cref="ISplitterDock"/>.
+        /// Creates <see cref="ISplitterDockable"/>.
         /// </summary>
-        /// <returns>The new instance of the <see cref="ISplitterDock"/> class.</returns>
-        ISplitterDock CreateSplitterDock();
+        /// <returns>The new instance of the <see cref="ISplitterDockable"/> class.</returns>
+        ISplitterDockable CreateSplitterDockable();
 
         /// <summary>
         /// Creates <see cref="IToolDock"/>.
@@ -71,11 +96,11 @@ namespace Dock.Model
         /// <summary>
         /// Creates layout.
         /// </summary>
-        /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
-        IDock? CreateLayout();
+        /// <returns>The new instance of the <see cref="IRootDock"/> class.</returns>
+        IRootDock? CreateLayout();
 
         /// <summary>
-        /// Gets registered context.
+        /// Gets registered context in <see cref="ContextLocator"/>.
         /// </summary>
         /// <param name="id">The object id.</param>
         /// <returns>The located context.</returns>
@@ -89,11 +114,12 @@ namespace Dock.Model
         IHostWindow? GetHostWindow(string id);
 
         /// <summary>
-        /// Gets registered dockable.
+        /// Gets registered dockable in <see cref="DockableLocator"/>.
         /// </summary>
-        /// <param name="id">The host id.</param>
+        /// <param name="id">The dockable id.</param>
+        /// <typeparam name="T">The dockable return type.</typeparam>
         /// <returns>The located dockable.</returns>
-        IDockable? GetDockable(string id);
+        T? GetDockable<T>(string id) where T: class, IDockable;
 
         /// <summary>
         /// Initialize layout.
@@ -144,7 +170,7 @@ namespace Dock.Model
         void RemoveWindow(IDockWindow window);
 
         /// <summary>
-        /// Sets an avtive dockable. If the dockable is contained inside an dock it
+        /// Sets an active dockable. If the dockable is contained inside an dock it
         /// will become the selected dockable.
         /// </summary>
         /// <param name="dockable">The dockable to select.</param>
@@ -155,7 +181,7 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dock">The dock to set the focused dockable on.</param>
         /// <param name="dockable">The dockable to set.</param>
-        void SetFocusedDockable(IDock dock, IDockable dockable);
+        void SetFocusedDockable(IDock dock, IDockable? dockable);
 
         /// <summary>
         /// Searches for root dockable.
@@ -178,6 +204,12 @@ namespace Dock.Model
         /// </summary>
         /// <param name="dockable">The dockable to pin.</param>
         void PinDockable(IDockable dockable);
+
+        /// <summary>
+        /// Floats dockable.
+        /// </summary>
+        /// <param name="dockable">The dockable to float.</param>
+        void FloatDockable(IDockable dockable);
 
         /// <summary>
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
@@ -230,7 +262,7 @@ namespace Dock.Model
         /// Creates a new split layout from source dockable.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
-        /// <param name="dockable">The optional dockable to add to splitted side.</param>
+        /// <param name="dockable">The optional dockable to add to a split side.</param>
         /// <param name="operation">The dock operation.</param>
         /// <returns>The new instance of the <see cref="IDock"/> class.</returns>
         IDock CreateSplitLayout(IDock dock, IDockable dockable, DockOperation operation);
@@ -239,7 +271,7 @@ namespace Dock.Model
         /// Splits dock and updates owner layout.
         /// </summary>
         /// <param name="dock">The dock to perform operation on.</param>
-        /// <param name="dockable">The optional dockable to add to splitted side.</param>
+        /// <param name="dockable">The optional dockable to add to a split side.</param>
         /// <param name="operation"> The dock operation to perform.</param>
         void SplitToDock(IDock dock, IDockable dockable, DockOperation operation);
 
@@ -254,7 +286,7 @@ namespace Dock.Model
         /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.
         /// </summary>
         /// <param name="dock">The window owner.</param>
-        /// <param name="dockable">The dockable to add to splitted window.</param>
+        /// <param name="dockable">The dockable to add to a split window.</param>
         /// <param name="x">The window X coordinate.</param>
         /// <param name="y">The window Y coordinate.</param>
         /// <param name="width">The window width.</param>

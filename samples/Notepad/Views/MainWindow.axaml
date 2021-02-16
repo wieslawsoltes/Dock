@@ -3,15 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-        xmlns:views="clr-namespace:Notepad.Views;assembly=Notepad"
+        xmlns:id="using:Dock.Avalonia"
+        xmlns:vm="using:Notepad.ViewModels"
+        xmlns:views="using:Notepad.Views"
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
+        x:Name="MainWindow"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
-        Foreground="{DynamicResource ThemeForegroundBrush}"
-        BorderThickness="1" BorderBrush="{DynamicResource ThemeBorderLowBrush}"
+        Foreground="{DynamicResource DockThemeForegroundBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Notepad" Height="600" Width="900"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <views:MainView/>
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+        <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Label Content="Notepad" 
+                   Margin="4,0,4,0" 
+                   FontSize="14" 
+                   FontWeight="Normal"
+                   VerticalAlignment="Center"
+                   VerticalContentAlignment="Center"/>
+        </Panel>
+        <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+            <views:MainView/>
+        </Panel>
+    </Panel>
 </Window>

@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Dock.Model;
+using Dock.Model.Core;
 using ReactiveUI;
 
 namespace AvaloniaDemo
@@ -10,16 +10,16 @@ namespace AvaloniaDemo
     {
         public IControl Build(object data)
         {
-            var name = data.GetType()?.FullName?.Replace("ViewModel", "View");
-            if (name == null)
+            var name = data.GetType().FullName?.Replace("ViewModel", "View");
+            if (name is null)
             {
                 return new TextBlock { Text = "Invalid Data Type" };
             }
             var type = Type.GetType(name);
-            if (type != null)
+            if (type is { })
             {
                 var instance = Activator.CreateInstance(type);
-                if (instance != null)
+                if (instance is { })
                 {
                     return (Control)instance;
                 }

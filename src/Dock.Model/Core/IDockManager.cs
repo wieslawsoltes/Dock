@@ -1,6 +1,6 @@
 ﻿using Dock.Model.Controls;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Docking manager contract.

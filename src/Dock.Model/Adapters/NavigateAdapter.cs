@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
-namespace Dock.Model
+namespace Dock.Model.Adapters
 {
     internal static class EnumerableExtensions
     {
-        public static IEnumerable<T>? Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>?> f)
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>?> f)
         {
-            return e.SelectMany(c =>
+            var enumerable = e.ToList();
+            return enumerable.SelectMany(c =>
             {
                 var r = f(c);
-                if (r is null)
-                    return Enumerable.Empty<T>();
-                else
-                    return r.Flatten(f);
-            }).Concat(e);
+                return r is null ? Enumerable.Empty<T>() : r.Flatten(f);
+            }).Concat(enumerable);
         }
     }
 
@@ -52,7 +51,7 @@ namespace Dock.Model
             if (_back.Count > 0)
             {
                 var root = _back.Pop();
-                if (!(_dock.ActiveDockable is null))
+                if (_dock.ActiveDockable is not null)
                 {
                     _forward.Push(_dock.ActiveDockable);
                 }
@@ -66,7 +65,7 @@ namespace Dock.Model
             if (_forward.Count > 0)
             {
                 var root = _forward.Pop();
-                if (!(_dock.ActiveDockable is null))
+                if (_dock.ActiveDockable is not null)
                 {
                     _back.Push(_dock.ActiveDockable);
                 }
@@ -98,7 +97,10 @@ namespace Dock.Model
         {
             if (_dock.ActiveDockable is IDock activeDockableWindows)
             {
-                activeDockableWindows.Close();
+                if (activeDockableWindows.Close.CanExecute(null))
+                {
+                    activeDockableWindows.Close.Execute(null);
+                }
                 _dock.ActiveDockable = null;
             }
         }
@@ -123,20 +125,20 @@ namespace Dock.Model
             _back.Push(dockable);
         }
 
-        private void NavigateTo(IDockable dockable, bool bSnapshot)
+        private void NavigateTo(IDockable? dockable, bool bSnapshot)
         {
             if (_dock.ActiveDockable is IDock previousDock)
             {
-                previousDock.Close();
+                previousDock.Close.Execute(null);
             }
 
-            if (!(dockable is null) && _dock.ActiveDockable != dockable)
+            if (dockable is not null && _dock.ActiveDockable != dockable)
             {
-                if (!(_dock.ActiveDockable is null) && bSnapshot == true)
+                if (_dock.ActiveDockable is not null && bSnapshot)
                 {
                     PushBack(_dock.ActiveDockable);
                 }
-                if (_dock.Factory is IFactory factory)
+                if (_dock.Factory is { } factory)
                 {
                     factory.SetActiveDockable(dockable);
                 }
@@ -148,14 +150,17 @@ namespace Dock.Model
 
             if (dockable is IRootDock nextDock)
             {
-                nextDock.ShowWindows();
+                if (nextDock.ShowWindows.CanExecute(null))
+                {
+                    nextDock.ShowWindows.Execute(null);
+                }
             }
         }
 
         private void NavigateToUseVisible(string id, bool bSnapshot)
         {
-            var result = _dock.VisibleDockables.FirstOrDefault(v => v.Id == id);
-            if (!(result is null))
+            var result = _dock.VisibleDockables?.FirstOrDefault(v => v.Id == id);
+            if (result is not null)
             {
                 Navigate(result, bSnapshot);
             }
@@ -181,8 +186,8 @@ namespace Dock.Model
                 return null;
             });
 
-            var result = visible?.FirstOrDefault(v => v.Id == id);
-            if (!(result is null))
+            var result = visible.FirstOrDefault(v => v.Id == id);
+            if (result is not null)
             {
                 Navigate(result, bSnapshot);
             }
@@ -191,7 +196,7 @@ namespace Dock.Model
         /// <inheritdoc/>
         public void ShowWindows()
         {
-            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
+            if (_dock is IRootDock rootDock && rootDock.Windows is { })
             {
                 foreach (var window in rootDock.Windows)
                 {
@@ -200,14 +205,17 @@ namespace Dock.Model
             }
             if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeRootDockWindows.ShowWindows();
+                if (activeRootDockWindows.ShowWindows.CanExecute(null))
+                {
+                    activeRootDockWindows.ShowWindows.Execute(null);
+                }
             }
         }
 
         /// <inheritdoc/>
         public void ExitWindows()
         {
-            if (_dock is IRootDock rootDock && !(rootDock.Windows is null))
+            if (_dock is IRootDock rootDock && rootDock.Windows is { })
             {
                 foreach (var window in rootDock.Windows)
                 {
@@ -217,7 +225,10 @@ namespace Dock.Model
             }
             if (_dock.ActiveDockable is IRootDock activeRootDockWindows)
             {
-                activeRootDockWindows.ExitWindows();
+                if (activeRootDockWindows.ExitWindows.CanExecute(null))
+                {
+                    activeRootDockWindows.ExitWindows.Execute(null);
+                }
             }
         }
 
@@ -226,7 +237,10 @@ namespace Dock.Model
         {
             if (_dock is IRootDock rootDock)
             {
-                rootDock.ExitWindows();
+                if (rootDock.ExitWindows.CanExecute(null))
+                {
+                    rootDock.ExitWindows.Execute(null);
+                }
             }
         }
     }

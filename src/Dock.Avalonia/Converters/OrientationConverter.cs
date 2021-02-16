@@ -7,10 +7,15 @@ using Avalonia.Layout;
 namespace Dock.Avalonia.Converters
 {
     /// <summary>
-    /// Converts model <see cref="Model.Orientation"/> enum to avalonia <see cref="Orientation"/> enum.
+    /// Converts model <see cref="Model.Core.Orientation"/> enum to avalonia <see cref="Orientation"/> enum.
     /// </summary>
     public class OrientationConverter : IValueConverter
     {
+        /// <summary>
+        /// Gets <see cref="OrientationConverter"/> instance.
+        /// </summary>
+        public static readonly OrientationConverter Instance = new OrientationConverter();
+
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -19,28 +24,19 @@ namespace Dock.Avalonia.Converters
         /// <param name="parameter">A user-defined parameter.</param>
         /// <param name="culture">The culture to use.</param>
         /// <returns>The converted value.</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            return value switch
             {
-                if (value is Model.Orientation orientation)
+                null => AvaloniaProperty.UnsetValue,
+                Model.Core.Orientation orientation => orientation switch
                 {
-                    switch (orientation)
-                    {
-                        case Model.Orientation.Horizontal:
-                            return Orientation.Horizontal;
-                        case Model.Orientation.Vertical:
-                            return Orientation.Vertical;
-                        default:
-                            throw new NotSupportedException($"Provided orientation is not supported in Avalonia.");
-                    }
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            return AvaloniaProperty.UnsetValue;
+                    Model.Core.Orientation.Horizontal => Orientation.Horizontal,
+                    Model.Core.Orientation.Vertical => Orientation.Vertical,
+                    _ => throw new NotSupportedException($"Provided orientation is not supported in Avalonia.")
+                },
+                _ => value
+            };
         }
 
         /// <summary>
@@ -51,28 +47,19 @@ namespace Dock.Avalonia.Converters
         /// <param name="parameter">A user-defined parameter.</param>
         /// <param name="culture">The culture to use.</param>
         /// <returns>The converted value.</returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            return value switch
             {
-                if (value is Orientation orientation)
+                null => AvaloniaProperty.UnsetValue,
+                Orientation orientation => orientation switch
                 {
-                    switch (orientation)
-                    {
-                        case Orientation.Horizontal:
-                            return Model.Orientation.Horizontal;
-                        case Orientation.Vertical:
-                            return Model.Orientation.Vertical;
-                        default:
-                            throw new NotSupportedException($"Provided orientation is not supported in Model.");
-                    }
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            return AvaloniaProperty.UnsetValue;
+                    Orientation.Horizontal => Model.Core.Orientation.Horizontal,
+                    Orientation.Vertical => Model.Core.Orientation.Vertical,
+                    _ => throw new NotSupportedException($"Provided orientation is not supported in Model.")
+                },
+                _ => value
+            };
         }
     }
 }

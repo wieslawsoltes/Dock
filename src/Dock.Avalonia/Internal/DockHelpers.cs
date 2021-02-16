@@ -6,30 +6,31 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
-using Dock.Model;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
-namespace Dock.Avalonia
+namespace Dock.Avalonia.Internal
 {
     /// <summary>
     /// Dock helpers.
     /// </summary>
     internal static class DockHelpers
     {
-        public static bool IsHitTestVisible(IVisual visual)
+        private static bool IsHitTestVisible(IVisual visual)
         {
-            var element = visual as IInputElement;
-            return element != null &&
-                   element.IsVisible &&
-                   element.IsHitTestVisible &&
-                   element.IsEffectivelyEnabled &&
-                   element.IsAttachedToVisualTree;
+            return visual is IInputElement
+            {
+                IsVisible: true, 
+                IsHitTestVisible: true, 
+                IsEffectivelyEnabled: true, 
+                IsAttachedToVisualTree: true
+            };
         }
 
-        public static IEnumerable<IVisual>? GetVisualsAt(IVisual visual, Point p, Func<IVisual, bool> predicate)
+        private static IEnumerable<IVisual>? GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
         {
             var root = visual.GetVisualRoot();
-            if (root != null)
+            if (root is { })
             {
                 var rootPoint = visual.TranslatePoint(p, root);
                 if (rootPoint.HasValue)
@@ -40,40 +41,24 @@ namespace Dock.Avalonia
             return Enumerable.Empty<IVisual>();
         }
 
-        public static IControl? GetControl(IInputElement input, Point point, AvaloniaProperty<bool> property)
+        public static IControl? GetControl(IInputElement? input, Point point, AvaloniaProperty<bool> property)
         {
             IEnumerable<IInputElement>? inputElements = null;
             try
             {
                 inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
-                // TODO: GetVisualsAt can throw.
-                //inputElements = input.GetVisualsAt(point, IsHitTestVisible)?.Cast<IInputElement>();
-                // TODO: GetInputElementsAt can throw.
-                // inputElements = input.GetInputElementsAt(point);
             }
             catch (Exception ex)
             {
                 Print(ex);
-                void Print(Exception exception)
-                {
-                    Debug.WriteLine(ex.Message);
-                    Debug.WriteLine(ex.StackTrace);
-                    if (ex.InnerException != null)
-                    {
-                        Print(ex.InnerException);
-                    }
-                }
             }
-            if (inputElements == null)
-            {
-                return null;
-            }
-            var controls = inputElements.OfType<IControl>().ToList();
-            if (controls != null)
+
+            var controls = inputElements?.OfType<IControl>().ToList();
+            if (controls is { })
             {
                 foreach (var control in controls)
                 {
-                    if (control.GetValue(property) == true)
+                    if (control.GetValue(property))
                     {
                         return control;
                     }
@@ -82,18 +67,31 @@ namespace Dock.Avalonia
             return null;
         }
 
+        private static void Print(Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            Debug.WriteLine(ex.StackTrace);
+            if (ex.InnerException is { })
+            {
+                Print(ex.InnerException);
+            }
+        }
+
         public static DockPoint ToDockPoint(Point point)
         {
-            return new DockPoint(point.X, point.Y);
+            return new(point.X, point.Y);
         }
 
         public static void ShowWindows(IDockable dockable)
         {
-            if (dockable.Owner is IDock dock && dock.Factory is IFactory factory)
+            if (dockable.Owner is IDock {Factory: { } factory} dock)
             {
-                if (factory.FindRoot(dock, (x) => true) is IRootDock root && root.ActiveDockable is IRootDock avtiveRootDockable)
+                if (factory.FindRoot(dock, _ => true) is {ActiveDockable: IRootDock activeRootDockable})
                 {
-                    avtiveRootDockable.ShowWindows();
+                    if (activeRootDockable.ShowWindows.CanExecute(null))
+                    {
+                        activeRootDockable.ShowWindows.Execute(null);
+                    }
                 }
             }
         }

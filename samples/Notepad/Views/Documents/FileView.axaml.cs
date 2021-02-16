@@ -7,7 +7,7 @@ namespace Notepad.Views.Documents
     {
         public FileView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

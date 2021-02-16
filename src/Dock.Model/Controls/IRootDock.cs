@@ -1,5 +1,7 @@
 ﻿
 using System.Collections.Generic;
+using System.Windows.Input;
+using Dock.Model.Core;
 
 namespace Dock.Model.Controls
 {
@@ -26,11 +28,11 @@ namespace Dock.Model.Controls
         /// <summary>
         /// Show windows.
         /// </summary>
-        void ShowWindows();
+        ICommand ShowWindows { get; }
 
         /// <summary>
         /// Exit windows.
         /// </summary>
-        void ExitWindows();
+        ICommand ExitWindows { get; }
     }
 }

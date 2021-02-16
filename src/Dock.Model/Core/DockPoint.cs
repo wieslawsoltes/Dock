@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Point structure.
     /// </summary>
-    public struct DockPoint
+    public readonly struct DockPoint
     {
         /// <summary>
         /// Gets X coordinate.

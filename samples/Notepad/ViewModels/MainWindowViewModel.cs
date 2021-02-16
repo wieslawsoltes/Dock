@@ -5,50 +5,43 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
-using Dock.Model;
-using Dock.Serializer;
+using Dock.Model.Controls;
+using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
-using Notepad.Views.Layouts;
 using ReactiveUI;
 
 namespace Notepad.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IDropTarget
     {
-        public const string DocumentsDockId = "Files";
+        private readonly IFactory? _factory;
+        private IRootDock? _layout;
 
-        private IDockSerializer? _serializer;
-        private IFactory? _factory;
-        private IDock? _layout;
-
-        public IDockSerializer? Serializer
-        {
-            get => _serializer;
-            set => this.RaiseAndSetIfChanged(ref _serializer, value);
-        }
-
-        public IFactory? Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
-
-        public IDock? Layout
+        public IRootDock? Layout
         {
             get => _layout;
             set => this.RaiseAndSetIfChanged(ref _layout, value);
         }
 
+        public MainWindowViewModel()
+        {
+            _factory = new NotepadFactory();
+
+            Layout = _factory?.CreateLayout();
+            if (Layout is { })
+            {
+                _factory?.InitLayout(Layout);
+            }
+        }
+
         private Encoding GetEncoding(string path)
         {
-            using (var reader = new StreamReader(path, Encoding.Default, true))
+            using var reader = new StreamReader(path, Encoding.Default, true);
+            if (reader.Peek() >= 0)
             {
-                if (reader.Peek() >= 0)
-                {
-                    reader.Read();
-                }
-                return reader.CurrentEncoding;
+                reader.Read();
             }
+            return reader.CurrentEncoding;
         }
 
         private FileViewModel OpenFileViewModel(string path)
@@ -78,32 +71,24 @@ namespace Notepad.ViewModels
 
         private void AddFileViewModel(FileViewModel fileViewModel)
         {
-            if (Layout?.ActiveDockable is IDock active)
+            var files = _factory?.GetDockable<IDocumentDock>("Files");
+            if (Layout is { } && files is { })
             {
-                if (active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
-                {
-                    Factory?.AddDockable(files, fileViewModel);
-                    Factory?.SetActiveDockable(fileViewModel);
-                    Factory?.SetFocusedDockable(Layout, fileViewModel);
-                }
+                _factory?.AddDockable(files, fileViewModel);
+                _factory?.SetActiveDockable(fileViewModel);
+                _factory?.SetFocusedDockable(Layout, fileViewModel);
             }
         }
 
         private FileViewModel? GetFileViewModel()
         {
-            if (Layout?.ActiveDockable is IDock active)
-            {
-                if (active.Factory?.FindDockable(active, (d) => d.Id == DocumentsDockId) is IDock files)
-                {
-                    return files.ActiveDockable as FileViewModel;
-                }
-            }
-            return null;
+            var files = _factory?.GetDockable<IDocumentDock>("Files");
+            return files?.ActiveDockable as FileViewModel;
         }
 
         private FileViewModel GetUntitledFileViewModel()
         {
-            return new FileViewModel()
+            return new()
             {
                 Path = string.Empty,
                 Title = "Untitled",
@@ -112,13 +97,21 @@ namespace Notepad.ViewModels
             };
         }
 
+        public void CloseLayout()
+        {
+            if (Layout is IDock dock)
+            {
+                if (dock.Close.CanExecute(null))
+                {
+                    dock.Close.Execute(null);
+                }
+            }
+        }
+
         public void FileNew()
         {
             var untitledFileViewModel = GetUntitledFileViewModel();
-            if (untitledFileViewModel != null)
-            {
-                AddFileViewModel(untitledFileViewModel);
-            }
+            AddFileViewModel(untitledFileViewModel);
         }
 
         public async void FileOpen()
@@ -128,17 +121,14 @@ namespace Notepad.ViewModels
             dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
             dlg.AllowMultiple = true;
             var result = await dlg.ShowAsync(GetWindow());
-            if (result != null && result.Length > 0)
+            if (result is { } && result.Length > 0)
             {
                 foreach (var path in result)
                 {
                     if (!string.IsNullOrEmpty(path))
                     {
                         var untitledFileViewModel = OpenFileViewModel(path);
-                        if (untitledFileViewModel != null)
-                        {
-                            AddFileViewModel(untitledFileViewModel);
-                        }
+                        AddFileViewModel(untitledFileViewModel);
                     }
                 }
             }
@@ -146,7 +136,7 @@ namespace Notepad.ViewModels
 
         public async void FileSave()
         {
-            if (GetFileViewModel() is FileViewModel fileViewModel)
+            if (GetFileViewModel() is { } fileViewModel)
             {
                 if (string.IsNullOrEmpty(fileViewModel.Path))
                 {
@@ -161,13 +151,13 @@ namespace Notepad.ViewModels
 
         public async void FileSaveAs()
         {
-            if (GetFileViewModel() is FileViewModel fileViewModel)
+            if (GetFileViewModel() is { } fileViewModel)
             {
                 await FileSaveAsImpl(fileViewModel);
             }
         }
 
-        public async Task FileSaveAsImpl(FileViewModel fileViewModel)
+        private async Task FileSaveAsImpl(FileViewModel fileViewModel)
         {
             var dlg = new SaveFileDialog();
             dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
@@ -175,7 +165,7 @@ namespace Notepad.ViewModels
             dlg.InitialFileName = fileViewModel.Title;
             dlg.DefaultExtension = "txt";
             var result = await dlg.ShowAsync(GetWindow());
-            if (result != null)
+            if (result is { })
             {
                 if (!string.IsNullOrEmpty(result))
                 {
@@ -214,111 +204,11 @@ namespace Notepad.ViewModels
                         if (!string.IsNullOrEmpty(path))
                         {
                             var untitledFileViewModel = OpenFileViewModel(path);
-                            if (untitledFileViewModel != null)
-                            {
-                                AddFileViewModel(untitledFileViewModel);
-                            }
+                            AddFileViewModel(untitledFileViewModel);
                         }
                     }
                 }
                 e.Handled = true;
-            }
-        }
-
-        private void CopyDocuments(IDock source, IDock target, string id)
-        {
-            if (source.Factory?.FindDockable(source, (d) => d.Id == id) is IDock sourceFiles
-                && target.Factory?.FindDockable(target, (d) => d.Id == id) is IDock targetFiles
-                && sourceFiles.VisibleDockables != null
-                && targetFiles.VisibleDockables != null)
-            {
-                targetFiles.VisibleDockables.Clear();
-                targetFiles.ActiveDockable = null;
-
-                foreach (var visible in sourceFiles.VisibleDockables)
-                {
-                    targetFiles.VisibleDockables.Add(visible);
-                }
-
-                targetFiles.ActiveDockable = sourceFiles.ActiveDockable;
-            }
-        }
-
-        public async void WindowSaveWindowLayout()
-        {
-            if (GetWindow() is Window onwer)
-            {
-                var window = new SaveWindowLayoutWindow();
-
-                // TODO:
-
-                await window.ShowDialog(onwer);
-            }
-
-            // TODO:
-
-            if (Layout?.ActiveDockable is IDock active)
-            {
-                var clone = (IDock?)active.Clone();
-                if (clone != null)
-                {
-                    clone.Title = clone.Title + "-copy";
-                    active.Close();
-                    Layout.Factory?.AddDockable(Layout, clone);
-                    Layout.Navigate(clone);
-                    Layout.Factory?.SetFocusedDockable(Layout, clone);
-                    Layout.DefaultDockable = clone;
-                }
-            }
-        }
-
-        public void WindowApplyWindowLayout(IDock dock)
-        {
-            if (Layout?.ActiveDockable is IDock active && dock != active)
-            {
-                active.Close();
-                CopyDocuments(active, dock, DocumentsDockId);
-                Layout.Navigate(dock);
-                Layout.Factory?.SetFocusedDockable(Layout, dock);
-                Layout.DefaultDockable = dock;
-            }
-        }
-
-        public async void WindowManageWindowLayouts()
-        {
-            if (GetWindow() is Window onwer)
-            {
-                var window = new ManageWindowLayoutsWindow();
-
-                // TODO:
-
-                await window.ShowDialog(onwer);
-            }
-        }
-
-        public async void WindowResetWindowLayout()
-        {
-            if (GetWindow() is Window onwer)
-            {
-                var window = new ResetWindowLayoutWindow();
-
-                // TODO:
-
-                await window.ShowDialog(onwer);
-            }
-
-            // TODO:
-
-            if (Layout?.ActiveDockable is IDock active)
-            {
-                var layout = Factory?.CreateLayout();
-                if (layout != null)
-                {
-                    Factory?.InitLayout(layout);
-                    CopyDocuments(active, layout, DocumentsDockId);
-                    Layout?.Close();
-                    Layout = layout;
-                }
             }
         }
 

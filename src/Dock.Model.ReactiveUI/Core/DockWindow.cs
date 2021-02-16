@@ -1,8 +1,10 @@
 ﻿using System.Runtime.Serialization;
+using Dock.Model.Adapters;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using ReactiveUI;
 
-namespace Dock.Model
+namespace Dock.Model.ReactiveUI.Core
 {
     /// <summary>
     /// Dock window.
@@ -10,7 +12,7 @@ namespace Dock.Model
     [DataContract(IsReference = true)]
     public class DockWindow : ReactiveObject, IDockWindow
     {
-        private IHostAdapter _hostAdapter;
+        private readonly IHostAdapter _hostAdapter;
         private string _id;
         private double _x;
         private double _y;
@@ -137,12 +139,6 @@ namespace Dock.Model
         public void Exit()
         {
             _hostAdapter.Exit();
-        }
-
-        /// <inheritdoc/>
-        public IDockWindow? Clone()
-        {
-            return CloneHelper.CloneDockWindow(this);
         }
     }
 }

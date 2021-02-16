@@ -1,33 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net461;net5.0</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <PublishTrimmed>False</PublishTrimmed>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishReadyToRun>False</PublishReadyToRun>
-  </PropertyGroup>
-
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
-  <Import Project="..\..\build\Newtonsoft.Json.props" />
   <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Default\Dock.Avalonia.Themes.Default.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Layouts\ManageWindowLayoutsWindow.axaml" />
+    <UpToDateCheckInput Remove="Views\Layouts\ResetWindowLayoutWindow.axaml" />
+    <UpToDateCheckInput Remove="Views\Layouts\SaveWindowLayoutWindow.axaml" />
   </ItemGroup>
 
 </Project>

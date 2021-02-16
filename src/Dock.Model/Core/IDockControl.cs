@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Dock.Model
+﻿namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock control contract.
@@ -8,29 +6,19 @@ namespace Dock.Model
     public interface IDockControl
     {
         /// <summary>
-        /// Gets dock controls.
-        /// </summary>
-        IList<IDockControl>? DockControls { get; }
-
-        /// <summary>
         /// Gets dock manager.
         /// </summary>
-        IDockManager? DockManager { get; }
+        IDockManager DockManager { get; }
 
         /// <summary>
-        /// Gest dock control state.
+        /// Gets dock control state.
         /// </summary>
-        IDockControlState? DockControlState { get; }
+        IDockControlState DockControlState { get; }
 
         /// <summary>
         /// Gets or sets the dock layout.
         /// </summary>
-        IDock Layout { get; set; }
-
-        /// <summary>
-        /// Gets or sets the dock factory.
-        /// </summary>
-        IFactory Factory { get; set; }
+        IDock? Layout { get; set; }
 
         /// <summary>
         /// Gets or sets the flag indicating whether to initialize layout.

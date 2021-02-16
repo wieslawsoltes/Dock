@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Dock.Model.Controls;
-using ReactiveUI.Legacy;
+﻿using System.Collections.ObjectModel;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Core;
 using Xunit;
 
 namespace Dock.Model.ReactiveUI.UnitTests
@@ -47,9 +47,9 @@ namespace Dock.Model.ReactiveUI.UnitTests
         public void CreateSplitterDock_Creates_SplitterDock()
         {
             var factory = new TestFactory();
-            var actual = factory.CreateSplitterDock();
+            var actual = factory.CreateSplitterDockable();
             Assert.NotNull(actual);
-            Assert.IsType<SplitterDock>(actual);
+            Assert.IsType<SplitterDockable>(actual);
         }
 
         [Fact]
@@ -87,14 +87,6 @@ namespace Dock.Model.ReactiveUI.UnitTests
             Assert.NotNull(actual);
             Assert.IsType<RootDock>(actual);
         }
-    }
-
-    public class TestDocument : Document
-    {
-    }
-
-    public class TestTool : Tool
-    {
     }
 
     public class TestFactory : Factory

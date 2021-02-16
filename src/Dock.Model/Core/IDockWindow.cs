@@ -1,7 +1,6 @@
-﻿
-using Dock.Model.Controls;
+﻿using Dock.Model.Controls;
 
-namespace Dock.Model
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock window contract.
@@ -78,11 +77,5 @@ namespace Dock.Model
         /// Exits window.
         /// </summary>
         void Exit();
-
-        /// <summary>
-        /// Clones <see cref="IDockWindow"/> object.
-        /// </summary>
-        /// <returns>The new instance or reference of the <see cref="IDockWindow"/> class.</returns>
-        IDockWindow? Clone();
     }
 }

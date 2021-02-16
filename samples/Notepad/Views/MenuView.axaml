@@ -3,10 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="20">
+             d:DesignWidth="600" d:DesignHeight="20">
     <Menu>
         <MenuItem Header="_File">
             <MenuItem Header="_New" Command="{Binding FileNew}"/>
@@ -38,20 +36,6 @@
         </MenuItem>
         <MenuItem Header="_View">
             <MenuItem Header="_Status bar"/>
-        </MenuItem>
-        <MenuItem Header="_Window">
-            <MenuItem Header="_Save Window Layout" Command="{Binding WindowSaveWindowLayout}"/>
-            <MenuItem Header="_Apply Window Layout" Items="{Binding Layout.VisibleDockables}">
-                <MenuItem.Styles>
-                    <Style Selector="MenuItem">
-                        <Setter Property="Header" Value="{Binding Title}"/>
-                        <Setter Property="Command" Value="{Binding $parent.DataContext.WindowApplyWindowLayout}"/>
-                        <Setter Property="CommandParameter" Value="{Binding}"/>
-                    </Style>
-                </MenuItem.Styles>
-            </MenuItem>
-            <MenuItem Header="_Manage Window Layouts" Command="{Binding WindowManageWindowLayouts}"/>
-            <MenuItem Header="_Reset Window Layout" Command="{Binding WindowResetWindowLayout}"/>
         </MenuItem>
         <MenuItem Header="_Help">
             <MenuItem Header="Get _Help"/>

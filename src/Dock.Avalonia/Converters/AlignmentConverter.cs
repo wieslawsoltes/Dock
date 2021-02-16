@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Globalization;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Converters
 {
     /// <summary>
-    /// Converts model <see cref="Model.Alignment"/> enum to avalonia <see cref="global::Avalonia.Controls.Dock"/> enum.
+    /// Converts model <see cref="Alignment"/> enum to avalonia <see cref="Dock"/> enum.
     /// </summary>
     public class AlignmentConverter : IValueConverter
     {
+        /// <summary>
+        /// Gets <see cref="AlignmentConverter"/> instance.
+        /// </summary>
+        public static readonly AlignmentConverter Instance = new AlignmentConverter();
+
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -18,34 +25,22 @@ namespace Dock.Avalonia.Converters
         /// <param name="parameter">A user-defined parameter.</param>
         /// <param name="culture">The culture to use.</param>
         /// <returns>The converted value.</returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            return value switch
             {
-                if (value is Model.Alignment alignment)
+                null => AvaloniaProperty.UnsetValue,
+                Alignment alignment => alignment switch
                 {
-                    switch (alignment)
-                    {
-                        case Model.Alignment.Unset:
-                            return AvaloniaProperty.UnsetValue;
-                        case Model.Alignment.Left:
-                            return global::Avalonia.Controls.Dock.Left;
-                        case Model.Alignment.Bottom:
-                            return global::Avalonia.Controls.Dock.Bottom;
-                        case Model.Alignment.Right:
-                            return global::Avalonia.Controls.Dock.Right;
-                        case Model.Alignment.Top:
-                            return global::Avalonia.Controls.Dock.Top;
-                        default:
-                            throw new NotSupportedException($"Provided dock is not supported in Avalonia.");
-                    }
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            return AvaloniaProperty.UnsetValue;
+                    Alignment.Unset => AvaloniaProperty.UnsetValue,
+                    Alignment.Left => global::Avalonia.Controls.Dock.Left,
+                    Alignment.Bottom => global::Avalonia.Controls.Dock.Bottom,
+                    Alignment.Right => global::Avalonia.Controls.Dock.Right,
+                    Alignment.Top => global::Avalonia.Controls.Dock.Top,
+                    _ => throw new NotSupportedException($"Provided dock is not supported in Avalonia.")
+                },
+                _ => value
+            };
         }
 
         /// <summary>
@@ -56,32 +51,21 @@ namespace Dock.Avalonia.Converters
         /// <param name="parameter">A user-defined parameter.</param>
         /// <param name="culture">The culture to use.</param>
         /// <returns>The converted value.</returns>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            return value switch
             {
-                if (value is global::Avalonia.Controls.Dock dock)
+                null => AvaloniaProperty.UnsetValue,
+                global::Avalonia.Controls.Dock dock => dock switch
                 {
-                    switch (dock)
-                    {
-                        case global::Avalonia.Controls.Dock.Left:
-                            return Model.Alignment.Left;
-                        case global::Avalonia.Controls.Dock.Bottom:
-                            return Model.Alignment.Bottom;
-                        case global::Avalonia.Controls.Dock.Right:
-                            return Model.Alignment.Right;
-                        case global::Avalonia.Controls.Dock.Top:
-                            return Model.Alignment.Top;
-                        default:
-                            return Model.Alignment.Unset;
-                    }
-                }
-                else
-                {
-                    return value;
-                }
-            }
-            return AvaloniaProperty.UnsetValue;
+                    global::Avalonia.Controls.Dock.Left => Alignment.Left,
+                    global::Avalonia.Controls.Dock.Bottom => Alignment.Bottom,
+                    global::Avalonia.Controls.Dock.Right => Alignment.Right,
+                    global::Avalonia.Controls.Dock.Top => Alignment.Top,
+                    _ => Alignment.Unset
+                },
+                _ => value
+            };
         }
     }
 }

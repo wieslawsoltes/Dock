@@ -25,7 +25,12 @@
                         <Style Selector="Border.panel">
                             <Setter Property="Margin" Value="0" />
                             <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                            <Setter Property="BorderThickness" Value="1 0 1 1" />
+                            <Setter Property="BorderThickness" Value="1 0 1 0" />
+                        </Style>
+                        
+                        <Style Selector="Separator.separator">
+                            <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
+                            <Setter Property="Height" Value="1" />
                         </Style>
                         <Style Selector="Button.chromeButton">
                             <Setter Property="Margin" Value="2 0 0 0" />
@@ -144,6 +149,9 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
+                    <Separator x:Name="PART_Separator" 
+                               Classes="separator" 
+                               DockPanel.Dock="Bottom"/>
                     <Border x:Name="PART_Border" 
                             Classes="panel" 
                             ZIndex="-1" 

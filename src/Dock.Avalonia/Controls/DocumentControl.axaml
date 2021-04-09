@@ -236,7 +236,7 @@
     <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
     </Style>
-    <Style Selector="idc|DocumentControl /template/ Grid#PART_Border">
+    <Style Selector="idc|DocumentControl /template/ Border#PART_Border">
         <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
         <Setter Property="BorderThickness" Value="1,1,1,1"/>
     </Style>

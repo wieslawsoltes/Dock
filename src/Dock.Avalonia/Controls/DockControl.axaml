@@ -31,7 +31,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IDocumentDock">
                             <idc:DockableControl TrackingMode="Visible" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                <idc:DocumentControl/>
+                                <idc:DocumentControl IsActive="{Binding IsActive}" />
                             </idc:DockableControl>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">

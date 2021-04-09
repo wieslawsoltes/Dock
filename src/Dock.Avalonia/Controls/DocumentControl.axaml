@@ -159,18 +159,6 @@
                                     </ControlTemplate>
                                 </Setter>
                             </Style>
-                            <Style Selector="TabStripItem:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-                            </Style>
-                            <Style Selector="TabStripItem:selected">
-                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-                            </Style>
-                            <Style Selector="TabStripItem:selected:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-                            </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
@@ -209,13 +197,12 @@
                         </TabStrip.DataTemplates>
                     </TabStrip>
                     <Grid  x:Name="PART_Grid"
-                           Background="{DynamicResource DockApplicationAccentBrushLow}" 
                            Height="2" 
                            IsVisible="{Binding #PART_TabStrip.IsVisible}" 
                            DockPanel.Dock="Top" 
                            x:CompileBindings="False" />
                     <Border x:Name="PART_Border"
-                            BorderThickness="1" 
+                            BorderThickness="1,0,1,1" 
                             BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
                         <idc:DockableControl DataContext="{Binding ActiveDockable}"
                                              TrackingMode="Visible">
@@ -228,5 +215,29 @@
                 </DockPanel>
             </ControlTemplate>
         </Setter>
+    </Style>
+
+    <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}"/>
+    </Style>
+    <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+    </Style>
+    
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl:not(:active) /template/ TabStrip#PART_TabStrip TabStripItem:selected">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl:active /template/ TabStrip#PART_TabStrip TabStripItem:selected">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
 </Styles>

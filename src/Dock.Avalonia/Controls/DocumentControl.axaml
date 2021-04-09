@@ -201,9 +201,7 @@
                            IsVisible="{Binding #PART_TabStrip.IsVisible}" 
                            DockPanel.Dock="Top" 
                            x:CompileBindings="False" />
-                    <Border x:Name="PART_Border"
-                            BorderThickness="1,0,1,1" 
-                            BorderBrush="{DynamicResource DockThemeBorderLowBrush}">
+                    <Border x:Name="PART_Border">
                         <idc:DockableControl DataContext="{Binding ActiveDockable}"
                                              TrackingMode="Visible">
                             <ContentControl x:Name="PART_ContentPresenter"
@@ -216,14 +214,6 @@
             </ControlTemplate>
         </Setter>
     </Style>
-
-    <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
-        <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}"/>
-    </Style>
-    <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
-        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
-    </Style>
-    
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>
         <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
@@ -239,5 +229,15 @@
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
         <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}"/>
+    </Style>
+    <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ Grid#PART_Border">
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
+        <Setter Property="BorderThickness" Value="1,1,1,1"/>
     </Style>
 </Styles>

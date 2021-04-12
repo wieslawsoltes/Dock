@@ -60,18 +60,6 @@
                                 </Setter>
                             </Style>
                             <Style Selector="TabStripItem">
-                                <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
-                                <Setter Property="FontWeight" Value="Normal" />
-                                <Setter Property="MinHeight" Value="0" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <!-- TODO: Background -->
-                                <Setter Property="Background" Value="Transparent" />
-                                <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
-                                <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="Padding" Value="4 1 4 0" />
                                 <Setter Property="Template">
                                     <ControlTemplate>
                                         <Border>
@@ -112,24 +100,6 @@
                                     </ControlTemplate>
                                 </Setter>
                             </Style>
-                            <Style Selector="TabStripItem:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
-                            </Style>
-                            <Style Selector="TabStrip:singleitem">
-                                <Setter Property="IsVisible" Value="False" />
-                            </Style>
-                            <Style Selector="TabStripItem:selected">
-                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-                                <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                                <Setter Property="BorderThickness" Value="1 0 1 1" />
-                                <Setter Property="Margin" Value="0 -1 0 0" />
-                                <Setter Property="Padding" Value="4 2 4 0" />
-                            </Style>
-                            <Style Selector="TabStripItem:selected:pointerover">
-                                <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                            </Style>
                         </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
@@ -167,5 +137,37 @@
                 </DockPanel>
             </ControlTemplate>
         </Setter>
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem">
+        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <!-- TODO: Background -->
+        <Setter Property="Background" Value="Transparent" />
+        <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
+        <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="4 1 4 0" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStrip:singleitem">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:selected">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="BorderThickness" Value="1 0 1 1" />
+        <Setter Property="Margin" Value="0 -1 0 0" />
+        <Setter Property="Padding" Value="4 2 4 0" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     </Style>
 </Styles>

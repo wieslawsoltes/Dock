@@ -243,9 +243,12 @@ namespace Dock.Model
 
                 if (dockable is not null)
                 {
-                    root.FocusedDockable = dockable;
-                    
-                    OnFocusedDockableChanged(dockable);
+                    if (root.FocusedDockable != dockable)
+                    {
+                        root.FocusedDockable = dockable;
+
+                        OnFocusedDockableChanged(dockable);
+                    }
                 }
 
                 if (root.FocusedDockable?.Owner is not null)

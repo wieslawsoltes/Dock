@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Diagnostics;
+using System.Windows.Input;
 using AvaloniaDemo.Models;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -22,6 +23,16 @@ namespace AvaloniaDemo.ViewModels
         public MainWindowViewModel()
         {
             _factory = new DemoFactory(new DemoData());
+
+            _factory.ActiveDockableChanged += (sender, args) =>
+            {
+                Debug.WriteLine($"ActiveDockableChanged {args.Dockable?.Title}");
+            };
+
+            _factory.FocusedDockableChanged += (sender, args) =>
+            {
+                Debug.WriteLine($"FocusedDockableChanged {args.Dockable?.Title}");
+            };
 
             Layout = _factory?.CreateLayout();
             if (Layout is { })

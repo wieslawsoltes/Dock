@@ -212,6 +212,12 @@ namespace Dock.Model.Core
         void FloatDockable(IDockable dockable);
 
         /// <summary>
+        /// Collapses dock.
+        /// </summary>
+        /// <param name="dock">The dock to collapse.</param>
+        void CollapseDock(IDock dock);
+
+        /// <summary>
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
         /// </summary>
         /// <param name="dockable">The dockable to remove.</param>

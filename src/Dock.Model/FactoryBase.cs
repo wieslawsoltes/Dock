@@ -426,7 +426,8 @@ namespace Dock.Model
             SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight);
         }
 
-        private void Collapse(IDock dock)
+        /// <inheritdoc/>
+        public virtual void CollapseDock(IDock dock)
         {
             if (!dock.IsCollapsable || dock.VisibleDockables is null || dock.VisibleDockables.Count != 0)
             {
@@ -528,7 +529,7 @@ namespace Dock.Model
 
             if (collapse)
             {
-                Collapse(dock);
+                CollapseDock(dock);
             }
         }
 

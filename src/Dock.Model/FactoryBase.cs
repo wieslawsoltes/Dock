@@ -8,7 +8,7 @@ namespace Dock.Model
     /// <summary>
     /// Factory base class.
     /// </summary>
-    public abstract class FactoryBase : IFactory
+    public abstract partial class FactoryBase : IFactory
     {
         /// <inheritdoc/>
         public abstract IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
@@ -218,6 +218,8 @@ namespace Dock.Model
             if (dockable.Owner is IDock dock)
             {
                 dock.ActiveDockable = dockable;
+ 
+                OnActiveDockableChanged(dockable);
             }
         }
 
@@ -242,6 +244,8 @@ namespace Dock.Model
                 if (dockable is not null)
                 {
                     root.FocusedDockable = dockable;
+                    
+                    OnFocusedDockableChanged(dockable);
                 }
 
                 if (root.FocusedDockable?.Owner is not null)

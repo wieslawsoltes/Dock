@@ -7,7 +7,7 @@ namespace Dock.Model.Core
     /// <summary>
     /// Dock factory contract.
     /// </summary>
-    public interface IFactory
+    public partial interface IFactory
     {
         /// <summary>
         /// Gets visible dockable controls.

@@ -1,0 +1,121 @@
+﻿using System;
+using Dock.Model.Core.Events;
+
+namespace Dock.Model.Core
+{
+    /// <summary>
+    /// Dock factory contract.
+    /// </summary>
+    public partial interface IFactory
+    {
+        /// <summary>
+        /// Active dockable changed event handler.
+        /// </summary>
+        event EventHandler<ActiveDockableChangedEventArgs>? ActiveDockableChanged;
+
+        /// <summary>
+        /// Focused dockable changed event handler.
+        /// </summary>
+        event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
+
+        /// <summary>
+        /// Dockable added event handler.
+        /// </summary>
+        event EventHandler<DockableAddedEventArgs>? DockableAdded;
+
+        /// <summary>
+        /// Dockable removed event handler.
+        /// </summary>
+        event EventHandler<DockableRemovedEventArgs>? DockableRemoved;
+
+        /// <summary>
+        /// Dockable moved event handler.
+        /// </summary>
+        event EventHandler<DockableMovedEventArgs>? DockableMoved;
+
+        /// <summary>
+        /// Dockable swapped event handler.
+        /// </summary>
+        event EventHandler<DockableSwappedEventArgs>? DockableSwapped;
+
+        /// <summary>
+        /// Dockable pinned event handler.
+        /// </summary>
+        event EventHandler<DockablePinnedEventArgs>? DockablePinned;
+
+        /// <summary>
+        /// Dockable unpinned event handler.
+        /// </summary>
+        event EventHandler<DockableUnpinnedEventArgs>? DockableUnpinned;
+
+        /// <summary>
+        /// Window added event handler.
+        /// </summary>
+        event EventHandler<WindowAddedEventArgs>? WindowAdded;
+
+        /// <summary>
+        /// Window removed event handler.
+        /// </summary>
+        event EventHandler<WindowRemovedEventArgs>? WindowRemoved;
+
+        /// <summary>
+        /// Called when the active dockable changed.
+        /// </summary>
+        /// <param name="dockable">The activate dockable.</param>
+        void OnActiveDockableChanged(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the focused dockable changed.
+        /// </summary>
+        /// <param name="dockable">The focused dockable.</param>
+        void OnFocusedDockableChanged(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been added.
+        /// </summary>
+        /// <param name="dockable">The added dockable.</param>
+        void OnDockableAdded(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been removed.
+        /// </summary>
+        /// <param name="dockable">The removed dockable.</param>
+        void OnDockableRemoved(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been moved.
+        /// </summary>
+        /// <param name="dockable">The moved dockable.</param>
+        void OnDockableMoved(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been swapped.
+        /// </summary>
+        /// <param name="dockable">The swapped dockable.</param>
+        void OnDockableSwapped(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been pinned.
+        /// </summary>
+        /// <param name="dockable">The pinned dockable.</param>
+        void OnDockablePinned(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been unpinned.
+        /// </summary>
+        /// <param name="dockable">The unpinned dockable.</param>
+        void OnDockableUnpinned(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the window has been added.
+        /// </summary>
+        /// <param name="window">The added window.</param>
+        void OnWindowAdded(IDockWindow? window);
+
+        /// <summary>
+        /// Called when the window has been removed.
+        /// </summary>
+        /// <param name="window">The removed window.</param>
+        void OnWindowRemoved(IDockWindow? window);
+    }
+}

@@ -7,7 +7,7 @@ namespace Dock.Model.Core
     /// <summary>
     /// Dock factory contract.
     /// </summary>
-    public interface IFactory
+    public partial interface IFactory
     {
         /// <summary>
         /// Gets visible dockable controls.
@@ -210,6 +210,12 @@ namespace Dock.Model.Core
         /// </summary>
         /// <param name="dockable">The dockable to float.</param>
         void FloatDockable(IDockable dockable);
+
+        /// <summary>
+        /// Collapses dock.
+        /// </summary>
+        /// <param name="dock">The dock to collapse.</param>
+        void CollapseDock(IDock dock);
 
         /// <summary>
         /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.

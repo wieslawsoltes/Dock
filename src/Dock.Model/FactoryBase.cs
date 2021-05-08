@@ -230,7 +230,7 @@ namespace Dock.Model
         }
 
         /// <inheritdoc />
-        public void SetFocusedDockable(IDock dock, IDockable? dockable)
+        public virtual void SetFocusedDockable(IDock dock, IDockable? dockable)
         {
             if (dock.ActiveDockable is not null && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is { } root)
             {

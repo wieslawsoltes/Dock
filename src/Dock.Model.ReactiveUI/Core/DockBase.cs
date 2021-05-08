@@ -68,6 +68,7 @@ namespace Dock.Model.ReactiveUI.Core
             set
             {
                 this.RaiseAndSetIfChanged(ref _activeDockable, value);
+                Factory?.OnActiveDockableChanged(value);
                 if (value is { })
                 {
                     Factory?.UpdateDockable(value, this);
@@ -95,7 +96,11 @@ namespace Dock.Model.ReactiveUI.Core
         public IDockable? FocusedDockable
         {
             get => _focusedDockable;
-            set => this.RaiseAndSetIfChanged(ref _focusedDockable, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _focusedDockable, value);
+                Factory?.OnFocusedDockableChanged(value);
+            }
         }
 
         /// <inheritdoc/>

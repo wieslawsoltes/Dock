@@ -218,8 +218,6 @@ namespace Dock.Model
             if (dockable.Owner is IDock dock)
             {
                 dock.ActiveDockable = dockable;
- 
-                OnActiveDockableChanged(dockable);
             }
         }
 
@@ -246,8 +244,6 @@ namespace Dock.Model
                     if (root.FocusedDockable != dockable)
                     {
                         root.FocusedDockable = dockable;
-
-                        OnFocusedDockableChanged(dockable);
                     }
                 }
 

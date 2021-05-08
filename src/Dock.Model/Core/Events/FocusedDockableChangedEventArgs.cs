@@ -16,7 +16,7 @@ namespace Dock.Model.Core.Events
         /// Initializes new instance of the <see cref="FocusedDockableChangedEventArgs"/> class.
         /// </summary>
         /// <param name="dockable">The focused dockable.</param>
-        public FocusedDockableChangedEventArgs(IDockable dockable)
+        public FocusedDockableChangedEventArgs(IDockable? dockable)
         {
             Dockable = dockable;
         }

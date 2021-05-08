@@ -22,12 +22,12 @@ namespace Dock.Model.Core
         /// Called when the active dockable changed.
         /// </summary>
         /// <param name="dockable">The activate dockable.</param>
-        void OnActiveDockableChanged(IDockable dockable);
+        void OnActiveDockableChanged(IDockable? dockable);
 
         /// <summary>
         /// Called when the focused dockable changed.
         /// </summary>
         /// <param name="dockable">The focused dockable.</param>
-        void OnFocusedDockableChanged(IDockable dockable);
+        void OnFocusedDockableChanged(IDockable? dockable);
     }
 }

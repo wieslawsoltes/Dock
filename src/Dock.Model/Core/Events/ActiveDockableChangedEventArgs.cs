@@ -16,7 +16,7 @@ namespace Dock.Model.Core.Events
         /// Initializes new instance of the <see cref="ActiveDockableChangedEventArgs"/> class.
         /// </summary>
         /// <param name="dockable">The active dockable.</param>
-        public ActiveDockableChangedEventArgs(IDockable dockable)
+        public ActiveDockableChangedEventArgs(IDockable? dockable)
         {
             Dockable = dockable;
         }

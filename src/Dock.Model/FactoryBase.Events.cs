@@ -16,13 +16,13 @@ namespace Dock.Model
         public event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
         /// <inheritdoc />
-        public virtual void OnActiveDockableChanged(IDockable dockable)
+        public virtual void OnActiveDockableChanged(IDockable? dockable)
         {
             ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
         }
 
         /// <inheritdoc />
-        public virtual void OnFocusedDockableChanged(IDockable dockable)
+        public virtual void OnFocusedDockableChanged(IDockable? dockable)
         {
             FocusedDockableChanged?.Invoke(this, new FocusedDockableChangedEventArgs(dockable));
         }

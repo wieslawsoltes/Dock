@@ -24,15 +24,7 @@ namespace AvaloniaDemo.ViewModels
         {
             _factory = new DemoFactory(new DemoData());
 
-            _factory.ActiveDockableChanged += (sender, args) =>
-            {
-                Debug.WriteLine($"ActiveDockableChanged {args.Dockable?.Title}");
-            };
-
-            _factory.FocusedDockableChanged += (sender, args) =>
-            {
-                Debug.WriteLine($"FocusedDockableChanged {args.Dockable?.Title}");
-            };
+            DebugFactoryEvents(_factory);
 
             Layout = _factory?.CreateLayout();
             if (Layout is { })
@@ -45,6 +37,59 @@ namespace AvaloniaDemo.ViewModels
             }
 
             NewLayout = ReactiveCommand.Create(ResetLayout);
+        }
+
+        private void DebugFactoryEvents(IFactory factory)
+        {
+            factory.ActiveDockableChanged += (_, args) =>
+            {
+                Debug.WriteLine($"[ActiveDockableChanged] {args.Dockable?.Title}");
+            };
+
+            factory.FocusedDockableChanged += (_, args) =>
+            {
+                Debug.WriteLine($"[FocusedDockableChanged] {args.Dockable?.Title}");
+            };
+
+            factory.DockableAdded += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableAdded] {args.Dockable?.Title}");
+            };
+
+            factory.DockableRemoved += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableRemoved] {args.Dockable?.Title}");
+            };
+
+            factory.DockableMoved += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableMoved] {args.Dockable?.Title}");
+            };
+
+            factory.DockableSwapped += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableSwapped] {args.Dockable?.Title}");
+            };
+
+            factory.DockablePinned += (_, args) =>
+            {
+                Debug.WriteLine($"[DockablePinned] {args.Dockable?.Title}");
+            };
+
+            factory.DockableUnpinned += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableUnpinned] {args.Dockable?.Title}");
+            };
+
+            factory.WindowAdded += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowAdded] {args.Window?.Title}");
+            };
+
+            factory.WindowRemoved += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowRemoved] {args.Window?.Title}");
+            };
         }
 
         public void CloseLayout()

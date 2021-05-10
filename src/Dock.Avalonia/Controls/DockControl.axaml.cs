@@ -18,6 +18,7 @@ namespace Dock.Avalonia.Controls
     {
         private readonly DockManager _dockManager;
         private readonly DockControlState _dockControlState;
+        private bool _isInitialized;
 
         /// <summary>
         /// Defines the <see cref="Layout"/> property.
@@ -81,16 +82,29 @@ namespace Dock.Avalonia.Controls
             AddHandler(PointerWheelChangedEvent, WheelChanged, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         }
 
-        /// <inheritdoc/>
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        /// <inheritdoc />
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            base.OnAttachedToVisualTree(e);
+            base.OnPropertyChanged(change);
 
+            if (change.Property == LayoutProperty)
+            {
+                if (_isInitialized)
+                {
+                    DeInitialize();
+                }
+
+                Initialize(); 
+            }
+        }
+
+        private void Initialize()
+        {
             if (Layout?.Factory is null)
             {
                 return;
             }
- 
+
             Layout.Factory.DockControls.Add(this);
 
             if (InitializeFactory)
@@ -109,13 +123,12 @@ namespace Dock.Avalonia.Controls
             {
                 Layout.Factory.InitLayout(Layout);
             }
+
+            _isInitialized = true;
         }
 
-        /// <inheritdoc/>
-        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        private void DeInitialize()
         {
-            base.OnDetachedFromVisualTree(e);
-
             if (Layout?.Factory is null)
             {
                 return;
@@ -129,6 +142,32 @@ namespace Dock.Avalonia.Controls
                 {
                     Layout.Close.Execute(null);
                 }
+            }
+
+            _isInitialized = false;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            if (_isInitialized)
+            {
+                DeInitialize();
+            }
+
+            Initialize();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+
+            if (_isInitialized)
+            {
+                DeInitialize();
             }
         }
 

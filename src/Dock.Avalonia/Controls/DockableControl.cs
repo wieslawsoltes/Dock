@@ -159,10 +159,15 @@ namespace Dock.Avalonia.Controls
             }
 
             var position = e.GetPosition(this);
-            var screenPosition = DockHelpers.ToDockPoint(this.PointToScreen(position).ToPoint(1.0));
+
+            if (this.VisualRoot is null)
+            {
+                return;
+            }
+            var screenPoint = DockHelpers.ToDockPoint(this.PointToScreen(position).ToPoint(1.0));
 
             dockable.SetPointerPosition(position.X, position.Y);
-            dockable.SetPointerScreenPosition(screenPosition.X, screenPosition.Y);
+            dockable.SetPointerScreenPosition(screenPoint.X, screenPoint.Y);
         }
     }
 }

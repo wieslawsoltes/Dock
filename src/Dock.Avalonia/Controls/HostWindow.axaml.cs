@@ -164,8 +164,7 @@ namespace Dock.Avalonia.Controls
 
             _chromeGrip = chromeControl.Grip;
             ((IPseudoClasses)chromeControl.Classes).Add(":floating");
-            PseudoClasses.Set(":toolwindow", true);
-            // IsToolWindow = true;
+            IsToolWindow = true;
         }
 
         /// <inheritdoc/>

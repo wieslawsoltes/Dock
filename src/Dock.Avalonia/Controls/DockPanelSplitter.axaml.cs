@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -10,6 +11,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Represents a control that lets the user change the size of elements in a <see cref="DockPanel"/>.
     /// </summary>
+    [PseudoClasses(":horizontal", ":vertical")]
     public class DockPanelSplitter : Thumb
     {
         private Control? _element;

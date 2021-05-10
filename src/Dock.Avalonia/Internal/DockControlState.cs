@@ -88,7 +88,15 @@ namespace Dock.Avalonia.Internal
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 DockManager.Position = DockHelpers.ToDockPoint(point);
-                DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+
+                if (relativeTo.VisualRoot is null)
+                {
+                    return false;
+                }
+
+                var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+                DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
+
                 return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
             }
 
@@ -105,7 +113,14 @@ namespace Dock.Avalonia.Internal
             if (_dragControl.DataContext is IDockable sourceDockable && _dropControl.DataContext is IDockable targetDockable)
             {
                 DockManager.Position = DockHelpers.ToDockPoint(point);
-                DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativeTo.PointToScreen(point).ToPoint(1.0));
+
+                if (relativeTo.VisualRoot is null)
+                {
+                    return;
+                }
+                var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+                DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
+
                 DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, true);
             }
         }
@@ -214,8 +229,18 @@ namespace Dock.Avalonia.Internal
                             {
                                 if (dockControl is IInputElement inputDockControl && inputDockControl != inputActiveDockControl)
                                 {
+                                    if (inputActiveDockControl.VisualRoot is null)
+                                    {
+                                        continue;
+                                    }
                                     var screenPoint = inputActiveDockControl.PointToScreen(point);
+    
+                                    if (inputDockControl.VisualRoot is null)
+                                    {
+                                        continue;
+                                    }
                                     var dockControlPoint = inputDockControl.PointToClient(screenPoint);
+
                                     dropControl = DockHelpers.GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                                     if (dropControl is { })
                                     {

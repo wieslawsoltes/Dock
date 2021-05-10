@@ -888,6 +888,10 @@ namespace Dock.Model
                         if (target is IDock dock)
                         {
                             dock.VisibleDockables = CreateList<IDockable>();
+                            if (dockable.Owner is IDocumentDock sourceDocumentDock)
+                            {
+                                ((target as IDocumentDock)!).CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                            }
                             if (dock.VisibleDockables is not null)
                             {
                                 dock.VisibleDockables.Add(dockable);

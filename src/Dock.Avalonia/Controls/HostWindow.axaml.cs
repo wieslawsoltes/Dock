@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -26,7 +27,22 @@ namespace Dock.Avalonia.Controls
         private bool _mouseDown;
         private Point _startPoint;
 
+        /// <summary>
+        /// Define <see cref="IsToolWindow"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsToolWindowProperty = 
+            AvaloniaProperty.Register<HostWindow, bool>(nameof(IsToolWindow));
+
         Type IStyleable.StyleKey => typeof(HostWindow);
+
+        /// <summary>
+        /// Gets or sets if this is the tool window.
+        /// </summary>
+        public bool IsToolWindow
+        {
+            get => GetValue(IsToolWindowProperty);
+            set => SetValue(IsToolWindowProperty, value);
+        }
 
         /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
@@ -59,6 +75,7 @@ namespace Dock.Avalonia.Controls
 #if DEBUG
             this.AttachDevTools();
 #endif
+            UpdatePseudoClasses(IsToolWindow);
         }
 
         /// <inheritdoc/>
@@ -147,7 +164,23 @@ namespace Dock.Avalonia.Controls
 
             _chromeGrip = chromeControl.Grip;
             ((IPseudoClasses)chromeControl.Classes).Add(":floating");
-            PseudoClasses.Set(":toolwindow", true);
+            IsToolWindow = true;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == IsToolWindowProperty)
+            {
+                UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
+            }
+        }
+
+        private void UpdatePseudoClasses(bool isToolWindow)
+        {
+            PseudoClasses.Set(":toolwindow", isToolWindow);
         }
 
         /// <inheritdoc/>

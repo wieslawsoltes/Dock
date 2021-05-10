@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -12,6 +13,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
     /// </summary>
+    [PseudoClasses(":horizontal", ":vertical")]
     public class ProportionalStackPanelSplitter : Thumb
     {
         /// <summary>

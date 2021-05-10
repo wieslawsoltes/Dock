@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
@@ -15,6 +16,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Interaction logic for <see cref="HostWindow"/> xaml.
     /// </summary>
+    [PseudoClasses(":toolwindow")]
     public class HostWindow : Window, IStyleable, IHostWindow
     {
         private static bool s_useCustomDrag = true;

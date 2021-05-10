@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,6 +11,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Dock tool chrome content control.
     /// </summary>
+    [PseudoClasses(":floating", ":active")]
     public class ToolChromeControl : ContentControl
     {
         /// <summary>

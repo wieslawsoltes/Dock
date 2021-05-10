@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Dock.Model;
 using Notepad.ViewModels;
 using Notepad.Views;
 
@@ -15,6 +16,8 @@ namespace Notepad
 
         public override void OnFrameworkInitializationCompleted()
         {
+            // DockManager.s_enableSplitToWindow = true;
+
             var mainWindowViewModel = new MainWindowViewModel();
 
             switch (ApplicationLifetime)

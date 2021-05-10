@@ -61,6 +61,11 @@ namespace AvaloniaDemo.ViewModels
                 Debug.WriteLine($"[DockableRemoved] {args.Dockable?.Title}");
             };
 
+            factory.DockableClosed += (_, args) =>
+            {
+                Debug.WriteLine($"[DockableClosed] {args.Dockable?.Title}");
+            };
+
             factory.DockableMoved += (_, args) =>
             {
                 Debug.WriteLine($"[DockableMoved] {args.Dockable?.Title}");

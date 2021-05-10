@@ -22,6 +22,9 @@ namespace Dock.Model
         public event EventHandler<DockableRemovedEventArgs>? DockableRemoved;
 
         /// <inheritdoc />
+        public event EventHandler<DockableClosedEventArgs>? DockableClosed;
+
+        /// <inheritdoc />
         public event EventHandler<DockableMovedEventArgs>? DockableMoved;
 
         /// <inheritdoc />
@@ -61,6 +64,12 @@ namespace Dock.Model
         public virtual void OnDockableRemoved(IDockable? dockable)
         {
             DockableRemoved?.Invoke(this, new DockableRemovedEventArgs(dockable));
+        }
+
+        /// <inheritdoc />
+        public virtual void OnDockableClosed(IDockable? dockable)
+        {
+            DockableClosed?.Invoke(this, new DockableClosedEventArgs(dockable));
         }
 
         /// <inheritdoc />

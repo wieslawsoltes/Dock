@@ -549,6 +549,7 @@ namespace Dock.Model
             if (dockable.OnClose())
             {
                 RemoveDockable(dockable, true);
+                OnDockableClosed(dockable);
             }
         }
 

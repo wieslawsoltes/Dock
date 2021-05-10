@@ -29,6 +29,11 @@ namespace Dock.Model.Core
         event EventHandler<DockableRemovedEventArgs>? DockableRemoved;
 
         /// <summary>
+        /// Dockable closed event handler.
+        /// </summary>
+        event EventHandler<DockableClosedEventArgs>? DockableClosed;
+
+        /// <summary>
         /// Dockable moved event handler.
         /// </summary>
         event EventHandler<DockableMovedEventArgs>? DockableMoved;
@@ -81,6 +86,12 @@ namespace Dock.Model.Core
         /// </summary>
         /// <param name="dockable">The removed dockable.</param>
         void OnDockableRemoved(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the dockable has been closed.
+        /// </summary>
+        /// <param name="dockable">The closed dockable.</param>
+        void OnDockableClosed(IDockable? dockable);
 
         /// <summary>
         /// Called when the dockable has been moved.

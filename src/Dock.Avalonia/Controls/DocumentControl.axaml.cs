@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,6 +11,7 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Interaction logic for <see cref="DocumentControl"/> xaml.
     /// </summary>
+    [PseudoClasses(":active")]
     public class DocumentControl : TemplatedControl
     {
         /// <summary>
@@ -26,7 +28,7 @@ namespace Dock.Avalonia.Controls
             get => GetValue(IsActiveProperty);
             set => SetValue(IsActiveProperty, value);
         }
-        
+
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {

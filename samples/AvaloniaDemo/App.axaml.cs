@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
+using Dock.Model;
 
 namespace AvaloniaDemo
 {
@@ -52,6 +53,8 @@ namespace AvaloniaDemo
 
         public override void OnFrameworkInitializationCompleted()
         {
+            // DockManager.s_enableSplitToWindow = true;
+
             var mainWindowViewModel = new MainWindowViewModel();
 
             switch (ApplicationLifetime)

@@ -168,11 +168,11 @@
                                                 Spacing="2"
                                                 id:DockProperties.IsDragArea="True" 
                                                 id:DockProperties.IsDropArea="True" >
-                                        <StackPanel Orientation="Horizontal" 
-                                                    Margin="2" 
-                                                    TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
-                                            <TextBlock Text="{Binding Title}" Padding="2" />
-                                        </StackPanel>
+                                        <Panel Margin="2" 
+                                               TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
+                                            <ContentPresenter ContentTemplate="{Binding $parent[idc:DockControl].TabHeaderTemplate}" 
+                                                              Content="{Binding}" />
+                                        </Panel>
                                         <Button Height="14" 
                                                 Width="14" 
                                                 Command="{Binding Owner.Factory.CloseDockable}" 

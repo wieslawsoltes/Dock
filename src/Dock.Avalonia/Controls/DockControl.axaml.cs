@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
@@ -38,6 +39,12 @@ namespace Dock.Avalonia.Controls
         public static readonly StyledProperty<bool> InitializeFactoryProperty =
             AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
+        /// <summary>
+        /// Defines the <see cref="TabHeaderTemplate"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IDataTemplate> TabHeaderTemplateProperty =
+            AvaloniaProperty.Register<DockControl, IDataTemplate>(nameof(TabHeaderTemplate));
+        
         /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
 
@@ -64,6 +71,15 @@ namespace Dock.Avalonia.Controls
         {
             get => GetValue(InitializeFactoryProperty);
             set => SetValue(InitializeFactoryProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the template of tab item header
+        /// </summary>
+        public IDataTemplate TabHeaderTemplate
+        {
+            get { return GetValue(TabHeaderTemplateProperty); }
+            set { SetValue(TabHeaderTemplateProperty, value); }
         }
 
         /// <summary>

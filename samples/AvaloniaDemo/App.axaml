@@ -1,8 +1,19 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:AvaloniaDemo"
+             xmlns:idc="using:Dock.Avalonia.Controls"
+             xmlns:core="using:Dock.Model.Core"
              x:Class="AvaloniaDemo.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
+    <Application.Styles>
+        <Style Selector="idc|DocumentControl">
+            <Setter Property="HeaderTemplate">
+                <DataTemplate DataType="core:IDockable">
+                    <TextBlock Text="{Binding Title}" Foreground="Red" Padding="2" />
+                </DataTemplate>
+            </Setter>
+        </Style>
+    </Application.Styles>
 </Application>

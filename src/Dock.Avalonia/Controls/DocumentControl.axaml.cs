@@ -18,7 +18,7 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Define the HeaderTemplate property.
         /// </summary>
-        public static readonly AttachedProperty<IDataTemplate> HeaderTemplateProperty = 
+        public static readonly AttachedProperty<IDataTemplate> HeaderTemplateProperty =
             AvaloniaProperty.RegisterAttached<DocumentControl, DocumentControl, IDataTemplate>("HeaderTemplate");
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Dock.Avalonia.Controls
                 }
             }
         }
-        
+
         /// <inheritdoc/>
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {

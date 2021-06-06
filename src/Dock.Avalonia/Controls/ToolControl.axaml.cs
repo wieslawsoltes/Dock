@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model.Core;
@@ -11,6 +12,21 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class ToolControl : TemplatedControl
     {
+        /// <summary>
+        /// Define the <see cref="HeaderTemplate"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
+            AvaloniaProperty.Register<ToolControl, IDataTemplate>(nameof(HeaderTemplate));
+
+        /// <summary>
+        /// Gets or sets tab header template.
+        /// </summary>
+        public IDataTemplate HeaderTemplate
+        {
+            get => GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
+        }
+
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {

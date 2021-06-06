@@ -23,11 +23,6 @@
                            x:DataType="dmc:IDocumentDock" 
                            x:CompileBindings="True">
                     <DockPanel.Styles>
-                        <Style Selector="TextBlock.drag">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="VerticalAlignment" Value="Stretch"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        </Style>
                         <Style Selector="Border.panel">
                             <Setter Property="Margin" Value="0"/>
                             <Setter Property="Padding" Value="4"/>
@@ -172,12 +167,10 @@
                                                 Orientation="Horizontal" 
                                                 Spacing="2"
                                                 id:DockProperties.IsDragArea="True" 
-                                                id:DockProperties.IsDropArea="True" >
-                                        <Panel Margin="2" 
-                                               TextBlock.FontSize="{DynamicResource DockFontSizeNormal}">
+                                                id:DockProperties.IsDropArea="True">
+                                        <Panel Margin="2">
                                             <ContentPresenter ContentTemplate="{Binding $parent[idc:DocumentControl].HeaderTemplate}" 
-                                                              Content="{Binding}"
-                                                              x:CompileBindings="False" />
+                                                              Content="{Binding}" />
                                         </Panel>
                                         <Button Height="14" 
                                                 Width="14" 
@@ -219,6 +212,10 @@
                 </DockPanel>
             </ControlTemplate>
         </Setter>
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
+        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+        <Setter Property="FontWeight" Value="Normal" />
     </Style>
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>

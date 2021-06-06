@@ -15,7 +15,7 @@ namespace Dock.Avalonia.Controls
         /// <summary>
         /// Define the <see cref="HeaderTemplate"/> property.
         /// </summary>
-        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
+        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty =
             AvaloniaProperty.Register<ToolControl, IDataTemplate>(nameof(HeaderTemplate));
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
- 
+
             AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
         }
 

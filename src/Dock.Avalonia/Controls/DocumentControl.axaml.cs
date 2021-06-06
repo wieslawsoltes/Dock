@@ -16,10 +16,10 @@ namespace Dock.Avalonia.Controls
     public class DocumentControl : TemplatedControl
     {
         /// <summary>
-        /// Define the HeaderTemplate property.
+        /// Define the <see cref="HeaderTemplate"/> property.
         /// </summary>
-        public static readonly AttachedProperty<IDataTemplate> HeaderTemplateProperty =
-            AvaloniaProperty.RegisterAttached<DocumentControl, DocumentControl, IDataTemplate>("HeaderTemplate");
+        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
+            AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(HeaderTemplate));
 
         /// <summary>
         /// Define the <see cref="IsActive"/> property.
@@ -28,23 +28,12 @@ namespace Dock.Avalonia.Controls
             AvaloniaProperty.Register<DocumentControl, bool>(nameof(IsActive));
 
         /// <summary>
-        /// Gets the value of the HeaderTemplate attached property on the specified document control.
+        /// Gets or sets tab header template.
         /// </summary>
-        /// <param name="documentControl">The document control.</param>
-        /// <returns>The HeaderTemplate attached property.</returns>
-        public static IDataTemplate GetHeaderTemplate(DocumentControl documentControl)
+        public IDataTemplate HeaderTemplate
         {
-            return documentControl.GetValue(HeaderTemplateProperty);
-        }
-
-        /// <summary>
-        /// Sets the value of the HeaderTemplate attached property on the specified document control.
-        /// </summary>
-        /// <param name="documentControl">The control.</param>
-        /// <param name="value">The value of the HeaderTemplate property.</param>
-        public static void SetHeaderTemplate(DocumentControl documentControl, IDataTemplate value)
-        {
-            documentControl.SetValue(HeaderTemplateProperty, value);
+            get => GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         /// <summary>

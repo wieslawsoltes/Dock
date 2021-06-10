@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model.Core;
@@ -15,11 +16,26 @@ namespace Dock.Avalonia.Controls
     public class DocumentControl : TemplatedControl
     {
         /// <summary>
+        /// Define the <see cref="HeaderTemplate"/> property.
+        /// </summary>
+        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
+            AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(HeaderTemplate));
+
+        /// <summary>
         /// Define the <see cref="IsActive"/> property.
         /// </summary>
         public static readonly StyledProperty<bool> IsActiveProperty =
             AvaloniaProperty.Register<DocumentControl, bool>(nameof(IsActive));
-        
+
+        /// <summary>
+        /// Gets or sets tab header template.
+        /// </summary>
+        public IDataTemplate HeaderTemplate
+        {
+            get => GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
+        }
+
         /// <summary>
         /// Gets or sets if this is the currently active dockable.
         /// </summary>
@@ -47,7 +63,7 @@ namespace Dock.Avalonia.Controls
                 }
             }
         }
-        
+
         /// <inheritdoc/>
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {

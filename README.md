@@ -4,8 +4,8 @@
 
 [![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Sources/Dock)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=55)
 
-[![NuGet](https://img.shields.io/nuget/v/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Model)
-[![NuGet](https://img.shields.io/nuget/dt/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Model)
+[![NuGet](https://img.shields.io/nuget/v/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Avalonia)
+[![NuGet](https://img.shields.io/nuget/dt/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Avalonia)
 [![MyGet](https://img.shields.io/myget/dock-nightly/vpre/Dock.Model.svg?label=myget)](https://www.myget.org/gallery/dock-nightly) 
 
 A docking layout system.

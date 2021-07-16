@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -61,12 +62,12 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void AssignProportions()
+        private void AssignProportions(IList<IControl> children)
         {
             var assignedProportion = 0.0;
             var unassignedProportions = 0;
 
-            foreach (var control in GetChildren())
+            foreach (var control in children)
             {
                 var element = (Control) control;
                 if (element is not ProportionalStackPanelSplitter)
@@ -87,12 +88,13 @@ namespace Dock.Avalonia.Controls
             if (unassignedProportions > 0)
             {
                 var toAssign = assignedProportion;
-                foreach (var control in GetChildren().Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
+                foreach (var control in children.Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
                 {
                     var element = (Control) control;
                     if (element is not ProportionalStackPanelSplitter)
                     {
-                        ProportionalStackPanelSplitter.SetProportion(element, (1.0 - toAssign) / unassignedProportions);
+                        var proportion = (1.0 - toAssign) / unassignedProportions;
+                        ProportionalStackPanelSplitter.SetProportion(element, proportion);
                         assignedProportion += (1.0 - toAssign) / unassignedProportions;
                     }
                 }
@@ -100,31 +102,33 @@ namespace Dock.Avalonia.Controls
 
             if (assignedProportion < 1)
             {
-                var numChildren = (double)GetChildren().Count(c => c is not ProportionalStackPanelSplitter);
+                var numChildren = (double)children.Count(c => c is not ProportionalStackPanelSplitter);
 
                 var toAdd = (1.0 - assignedProportion) / numChildren;
 
-                foreach (var child in GetChildren().Where(c => c is not ProportionalStackPanelSplitter))
+                foreach (var child in children.Where(c => c is not ProportionalStackPanelSplitter))
                 {
-                    ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) + toAdd);
+                    var proportion = ProportionalStackPanelSplitter.GetProportion(child) + toAdd;
+                    ProportionalStackPanelSplitter.SetProportion(child, proportion);
                 }
             }
             else if (assignedProportion > 1)
             {
-                var numChildren = (double)GetChildren().Count(c => c is not ProportionalStackPanelSplitter);
+                var numChildren = (double)children.Count(c => c is not ProportionalStackPanelSplitter);
 
                 var toRemove = (assignedProportion - 1.0) / numChildren;
 
-                foreach (var child in GetChildren().Where(c => c is not ProportionalStackPanelSplitter))
+                foreach (var child in children.Where(c => c is not ProportionalStackPanelSplitter))
                 {
-                    ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) - toRemove);
+                    var proportion = ProportionalStackPanelSplitter.GetProportion(child) - toRemove;
+                    ProportionalStackPanelSplitter.SetProportion(child, proportion);
                 }
             }
         }
 
-        private double GetTotalSplitterThickness()
+        private double GetTotalSplitterThickness(IList<IControl> children)
         {
-            var result = GetChildren().OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
+            var result = children.OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
 
             return double.IsNaN(result) ? 0 : result;
         }
@@ -145,13 +149,13 @@ namespace Dock.Avalonia.Controls
             var usedHeight = 0.0;
             var maximumWidth = 0.0;
             var maximumHeight = 0.0;
+            var children = GetChildren();
+            var splitterThickness = GetTotalSplitterThickness(children);
 
-            var splitterThickness = GetTotalSplitterThickness();
-
-            AssignProportions();
+            AssignProportions(children);
 
             // Measure each of the Children
-            foreach (var control in GetChildren())
+            foreach (var control in children)
             {
                 var element = (Control) control;
                 // Get the child's desired size
@@ -163,6 +167,8 @@ namespace Dock.Avalonia.Controls
 
                 if (element is not ProportionalStackPanelSplitter)
                 {
+                    Debug.Assert(!double.IsNaN(proportion));
+
                     switch (Orientation)
                     {
                         case Orientation.Horizontal:
@@ -225,11 +231,12 @@ namespace Dock.Avalonia.Controls
             var right = 0.0;
             var bottom = 0.0;
 
-            var splitterThickness = GetTotalSplitterThickness();
-
             // Arrange each of the Children
             var children = GetChildren();
+            var splitterThickness = GetTotalSplitterThickness(children);
             var index = 0;
+
+            AssignProportions(children);
 
             foreach (var element in children)
             {
@@ -258,6 +265,7 @@ namespace Dock.Avalonia.Controls
                             }
                             else
                             {
+                                Debug.Assert(!double.IsNaN(proportion));
                                 remainingRect = remainingRect.WithWidth(Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion));
                                 left += Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
                             }
@@ -270,6 +278,7 @@ namespace Dock.Avalonia.Controls
                             }
                             else
                             {
+                                Debug.Assert(!double.IsNaN(proportion));
                                 remainingRect = remainingRect.WithHeight(Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion));
                                 top += Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion);
                             }

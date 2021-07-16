@@ -81,13 +81,22 @@ namespace Dock.Avalonia.Controls
             switch (TrackingMode)
             {
                 case TrackingMode.Visible:
-                    dockable.Factory?.VisibleDockableControls.Add(dockable, this);
+                    if (dockable.Factory is not null)
+                    {
+                        dockable.Factory.VisibleDockableControls[dockable] = this;
+                    }
                     break;
                 case TrackingMode.Pinned:
-                    dockable.Factory?.PinnedDockableControls.Add(dockable, this);
+                    if (dockable.Factory is not null)
+                    {
+                        dockable.Factory.PinnedDockableControls[dockable] = this;
+                    }
                     break;
                 case TrackingMode.Tab:
-                    dockable.Factory?.TabDockableControls.Add(dockable, this);
+                    if (dockable.Factory is not null)
+                    {
+                        dockable.Factory.TabDockableControls[dockable] = this;
+                    }
                     break;
             }
         }

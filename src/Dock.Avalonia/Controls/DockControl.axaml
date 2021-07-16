@@ -46,7 +46,7 @@
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.DataTemplates>
-                                            <DataTemplate>
+                                            <DataTemplate DataType="core:IDockable">
                                                 <idc:DockableControl TrackingMode="Pinned">
                                                     <LayoutTransformControl Margin="4">
                                                         <LayoutTransformControl.LayoutTransform>

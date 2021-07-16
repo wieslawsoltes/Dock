@@ -38,10 +38,7 @@ namespace Dock.Avalonia.Controls
                     cp.UpdateChild();
                     return cp.Child;
                 }
-                else
-                {
-                    return c;
-                }
+                return c;
             }).ToList();
         }
 

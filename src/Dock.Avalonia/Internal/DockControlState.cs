@@ -142,7 +142,7 @@ namespace Dock.Avalonia.Internal
         /// <param name="dockControls">The dock controls.</param>
         public void Process(Point point, Vector delta, EventType eventType, DragAction dragAction, IVisual activeDockControl, IList<IDockControl> dockControls)
         {
-            if (!(activeDockControl is IInputElement inputActiveDockControl))
+            if (activeDockControl is not IInputElement inputActiveDockControl)
             {
                 return;
             }

@@ -72,7 +72,7 @@ namespace Dock.Avalonia.Controls
             foreach (var control in GetChildren())
             {
                 var element = (Control) control;
-                if (!(element is ProportionalStackPanelSplitter))
+                if (element is not ProportionalStackPanelSplitter)
                 {
                     var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
@@ -93,7 +93,7 @@ namespace Dock.Avalonia.Controls
                 foreach (var control in GetChildren().Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
                 {
                     var element = (Control) control;
-                    if (!(element is ProportionalStackPanelSplitter))
+                    if (element is not ProportionalStackPanelSplitter)
                     {
                         ProportionalStackPanelSplitter.SetProportion(element, (1.0 - toAssign) / unassignedProportions);
                         assignedProportion += (1.0 - toAssign) / unassignedProportions;
@@ -103,22 +103,22 @@ namespace Dock.Avalonia.Controls
 
             if (assignedProportion < 1)
             {
-                var numChildren = (double)GetChildren().Count(c => !(c is ProportionalStackPanelSplitter));
+                var numChildren = (double)GetChildren().Count(c => c is not ProportionalStackPanelSplitter);
 
                 var toAdd = (1.0 - assignedProportion) / numChildren;
 
-                foreach (var child in GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)))
+                foreach (var child in GetChildren().Where(c => c is not ProportionalStackPanelSplitter))
                 {
                     ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) + toAdd);
                 }
             }
             else if (assignedProportion > 1)
             {
-                var numChildren = (double)GetChildren().Count(c => !(c is ProportionalStackPanelSplitter));
+                var numChildren = (double)GetChildren().Count(c => c is not ProportionalStackPanelSplitter);
 
                 var toRemove = (assignedProportion - 1.0) / numChildren;
 
-                foreach (var child in GetChildren().Where(c => !(c is ProportionalStackPanelSplitter)))
+                foreach (var child in GetChildren().Where(c => c is not ProportionalStackPanelSplitter))
                 {
                     ProportionalStackPanelSplitter.SetProportion(child, ProportionalStackPanelSplitter.GetProportion(child) - toRemove);
                 }
@@ -164,7 +164,7 @@ namespace Dock.Avalonia.Controls
 
                 var proportion = ProportionalStackPanelSplitter.GetProportion(element);
 
-                if (!(element is ProportionalStackPanelSplitter))
+                if (element is not ProportionalStackPanelSplitter)
                 {
                     switch (Orientation)
                     {

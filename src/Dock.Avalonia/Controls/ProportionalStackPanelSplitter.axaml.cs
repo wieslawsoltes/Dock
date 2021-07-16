@@ -198,7 +198,7 @@ namespace Dock.Avalonia.Controls
         {
             if (Parent is ContentPresenter presenter)
             {
-                if (!(presenter.GetVisualParent() is Panel panel))
+                if (presenter.GetVisualParent() is not Panel panel)
                 {
                     return null;
                 }

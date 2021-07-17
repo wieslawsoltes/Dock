@@ -165,14 +165,14 @@ namespace Dock.Avalonia.Controls
                     Height = Thickness;
                     Width = double.NaN;
                     Cursor = new Cursor(StandardCursorType.SizeNorthSouth);
-                    PseudoClasses.Add(":horizontal");
+                    PseudoClasses.Add(":vertical");
                 }
                 else
                 {
                     Width = Thickness;
                     Height = double.NaN;
                     Cursor = new Cursor(StandardCursorType.SizeWestEast);
-                    PseudoClasses.Add(":vertical");
+                    PseudoClasses.Add(":horizontal");
                 }
             }
         }

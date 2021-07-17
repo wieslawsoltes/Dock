@@ -2,8 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:id="using:Dock.Avalonia"
         xmlns:idc="using:Dock.Avalonia.Controls"
-        xmlns:converters="using:Dock.Avalonia.Converters"
-        xmlns:dmc="using:Dock.Model.Controls"
         xmlns:core="using:Dock.Model.Core">
     <Design.PreviewWith>
         <idc:ToolPinnedControl Width="30" Height="400"/>
@@ -12,8 +10,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <ItemsControl Items="{Binding PinnedDockables}"
-                              DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}"
-                              x:DataType="dmc:IToolDock" 
+                              x:DataType="core:IDock" 
                               x:CompileBindings="True">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

@@ -30,74 +30,76 @@
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IDocumentDock">
-                            <idc:DockableControl TrackingMode="Visible" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockableControl TrackingMode="Visible" 
+                                                 idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <idc:DocumentControl IsActive="{Binding IsActive}" />
                             </idc:DockableControl>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">
-                                <DockPanel idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                    <ItemsControl Items="{Binding PinnedDockables}"
-                                                  DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Vertical" 
-                                                            id:DockProperties.IsDropArea="True">
-                                                </StackPanel>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.DataTemplates>
-                                            <DataTemplate DataType="core:IDockable">
-                                                <idc:DockableControl TrackingMode="Pinned">
-                                                    <LayoutTransformControl Margin="4">
-                                                        <LayoutTransformControl.LayoutTransform>
-                                                            <RotateTransform Angle="270"></RotateTransform>
-                                                        </LayoutTransformControl.LayoutTransform>
-                                                        <Button Background="Transparent"
-                                                                BorderBrush="Transparent"
-                                                                BorderThickness="0"
-                                                                Command="{Binding Owner.Factory.PinDockable}" 
-                                                                CommandParameter="{Binding}" 
-                                                                IsVisible="{Binding CanPin}"
-                                                                x:CompileBindings="False">
-                                                            <TextBlock Text="{Binding Title}"
-                                                                       VerticalAlignment="Center"
-                                                                       HorizontalAlignment="Left">
-                                                                <TextBlock.ContextMenu>
-                                                                    <ContextMenu>
-                                                                        <MenuItem Header="_Float" 
-                                                                                  Command="{Binding Owner.Factory.FloatDockable}" 
-                                                                                  CommandParameter="{Binding}" 
-                                                                                  IsVisible="{Binding CanFloat}"
-                                                                                  x:CompileBindings="False" />
-                                                                        <MenuItem Header="_Show" 
-                                                                                  Command="{Binding Owner.Factory.PinDockable}" 
-                                                                                  CommandParameter="{Binding}" 
-                                                                                  IsVisible="{Binding CanPin}"
-                                                                                  x:CompileBindings="False" />
-                                                                        <MenuItem Header="_Close" 
-                                                                                  Command="{Binding Owner.Factory.CloseDockable}" 
-                                                                                  CommandParameter="{Binding}" 
-                                                                                  IsVisible="{Binding CanClose}"
-                                                                                  x:CompileBindings="False" />
-                                                                    </ContextMenu>
-                                                                </TextBlock.ContextMenu>
-                                                            </TextBlock>
-                                                        </Button>
-                                                    </LayoutTransformControl>
-                                                </idc:DockableControl>
-                                            </DataTemplate>
-                                        </ItemsControl.DataTemplates>
-                                    </ItemsControl>
-                                    <idc:DockableControl TrackingMode="Visible">
-                                        <idc:ToolChromeControl IsActive="{Binding IsActive}" 
-                                                               IsVisible="{Binding !!VisibleDockables.Count}">
-                                            <idc:ToolControl/>
-                                        </idc:ToolChromeControl>
-                                    </idc:DockableControl>
-                                </DockPanel>
+                            <DockPanel idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <ItemsControl Items="{Binding PinnedDockables}"
+                                              DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" 
+                                                        id:DockProperties.IsDropArea="True">
+                                            </StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.DataTemplates>
+                                        <DataTemplate DataType="core:IDockable">
+                                            <idc:DockableControl TrackingMode="Pinned">
+                                                <LayoutTransformControl Margin="4">
+                                                    <LayoutTransformControl.LayoutTransform>
+                                                        <RotateTransform Angle="270"></RotateTransform>
+                                                    </LayoutTransformControl.LayoutTransform>
+                                                    <Button Background="Transparent"
+                                                            BorderBrush="Transparent"
+                                                            BorderThickness="0"
+                                                            Command="{Binding Owner.Factory.PinDockable}" 
+                                                            CommandParameter="{Binding}" 
+                                                            IsVisible="{Binding CanPin}"
+                                                            x:CompileBindings="False">
+                                                        <TextBlock Text="{Binding Title}"
+                                                                   VerticalAlignment="Center"
+                                                                   HorizontalAlignment="Left">
+                                                            <TextBlock.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="_Float" 
+                                                                              Command="{Binding Owner.Factory.FloatDockable}" 
+                                                                              CommandParameter="{Binding}" 
+                                                                              IsVisible="{Binding CanFloat}"
+                                                                              x:CompileBindings="False" />
+                                                                    <MenuItem Header="_Show" 
+                                                                              Command="{Binding Owner.Factory.PinDockable}" 
+                                                                              CommandParameter="{Binding}" 
+                                                                              IsVisible="{Binding CanPin}"
+                                                                              x:CompileBindings="False" />
+                                                                    <MenuItem Header="_Close" 
+                                                                              Command="{Binding Owner.Factory.CloseDockable}" 
+                                                                              CommandParameter="{Binding}" 
+                                                                              IsVisible="{Binding CanClose}"
+                                                                              x:CompileBindings="False" />
+                                                                </ContextMenu>
+                                                            </TextBlock.ContextMenu>
+                                                        </TextBlock>
+                                                    </Button>
+                                                </LayoutTransformControl>
+                                            </idc:DockableControl>
+                                        </DataTemplate>
+                                    </ItemsControl.DataTemplates>
+                                </ItemsControl>
+                                <idc:DockableControl TrackingMode="Visible">
+                                    <idc:ToolChromeControl IsActive="{Binding IsActive}" 
+                                                           IsVisible="{Binding !!VisibleDockables.Count}">
+                                        <idc:ToolControl/>
+                                    </idc:ToolChromeControl>
+                                </idc:DockableControl>
+                            </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">
-                            <idc:DockableControl TrackingMode="Visible" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockableControl TrackingMode="Visible" 
+                                                 idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                                 <ItemsControl Items="{Binding VisibleDockables}">
                                     <ItemsControl.Styles>
                                         <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">

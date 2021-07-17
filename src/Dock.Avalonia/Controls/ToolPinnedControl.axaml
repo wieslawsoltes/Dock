@@ -6,7 +6,7 @@
         xmlns:dmc="using:Dock.Model.Controls"
         xmlns:core="using:Dock.Model.Core">
     <Design.PreviewWith>
-        <idc:ToolPinnedControl  Width="30" Height="400"/>
+        <idc:ToolPinnedControl Width="30" Height="400"/>
     </Design.PreviewWith>
     <Style Selector="idc|ToolPinnedControl">
         <Setter Property="Template">

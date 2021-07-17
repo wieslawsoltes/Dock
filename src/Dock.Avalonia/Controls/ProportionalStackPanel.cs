@@ -43,24 +43,23 @@ namespace Dock.Avalonia.Controls
             }).ToList();
         }
 
-        /// <inheritdoc/>
-        protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            base.ChildrenChanged(sender, e);
-
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    if (e.NewItems is not null)
-                    {
-                        foreach (var item in e.NewItems.OfType<IControl>())
-                        {
-                            ProportionalStackPanelSplitter.SetProportion(item, double.NaN);
-                        }
-                    }
-                    break;
-            }
-        }
+        // /// <inheritdoc/>
+        // protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        // {
+        //     base.ChildrenChanged(sender, e);
+        //     switch (e.Action)
+        //     {
+        //         case NotifyCollectionChangedAction.Add:
+        //             if (e.NewItems is not null)
+        //             {
+        //                 foreach (var item in e.NewItems.OfType<IControl>())
+        //                 {
+        //                     ProportionalStackPanelSplitter.SetProportion(item, double.NaN);
+        //                 }
+        //             }
+        //             break;
+        //     }
+        // }
 
         private void AssignProportions(IList<IControl> children)
         {

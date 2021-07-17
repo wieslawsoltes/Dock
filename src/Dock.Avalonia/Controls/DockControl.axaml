@@ -37,7 +37,7 @@
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">
                             <DockPanel idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                                <idc:ToolPinnedControl/>
+                                <idc:ToolPinnedControl DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}"/>
                                 <idc:DockableControl TrackingMode="Visible">
                                     <idc:ToolChromeControl IsActive="{Binding IsActive}" 
                                                            IsVisible="{Binding !!VisibleDockables.Count}">

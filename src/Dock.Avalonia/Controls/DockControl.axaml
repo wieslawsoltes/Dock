@@ -30,12 +30,12 @@
                             <idc:ProportionalStackPanelSplitter Background="Transparent"/>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IDocumentDock">
-                            <idc:DockableControl TrackingMode="Visible" idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockableControl TrackingMode="Visible">
                                 <idc:DocumentControl IsActive="{Binding IsActive}" />
                             </idc:DockableControl>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IToolDock">
-                                <DockPanel idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                                <DockPanel>
                                     <ItemsControl Items="{Binding PinnedDockables}"
                                                   DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}">
                                         <ItemsControl.ItemsPanel>
@@ -97,9 +97,16 @@
                                 </DockPanel>
                         </DataTemplate>
                         <DataTemplate DataType="dmc:IProportionalDock">
-                            <idc:DockableControl TrackingMode="Visible" 
-                                                 idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                            <idc:DockableControl TrackingMode="Visible">
                                 <ItemsControl Items="{Binding VisibleDockables}">
+                                    <ItemsControl.Styles>
+                                        <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
+                                            <Setter Property="(idc:ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}"/>
+                                        </Style>
+                                        <Style Selector="ItemsControl > ContentPresenter > :is(Control)" x:DataType="core:IDock">
+                                            <Setter Property="(idc:ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}"/>
+                                        </Style>
+                                    </ItemsControl.Styles>
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True" 

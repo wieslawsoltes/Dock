@@ -22,30 +22,9 @@
                            ZIndex="1" 
                            x:DataType="dmc:IDocumentDock" 
                            x:CompileBindings="True">
-                    <DockPanel.Styles>
-                        <Style Selector="Border.panel">
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="Padding" Value="4"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                        </Style>
-                        <Style Selector="Button.chromeButton">
-                            <Setter Property="Margin" Value="2 0 0 0"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Background" Value="Transparent" />
-                        </Style>
-                        <Style Selector="Grid.grip:floating">
-                            <Setter Property="IsVisible" Value="False" />
-                        </Style>
-                    </DockPanel.Styles>
                     <TabStrip x:Name="PART_TabStrip" 
-                              Background="Transparent" 
                               Items="{Binding VisibleDockables}" 
                               SelectedItem="{Binding ActiveDockable, Mode=TwoWay}" 
-                              Focusable="false" 
-                              ClipToBounds="False" 
-                              ZIndex="1" 
                               id:DockProperties.IsDropArea="True">
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
@@ -59,24 +38,13 @@
                                             <ContentPresenter ContentTemplate="{Binding $parent[idc:DocumentControl].HeaderTemplate}" 
                                                               Content="{Binding}" />
                                         </Panel>
-                                        <Button Height="14" 
-                                                Width="14" 
+                                        <Button x:Name="PART_CloseButton" 
                                                 Command="{Binding Owner.Factory.CloseDockable}" 
                                                 CommandParameter="{Binding}" 
-                                                Classes="documentTabButton" 
+                                                Classes="documentTabButton closeButton" 
                                                 IsVisible="{Binding CanClose}"
                                                 x:CompileBindings="False">
-                                            <Button.Styles>
-                                                <Style Selector="Button">
-                                                    <Setter Property="BorderThickness" Value="0"/>
-                                                    <Setter Property="Padding" Value="0"/>
-                                                    <Setter Property="Margin" Value="0"/>
-                                                </Style>
-                                            </Button.Styles>
-                                            <Path Margin="2" 
-                                                  Stretch="Uniform" 
-                                                  UseLayoutRounding="False" 
-                                                  Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                                            <Path x:Name="PART_ClosePath" Classes="closeButton"/>
                                         </Button>
                                     </StackPanel>
                                 </idc:DockableControl>
@@ -84,7 +52,6 @@
                         </TabStrip.DataTemplates>
                     </TabStrip>
                     <Grid x:Name="PART_Grid"
-                          Height="2" 
                           IsVisible="{Binding #PART_TabStrip.IsVisible}" 
                           x:CompileBindings="False" />
                     <Border x:Name="PART_Border">
@@ -124,16 +91,25 @@
     <Style Selector="Button.documentTabButton:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
     </Style>
-    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
-        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    <Style Selector="Button.closeButton">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
     </Style>
-    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button.documentTabButton Path">
-        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    <Style Selector="Path.closeButton">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="Data" Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
     </Style>
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="ZIndex" Value="1" />
         <Setter Property="DockPanel.Dock" Value="Top" />
-    </Style>
-    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip">
         <Setter Property="Template">
             <ControlTemplate>
                 <DockPanel Background="Transparent" 
@@ -147,7 +123,7 @@
                             DockPanel.Dock="Right">
                         <Path x:Name="PART_PathCreate" Classes="createDocument"/>
                     </Button>
-                    <ItemsPresenter Name="PART_ItemsPresenter"
+                    <ItemsPresenter x:Name="PART_ItemsPresenter"
                                     Items="{TemplateBinding Items}"
                                     ItemsPanel="{TemplateBinding ItemsPanel}"
                                     ItemTemplate="{TemplateBinding ItemTemplate}" />
@@ -209,9 +185,11 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
-        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
-        <Setter Property="FontWeight" Value="Normal" />
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
+        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button.documentTabButton Path">
+        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}"/>
@@ -230,10 +208,9 @@
         <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
     <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
-        <Setter Property="DockPanel.Dock" Value="Top" />
-    </Style>
-    <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
         <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}"/>
+        <Setter Property="Height" Value="2"/>
+        <Setter Property="DockPanel.Dock" Value="Top" />
     </Style>
     <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>

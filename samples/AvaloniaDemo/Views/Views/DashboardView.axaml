@@ -8,18 +8,18 @@
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
              x:DataType="vm:DashboardViewModel" x:CompileBindings="True">
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="{Binding Id}"/>
-            <TextBlock Text="{Binding Title}"/>
-            <TextBlock Text="{Binding Context}"/>
-            <Button DataContext="{Binding Context}"
-                    Content="Home" 
-                    Command="{Binding Navigate}" 
-                    CommandParameter="Home" 
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    x:DataType="idc:IRootDock"/>
-        </StackPanel>
-    </Grid>
+  <Grid>
+    <StackPanel>
+      <TextBlock Text="{Binding Id}" />
+      <TextBlock Text="{Binding Title}" />
+      <TextBlock Text="{Binding Context}" />
+      <Button DataContext="{Binding Context}"
+              Content="Home"
+              Command="{Binding Navigate}"
+              CommandParameter="Home"
+              HorizontalAlignment="Stretch"
+              HorizontalContentAlignment="Center"
+              x:DataType="idc:IRootDock" />
+    </StackPanel>
+  </Grid>
 </UserControl>

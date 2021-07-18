@@ -7,8 +7,8 @@
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
              x:DataType="vm:HomeViewModel" x:CompileBindings="True">
-    <Grid RowDefinitions="*,25">
-        <ContentControl Content="{Binding ActiveDockable}" Margin="4" Grid.Row="0"/>
-        <TextBlock Text="{Binding FocusedDockable}" Margin="4" Grid.Row="1"/>
-    </Grid>
+  <Grid RowDefinitions="*,25">
+    <ContentControl Content="{Binding ActiveDockable}" Margin="4" Grid.Row="0" />
+    <TextBlock Text="{Binding FocusedDockable}" Margin="4" Grid.Row="1" />
+  </Grid>
 </UserControl>

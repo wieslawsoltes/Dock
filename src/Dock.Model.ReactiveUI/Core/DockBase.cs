@@ -21,6 +21,7 @@ namespace Dock.Model.ReactiveUI.Core
         private IDockable? _defaultDockable;
         private IDockable? _focusedDockable;
         private double _proportion = double.NaN;
+        private DockMode _dock = DockMode.Center;
         private bool _isCollapsable = true;
         private bool _isActive;
 
@@ -109,6 +110,14 @@ namespace Dock.Model.ReactiveUI.Core
         {
             get => _proportion;
             set => this.RaiseAndSetIfChanged(ref _proportion, value);
+        }
+
+        /// <inheritdoc/>
+        [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        public DockMode Dock
+        {
+            get => _dock;
+            set => this.RaiseAndSetIfChanged(ref _dock, value);
         }
 
         /// <inheritdoc/>

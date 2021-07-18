@@ -43,6 +43,11 @@ namespace Dock.Model.Core
         /// </summary> 
         double Proportion { get; set; }
 
+        /// <summary> 
+        /// Gets or sets docking mode. 
+        /// </summary> 
+        DockMode Dock { get; set; }
+
         /// <summary>
         /// Gets or sets if the dockable is the currently active.
         /// </summary>

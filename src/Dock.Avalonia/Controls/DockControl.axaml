@@ -74,6 +74,25 @@
                 </ItemsControl>
               </idc:DockableControl>
             </DataTemplate>
+            <!-- Dock Dock -->
+            <DataTemplate DataType="dmc:IDockDock">
+              <idc:DockableControl TrackingMode="Visible">
+                <ItemsControl Items="{Binding VisibleDockables}">
+                  <ItemsControl.Styles>
+                    <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
+                      <Setter Property="DockPanel.Dock" Value="{Binding Dock}" />
+                    </Style>
+                  </ItemsControl.Styles>
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <DockPanel id:DockProperties.IsDropArea="True"
+                                 Background="Transparent"
+                                 LastChildFill="{Binding LastChildFill}"/>
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </idc:DockableControl>
+            </DataTemplate>
             <!-- Root Dock -->
             <DataTemplate DataType="dmc:IRootDock">
               <idc:DockableControl TrackingMode="Visible">

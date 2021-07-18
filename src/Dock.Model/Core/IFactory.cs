@@ -70,6 +70,12 @@ namespace Dock.Model.Core
         IProportionalDock CreateProportionalDock();
 
         /// <summary>
+        /// Creates <see cref="IDockDock"/>.
+        /// </summary>
+        /// <returns>The new instance of the <see cref="IDockDock"/> class.</returns>
+        IDockDock CreateDockDock();
+
+        /// <summary>
         /// Creates <see cref="ISplitterDockable"/>.
         /// </summary>
         /// <returns>The new instance of the <see cref="ISplitterDockable"/> class.</returns>

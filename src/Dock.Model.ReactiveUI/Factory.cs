@@ -49,6 +49,9 @@ namespace Dock.Model.ReactiveUI
         public override IProportionalDock CreateProportionalDock() => new ProportionalDock();
 
         /// <inheritdoc/>
+        public override IDockDock CreateDockDock() => new DockDock();
+
+        /// <inheritdoc/>
         public override ISplitterDockable CreateSplitterDockable() => new SplitterDockable();
 
         /// <inheritdoc/>

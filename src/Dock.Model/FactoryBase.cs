@@ -44,6 +44,9 @@ namespace Dock.Model
         public abstract IProportionalDock CreateProportionalDock();
 
         /// <inheritdoc/>
+        public abstract IDockDock CreateDockDock();
+
+        /// <inheritdoc/>
         public abstract ISplitterDockable CreateSplitterDockable();
 
         /// <inheritdoc/>
@@ -920,6 +923,12 @@ namespace Dock.Model
                         target = proportionalDock;
                         topmost = false;
                     }
+                    break;
+                case IDockDock dockDock:
+                {
+                    target = dockDock;
+                    topmost = false;
+                }
                     break;
                 case IRootDock rootDock:
                     {

@@ -80,7 +80,8 @@
                 <ItemsControl Items="{Binding VisibleDockables}">
                   <ItemsControl.Styles>
                     <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
-                      <Setter Property="DockPanel.Dock" Value="{Binding Dock}" />
+                      <Setter Property="(DockPanel.Dock)"
+                              Value="{Binding Dock, Converter={x:Static converters:DockModeConverter.Instance}}" />
                     </Style>
                   </ItemsControl.Styles>
                   <ItemsControl.ItemsPanel>

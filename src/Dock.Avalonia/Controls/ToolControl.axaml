@@ -159,7 +159,7 @@
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
     </Style>
-    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStrip:singleitem">
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip:singleitem">
         <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:selected">

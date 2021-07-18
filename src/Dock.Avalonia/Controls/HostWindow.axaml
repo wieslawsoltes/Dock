@@ -2,86 +2,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
         xmlns:core="using:Dock.Model.Core">
-    <Design.PreviewWith>
-        <idc:HostWindow IsToolWindow="False" Width="300" Height="400"/>
-    </Design.PreviewWith>
-    <Style Selector="idc|HostWindow">
-        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
-        <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-        <Setter Property="WindowState" Value="Normal" />
-        <Setter Property="UseLayoutRounding" Value="True" />
-        <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
-    </Style>
-    <Style Selector="idc|HostWindow">
-        <Setter Property="SystemDecorations" Value="Full" />
-        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Panel>
-                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
-                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
-                    <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-                    <VisualLayerManager>
-                        <VisualLayerManager.ChromeOverlayLayer>
-                            <TitleBar/>
-                        </VisualLayerManager.ChromeOverlayLayer>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </VisualLayerManager>
-                </Panel>
-            </ControlTemplate>
-        </Setter>
-        <Setter Property="Content">
-            <Template>
-                <Panel Margin="{Binding $parent[idc:HostWindow].OffScreenMargin}">
-                    <Panel Margin="{Binding $parent[idc:HostWindow].WindowDecorationMargin}">
-                        <idc:DockControl Layout="{Binding}"
-                                         x:DataType="core:IHostWindow"
-                                         x:CompileBindings="True"/>
-                    </Panel>
-                </Panel>
-            </Template>
-        </Setter>
-    </Style>
-    <Style Selector="idc|HostWindow:toolwindow">
-        <Setter Property="SystemDecorations" Value="BorderOnly" />
-        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-        <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Panel>
-                    <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
-                    <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
-                    <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
-                    <VisualLayerManager>
-                        <VisualLayerManager.ChromeOverlayLayer>
-                            <!-- <TitleBar/> -->
-                        </VisualLayerManager.ChromeOverlayLayer>
-                        <ContentPresenter Name="PART_ContentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Content="{TemplateBinding Content}"
-                                          Margin="{TemplateBinding Padding}"
-                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </VisualLayerManager>
-                </Panel>
-            </ControlTemplate>
-        </Setter>
-        <Setter Property="Content">
-            <Template>
-                <Panel Margin="{Binding $parent[idc:HostWindow].OffScreenMargin}">
-                    <idc:DockControl Layout="{Binding}"
-                                     x:DataType="core:IHostWindow"
-                                     x:CompileBindings="True"/>
-                </Panel>
-            </Template>
-        </Setter>
-    </Style>
+  <Design.PreviewWith>
+    <idc:HostWindow IsToolWindow="False" Width="300" Height="400" />
+  </Design.PreviewWith>
+  <Style Selector="idc|HostWindow">
+    <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+    <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+    <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
+    <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+    <Setter Property="WindowState" Value="Normal" />
+    <Setter Property="UseLayoutRounding" Value="True" />
+    <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
+  </Style>
+  <Style Selector="idc|HostWindow">
+    <Setter Property="SystemDecorations" Value="Full" />
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+    <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+          <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+          <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+          <VisualLayerManager>
+            <VisualLayerManager.ChromeOverlayLayer>
+              <TitleBar />
+            </VisualLayerManager.ChromeOverlayLayer>
+            <ContentPresenter Name="PART_ContentPresenter"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding Content}"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </VisualLayerManager>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="Content">
+      <Template>
+        <Panel Margin="{Binding $parent[idc:HostWindow].OffScreenMargin}">
+          <Panel Margin="{Binding $parent[idc:HostWindow].WindowDecorationMargin}">
+            <idc:DockControl Layout="{Binding}"
+                             x:DataType="core:IHostWindow"
+                             x:CompileBindings="True" />
+          </Panel>
+        </Panel>
+      </Template>
+    </Setter>
+  </Style>
+  <Style Selector="idc|HostWindow:toolwindow">
+    <Setter Property="SystemDecorations" Value="BorderOnly" />
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+    <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+          <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+          <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+          <VisualLayerManager>
+            <VisualLayerManager.ChromeOverlayLayer>
+              <!-- <TitleBar/> -->
+            </VisualLayerManager.ChromeOverlayLayer>
+            <ContentPresenter Name="PART_ContentPresenter"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding Content}"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </VisualLayerManager>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="Content">
+      <Template>
+        <Panel Margin="{Binding $parent[idc:HostWindow].OffScreenMargin}">
+          <idc:DockControl Layout="{Binding}"
+                           x:DataType="core:IHostWindow"
+                           x:CompileBindings="True" />
+        </Panel>
+      </Template>
+    </Setter>
+  </Style>
 </Styles>

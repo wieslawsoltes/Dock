@@ -133,8 +133,9 @@ csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
 
 # Xaml files
-[*.xaml]
-indent_size = 4
+[*.{xaml,axaml}]
+indent_style = space
+indent_size = 2
 
 # Xml project files
 [*.{csproj,vcxproj,vcxproj.filters,proj,nativeproj,locproj}]

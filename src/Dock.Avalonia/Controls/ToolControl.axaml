@@ -21,36 +21,10 @@
                            Background="Transparent" ZIndex="1" 
                            x:DataType="dmc:IToolDock" 
                            x:CompileBindings="True">
-                    <DockPanel.Styles>
-                        <Style Selector="TextBlock.drag">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        </Style>
-                        <Style Selector="Border.panel">
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                            <Setter Property="BorderThickness" Value="1 0 1 0" />
-                        </Style>
-                        <Style Selector="Button.chromeButton">
-                            <Setter Property="Margin" Value="2 0 0 0" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Background" Value="Transparent" />
-                        </Style>
-                        <Style Selector="Grid.grip:floating">
-                            <Setter Property="IsVisible" Value="False" />
-                        </Style>
-                    </DockPanel.Styles>
                     <TabStrip x:Name="PART_TabStrip" 
-                              Background="Transparent" 
                               Items="{Binding VisibleDockables}" 
                               SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"  
-                              Focusable="false" 
-                              ClipToBounds="False"
-                              ZIndex="1"
-                              id:DockProperties.IsDropArea="True" 
-                              DockPanel.Dock="Bottom">
+                              id:DockProperties.IsDropArea="True">
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
                                 <idc:DockableControl TrackingMode="Tab">
@@ -70,10 +44,7 @@
                         </TabStrip.DataTemplates>
                     </TabStrip>
                     <Separator x:Name="PART_Separator" />
-                    <Border x:Name="PART_Border" 
-                            Classes="panel" 
-                            ZIndex="-1" 
-                            Background="{DynamicResource DockThemeBackgroundBrush}">
+                    <Border x:Name="PART_Border">
                         <idc:DockableControl DataContext="{Binding ActiveDockable}"
                                              TrackingMode="Visible">
                             <ContentControl x:Name="PART_ContentPresenter"
@@ -87,14 +58,16 @@
         </Setter>
     </Style>
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="ZIndex" Value="1" />
+        <Setter Property="DockPanel.Dock" Value="Bottom" />
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <WrapPanel ClipToBounds="False" />
             </ItemsPanelTemplate>
         </Setter>
-    </Style>
-    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip">
-        <Setter Property="DockPanel.Dock" Value="Bottom" />
     </Style>
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem">
         <Setter Property="Template">
@@ -173,5 +146,12 @@
     <Style Selector="idc|ToolControl /template/ Separator#PART_Separator">
         <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
         <Setter Property="Height" Value="1" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ Border#PART_Border">
+        <Setter Property="ZIndex" Value="-1"/>
+        <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="BorderThickness" Value="1 0 1 0" />
     </Style>
 </Styles>

@@ -51,7 +51,7 @@
                                     <TextBlock x:Name="PART_Title"
                                                Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}"/>
                                 </Panel>
-                                <Button Name="PART_CloseButton" 
+                                <Button x:Name="PART_CloseButton" 
                                         Command="{Binding Owner.Factory.CloseDockable}" 
                                         CommandParameter="{Binding ActiveDockable}" 
                                         IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"

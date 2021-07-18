@@ -32,10 +32,6 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
                             <Setter Property="BorderThickness" Value="1 0 1 0" />
                         </Style>
-                        <Style Selector="Separator.separator">
-                            <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                            <Setter Property="Height" Value="1" />
-                        </Style>
                         <Style Selector="Button.chromeButton">
                             <Setter Property="Margin" Value="2 0 0 0" />
                             <Setter Property="Padding" Value="0" />
@@ -55,56 +51,6 @@
                               ZIndex="1"
                               id:DockProperties.IsDropArea="True" 
                               DockPanel.Dock="Bottom">
-                        <TabStrip.Styles>
-                            <Style Selector="TabStrip">
-                                <Setter Property="ItemsPanel">
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel ClipToBounds="False" />
-                                    </ItemsPanelTemplate>
-                                </Setter>
-                            </Style>
-                            <Style Selector="TabStripItem">
-                                <Setter Property="Template">
-                                    <ControlTemplate>
-                                        <Border>
-                                            <Border.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="_Float" 
-                                                              Command="{Binding Owner.Factory.FloatDockable}" 
-                                                              CommandParameter="{Binding}" 
-                                                              IsVisible="{Binding CanFloat}"
-                                                              x:CompileBindings="False" />
-                                                    <MenuItem Header="_Hide" 
-                                                              Command="{Binding Owner.Factory.PinDockable}" 
-                                                              CommandParameter="{Binding}" 
-                                                              IsVisible="{Binding CanPin}"
-                                                              x:CompileBindings="False" />
-                                                    <MenuItem Header="_Close" 
-                                                              Command="{Binding Owner.Factory.CloseDockable}" 
-                                                              CommandParameter="{Binding}" 
-                                                              IsVisible="{Binding CanClose}"
-                                                              x:CompileBindings="False" />
-                                                </ContextMenu>
-                                            </Border.ContextMenu>
-                                            <Panel>
-                                                <ContentPresenter x:Name="PART_ContentPresenter"
-                                                                  Background="{TemplateBinding Background}"
-                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                  Content="{TemplateBinding Content}"
-                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                                  TextBlock.FontFamily="{TemplateBinding FontFamily}"
-                                                                  TextBlock.FontSize="{TemplateBinding FontSize}"
-                                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                                                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                                                  Padding="{TemplateBinding Padding}"/>
-                                            </Panel>
-                                        </Border> 
-                                    </ControlTemplate>
-                                </Setter>
-                            </Style>
-                        </TabStrip.Styles>
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
                                 <idc:DockableControl TrackingMode="Tab">
@@ -123,9 +69,7 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Separator x:Name="PART_Separator" 
-                               Classes="separator" 
-                               DockPanel.Dock="Bottom"/>
+                    <Separator x:Name="PART_Separator" />
                     <Border x:Name="PART_Border" 
                             Classes="panel" 
                             ZIndex="-1" 
@@ -142,14 +86,63 @@
             </ControlTemplate>
         </Setter>
     </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <WrapPanel ClipToBounds="False" />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="DockPanel.Dock" Value="Bottom" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:DataType="dmc:IToolDock" x:CompileBindings="True">
+                    <Border.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="_Float" 
+                                      Command="{Binding Owner.Factory.FloatDockable}" 
+                                      CommandParameter="{Binding}" 
+                                      IsVisible="{Binding CanFloat}"
+                                      x:CompileBindings="False" />
+                            <MenuItem Header="_Hide" 
+                                      Command="{Binding Owner.Factory.PinDockable}" 
+                                      CommandParameter="{Binding}" 
+                                      IsVisible="{Binding CanPin}"
+                                      x:CompileBindings="False" />
+                            <MenuItem Header="_Close" 
+                                      Command="{Binding Owner.Factory.CloseDockable}" 
+                                      CommandParameter="{Binding}" 
+                                      IsVisible="{Binding CanClose}"
+                                      x:CompileBindings="False" />
+                        </ContextMenu>
+                    </Border.ContextMenu>
+                    <Panel>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          TextBlock.FontFamily="{TemplateBinding FontFamily}"
+                                          TextBlock.FontSize="{TemplateBinding FontSize}"
+                                          TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Padding="{TemplateBinding Padding}"/>
+                    </Panel>
+                </Border> 
+            </ControlTemplate>
+        </Setter>
+    </Style>
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem">
         <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="MinHeight" Value="0" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <!-- TODO: Background -->
         <Setter Property="Background" Value="Transparent" />
-        <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
         <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
         <Setter Property="BorderThickness" Value="0" />
@@ -173,5 +166,12 @@
     <Style Selector="idc|ToolControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ Separator#PART_Separator">
+        <Setter Property="DockPanel.Dock" Value="Bottom" />
+    </Style>
+    <Style Selector="idc|ToolControl /template/ Separator#PART_Separator">
+        <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="Height" Value="1" />
     </Style>
 </Styles>

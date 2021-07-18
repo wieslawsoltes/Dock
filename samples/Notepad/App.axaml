@@ -2,11 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Notepad"
              x:Class="Notepad.App">
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-    <Application.Styles>
-        <FluentTheme Mode="Light"/>
-        <StyleInclude Source="avares://Dock.Avalonia/Themes/FluentTheme.axaml"/>
-    </Application.Styles>
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+  <Application.Styles>
+    <FluentTheme Mode="Light" />
+    <StyleInclude Source="avares://Dock.Avalonia/Themes/FluentTheme.axaml" />
+  </Application.Styles>
 </Application>

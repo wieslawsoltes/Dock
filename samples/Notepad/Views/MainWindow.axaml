@@ -18,20 +18,20 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome"
         id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
-    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
-        <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Label Content="Notepad" 
-                   Margin="4,0,4,0" 
-                   FontSize="14" 
-                   FontWeight="Normal"
-                   VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"/>
-        </Panel>
-        <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
-            <views:MainView/>
-        </Panel>
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+    <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+      <Label Content="Notepad"
+             Margin="4,0,4,0"
+             FontSize="14"
+             FontWeight="Normal"
+             VerticalAlignment="Center"
+             VerticalContentAlignment="Center" />
     </Panel>
+    <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+      <views:MainView />
+    </Panel>
+  </Panel>
 </Window>

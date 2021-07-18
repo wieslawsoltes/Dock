@@ -5,30 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400">
-    <Grid RowDefinitions="*,Auto">
-        <TextBox BorderThickness="0" 
-                 AcceptsReturn="True" 
-                 AcceptsTab="True" 
-                 FontFamily="Consolas, Inconsolata" 
-                 FontWeight="Light" 
-                 FontSize="14"
-                 SelectionStart="{Binding SelectionStart, Mode=TwoWay}"
-                 SelectionEnd="{Binding SelectionEnd, Mode=TwoWay}"
-                 CaretIndex="{Binding CaretIndex, Mode=TwoWay}"
-                 TextWrapping="NoWrap"
-                 Text="{Binding Text}"
-                 Grid.Row="0"/>
-        <Grid ColumnDefinitions="*,Auto" Grid.Row="1">
-            <TextBlock Text="{Binding Path}"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Grid.Column="0"/>
-            <TextBlock Text="{Binding Encoding}"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       TextWrapping="Wrap"
-                       Grid.Column="1"/>
-        </Grid>
+  <Grid RowDefinitions="*,Auto">
+    <TextBox BorderThickness="0"
+             AcceptsReturn="True"
+             AcceptsTab="True"
+             FontFamily="Consolas, Inconsolata"
+             FontWeight="Light"
+             FontSize="14"
+             SelectionStart="{Binding SelectionStart, Mode=TwoWay}"
+             SelectionEnd="{Binding SelectionEnd, Mode=TwoWay}"
+             CaretIndex="{Binding CaretIndex, Mode=TwoWay}"
+             TextWrapping="NoWrap"
+             Text="{Binding Text}"
+             Grid.Row="0" />
+    <Grid ColumnDefinitions="*,Auto" Grid.Row="1">
+      <TextBlock Text="{Binding Path}"
+                 Margin="2"
+                 VerticalAlignment="Center"
+                 TextWrapping="Wrap"
+                 Grid.Column="0" />
+      <TextBlock Text="{Binding Encoding}"
+                 Margin="2"
+                 VerticalAlignment="Center"
+                 TextWrapping="Wrap"
+                 Grid.Column="1" />
     </Grid>
+  </Grid>
 </UserControl>

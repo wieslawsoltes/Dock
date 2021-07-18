@@ -5,41 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="20">
-    <Menu>
-        <MenuItem Header="_File">
-            <MenuItem Header="_New" Command="{Binding FileNew}"/>
-            <MenuItem Header="_Open..." Command="{Binding FileOpen}"/>
-            <MenuItem Header="Save" Command="{Binding FileSave}"/>
-            <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}"/>
-            <Separator/>
-            <MenuItem Header="E_xit" Command="{Binding FileExit}"/>
-        </MenuItem>
-        <MenuItem Header="_Edit">
-            <MenuItem Header="_Undo"/>
-            <Separator/>
-            <MenuItem Header="Cu_t"/>
-            <MenuItem Header="_Copy"/>
-            <MenuItem Header="_Paste"/>
-            <MenuItem Header="_Delete"/>
-            <Separator/>
-            <MenuItem Header="_Find..."/>
-            <MenuItem Header="Find _Next"/>
-            <MenuItem Header="_Replace..."/>
-            <MenuItem Header="_Go to..."/>
-            <Separator/>
-            <MenuItem Header="Select _All"/>
-            <MenuItem Header="_Time/date"/>
-        </MenuItem>
-        <MenuItem Header="_Format">
-            <MenuItem Header="_Wrap lines"/>
-            <MenuItem Header="_Font..."/>
-        </MenuItem>
-        <MenuItem Header="_View">
-            <MenuItem Header="_Status bar"/>
-        </MenuItem>
-        <MenuItem Header="_Help">
-            <MenuItem Header="Get _Help"/>
-            <MenuItem Header="Notepad - _About"/>
-        </MenuItem>
-    </Menu>
+  <Menu>
+    <MenuItem Header="_File">
+      <MenuItem Header="_New" Command="{Binding FileNew}" />
+      <MenuItem Header="_Open..." Command="{Binding FileOpen}" />
+      <MenuItem Header="Save" Command="{Binding FileSave}" />
+      <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}" />
+      <Separator />
+      <MenuItem Header="E_xit" Command="{Binding FileExit}" />
+    </MenuItem>
+    <MenuItem Header="_Edit">
+      <MenuItem Header="_Undo" />
+      <Separator />
+      <MenuItem Header="Cu_t" />
+      <MenuItem Header="_Copy" />
+      <MenuItem Header="_Paste" />
+      <MenuItem Header="_Delete" />
+      <Separator />
+      <MenuItem Header="_Find..." />
+      <MenuItem Header="Find _Next" />
+      <MenuItem Header="_Replace..." />
+      <MenuItem Header="_Go to..." />
+      <Separator />
+      <MenuItem Header="Select _All" />
+      <MenuItem Header="_Time/date" />
+    </MenuItem>
+    <MenuItem Header="_Format">
+      <MenuItem Header="_Wrap lines" />
+      <MenuItem Header="_Font..." />
+    </MenuItem>
+    <MenuItem Header="_View">
+      <MenuItem Header="_Status bar" />
+    </MenuItem>
+    <MenuItem Header="_Help">
+      <MenuItem Header="Get _Help" />
+      <MenuItem Header="Notepad - _About" />
+    </MenuItem>
+  </Menu>
 </UserControl>

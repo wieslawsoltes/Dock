@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignWidth="400" d:DesignHeight="150">
-    <Grid RowDefinitions="Auto,Auto,Auto">
-        <TextBox Text="{Binding Find}" Margin="4" Grid.Row="0"/>
-        <TextBox Text="{Binding Replace}" Margin="4" Grid.Row="1"/>
-        <Button Content="Replace Next" 
-                Command="{Binding ReplaceNext}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" 
-                Margin="4" 
-                Grid.Row="2"/>
-    </Grid>
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <TextBox Text="{Binding Find}" Margin="4" Grid.Row="0" />
+    <TextBox Text="{Binding Replace}" Margin="4" Grid.Row="1" />
+    <Button Content="Replace Next"
+            Command="{Binding ReplaceNext}"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Center"
+            Margin="4"
+            Grid.Row="2" />
+  </Grid>
 </UserControl>

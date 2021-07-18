@@ -38,18 +38,6 @@
                         <Style Selector="Grid.grip:floating">
                             <Setter Property="IsVisible" Value="False" />
                         </Style>
-                        <Style Selector="Button.documentTabButton">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Style>
-                        <Style Selector="Button.documentTabButton:pointerover">
-                            <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
-                        </Style>
-                        <Style Selector="TabStripItem:selected Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-                        </Style>
-                        <Style Selector="TabStripItem:pointerover Button.documentTabButton Path">
-                            <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-                        </Style>
                     </DockPanel.Styles>
                     <TabStrip x:Name="PART_TabStrip" 
                               Background="Transparent" 
@@ -58,108 +46,7 @@
                               Focusable="false" 
                               ClipToBounds="False" 
                               ZIndex="1" 
-                              id:DockProperties.IsDropArea="True" 
-                              DockPanel.Dock="Top">
-                        <TabStrip.Styles>
-                            <Style Selector="TabStrip">
-                                <Setter Property="Template">
-                                    <ControlTemplate>
-                                        <DockPanel Background="Transparent" ClipToBounds="False">
-                                            <Button x:Name="PART_ButtonCreate"
-                                                    Command="{Binding CreateDocument}"
-                                                    Classes="documentTabButton" 
-                                                    IsVisible="{Binding CanCreateDocument}"
-                                                    DockPanel.Dock="Right">
-                                            <Button.Styles>
-                                                    <Style Selector="Button">
-                                                        <Setter Property="BorderThickness" Value="0"/>
-                                                        <Setter Property="Padding" Value="0"/>
-                                                        <Setter Property="Margin" Value="0"/>
-                                                        <Setter Property="Width" Value="26"/>
-                                                        <Setter Property="Height" Value="24"/>
-                                                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                        <Setter Property="VerticalAlignment" Value="Top"/>
-                                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                                    </Style>
-                                                </Button.Styles>
-                                                <Path x:Name="PART_PathCreate">
-                                                    <Path.Styles>
-                                                        <Style Selector="Path">
-                                                            <Setter Property="Margin" Value="5"/>
-                                                            <Setter Property="Stretch" Value="Uniform"/>
-                                                            <Setter Property="UseLayoutRounding" Value="False"/>
-                                                            <Setter Property="Fill" Value="#474747"/>
-                                                            <Setter Property="Data" Value="M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z"/>
-                                                        </Style>
-                                                    </Path.Styles>
-                                                </Path>
-                                            </Button>
-                                            <ItemsPresenter Name="PART_ItemsPresenter"
-                                                            Items="{TemplateBinding Items}"
-                                                            ItemsPanel="{TemplateBinding ItemsPanel}"
-                                                            ItemTemplate="{TemplateBinding ItemTemplate}" />
-                                        </DockPanel>
-                                    </ControlTemplate>
-                                </Setter>
-                                <Setter Property="ItemsPanel">
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel ClipToBounds="False" />
-                                    </ItemsPanelTemplate>
-                                </Setter>
-                            </Style>
-                            <Style Selector="TabStrip:empty">
-                                <Setter Property="IsVisible" Value="False" />
-                            </Style>
-                            <Style Selector="TabStripItem">
-                                <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
-                                <Setter Property="FontWeight" Value="Normal" />
-                                <Setter Property="MinHeight" Value="24" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <!-- TODO: Background -->
-                                <Setter Property="Background" Value="Transparent" />
-                                <!-- <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" /> -->
-                                <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="Padding" Value="4 0 4 0" />
-                                <Setter Property="Template">
-                                    <ControlTemplate>
-                                        <Border>
-                                            <Border.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="_Float" 
-                                                              Command="{Binding Owner.Factory.FloatDockable}" 
-                                                              CommandParameter="{Binding}" 
-                                                              IsVisible="{Binding CanFloat}"
-                                                              x:CompileBindings="False" />
-                                                    <MenuItem Header="_Close" 
-                                                              Command="{Binding Owner.Factory.CloseDockable}" 
-                                                              CommandParameter="{Binding}" 
-                                                              IsVisible="{Binding CanClose}"
-                                                              x:CompileBindings="False" />
-                                                </ContextMenu>
-                                            </Border.ContextMenu>
-                                            <Panel>
-                                                <ContentPresenter x:Name="PART_ContentPresenter"
-                                                                  Background="{TemplateBinding Background}"
-                                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                                  Content="{TemplateBinding Content}"
-                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                                  TextBlock.FontFamily="{TemplateBinding FontFamily}"
-                                                                  TextBlock.FontSize="{TemplateBinding FontSize}"
-                                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}"
-                                                                  BorderBrush="{TemplateBinding BorderBrush}"
-                                                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                                                  Padding="{TemplateBinding Padding}"/>
-                                            </Panel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter>
-                            </Style>
-                        </TabStrip.Styles>
+                              id:DockProperties.IsDropArea="True">
                         <TabStrip.DataTemplates>
                             <DataTemplate DataType="core:IDockable">
                                 <idc:DockableControl TrackingMode="Tab">
@@ -175,7 +62,8 @@
                                         <Button Height="14" 
                                                 Width="14" 
                                                 Command="{Binding Owner.Factory.CloseDockable}" 
-                                                CommandParameter="{Binding}" Classes="documentTabButton" 
+                                                CommandParameter="{Binding}" 
+                                                Classes="documentTabButton" 
                                                 IsVisible="{Binding CanClose}"
                                                 x:CompileBindings="False">
                                             <Button.Styles>
@@ -195,11 +83,10 @@
                             </DataTemplate>
                         </TabStrip.DataTemplates>
                     </TabStrip>
-                    <Grid  x:Name="PART_Grid"
-                           Height="2" 
-                           IsVisible="{Binding #PART_TabStrip.IsVisible}" 
-                           DockPanel.Dock="Top" 
-                           x:CompileBindings="False" />
+                    <Grid x:Name="PART_Grid"
+                          Height="2" 
+                          IsVisible="{Binding #PART_TabStrip.IsVisible}" 
+                          x:CompileBindings="False" />
                     <Border x:Name="PART_Border">
                         <idc:DockableControl DataContext="{Binding ActiveDockable}"
                                              TrackingMode="Visible">
@@ -210,6 +97,115 @@
                         </idc:DockableControl>
                     </Border>
                 </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="Button.createDocument">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="26"/>
+        <Setter Property="Height" Value="24"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Path.createDocument">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="Fill" Value="#474747"/>
+        <Setter Property="Data" Value="M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z"/>
+    </Style>
+    <Style Selector="Button.documentTabButton">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.documentTabButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
+        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button.documentTabButton Path">
+        <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="DockPanel.Dock" Value="Top" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel Background="Transparent" 
+                           ClipToBounds="False"
+                           x:DataType="dmc:IDocumentDock" 
+                           x:CompileBindings="True">
+                    <Button x:Name="PART_ButtonCreate"
+                            Command="{Binding CreateDocument}"
+                            Classes="createDocument documentTabButton" 
+                            IsVisible="{Binding CanCreateDocument}"
+                            DockPanel.Dock="Right">
+                        <Path x:Name="PART_PathCreate" Classes="createDocument"/>
+                    </Button>
+                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                    Items="{TemplateBinding Items}"
+                                    ItemsPanel="{TemplateBinding ItemsPanel}"
+                                    ItemTemplate="{TemplateBinding ItemTemplate}" />
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <WrapPanel ClipToBounds="False" />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip:empty">
+        <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
+        <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="MinHeight" Value="24" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="4 0 4 0" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border>
+                    <Border.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="_Float" 
+                                      Command="{Binding Owner.Factory.FloatDockable}" 
+                                      CommandParameter="{Binding}" 
+                                      IsVisible="{Binding CanFloat}"
+                                      x:CompileBindings="False" />
+                            <MenuItem Header="_Close" 
+                                      Command="{Binding Owner.Factory.CloseDockable}" 
+                                      CommandParameter="{Binding}" 
+                                      IsVisible="{Binding CanClose}"
+                                      x:CompileBindings="False" />
+                        </ContextMenu>
+                    </Border.ContextMenu>
+                    <Panel>
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          TextBlock.FontFamily="{TemplateBinding FontFamily}"
+                                          TextBlock.FontSize="{TemplateBinding FontSize}"
+                                          TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Padding="{TemplateBinding Padding}"/>
+                    </Panel>
+                </Border>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -232,6 +228,9 @@
     <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
         <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}"/>
         <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
+        <Setter Property="DockPanel.Dock" Value="Top" />
     </Style>
     <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
         <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}"/>

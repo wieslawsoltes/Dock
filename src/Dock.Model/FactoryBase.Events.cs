@@ -37,6 +37,12 @@ namespace Dock.Model
         public event EventHandler<DockableUnpinnedEventArgs>? DockableUnpinned;
 
         /// <inheritdoc />
+        public event EventHandler<WindowOpenedEventArgs>? WindowOpened;
+
+        /// <inheritdoc />
+        public event EventHandler<WindowClosedEventArgs>? WindowClosed;
+
+        /// <inheritdoc />
         public event EventHandler<WindowAddedEventArgs>? WindowAdded;
 
         /// <inheritdoc />
@@ -107,6 +113,18 @@ namespace Dock.Model
         public virtual void OnWindowRemoved(IDockWindow? window)
         {
             WindowRemoved?.Invoke(this, new WindowRemovedEventArgs(window));
+        }
+
+        /// <inheritdoc />
+        public virtual void OnWindowOpened(IDockWindow? window)
+        {
+            WindowOpened?.Invoke(this, new WindowOpenedEventArgs(window));
+        }
+
+        /// <inheritdoc />
+        public virtual void OnWindowClosed(IDockWindow? window)
+        {
+            WindowClosed?.Invoke(this, new WindowClosedEventArgs(window));
         }
     }
 }

@@ -86,6 +86,16 @@ namespace AvaloniaDemo.ViewModels
                 Debug.WriteLine($"[DockableUnpinned] {args.Dockable?.Title}");
             };
 
+            factory.WindowOpened += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowOpened] {args.Window?.Title}");
+            };
+
+            factory.WindowClosed += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowClosed] {args.Window?.Title}");
+            };
+
             factory.WindowAdded += (_, args) =>
             {
                 Debug.WriteLine($"[WindowAdded] {args.Window?.Title}");

@@ -321,7 +321,7 @@ namespace Dock.Model
             if (visible.Count == 1)
             {
                 var sourceDockable = visible.FirstOrDefault();
-                if (sourceDockable is { } && DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
+                if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
                 {
                     return false;
                 }
@@ -329,7 +329,7 @@ namespace Dock.Model
             else
             {
                 var sourceDockable = visible.FirstOrDefault();
-                if (sourceDockable is { } && DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
+                if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
                 {
                     return false;
                 }
@@ -337,7 +337,7 @@ namespace Dock.Model
                 foreach (var dockable in visible.Skip(1))
                 {
                     var targetDockable = visible.FirstOrDefault();
-                    if (targetDockable is { } && DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
+                    if (targetDockable is null || DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
                     {
                         return false;
                     }

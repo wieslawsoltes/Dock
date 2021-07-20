@@ -68,7 +68,6 @@ namespace Dock.Avalonia.Controls
 
             PositionChanged += HostWindow_PositionChanged;
             LayoutUpdated += HostWindow_LayoutUpdated;
-            Closing += HostWindow_Closing;
 
             _dockManager = new DockManager();
             _hostWindowState = new HostWindowState(_dockManager, this);
@@ -92,6 +91,44 @@ namespace Dock.Avalonia.Controls
             base.OnClosed(e);
 
             Window?.Factory?.HostWindows.Remove(this);
+
+            if (Window is { })
+            {
+                Window.Factory?.OnWindowClosed(Window);
+
+                if (IsTracked)
+                {
+                    Window?.Factory?.RemoveWindow(Window);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            
+            if (Window is { })
+            {
+                if (Window.OnClose() == false)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            if (Window is { } && IsTracked)
+            {
+                Window.Save();
+
+                if (Window.Layout is IDock root)
+                {
+                    if (root.Close.CanExecute(null))
+                    {
+                        root.Close.Execute(null);
+                    }
+                }
+            }
         }
 
         private void HostWindow_PositionChanged(object? sender, PixelPointEventArgs e)
@@ -109,22 +146,6 @@ namespace Dock.Avalonia.Controls
             if (Window is { } && IsTracked)
             {
                 Window.Save();
-            }
-        }
-
-        private void HostWindow_Closing(object? sender, CancelEventArgs e)
-        {
-            if (Window is { } && IsTracked)
-            {
-                Window.Save();
-
-                if (Window.Layout is IDock root)
-                {
-                    if (root.Close.CanExecute(null))
-                    {
-                        root.Close.Execute(null);
-                    }
-                }
             }
         }
 
@@ -158,7 +179,7 @@ namespace Dock.Avalonia.Controls
             {
                 Observable.FromEventPattern(chromeControl.CloseButton, nameof(Button.Click)).Subscribe(_ =>
                 {
-                    Close();
+                    Exit();
                 });
             }
 
@@ -237,6 +258,11 @@ namespace Dock.Avalonia.Controls
             {
                 if (!IsVisible)
                 {
+                    if (Window is { })
+                    {
+                        Window.Factory?.OnWindowOpened(Window);
+                    }
+
                     ShowDialog(null); // FIXME: Set correct parent window.
                 }
             }
@@ -244,6 +270,11 @@ namespace Dock.Avalonia.Controls
             {
                 if (!IsVisible)
                 {
+                    if (Window is { })
+                    {
+                        Window.Factory?.OnWindowOpened(Window);
+                    }
+
                     Show();
                 }
             }
@@ -252,7 +283,17 @@ namespace Dock.Avalonia.Controls
         /// <inheritdoc/>
         public void Exit()
         {
-            Close();
+            if (Window is { })
+            {
+                if (Window.OnClose())
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                Close();
+            }
         }
 
         /// <inheritdoc/>

@@ -54,6 +54,16 @@ namespace Dock.Model.Core
         event EventHandler<DockableUnpinnedEventArgs>? DockableUnpinned;
 
         /// <summary>
+        /// Window opened event handler.
+        /// </summary>
+        event EventHandler<WindowOpenedEventArgs>? WindowOpened;
+
+        /// <summary>
+        /// Window closed event handler.
+        /// </summary>
+        event EventHandler<WindowClosedEventArgs>? WindowClosed;
+
+        /// <summary>
         /// Window added event handler.
         /// </summary>
         event EventHandler<WindowAddedEventArgs>? WindowAdded;
@@ -116,6 +126,18 @@ namespace Dock.Model.Core
         /// </summary>
         /// <param name="dockable">The unpinned dockable.</param>
         void OnDockableUnpinned(IDockable? dockable);
+
+        /// <summary>
+        /// Called when the window has been opened.
+        /// </summary>
+        /// <param name="window">The opened window.</param>
+        void OnWindowOpened(IDockWindow? window);
+
+        /// <summary>
+        /// Called when the window has been closed.
+        /// </summary>
+        /// <param name="window">The closed window.</param>
+        void OnWindowClosed(IDockWindow? window);
 
         /// <summary>
         /// Called when the window has been added.

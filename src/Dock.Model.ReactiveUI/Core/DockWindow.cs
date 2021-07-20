@@ -124,6 +124,12 @@ namespace Dock.Model.ReactiveUI.Core
         }
 
         /// <inheritdoc/>
+        public virtual bool OnClose()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
         public void Save()
         {
             _hostAdapter.Save();

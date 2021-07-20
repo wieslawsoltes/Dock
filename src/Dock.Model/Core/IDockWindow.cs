@@ -63,6 +63,12 @@ namespace Dock.Model.Core
         IHostWindow? Host { get; set; }
 
         /// <summary>
+        /// Called when the window is closed.
+        /// </summary>
+        /// <returns>true to accept the close, and false to cancel the close.</returns>
+        bool OnClose();
+
+        /// <summary>
         /// Saves window properties.
         /// </summary>
         void Save();

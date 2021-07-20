@@ -320,21 +320,24 @@ namespace Dock.Model
             
             if (visible.Count == 1)
             {
-                if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                var sourceDockable = visible.FirstOrDefault();
+                if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
                 {
                     return false;
                 }
             }
             else
             {
-                if (DockDockableIntoDock(visible.First(), targetDock, action, operation, bExecute) == false)
+                var sourceDockable = visible.FirstOrDefault();
+                if (sourceDockable is null || DockDockableIntoDock(sourceDockable, targetDock, action, operation, bExecute) == false)
                 {
                     return false;
                 }
                 
                 foreach (var dockable in visible.Skip(1))
                 {
-                    if (DockDockableIntoDockable(dockable, visible.First(), action, bExecute) == false)
+                    var targetDockable = visible.FirstOrDefault();
+                    if (targetDockable is null || DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
                     {
                         return false;
                     }

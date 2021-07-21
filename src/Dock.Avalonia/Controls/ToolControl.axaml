@@ -144,6 +144,8 @@
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
   </Style>
   <Style Selector="idc|ToolControl /template/ Separator#PART_Separator">
+
+    <Setter Property="Margin" Value="1,0,1,0" />
     <Setter Property="DockPanel.Dock" Value="Bottom" />
   </Style>
   <Style Selector="idc|ToolControl /template/ Separator#PART_Separator">

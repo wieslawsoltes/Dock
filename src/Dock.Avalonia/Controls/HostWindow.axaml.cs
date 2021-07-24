@@ -110,7 +110,7 @@ namespace Dock.Avalonia.Controls
             
             if (Window is { })
             {
-                if (Window.OnClose() == false)
+                if (Window.Factory?.OnWindowClosing(Window) == false)
                 {
                     e.Cancel = true;
                     return;

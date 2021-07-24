@@ -96,6 +96,12 @@ namespace AvaloniaDemo.ViewModels
                 Debug.WriteLine($"[WindowClosed] {args.Window?.Title}");
             };
 
+            factory.WindowClosing += (_, args) =>
+            {
+                //args.Cancel = true;
+                Debug.WriteLine($"[WindowClosing] {args.Window?.Title}");
+            };
+
             factory.WindowAdded += (_, args) =>
             {
                 Debug.WriteLine($"[WindowAdded] {args.Window?.Title}");

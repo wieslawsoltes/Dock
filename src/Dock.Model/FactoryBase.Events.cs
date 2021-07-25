@@ -136,7 +136,7 @@ namespace Dock.Model
 
             WindowClosing?.Invoke(this, eventArgs);
 
-            return !canClose;
+            return !eventArgs.Cancel;
         }
 
         /// <inheritdoc />

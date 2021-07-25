@@ -20,7 +20,11 @@ namespace Dock.Avalonia.Controls
     [PseudoClasses(":toolwindow")]
     public class HostWindow : Window, IStyleable, IHostWindow
     {
-        private static bool s_useCustomDrag = true;
+        /// <summary>
+        /// Use custom drag instead of BeginMoveDrag.
+        /// </summary>
+        public static bool s_useCustomDrag = true;
+
         private readonly DockManager _dockManager;
         private readonly HostWindowState _hostWindowState;
         private Control? _chromeGrip;

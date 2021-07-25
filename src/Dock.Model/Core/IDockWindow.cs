@@ -65,7 +65,7 @@ namespace Dock.Model.Core
         /// <summary>
         /// Called when the window is closed.
         /// </summary>
-        /// <returns>true to accept the close, and false to cancel the close.</returns>
+        /// <returns>True to accept the close, and false to cancel the close.</returns>
         bool OnClose();
 
         /// <summary>

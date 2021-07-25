@@ -59,6 +59,11 @@ namespace Dock.Model.Core
         event EventHandler<WindowOpenedEventArgs>? WindowOpened;
 
         /// <summary>
+        /// Window closing event handler.
+        /// </summary>
+        event EventHandler<WindowClosingEventArgs>? WindowClosing;
+
+        /// <summary>
         /// Window closed event handler.
         /// </summary>
         event EventHandler<WindowClosedEventArgs>? WindowClosed;
@@ -132,6 +137,13 @@ namespace Dock.Model.Core
         /// </summary>
         /// <param name="window">The opened window.</param>
         void OnWindowOpened(IDockWindow? window);
+
+        /// <summary>
+        /// Called when the window is closing.
+        /// </summary>
+        /// <param name="window">The closing window.</param>
+        /// <returns>False if canceled, otherwise true.</returns>
+        bool OnWindowClosing(IDockWindow? window);
 
         /// <summary>
         /// Called when the window has been closed.

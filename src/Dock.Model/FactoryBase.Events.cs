@@ -40,6 +40,9 @@ namespace Dock.Model
         public event EventHandler<WindowOpenedEventArgs>? WindowOpened;
 
         /// <inheritdoc />
+        public event EventHandler<WindowClosingEventArgs>? WindowClosing;
+
+        /// <inheritdoc />
         public event EventHandler<WindowClosedEventArgs>? WindowClosed;
 
         /// <inheritdoc />
@@ -119,6 +122,21 @@ namespace Dock.Model
         public virtual void OnWindowOpened(IDockWindow? window)
         {
             WindowOpened?.Invoke(this, new WindowOpenedEventArgs(window));
+        }
+
+        /// <inheritdoc />
+        public virtual bool OnWindowClosing(IDockWindow? window)
+        {
+            var canClose = window?.OnClose() ?? true;
+
+            var eventArgs = new WindowClosingEventArgs(window)
+            {
+                Cancel = !canClose
+            };
+
+            WindowClosing?.Invoke(this, eventArgs);
+
+            return !eventArgs.Cancel;
         }
 
         /// <inheritdoc />

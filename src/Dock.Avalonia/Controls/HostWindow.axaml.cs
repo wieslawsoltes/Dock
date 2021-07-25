@@ -80,7 +80,9 @@ namespace Dock.Avalonia.Controls
                     _mouseDown = true;
                     _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
 
+                    PseudoClasses.Set(":dragging", true);
                     BeginMoveDrag(e);
+                    PseudoClasses.Set(":dragging", false);
 
                     _hostWindowState.Process(e.GetPosition(this), EventType.Released);
                     _mouseDown = false;

@@ -43,73 +43,73 @@ namespace AvaloniaDemo.ViewModels
         {
             factory.ActiveDockableChanged += (_, args) =>
             {
-                Debug.WriteLine($"[ActiveDockableChanged] {args.Dockable?.Title}");
+                Debug.WriteLine($"[ActiveDockableChanged] Title='{args.Dockable?.Title}'");
             };
 
             factory.FocusedDockableChanged += (_, args) =>
             {
-                Debug.WriteLine($"[FocusedDockableChanged] {args.Dockable?.Title}");
+                Debug.WriteLine($"[FocusedDockableChanged] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableAdded += (_, args) =>
             {
-                Debug.WriteLine($"[DockableAdded] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableAdded] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableRemoved += (_, args) =>
             {
-                Debug.WriteLine($"[DockableRemoved] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableRemoved] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableClosed += (_, args) =>
             {
-                Debug.WriteLine($"[DockableClosed] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableClosed] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableMoved += (_, args) =>
             {
-                Debug.WriteLine($"[DockableMoved] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableMoved] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableSwapped += (_, args) =>
             {
-                Debug.WriteLine($"[DockableSwapped] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableSwapped] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockablePinned += (_, args) =>
             {
-                Debug.WriteLine($"[DockablePinned] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockablePinned] Title='{args.Dockable?.Title}'");
             };
 
             factory.DockableUnpinned += (_, args) =>
             {
-                Debug.WriteLine($"[DockableUnpinned] {args.Dockable?.Title}");
+                Debug.WriteLine($"[DockableUnpinned] Title='{args.Dockable?.Title}'");
             };
 
             factory.WindowOpened += (_, args) =>
             {
-                Debug.WriteLine($"[WindowOpened] {args.Window?.Title}");
+                Debug.WriteLine($"[WindowOpened] Title='{args.Window?.Title}'");
             };
 
             factory.WindowClosed += (_, args) =>
             {
-                Debug.WriteLine($"[WindowClosed] {args.Window?.Title}");
+                Debug.WriteLine($"[WindowClosed] Title='{args.Window?.Title}'");
             };
 
             factory.WindowClosing += (_, args) =>
             {
-                //args.Cancel = true;
-                Debug.WriteLine($"[WindowClosing] {args.Window?.Title}");
+                // args.Cancel = true;
+                Debug.WriteLine($"[WindowClosing] Title='{args.Window?.Title}', Cancel={args.Cancel}");
             };
 
             factory.WindowAdded += (_, args) =>
             {
-                Debug.WriteLine($"[WindowAdded] {args.Window?.Title}");
+                Debug.WriteLine($"[WindowAdded] Title='{args.Window?.Title}'");
             };
 
             factory.WindowRemoved += (_, args) =>
             {
-                Debug.WriteLine($"[WindowRemoved] {args.Window?.Title}");
+                Debug.WriteLine($"[WindowRemoved] Title='{args.Window?.Title}'");
             };
         }
 

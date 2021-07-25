@@ -3,7 +3,9 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Styling;
 using Dock.Avalonia.Internal;
@@ -15,12 +17,13 @@ namespace Dock.Avalonia.Controls
     /// <summary>
     /// Interaction logic for <see cref="HostWindow"/> xaml.
     /// </summary>
-    [PseudoClasses(":toolwindow")]
+    [PseudoClasses(":toolwindow", ":dragging")]
     public class HostWindow : Window, IStyleable, IHostWindow
     {
         private readonly DockManager _dockManager;
         private readonly HostWindowState _hostWindowState;
         private Control? _chromeGrip;
+        private HostWindowTitleBar? _hostWindowTitleBar;
         private bool _mouseDown;
 
         /// <summary>
@@ -69,6 +72,45 @@ namespace Dock.Avalonia.Controls
         }
 
         /// <inheritdoc/>
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            _hostWindowTitleBar = e.NameScope.Find<HostWindowTitleBar>("PART_TitleBar");
+            if (_hostWindowTitleBar is { })
+            {
+                _hostWindowTitleBar.ApplyTemplate();
+
+                if (_hostWindowTitleBar.BackgroundControl is { })
+                {
+                    _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
+                    {
+                        MoveDrag(args);
+                    };
+                }
+            }
+        }
+
+        private void MoveDrag(PointerPressedEventArgs e)
+        {
+            if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
+            {
+                return;
+            }
+
+            _mouseDown = true;
+            _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
+
+            PseudoClasses.Set(":dragging", true);
+            BeginMoveDrag(e);
+            PseudoClasses.Set(":dragging", false);
+
+            Window?.Factory?.OnWindowMoveDragEnd(Window);
+            _hostWindowState.Process(e.GetPosition(this), EventType.Released);
+            _mouseDown = false;
+        }
+
+        /// <inheritdoc/>
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             base.OnPointerPressed(e);
@@ -77,19 +119,7 @@ namespace Dock.Avalonia.Controls
             {
                 if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                 {
-                    if (Window?.Factory?.OnWindowMoveDragBegin(Window) == true)
-                    {
-                        _mouseDown = true;
-                        _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
-
-                        PseudoClasses.Set(":dragging", true);
-                        BeginMoveDrag(e);
-                        PseudoClasses.Set(":dragging", false);
-
-                        Window?.Factory?.OnWindowMoveDragEnd(Window);
-                        _hostWindowState.Process(e.GetPosition(this), EventType.Released);
-                        _mouseDown = false;
-                    }
+                    MoveDrag(e);
                 }
             }
         }
@@ -100,7 +130,9 @@ namespace Dock.Avalonia.Controls
             {
                 Window.Save();
 
-                if (_chromeGrip is { } && _chromeGrip.IsPointerOver && _mouseDown)
+                if ((_chromeGrip is { } && _chromeGrip.IsPointerOver)
+                    || (_hostWindowTitleBar?.BackgroundControl is { } && (_hostWindowTitleBar?.BackgroundControl?.IsPointerOver ?? false))
+                    && _mouseDown)
                 {
                     Window.Factory?.OnWindowMoveDrag(Window);
                     _hostWindowState.Process(Position.ToPoint(1.0), EventType.Moved);

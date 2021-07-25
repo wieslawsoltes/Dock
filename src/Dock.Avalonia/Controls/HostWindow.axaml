@@ -26,7 +26,7 @@
           <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
           <VisualLayerManager>
             <VisualLayerManager.ChromeOverlayLayer>
-              <TitleBar />
+              <idc:HostWindowTitleBar Name="PART_TitleBar" />
             </VisualLayerManager.ChromeOverlayLayer>
             <ContentPresenter Name="PART_ContentPresenter"
                               ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -93,5 +93,8 @@
     <Setter Property="Background" Value="{x:Null}" />
     <Setter Property="TransparencyLevelHint" Value="Transparent"/>
     <Setter Property="Opacity" Value="0.5" />
+  </Style>
+  <Style Selector="idc|HostWindowTitleBar /template/ Border#PART_Background">
+    <Setter Property="IsHitTestVisible" Value="True" />
   </Style>
 </Styles>

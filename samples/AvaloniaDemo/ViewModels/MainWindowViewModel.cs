@@ -99,7 +99,9 @@ namespace AvaloniaDemo.ViewModels
             factory.WindowClosing += (_, args) =>
             {
                 // NOTE: Set to True to cancel window closing.
-                // args.Cancel = true;
+#if false
+                args.Cancel = true;
+#endif
                 Debug.WriteLine($"[WindowClosing] Title='{args.Window?.Title}', Cancel={args.Cancel}");
             };
 

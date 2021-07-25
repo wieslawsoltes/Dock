@@ -114,6 +114,25 @@ namespace AvaloniaDemo.ViewModels
             {
                 Debug.WriteLine($"[WindowRemoved] Title='{args.Window?.Title}'");
             };
+
+            factory.WindowMoveDragBegin += (_, args) =>
+            {
+                // NOTE: Set to True to cancel window dragging.
+#if false
+                args.Cancel = true;
+#endif
+                Debug.WriteLine($"[WindowMoveDragBegin] Title='{args.Window?.Title}', Cancel={args.Cancel}, X='{args.Window?.X}', Y='{args.Window?.Y}'");
+            };
+
+            factory.WindowMoveDrag += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowMoveDrag] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
+            };
+
+            factory.WindowMoveDragEnd += (_, args) =>
+            {
+                Debug.WriteLine($"[WindowMoveDragEnd] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
+            };
         }
 
         public void CloseLayout()

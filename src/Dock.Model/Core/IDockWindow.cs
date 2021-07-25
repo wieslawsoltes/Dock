@@ -69,6 +69,22 @@ namespace Dock.Model.Core
         bool OnClose();
 
         /// <summary>
+        /// Called before the window dragging start.
+        /// </summary>
+        /// <returns>True to accept the dragging, and false to cancel the dragging.</returns>
+        bool OnMoveDragBegin();
+
+        /// <summary>
+        /// Called when the window is dragged.
+        /// </summary>
+        void OnMoveDrag();
+
+        /// <summary>
+        /// Called after the window dragging ended.
+        /// </summary>
+        void OnMoveDragEnd();
+
+        /// <summary>
         /// Saves window properties.
         /// </summary>
         void Save();

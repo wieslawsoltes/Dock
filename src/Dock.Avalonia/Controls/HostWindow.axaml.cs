@@ -77,15 +77,19 @@ namespace Dock.Avalonia.Controls
             {
                 if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                 {
-                    _mouseDown = true;
-                    _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
+                    if (Window?.Factory?.OnWindowMoveDragBegin(Window) == true)
+                    {
+                        _mouseDown = true;
+                        _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
 
-                    PseudoClasses.Set(":dragging", true);
-                    BeginMoveDrag(e);
-                    PseudoClasses.Set(":dragging", false);
+                        PseudoClasses.Set(":dragging", true);
+                        BeginMoveDrag(e);
+                        PseudoClasses.Set(":dragging", false);
 
-                    _hostWindowState.Process(e.GetPosition(this), EventType.Released);
-                    _mouseDown = false;
+                        Window?.Factory?.OnWindowMoveDragEnd(Window);
+                        _hostWindowState.Process(e.GetPosition(this), EventType.Released);
+                        _mouseDown = false;
+                    }
                 }
             }
         }
@@ -98,6 +102,7 @@ namespace Dock.Avalonia.Controls
 
                 if (_chromeGrip is { } && _chromeGrip.IsPointerOver && _mouseDown)
                 {
+                    Window.Factory?.OnWindowMoveDrag(Window);
                     _hostWindowState.Process(Position.ToPoint(1.0), EventType.Moved);
                 }
             }

@@ -79,6 +79,21 @@ namespace Dock.Model.Core
         event EventHandler<WindowRemovedEventArgs>? WindowRemoved;
 
         /// <summary>
+        /// Window dragging begin event handler.
+        /// </summary>
+        event EventHandler<WindowMoveDragBeginEventArgs>? WindowMoveDragBegin;
+
+        /// <summary>
+        /// Window dragging event handler.
+        /// </summary>
+        event EventHandler<WindowMoveDragEventArgs>? WindowMoveDrag;
+
+        /// <summary>
+        /// Window dragging end event handler.
+        /// </summary>
+        event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
+
+        /// <summary>
         /// Called when the active dockable changed.
         /// </summary>
         /// <param name="dockable">The activate dockable.</param>
@@ -142,7 +157,7 @@ namespace Dock.Model.Core
         /// Called when the window is closing.
         /// </summary>
         /// <param name="window">The closing window.</param>
-        /// <returns>False if canceled, otherwise true.</returns>
+        /// <returns>False if closing canceled, otherwise true.</returns>
         bool OnWindowClosing(IDockWindow? window);
 
         /// <summary>
@@ -162,5 +177,24 @@ namespace Dock.Model.Core
         /// </summary>
         /// <param name="window">The removed window.</param>
         void OnWindowRemoved(IDockWindow? window);
+
+        /// <summary>
+        /// Called before the window dragging starts.
+        /// </summary>
+        /// <param name="window">The dragged window.</param>
+        /// <returns>False if dragging canceled, otherwise true.</returns>
+        bool OnWindowMoveDragBegin(IDockWindow? window);
+
+        /// <summary>
+        /// Called when the window is dragged.
+        /// </summary>
+        /// <param name="window">The dragged window.</param>
+        void OnWindowMoveDrag(IDockWindow? window);
+
+        /// <summary>
+        /// Called after the window dragging ended.
+        /// </summary>
+        /// <param name="window">The dragged window.</param>
+        void OnWindowMoveDragEnd(IDockWindow? window);
     }
 }

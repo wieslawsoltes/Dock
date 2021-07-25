@@ -84,4 +84,14 @@
       </Template>
     </Setter>
   </Style>
+  <Style Selector="idc|HostWindow:toolwindow">
+    <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+    <Setter Property="TransparencyLevelHint" Value="None"/>
+    <Setter Property="Opacity" Value="1.0" />
+  </Style>
+  <Style Selector="idc|HostWindow:toolwindow:dragging">
+    <Setter Property="Background" Value="{x:Null}" />
+    <Setter Property="TransparencyLevelHint" Value="Transparent"/>
+    <Setter Property="Opacity" Value="0.5" />
+  </Style>
 </Styles>

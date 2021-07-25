@@ -52,6 +52,15 @@ namespace Dock.Model
         public event EventHandler<WindowRemovedEventArgs>? WindowRemoved;
 
         /// <inheritdoc />
+        public event EventHandler<WindowMoveDragBeginEventArgs>? WindowMoveDragBegin;
+
+        /// <inheritdoc />
+        public event EventHandler<WindowMoveDragEventArgs>? WindowMoveDrag;
+
+        /// <inheritdoc />
+        public event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
+
+        /// <inheritdoc />
         public virtual void OnActiveDockableChanged(IDockable? dockable)
         {
             ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
@@ -98,8 +107,7 @@ namespace Dock.Model
         {
             DockablePinned?.Invoke(this, new DockablePinnedEventArgs(dockable));
         }
- 
-      
+
         /// <inheritdoc />
         public virtual void OnDockableUnpinned(IDockable? dockable)
         {
@@ -143,6 +151,35 @@ namespace Dock.Model
         public virtual void OnWindowClosed(IDockWindow? window)
         {
             WindowClosed?.Invoke(this, new WindowClosedEventArgs(window));
+        }
+
+        /// <inheritdoc />
+        public virtual bool OnWindowMoveDragBegin(IDockWindow? window)
+        {
+            var canMoveDrag = window?.OnMoveDragBegin() ?? true;
+
+            var eventArgs = new WindowMoveDragBeginEventArgs(window)
+            {
+                Cancel = !canMoveDrag
+            };
+
+            WindowMoveDragBegin?.Invoke(this, eventArgs);
+
+            return !eventArgs.Cancel;
+        }
+
+        /// <inheritdoc />
+        public virtual void OnWindowMoveDrag(IDockWindow? window)
+        {
+            window?.OnMoveDrag();
+            WindowMoveDrag?.Invoke(this, new WindowMoveDragEventArgs(window));
+        }
+
+        /// <inheritdoc />
+        public virtual void OnWindowMoveDragEnd(IDockWindow? window)
+        {
+            window?.OnMoveDragEnd();
+            WindowMoveDragEnd?.Invoke(this, new WindowMoveDragEndEventArgs(window));
         }
     }
 }

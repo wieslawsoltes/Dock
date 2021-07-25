@@ -130,6 +130,22 @@ namespace Dock.Model.ReactiveUI.Core
         }
 
         /// <inheritdoc/>
+        public virtual bool OnMoveDragBegin()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnMoveDrag()
+        {
+        }
+
+        /// <inheritdoc/>
+        public virtual void OnMoveDragEnd()
+        {
+        }
+
+        /// <inheritdoc/>
         public void Save()
         {
             _hostAdapter.Save();

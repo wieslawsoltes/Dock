@@ -127,10 +127,16 @@ namespace Dock.Model
         /// <inheritdoc />
         public virtual bool OnWindowClosing(IDockWindow? window)
         {
-            var eventArgs = new WindowClosingEventArgs(window);
-            eventArgs.Cancel = !(window?.OnClose() ?? true);
+            var canClose = window?.OnClose() ?? true;
+
+            var eventArgs = new WindowClosingEventArgs(window)
+            {
+                Cancel = !canClose
+            };
+
             WindowClosing?.Invoke(this, eventArgs);
-            return !eventArgs.Cancel;
+
+            return !canClose;
         }
 
         /// <inheritdoc />

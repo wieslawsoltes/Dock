@@ -12,7 +12,7 @@ namespace Dock.Model
         /// <summary>
         /// Enable split into window on drag event.
         /// </summary>
-        public static bool s_enableSplitToWindow = false;
+        public static bool s_enableSplitToWindow = true;
 
         /// <inheritdoc/>
         public DockPoint Position { get; set; }

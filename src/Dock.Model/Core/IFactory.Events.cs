@@ -142,7 +142,7 @@ namespace Dock.Model.Core
         /// Called when the window is closing.
         /// </summary>
         /// <param name="window">The closing window.</param>
-        /// <returns>If canceled false otherwise true.</returns>
+        /// <returns>False if canceled, otherwise true.</returns>
         bool OnWindowClosing(IDockWindow? window);
 
         /// <summary>

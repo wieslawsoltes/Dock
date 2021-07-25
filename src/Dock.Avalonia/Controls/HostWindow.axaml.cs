@@ -107,7 +107,7 @@ namespace Dock.Avalonia.Controls
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            
+
             if (Window is { })
             {
                 if (Window.Factory?.OnWindowClosing(Window) == false)

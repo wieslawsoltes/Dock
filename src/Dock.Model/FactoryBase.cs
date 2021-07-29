@@ -445,6 +445,12 @@ namespace Dock.Model
                 return;
             }
 
+            // Don't remove the dock if there are pinned dockables.
+            if (dock.PinnedDockables is not null && dock.PinnedDockables.Count != 0)
+            {
+                return;
+            }
+
             if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
             {
                 var toRemove = new List<IDockable>();

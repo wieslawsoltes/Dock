@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
 		build\XUnit.props = build\XUnit.props
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
+		build\SourceLink.props = build\SourceLink.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"

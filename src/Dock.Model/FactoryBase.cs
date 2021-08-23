@@ -445,7 +445,6 @@ namespace Dock.Model
                 return;
             }
 
-            // Don't remove the dock if there are pinned dockables.
             if (dock.PinnedDockables is not null && dock.PinnedDockables.Count != 0)
             {
                 return;

@@ -151,6 +151,11 @@ namespace Dock.Model
                         return false;
                     }
 
+                    if (!sourceDockable.CanFloat)
+                    {
+                        return false;
+                    }
+
                     if (sourceDockable.Owner is not IDock sourceDockableOwner)
                     {
                         return false;

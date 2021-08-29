@@ -1,4 +1,6 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace Dock.Model.Core
 {
     /// <summary>
@@ -9,6 +11,7 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets or sets dock manager.
         /// </summary>
+        [JsonIgnore]
         IDockManager DockManager { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
@@ -16,6 +17,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public Orientation Orientation
         {
             get => _orientation;

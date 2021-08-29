@@ -20,13 +20,13 @@ namespace AvaloniaDemo.ViewModels
 
         public ICommand NewLayout { get; }
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IRootDock? layout = null)
         {
             _factory = new DemoFactory(new DemoData());
 
             DebugFactoryEvents(_factory);
 
-            Layout = _factory?.CreateLayout();
+            Layout = layout ?? _factory?.CreateLayout();
             if (Layout is { })
             {
                 _factory?.InitLayout(Layout);

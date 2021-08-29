@@ -1,4 +1,6 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace Dock.Model.Core
 {
     /// <summary>
@@ -9,41 +11,49 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets or sets dockable id.
         /// </summary>
+        [JsonInclude]
         string Id { get; set; }
 
         /// <summary>
         /// Gets or sets dockable title.
         /// </summary>
+        [JsonInclude]
         string Title { get; set; }
 
         /// <summary>
         /// Gets or sets dockable context.
         /// </summary>
+        [JsonIgnore]
         object? Context { get; set; }
 
         /// <summary>
         /// Gets or sets dockable owner.
         /// </summary>
+        [JsonIgnore]
         IDockable? Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dockable factory.
         /// </summary>
+        [JsonIgnore]
         IFactory? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets if the dockable can be closed.
         /// </summary>
+        [JsonInclude]
         bool CanClose { get; set; }
 
         /// <summary>
         /// Gets or sets if the dockable can be pinned.
         /// </summary>
+        [JsonInclude]
         bool CanPin { get; set; }
 
         /// <summary>
         /// Gets or sets if the dockable can be floated.
         /// </summary>
+        [JsonInclude]
         bool CanFloat { get; set; }
 
         /// <summary>

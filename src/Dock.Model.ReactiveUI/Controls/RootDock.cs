@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -20,6 +21,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool IsFocusableRoot
         {
             get => _isFocusableRoot;
@@ -28,6 +30,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IDockWindow? Window
         {
             get => _window;
@@ -36,6 +39,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IList<IDockWindow>? Windows
         {
             get => _windows;
@@ -45,6 +49,7 @@ namespace Dock.Model.ReactiveUI.Controls
         /// <summary>
         /// Initializes new instance of the <see cref="RootDock"/> class.
         /// </summary>
+        [JsonConstructor]
         public RootDock()
         {
             ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
@@ -53,10 +58,12 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand ShowWindows { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand ExitWindows { get; }
     }
 }

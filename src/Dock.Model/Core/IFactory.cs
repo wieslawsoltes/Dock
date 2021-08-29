@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 
 namespace Dock.Model.Core
@@ -12,26 +13,31 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets visible dockable controls.
         /// </summary>
+        [JsonIgnore]
         IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
         /// <summary>
         /// Gets pinned dockable controls.
         /// </summary>
+        [JsonIgnore]
         IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
         /// <summary>
         /// Gets tab dockable controls.
         /// </summary>
+        [JsonIgnore]
         IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
         /// <summary>
         /// Gets dock controls.
         /// </summary>
+        [JsonIgnore]
         IList<IDockControl> DockControls { get; }
 
         /// <summary>
         /// Gets host windows.
         /// </summary>
+        [JsonIgnore]
         IList<IHostWindow> HostWindows { get; }
 
         /// <summary>

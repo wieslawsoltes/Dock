@@ -1,4 +1,5 @@
-﻿using Dock.Model.Controls;
+﻿using System.Text.Json.Serialization;
+using Dock.Model.Controls;
 
 namespace Dock.Model.Core
 {
@@ -10,56 +11,67 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets or sets id.
         /// </summary>
+        [JsonInclude]
         string Id { get; set; }
 
-        /// <summary>
+        /// <summary>0
         /// Gets or sets window X coordinate.
         /// </summary>
+        [JsonInclude]
         double X { get; set; }
 
         /// <summary>
         /// Gets or sets window X coordinate.
         /// </summary>
+        [JsonInclude]
         double Y { get; set; }
 
         /// <summary>
         /// Gets or sets window width.
         /// </summary>
+        [JsonInclude]
         double Width { get; set; }
 
         /// <summary>
         /// Gets or sets window height.
         /// </summary>
+        [JsonInclude]
         double Height { get; set; }
 
         /// <summary>
         /// Gets or sets whether this window appears on top of all other windows.
         /// </summary>
+        [JsonInclude]
         bool Topmost { get; set; }
 
         /// <summary>
         /// Gets or sets window title.
         /// </summary>
+        [JsonInclude]
         string Title { get; set; }
 
         /// <summary>
         /// Gets or sets window owner dockable.
         /// </summary>
+        [JsonIgnore]
         IDockable? Owner { get; set; }
 
         /// <summary>
         /// Gets or sets dock factory.
         /// </summary>
+        [JsonIgnore]
         IFactory? Factory { get; set; }
 
         /// <summary>
         /// Gets or sets layout.
         /// </summary>
+        [JsonInclude]
         IRootDock? Layout { get; set; }
 
         /// <summary>
         /// Gets or sets dock window.
         /// </summary>
+        [JsonIgnore]
         IHostWindow? Host { get; set; }
 
         /// <summary>

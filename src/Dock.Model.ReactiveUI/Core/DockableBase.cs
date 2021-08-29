@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
 using ReactiveUI;
@@ -23,6 +24,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public string Id
         {
             get => _id;
@@ -31,6 +33,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public string Title
         {
             get => _title;
@@ -39,6 +42,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public object? Context
         {
             get => _context;
@@ -47,6 +51,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IDockable? Owner
         {
             get => _owner;
@@ -55,6 +60,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IFactory? Factory
         {
             get => _factory;
@@ -63,6 +69,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool CanClose
         {
             get => _canClose;
@@ -71,6 +78,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool CanPin
         {
             get => _canPin;
@@ -79,6 +87,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool CanFloat
         {
             get => _canFloat;
@@ -88,6 +97,7 @@ namespace Dock.Model.ReactiveUI.Core
         /// <summary>
         /// Initializes new instance of the <see cref="DockableBase"/> class.
         /// </summary>
+        [JsonConstructor]
         protected DockableBase()
         {
             _trackingAdapter = new TrackingAdapter();

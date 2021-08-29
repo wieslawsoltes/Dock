@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -11,27 +12,35 @@ namespace Dock.Model
     public abstract partial class FactoryBase : IFactory
     {
         /// <inheritdoc/>
+        [JsonIgnore]
         public abstract IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public abstract IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public abstract IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public abstract IList<IDockControl> DockControls { get; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public abstract IList<IHostWindow> HostWindows { get; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public virtual IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
         /// <inheritdoc/>

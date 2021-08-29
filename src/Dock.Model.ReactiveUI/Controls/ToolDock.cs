@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
@@ -19,6 +20,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public Alignment Alignment
         {
             get => _alignment;
@@ -27,6 +29,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool IsExpanded
         {
             get => _isExpanded;
@@ -35,6 +38,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool AutoHide
         {
             get => _autoHide;
@@ -43,6 +47,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public GripMode GripMode
         {
             get => _gripMode;

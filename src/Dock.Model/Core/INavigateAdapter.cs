@@ -1,4 +1,5 @@
-﻿using Dock.Model.Controls;
+﻿using System.Text.Json.Serialization;
+using Dock.Model.Controls;
 
 namespace Dock.Model.Core
 {
@@ -10,11 +11,13 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets a value that indicates whether there is at least one entry in back navigation history.
         /// </summary>
+        [JsonIgnore]
         bool CanGoBack { get; }
 
         /// <summary>
         /// Gets a value that indicates whether there is at least one entry in forward navigation history.
         /// </summary>
+        [JsonIgnore]
         bool CanGoForward { get; }
 
         /// <summary>

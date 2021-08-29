@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
@@ -28,6 +29,7 @@ namespace Dock.Model.ReactiveUI.Core
         /// <summary>
         /// Initializes new instance of the <see cref="DockBase"/> class.
         /// </summary>
+        [JsonConstructor]
         protected DockBase()
         {
             _navigateAdapter = new NavigateAdapter(this);
@@ -39,6 +41,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IList<IDockable>? VisibleDockables
         {
             get => _visibleDockables;
@@ -47,6 +50,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IList<IDockable>? HiddenDockables
         {
             get => _hiddenDockables;
@@ -55,6 +59,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IList<IDockable>? PinnedDockables
         {
             get => _pinnedDockables;
@@ -63,6 +68,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IDockable? ActiveDockable
         {
             get => _activeDockable;
@@ -86,6 +92,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IDockable? DefaultDockable
         {
             get => _defaultDockable;
@@ -94,6 +101,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IDockable? FocusedDockable
         {
             get => _focusedDockable;
@@ -106,6 +114,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public double Proportion
         {
             get => _proportion;
@@ -114,6 +123,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public DockMode Dock
         {
             get => _dock;
@@ -122,6 +132,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool IsActive
         {
             get => _isActive;
@@ -130,6 +141,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool IsCollapsable
         {
             get => _isCollapsable;
@@ -138,26 +150,32 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public bool CanGoBack => _navigateAdapter.CanGoBack;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public bool CanGoForward => _navigateAdapter.CanGoForward;
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand GoBack { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand GoForward { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand Navigate { get; }
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICommand Close { get; }
     }
 }

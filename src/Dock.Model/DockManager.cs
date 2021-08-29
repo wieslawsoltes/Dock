@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -12,12 +13,15 @@ namespace Dock.Model
         /// <summary>
         /// Enable split into window on drag event.
         /// </summary>
+        [JsonIgnore]
         public static bool s_enableSplitToWindow = true;
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public DockPoint Position { get; set; }
 
         /// <inheritdoc/>
+        [JsonIgnore]
         public DockPoint ScreenPosition { get; set; }
 
         private bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)

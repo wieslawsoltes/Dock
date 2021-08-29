@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -7,6 +11,7 @@ using Avalonia.Styling;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
+using Dock.Model.ReactiveUI.Controls;
 
 namespace AvaloniaDemo
 {
@@ -55,7 +60,30 @@ namespace AvaloniaDemo
         {
             // DockManager.s_enableSplitToWindow = true;
 
-            var mainWindowViewModel = new MainWindowViewModel();
+            var layout = default(RootDock);
+            var layoutPath = "AvaloniaDemo.layout";
+
+            try
+            {
+                if (File.Exists(layoutPath))
+                {
+                    var layoutJson = File.ReadAllText(layoutPath);
+                    if (!string.IsNullOrEmpty(layoutJson))
+                    {
+                        layout = JsonSerializer.Deserialize<RootDock>(layoutJson, 
+                            new JsonSerializerOptions()
+                            {
+                                ReferenceHandler = ReferenceHandler.Preserve
+                            });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            var mainWindowViewModel = new MainWindowViewModel(layout);
 
             switch (ApplicationLifetime)
             {
@@ -69,6 +97,28 @@ namespace AvaloniaDemo
                     mainWindow.Closing += (_, _) =>
                     {
                         mainWindowViewModel.CloseLayout();
+
+                        if (mainWindowViewModel.Layout is RootDock rootDock)
+                        {
+                            try
+                            {
+                                var layoutJson = JsonSerializer.Serialize<RootDock>(rootDock,
+                                    new JsonSerializerOptions()
+                                    {
+                                        WriteIndented = true, 
+                                        ReferenceHandler = ReferenceHandler.Preserve,
+                                        NumberHandling = JsonNumberHandling.WriteAsString
+                                    });
+                                if (!string.IsNullOrEmpty(layoutJson))
+                                {
+                                    File.WriteAllText(layoutPath, layoutJson);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e);
+                            }
+                        }
                     };
 
                     desktopLifetime.MainWindow = mainWindow;

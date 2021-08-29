@@ -1,4 +1,5 @@
 ﻿
+using System.Text.Json.Serialization;
 using Dock.Model.Core;
 
 namespace Dock.Model.Controls
@@ -11,6 +12,7 @@ namespace Dock.Model.Controls
         /// <summary>
         /// Gets or sets document content.
         /// </summary>
+        [JsonInclude]
         object Content { get; set; }
     }
 }

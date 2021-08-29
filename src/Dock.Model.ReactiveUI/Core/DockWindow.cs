@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -27,6 +28,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public string Id
         {
             get => _id;
@@ -35,6 +37,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = true, EmitDefaultValue = true)]
+        [JsonInclude]
         public double X
         {
             get => _x;
@@ -43,6 +46,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = true, EmitDefaultValue = true)]
+        [JsonInclude]
         public double Y
         {
             get => _y;
@@ -51,6 +55,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = true, EmitDefaultValue = true)]
+        [JsonInclude]
         public double Width
         {
             get => _width;
@@ -59,6 +64,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = true, EmitDefaultValue = true)]
+        [JsonInclude]
         public double Height
         {
             get => _height;
@@ -67,6 +73,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool Topmost
         {
             get => _topmost;
@@ -75,6 +82,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public string Title
         {
             get => _title;
@@ -83,6 +91,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IDockable? Owner
         {
             get => _owner;
@@ -91,6 +100,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IFactory? Factory
         {
             get => _factory;
@@ -99,6 +109,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public IRootDock? Layout
         {
             get => _layout;
@@ -107,6 +118,7 @@ namespace Dock.Model.ReactiveUI.Core
 
         /// <inheritdoc/>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IHostWindow? Host
         {
             get => _host;
@@ -116,6 +128,7 @@ namespace Dock.Model.ReactiveUI.Core
         /// <summary>
         /// Initializes new instance of the <see cref="DockWindow"/> class.
         /// </summary>
+        [JsonConstructor]
         public DockWindow()
         {
             _id = nameof(IDockWindow);

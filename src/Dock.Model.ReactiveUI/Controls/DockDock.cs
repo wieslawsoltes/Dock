@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
@@ -15,6 +16,7 @@ namespace Dock.Model.ReactiveUI.Controls
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
+        [JsonInclude]
         public bool LastChildFill
         {
             get => _lastChildFill;

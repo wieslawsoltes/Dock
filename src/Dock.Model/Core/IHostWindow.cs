@@ -1,4 +1,6 @@
-﻿namespace Dock.Model.Core
+﻿using System.Text.Json.Serialization;
+
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Host window contract.
@@ -8,21 +10,25 @@
         /// <summary>
         /// Gets dock manager.
         /// </summary>
+        [JsonIgnore]
         IDockManager? DockManager { get; }
 
         /// <summary>
         /// Gets host window state.
         /// </summary>
+        [JsonIgnore]
         IHostWindowState? HostWindowState { get; }
 
         /// <summary>
         /// Gets or sets value that indicates whether host size and position is tracked.
         /// </summary>
+        [JsonIgnore]
         bool IsTracked { get; set; }
 
         /// <summary>
         /// Gets or sets dock window.
         /// </summary>
+        [JsonIgnore]
         IDockWindow? Window { get; set; }
 
         /// <summary>

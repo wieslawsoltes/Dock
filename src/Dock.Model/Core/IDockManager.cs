@@ -1,4 +1,5 @@
-﻿using Dock.Model.Controls;
+﻿using System.Text.Json.Serialization;
+using Dock.Model.Controls;
 
 namespace Dock.Model.Core
 {
@@ -10,11 +11,13 @@ namespace Dock.Model.Core
         /// <summary>
         /// Gets or sets pointer position relative to event source.
         /// </summary>
+        [JsonIgnore]
         DockPoint Position { get; set; }
 
         /// <summary>
         /// Gets or sets pointer position relative to event source and translated to screen coordinates.
         /// </summary>
+        [JsonIgnore]
         DockPoint ScreenPosition { get; set; }
 
         /// <summary>

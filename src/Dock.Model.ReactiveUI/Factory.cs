@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
@@ -13,18 +15,28 @@ namespace Dock.Model.ReactiveUI
     public class Factory : FactoryBase
     {
         /// <inheritdoc/>
+        [IgnoreDataMember]
+        [JsonIgnore]
         public override IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
+        [JsonIgnore]
         public override IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
+        [JsonIgnore]
         public override IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
+        [JsonIgnore]
         public override IList<IDockControl> DockControls { get; }
 
         /// <inheritdoc/>
+        [IgnoreDataMember]
+        [JsonIgnore]
         public override IList<IHostWindow> HostWindows { get; }
 
         /// <summary>

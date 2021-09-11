@@ -15,7 +15,7 @@ namespace Dock.Model.ReactiveUI.Controls
         private Alignment _alignment = Alignment.Unset;
         private bool _isExpanded;
         private bool _autoHide = true;
-        private GripMode _gripMode = Model.Core.GripMode.Visible;
+        private GripMode _gripMode = GripMode.Visible;
 
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]

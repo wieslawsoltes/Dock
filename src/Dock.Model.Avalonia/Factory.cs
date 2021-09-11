@@ -16,7 +16,7 @@ namespace Dock.Model.Avalonia
         /// <summary>
         /// Initializes the new instance of <see cref="Factory"/> class.
         /// </summary>
-        protected Factory()
+        public Factory()
         {
             VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
             PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();

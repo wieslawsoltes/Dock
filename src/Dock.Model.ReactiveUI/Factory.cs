@@ -12,6 +12,18 @@ namespace Dock.Model.ReactiveUI
     /// </summary>
     public class Factory : FactoryBase
     {
+        /// <summary>
+        /// Initializes the new instance of <see cref="Factory"/> class.
+        /// </summary>
+        protected Factory()
+        {
+            VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
+            PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
+            TabDockableControls = new Dictionary<IDockable, IDockableControl>();
+            DockControls = new ObservableCollection<IDockControl>();
+            HostWindows = new ObservableCollection<IHostWindow>();
+        }
+
         /// <inheritdoc/>
         public override IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
@@ -26,18 +38,6 @@ namespace Dock.Model.ReactiveUI
 
         /// <inheritdoc/>
         public override IList<IHostWindow> HostWindows { get; }
-
-        /// <summary>
-        /// Initializes the new instance of <see cref="Factory"/> class.
-        /// </summary>
-        protected Factory()
-        {
-            VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
-            PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
-            TabDockableControls = new Dictionary<IDockable, IDockableControl>();
-            DockControls = new ObservableCollection<IDockControl>();
-            HostWindows = new ObservableCollection<IHostWindow>();
-        }
 
         /// <inheritdoc/>
         public override IList<T> CreateList<T>(params T[] items) => new ObservableCollection<T>(items);

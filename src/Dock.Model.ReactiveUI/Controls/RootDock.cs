@@ -18,6 +18,15 @@ namespace Dock.Model.ReactiveUI.Controls
         private IDockWindow? _window;
         private IList<IDockWindow>? _windows;
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="RootDock"/> class.
+        /// </summary>
+        public RootDock()
+        {
+            ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
+            ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
+        }
+
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public bool IsFocusableRoot
@@ -40,15 +49,6 @@ namespace Dock.Model.ReactiveUI.Controls
         {
             get => _windows;
             set => this.RaiseAndSetIfChanged(ref _windows, value);
-        }
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="RootDock"/> class.
-        /// </summary>
-        public RootDock()
-        {
-            ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
-            ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
         }
 
         /// <inheritdoc/>

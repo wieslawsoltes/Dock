@@ -21,6 +21,14 @@ namespace Dock.Model.ReactiveUI.Core
         private bool _canPin = true;
         private bool _canFloat = true;
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="DockableBase"/> class.
+        /// </summary>
+        protected DockableBase()
+        {
+            _trackingAdapter = new TrackingAdapter();
+        }
+
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Id
@@ -83,14 +91,6 @@ namespace Dock.Model.ReactiveUI.Core
         {
             get => _canFloat;
             set => this.RaiseAndSetIfChanged(ref _canFloat, value);
-        }
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="DockableBase"/> class.
-        /// </summary>
-        protected DockableBase()
-        {
-            _trackingAdapter = new TrackingAdapter();
         }
 
         /// <inheritdoc/>

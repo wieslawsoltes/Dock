@@ -25,6 +25,16 @@ namespace Dock.Model.ReactiveUI.Core
         private IRootDock? _layout;
         private IHostWindow? _host;
 
+        /// <summary>
+        /// Initializes new instance of the <see cref="DockWindow"/> class.
+        /// </summary>
+        public DockWindow()
+        {
+            _id = nameof(IDockWindow);
+            _title = nameof(IDockWindow);
+            _hostAdapter = new HostAdapter(this);
+        }
+
         /// <inheritdoc/>
         [DataMember(IsRequired = false, EmitDefaultValue = true)]
         public string Id
@@ -111,16 +121,6 @@ namespace Dock.Model.ReactiveUI.Core
         {
             get => _host;
             set => this.RaiseAndSetIfChanged(ref _host, value);
-        }
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="DockWindow"/> class.
-        /// </summary>
-        public DockWindow()
-        {
-            _id = nameof(IDockWindow);
-            _title = nameof(IDockWindow);
-            _hostAdapter = new HostAdapter(this);
         }
 
         /// <inheritdoc/>

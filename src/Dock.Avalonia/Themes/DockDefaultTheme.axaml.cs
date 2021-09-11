@@ -5,7 +5,7 @@ namespace Dock.Avalonia.Themes
     /// <summary>
     /// The Dock default theme.
     /// </summary>
-    public class DefaultTheme : Styles
+    public class DockDefaultTheme : Styles
     {
     }
 }

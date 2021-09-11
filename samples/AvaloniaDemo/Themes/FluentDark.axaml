@@ -13,7 +13,7 @@
     <Color x:Key="AcrylicFallbackColor">#1F1F1F</Color>
   </Styles.Resources>
   <FluentTheme Mode="Dark" />
-  <StyleInclude Source="avares://Dock.Avalonia/Themes/FluentTheme.axaml" />
+  <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
   <Style Selector="idc|ToolChromeControl">
     <Setter Property="Background" Value="Transparent" />
   </Style>

@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=netstandard"
-        x:Class="Dock.Avalonia.Themes.FluentTheme">
+        x:Class="Dock.Avalonia.Themes.DockFluentTheme">
   <StyleInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.axaml" />
   <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.axaml" />

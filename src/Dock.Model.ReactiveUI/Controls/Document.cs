@@ -8,7 +8,7 @@ namespace Dock.Model.ReactiveUI.Controls
     /// Document.
     /// </summary>
     [DataContract(IsReference = true)]
-    public abstract class Document : DockableBase, IDocument
+    public class Document : DockableBase, IDocument
     {
     }
 }

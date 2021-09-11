@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="AvaloniaDemo.Xaml.Views.MainView"
+       xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       mc:Ignorable="d"
+       d:DesignWidth="800" d:DesignHeight="600">
+  <DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True">
+    <RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
+      <RootDock.Factory>
+        <Factory/>
+      </RootDock.Factory>
+      <ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
+        <ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
+          <ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
+            <Tool x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+            <Tool x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+          </ToolDock>
+          <SplitterDockable x:Name="LeftPaneTopSplitter" Id="LeftPaneTopSplitter" Title="LeftPaneTopSplitter" />
+          <ToolDock x:Name="LeftPaneBottom" Id="LeftPaneBottom" Title="LeftPaneBottom" Proportion="NaN" ActiveDockable="{Binding #LeftBottom1}">
+            <Tool x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+            <Tool x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+          </ToolDock>
+        </ProportionalDock>
+        <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
+        <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
+          <Document x:Name="Document1" Id="Document1" Title="Document1">
+            <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Document>
+          <Document x:Name="Document2" Id="Document2" Title="Document2">
+            <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Document>
+        </DocumentDock>
+        <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter"/>
+        <ProportionalDock x:Name="RightPane" Id="RightPane" Title="RightPane" Proportion="NaN" Orientation="Vertical">
+          <ToolDock x:Name="RightPaneTop" Id="RightPaneTop" Title="RightPaneTop" Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
+            <Tool x:Name="RightTop1" Id="RightTop1" Title="RightTop1">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+            <Tool x:Name="RightTop2" Id="RightTop2" Title="RightTop2">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+          </ToolDock>
+          <SplitterDockable x:Name="RightPaneTopSplitter" Id="RightPaneTopSplitter" Title="RightPaneTopSplitter"/>
+          <ToolDock x:Name="RightPaneBottom" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="NaN" ActiveDockable="{Binding #RightBottom1}">
+            <Tool x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+            <Tool x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2">
+              <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Tool>
+          </ToolDock>
+        </ProportionalDock>
+      </ProportionalDock>
+    </RootDock>
+  </DockControl>
+</UserControl>

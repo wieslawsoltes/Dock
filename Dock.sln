@@ -66,6 +66,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad", "samples\Notepad\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia", "src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj", "{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Xaml", "samples\AvaloniaDemo.Xaml\AvaloniaDemo.Xaml.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{2A9959DB-769C-4524-A817-507C554615EA} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{E84B9270-FF6F-46EE-9B86-C1E922582645} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

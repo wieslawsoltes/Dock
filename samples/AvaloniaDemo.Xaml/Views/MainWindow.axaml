@@ -1,0 +1,16 @@
+﻿<Window x:Class="AvaloniaDemo.Xaml.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+        xmlns:views="clr-namespace:AvaloniaDemo.Xaml.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="1000" d:DesignHeight="620"
+        UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
+        WindowState="Normal" 
+        WindowStartupLocation="CenterScreen"
+        Title="Dock Avalonia Demo" Height="620" Width="1000"
+        id:DockProperties.IsDragEnabled="True" id:DockProperties.IsDropEnabled="True">
+    <views:MainView/>
+</Window>

@@ -13,20 +13,20 @@
     </Style>
   </UserControl.Styles>
   <DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True">
-    <RootDock x:Name="Root" Id="Root" Title="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
+    <RootDock x:Name="Root" Id="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
       <RootDock.Factory>
         <Factory/>
       </RootDock.Factory>
-      <ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
-        <ToolDock x:Name="LeftPane" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="0.25" Alignment="Left" ActiveDockable="{Binding #SolutionExplorer}">
+      <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+        <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left" ActiveDockable="{Binding #SolutionExplorer}">
           <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
             <TextBlock Text="{Binding Title}"/>
           </Tool>
         </ToolDock>
-        <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
-        <ProportionalDock x:Name="TopPane" Id="TopPane" Title="TopPane" Proportion="NaN" Orientation="Vertical">
-          <ProportionalDock x:Name="RightPage" Id="RightPage" Title="RightPage" Proportion="NaN" Orientation="Horizontal">
-            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
+        <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" />
+        <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
+          <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
+            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" IsCollapsable="False" ActiveDockable="{Binding #Document1}">
               <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
                 <TextBlock Text="{Binding Title}"/>
               </Document>
@@ -34,15 +34,15 @@
                 <TextBlock Text="{Binding Title}"/>
               </Document>
             </DocumentDock>
-            <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter" />
-            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Title="PropertiesPane" Proportion="0.3" Alignment="Right" ActiveDockable="{Binding #Properties}">
+            <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" />
+            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right" ActiveDockable="{Binding #Properties}">
               <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>
             </ToolDock>
           </ProportionalDock>
-          <SplitterDockable x:Name="BottomSplitter" Id="BottomSplitter" Title="BottomSplitter"/>
-          <ToolDock x:Name="BottomPage" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
+          <SplitterDockable x:Name="BottomSplitter" Id="BottomSplitter" />
+          <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
             <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
               <TextBlock Text="{Binding Title}"/>
             </Tool>

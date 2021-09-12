@@ -9,9 +9,6 @@
              d:DesignWidth="1280" d:DesignHeight="20"
              x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Menu>
-    <MenuItem Header="_File">
-      <MenuItem Header="_New" Command="{Binding NewLayout}" x:CompileBindings="False" />
-    </MenuItem>
     <MenuItem Header="_View">
       <MenuItem Header="_Windows" DataContext="{Binding DockControl.Layout, FallbackValue={x:Null}}" >
         <MenuItem Header="_Exit" Command="{Binding ExitWindows}" x:DataType="RootDock" />

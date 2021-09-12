@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
-using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -10,11 +9,6 @@ namespace AvaloniaDemo
 {
     public class DockFactory : Factory
     {
-        public override IRootDock CreateLayout()
-        {
-            return new RootDock();
-        }
-
         public override void InitLayout(IDockable layout)
         {
             ContextLocator = new Dictionary<string, Func<object>>

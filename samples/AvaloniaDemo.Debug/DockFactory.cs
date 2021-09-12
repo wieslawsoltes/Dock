@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
-using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -15,11 +14,6 @@ namespace AvaloniaDemo
         public DockFactory(object context)
         {
             _context = context;
-        }
-
-        public override IRootDock CreateLayout()
-        {
-            return new RootDock();
         }
 
         public override void InitLayout(IDockable layout)

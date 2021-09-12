@@ -20,10 +20,10 @@ namespace AvaloniaDemo.ViewModels
             DockControl = dockControl;
 
             var layout = DockControl.Layout;
-            if (layout != null)
+            if (layout is { })
             {
                 var factory = new DockFactory();
-                factory?.InitLayout(layout);
+                factory.InitLayout(layout);
             }
         }
 
@@ -33,24 +33,6 @@ namespace AvaloniaDemo.ViewModels
             {
                 layout.Close.Execute(null);
                 DockControl = null;
-            }
-        }
-
-        public void NewLayout()
-        {
-            if (DockControl != null)
-            {
-                if (DockControl.Layout is { } root)
-                {
-                    root.Close.Execute(null);
-                }
-                var factory = new DockFactory();
-                var layout = factory?.CreateLayout();
-                if (layout != null)
-                {
-                    factory?.InitLayout(layout);
-                    DockControl.Layout = layout;
-                }
             }
         }
 

@@ -8,7 +8,9 @@ namespace Dock.Model.Avalonia.Internal
         private readonly Action<T> _execute;
         private readonly Func<T, bool> _canExecute;
 
+#pragma warning disable CS0067
         public event EventHandler? CanExecuteChanged;
+#pragma warning restore CS0067
 
         public Command(Action<T> execute, Func<T, bool>? canExecute = null)
         {

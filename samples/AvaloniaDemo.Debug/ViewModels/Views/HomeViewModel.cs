@@ -1,8 +1,4 @@
-﻿using System;
-using Dock.Model;
-using Dock.Model.Avalonia.Controls;
-using Dock.Model.Controls;
-using Dock.Model.Core;
+﻿using Dock.Model.Avalonia.Controls;
 
 namespace AvaloniaDemo.ViewModels.Views
 {

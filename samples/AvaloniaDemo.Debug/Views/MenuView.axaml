@@ -4,17 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:vm="clr-namespace:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="20">
+             d:DesignWidth="1280" d:DesignHeight="20"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Menu>
     <MenuItem Header="_File">
       <MenuItem Header="_New" Command="{Binding FileNew}" />
     </MenuItem>
     <MenuItem Header="_View">
-      <MenuItem Header="_Windows">
-        <MenuItem Header="_Exit" Command="{Binding DockControl.Layout.ExitWindows}" />
+      <MenuItem Header="_Windows" DataContext="{Binding DockControl.Layout, FallbackValue={x:Null}}" >
+        <MenuItem Header="_Exit" Command="{Binding ExitWindows}" x:DataType="RootDock" />
         <Separator />
-        <MenuItem Header="_Show" Command="{Binding DockControl.Layout.ShowWindows}" />
+        <MenuItem Header="_Show" Command="{Binding ShowWindows}" x:DataType="RootDock" />
       </MenuItem>
     </MenuItem>
     <MenuItem Header="_Options">

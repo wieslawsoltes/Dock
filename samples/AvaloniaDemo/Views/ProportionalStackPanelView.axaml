@@ -3,66 +3,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:idc="using:Dock.Avalonia.Controls"
              mc:Ignorable="d"
              d:DesignWidth="400" d:DesignHeight="400">
   <Grid Margin="0,0,0,12">
     <Grid.Styles>
-      <Style Selector="idc|ProportionalStackPanelSplitter">
+      <Style Selector="ProportionalStackPanelSplitter">
         <Setter Property="Background" Value="LightGray" />
       </Style>
     </Grid.Styles>
     <TabControl>
       <TabItem Header="Default">
-        <idc:ProportionalStackPanel Orientation="Horizontal">
-          <idc:ProportionalStackPanel idc:ProportionalStackPanelSplitter.Proportion="0.5">
-            <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
-            <idc:ProportionalStackPanelSplitter />
+        <ProportionalStackPanel Orientation="Horizontal">
+          <ProportionalStackPanel ProportionalStackPanelSplitter.Proportion="0.5">
+            <Rectangle Fill="Red" ProportionalStackPanelSplitter.Proportion="0.5" />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Green" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Blue" />
-          </idc:ProportionalStackPanel>
-          <idc:ProportionalStackPanelSplitter />
-          <idc:ProportionalStackPanel>
+          </ProportionalStackPanel>
+          <ProportionalStackPanelSplitter />
+          <ProportionalStackPanel>
             <Rectangle Fill="Blue" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Red" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Green" />
-          </idc:ProportionalStackPanel>
-          <idc:ProportionalStackPanelSplitter />
-          <idc:ProportionalStackPanel>
+          </ProportionalStackPanel>
+          <ProportionalStackPanelSplitter />
+          <ProportionalStackPanel>
             <Rectangle Fill="Green" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Blue" />
-            <idc:ProportionalStackPanelSplitter />
-            <Rectangle Fill="Red" idc:ProportionalStackPanelSplitter.Proportion="0.5" />
-          </idc:ProportionalStackPanel>
-        </idc:ProportionalStackPanel>
+            <ProportionalStackPanelSplitter />
+            <Rectangle Fill="Red" ProportionalStackPanelSplitter.Proportion="0.5" />
+          </ProportionalStackPanel>
+        </ProportionalStackPanel>
       </TabItem>
       <TabItem Header="ItemsControl">
         <ItemsControl>
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <idc:ProportionalStackPanel Orientation="Horizontal" />
+              <ProportionalStackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
           <ItemsControl.Items>
             <Rectangle Fill="Green" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <Rectangle Fill="Blue" />
-            <idc:ProportionalStackPanelSplitter />
+            <ProportionalStackPanelSplitter />
             <ItemsControl>
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                  <idc:ProportionalStackPanel Orientation="Vertical" />
+                  <ProportionalStackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
               <ItemsControl.Items>
                 <Rectangle Fill="Green" />
-                <idc:ProportionalStackPanelSplitter />
+                <ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
-                <idc:ProportionalStackPanelSplitter />
+                <ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" />
               </ItemsControl.Items>
             </ItemsControl>

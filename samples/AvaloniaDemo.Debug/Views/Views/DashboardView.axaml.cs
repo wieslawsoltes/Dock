@@ -7,7 +7,7 @@ namespace AvaloniaDemo.Views.Views
     {
         public DashboardView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

@@ -3,18 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
              xmlns:views="clr-namespace:AvaloniaDemo.Views;assembly=AvaloniaDemo"
+             xmlns:vm="clr-namespace:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="1280" d:DesignHeight="680">
+             d:DesignWidth="1280" d:DesignHeight="680"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <UserControl.Styles>
     <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.axaml" />
   </UserControl.Styles>
-  <Grid ColumnDefinitions="*,Auto,280" RowDefinitions="Auto,Auto,*,25" Background="Transparent">
+  <Grid ColumnDefinitions="*,Auto,280" RowDefinitions="Auto,Auto,*" Background="Transparent">
     <views:DebugView DataContext="{Binding #dockControl.Layout}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" />
     <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="6" />
     <views:MenuView Grid.Row="0" Grid.Column="0" />
-    <idc:DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Column="0" Grid.Row="2" />
-    <TextBlock Text="{Binding #dockControl.Layout.ActiveDockable.FocusedDockable}" Margin="4" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" />
+    <DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Column="0" Grid.Row="2" />
   </Grid>
 </UserControl>

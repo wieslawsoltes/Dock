@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
-             xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
@@ -84,7 +83,7 @@
         </ComboBox>
       </Grid>
     </Panel>
-    <idc:DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
+    <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
                      Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
     <Panel DataContext="{Binding Layout.ActiveDockable}"
            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">

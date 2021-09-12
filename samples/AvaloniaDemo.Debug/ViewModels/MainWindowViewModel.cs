@@ -1,7 +1,4 @@
-﻿using System;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 
@@ -10,17 +7,19 @@ namespace AvaloniaDemo.ViewModels
     public class MainWindowViewModel : StyledElement
     {
         public static readonly DirectProperty<MainWindowViewModel, DockControl?> DockControlProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, DockControl?>(nameof(DockControl), o => o.DockControl, (o, v) => o.DockControl = v);
+            AvaloniaProperty.RegisterDirect<MainWindowViewModel, DockControl?>(
+                nameof(DockControl), 
+                o => o.DockControl, 
+                (o, v) => o.DockControl = v);
 
         public static readonly DirectProperty<MainWindowViewModel, IFactory?> FactoryProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IFactory?>(nameof(Factory), o => o.Factory, (o, v) => o.Factory = v);
-
-        public static readonly DirectProperty<MainWindowViewModel, string> PathProperty =
-            AvaloniaProperty.RegisterDirect<MainWindowViewModel, string>(nameof(Path), o => o.Path, (o, v) => o.Path = v);
+            AvaloniaProperty.RegisterDirect<MainWindowViewModel, IFactory?>(
+                nameof(Factory), 
+                o => o.Factory, 
+                (o, v) => o.Factory = v);
 
         private DockControl? _dockControl;
         private IFactory? _factory;
-        private string _path = string.Empty;
 
         public DockControl? DockControl
         {
@@ -34,70 +33,50 @@ namespace AvaloniaDemo.ViewModels
             set => SetAndRaise(FactoryProperty, ref _factory, value);
         }
 
-        public string Path
-        {
-            get => _path;
-            set => SetAndRaise(PathProperty, ref _path, value);
-        }
-
         public MainWindowViewModel()
         {
             DockControl = null;
-            Factory = new DemoFactory("Demo");
-            Path = System.IO.Path.Combine(AppContext.BaseDirectory, "Layout.json");
+            Factory = new DockFactory("Demo");
         }
 
         public void AttachDockControl(DockControl dockControl)
         {
-            if (dockControl != null)
-            {
-                DockControl = dockControl;
+            DockControl = dockControl;
                 
-                if (DockControl.Layout != null)
-                {
-                    Factory?.InitLayout(DockControl.Layout);
-                }
+            if (DockControl.Layout != null)
+            {
+                Factory?.InitLayout(DockControl.Layout);
             }
         }
 
         public void DetachDockControl()
         {
-            if (DockControl != null)
+            if (DockControl == null)
             {
-                if (DockControl.Layout != null)
-                {
-                    DockControl.Layout.Close.Execute(null);
-                }
-
-                DockControl = null;
+                return;
             }
+
+            DockControl.Layout?.Close.Execute(null);
+            DockControl = null;
         }
 
         public void FileNew()
         {
-            if (DockControl != null)
+            if (DockControl == null)
             {
-                if (DockControl.Layout is IDock root)
-                {
-                    root.Close.Execute(null);
-                }
-                Factory = new DemoFactory("Demo");
-                var layout = Factory?.CreateLayout();
-                if (layout != null)
-                {
-                    Factory?.InitLayout(layout);
-                    DockControl.Layout = layout;
-                }
+                return;
             }
-        }
-        
-        private Window? GetWindow()
-        {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+            if (DockControl.Layout is { } root)
             {
-                return desktopLifetime.MainWindow;
+                root.Close.Execute(null);
             }
-            return null;
+            Factory = new DockFactory("Demo");
+            var layout = Factory?.CreateLayout();
+            if (layout != null)
+            {
+                Factory?.InitLayout(layout);
+                DockControl.Layout = layout;
+            }
         }
     }
 }

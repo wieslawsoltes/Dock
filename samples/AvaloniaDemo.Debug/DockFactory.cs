@@ -8,11 +8,11 @@ using Dock.Model.Core;
 
 namespace AvaloniaDemo
 {
-    public class DemoFactory : Factory
+    public class DockFactory : Factory
     {
-        private object _context;
+        private readonly object _context;
 
-        public DemoFactory(object context)
+        public DockFactory(object context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace AvaloniaDemo
 
         public override void InitLayout(IDockable layout)
         {
-            this.ContextLocator = new Dictionary<string, Func<object>>
+            ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => _context,
                 [nameof(IProportionalDock)] = () => _context,
@@ -51,12 +51,12 @@ namespace AvaloniaDemo
                 ["Home"] = () => _context
             };
 
-            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+            DockableLocator = new Dictionary<string, Func<IDockable?>>();
 
             base.InitLayout(layout);
         }

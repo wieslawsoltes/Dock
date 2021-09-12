@@ -1,13 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Avalonia;
-using Avalonia.Collections;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia;
 using Dock.Avalonia.Controls;
-using Dock.Model;
-using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace AvaloniaDemo.ViewModels
@@ -25,22 +17,19 @@ namespace AvaloniaDemo.ViewModels
 
         public void AttachDockControl(DockControl dockControl)
         {
-            if (dockControl != null)
-            {
-                DockControl = dockControl;
+            DockControl = dockControl;
 
-                var layout = DockControl.Layout;
-                if (layout != null)
-                {
-                    var factory = new DemoFactory();
-                    factory?.InitLayout(layout);
-                }
+            var layout = DockControl.Layout;
+            if (layout != null)
+            {
+                var factory = new DockFactory();
+                factory?.InitLayout(layout);
             }
         }
 
         public void DetachDockControl()
         {
-            if (DockControl?.Layout is IDock layout)
+            if (DockControl?.Layout is { } layout)
             {
                 layout.Close.Execute(null);
                 DockControl = null;
@@ -51,11 +40,11 @@ namespace AvaloniaDemo.ViewModels
         {
             if (DockControl != null)
             {
-                if (DockControl.Layout is IDock root)
+                if (DockControl.Layout is { } root)
                 {
                     root.Close.Execute(null);
                 }
-                var factory = new DemoFactory();
+                var factory = new DockFactory();
                 var layout = factory?.CreateLayout();
                 if (layout != null)
                 {
@@ -67,22 +56,13 @@ namespace AvaloniaDemo.ViewModels
 
         public void ApplyWindowLayout(IDock dock)
         {
-            if (DockControl.Layout?.ActiveDockable is IDock active && dock != active)
+            if (DockControl?.Layout?.ActiveDockable is IDock active && dock != active)
             {
                 active.Close.Execute(null);
                 DockControl.Layout.Navigate.Execute(dock);
                 DockControl.Layout.Factory?.SetFocusedDockable(DockControl.Layout, dock);
                 DockControl.Layout.DefaultDockable = dock;
             }
-        }
-
-        private Window? GetWindow()
-        {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-            {
-                return desktopLifetime.MainWindow;
-            }
-            return null;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AvaloniaDemo.Views.Tools
     {
         public RightTopTool2View()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

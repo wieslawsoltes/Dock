@@ -6,6 +6,8 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
+    <AssemblyName>AvaloniaDemo</AssemblyName>
+    <RootNamespace>AvaloniaDemo</RootNamespace>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />

@@ -1,30 +1,29 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="using:Dock.Avalonia.Controls">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Design.PreviewWith>
     <Panel Width="300" Height="300">
-      <idc:DockTarget>
-        <idc:DockTarget.Styles>
-          <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">
+      <DockTarget>
+        <DockTarget.Styles>
+          <Style Selector="DockTarget /template/ Panel#PART_TopIndicator">
             <Setter Property="Opacity" Value="0.0" />
           </Style>
-          <Style Selector="idc|DockTarget /template/ Panel#PART_BottomIndicator">
+          <Style Selector="DockTarget /template/ Panel#PART_BottomIndicator">
             <Setter Property="Opacity" Value="0.0" />
           </Style>
-          <Style Selector="idc|DockTarget /template/ Panel#PART_LeftIndicator">
+          <Style Selector="DockTarget /template/ Panel#PART_LeftIndicator">
             <Setter Property="Opacity" Value="0.0" />
           </Style>
-          <Style Selector="idc|DockTarget /template/ Panel#PART_RightIndicator">
+          <Style Selector="DockTarget /template/ Panel#PART_RightIndicator">
             <Setter Property="Opacity" Value="0.0" />
           </Style>
-          <Style Selector="idc|DockTarget /template/ Panel#PART_CenterIndicator">
+          <Style Selector="DockTarget /template/ Panel#PART_CenterIndicator">
             <Setter Property="Opacity" Value="0.0" />
           </Style>
-        </idc:DockTarget.Styles>
-      </idc:DockTarget>
+        </DockTarget.Styles>
+      </DockTarget>
     </Panel>
   </Design.PreviewWith>
-  <Style Selector="idc|DockTarget">
+  <Style Selector="DockTarget">
     <Setter Property="Template">
       <ControlTemplate>
         <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*" x:CompileBindings="True">
@@ -46,51 +45,51 @@
       </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="idc|DockTarget /template/ Grid#PART_SelectorGrid">
+  <Style Selector="DockTarget /template/ Grid#PART_SelectorGrid">
     <Setter Property="MaxWidth" Value="125" />
     <Setter Property="MaxHeight" Value="125" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Panel#PART_TopIndicator">
+  <Style Selector="DockTarget /template/ Panel#PART_TopIndicator">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
     <Setter Property="Opacity" Value="0" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Panel#PART_BottomIndicator">
+  <Style Selector="DockTarget /template/ Panel#PART_BottomIndicator">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
     <Setter Property="Opacity" Value="0" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Panel#PART_LeftIndicator">
+  <Style Selector="DockTarget /template/ Panel#PART_LeftIndicator">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
     <Setter Property="Opacity" Value="0" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Panel#PART_RightIndicator">
+  <Style Selector="DockTarget /template/ Panel#PART_RightIndicator">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
     <Setter Property="Opacity" Value="0" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Panel#PART_CenterIndicator">
+  <Style Selector="DockTarget /template/ Panel#PART_CenterIndicator">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
     <Setter Property="Opacity" Value="0" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Image#PART_TopSelector">
+  <Style Selector="DockTarget /template/ Image#PART_TopSelector">
     <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableTop.png" />
     <Setter Property="Width" Value="40" />
     <Setter Property="Height" Value="40" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Image#PART_BottomSelector">
+  <Style Selector="DockTarget /template/ Image#PART_BottomSelector">
     <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableBottom.png" />
     <Setter Property="Width" Value="40" />
     <Setter Property="Height" Value="40" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Image#PART_LeftSelector">
+  <Style Selector="DockTarget /template/ Image#PART_LeftSelector">
     <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableLeft.png" />
     <Setter Property="Width" Value="40" />
     <Setter Property="Height" Value="40" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Image#PART_RightSelector">
+  <Style Selector="DockTarget /template/ Image#PART_RightSelector">
     <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" />
     <Setter Property="Width" Value="40" />
     <Setter Property="Height" Value="40" />
   </Style>
-  <Style Selector="idc|DockTarget /template/ Image#PART_CenterSelector">
+  <Style Selector="DockTarget /template/ Image#PART_CenterSelector">
     <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockDocumentInside.png" />
     <Setter Property="Width" Value="40" />
     <Setter Property="Height" Value="40" />

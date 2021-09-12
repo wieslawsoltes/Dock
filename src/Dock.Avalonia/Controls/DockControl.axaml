@@ -1,14 +1,12 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="using:Dock.Avalonia"
-        xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:converters="using:Dock.Avalonia.Converters"
         xmlns:dmc="using:Dock.Model.Controls"
         xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
-    <idc:DockControl Width="600" Height="400" />
+    <DockControl Width="600" Height="400" />
   </Design.PreviewWith>
-  <Style Selector="idc|DockControl">
+  <Style Selector="DockControl">
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"
@@ -18,67 +16,67 @@
           <ContentControl.DataTemplates>
             <!-- Document Content -->
             <DataTemplate DataType="dmc:IDocumentContent">
-              <idc:DockableControl TrackingMode="Visible">
+              <DockableControl TrackingMode="Visible">
                 <ContentControl Content="{Binding}" 
                                 ContentTemplate="{Binding}" />
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
             <!-- Tool Content -->
             <DataTemplate DataType="dmc:IToolContent">
-              <idc:DockableControl TrackingMode="Visible">
+              <DockableControl TrackingMode="Visible">
                 <ContentControl Content="{Binding}" 
                                 ContentTemplate="{Binding}" />
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
             <!-- Splitter Dockable -->
             <DataTemplate DataType="dmc:ISplitterDockable">
-              <idc:ProportionalStackPanelSplitter Background="Transparent" />
+              <ProportionalStackPanelSplitter Background="Transparent" />
             </DataTemplate>
             <!-- Document Dock -->
             <DataTemplate DataType="dmc:IDocumentDock">
-              <idc:DockableControl TrackingMode="Visible"
-                                   idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                <idc:DocumentControl IsActive="{Binding IsActive}" />
-              </idc:DockableControl>
+              <DockableControl TrackingMode="Visible"
+                               ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                <DocumentControl IsActive="{Binding IsActive}" />
+              </DockableControl>
             </DataTemplate>
             <!-- Tool Dock -->
             <DataTemplate DataType="dmc:IToolDock">
-              <DockPanel idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                <idc:ToolPinnedControl DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}" />
-                <idc:DockableControl TrackingMode="Visible">
-                  <idc:ToolChromeControl IsActive="{Binding IsActive}"
-                                         IsVisible="{Binding !!VisibleDockables.Count}">
-                    <idc:ToolControl />
-                  </idc:ToolChromeControl>
-                </idc:DockableControl>
+              <DockPanel ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                <ToolPinnedControl DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}" />
+                <DockableControl TrackingMode="Visible">
+                  <ToolChromeControl IsActive="{Binding IsActive}"
+                                     IsVisible="{Binding !!VisibleDockables.Count}">
+                    <ToolControl />
+                  </ToolChromeControl>
+                </DockableControl>
               </DockPanel>
             </DataTemplate>
             <!-- Proportional Dock -->
             <DataTemplate DataType="dmc:IProportionalDock">
-              <idc:DockableControl TrackingMode="Visible"
-                                   idc:ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+              <DockableControl TrackingMode="Visible"
+                               ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                 <ItemsControl Items="{Binding VisibleDockables}">
                   <ItemsControl.Styles>
                     <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
-                      <Setter Property="(idc:ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+                      <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
                     </Style>
                     <Style Selector="ItemsControl > ContentPresenter > :is(Control)" x:DataType="core:IDock">
-                      <Setter Property="(idc:ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+                      <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
                     </Style>
                   </ItemsControl.Styles>
                   <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                      <idc:ProportionalStackPanel id:DockProperties.IsDropArea="True"
-                                                  Background="Transparent"
-                                                  Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
+                      <ProportionalStackPanel DockProperties.IsDropArea="True"
+                                              Background="Transparent"
+                                              Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
                     </ItemsPanelTemplate>
                   </ItemsControl.ItemsPanel>
                 </ItemsControl>
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
             <!-- Dock Dock -->
             <DataTemplate DataType="dmc:IDockDock">
-              <idc:DockableControl TrackingMode="Visible">
+              <DockableControl TrackingMode="Visible">
                 <ItemsControl Items="{Binding VisibleDockables}">
                   <ItemsControl.Styles>
                     <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
@@ -88,22 +86,21 @@
                   </ItemsControl.Styles>
                   <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                      <DockPanel id:DockProperties.IsDropArea="True"
+                      <DockPanel DockProperties.IsDropArea="True"
                                  Background="Transparent"
                                  LastChildFill="{Binding LastChildFill}"/>
                     </ItemsPanelTemplate>
                   </ItemsControl.ItemsPanel>
                 </ItemsControl>
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
             <!-- Root Dock -->
             <DataTemplate DataType="dmc:IRootDock">
-              <idc:DockableControl TrackingMode="Visible">
-                <DockPanel id:DockProperties.IsDropArea="False"
-                           Background="Transparent">
+              <DockableControl TrackingMode="Visible">
+                <DockPanel DockProperties.IsDropArea="False" Background="Transparent">
                   <ContentControl Content="{Binding ActiveDockable}" />
                 </DockPanel>
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>

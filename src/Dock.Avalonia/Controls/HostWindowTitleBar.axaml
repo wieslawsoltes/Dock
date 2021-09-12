@@ -1,12 +1,11 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:idc="using:Dock.Avalonia.Controls">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Design.PreviewWith>
     <Border>
-      <idc:HostWindowTitleBar Background="SkyBlue" Height="30" Width="300" Foreground="Black" />
+      <HostWindowTitleBar Background="SkyBlue" Height="30" Width="300" Foreground="Black" />
     </Border>
   </Design.PreviewWith>
-  <Style Selector="idc|HostWindowTitleBar">
+  <Style Selector="HostWindowTitleBar">
     <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>    
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -23,19 +22,19 @@
       </ControlTemplate>
     </Setter>
   </Style>
-  <Style Selector="idc|HostWindowTitleBar:fullscreen">
+  <Style Selector="HostWindowTitleBar:fullscreen">
     <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
   </Style>
-  <Style Selector="idc|HostWindowTitleBar /template/ Border#PART_Background">
+  <Style Selector="HostWindowTitleBar /template/ Border#PART_Background">
     <Setter Property="IsHitTestVisible" Value="False" />
   </Style>
-  <Style Selector="idc|HostWindowTitleBar:fullscreen /template/ Border#PART_Background">
+  <Style Selector="HostWindowTitleBar:fullscreen /template/ Border#PART_Background">
     <Setter Property="IsHitTestVisible" Value="True" />
   </Style>
-  <Style Selector="idc|HostWindowTitleBar:fullscreen /template/ Panel#PART_MouseTracker">
+  <Style Selector="HostWindowTitleBar:fullscreen /template/ Panel#PART_MouseTracker">
     <Setter Property="Background" Value="Transparent" />
   </Style>
-  <Style Selector="idc|HostWindowTitleBar:fullscreen /template/ Panel#PART_Container">
+  <Style Selector="HostWindowTitleBar:fullscreen /template/ Panel#PART_Container">
     <Setter Property="RenderTransform" Value="translateY(-30px)" />
     <Setter Property="Transitions">
       <Transitions>
@@ -43,7 +42,7 @@
       </Transitions>
     </Setter>
   </Style>
-  <Style Selector="idc|HostWindowTitleBar:fullscreen:pointerover /template/ Panel#PART_Container">
+  <Style Selector="HostWindowTitleBar:fullscreen:pointerover /template/ Panel#PART_Container">
     <Setter Property="RenderTransform" Value="none" />
   </Style>
 </Styles>

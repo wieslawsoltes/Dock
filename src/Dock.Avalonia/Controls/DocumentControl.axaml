@@ -1,13 +1,11 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="using:Dock.Avalonia"
-        xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:dmc="using:Dock.Model.Controls"
         xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
-    <idc:DocumentControl Width="300" Height="400" />
+    <DocumentControl Width="300" Height="400" />
   </Design.PreviewWith>
-  <Style Selector="idc|DocumentControl">
+  <Style Selector="DocumentControl">
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" Padding="2" />
@@ -16,8 +14,8 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockPanel x:Name="PART_DockPanel"
-                   id:DockProperties.IsDropArea="True"
-                   id:DockProperties.IsDockTarget="True"
+                   DockProperties.IsDropArea="True"
+                   DockProperties.IsDockTarget="True"
                    Background="Transparent"
                    ZIndex="1"
                    x:DataType="dmc:IDocumentDock"
@@ -25,17 +23,17 @@
           <TabStrip x:Name="PART_TabStrip"
                     Items="{Binding VisibleDockables}"
                     SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                    id:DockProperties.IsDropArea="True">
+                    DockProperties.IsDropArea="True">
             <TabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
-                <idc:DockableControl TrackingMode="Tab">
+                <DockableControl TrackingMode="Tab">
                   <StackPanel Background="Transparent"
                               Orientation="Horizontal"
                               Spacing="2"
-                              id:DockProperties.IsDragArea="True"
-                              id:DockProperties.IsDropArea="True">
+                              DockProperties.IsDragArea="True"
+                              DockProperties.IsDropArea="True">
                     <Panel Margin="2">
-                      <ContentPresenter ContentTemplate="{Binding $parent[idc:DocumentControl].HeaderTemplate}"
+                      <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                         Content="{Binding}" />
                     </Panel>
                     <Button x:Name="PART_CloseButton"
@@ -47,7 +45,7 @@
                       <Path x:Name="PART_ClosePath" Classes="closeButton" />
                     </Button>
                   </StackPanel>
-                </idc:DockableControl>
+                </DockableControl>
               </DataTemplate>
             </TabStrip.DataTemplates>
           </TabStrip>
@@ -55,13 +53,13 @@
                 IsVisible="{Binding #PART_TabStrip.IsVisible}"
                 x:CompileBindings="False" />
           <Border x:Name="PART_Border">
-            <idc:DockableControl DataContext="{Binding ActiveDockable}"
-                                 TrackingMode="Visible">
+            <DockableControl DataContext="{Binding ActiveDockable}"
+                             TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"
                               Content="{Binding}"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch" />
-            </idc:DockableControl>
+            </DockableControl>
           </Border>
         </DockPanel>
       </ControlTemplate>
@@ -106,7 +104,7 @@
     <Setter Property="Data"
             Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Focusable" Value="False" />
     <Setter Property="ClipToBounds" Value="False" />
@@ -138,10 +136,10 @@
       </ItemsPanelTemplate>
     </Setter>
   </Style>
-  <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip:empty">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip:empty">
     <Setter Property="IsVisible" Value="False" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
     <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
     <Setter Property="MinHeight" Value="24" />
@@ -188,38 +186,38 @@
     </Setter>
   </Style>
   <Style
-    Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
+    Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
     <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
   </Style>
   <Style
-    Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button.documentTabButton Path">
+    Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button.documentTabButton Path">
     <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
     <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
   </Style>
-  <Style Selector="idc|DocumentControl:not(:active) /template/ TabStrip#PART_TabStrip TabStripItem:selected">
+  <Style Selector="DocumentControl:not(:active) /template/ TabStrip#PART_TabStrip TabStripItem:selected">
     <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
   </Style>
-  <Style Selector="idc|DocumentControl:active /template/ TabStrip#PART_TabStrip TabStripItem:selected">
+  <Style Selector="DocumentControl:active /template/ TabStrip#PART_TabStrip TabStripItem:selected">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
     <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
     <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ Grid#PART_Grid">
+  <Style Selector="DocumentControl /template/ Grid#PART_Grid">
     <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="Height" Value="2" />
     <Setter Property="DockPanel.Dock" Value="Top" />
   </Style>
-  <Style Selector="idc|DocumentControl:active /template/ Grid#PART_Grid">
+  <Style Selector="DocumentControl:active /template/ Grid#PART_Grid">
     <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
   </Style>
-  <Style Selector="idc|DocumentControl /template/ Border#PART_Border">
+  <Style Selector="DocumentControl /template/ Border#PART_Border">
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="1,1,1,1" />
   </Style>

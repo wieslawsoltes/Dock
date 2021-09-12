@@ -1,12 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:id="using:Dock.Avalonia"
-        xmlns:idc="using:Dock.Avalonia.Controls"
         xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
-    <idc:ToolPinnedControl Width="30" Height="400" />
+    <ToolPinnedControl Width="30" Height="400" />
   </Design.PreviewWith>
-  <Style Selector="idc|ToolPinnedControl">
+  <Style Selector="ToolPinnedControl">
     <Setter Property="Template">
       <ControlTemplate>
         <ItemsControl Items="{Binding PinnedDockables}"
@@ -15,12 +13,12 @@
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Vertical"
-                          id:DockProperties.IsDropArea="True" />
+                          DockProperties.IsDropArea="True" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="core:IDockable">
-              <idc:DockableControl TrackingMode="Pinned">
+              <DockableControl TrackingMode="Pinned">
                 <LayoutTransformControl Margin="4">
                   <LayoutTransformControl.LayoutTransform>
                     <RotateTransform Angle="270" />
@@ -57,7 +55,7 @@
                     </TextBlock>
                   </Button>
                 </LayoutTransformControl>
-              </idc:DockableControl>
+              </DockableControl>
             </DataTemplate>
           </ItemsControl.DataTemplates>
         </ItemsControl>

@@ -2,7 +2,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Dock.Model;
 using Dock.Model.Core;
 
 namespace AvaloniaDemo

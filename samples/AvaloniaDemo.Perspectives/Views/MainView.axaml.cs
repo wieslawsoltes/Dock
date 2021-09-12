@@ -8,11 +8,11 @@ namespace AvaloniaDemo.Views
 {
     public class MainView : UserControl
     {
-        private DockControl _dockControl;
+        private readonly DockControl? _dockControl;
 
         public MainView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             _dockControl = this.FindControl<DockControl>("dockControl");
         }
 
@@ -25,12 +25,9 @@ namespace AvaloniaDemo.Views
         {
             base.OnAttachedToVisualTree(e);
 
-            if (this.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
             {
-                if (_dockControl != null)
-                {
-                    mainWindowViewModel.AttachDockControl(_dockControl);
-                }
+                mainWindowViewModel.AttachDockControl(_dockControl);
             }
         }
 
@@ -38,12 +35,9 @@ namespace AvaloniaDemo.Views
         {
             base.OnDetachedFromVisualTree(e);
 
-            if (this.DataContext is MainWindowViewModel mainWindowViewModel)
+            if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
             {
-                if (_dockControl != null)
-                {
-                    mainWindowViewModel.DetachDockControl();
-                }
+                mainWindowViewModel.DetachDockControl();
             }
         }
     }

@@ -1,9 +1,8 @@
 ﻿<Style xmlns="https://github.com/avaloniaui" 
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
        xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
        xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
-       Selector="idc|DockControl.Default">
+       Selector="DockControl.Default">
   <Setter Property="Layout">
     <RootDock ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}" IsCollapsable="False">
       <RootDock x:Name="Perspective"  ActiveDockable="{Binding #MainLayout}">

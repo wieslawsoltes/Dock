@@ -8,7 +8,7 @@ using Dock.Model.Core;
 
 namespace AvaloniaDemo
 {
-    public class DemoFactory : Factory
+    public class DockFactory : Factory
     {
         public override IRootDock CreateLayout()
         {
@@ -17,7 +17,7 @@ namespace AvaloniaDemo
 
         public override void InitLayout(IDockable layout)
         {
-            this.ContextLocator = new Dictionary<string, Func<object>>
+            ContextLocator = new Dictionary<string, Func<object>>
             {
                 [nameof(IRootDock)] = () => layout,
                 [nameof(IProportionalDock)] = () => layout,
@@ -29,12 +29,12 @@ namespace AvaloniaDemo
                 [nameof(ITool)] = () => layout,
             };
 
-            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+            DockableLocator = new Dictionary<string, Func<IDockable?>>();
 
             base.InitLayout(layout);
         }

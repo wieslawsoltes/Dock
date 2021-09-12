@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia;
-using Dock.Avalonia.Controls;
 
 namespace AvaloniaDemo.Views
 {
@@ -9,7 +8,7 @@ namespace AvaloniaDemo.Views
     {
         public MenuView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
             {

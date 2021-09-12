@@ -21,6 +21,8 @@
         <Button Content="Apply Layout" 
                 Command="{Binding ApplyLayout}" 
                 CommandParameter="{Binding #visibleDockables.SelectedItem}" 
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
                 Margin="4,2"
                 x:CompileBindings="False"/>
       </StackPanel>

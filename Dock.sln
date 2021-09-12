@@ -68,6 +68,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Xaml", "samples\AvaloniaDemo.Xaml\AvaloniaDemo.Xaml.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Debug", "samples\AvaloniaDemo.Debug\AvaloniaDemo.Debug.csproj", "{F2766728-CECC-40E3-A33F-20CA7467CACD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Perspectives", "samples\AvaloniaDemo.Perspectives\AvaloniaDemo.Perspectives.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +118,14 @@ Global
 		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E84B9270-FF6F-46EE-9B86-C1E922582645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2766728-CECC-40E3-A33F-20CA7467CACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2766728-CECC-40E3-A33F-20CA7467CACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2766728-CECC-40E3-A33F-20CA7467CACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2766728-CECC-40E3-A33F-20CA7467CACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +144,8 @@ Global
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{E84B9270-FF6F-46EE-9B86-C1E922582645} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{F2766728-CECC-40E3-A33F-20CA7467CACD} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{CCA4614A-15A7-453A-A34E-EC82E217CA0F} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

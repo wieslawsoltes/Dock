@@ -36,7 +36,7 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void FileNew()
+        public void NewLayout()
         {
             if (DockControl != null)
             {
@@ -54,7 +54,7 @@ namespace AvaloniaDemo.ViewModels
             }
         }
 
-        public void ApplyWindowLayout(IDock dock)
+        public void ApplyLayout(IDock dock)
         {
             if (DockControl?.Layout?.ActiveDockable is IDock active && dock != active)
             {

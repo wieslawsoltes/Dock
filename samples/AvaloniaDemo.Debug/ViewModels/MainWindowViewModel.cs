@@ -60,7 +60,7 @@ namespace AvaloniaDemo.ViewModels
             DockControl = null;
         }
 
-        public void FileNew()
+        public void NewLayout()
         {
             if (DockControl == null)
             {

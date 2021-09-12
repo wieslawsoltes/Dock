@@ -749,7 +749,7 @@ namespace Dock.Model
                 split.Id = nameof(IProportionalDock);
                 split.Title = nameof(IProportionalDock);
                 split.VisibleDockables = CreateList<IDockable>();
-                if (split.VisibleDockables is not  null)
+                if (split.VisibleDockables is not null)
                 {
                     split.VisibleDockables.Add(dockable);
                     OnDockableAdded(dockable);

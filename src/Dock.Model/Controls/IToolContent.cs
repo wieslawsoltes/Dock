@@ -9,8 +9,8 @@ namespace Dock.Model.Controls
     public interface IToolContent : IDockable
     {
         /// <summary>
-        /// Gets or sets tool template.
+        /// Gets or sets tool content.
         /// </summary>
-        object Template { get; set; }
+        object Content { get; set; }
     }
 }

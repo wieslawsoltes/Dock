@@ -20,14 +20,14 @@
             <DataTemplate DataType="dmc:IDocumentContent">
               <idc:DockableControl TrackingMode="Visible">
                 <ContentControl Content="{Binding}" 
-                                ContentTemplate="{Binding Template}" />
+                                ContentTemplate="{Binding}" />
               </idc:DockableControl>
             </DataTemplate>
             <!-- Tool Content -->
             <DataTemplate DataType="dmc:IToolContent">
               <idc:DockableControl TrackingMode="Visible">
                 <ContentControl Content="{Binding}" 
-                                ContentTemplate="{Binding Template}" />
+                                ContentTemplate="{Binding}" />
               </idc:DockableControl>
             </DataTemplate>
             <!-- Splitter Dockable -->

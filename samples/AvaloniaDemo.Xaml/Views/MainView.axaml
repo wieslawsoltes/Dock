@@ -20,69 +20,49 @@
       <ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
         <ProportionalDock x:Name="LeftPane" Id="LeftPane" Title="LeftPane" Proportion="NaN" Orientation="Vertical">
           <ToolDock x:Name="LeftPaneTop" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="NaN" ActiveDockable="{Binding #LeftTop1}">
-            <Tool x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
-            <Tool x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
           </ToolDock>
           <SplitterDockable x:Name="LeftPaneTopSplitter" Id="LeftPaneTopSplitter" Title="LeftPaneTopSplitter" />
           <ToolDock x:Name="LeftPaneBottom" Id="LeftPaneBottom" Title="LeftPaneBottom" Proportion="NaN" ActiveDockable="{Binding #LeftBottom1}">
-            <Tool x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="LeftBottom1" Id="LeftBottom1" Title="LeftBottom1" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
-            <Tool x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="LeftBottom2" Id="LeftBottom2" Title="LeftBottom2" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
           </ToolDock>
         </ProportionalDock>
         <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" Title="LeftSplitter"/>
         <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" Title="DocumentsPane" IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
-          <Document x:Name="Document1" Id="Document1" Title="Document1">
-            <DataTemplate DataType="Document">
-              <TextBlock Text="{Binding Title}"/>
-            </DataTemplate>
+          <Document x:Name="Document1" Id="Document1" Title="Document1" x:DataType="Document">
+            <TextBlock Text="{Binding Title}"/>
           </Document>
-          <Document x:Name="Document2" Id="Document2" Title="Document2">
-            <DataTemplate DataType="Document">
-              <TextBlock Text="{Binding Title}"/>
-            </DataTemplate>
+          <Document x:Name="Document2" Id="Document2" Title="Document2" x:DataType="Document">
+            <TextBlock Text="{Binding Title}"/>
           </Document>
         </DocumentDock>
         <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter"/>
         <ProportionalDock x:Name="RightPane" Id="RightPane" Title="RightPane" Proportion="NaN" Orientation="Vertical">
           <ToolDock x:Name="RightPaneTop" Id="RightPaneTop" Title="RightPaneTop" Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
-            <Tool x:Name="RightTop1" Id="RightTop1" Title="RightTop1">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="RightTop1" Id="RightTop1" Title="RightTop1" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
-            <Tool x:Name="RightTop2" Id="RightTop2" Title="RightTop2">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="RightTop2" Id="RightTop2" Title="RightTop2" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
           </ToolDock>
           <SplitterDockable x:Name="RightPaneTopSplitter" Id="RightPaneTopSplitter" Title="RightPaneTopSplitter"/>
           <ToolDock x:Name="RightPaneBottom" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="NaN" ActiveDockable="{Binding #RightBottom1}">
-            <Tool x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
-            <Tool x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2">
-              <DataTemplate DataType="Tool">
-                <TextBlock Text="{Binding Title}"/>
-              </DataTemplate>
+            <Tool x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
             </Tool>
           </ToolDock>
         </ProportionalDock>

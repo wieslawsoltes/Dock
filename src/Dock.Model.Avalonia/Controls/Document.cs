@@ -13,10 +13,10 @@ namespace Dock.Model.Avalonia.Controls
     public class Document : DockableBase, IDocument, IDocumentContent
     {
         /// <summary>
-        /// Defines the <see cref="Content"/> property.
+        /// Defines the <see cref="Template"/> property.
         /// </summary>
-        public static readonly StyledProperty<object> ContentProperty =
-            AvaloniaProperty.Register<Document, object>(nameof(Content));
+        public static readonly StyledProperty<object> TemplateProperty =
+            AvaloniaProperty.Register<Document, object>(nameof(Template));
 
         /// <summary>
         /// Initializes new instance of the <see cref="Document"/> class.
@@ -28,14 +28,14 @@ namespace Dock.Model.Avalonia.Controls
         }
 
         /// <summary>
-        /// Gets or sets the content to display.
+        /// Gets or sets the template to display.
         /// </summary>
         [Content]
         [IgnoreDataMember]
-        public object Content
+        public object Template
         {
-            get => GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
+            get => GetValue(TemplateProperty);
+            set => SetValue(TemplateProperty, value);
         }
     }
 }

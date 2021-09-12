@@ -9,8 +9,8 @@ namespace Dock.Model.Controls
     public interface IDocumentContent : IDockable
     {
         /// <summary>
-        /// Gets or sets document content.
+        /// Gets or sets document template.
         /// </summary>
-        object Content { get; set; }
+        object Template { get; set; }
     }
 }

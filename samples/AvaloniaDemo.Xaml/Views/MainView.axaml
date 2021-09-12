@@ -18,7 +18,7 @@
         <Factory/>
       </RootDock.Factory>
       <ProportionalDock x:Name="MainLayout" Id="MainLayout" Title="MainLayout" Proportion="NaN" Orientation="Horizontal">
-        <ToolDock x:Name="LeftPane" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="0.25" ActiveDockable="{Binding #SolutionExplorer}">
+        <ToolDock x:Name="LeftPane" Id="LeftPaneTop" Title="LeftPaneTop" Proportion="0.25" Alignment="Left" ActiveDockable="{Binding #SolutionExplorer}">
           <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
             <TextBlock Text="{Binding Title}"/>
           </Tool>
@@ -35,14 +35,14 @@
               </Document>
             </DocumentDock>
             <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" Title="RightSplitter" />
-            <ToolDock x:Name="PropertiesPane" Id="RightPaneTop" Title="RightPaneTop" Proportion="0.3" ActiveDockable="{Binding #Properties}">
+            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Title="PropertiesPane" Proportion="0.3" Alignment="Right" ActiveDockable="{Binding #Properties}">
               <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>
             </ToolDock>
           </ProportionalDock>
           <SplitterDockable x:Name="BottomSplitter" Id="BottomSplitter" Title="BottomSplitter"/>
-          <ToolDock x:Name="BottomPage" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="0.3" ActiveDockable="{Binding #Output}">
+          <ToolDock x:Name="BottomPage" Id="RightPaneBottom" Title="RightPaneBottom" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
             <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
               <TextBlock Text="{Binding Title}"/>
             </Tool>

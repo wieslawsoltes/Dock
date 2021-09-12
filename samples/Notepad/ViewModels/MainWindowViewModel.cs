@@ -121,7 +121,7 @@ namespace Notepad.ViewModels
             dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
             dlg.AllowMultiple = true;
             var result = await dlg.ShowAsync(GetWindow());
-            if (result is { } && result.Length > 0)
+            if (result is { Length: > 0 })
             {
                 foreach (var path in result)
                 {

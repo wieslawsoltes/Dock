@@ -561,6 +561,76 @@ namespace Dock.Model
             }
         }
 
+        private void CloseDockablesRange(IDock dock, int start, int end, IDockable? excluding = null)
+        {
+            if (dock.VisibleDockables is null)
+                return;
+            
+            for (int i = end; i >= start; --i)
+            {
+                if (excluding == null || dock.VisibleDockables[i] != excluding)
+                {
+                    CloseDockable(dock.VisibleDockables[i]);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual void CloseOtherDockables(IDockable dockable)
+        {
+            if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            CloseDockablesRange(dock, 0, dock.VisibleDockables.Count - 1, dockable);
+        }
+        
+        /// <inheritdoc/>
+        public virtual void CloseAllDockables(IDockable dockable)
+        {
+            if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            CloseDockablesRange(dock, 0, dock.VisibleDockables.Count - 1);
+        }
+        
+        /// <inheritdoc/>
+        public virtual void CloseLeftDockables(IDockable dockable)
+        {
+            if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            int indexOf = dock.VisibleDockables.IndexOf(dockable);
+            if (indexOf == -1)
+            {
+                return;
+            }
+            
+            CloseDockablesRange(dock, 0, indexOf - 1);
+        }
+        
+        /// <inheritdoc/>
+        public virtual void CloseRightDockables(IDockable dockable)
+        {
+            if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+            {
+                return;
+            }
+
+            int indexOf = dock.VisibleDockables.IndexOf(dockable);
+            if (indexOf == -1)
+            {
+                return;
+            }
+            
+            CloseDockablesRange(dock, indexOf + 1, dock.VisibleDockables.Count - 1);
+        }
+
         /// <inheritdoc/>
         public virtual void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)
         {

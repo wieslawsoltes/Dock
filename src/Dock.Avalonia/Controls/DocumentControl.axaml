@@ -165,6 +165,26 @@
                         CommandParameter="{Binding}"
                         IsVisible="{Binding CanClose}"
                         x:CompileBindings="False" />
+              <MenuItem Header="Close other tabs"
+                        Command="{Binding Owner.Factory.CloseOtherDockables}"
+                        CommandParameter="{Binding}"
+                        IsVisible="{Binding CanClose}"
+                        x:CompileBindings="False" />
+              <MenuItem Header="Close all tabs"
+                        Command="{Binding Owner.Factory.CloseAllDockables}"
+                        CommandParameter="{Binding}"
+                        IsVisible="{Binding CanClose}"
+                        x:CompileBindings="False" />
+              <MenuItem Header="_Close tabs to the left"
+                        Command="{Binding Owner.Factory.CloseLeftDockables}"
+                        CommandParameter="{Binding}"
+                        IsVisible="{Binding CanClose}"
+                        x:CompileBindings="False" />
+              <MenuItem Header="_Close tabs to the right"
+                        Command="{Binding Owner.Factory.CloseRightDockables}"
+                        CommandParameter="{Binding}"
+                        IsVisible="{Binding CanClose}"
+                        x:CompileBindings="False" />
             </ContextMenu>
           </Border.ContextMenu>
           <Panel>

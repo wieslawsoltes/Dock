@@ -23,6 +23,7 @@
           <DockTabStrip x:Name="PART_TabStrip"
                         Items="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        CanCreateItem="{Binding CanCreateDocument}"
                         DockProperties.IsDropArea="True">
             <DockTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
@@ -136,7 +137,7 @@
       </ItemsPanelTemplate>
     </Setter>
   </Style>
-  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip:empty">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip:not(:create):empty">
     <Setter Property="IsVisible" Value="False" />
   </Style>
   <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">

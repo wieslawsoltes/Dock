@@ -4,6 +4,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls

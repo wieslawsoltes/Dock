@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Dock.Model.Core;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia.Internal
 {
     internal class ItemDragBehavior
     {

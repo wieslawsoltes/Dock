@@ -38,6 +38,12 @@ namespace Dock.Avalonia.Controls
         public static readonly StyledProperty<bool> InitializeFactoryProperty =
             AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
+        /// <summary>
+        /// Defines the <see cref="FactoryType"/> property.
+        /// </summary>
+        public static readonly StyledProperty<Type?> FactoryTypeProperty =
+            AvaloniaProperty.Register<DockControl, Type?>(nameof(FactoryType));
+
         /// <inheritdoc/>
         public IDockManager DockManager => _dockManager;
 
@@ -64,6 +70,13 @@ namespace Dock.Avalonia.Controls
         {
             get => GetValue(InitializeFactoryProperty);
             set => SetValue(InitializeFactoryProperty, value);
+        }
+
+        /// <inheritdoc/>
+        public Type? FactoryType
+        {
+            get => GetValue(FactoryTypeProperty);
+            set => SetValue(FactoryTypeProperty, value);
         }
 
         /// <summary>
@@ -100,9 +113,29 @@ namespace Dock.Avalonia.Controls
 
         private void Initialize()
         {
-            if (Layout?.Factory is null)
+            if (Layout is null)
             {
                 return;
+            }
+
+            if (Layout.Factory is null)
+            {
+                if (FactoryType is { })
+                {
+                    var factory = (IFactory?)Activator.CreateInstance(FactoryType);
+                    if (factory is { })
+                    {
+                        Layout.Factory = factory;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    return;
+                }
             }
 
             Layout.Factory.DockControls.Add(this);

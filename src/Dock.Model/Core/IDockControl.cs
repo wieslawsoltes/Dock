@@ -1,4 +1,6 @@
-﻿namespace Dock.Model.Core
+﻿using System;
+
+namespace Dock.Model.Core
 {
     /// <summary>
     /// Dock control contract.
@@ -29,5 +31,10 @@
         /// Gets or sets the flag indicating whether to initialize factory.
         /// </summary>
         bool InitializeFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the factory type.
+        /// </summary>
+        Type? FactoryType { get; set; }
     }
 }

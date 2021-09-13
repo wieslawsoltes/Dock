@@ -1,22 +1,15 @@
-﻿<UserControl x:Class="AvaloniaDemo.Xaml.Views.MainView"
-       xmlns="https://github.com/avaloniaui"
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-       mc:Ignorable="d"
-       d:DesignWidth="800" d:DesignHeight="600"
-       x:CompileBindings="True" x:DataType="DockControl">
-  <UserControl.Styles>
-    <Style Selector="TextBlock">
-      <Setter Property="HorizontalAlignment" Value="Center"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-  </UserControl.Styles>
-  <DockControl x:Name="dockControl" InitializeLayout="True" InitializeFactory="True">
-    <RootDock x:Name="Root" Id="Root" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}" IsCollapsable="False">
-      <RootDock.Factory>
-        <Factory/>
-      </RootDock.Factory>
+﻿<Window x:Class="AvaloniaDemo.Xaml.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        d:DesignWidth="800" d:DesignHeight="600"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Title="Dock Avalonia Demo" Width="800" Height="600"
+        x:CompileBindings="True" x:DataType="DockControl">
+  <DockControl FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
+    <RootDock x:Name="Root" Id="Root" IsCollapsable="False" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}">
       <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
         <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left" ActiveDockable="{Binding #SolutionExplorer}">
           <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
@@ -26,7 +19,7 @@
         <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" />
         <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
           <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
-            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" IsCollapsable="False" ActiveDockable="{Binding #Document1}">
+            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" ActiveDockable="{Binding #Document1}">
               <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
                 <TextBlock Text="{Binding Title}"/>
               </Document>
@@ -54,4 +47,4 @@
       </ProportionalDock>
     </RootDock>
   </DockControl>
-</UserControl>
+</Window>

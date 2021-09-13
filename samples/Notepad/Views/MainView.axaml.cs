@@ -10,11 +10,11 @@ namespace Notepad.Views
         public MainView()
         {
             InitializeComponent();
-            AddHandler(DragDrop.DropEvent, Drop);
-            AddHandler(DragDrop.DragOverEvent, DragOver);
+            AddHandler(DragDrop.DropEvent, DropHandler);
+            AddHandler(DragDrop.DragOverEvent, DragOverHandler);
         }
 
-        private void DragOver(object? sender, DragEventArgs e)
+        private void DragOverHandler(object? sender, DragEventArgs e)
         {
             if (DataContext is IDropTarget dropTarget)
             {
@@ -22,7 +22,7 @@ namespace Notepad.Views
             }
         }
 
-        private void Drop(object? sender, DragEventArgs e)
+        private void DropHandler(object? sender, DragEventArgs e)
         {
             if (DataContext is IDropTarget dropTarget)
             {

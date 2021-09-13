@@ -74,13 +74,13 @@ namespace Dock.Avalonia.Controls
         {
             _dockManager = new DockManager();
             _dockControlState = new DockControlState(_dockManager);
-            AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerReleasedEvent, Released, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerEnterEvent, Enter, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerLeaveEvent, Leave, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerCaptureLostEvent, CaptureLost, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-            AddHandler(PointerWheelChangedEvent, WheelChanged, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerEnterEvent, EnterHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerLeaveEvent, LeaveHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerCaptureLostEvent, CaptureLostHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+            AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         }
 
         /// <inheritdoc />
@@ -192,7 +192,7 @@ namespace Dock.Avalonia.Controls
             return DragAction.Move;
         }
 
-        private void Pressed(object? sender, PointerPressedEventArgs e)
+        private void PressedHandler(object? sender, PointerPressedEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -203,7 +203,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Released(object? sender, PointerReleasedEventArgs e)
+        private void ReleasedHandler(object? sender, PointerReleasedEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -214,7 +214,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Moved(object? sender, PointerEventArgs e)
+        private void MovedHandler(object? sender, PointerEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -225,7 +225,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Enter(object? sender, PointerEventArgs e)
+        private void EnterHandler(object? sender, PointerEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -236,7 +236,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Leave(object? sender, PointerEventArgs e)
+        private void LeaveHandler(object? sender, PointerEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -247,7 +247,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void CaptureLost(object? sender, PointerCaptureLostEventArgs e)
+        private void CaptureLostHandler(object? sender, PointerCaptureLostEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {
@@ -258,7 +258,7 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void WheelChanged(object? sender, PointerWheelEventArgs e)
+        private void WheelChangedHandler(object? sender, PointerWheelEventArgs e)
         {
             if (Layout?.Factory?.DockControls is { })
             {

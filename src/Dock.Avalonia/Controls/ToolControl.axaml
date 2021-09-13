@@ -18,11 +18,11 @@
                    DockProperties.IsDockTarget="True"
                    x:DataType="dmc:IToolDock"
                    x:CompileBindings="True">
-          <TabStrip x:Name="PART_TabStrip"
-                    Items="{Binding VisibleDockables}"
-                    SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                    DockProperties.IsDropArea="True">
-            <TabStrip.DataTemplates>
+          <DockTabStrip x:Name="PART_TabStrip"
+                        Items="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        DockProperties.IsDropArea="True">
+            <DockTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
                 <DockableControl TrackingMode="Tab">
                   <StackPanel x:Name="DragTool"
@@ -38,8 +38,8 @@
                   </StackPanel>
                 </DockableControl>
               </DataTemplate>
-            </TabStrip.DataTemplates>
-          </TabStrip>
+            </DockTabStrip.DataTemplates>
+          </DockTabStrip>
           <Separator x:Name="PART_Separator" />
           <Border x:Name="PART_Border">
             <DockableControl DataContext="{Binding ActiveDockable}"

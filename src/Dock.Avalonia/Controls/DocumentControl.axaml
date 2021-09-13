@@ -20,11 +20,12 @@
                    ZIndex="1"
                    x:DataType="dmc:IDocumentDock"
                    x:CompileBindings="True">
-          <TabStrip x:Name="PART_TabStrip"
-                    Items="{Binding VisibleDockables}"
-                    SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                    DockProperties.IsDropArea="True">
-            <TabStrip.DataTemplates>
+          <DockTabStrip x:Name="PART_TabStrip"
+                        Items="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        CanCreateItem="{Binding CanCreateDocument}"
+                        DockProperties.IsDropArea="True">
+            <DockTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
                 <DockableControl TrackingMode="Tab">
                   <StackPanel Background="Transparent"
@@ -47,8 +48,8 @@
                   </StackPanel>
                 </DockableControl>
               </DataTemplate>
-            </TabStrip.DataTemplates>
-          </TabStrip>
+            </DockTabStrip.DataTemplates>
+          </DockTabStrip>
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}"
                 x:CompileBindings="False" />
@@ -80,7 +81,7 @@
     <Setter Property="Margin" Value="5" />
     <Setter Property="Stretch" Value="Uniform" />
     <Setter Property="UseLayoutRounding" Value="False" />
-    <Setter Property="Fill" Value="#474747" />
+    <Setter Property="Fill" Value="{DynamicResource DockThemeForegroundBrush}" />
     <Setter Property="Data"
             Value="M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z" />
   </Style>
@@ -136,7 +137,7 @@
       </ItemsPanelTemplate>
     </Setter>
   </Style>
-  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip:empty">
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip:not(:create):empty">
     <Setter Property="IsVisible" Value="False" />
   </Style>
   <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">

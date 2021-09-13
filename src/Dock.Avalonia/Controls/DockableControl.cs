@@ -52,8 +52,8 @@ namespace Dock.Avalonia.Controls
                 }
             });
 
-            AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
-            AddHandler(PointerMovedEvent, Moved, RoutingStrategies.Tunnel);
+            AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+            AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Tunnel);
 
             _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe(SetBoundsTracking);
         }
@@ -69,8 +69,8 @@ namespace Dock.Avalonia.Controls
                 _currentDockable = null;
             }
 
-            RemoveHandler(PointerPressedEvent, Pressed);
-            RemoveHandler(PointerMovedEvent, Moved);
+            RemoveHandler(PointerPressedEvent, PressedHandler);
+            RemoveHandler(PointerMovedEvent, MovedHandler);
 
             _boundsDisposable?.Dispose();
             _dataContextDisposable?.Dispose();
@@ -117,12 +117,12 @@ namespace Dock.Avalonia.Controls
             }
         }
 
-        private void Pressed(object? sender, PointerPressedEventArgs e)
+        private void PressedHandler(object? sender, PointerPressedEventArgs e)
         {
             SetPointerTracking(e);
         }
 
-        private void Moved(object? sender, PointerEventArgs e)
+        private void MovedHandler(object? sender, PointerEventArgs e)
         {
             SetPointerTracking(e);
         }

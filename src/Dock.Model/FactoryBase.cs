@@ -564,9 +564,11 @@ namespace Dock.Model
         private void CloseDockablesRange(IDock dock, int start, int end, IDockable? excluding = null)
         {
             if (dock.VisibleDockables is null)
+            {
                 return;
-            
-            for (int i = end; i >= start; --i)
+            }
+
+            for (var i = end; i >= start; --i)
             {
                 if (excluding == null || dock.VisibleDockables[i] != excluding)
                 {

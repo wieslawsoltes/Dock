@@ -206,6 +206,12 @@
       </ControlTemplate>
     </Setter>
   </Style>
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem">
+    <Setter Property="ZIndex" Value="0" />
+  </Style>
+  <Style Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:pressed">
+    <Setter Property="ZIndex" Value="1" />
+  </Style>
   <Style
     Selector="DocumentControl /template/ TabStrip#PART_TabStrip TabStripItem:selected Button.documentTabButton Path">
     <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />

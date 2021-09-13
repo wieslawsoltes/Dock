@@ -13,14 +13,34 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockTabStripItem : TabStripItem, IStyleable
     {
+        private readonly ItemDragBehavior _itemDragBehavior;
+
         Type IStyleable.StyleKey => typeof(TabStripItem);
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="DockTabStripItem"/> class.
+        /// </summary>
+        public DockTabStripItem()
+        {
+            _itemDragBehavior = new ItemDragBehavior(this, Orientation.Horizontal);
+        }
         
         /// <inheritdoc/>
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
 
+            _itemDragBehavior.Attach();
             AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+
+            _itemDragBehavior.Detach();
+            RemoveHandler(PointerPressedEvent, PressedHandler);
         }
 
         private void PressedHandler(object? sender, PointerPressedEventArgs e)

@@ -22,7 +22,7 @@ namespace AvaloniaDemo.ViewModels
 
         public MainWindowViewModel()
         {
-            _factory = new DemoFactory(new DemoData());
+            _factory = new DockFactory(new DemoData());
 
             DebugFactoryEvents(_factory);
 
@@ -159,7 +159,7 @@ namespace AvaloniaDemo.ViewModels
             var layout = _factory?.CreateLayout();
             if (layout is not null)
             {
-                Layout = layout as IRootDock;
+                Layout = layout;
                 _factory?.InitLayout(layout);
             }
         }

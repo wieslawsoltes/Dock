@@ -14,13 +14,13 @@ using Dock.Model.ReactiveUI.Controls;
 
 namespace AvaloniaDemo.ViewModels
 {
-    public class DemoFactory : Factory
+    public class DockFactory : Factory
     {
         private readonly object _context;
         private IRootDock? _rootDock;
         private IDocumentDock? _documentDock;
 
-        public DemoFactory(object context)
+        public DockFactory(object context)
         {
             _context = context;
         }

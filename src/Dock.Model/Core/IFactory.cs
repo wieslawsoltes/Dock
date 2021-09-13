@@ -237,27 +237,27 @@ namespace Dock.Model.Core
         void CloseDockable(IDockable dockable);
         
         /// <summary>
-        /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself
+        /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
         /// </summary>
-        /// <param name="dockable">The dockable to remove.</param>
+        /// <param name="dockable">The dockable owner source.</param>
         void CloseOtherDockables(IDockable dockable);
 
         /// <summary>
-        /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner
+        /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner.
         /// </summary>
-        /// <param name="dockable">The dockable to remove.</param>
+        /// <param name="dockable">The dockable owner source.</param>
         void CloseAllDockables(IDockable dockable);
 
         /// <summary>
-        /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner
+        /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
         /// </summary>
-        /// <param name="dockable">The dockable to remove.</param>
+        /// <param name="dockable">The dockable owner source.</param>
         void CloseLeftDockables(IDockable dockable);
 
         /// <summary>
-        /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner
+        /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
         /// </summary>
-        /// <param name="dockable">The dockable to remove.</param>
+        /// <param name="dockable">The dockable owner source.</param>
         void CloseRightDockables(IDockable dockable);
 
         /// <summary>

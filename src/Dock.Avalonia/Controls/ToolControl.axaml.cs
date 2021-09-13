@@ -32,10 +32,10 @@ namespace Dock.Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            AddHandler(PointerPressedEvent, Pressed, RoutingStrategies.Tunnel);
+            AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         }
 
-        private void Pressed(object? sender, PointerPressedEventArgs e)
+        private void PressedHandler(object? sender, PointerPressedEventArgs e)
         {
             if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
             {

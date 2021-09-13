@@ -20,11 +20,11 @@
                    ZIndex="1"
                    x:DataType="dmc:IDocumentDock"
                    x:CompileBindings="True">
-          <TabStrip x:Name="PART_TabStrip"
-                    Items="{Binding VisibleDockables}"
-                    SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                    DockProperties.IsDropArea="True">
-            <TabStrip.DataTemplates>
+          <DockTabStrip x:Name="PART_TabStrip"
+                        Items="{Binding VisibleDockables}"
+                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        DockProperties.IsDropArea="True">
+            <DockTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
                 <DockableControl TrackingMode="Tab">
                   <StackPanel Background="Transparent"
@@ -47,8 +47,8 @@
                   </StackPanel>
                 </DockableControl>
               </DataTemplate>
-            </TabStrip.DataTemplates>
-          </TabStrip>
+            </DockTabStrip.DataTemplates>
+          </DockTabStrip>
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}"
                 x:CompileBindings="False" />

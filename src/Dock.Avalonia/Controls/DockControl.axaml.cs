@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;

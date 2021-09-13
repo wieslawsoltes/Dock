@@ -9,9 +9,9 @@
         Title="Dock Avalonia Demo" Width="800" Height="600"
         x:CompileBindings="True" x:DataType="DockControl">
   <DockControl FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
-    <RootDock x:Name="Root" Id="Root" IsCollapsable="False" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}">
+    <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
       <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
-        <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left" ActiveDockable="{Binding #SolutionExplorer}">
+        <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
           <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
             <TextBlock Text="{Binding Title}"/>
           </Tool>
@@ -28,7 +28,7 @@
               </Document>
             </DocumentDock>
             <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" />
-            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right" ActiveDockable="{Binding #Properties}">
+            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right">
               <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>

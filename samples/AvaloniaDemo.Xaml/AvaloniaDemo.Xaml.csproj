@@ -12,7 +12,7 @@
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
-  <Import Project="..\..\build\Avalonia.Diagnostics.props" />
+  <Import Project="..\..\build\Avalonia.Diagnostics.props" Condition="'$(Configuration)'=='Debug'" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

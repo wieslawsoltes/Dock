@@ -14,8 +14,6 @@ namespace Dock.Avalonia.Controls
     /// </summary>
     public class DockTabStripItem : TabStripItem, IStyleable
     {
-        private readonly ItemDragBehavior _itemDragBehavior;
-
         Type IStyleable.StyleKey => typeof(TabStripItem);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace Dock.Avalonia.Controls
         /// </summary>
         public DockTabStripItem()
         {
-            _itemDragBehavior = new ItemDragBehavior(this, Orientation.Horizontal);
         }
         
         /// <inheritdoc/>
@@ -31,7 +28,6 @@ namespace Dock.Avalonia.Controls
         {
             base.OnAttachedToVisualTree(e);
 
-            _itemDragBehavior.Attach();
             AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         }
 
@@ -40,7 +36,6 @@ namespace Dock.Avalonia.Controls
         {
             base.OnDetachedFromVisualTree(e);
 
-            _itemDragBehavior.Detach();
             RemoveHandler(PointerPressedEvent, PressedHandler);
         }
 

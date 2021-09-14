@@ -8,7 +8,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.ProportionalStackPanel
 {
     /// <summary>
     /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
@@ -48,6 +48,32 @@ namespace Dock.Avalonia.Controls
         public static readonly StyledProperty<double> ThicknessProperty =
             AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(Thickness), 4.0);
 
+        /// <summary>
+        /// Defines the MinimumProportionSize attached property.
+        /// </summary>
+        public static readonly AttachedProperty<double> MinimumProportionSizeProperty =
+            AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("MinimumProportionSize", 75, true);
+
+        /// <summary>
+        /// Gets the value of the MinimumProportion attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <returns>The minimum size a proportion can be resized to.</returns>
+        public static double GetMinimumProportionSize(IControl control)
+        {
+            return control.GetValue(MinimumProportionSizeProperty);
+        }
+
+        /// <summary>
+        /// Sets the value of the MinimumProportionSize attached property on the specified control.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        /// <param name="value">The minimum size a proportion can be resized to.</param>
+        public static void SetMinimumProportionSize(IControl control, double value)
+        {
+            control.SetValue(MinimumProportionSizeProperty, value);
+        }
+        
         /// <summary>
         /// Gets or sets the thickness (height or width, depending on orientation).
         /// </summary>
@@ -132,7 +158,7 @@ namespace Dock.Avalonia.Controls
             targetElementProportion += dProportion;
             neighbourProportion -= dProportion;
 
-            var minProportion = GetValue(DockProperties.MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+            var minProportion = GetValue(MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
             if (targetElementProportion < minProportion)
             {

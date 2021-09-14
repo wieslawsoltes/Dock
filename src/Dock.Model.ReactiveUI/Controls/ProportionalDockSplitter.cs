@@ -5,10 +5,10 @@ using Dock.Model.ReactiveUI.Core;
 namespace Dock.Model.ReactiveUI.Controls
 {
     /// <summary>
-    /// Splitter dockable.
+    /// Proportional dock splitter.
     /// </summary>
     [DataContract(IsReference = true)]
-    public class SplitterDockable : DockableBase, ISplitterDockable
+    public class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
     {
     }
 }

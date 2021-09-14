@@ -76,10 +76,10 @@ namespace Dock.Model.Core
         IDockDock CreateDockDock();
 
         /// <summary>
-        /// Creates <see cref="ISplitterDockable"/>.
+        /// Creates <see cref="IProportionalDockSplitter"/>.
         /// </summary>
-        /// <returns>The new instance of the <see cref="ISplitterDockable"/> class.</returns>
-        ISplitterDockable CreateSplitterDockable();
+        /// <returns>The new instance of the <see cref="IProportionalDockSplitter"/> class.</returns>
+        IProportionalDockSplitter CreateProportionalDockSplitter();
 
         /// <summary>
         /// Creates <see cref="IToolDock"/>.

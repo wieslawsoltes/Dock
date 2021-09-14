@@ -8,7 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Layout;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.ProportionalStackPanel
 {
     /// <summary>
     /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.

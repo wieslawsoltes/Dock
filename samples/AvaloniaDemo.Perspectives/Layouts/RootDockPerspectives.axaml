@@ -23,24 +23,24 @@
           <Reference Name="LeftTop1" />
           <Reference Name="LeftTop2" />
         </ToolDock>
-        <SplitterDockable />
+        <ProportionalDockSplitter />
         <ToolDock Proportion="NaN" ActiveDockable="{Binding #LeftBottom1}">
           <Reference Name="LeftBottom1" />
           <Reference Name="LeftBottom2" />
         </ToolDock>
       </ProportionalDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
         <Reference Name="Document1" />
         <Reference Name="Document2" />
       </DocumentDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <ProportionalDock Proportion="NaN" Orientation="Vertical">
         <ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
           <Reference Name="RightTop1" />
           <Reference Name="RightTop2" />
         </ToolDock>
-        <SplitterDockable />
+        <ProportionalDockSplitter />
         <ToolDock Proportion="NaN" ActiveDockable="{Binding #RightBottom1}">
           <Reference Name="RightBottom1" />
           <Reference Name="RightBottom2" />
@@ -58,12 +58,12 @@
           <Reference Name="LeftBottom2" />
         </ToolDock>
       </ProportionalDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
         <Reference Name="Document1" />
         <Reference Name="Document2" />
       </DocumentDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <ProportionalDock Proportion="NaN" Orientation="Vertical">
         <ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
           <Reference Name="RightTop1" />
@@ -92,12 +92,12 @@
           <Reference Name="LeftBottom2" />
         </ToolDock>
       </ProportionalDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <DocumentDock IsCollapsable="False" Proportion="NaN" ActiveDockable="{Binding #Document1}">
         <Reference Name="Document1" />
         <Reference Name="Document2" />
       </DocumentDock>
-      <SplitterDockable />
+      <ProportionalDockSplitter />
       <ProportionalDock Proportion="NaN" Orientation="Vertical">
         <ToolDock Proportion="NaN" ActiveDockable="{Binding #RightTop1}">
           <Reference Name="RightTop1" />

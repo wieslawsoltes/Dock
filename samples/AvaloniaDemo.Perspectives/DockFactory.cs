@@ -15,9 +15,9 @@ namespace AvaloniaDemo
             {
                 [nameof(IRootDock)] = () => layout,
                 [nameof(IProportionalDock)] = () => layout,
+                [nameof(IProportionalDockSplitter)] = () => layout,
                 [nameof(IDocumentDock)] = () => layout,
                 [nameof(IToolDock)] = () => layout,
-                [nameof(ISplitterDockable)] = () => layout,
                 [nameof(IDockWindow)] = () => layout,
                 [nameof(IDocument)] = () => layout,
                 [nameof(ITool)] = () => layout,

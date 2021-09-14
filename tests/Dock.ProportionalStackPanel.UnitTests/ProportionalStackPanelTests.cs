@@ -4,10 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
-using Dock.Avalonia.Controls;
 using Xunit;
 
-namespace Dock.Avalonia.UnitTests.Controls
+namespace Dock.ProportionalStackPanel.UnitTests
 {
     public class ProportionalStackPanelTests
     {

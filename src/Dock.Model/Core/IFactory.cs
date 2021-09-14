@@ -35,6 +35,16 @@ namespace Dock.Model.Core
         IList<IHostWindow> HostWindows { get; }
 
         /// <summary>
+        /// Gets or sets <see cref="IDockable.Context"/> default locator.
+        /// </summary>
+        Func<object>? DefaultContextLocator { get; set; }
+
+        /// <summary>
+        /// Gets or sets <see cref="IHostWindow"/> default locator.
+        /// </summary>
+        Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+
+        /// <summary>
         /// Gets or sets <see cref="IDockable.Context"/> locator registry.
         /// </summary>
         IDictionary<string, Func<object>>? ContextLocator { get; set; }

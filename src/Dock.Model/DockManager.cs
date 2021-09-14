@@ -150,63 +150,53 @@ namespace Dock.Model
             }
         }
 
-        private bool DockDockableIntoWindow(IDockable sourceDockable, IDockable targetDockable, DockOperation operation, bool bExecute)
+        private bool DockDockableIntoWindow(IDockable sourceDockable, IDockable targetDockable, bool bExecute)
         {
-            switch (operation)
+            if (sourceDockable == targetDockable)
             {
-                case DockOperation.Window:
-                {
-                    if (sourceDockable == targetDockable)
-                    {
-                        return false;
-                    }
-
-                    if (!sourceDockable.CanFloat)
-                    {
-                        return false;
-                    }
-
-                    if (sourceDockable.Owner is not IDock sourceDockableOwner)
-                    {
-                        return false;
-                    }
-
-                    if (sourceDockableOwner.Factory is not { } factory)
-                    {
-                        return false;
-                    }
-
-                    if (factory.FindRoot(sourceDockable, _ => true) is { ActiveDockable: IDock targetWindowOwner })
-                    {
-                        if (bExecute)
-                        {
-                            sourceDockableOwner.GetVisibleBounds(out _, out _, out var ownerWidth, out var ownerHeight);
-                            sourceDockable.GetVisibleBounds(out _, out _, out var width, out var height);
-                            var x = ScreenPosition.X;
-                            var y = ScreenPosition.Y;
-                            if (double.IsNaN(width))
-                            {
-                                width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
-                            }
-
-                            if (double.IsNaN(height))
-                            {
-                                height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
-                            }
-
-                            factory.SplitToWindow(targetWindowOwner, sourceDockable, x, y, width, height);
-                        }
-
-                        return true;
-                    }
-
-                    return false;
-                }
-                default:
-                {
-                    return false;
-                }
+                return false;
             }
+
+            if (!sourceDockable.CanFloat)
+            {
+                return false;
+            }
+
+            if (sourceDockable.Owner is not IDock sourceDockableOwner)
+            {
+                return false;
+            }
+
+            if (sourceDockableOwner.Factory is not { } factory)
+            {
+                return false;
+            }
+
+            if (factory.FindRoot(sourceDockable, _ => true) is { ActiveDockable: IDock targetWindowOwner })
+            {
+                if (bExecute)
+                {
+                    sourceDockableOwner.GetVisibleBounds(out _, out _, out var ownerWidth, out var ownerHeight);
+                    sourceDockable.GetVisibleBounds(out _, out _, out var width, out var height);
+                    var x = ScreenPosition.X;
+                    var y = ScreenPosition.Y;
+                    if (double.IsNaN(width))
+                    {
+                        width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
+                    }
+
+                    if (double.IsNaN(height))
+                    {
+                        height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
+                    }
+
+                    factory.SplitToWindow(targetWindowOwner, sourceDockable, x, y, width, height);
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private bool DockDockableIntoDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, bool bExecute)
@@ -296,7 +286,7 @@ namespace Dock.Model
                 DockOperation.Right => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
                 DockOperation.Top => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
                 DockOperation.Bottom => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-                DockOperation.Window => DockDockableIntoWindow(sourceDockable, targetDock, operation, bExecute),
+                DockOperation.Window => DockDockableIntoWindow(sourceDockable, targetDock, bExecute),
                 _ => false
             };
         }
@@ -382,7 +372,7 @@ namespace Dock.Model
             return operation switch
             {
                 DockOperation.Fill => DockDockableIntoDockVisible(sourceDock, targetDock, action, operation, bExecute),
-                DockOperation.Window => DockDockableIntoWindow(sourceDock, targetDockable, operation, bExecute),
+                DockOperation.Window => DockDockableIntoWindow(sourceDock, targetDockable, bExecute),
                 _ => DockDockIntoDock(sourceDock, targetDock, action, operation, bExecute)
             };
         }
@@ -392,7 +382,7 @@ namespace Dock.Model
         {
             return targetDockable switch
             {
-                IRootDock _ => DockDockableIntoWindow(sourceTool, targetDockable, operation, bExecute),
+                IRootDock _ => DockDockableIntoWindow(sourceTool, targetDockable, bExecute),
                 IToolDock toolDock => DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
                 IDocumentDock documentDock => DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute),
                 ITool tool => DockDockableIntoDockable(sourceTool, tool, action, bExecute),
@@ -406,7 +396,7 @@ namespace Dock.Model
         {
             return targetDockable switch
             {
-                IRootDock _ => DockDockableIntoWindow(sourceDocument, targetDockable, operation, bExecute),
+                IRootDock _ => DockDockableIntoWindow(sourceDocument, targetDockable, bExecute),
                 IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
                 IDocument document => DockDockableIntoDockable(sourceDocument, document, action, bExecute),
                 _ => false
@@ -418,7 +408,7 @@ namespace Dock.Model
         {
             return targetDockable switch
             {
-                IRootDock _ => DockDockableIntoWindow(sourceDock, targetDockable, operation, bExecute),
+                IRootDock _ => DockDockableIntoWindow(sourceDock, targetDockable, bExecute),
                 IToolDock toolDock => sourceDock != toolDock &&
                                       DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
                 IDocumentDock documentDock => sourceDock != documentDock &&

@@ -44,7 +44,7 @@ namespace Dock.Model.ReactiveUI.UnitTests
         }
 
         [Fact]
-        public void CreateDockDock_Creates_DockDockk()
+        public void CreateDockDock_Creates_DockDock()
         {
             var factory = new TestFactory();
             var actual = factory.CreateDockDock();

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Dock.Avalonia</PackageId>
+    <PackageId>Dock.ProportionalStackPanel</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\Dock.ProportionalStackPanel\Dock.ProportionalStackPanel.csproj" />
   </ItemGroup>
 
 </Project>

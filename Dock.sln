@@ -72,6 +72,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Debug", "sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Perspectives", "samples\AvaloniaDemo.Perspectives\AvaloniaDemo.Perspectives.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel", "src\Dock.ProportionalStackPanel\Dock.ProportionalStackPanel.csproj", "{93E4EB2E-0784-4E01-928D-2BD57BB2638A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel.UnitTests", "tests\Dock.ProportionalStackPanel.UnitTests\Dock.ProportionalStackPanel.UnitTests.csproj", "{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +134,22 @@ Global
 		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCA4614A-15A7-453A-A34E-EC82E217CA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E4EB2E-0784-4E01-928D-2BD57BB2638A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E4EB2E-0784-4E01-928D-2BD57BB2638A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E4EB2E-0784-4E01-928D-2BD57BB2638A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E4EB2E-0784-4E01-928D-2BD57BB2638A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +170,10 @@ Global
 		{E84B9270-FF6F-46EE-9B86-C1E922582645} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{F2766728-CECC-40E3-A33F-20CA7467CACD} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{CCA4614A-15A7-453A-A34E-EC82E217CA0F} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{93E4EB2E-0784-4E01-928D-2BD57BB2638A} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

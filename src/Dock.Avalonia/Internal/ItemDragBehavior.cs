@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -74,21 +73,157 @@ namespace Dock.Avalonia.Internal
 
         private void Released()
         {
-            if (_enableDrag)
+            if (!_enableDrag)
             {
-                RemoveTransforms(_itemsControl);
+                return;
+            }
 
-                if (_draggedIndex >= 0 && _targetIndex >= 0 && _draggedIndex != _targetIndex)
+            RemoveTransforms(_itemsControl);
+
+            if (_draggedIndex >= 0 && _targetIndex >= 0 && _draggedIndex != _targetIndex)
+            {
+                MoveDockable(_itemsControl, _draggedIndex, _targetIndex);
+            }
+
+            _draggedIndex = -1;
+            _targetIndex = -1;
+            _enableDrag = false;
+            _itemsControl = null;
+            _draggedContainer = null;
+        }
+
+        private void Moved(object? sender, PointerEventArgs e)
+        {
+            if (_itemsControl?.Items is null || _draggedContainer?.RenderTransform is null || !_enableDrag)
+            {
+                return;
+            }
+
+            var orientation = Orientation;
+            var isHorizontal = orientation == Orientation.Horizontal;
+            var position = e.GetPosition(_itemsControl);
+            var delta = isHorizontal ? position.X - _start.X : position.Y - _start.Y;
+            var bounds = _draggedContainer.Bounds;
+
+            var translatedOrigin = _draggedContainer.TranslatePoint(new Point(0.0, 0.0), _itemsControl);
+            if (translatedOrigin is null)
+            {
+                return;
+            }
+            
+            var translatedDelta = _draggedContainer.TranslatePoint(new Point(isHorizontal ? delta : 0.0, isHorizontal ? 0.0 : delta), _itemsControl);
+            if (translatedDelta is null)
+            {
+                return;
+            }
+
+            Debug.WriteLine($"translatedOrigin={translatedOrigin.Value} translatedDelta={translatedOrigin.Value}");
+            
+            var tx = translatedDelta.Value.X;
+            var ty = translatedDelta.Value.Y;
+            if (isHorizontal)
+            {
+                if (tx < 0.0)
                 {
-                    Debug.WriteLine($"MoveItem {_draggedIndex} -> {_targetIndex}");
-                    MoveDraggedItem(_itemsControl, _draggedIndex, _targetIndex);
+                    delta = 0.0;
                 }
 
-                _draggedIndex = -1;
-                _targetIndex = -1;
-                _enableDrag = false;
-                _itemsControl = null;
-                _draggedContainer = null;
+                //if (tx + bounds.Width > _itemsControl.Bounds.Width)
+                //{
+                //    delta = _itemsControl.Bounds.Width - bounds.Width;
+                //}
+            }
+            else
+            {
+                if (ty < 0.0)
+                {
+                    delta = 0.0;
+                }
+
+                //if (ty + bounds.Height > _itemsControl.Bounds.Height)
+                //{
+                //    delta = _itemsControl.Bounds.Height - bounds.Height;
+                //}
+            }
+            
+            MoveControl(_draggedContainer, orientation, delta, delta);
+            _draggedIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(_draggedContainer);
+            _targetIndex = -1;
+
+            var draggedStart = isHorizontal ? bounds.X : bounds.Y;
+            var draggedStartDelta = isHorizontal ? bounds.X + delta : bounds.Y + delta;
+            var draggedEndDelta = isHorizontal ? bounds.X + delta + bounds.Width : bounds.Y + delta + bounds.Height;
+
+            var i = 0;
+            foreach (var _ in _itemsControl.Items)
+            {
+                var targetContainer = _itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+                if (targetContainer?.RenderTransform is null || ReferenceEquals(targetContainer, _draggedContainer))
+                {
+                    i++;
+                    continue;
+                }
+
+                var target = targetContainer.Bounds;
+                var targetStart = isHorizontal ? target.X : target.Y;
+                var targetMid = isHorizontal ? target.X + target.Width / 2 : target.Y + target.Height / 2;
+
+                var targetIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(targetContainer);
+                if (targetStart > draggedStart && draggedEndDelta >= targetMid)
+                {
+                    MoveControl(targetContainer, orientation, -bounds.Width, -bounds.Height);
+                    _targetIndex = _targetIndex == -1 ? targetIndex : targetIndex > _targetIndex ? targetIndex : _targetIndex;
+                }
+                else if (targetStart < draggedStart && draggedStartDelta <= targetMid)
+                {
+                    MoveControl(targetContainer, orientation, bounds.Width, bounds.Height);
+                    _targetIndex = _targetIndex == -1 ? targetIndex : targetIndex < _targetIndex ? targetIndex : _targetIndex;
+                }
+                else
+                {
+                    MoveControl(targetContainer, orientation, 0, 0);
+                }
+
+                i++;
+            }
+        }
+
+        private void MoveControl(IControl? control, Orientation orientation, double x, double y)
+        {
+            if (control?.RenderTransform is not TranslateTransform translateTransform)
+            {
+                return;
+            }
+
+            if (orientation == Orientation.Horizontal)
+            {
+                translateTransform.X = x;
+            }
+            else
+            {
+                translateTransform.Y = y;
+            }
+        }
+
+        private void MoveDockable(ItemsControl? itemsControl, int draggedIndex, int targetIndex)
+        {
+            if (itemsControl?.Items is not IList items)
+            {
+                return;
+            }
+
+            var draggedItem = items[draggedIndex];
+            var targetItem = items[targetIndex];
+
+            if (draggedItem is IDockable sourceDockable && targetItem is IDockable targetDockable)
+            {
+                if (sourceDockable.Owner is IDock sourceOwner && targetDockable.Owner is IDock targetOwner)
+                {
+                    if (sourceOwner == targetOwner && sourceOwner.Factory is { } factory)
+                    {
+                        factory.MoveDockable(sourceOwner, sourceDockable, targetDockable);
+                    }
+                }
             }
         }
 
@@ -132,134 +267,6 @@ namespace Dock.Avalonia.Internal
   
                 i++;
             }  
-        }
-
-        private void MoveDraggedItem(ItemsControl? itemsControl, int draggedIndex, int targetIndex)
-        {
-            if (itemsControl?.Items is not IList items)
-            {
-                return;
-            }
-
-            var draggedItem = items[draggedIndex];
-            var targetItem = items[targetIndex];
-
-            if (draggedItem is IDockable sourceDockable && 
-                targetItem is IDockable targetDockable)
-            {
-                if (sourceDockable.Owner is IDock sourceDockableOwner &&
-                    targetDockable.Owner is IDock targetDockableOwner &&
-                    sourceDockableOwner == targetDockableOwner &&
-                    sourceDockableOwner.Factory is { } factory)
-                {
-                    factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
-                }
-            }
-        }
-
-        private void Moved(object? sender, PointerEventArgs e)
-        {
-            if (_itemsControl?.Items is null || _draggedContainer?.RenderTransform is null || !_enableDrag)
-            {
-                return;
-            }
-
-            var orientation = Orientation;
-            var position = e.GetPosition(_itemsControl);
-            var delta = orientation == Orientation.Horizontal ? position.X - _start.X : position.Y - _start.Y;
-
-            if (orientation == Orientation.Horizontal)
-            {
-                ((TranslateTransform) _draggedContainer.RenderTransform).X = delta;
-            }
-            else
-            {
-                ((TranslateTransform) _draggedContainer.RenderTransform).Y = delta;
-            }
-
-            _draggedIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(_draggedContainer);
-            _targetIndex = -1;
-
-            var draggedBounds = _draggedContainer.Bounds;
-
-            var draggedStart = orientation == Orientation.Horizontal ? 
-                draggedBounds.X : draggedBounds.Y;
-
-            var draggedDeltaStart = orientation == Orientation.Horizontal ? 
-                draggedBounds.X + delta : draggedBounds.Y + delta;
-
-            var draggedDeltaEnd = orientation == Orientation.Horizontal ?
-                draggedBounds.X + delta + draggedBounds.Width : draggedBounds.Y + delta + draggedBounds.Height;
-
-            var i = 0;
-
-            foreach (var _ in _itemsControl.Items)
-            {
-                var targetContainer = _itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
-                if (targetContainer?.RenderTransform is null || ReferenceEquals(targetContainer, _draggedContainer))
-                {
-                    i++;
-                    continue;
-                }
-
-                var targetBounds = targetContainer.Bounds;
-
-                var targetStart = orientation == Orientation.Horizontal ? 
-                    targetBounds.X : targetBounds.Y;
-
-                var targetMid = orientation == Orientation.Horizontal ? 
-                    targetBounds.X + targetBounds.Width / 2 : targetBounds.Y + targetBounds.Height / 2;
-
-                var targetIndex = _itemsControl.ItemContainerGenerator.IndexFromContainer(targetContainer);
-
-                if (targetStart > draggedStart && draggedDeltaEnd >= targetMid)
-                {
-                    if (orientation == Orientation.Horizontal)
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).X = -draggedBounds.Width;
-                    }
-                    else
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).Y = -draggedBounds.Height;
-                    }
-
-                    _targetIndex = _targetIndex == -1 ? 
-                        targetIndex : 
-                        targetIndex > _targetIndex ? targetIndex : _targetIndex;
-                    Debug.WriteLine($"Moved Right {_draggedIndex} -> {_targetIndex}");
-                }
-                else if (targetStart < draggedStart && draggedDeltaStart <= targetMid)
-                {
-                    if (orientation == Orientation.Horizontal)
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).X = draggedBounds.Width;
-                    }
-                    else
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).Y = draggedBounds.Height;
-                    }
-
-                    _targetIndex = _targetIndex == -1 ? 
-                        targetIndex : 
-                        targetIndex < _targetIndex ? targetIndex : _targetIndex;
-                    Debug.WriteLine($"Moved Left {_draggedIndex} -> {_targetIndex}");
-                }
-                else
-                {
-                    if (orientation == Orientation.Horizontal)
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).X = 0;
-                    }
-                    else
-                    {
-                        ((TranslateTransform) targetContainer.RenderTransform).Y = 0;
-                    }
-                }
-
-                i++;
-            }
-
-            Debug.WriteLine($"Moved {_draggedIndex} -> {_targetIndex}");
         }
     }
 }

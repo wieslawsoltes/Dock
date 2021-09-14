@@ -26,6 +26,12 @@ namespace Dock.Model
         public abstract IList<IHostWindow> HostWindows { get; }
 
         /// <inheritdoc/>
+        public virtual Func<object>? DefaultContextLocator { get; set; }
+
+        /// <inheritdoc/>
+        public virtual Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+
+        /// <inheritdoc/>
         public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
 
         /// <inheritdoc/>
@@ -64,42 +70,51 @@ namespace Dock.Model
         /// <inheritdoc/>
         public virtual object? GetContext(string id)
         {
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
-                Func<object>? locator = null;
-                if (ContextLocator?.TryGetValue(id, out locator) == true)
-                {
-                    return locator?.Invoke();
-                }
+                return null;
             }
-            return null;
+
+            Func<object>? locator = null;
+            if (ContextLocator?.TryGetValue(id, out locator) == true)
+            {
+                return locator?.Invoke();
+            }
+
+            return DefaultContextLocator?.Invoke();
         }
 
         /// <inheritdoc/>
         public virtual IHostWindow? GetHostWindow(string id)
         {
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
-                Func<IHostWindow>? locator = null;
-                if (HostWindowLocator?.TryGetValue(id, out locator) == true)
-                {
-                    return locator?.Invoke();
-                }
+                return null;
             }
-            return null;
+
+            Func<IHostWindow>? locator = null;
+            if (HostWindowLocator?.TryGetValue(id, out locator) == true)
+            {
+                return locator?.Invoke();
+            }
+
+            return DefaultHostWindowLocator?.Invoke();
         }
 
         /// <inheritdoc/>
         public virtual T? GetDockable<T>(string id) where T: class, IDockable
         {
-            if (!string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
-                Func<IDockable?>? locator = null;
-                if (DockableLocator?.TryGetValue(id, out locator) == true)
-                {
-                    return locator?.Invoke() as T;
-                }
+                return default;
             }
+
+            Func<IDockable?>? locator = null;
+            if (DockableLocator?.TryGetValue(id, out locator) == true)
+            {
+                return locator?.Invoke() as T;
+            }
+
             return default;
         }
 

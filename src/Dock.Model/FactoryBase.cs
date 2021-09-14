@@ -47,7 +47,7 @@ namespace Dock.Model
         public abstract IDockDock CreateDockDock();
 
         /// <inheritdoc/>
-        public abstract ISplitterDockable CreateSplitterDockable();
+        public abstract IProportionalDockSplitter CreateProportionalDockSplitter();
 
         /// <inheritdoc/>
         public abstract IToolDock CreateToolDock();
@@ -461,7 +461,7 @@ namespace Dock.Model
                     if (dockIndex > 0 && indexSplitterPrevious >= 0)
                     {
                         var previousVisible = ownerDock.VisibleDockables[indexSplitterPrevious];
-                        if (previousVisible is ISplitterDockable splitterPrevious)
+                        if (previousVisible is IProportionalDockSplitter splitterPrevious)
                         {
                             toRemove.Add(splitterPrevious);
                         }
@@ -471,7 +471,7 @@ namespace Dock.Model
                     if (dockIndex < ownerDock.VisibleDockables.Count - 1 && indexSplitterNext >= 0)
                     {
                         var nextVisible = ownerDock.VisibleDockables[indexSplitterNext];
-                        if (nextVisible is ISplitterDockable splitterNext)
+                        if (nextVisible is IProportionalDockSplitter splitterNext)
                         {
                             toRemove.Add(splitterNext);
                         }
@@ -515,7 +515,7 @@ namespace Dock.Model
             if (dock.VisibleDockables.Count > 0)
             {
                 var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-                dock.ActiveDockable = nextActiveDockable is not ISplitterDockable ? nextActiveDockable : null;
+                dock.ActiveDockable = nextActiveDockable is not IProportionalDockSplitter ? nextActiveDockable : null;
             }
             else
             {
@@ -525,7 +525,7 @@ namespace Dock.Model
             if (dock.VisibleDockables.Count == 1)
             {
                 var dockable0 = dock.VisibleDockables[0];
-                if (dockable0 is ISplitterDockable splitter0)
+                if (dockable0 is IProportionalDockSplitter splitter0)
                 {
                     RemoveDockable(splitter0, false);
                 }
@@ -535,11 +535,11 @@ namespace Dock.Model
             {
                 var dockable0 = dock.VisibleDockables[0];
                 var dockable1 = dock.VisibleDockables[1];
-                if (dockable0 is ISplitterDockable splitter0)
+                if (dockable0 is IProportionalDockSplitter splitter0)
                 {
                     RemoveDockable(splitter0, false);
                 }
-                if (dockable1 is ISplitterDockable splitter1)
+                if (dockable1 is IProportionalDockSplitter splitter1)
                 {
                     RemoveDockable(splitter1, false);
                 }
@@ -838,9 +838,9 @@ namespace Dock.Model
             layout.VisibleDockables = CreateList<IDockable>();
             layout.Proportion = containerProportion;
 
-            var splitter = CreateSplitterDockable();
-            splitter.Id = nameof(ISplitterDockable);
-            splitter.Title = nameof(ISplitterDockable);
+            var splitter = CreateProportionalDockSplitter();
+            splitter.Id = nameof(IProportionalDockSplitter);
+            splitter.Title = nameof(IProportionalDockSplitter);
 
             switch (operation)
             {

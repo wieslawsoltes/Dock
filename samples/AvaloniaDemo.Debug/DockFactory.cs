@@ -22,9 +22,9 @@ namespace AvaloniaDemo
             {
                 [nameof(IRootDock)] = () => _context,
                 [nameof(IProportionalDock)] = () => _context,
+                [nameof(IProportionalDockSplitter)] = () => _context,
                 [nameof(IDocumentDock)] = () => _context,
                 [nameof(IToolDock)] = () => _context,
-                [nameof(ISplitterDockable)] = () => _context,
                 [nameof(IDockWindow)] = () => _context,
                 [nameof(IDocument)] = () => _context,
                 [nameof(ITool)] = () => _context,

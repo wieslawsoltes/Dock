@@ -15,7 +15,7 @@
             <TextBlock Text="{Binding Title}"/>
           </Tool>
         </ToolDock>
-        <SplitterDockable x:Name="LeftSplitter" Id="LeftSplitter" />
+        <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
         <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
           <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
             <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" ActiveDockable="{Binding #Document1}">
@@ -26,14 +26,14 @@
                 <TextBlock Text="{Binding Title}"/>
               </Document>
             </DocumentDock>
-            <SplitterDockable x:Name="RightSplitter" Id="RightSplitter" />
+            <ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
             <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right">
               <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>
             </ToolDock>
           </ProportionalDock>
-          <SplitterDockable x:Name="BottomSplitter" Id="BottomSplitter" />
+          <ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
           <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
             <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
               <TextBlock Text="{Binding Title}"/>

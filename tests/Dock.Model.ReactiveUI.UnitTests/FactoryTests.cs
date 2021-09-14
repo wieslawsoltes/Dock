@@ -54,12 +54,12 @@ namespace Dock.Model.ReactiveUI.UnitTests
         }
 
         [Fact]
-        public void CreateSplitterDock_Creates_SplitterDock()
+        public void CreateProportionalDockSplitter_Creates_ProportionalDockSplitter()
         {
             var factory = new TestFactory();
-            var actual = factory.CreateSplitterDockable();
+            var actual = factory.CreateProportionalDockSplitter();
             Assert.NotNull(actual);
-            Assert.IsType<SplitterDockable>(actual);
+            Assert.IsType<ProportionalDockSplitter>(actual);
         }
 
         [Fact]

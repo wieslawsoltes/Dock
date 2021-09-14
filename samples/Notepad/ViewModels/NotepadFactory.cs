@@ -73,7 +73,7 @@ namespace Notepad.ViewModels
                         Alignment = Alignment.Right,
                         GripMode = GripMode.Visible
                     },
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     new ToolDock
                     {
                         ActiveDockable = replaceViewModel,
@@ -96,7 +96,7 @@ namespace Notepad.ViewModels
                 VisibleDockables = CreateList<IDockable>
                 (
                     documentDock,
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     tools
                 )
             };

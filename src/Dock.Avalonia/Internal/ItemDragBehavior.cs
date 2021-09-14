@@ -140,7 +140,7 @@ namespace Dock.Avalonia.Internal
             {
                 return;
             }
-#if true
+
             var draggedItem = items[draggedIndex];
             var targetItem = items[targetIndex];
 
@@ -155,16 +155,6 @@ namespace Dock.Avalonia.Internal
                     factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
                 }
             }
-#else
-            var draggedItem = items[draggedIndex];
-            items.RemoveAt(draggedIndex);
-            items.Insert(targetIndex, draggedItem);
-
-            if (itemsControl is SelectingItemsControl selectingItemsControl)
-            {
-                selectingItemsControl.SelectedIndex = targetIndex;
-            }
-#endif
         }
 
         private void Moved(object? sender, PointerEventArgs e)

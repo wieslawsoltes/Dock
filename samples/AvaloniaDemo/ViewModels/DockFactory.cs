@@ -54,7 +54,7 @@ namespace AvaloniaDemo.ViewModels
                         VisibleDockables = CreateList<IDockable>(tool1, tool2),
                         Alignment = Alignment.Left
                     },
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     new ToolDock
                     {
                         ActiveDockable = tool3,
@@ -78,7 +78,7 @@ namespace AvaloniaDemo.ViewModels
                         Alignment = Alignment.Right,
                         GripMode = GripMode.Hidden
                     },
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     new ToolDock
                     {
                         ActiveDockable = tool7,
@@ -103,9 +103,9 @@ namespace AvaloniaDemo.ViewModels
                 VisibleDockables = CreateList<IDockable>
                 (
                     leftDock,
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     documentDock,
-                    new SplitterDockable(),
+                    new ProportionalDockSplitter(),
                     rightDock
                 )
             };

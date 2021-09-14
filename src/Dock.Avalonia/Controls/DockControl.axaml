@@ -28,8 +28,8 @@
                                 ContentTemplate="{Binding}" />
               </DockableControl>
             </DataTemplate>
-            <!-- Splitter Dockable -->
-            <DataTemplate DataType="dmc:ISplitterDockable">
+            <!-- Proportional Splitter -->
+            <DataTemplate DataType="dmc:IProportionalDockSplitter">
               <ProportionalStackPanelSplitter Background="Transparent" />
             </DataTemplate>
             <!-- Document Dock -->

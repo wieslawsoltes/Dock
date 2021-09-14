@@ -4,9 +4,9 @@ using Dock.Model.Core;
 namespace Dock.Model.Controls
 {
     /// <summary>
-    /// Splitter dockable contract.
+    /// Proportional dock splitter contract.
     /// </summary>
-    public interface ISplitterDockable : IDockable
+    public interface IProportionalDockSplitter : IDockable
     {
     }
 }

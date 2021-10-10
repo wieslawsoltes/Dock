@@ -7,6 +7,9 @@
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
+             xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:controls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
@@ -75,11 +78,18 @@
                 Grid.Column="3" />
         <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
-        <ComboBox x:Name="Themes" SelectedIndex="0" Grid.Column="6">
-          <ComboBoxItem>Fluent Light</ComboBoxItem>
-          <ComboBoxItem>Fluent Dark</ComboBoxItem>
-          <ComboBoxItem>Default Light</ComboBoxItem>
-          <ComboBoxItem>Default Dark</ComboBoxItem>
+        <ComboBox x:Name="Themes"  SelectedIndex="0" VirtualizationMode="None" Grid.Column="6">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding ElementName=Id}" x:DataType="controls:TextBox" />
+            </DataTemplate> 
+          </ComboBox.ItemTemplate>
+          <collections:ArrayList>
+            <system:String>Fluent Light</system:String>
+            <system:String>Fluent Dark</system:String>
+            <system:String>Default Light</system:String>
+            <system:String>Default Dark</system:String>
+          </collections:ArrayList>
         </ComboBox>
       </Grid>
     </Panel>

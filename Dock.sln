@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D
 		build.ps1 = build.ps1
 		build.sh = build.sh
 		global.json = global.json
+		build\dock.public.snk = build\dock.public.snk
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
@@ -40,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\XUnit.props = build\XUnit.props
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
 		build\SourceLink.props = build\SourceLink.props
+		build\SignAssembly.props = build\SignAssembly.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"

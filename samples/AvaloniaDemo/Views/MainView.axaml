@@ -20,7 +20,7 @@
         <MenuItem Header="_New Layout" Command="{Binding NewLayout}" />
       </MenuItem>
       <MenuItem Header="_Window" DataContext="{Binding Layout}">
-        <MenuItem Header="_Exit tWindows" Command="{Binding ExitWindows}" />
+        <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}" />
         <Separator />
         <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}" />
       </MenuItem>

@@ -1,5 +1,12 @@
 name: $(date:yyyyMMdd)$(rev:-rr)
 
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: wieslawsoltes/BuildTemplates
+      ref: refs/tags/v1.0.0
+
 variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'Any CPU'
@@ -9,37 +16,37 @@ variables:
   PublishRuntime: ''
 
 jobs:
-  - template: build/templates/Test-PowerShell.yml
+  - template: Test-PowerShell.yml@templates
     parameters:
       name: 'Test_Windows'
       vmImage: 'windows-2022'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
 
-  - template: build/templates/Test-Bash.yml
+  - template: Test-Bash.yml@templates
     parameters:
       name: 'Test_Linux'
       vmImage: 'ubuntu-20.04'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
 
-  - template: build/templates/Test-Bash.yml
+  - template: Test-Bash.yml@templates
     parameters:
       name: 'Test_macOS'
       vmImage: 'macOS-11'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
 
-  - template: build/templates/Pack-MyGet.yml
+  - template: Pack-MyGet.yml@templates
     parameters:
       name: 'Pack_MyGet'
       vmImage: 'windows-2022'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
 
-  - template: build/templates/Pack-NuGet.yml
+  - template: Pack-NuGet.yml@templates
     parameters:
       name: 'Pack_NuGet'
       vmImage: 'windows-2022'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
 
-  - template: build/templates/Publish-PowerShell.yml
+  - template: Publish-PowerShell.yml@templates
     parameters:
       name: 'Publish_Windows'
       vmImage: 'windows-2022'
@@ -48,7 +55,7 @@ jobs:
       PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'win7-x64'
 
-  - template: build/templates/Publish-Bash.yml
+  - template: Publish-Bash.yml@templates
     parameters:
       name: 'Publish_Ubuntu'
       vmImage: 'ubuntu-20.04'
@@ -57,7 +64,7 @@ jobs:
       PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'ubuntu.14.04-x64'
 
-  - template: build/templates/Publish-Bash.yml
+  - template: Publish-Bash.yml@templates
     parameters:
       name: 'Publish_Debian'
       vmImage: 'ubuntu-20.04'
@@ -66,7 +73,7 @@ jobs:
       PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'debian.8-x64'
 
-  - template: build/templates/Publish-Bash.yml
+  - template: Publish-Bash.yml@templates
     parameters:
       name: 'Publish_macOS'
       vmImage: 'macOS-11'

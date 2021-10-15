@@ -83,16 +83,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel.UnitTests", "tests\Dock.ProportionalStackPanel.UnitTests\Dock.ProportionalStackPanel.UnitTests.csproj", "{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{ED35C6DC-DCF1-47ED-80A0-EE61E57E87D2}"
-ProjectSection(SolutionItems) = preProject
-	build\templates\Pack-MyGet.yml = build\templates\Pack-MyGet.yml
-	build\templates\Pack-NuGet.yml = build\templates\Pack-NuGet.yml
-	build\templates\Publish-Bash.yml = build\templates\Publish-Bash.yml
-	build\templates\Publish-PowerShell.yml = build\templates\Publish-PowerShell.yml
-	build\templates\Test-Bash.yml = build\templates\Test-Bash.yml
-	build\templates\Test-PowerShell.yml = build\templates\Test-PowerShell.yml
-EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,7 +177,6 @@ Global
 		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
-		{ED35C6DC-DCF1-47ED-80A0-EE61E57E87D2} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

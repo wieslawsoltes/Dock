@@ -48,15 +48,6 @@ jobs:
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'win7-x64'
 
-  - template: build/templates/Publish-PowerShell.yml
-    parameters:
-      name: 'Publish_Windows_net461'
-      vmImage: 'windows-2022'
-      BuildConfiguration: ${{ variables.BuildConfiguration }}
-      PublishFramework: 'net461'
-      PublishProject: 'AvaloniaDemo'
-      PublishRuntime: 'win7-x64'
-
   - template: build/templates/Publish-Bash.yml
     parameters:
       name: 'Publish_Ubuntu'

@@ -2,7 +2,8 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/Dock.svg)](https://gitter.im/wieslawsoltes/Dock?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Sources/Dock)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=55)
+[![Build Status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/wieslawsoltes.Dock?branchName=master)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=89&branchName=master)
+[![CI](https://github.com/wieslawsoltes/Dock/actions/workflows/build.yml/badge.svg)](https://github.com/wieslawsoltes/Dock/actions/workflows/build.yml)
 
 [![NuGet](https://img.shields.io/nuget/v/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Avalonia)
 [![NuGet](https://img.shields.io/nuget/dt/Dock.Model.svg)](https://www.nuget.org/packages/Dock.Avalonia)

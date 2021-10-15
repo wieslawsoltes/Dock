@@ -4,7 +4,7 @@ parameters:
   - name: vmImage
     default: ''
   - name: BuildConfiguration
-    default: ${{ variables.BuildConfiguration }}
+    default: $(BuildConfiguration)
 
 jobs:
   - job: ${{ parameters.name }}

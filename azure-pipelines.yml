@@ -43,6 +43,8 @@ jobs:
     parameters:
       name: 'Publish_Windows'
       vmImage: 'windows-2022'
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
+      PublishFramework: ${{ variables.PublishFramework }}
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'win7-x64'
 
@@ -50,6 +52,7 @@ jobs:
     parameters:
       name: 'Publish_Windows_net461'
       vmImage: 'windows-2022'
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
       PublishFramework: 'net461'
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'win7-x64'
@@ -58,6 +61,8 @@ jobs:
     parameters:
       name: 'Publish_Ubuntu'
       vmImage: 'ubuntu-20.04'
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
+      PublishFramework: ${{ variables.PublishFramework }}
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'ubuntu.14.04-x64'
 
@@ -65,6 +70,8 @@ jobs:
     parameters:
       name: 'Publish_Debian'
       vmImage: 'ubuntu-20.04'
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
+      PublishFramework: ${{ variables.PublishFramework }}
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'debian.8-x64'
 
@@ -72,5 +79,7 @@ jobs:
     parameters:
       name: 'Publish_macOS'
       vmImage: 'macOS-11'
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
+      PublishFramework: ${{ variables.PublishFramework }}
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'osx.10.12-x64'

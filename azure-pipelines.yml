@@ -5,7 +5,7 @@ variables:
   BuildPlatform: 'Any CPU'
   NetCoreSDK: '5.0.400'
   PublishFramework: 'net5.0'
-  PublishProject: ''
+  PublishProject: 'AvaloniaDemo'
   PublishRuntime: ''
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
       vmImage: 'windows-2022'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       PublishFramework: ${{ variables.PublishFramework }}
-      PublishProject: 'AvaloniaDemo'
+      PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'win7-x64'
 
   - template: build/templates/Publish-Bash.yml
@@ -54,7 +54,7 @@ jobs:
       vmImage: 'ubuntu-20.04'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       PublishFramework: ${{ variables.PublishFramework }}
-      PublishProject: 'AvaloniaDemo'
+      PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'ubuntu.14.04-x64'
 
   - template: build/templates/Publish-Bash.yml
@@ -63,7 +63,7 @@ jobs:
       vmImage: 'ubuntu-20.04'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       PublishFramework: ${{ variables.PublishFramework }}
-      PublishProject: 'AvaloniaDemo'
+      PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'debian.8-x64'
 
   - template: build/templates/Publish-Bash.yml
@@ -72,5 +72,5 @@ jobs:
       vmImage: 'macOS-11'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       PublishFramework: ${{ variables.PublishFramework }}
-      PublishProject: 'AvaloniaDemo'
+      PublishProject: ${{ variables.PublishProject }}
       PublishRuntime: 'osx.10.12-x64'

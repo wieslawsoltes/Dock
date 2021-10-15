@@ -31,7 +31,7 @@ jobs:
         inputs:
           targetType: filePath
           filePath: ./build.sh
-          arguments: --target Publish --configuration $(BuildConfiguration) --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"
+          arguments: --target Publish --configuration "$(BuildConfiguration)" --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"
       - task: ArchiveFiles@2
         displayName: Archive Publish
         inputs:

@@ -4,13 +4,13 @@ parameters:
   - name: vmImage
     default: ''
   - name: BuildConfiguration
-    default: $(BuildConfiguration)
+    default: ${{ variables.BuildConfiguration }}
   - name: PublishFramework
-    default: $(PublishFramework)
+    default: ${{ variables.PublishFramework }}
   - name: PublishProject
-    default: $(PublishProject)
+    default: ${{ variables.PublishProject }}
   - name: PublishRuntime
-    default: $(PublishRuntime)
+    default: ${{ variables.PublishRuntime }}
 
 jobs:
   - job: ${{ parameters.name }}

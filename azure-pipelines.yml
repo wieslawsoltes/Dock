@@ -13,31 +13,31 @@ jobs:
     parameters:
       name: 'Test_Windows'
       vmImage: 'windows-2022'
-      BuildConfiguration:  $(BuildConfiguration)
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
 
   - template: build/templates/Test-Bash.yml
     parameters:
       name: 'Test_Linux'
       vmImage: 'ubuntu-20.04'
-      BuildConfiguration:  $(BuildConfiguration)
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
 
   - template: build/templates/Test-Bash.yml
     parameters:
       name: 'Test_macOS'
       vmImage: 'macOS-11'
-      BuildConfiguration:  $(BuildConfiguration)
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
 
   - template: build/templates/Pack-MyGet.yml
     parameters:
       name: 'Pack_MyGet'
       vmImage: 'windows-2022'
-      BuildConfiguration:  $(BuildConfiguration)
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
 
   - template: build/templates/Pack-NuGet.yml
     parameters:
       name: 'Pack_NuGet'
       vmImage: 'windows-2022'
-      BuildConfiguration:  $(BuildConfiguration)
+      BuildConfiguration: ${{ variables.BuildConfiguration }}
 
   - template: build/templates/Publish-PowerShell.yml
     parameters:

@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Test Linux'
+    default: 'Test_Linux'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

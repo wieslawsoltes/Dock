@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Publish PowerShell'
+    default: 'Publish_PowerShell'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

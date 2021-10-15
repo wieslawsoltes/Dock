@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Publish Bash'
+    default: 'Publish_Bash'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

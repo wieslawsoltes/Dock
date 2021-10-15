@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Pack NuGet'
+    default: 'Pack_NuGet'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

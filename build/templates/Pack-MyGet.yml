@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Pack MyGet'
+    default: 'Pack_MyGet'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

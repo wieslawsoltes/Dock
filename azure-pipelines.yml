@@ -11,44 +11,44 @@ variables:
 jobs:
   - template: build/templates/Test-PowerShell.yml
     parameters:
-      name: 'Test Windows'
+      name: 'Test_Windows'
       vmImage: 'windows-2022'
       BuildConfiguration:  $(BuildConfiguration)
 
   - template: build/templates/Test-Bash.yml
     parameters:
-      name: 'Test Linux'
+      name: 'Test_Linux'
       vmImage: 'ubuntu-20.04'
       BuildConfiguration:  $(BuildConfiguration)
 
   - template: build/templates/Test-Bash.yml
     parameters:
-      name: 'Test macOS'
+      name: 'Test_macOS'
       vmImage: 'macOS-11'
       BuildConfiguration:  $(BuildConfiguration)
 
   - template: build/templates/Pack-MyGet.yml
     parameters:
-      name: 'Pack MyGet'
+      name: 'Pack_MyGet'
       vmImage: 'windows-2022'
       BuildConfiguration:  $(BuildConfiguration)
 
   - template: build/templates/Pack-NuGet.yml
     parameters:
-      name: 'Pack NuGet'
+      name: 'Pack_NuGet'
       vmImage: 'windows-2022'
       BuildConfiguration:  $(BuildConfiguration)
 
   - template: build/templates/Publish-PowerShell.yml
     parameters:
-      name: 'Publish Windows'
+      name: 'Publish_Windows'
       vmImage: 'windows-2022'
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'win7-x64'
 
   - template: build/templates/Publish-PowerShell.yml
     parameters:
-      name: 'Publish Windows net461'
+      name: 'Publish_Windows_net461'
       vmImage: 'windows-2022'
       PublishFramework: 'net461'
       PublishProject: 'AvaloniaDemo'
@@ -56,21 +56,21 @@ jobs:
 
   - template: build/templates/Publish-Bash.yml
     parameters:
-      name: 'Publish Ubuntu'
+      name: 'Publish_Ubuntu'
       vmImage: 'ubuntu-20.04'
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'ubuntu.14.04-x64'
 
   - template: build/templates/Publish-Bash.yml
     parameters:
-      name: 'Publish Debian'
+      name: 'Publish_Debian'
       vmImage: 'ubuntu-20.04'
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'debian.8-x64'
 
   - template: build/templates/Publish-Bash.yml
     parameters:
-      name: 'Publish macOS'
+      name: 'Publish_macOS'
       vmImage: 'macOS-11'
       PublishProject: 'AvaloniaDemo'
       PublishRuntime: 'osx.10.12-x64'

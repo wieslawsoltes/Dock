@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Test PowerShell'
+    default: 'Test_PowerShell'
   - name: vmImage
     default: ''
   - name: BuildConfiguration

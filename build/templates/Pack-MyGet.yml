@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Pack_MyGet'
+    default: Pack_MyGet
   - name: vmImage
     default: ''
   - name: BuildConfiguration
@@ -14,17 +14,17 @@ jobs:
       BuildConfiguration: ${{ parameters.BuildConfiguration }}
     steps:
       - task: UseDotNet@2
-        displayName: 'Install .NET Core SDK'
+        displayName: Install .NET Core SDK
         inputs:
           useGlobalJson: true
       - task: PowerShell@2
-        displayName: 'Nuke Target Pack'
+        displayName: Nuke Target Pack
         inputs:
           targetType: filePath
           filePath: ./build.ps1
-          arguments: '--target Pack --configuration $(BuildConfiguration) --version-suffix "build$(Build.BuildNumber)"'
+          arguments: --target Pack --configuration $(BuildConfiguration) --version-suffix "build$(Build.BuildNumber)"
       - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact: MyGet'
+        displayName: Publish Artifact MyGet
         inputs:
           PathtoPublish: ./artifacts/NuGet
           ArtifactName: MyGet

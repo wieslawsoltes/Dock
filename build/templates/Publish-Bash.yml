@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: 'Publish_Bash'
+    default: Publish_Bash
   - name: vmImage
     default: ''
   - name: BuildConfiguration
@@ -23,23 +23,23 @@ jobs:
       PublishRuntime: ${{ parameters.PublishRuntime }}
     steps:
       - task: UseDotNet@2
-        displayName: 'Install .NET Core SDK'
+        displayName: Install .NET Core SDK
         inputs:
           useGlobalJson: true
       - task: Bash@3
-        displayName: 'Nuke Target Publish'
+        displayName: Nuke Target Publish
         inputs:
           targetType: filePath
           filePath: ./build.sh
-          arguments: '--target Publish --configuration $(BuildConfiguration) --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"'
+          arguments: --target Publish --configuration $(BuildConfiguration) --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"
       - task: ArchiveFiles@2
-        displayName: 'Archive Publish'
+        displayName: Archive Publish
         inputs:
-          rootFolderOrFile: './artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)'
+          rootFolderOrFile: ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)
           includeRootFolder: false
-          archiveFile: './artifacts/Publish/Zip/$(PublishProject)-$(PublishFramework)-$(PublishRuntime).zip'
+          archiveFile: ./artifacts/Publish/Zip/$(PublishProject)-$(PublishFramework)-$(PublishRuntime).zip
       - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifacts'
+        displayName: Publish Artifacts
         inputs:
           PathtoPublish: ./artifacts/Publish/Zip
           ArtifactName: Publish

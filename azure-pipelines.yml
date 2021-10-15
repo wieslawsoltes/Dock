@@ -1,8 +1,8 @@
 name: $(date:yyyyMMdd)$(rev:-rr)
 
 variables:
-  BuildConfiguration: 'release'
-  BuildPlatform: 'any cpu'
+  BuildConfiguration: 'Release'
+  BuildPlatform: 'Any CPU'
   NetCoreSDK: '5.0.400'
   PublishFramework: 'net5.0'
   PublishProject: ''

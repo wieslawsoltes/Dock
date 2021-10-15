@@ -3,6 +3,7 @@ name: $(date:yyyyMMdd)$(rev:-rr)
 resources:
   repositories:
     - repository: templates
+      endpoint: GitHub
       type: github
       name: wieslawsoltes/BuildTemplates
       ref: refs/tags/v1.0.0

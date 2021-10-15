@@ -1,33 +1,76 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
-trigger:
-- master
-
-pool:
-  vmImage: 'windows-latest'
+name: $(date:yyyyMMdd)$(rev:-rr)
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'release'
+  BuildPlatform: 'any cpu'
+  NetCoreSDK: '5.0.400'
+  PublishFramework: 'net5.0'
+  PublishProject: ''
+  PublishRuntime: ''
 
-steps:
-- task: NuGetToolInstaller@1
+jobs:
+  - template: build/templates/Test-PowerShell.yml
+    parameters:
+      name: 'Test Windows'
+      vmImage: 'windows-2022'
+      BuildConfiguration:  $(BuildConfiguration)
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  - template: build/templates/Test-Bash.yml
+    parameters:
+      name: 'Test Linux'
+      vmImage: 'ubuntu-20.04'
+      BuildConfiguration:  $(BuildConfiguration)
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - template: build/templates/Test-Bash.yml
+    parameters:
+      name: 'Test macOS'
+      vmImage: 'macOS-11'
+      BuildConfiguration:  $(BuildConfiguration)
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - template: build/templates/Pack-MyGet.yml
+    parameters:
+      name: 'Pack MyGet'
+      vmImage: 'windows-2022'
+      BuildConfiguration:  $(BuildConfiguration)
+
+  - template: build/templates/Pack-NuGet.yml
+    parameters:
+      name: 'Pack NuGet'
+      vmImage: 'windows-2022'
+      BuildConfiguration:  $(BuildConfiguration)
+
+  - template: build/templates/Publish-PowerShell.yml
+    parameters:
+      name: 'Publish Windows'
+      vmImage: 'windows-2022'
+      PublishProject: 'AvaloniaDemo'
+      PublishRuntime: 'win7-x64'
+
+  - template: build/templates/Publish-PowerShell.yml
+    parameters:
+      name: 'Publish Windows net461'
+      vmImage: 'windows-2022'
+      PublishFramework: 'net461'
+      PublishProject: 'AvaloniaDemo'
+      PublishRuntime: 'win7-x64'
+
+  - template: build/templates/Publish-Bash.yml
+    parameters:
+      name: 'Publish Ubuntu'
+      vmImage: 'ubuntu-20.04'
+      PublishProject: 'AvaloniaDemo'
+      PublishRuntime: 'ubuntu.14.04-x64'
+
+  - template: build/templates/Publish-Bash.yml
+    parameters:
+      name: 'Publish Debian'
+      vmImage: 'ubuntu-20.04'
+      PublishProject: 'AvaloniaDemo'
+      PublishRuntime: 'debian.8-x64'
+
+  - template: build/templates/Publish-Bash.yml
+    parameters:
+      name: 'Publish macOS'
+      vmImage: 'macOS-11'
+      PublishProject: 'AvaloniaDemo'
+      PublishRuntime: 'osx.10.12-x64'

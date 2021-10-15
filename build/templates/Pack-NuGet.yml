@@ -1,0 +1,30 @@
+parameters:
+  - name: name
+    default: 'Pack NuGet'
+  - name: vmImage
+    default: ''
+  - name: BuildConfiguration
+    default: $(BuildConfiguration)
+
+jobs:
+  - job: ${{ parameters.name }}
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    variables:
+      BuildConfiguration: ${{ parameters.BuildConfiguration }}
+    steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET Core SDK'
+        inputs:
+          useGlobalJson: true
+      - task: PowerShell@2
+        displayName: 'Nuke Target Pack'
+        inputs:
+          targetType: filePath
+          filePath: ./build.ps1
+          arguments: '--target Pack --configuration $(BuildConfiguration)'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: NuGet'
+        inputs:
+          PathtoPublish: ./artifacts/NuGet
+          ArtifactName: NuGet

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Chrome;
@@ -24,7 +25,7 @@ namespace Dock.Avalonia.Controls
         private readonly HostWindowState _hostWindowState;
         private Control? _chromeGrip;
         private HostWindowTitleBar? _hostWindowTitleBar;
-        private bool _mouseDown;
+        private bool _mouseDown, _draggingWindow;
 
         /// <summary>
         /// Define <see cref="IsToolWindow"/> property.
@@ -102,12 +103,23 @@ namespace Dock.Avalonia.Controls
             _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
 
             PseudoClasses.Set(":dragging", true);
+            _draggingWindow = true;
             BeginMoveDrag(e);
+            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                EndDrag(e);
+            }
+        }
+
+        private void EndDrag(PointerEventArgs e)
+        {
             PseudoClasses.Set(":dragging", false);
 
             Window?.Factory?.OnWindowMoveDragEnd(Window);
             _hostWindowState.Process(e.GetPosition(this), EventType.Released);
             _mouseDown = false;
+            _draggingWindow = false;
         }
 
         /// <inheritdoc/>
@@ -121,6 +133,17 @@ namespace Dock.Avalonia.Controls
                 {
                     MoveDrag(e);
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+        {
+            base.OnPointerReleased(e);
+
+            if (_draggingWindow)
+            {
+                EndDrag(e);
             }
         }
 

@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
 		build\SourceLink.props = build\SourceLink.props
 		build\SignAssembly.props = build\SignAssembly.props
+		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
@@ -82,6 +83,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel.UnitTests", "tests\Dock.ProportionalStackPanel.UnitTests\Dock.ProportionalStackPanel.UnitTests.csproj", "{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,6 +156,10 @@ Global
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +184,7 @@ Global
 		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{89C43375-BDB6-42DF-90B9-8819DF675C35} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

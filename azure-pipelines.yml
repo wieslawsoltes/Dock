@@ -11,8 +11,7 @@ resources:
 variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'Any CPU'
-  NetCoreSDK: '5.0.400'
-  PublishFramework: 'net5.0'
+  PublishFramework: 'net6.0'
   PublishProject: 'AvaloniaDemo'
   PublishRuntime: ''
 

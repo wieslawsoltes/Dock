@@ -33,6 +33,9 @@ class Build : NukeBuild
     [Parameter("publish-project")]
     public string PublishProject { get; set; }
 
+    [Parameter("publish-self-contained")]
+    public bool PublishSelfContained { get; set; } = true;
+
     AbsolutePath SourceDirectory => RootDirectory / "src";
 
     AbsolutePath TestsDirectory => RootDirectory / "tests";
@@ -87,7 +90,7 @@ class Build : NukeBuild
             DotNetTest(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetLogger("trx")
+                .SetLoggers("trx")
                 .SetResultsDirectory(ArtifactsDirectory / "TestResults")
                 .EnableNoBuild()
                 .EnableNoRestore());
@@ -119,6 +122,7 @@ class Build : NukeBuild
                 .SetVersionSuffix(VersionSuffix)
                 .SetFramework(PublishFramework)
                 .SetRuntime(PublishRuntime)
+                .SetSelfContained(PublishSelfContained)
                 .SetOutput(ArtifactsDirectory / "Publish" / PublishProject + "-" + PublishFramework + "-" + PublishRuntime));
         });
 }

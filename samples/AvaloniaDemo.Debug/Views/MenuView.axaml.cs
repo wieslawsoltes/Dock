@@ -2,36 +2,35 @@
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia;
 
-namespace AvaloniaDemo.Views
+namespace AvaloniaDemo.Views;
+
+public class MenuView : UserControl
 {
-    public class MenuView : UserControl
+    public MenuView()
     {
-        public MenuView()
+        InitializeComponent();
+
+        this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
         {
-            InitializeComponent();
-
-            this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
+            if (VisualRoot is Window window)
             {
-                if (VisualRoot is Window window)
-                {
-                    bool isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
-                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
-                }
-            };
+                bool isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
+            }
+        };
 
-            this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (sender, e) =>
-            {
-                if (VisualRoot is Window window)
-                {
-                    bool isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
-                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
-                }
-            };
-        }
-
-        private void InitializeComponent()
+        this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (sender, e) =>
         {
-            AvaloniaXamlLoader.Load(this);
-        }
+            if (VisualRoot is Window window)
+            {
+                bool isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
+            }
+        };
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

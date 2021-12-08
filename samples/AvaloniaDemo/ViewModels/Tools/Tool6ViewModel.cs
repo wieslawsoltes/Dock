@@ -1,8 +1,7 @@
 ﻿using Dock.Model.ReactiveUI.Controls;
 
-namespace AvaloniaDemo.ViewModels.Tools
+namespace AvaloniaDemo.ViewModels.Tools;
+
+public class Tool6ViewModel : Tool
 {
-    public class Tool6ViewModel : Tool
-    {
-    }
 }

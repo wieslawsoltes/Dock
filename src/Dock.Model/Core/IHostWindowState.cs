@@ -1,14 +1,13 @@
 ﻿
-namespace Dock.Model.Core
+namespace Dock.Model.Core;
+
+/// <summary>
+/// Host window state contract.
+/// </summary>
+public interface IHostWindowState
 {
     /// <summary>
-    /// Host window state contract.
+    /// Gets or sets dock manager.
     /// </summary>
-    public interface IHostWindowState
-    {
-        /// <summary>
-        /// Gets or sets dock manager.
-        /// </summary>
-        IDockManager DockManager { get; set; }
-    }
+    IDockManager DockManager { get; set; }
 }

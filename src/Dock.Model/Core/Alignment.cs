@@ -1,34 +1,33 @@
 ﻿
-namespace Dock.Model.Core
+namespace Dock.Model.Core;
+
+/// <summary>
+/// Defines dock alignment.
+/// </summary>
+public enum Alignment
 {
     /// <summary>
-    /// Defines dock alignment.
+    /// Unset alignment.
     /// </summary>
-    public enum Alignment
-    {
-        /// <summary>
-        /// Unset alignment.
-        /// </summary>
-        Unset = -1,
+    Unset = -1,
 
-        /// <summary>
-        /// Left alignment.
-        /// </summary>
-        Left = 0,
+    /// <summary>
+    /// Left alignment.
+    /// </summary>
+    Left = 0,
 
-        /// <summary>
-        /// Bottom alignment.
-        /// </summary>
-        Bottom = 1,
+    /// <summary>
+    /// Bottom alignment.
+    /// </summary>
+    Bottom = 1,
 
-        /// <summary>
-        /// Right alignment.
-        /// </summary>
-        Right = 2,
+    /// <summary>
+    /// Right alignment.
+    /// </summary>
+    Right = 2,
 
-        /// <summary>
-        /// Top alignment.
-        /// </summary>
-        Top = 3
-    }
+    /// <summary>
+    /// Top alignment.
+    /// </summary>
+    Top = 3
 }

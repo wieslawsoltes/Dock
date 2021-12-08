@@ -1,8 +1,7 @@
 ﻿using Dock.Model.ReactiveUI.Controls;
 
-namespace AvaloniaDemo.ViewModels.Views
+namespace AvaloniaDemo.ViewModels.Views;
+
+public class HomeViewModel : RootDock
 {
-    public class HomeViewModel : RootDock
-    {
-    }
 }

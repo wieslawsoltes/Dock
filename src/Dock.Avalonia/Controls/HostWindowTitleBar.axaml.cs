@@ -4,23 +4,22 @@ using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia.Controls;
+
+/// <summary>
+/// Interaction logic for <see cref="HostWindowTitleBar"/> xaml.
+/// </summary>
+public class HostWindowTitleBar : TitleBar, IStyleable
 {
-    /// <summary>
-    /// Interaction logic for <see cref="HostWindowTitleBar"/> xaml.
-    /// </summary>
-    public class HostWindowTitleBar : TitleBar, IStyleable
-    {
-        internal Control? BackgroundControl { get; private set; }
+    internal Control? BackgroundControl { get; private set; }
         
-        Type IStyleable.StyleKey => typeof(HostWindowTitleBar);
+    Type IStyleable.StyleKey => typeof(HostWindowTitleBar);
 
-        /// <inheritdoc/>
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-        {
-            base.OnApplyTemplate(e);
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
 
-            BackgroundControl = e.NameScope.Find<Control>("PART_Background");
-        }
+        BackgroundControl = e.NameScope.Find<Control>("PART_Background");
     }
 }

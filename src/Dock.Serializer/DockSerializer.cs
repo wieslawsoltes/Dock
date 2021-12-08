@@ -7,81 +7,80 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace Dock.Serializer
+namespace Dock.Serializer;
+
+public sealed class DockSerializer : IDockSerializer
 {
-    public sealed class DockSerializer : IDockSerializer
+    private readonly JsonSerializerSettings _settings;
+
+    private class ListContractResolver : DefaultContractResolver
     {
-        private readonly JsonSerializerSettings _settings;
+        private readonly Type _type;
 
-        private class ListContractResolver : DefaultContractResolver
+        public ListContractResolver(Type type)
         {
-            private readonly Type _type;
+            _type = type;
+        }
 
-            public ListContractResolver(Type type)
+        public override JsonContract ResolveContract(Type type)
+        {
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
             {
-                _type = type;
+                return base.ResolveContract(_type.MakeGenericType(type.GenericTypeArguments[0]));
             }
+            return base.ResolveContract(type);
+        }
 
-            public override JsonContract ResolveContract(Type type)
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            return base.CreateProperties(type, memberSerialization).Where(p => p.Writable).ToList();
+        }
+    }
+
+    public DockSerializer(Type listType)
+    {
+        _settings = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+            TypeNameHandling = TypeNameHandling.Objects,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            ContractResolver = new ListContractResolver(listType),
+            NullValueHandling = NullValueHandling.Ignore,
+            Converters =
             {
-                if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>))
-                {
-                    return base.ResolveContract(_type.MakeGenericType(type.GenericTypeArguments[0]));
-                }
-                return base.ResolveContract(type);
+                new KeyValuePairConverter()
             }
+        };
+    }
 
-            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-            {
-                return base.CreateProperties(type, memberSerialization).Where(p => p.Writable).ToList();
-            }
-        }
+    public string Serialize<T>(T value)
+    {
+        return JsonConvert.SerializeObject(value, _settings);
+    }
 
-        public DockSerializer(Type listType)
+    public T Deserialize<T>(string text)
+    {
+        return JsonConvert.DeserializeObject<T>(text, _settings)!;
+    }
+
+    public T Load<T>(string path)
+    {
+        using var stream = System.IO.File.OpenRead(path);
+        using var streamReader = new System.IO.StreamReader(stream, Encoding.UTF8);
+        var text = streamReader.ReadToEnd();
+        return Deserialize<T>(text);
+    }
+
+    public void Save<T>(string path, T value)
+    {
+        var text = Serialize(value);
+        if (string.IsNullOrWhiteSpace(text))
         {
-            _settings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                TypeNameHandling = TypeNameHandling.Objects,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                ContractResolver = new ListContractResolver(listType),
-                NullValueHandling = NullValueHandling.Ignore,
-                Converters =
-                {
-                    new KeyValuePairConverter()
-                }
-            };
+            return;
         }
-
-        public string Serialize<T>(T value)
-        {
-            return JsonConvert.SerializeObject(value, _settings);
-        }
-
-        public T Deserialize<T>(string text)
-        {
-            return JsonConvert.DeserializeObject<T>(text, _settings)!;
-        }
-
-        public T Load<T>(string path)
-        {
-            using var stream = System.IO.File.OpenRead(path);
-            using var streamReader = new System.IO.StreamReader(stream, Encoding.UTF8);
-            var text = streamReader.ReadToEnd();
-            return Deserialize<T>(text);
-        }
-
-        public void Save<T>(string path, T value)
-        {
-            var text = Serialize(value);
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                return;
-            }
-            using var stream = System.IO.File.Create(path);
-            using var streamWriter = new System.IO.StreamWriter(stream, Encoding.UTF8);
-            streamWriter.Write(text);
-        }
+        using var stream = System.IO.File.Create(path);
+        using var streamWriter = new System.IO.StreamWriter(stream, Encoding.UTF8);
+        streamWriter.Write(text);
     }
 }

@@ -1,18 +1,17 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Notepad.Views.Tools
-{
-    public class ReplaceView : UserControl
-    {
-        public ReplaceView()
-        {
-            InitializeComponent();
-        }
+namespace Notepad.Views.Tools;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public class ReplaceView : UserControl
+{
+    public ReplaceView()
+    {
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

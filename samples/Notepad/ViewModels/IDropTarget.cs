@@ -1,10 +1,9 @@
 ﻿using Avalonia.Input;
 
-namespace Notepad.ViewModels
+namespace Notepad.ViewModels;
+
+public interface IDropTarget
 {
-    public interface IDropTarget
-    {
-        void DragOver(object? sender, DragEventArgs e);
-        void Drop(object? sender, DragEventArgs e);
-    }
+    void DragOver(object? sender, DragEventArgs e);
+    void Drop(object? sender, DragEventArgs e);
 }

@@ -1,7 +1,6 @@
 ﻿
-namespace AvaloniaDemo.Models.Documents
+namespace AvaloniaDemo.Models.Documents;
+
+public class DemoDocument
 {
-    public class DemoDocument
-    {
-    }
 }

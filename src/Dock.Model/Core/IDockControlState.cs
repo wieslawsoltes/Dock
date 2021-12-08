@@ -1,14 +1,13 @@
 ﻿
-namespace Dock.Model.Core
+namespace Dock.Model.Core;
+
+/// <summary>
+/// Dock control state contract.
+/// </summary>
+public interface IDockControlState
 {
     /// <summary>
-    /// Dock control state contract.
+    /// Gets or sets dock manager.
     /// </summary>
-    public interface IDockControlState
-    {
-        /// <summary>
-        /// Gets or sets dock manager.
-        /// </summary>
-        IDockManager DockManager { get; set; }
-    }
+    IDockManager DockManager { get; set; }
 }

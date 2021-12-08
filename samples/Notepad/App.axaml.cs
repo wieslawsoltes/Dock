@@ -5,58 +5,57 @@ using Dock.Model;
 using Notepad.ViewModels;
 using Notepad.Views;
 
-namespace Notepad
+namespace Notepad;
+
+public class App : Application
 {
-    public class App : Application
+    public override void Initialize()
     {
-        public override void Initialize()
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        // DockManager.s_enableSplitToWindow = true;
+
+        var mainWindowViewModel = new MainWindowViewModel();
+
+        switch (ApplicationLifetime)
         {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            // DockManager.s_enableSplitToWindow = true;
-
-            var mainWindowViewModel = new MainWindowViewModel();
-
-            switch (ApplicationLifetime)
+            case IClassicDesktopStyleApplicationLifetime desktopLifetime:
             {
-                case IClassicDesktopStyleApplicationLifetime desktopLifetime:
+                var mainWindow = new MainWindow
                 {
-                    var mainWindow = new MainWindow
-                    {
-                        DataContext = mainWindowViewModel
-                    };
+                    DataContext = mainWindowViewModel
+                };
 
-                    mainWindow.Closing += (_, _) =>
-                    {
-                        mainWindowViewModel.CloseLayout();
-                    };
-
-                    desktopLifetime.MainWindow = mainWindow;
-
-                    desktopLifetime.Exit += (_, _) =>
-                    {
-                        mainWindowViewModel.CloseLayout();
-                    };
-
-                    break;
-                }
-                case ISingleViewApplicationLifetime singleViewLifetime:
+                mainWindow.Closing += (_, _) =>
                 {
-                    var mainView = new MainView()
-                    {
-                        DataContext = mainWindowViewModel
-                    };
+                    mainWindowViewModel.CloseLayout();
+                };
 
-                    singleViewLifetime.MainView = mainView;
+                desktopLifetime.MainWindow = mainWindow;
 
-                    break;
-                }
+                desktopLifetime.Exit += (_, _) =>
+                {
+                    mainWindowViewModel.CloseLayout();
+                };
+
+                break;
             }
+            case ISingleViewApplicationLifetime singleViewLifetime:
+            {
+                var mainView = new MainView()
+                {
+                    DataContext = mainWindowViewModel
+                };
 
-            base.OnFrameworkInitializationCompleted();
+                singleViewLifetime.MainView = mainView;
+
+                break;
+            }
         }
+
+        base.OnFrameworkInitializationCompleted();
     }
 }

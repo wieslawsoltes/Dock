@@ -1,8 +1,7 @@
 ﻿using Dock.Model.Avalonia.Controls;
 
-namespace AvaloniaDemo.ViewModels.Tools
+namespace AvaloniaDemo.ViewModels.Tools;
+
+public class RightTopTool2ViewModel : Tool
 {
-    public class RightTopTool2ViewModel : Tool
-    {
-    }
 }

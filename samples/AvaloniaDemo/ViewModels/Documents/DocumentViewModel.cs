@@ -1,8 +1,7 @@
 ﻿using Dock.Model.ReactiveUI.Controls;
 
-namespace AvaloniaDemo.ViewModels.Documents
+namespace AvaloniaDemo.ViewModels.Documents;
+
+public class DocumentViewModel : Document
 {
-    public class DocumentViewModel : Document
-    {
-    }
 }

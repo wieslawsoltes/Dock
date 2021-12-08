@@ -4,41 +4,40 @@ using Avalonia.Markup.Xaml;
 using AvaloniaDemo.ViewModels;
 using Dock.Avalonia.Controls;
 
-namespace AvaloniaDemo.Views
+namespace AvaloniaDemo.Views;
+
+public class MainView : UserControl
 {
-    public class MainView : UserControl
+    private readonly DockControl? _dockControl;
+
+    public MainView()
     {
-        private readonly DockControl? _dockControl;
+        InitializeComponent();
+        _dockControl = this.FindControl<DockControl>("dockControl");
+    }
 
-        public MainView()
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
         {
-            InitializeComponent();
-            _dockControl = this.FindControl<DockControl>("dockControl");
+            mainWindowViewModel.AttachDockControl(_dockControl);
         }
+    }
 
-        private void InitializeComponent()
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
         {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e);
-
-            if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
-            {
-                mainWindowViewModel.AttachDockControl(_dockControl);
-            }
-        }
-
-        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnDetachedFromVisualTree(e);
-
-            if (DataContext is MainWindowViewModel mainWindowViewModel && _dockControl != null)
-            {
-                mainWindowViewModel.DetachDockControl();
-            }
+            mainWindowViewModel.DetachDockControl();
         }
     }
 }

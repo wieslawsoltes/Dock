@@ -1,18 +1,17 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo.Views.Tools
-{
-    public class RightBottomTool2View : UserControl
-    {
-        public RightBottomTool2View()
-        {
-            InitializeComponent();
-        }
+namespace AvaloniaDemo.Views.Tools;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public class RightBottomTool2View : UserControl
+{
+    public RightBottomTool2View()
+    {
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

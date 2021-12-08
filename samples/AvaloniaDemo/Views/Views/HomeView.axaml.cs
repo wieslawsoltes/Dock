@@ -1,18 +1,17 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo.Views.Views
-{
-    public class HomeView : UserControl
-    {
-        public HomeView()
-        {
-            InitializeComponent();
-        }
+namespace AvaloniaDemo.Views.Views;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public class HomeView : UserControl
+{
+    public HomeView()
+    {
+        InitializeComponent();
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

@@ -6,104 +6,103 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model.Core;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia.Controls;
+
+/// <summary>
+/// Dock tool chrome content control.
+/// </summary>
+[PseudoClasses(":floating", ":active")]
+public class ToolChromeControl : ContentControl
 {
     /// <summary>
-    /// Dock tool chrome content control.
+    /// Define <see cref="Title"/> property.
     /// </summary>
-    [PseudoClasses(":floating", ":active")]
-    public class ToolChromeControl : ContentControl
+    public static readonly StyledProperty<string> TitleProprty =
+        AvaloniaProperty.Register<ToolChromeControl, string>(nameof(Title));
+
+    /// <summary>
+    /// Define the <see cref="IsActive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsActiveProperty =
+        AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsActive));
+
+    /// <summary>
+    /// Initialize the new instance of the <see cref="ToolChromeControl"/>.
+    /// </summary>
+    public ToolChromeControl()
     {
-        /// <summary>
-        /// Define <see cref="Title"/> property.
-        /// </summary>
-        public static readonly StyledProperty<string> TitleProprty =
-            AvaloniaProperty.Register<ToolChromeControl, string>(nameof(Title));
+        UpdatePseudoClasses(IsActive);
+    }
 
-        /// <summary>
-        /// Define the <see cref="IsActive"/> property.
-        /// </summary>
-        public static readonly StyledProperty<bool> IsActiveProperty =
-            AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsActive));
+    /// <summary>
+    /// Gets or sets chrome tool title.
+    /// </summary>
+    public string Title
+    {
+        get => GetValue(TitleProprty);
+        set => SetValue(TitleProprty, value);
+    }
 
-        /// <summary>
-        /// Initialize the new instance of the <see cref="ToolChromeControl"/>.
-        /// </summary>
-        public ToolChromeControl()
-        {
-            UpdatePseudoClasses(IsActive);
-        }
+    /// <summary>
+    /// Gets or sets if this is the currently active Tool.
+    /// </summary>
+    public bool IsActive
+    {
+        get => GetValue(IsActiveProperty);
+        set => SetValue(IsActiveProperty, value);
+    }
 
-        /// <summary>
-        /// Gets or sets chrome tool title.
-        /// </summary>
-        public string Title
-        {
-            get => GetValue(TitleProprty);
-            set => SetValue(TitleProprty, value);
-        }
+    internal Control? Grip { get; private set; }
 
-        /// <summary>
-        /// Gets or sets if this is the currently active Tool.
-        /// </summary>
-        public bool IsActive
-        {
-            get => GetValue(IsActiveProperty);
-            set => SetValue(IsActiveProperty, value);
-        }
+    internal Button? CloseButton { get; private set; }
 
-        internal Control? Grip { get; private set; }
-
-        internal Button? CloseButton { get; private set; }
-
-        /// <inheritdoc/>
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e);
-            AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
-        }
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+    }
         
-        private void PressedHandler(object? sender, PointerPressedEventArgs e)
+    private void PressedHandler(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
         {
-            if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
+            if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
             {
-                if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
-                {
-                    factory.SetFocusedDockable(root, dock.ActiveDockable);
-                }
+                factory.SetFocusedDockable(root, dock.ActiveDockable);
             }
         }
+    }
 
-        /// <inheritdoc/>
-        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        if (VisualRoot is HostWindow window)
         {
-            base.OnApplyTemplate(e);
+            Grip = e.NameScope.Find<Control>("PART_Grip");
+            CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
 
-            if (VisualRoot is HostWindow window)
-            {
-                Grip = e.NameScope.Find<Control>("PART_Grip");
-                CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
+            window.AttachGrip(this);
 
-                window.AttachGrip(this);
-
-                PseudoClasses.Set(":floating", true);
-            }
+            PseudoClasses.Set(":floating", true);
         }
+    }
 
-        /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsActiveProperty)
         {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == IsActiveProperty)
-            {
-                UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
-            }
+            UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
         }
+    }
 
-        private void UpdatePseudoClasses(bool isActive)
-        {
-            PseudoClasses.Set(":active", isActive);
-        }
+    private void UpdatePseudoClasses(bool isActive)
+    {
+        PseudoClasses.Set(":active", isActive);
     }
 }

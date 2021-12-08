@@ -1,8 +1,7 @@
 ﻿using Dock.Model.Avalonia.Core;
 
-namespace AvaloniaDemo.ViewModels.Views
+namespace AvaloniaDemo.ViewModels.Views;
+
+public class DashboardViewModel : DockBase
 {
-    public class DashboardViewModel : DockBase
-    {
-    }
 }

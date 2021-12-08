@@ -1,7 +1,6 @@
 ﻿
-namespace AvaloniaDemo.Models.Tools
+namespace AvaloniaDemo.Models.Tools;
+
+public class Tool8
 {
-    public class Tool8
-    {
-    }
 }

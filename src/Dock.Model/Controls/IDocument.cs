@@ -1,12 +1,11 @@
 ﻿
 using Dock.Model.Core;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.Controls;
+
+/// <summary>
+/// Document contract.
+/// </summary>
+public interface IDocument : IDockable
 {
-    /// <summary>
-    /// Document contract.
-    /// </summary>
-    public interface IDocument : IDockable
-    {
-    }
 }

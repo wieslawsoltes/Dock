@@ -9,89 +9,88 @@ using Avalonia.VisualTree;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
-namespace Dock.Avalonia.Internal
+namespace Dock.Avalonia.Internal;
+
+/// <summary>
+/// Dock helpers.
+/// </summary>
+internal static class DockHelpers
 {
-    /// <summary>
-    /// Dock helpers.
-    /// </summary>
-    internal static class DockHelpers
+    private static bool IsHitTestVisible(IVisual visual)
     {
-        private static bool IsHitTestVisible(IVisual visual)
+        return visual is IInputElement
         {
-            return visual is IInputElement
+            IsVisible: true, 
+            IsHitTestVisible: true, 
+            IsEffectivelyEnabled: true, 
+            IsAttachedToVisualTree: true
+        };
+    }
+
+    private static IEnumerable<IVisual>? GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
+    {
+        var root = visual.GetVisualRoot();
+        if (root is { })
+        {
+            var rootPoint = visual.TranslatePoint(p, root);
+            if (rootPoint.HasValue)
             {
-                IsVisible: true, 
-                IsHitTestVisible: true, 
-                IsEffectivelyEnabled: true, 
-                IsAttachedToVisualTree: true
-            };
+                return root.Renderer?.HitTest(rootPoint.Value, visual, predicate);
+            }
+        }
+        return Enumerable.Empty<IVisual>();
+    }
+
+    public static IControl? GetControl(IInputElement? input, Point point, AvaloniaProperty<bool> property)
+    {
+        IEnumerable<IInputElement>? inputElements = null;
+        try
+        {
+            inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
+        }
+        catch (Exception ex)
+        {
+            Print(ex);
         }
 
-        private static IEnumerable<IVisual>? GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
+        var controls = inputElements?.OfType<IControl>().ToList();
+        if (controls is { })
         {
-            var root = visual.GetVisualRoot();
-            if (root is { })
+            foreach (var control in controls)
             {
-                var rootPoint = visual.TranslatePoint(p, root);
-                if (rootPoint.HasValue)
+                if (control.GetValue(property))
                 {
-                    return root.Renderer?.HitTest(rootPoint.Value, visual, predicate);
+                    return control;
                 }
             }
-            return Enumerable.Empty<IVisual>();
         }
+        return null;
+    }
 
-        public static IControl? GetControl(IInputElement? input, Point point, AvaloniaProperty<bool> property)
+    private static void Print(Exception ex)
+    {
+        Debug.WriteLine(ex.Message);
+        Debug.WriteLine(ex.StackTrace);
+        if (ex.InnerException is { })
         {
-            IEnumerable<IInputElement>? inputElements = null;
-            try
-            {
-                inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
-            }
-            catch (Exception ex)
-            {
-                Print(ex);
-            }
+            Print(ex.InnerException);
+        }
+    }
 
-            var controls = inputElements?.OfType<IControl>().ToList();
-            if (controls is { })
+    public static DockPoint ToDockPoint(Point point)
+    {
+        return new(point.X, point.Y);
+    }
+
+    public static void ShowWindows(IDockable dockable)
+    {
+        if (dockable.Owner is IDock {Factory: { } factory} dock)
+        {
+            if (factory.FindRoot(dock, _ => true) is {ActiveDockable: IRootDock activeRootDockable})
             {
-                foreach (var control in controls)
+                if (activeRootDockable.ShowWindows.CanExecute(null))
                 {
-                    if (control.GetValue(property))
-                    {
-                        return control;
-                    }
-                }
-            }
-            return null;
-        }
-
-        private static void Print(Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-            Debug.WriteLine(ex.StackTrace);
-            if (ex.InnerException is { })
-            {
-                Print(ex.InnerException);
-            }
-        }
-
-        public static DockPoint ToDockPoint(Point point)
-        {
-            return new(point.X, point.Y);
-        }
-
-        public static void ShowWindows(IDockable dockable)
-        {
-            if (dockable.Owner is IDock {Factory: { } factory} dock)
-            {
-                if (factory.FindRoot(dock, _ => true) is {ActiveDockable: IRootDock activeRootDockable})
-                {
-                    if (activeRootDockable.ShowWindows.CanExecute(null))
-                    {
-                        activeRootDockable.ShowWindows.Execute(null);
-                    }
+                    activeRootDockable.ShowWindows.Execute(null);
                 }
             }
         }

@@ -6,62 +6,61 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
 
-namespace Dock.Avalonia.Controls
+namespace Dock.Avalonia.Controls;
+
+/// <summary>
+/// Dock TabStrip custom control.
+/// </summary>
+[PseudoClasses(":create")]
+public class DockTabStrip : TabStrip, IStyleable
 {
     /// <summary>
-    /// Dock TabStrip custom control.
+    /// Defines the <see cref="CanCreateItem"/> property.
     /// </summary>
-    [PseudoClasses(":create")]
-    public class DockTabStrip : TabStrip, IStyleable
+    public static readonly StyledProperty<bool> CanCreateItemProperty =
+        AvaloniaProperty.Register<DockPanel, bool>(nameof(CanCreateItem));
+
+    /// <summary>
+    /// Gets or sets if tab strop dock can create new items.
+    /// </summary>
+    public bool CanCreateItem
     {
-        /// <summary>
-        /// Defines the <see cref="CanCreateItem"/> property.
-        /// </summary>
-        public static readonly StyledProperty<bool> CanCreateItemProperty =
-            AvaloniaProperty.Register<DockPanel, bool>(nameof(CanCreateItem));
+        get => GetValue(CanCreateItemProperty);
+        set => SetValue(CanCreateItemProperty, value);
+    }
 
-        /// <summary>
-        /// Gets or sets if tab strop dock can create new items.
-        /// </summary>
-        public bool CanCreateItem
+    Type IStyleable.StyleKey => typeof(TabStrip);
+
+    /// <summary>
+    /// Initializes new instance of the <see cref="DockTabStrip"/> class.
+    /// </summary>
+    public DockTabStrip()
+    {
+        UpdatePseudoClasses(CanCreateItem);
+    }
+
+    /// <inheritdoc/>
+    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    {
+        return new ItemContainerGenerator<DockTabStripItem>(
+            this,
+            ContentControl.ContentProperty,
+            ContentControl.ContentTemplateProperty);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == CanCreateItemProperty)
         {
-            get => GetValue(CanCreateItemProperty);
-            set => SetValue(CanCreateItemProperty, value);
+            UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
         }
+    }
 
-        Type IStyleable.StyleKey => typeof(TabStrip);
-
-        /// <summary>
-        /// Initializes new instance of the <see cref="DockTabStrip"/> class.
-        /// </summary>
-        public DockTabStrip()
-        {
-            UpdatePseudoClasses(CanCreateItem);
-        }
-
-        /// <inheritdoc/>
-        protected override IItemContainerGenerator CreateItemContainerGenerator()
-        {
-            return new ItemContainerGenerator<DockTabStripItem>(
-                this,
-                ContentControl.ContentProperty,
-                ContentControl.ContentTemplateProperty);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == CanCreateItemProperty)
-            {
-                UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
-            }
-        }
-
-        private void UpdatePseudoClasses(bool canCreate)
-        {
-            PseudoClasses.Set(":create", canCreate);
-        }
+    private void UpdatePseudoClasses(bool canCreate)
+    {
+        PseudoClasses.Set(":create", canCreate);
     }
 }

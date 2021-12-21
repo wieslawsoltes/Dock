@@ -120,7 +120,12 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
         dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
         dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
         dlg.AllowMultiple = true;
-        var result = await dlg.ShowAsync(GetWindow());
+        var window = GetWindow();
+        if (window is null)
+        {
+            return;
+        }
+        var result = await dlg.ShowAsync(window);
         if (result is { Length: > 0 })
         {
             foreach (var path in result)
@@ -164,7 +169,12 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
         dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
         dlg.InitialFileName = fileViewModel.Title;
         dlg.DefaultExtension = "txt";
-        var result = await dlg.ShowAsync(GetWindow());
+        var window = GetWindow();
+        if (window is null)
+        {
+            return;
+        }
+        var result = await dlg.ShowAsync(window);
         if (result is { })
         {
             if (!string.IsNullOrEmpty(result))
@@ -177,7 +187,7 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     public void FileExit()
     {
-        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             desktopLifetime.Shutdown();
         }
@@ -214,7 +224,7 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     private Window? GetWindow()
     {
-        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             return desktopLifetime.MainWindow;
         }

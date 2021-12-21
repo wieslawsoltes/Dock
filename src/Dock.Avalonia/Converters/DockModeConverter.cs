@@ -25,7 +25,7 @@ public class DockModeConverter : IValueConverter
     /// <param name="parameter">A user-defined parameter.</param>
     /// <param name="culture">The culture to use.</param>
     /// <returns>The converted value.</returns>
-    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value switch
         {
@@ -50,7 +50,7 @@ public class DockModeConverter : IValueConverter
     /// <param name="parameter">A user-defined parameter.</param>
     /// <param name="culture">The culture to use.</param>
     /// <returns>The converted value.</returns>
-    public object ConvertBack(object? value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value switch
         {

@@ -25,14 +25,17 @@ public class MainView : UserControl
 
         themes.SelectionChanged += (_, _) =>
         {
-            Application.Current.Styles[0] = themes.SelectedIndex switch
+            if (Application.Current is { })
             {
-                0 => App.FluentLight,
-                1 => App.FluentDark,
-                2 => App.DefaultLight,
-                3 => App.DefaultDark,
-                _ => throw new Exception("Not support theme.")
-            };
+                Application.Current.Styles[0] = themes.SelectedIndex switch
+                {
+                    0 => App.FluentLight,
+                    1 => App.FluentDark,
+                    2 => App.DefaultLight,
+                    3 => App.DefaultDark,
+                    _ => throw new Exception("Not support theme.")
+                };
+            }
         };
     }
 

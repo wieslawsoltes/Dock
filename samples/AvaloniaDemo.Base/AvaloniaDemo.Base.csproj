@@ -7,7 +7,6 @@
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
     <RootNamespace>AvaloniaDemo</RootNamespace>
-    <PackageId>AvaloniaDemo.Base</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />

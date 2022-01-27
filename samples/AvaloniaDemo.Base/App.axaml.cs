@@ -14,33 +14,33 @@ public class App : Application
 {       
     public static readonly Styles FluentDark = new Styles
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo/Themes/FluentDark.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentDark.axaml")
         }
     };
 
     public static readonly Styles FluentLight = new Styles
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo/Themes/FluentLight.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentLight.axaml")
         }
     };
 
     public static readonly Styles DefaultLight = new Styles
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo/Themes/DefaultLight.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultLight.axaml")
         }
     };
 
     public static readonly Styles DefaultDark = new Styles
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo/Styles"))
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo/Themes/DefaultDark.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultDark.axaml")
         },
     };
 

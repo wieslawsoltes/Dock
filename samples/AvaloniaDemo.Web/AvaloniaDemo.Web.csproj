@@ -47,7 +47,6 @@
     <TrimmableAssembly Include="Microsoft.CodeAnalysis.CSharp.Scripting" />
     <TrimmableAssembly Include="Microsoft.CodeAnalysis.Scripting" />
     <TrimmableAssembly Include="Avalonia.Controls.DataGrid" />
-    <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
 
   <PropertyGroup>

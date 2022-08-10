@@ -61,8 +61,7 @@ internal class DockControlState : IDockControlState
     private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-
-        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.AddAdorner(control);
         }
@@ -89,7 +88,7 @@ internal class DockControlState : IDockControlState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -99,7 +98,7 @@ internal class DockControlState : IDockControlState
 
     private void Leave()
     {
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -182,7 +181,7 @@ internal class DockControlState : IDockControlState
                 if (dragControl is { })
                 {
                     var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
-                    if (isDragEnabled != true)
+                    if (isDragEnabled is not true)
                     {
                         break;
                     }
@@ -200,7 +199,7 @@ internal class DockControlState : IDockControlState
 
                         if (_state.TargetDockControl is IControl targetControl)
                         {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty) is true;
                         }
 
                         if (isDropEnabled)
@@ -285,7 +284,7 @@ internal class DockControlState : IDockControlState
 
                         if (targetDockControl is IControl targetControl)
                         {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty) is true;
                         }
 
                         if (isDropEnabled)

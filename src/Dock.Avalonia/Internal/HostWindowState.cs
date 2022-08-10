@@ -62,7 +62,7 @@ internal class HostWindowState : IHostWindowState
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-        if (isValid && _state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (isValid && _state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.AddAdorner(control);
         }
@@ -92,7 +92,7 @@ internal class HostWindowState : IHostWindowState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -105,7 +105,7 @@ internal class HostWindowState : IHostWindowState
 
     private void Leave()
     {
-        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -196,7 +196,7 @@ internal class HostWindowState : IHostWindowState
 
                         if (_state.TargetDockControl is IControl targetControl)
                         {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty) is true;
                         }
 
                         if (isDropEnabled)

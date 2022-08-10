@@ -91,13 +91,13 @@ public class ToolChromeControl : ContentControl
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
         if (change.Property == IsActiveProperty)
         {
-            UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
+            UpdatePseudoClasses(change.GetNewValue<bool>());
         }
     }
 

@@ -139,11 +139,14 @@ public class DockableControl : Panel, IDockableControl
         var width = bounds.Width;
         var height = bounds.Height;
 
-        var translatedPosition = this.TranslatePoint(bounds.Position, VisualRoot);
-        if (translatedPosition.HasValue)
+        if (VisualRoot is { })
         {
-            x = translatedPosition.Value.X;
-            y = translatedPosition.Value.Y;
+            var translatedPosition = this.TranslatePoint(bounds.Position, VisualRoot);
+            if (translatedPosition.HasValue)
+            {
+                x = translatedPosition.Value.X;
+                y = translatedPosition.Value.Y;
+            }
         }
 
         switch (TrackingMode)

@@ -181,7 +181,7 @@ internal class DockControlState : IDockControlState
                 if (dragControl is { })
                 {
                     var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
-                    if (isDragEnabled is not true)
+                    if (!isDragEnabled)
                     {
                         break;
                     }

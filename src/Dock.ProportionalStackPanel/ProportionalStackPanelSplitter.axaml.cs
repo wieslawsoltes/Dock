@@ -176,7 +176,10 @@ public class ProportionalStackPanelSplitter : Thumb
 
         SetProportion(target, targetElementProportion);
 
-        SetProportion(child, neighbourProportion);
+        if (child is { })
+        {
+            SetProportion(child, neighbourProportion);
+        }
 
         panel.InvalidateMeasure();
         panel.InvalidateArrange();

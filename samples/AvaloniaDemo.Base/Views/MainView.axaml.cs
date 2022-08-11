@@ -22,41 +22,51 @@ public class MainView : UserControl
     private void InitializeThemes()
     {
         var themes = this.Find<ComboBox>("Themes");
-
-        themes.SelectionChanged += (_, _) =>
+        if (themes is { })
         {
-            if (Application.Current is { })
+            themes.SelectionChanged += (_, _) =>
             {
-                Application.Current.Styles[0] = themes.SelectedIndex switch
+                if (Application.Current is { })
                 {
-                    0 => App.FluentLight,
-                    1 => App.FluentDark,
-                    2 => App.DefaultLight,
-                    3 => App.DefaultDark,
-                    _ => throw new Exception("Not support theme.")
-                };
-            }
-        };
+                    Application.Current.Styles[0] = themes.SelectedIndex switch
+                    {
+                        0 => App.FluentLight,
+                        1 => App.FluentDark,
+                        2 => App.DefaultLight,
+                        3 => App.DefaultDark,
+                        _ => throw new Exception("Not support theme.")
+                    };
+                }
+            };
+        }
     }
 
     private void InitializeMenu()
     {
-        this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (_, _) =>
+        var optionsIsDragEnabled = this.FindControl<MenuItem>("OptionsIsDragEnabled");
+        if (optionsIsDragEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDragEnabled.Click += (_, _) =>
             {
-                var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
-                window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
+                }
+            };
+        }
 
-        this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (_, _) =>
+        var optionsIsDropEnabled = this.FindControl<MenuItem>("OptionsIsDropEnabled");
+        if (optionsIsDropEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDropEnabled.Click += (_, _) =>
             {
-                var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
-                window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
+                }
+            };
+        }
     }
 }

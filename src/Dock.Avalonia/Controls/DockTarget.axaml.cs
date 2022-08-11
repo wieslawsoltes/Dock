@@ -24,11 +24,6 @@ public class DockTarget : TemplatedControl
     private Control? _rightSelector;
     private Control? _centerSelector;
 
-    static DockTarget()
-    {
-        IsHitTestVisibleProperty.OverrideDefaultValue(typeof(DockTarget), false);
-    }
-
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -73,7 +68,7 @@ public class DockTarget : TemplatedControl
 
         if (InvalidateIndicator(_centerSelector, _centerIndicator, point, relativeTo, DockOperation.Fill, dragAction, validate))
         {
-            result = DockOperation.Fill;
+            result = DockOperation.Fill;;
         }
 
         return result;
@@ -87,10 +82,16 @@ public class DockTarget : TemplatedControl
         }
 
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
-        if (selectorPoint is { } && selector.InputHitTest(selectorPoint.Value) is { } && validate(point, operation, dragAction, relativeTo))
+        if (selectorPoint is { })
         {
-            indicator.Opacity = 0.5;
-            return true;
+            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
+            {
+                if (validate(point, operation, dragAction, relativeTo))
+                {
+                    indicator.Opacity = 0.5;
+                    return true;
+                }
+            }
         }
 
         indicator.Opacity = 0;

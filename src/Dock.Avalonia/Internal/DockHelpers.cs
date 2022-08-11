@@ -41,7 +41,7 @@ internal static class DockHelpers
         return Enumerable.Empty<IVisual>();
     }
 
-    public static Control? GetControl(IInputElement? input, Point point, AvaloniaProperty<bool> property)
+    public static Control? GetControl(IInputElement? input, Point point, StyledProperty<bool> property)
     {
         IEnumerable<IInputElement>? inputElements = null;
         try
@@ -58,7 +58,7 @@ internal static class DockHelpers
         {
             foreach (var control in controls)
             {
-                if (control.GetValue(property) is true)
+                if (control.GetValue(property))
                 {
                     return control;
                 }

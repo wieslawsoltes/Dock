@@ -68,7 +68,7 @@ public class DockTarget : TemplatedControl
 
         if (InvalidateIndicator(_centerSelector, _centerIndicator, point, relativeTo, DockOperation.Fill, dragAction, validate))
         {
-            result = DockOperation.Fill;;
+            result = DockOperation.Fill;
         }
 
         return result;

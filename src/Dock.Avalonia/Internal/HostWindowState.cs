@@ -14,7 +14,7 @@ internal class WindowDragState
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
     public Point TargetPoint { get; set; }
-    public IControl? TargetDropControl { get; set; }
+    public Control? TargetDropControl { get; set; }
     public DragAction DragAction { get; set; }
 
     public void Start(Point point)
@@ -62,7 +62,7 @@ internal class HostWindowState : IHostWindowState
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-        if (isValid && _state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
+        if (isValid && _state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             _adornerHelper.AddAdorner(control);
         }
@@ -92,7 +92,7 @@ internal class HostWindowState : IHostWindowState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
+        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -105,7 +105,7 @@ internal class HostWindowState : IHostWindowState
 
     private void Leave()
     {
-        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty) is true)
+        if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             _adornerHelper.RemoveAdorner(control);
         }
@@ -194,9 +194,9 @@ internal class HostWindowState : IHostWindowState
                     {
                         var isDropEnabled = true;
 
-                        if (_state.TargetDockControl is IControl targetControl)
+                        if (_state.TargetDockControl is Control targetControl)
                         {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty) is true;
+                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                         }
 
                         if (isDropEnabled)

@@ -169,7 +169,7 @@ public class ProportionalStackPanelTests
                     Orientation = Orientation.Horizontal
                 }
             },
-            Items = new List<IControl>()
+            Items = new List<Control>()
             {
                 new Border()
                 {
@@ -190,7 +190,7 @@ public class ProportionalStackPanelTests
                             Orientation = Orientation.Vertical,
                         }
                     },
-                    Items = new List<IControl>()
+                    Items = new List<Control>()
                     {
                         new Border()
                         {
@@ -214,9 +214,9 @@ public class ProportionalStackPanelTests
         target1.Measure(Size.Infinity);
         target1.Arrange(new Rect(target1.DesiredSize));
 
-        var items1 = target1.Items as List<IControl>;
+        var items1 = target1.Items as List<Control>;
         var target2 = items1?[4] as ItemsControl;
-        var items2 = target2?.Items as List<IControl>;
+        var items2 = target2?.Items as List<Control>;
 
         Assert.Equal(new Size(1000, 500), target1.Bounds.Size);
         Assert.Equal(new Rect(0, 0, 0, 0), items1?[0].Bounds);

@@ -13,31 +13,31 @@ public class DockProperties : AvaloniaObject
     /// Defines the IsDockTarget attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDockTargetProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDragArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDragAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDragArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragArea", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDropArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDropAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropArea", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDragEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDragEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDropEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDropEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
@@ -114,7 +114,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDragEnabled property.</param>
-    public static void SetIsDragEnabled(IControl control, bool value)
+    public static void SetIsDragEnabled(Control control, bool value)
     {
         control.SetValue(IsDragEnabledProperty, value);
     }

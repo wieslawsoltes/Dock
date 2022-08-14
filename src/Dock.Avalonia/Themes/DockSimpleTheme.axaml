@@ -19,26 +19,8 @@
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Themes/Accents/Simple.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>
-  <Style>
-    <Style.Resources>
-      <SolidColorBrush x:Key="DockApplicationAccentBrushLow">#007ACC</SolidColorBrush>
-      <SolidColorBrush x:Key="DockApplicationAccentBrushMed">#1C97EA</SolidColorBrush>
-      <SolidColorBrush x:Key="DockApplicationAccentBrushHigh">#52B0EF</SolidColorBrush>
-      <SolidColorBrush x:Key="DockApplicationAccentForegroundBrush">#F0F0F0</SolidColorBrush>
-      <SolidColorBrush x:Key="DockApplicationAccentBrushIndicator">#007ACC</SolidColorBrush>
-    </Style.Resources>
-  </Style>
-  <Style>
-    <Style.Resources>
-      <SolidColorBrush x:Key="DockThemeBorderLowBrush" Color="{DynamicResource ThemeBorderLowColor}" />
-      <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}" />
-      <SolidColorBrush x:Key="DockThemeAccentBrush" Color="{DynamicResource ThemeAccentColor}" />
-      <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="{DynamicResource ThemeForegroundColor}" />
-      <SolidColorBrush x:Key="DockThemeControlBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}" />
-      <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
-    </Style.Resources>
-  </Style>
 </Styles>

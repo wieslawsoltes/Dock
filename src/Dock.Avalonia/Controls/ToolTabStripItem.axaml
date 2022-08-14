@@ -29,7 +29,14 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-          <Border x:DataType="dmc:IToolDock" x:CompileBindings="True">
+          <Border Background="{TemplateBinding Background}"
+                  TextElement.FontFamily="{TemplateBinding FontFamily}"
+                  TextElement.FontSize="{TemplateBinding FontSize}"
+                  TextElement.FontWeight="{TemplateBinding FontWeight}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  Padding="{TemplateBinding Padding}"
+                  x:DataType="dmc:IToolDock" x:CompileBindings="True">
             <Border.ContextMenu>
               <ContextMenu>
                 <MenuItem Header="_Float"
@@ -49,20 +56,19 @@
                           x:CompileBindings="False" />
               </ContextMenu>
             </Border.ContextMenu>
-            <Panel>
-              <ContentPresenter x:Name="PART_ContentPresenter"
-                                Background="{TemplateBinding Background}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                TextElement.FontSize="{TemplateBinding FontSize}"
-                                TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}" />
-            </Panel>
+            <DockableControl TrackingMode="Tab">
+              <StackPanel x:Name="DragTool"
+                          Background="Transparent"
+                          Orientation="Horizontal"
+                          Spacing="2"
+                          DockProperties.IsDragArea="True"
+                          DockProperties.IsDropArea="True">
+                <Panel Margin="2">
+                  <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
+                                    Content="{Binding}" />
+                </Panel>
+              </StackPanel>
+            </DockableControl>
           </Border>
       </ControlTemplate>
     </Setter>

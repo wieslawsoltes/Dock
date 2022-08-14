@@ -7,11 +7,13 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolControl}" TargetType="ToolControl">
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" Padding="2" />
       </DataTemplate>
     </Setter>
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockPanel x:Name="PART_DockPanel"
@@ -23,25 +25,7 @@
                         Items="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         DockPanel.Dock="Bottom"
-                        DockProperties.IsDropArea="True">
-            <ToolTabStrip.DataTemplates>
-              <DataTemplate DataType="core:IDockable">
-                <DockableControl TrackingMode="Tab">
-                  <StackPanel x:Name="DragTool"
-                              Background="Transparent"
-                              Orientation="Horizontal"
-                              Spacing="2"
-                              DockProperties.IsDragArea="True"
-                              DockProperties.IsDropArea="True">
-                    <Panel Margin="2">
-                      <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
-                                        Content="{Binding}" />
-                    </Panel>
-                  </StackPanel>
-                </DockableControl>
-              </DataTemplate>
-            </ToolTabStrip.DataTemplates>
-          </ToolTabStrip>
+                        DockProperties.IsDropArea="True" />
           <Separator x:Name="PART_Separator" />
           <Border x:Name="PART_Border">
             <DockableControl DataContext="{Binding ActiveDockable}"

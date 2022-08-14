@@ -19,11 +19,13 @@
   </ControlTheme>
 
   <ControlTheme x:Key="{x:Type DocumentControl}" TargetType="DocumentControl">
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" Padding="2" />
       </DataTemplate>
     </Setter>
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockPanel x:Name="PART_DockPanel"

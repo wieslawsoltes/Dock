@@ -6,31 +6,16 @@
     <DocumentControl Width="300" Height="400" />
   </Design.PreviewWith>
 
-  <ControlTheme x:Key="ButtonCreateDocument" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-    <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="Padding" Value="0" />
-    <Setter Property="Margin" Value="0" />
-    <Setter Property="Width" Value="26" />
-    <Setter Property="Height" Value="24" />
-    <Setter Property="HorizontalAlignment" Value="Right" />
-    <Setter Property="HorizontalContentAlignment" Value="Center" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="VerticalContentAlignment" Value="Center" />
-  </ControlTheme>
-
-  <ControlTheme x:Key="ButtonDocumentTabButton" TargetType="Button" BasedOn="{StaticResource ButtonCreateDocument}">
-    <Setter Property="Background" Value="Transparent" />
-    <Style Selector="^:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
-    </Style>
-  </ControlTheme>
-
-  <ControlTheme x:Key="ButtonCloseButton" TargetType="Button" BasedOn="{StaticResource ButtonDocumentTabButton}">
+  <ControlTheme x:Key="ButtonCloseButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="Margin" Value="0" />
     <Setter Property="Width" Value="14" />
     <Setter Property="Height" Value="14" />
+    <Setter Property="Background" Value="Transparent" />
+    <Style Selector="^:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+    </Style>
   </ControlTheme>
 
   <ControlTheme x:Key="{x:Type DocumentControl}" TargetType="DocumentControl">
@@ -78,6 +63,7 @@
                             <Setter Property="Margin" Value="2" />
                             <Setter Property="Stretch" Value="Uniform" />
                             <Setter Property="UseLayoutRounding" Value="False" />
+                            <Setter Property="Fill" Value="{DynamicResource DockThemeForegroundBrush}" />
                             <Setter Property="Data"
                                     Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
                           </Style>

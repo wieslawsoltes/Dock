@@ -7,7 +7,7 @@
   </Application.DataTemplates>
   <Application.Styles>
     <SimpleTheme Mode="Light" />
-    <StyleInclude Source="avares://Dock.Avalonia/Themes/DockDefaultTheme.axaml" />
+    <StyleInclude Source="avares://Dock.Avalonia/Themes/DockSimpleTheme.axaml" />
     <Style Selector="TabItem">
       <Setter Property="FontWeight" Value="Normal" />
       <Setter Property="Padding" Value="6,0,6,0" />

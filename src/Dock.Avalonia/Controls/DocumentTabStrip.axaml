@@ -60,7 +60,7 @@
 
     <!-- Create Button -->
 
-    <Style Selector="^/template/ Button#PART_ButtonCreate Path#PART_PathCreate">
+    <Style Selector="^/template/ DocumentTabStrip#PART_TabStrip DocumentTabStripItem Button#PART_ButtonCreate Path#PART_PathCreate">
       <Setter Property="Margin" Value="5" />
       <Setter Property="Stretch" Value="Uniform" />
       <Setter Property="UseLayoutRounding" Value="False" />

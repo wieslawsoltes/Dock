@@ -75,18 +75,6 @@
       <Setter Property="IsVisible" Value="False" />
     </Style>
 
-    <!-- Create Button -->
-
-    <Style
-      Selector="^/template/ DocumentTabStrip#PART_TabStrip DocumentTabStripItem:selected Button#PART_ButtonCreate Path#PART_PathCreate">
-      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-    </Style>
-
-    <Style
-      Selector="^/template/ DocumentTabStrip#PART_TabStrip DocumentTabStripItem:pointerover Button#PART_ButtonCreate Path#PART_PathCreate">
-      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-    </Style>
-
   </ControlTheme>
 
 </ResourceDictionary>

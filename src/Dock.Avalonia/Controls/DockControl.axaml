@@ -1,12 +1,13 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converters="using:Dock.Avalonia.Converters"
-        xmlns:dmc="using:Dock.Model.Controls"
-        xmlns:core="using:Dock.Model.Core">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
     <DockControl Width="600" Height="400" />
   </Design.PreviewWith>
-  <Style Selector="DockControl">
+
+  <ControlTheme x:Key="{x:Type DockControl}" TargetType="DockControl">
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"
@@ -106,5 +107,6 @@
         </ContentControl>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+
+</ResourceDictionary>

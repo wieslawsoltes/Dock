@@ -2,16 +2,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=netstandard"
         x:Class="Dock.Avalonia.Themes.DockFluentTheme">
-  <StyleInclude Source="avares://Dock.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/DocumentControl.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/ToolChromeControl.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/ToolControl.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/ToolPinnedControl.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/HostWindowTitleBar.axaml" />
-  <StyleInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml" />
+  <Styles.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://Dock.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockTarget.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DocumentControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolChromeControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolPinnedControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindowTitleBar.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Styles.Resources>
   <Style>
     <Style.Resources>
       <SolidColorBrush x:Key="DockApplicationAccentBrushLow">#007ACC</SolidColorBrush>

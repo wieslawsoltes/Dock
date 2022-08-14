@@ -82,9 +82,21 @@
       </ControlTemplate>
     </Setter>
 
+    <!--
+    <Style Selector="^:not(:active) /template/ DocumentTabStripItem:selected">
+      <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:active /template/ DocumentTabStripItem:selected">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    -->
+ 
     <Style Selector="^:selected">
-      <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelected}" />
-      <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
 
     <Style Selector="^:pointerover">

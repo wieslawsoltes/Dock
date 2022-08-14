@@ -1,6 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:idc="using:Dock.Avalonia.Controls">
+  <Styles.Resources>
+    <Color x:Key="RegionColor">#FF212121</Color>
+    <Color x:Key="AcrylicFallbackColor">#1F1F1F</Color>
+  </Styles.Resources>
   <SimpleTheme Mode="Dark" />
   <StyleInclude Source="avares://Dock.Avalonia/Themes/DockSimpleTheme.axaml" />
   <Style Selector="idc|ToolChromeControl">

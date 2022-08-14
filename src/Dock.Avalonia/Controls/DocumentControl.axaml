@@ -136,7 +136,7 @@
       <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem">
-      <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+      <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
       <Setter Property="FontWeight" Value="Normal" />
       <Setter Property="MinHeight" Value="24" />
       <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -190,9 +190,9 @@
                                 Content="{TemplateBinding Content}"
                                 HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextBlock.FontFamily="{TemplateBinding FontFamily}"
-                                TextBlock.FontSize="{TemplateBinding FontSize}"
-                                TextBlock.FontWeight="{TemplateBinding FontWeight}"
+                                TextElement.FontFamily="{TemplateBinding FontFamily}"
+                                TextElement.FontSize="{TemplateBinding FontSize}"
+                                TextElement.FontWeight="{TemplateBinding FontWeight}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}" />

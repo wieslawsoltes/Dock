@@ -32,8 +32,8 @@ public class MainView : UserControl
                     {
                         0 => App.FluentLight,
                         1 => App.FluentDark,
-                        2 => App.DefaultLight,
-                        3 => App.DefaultDark,
+                        2 => App.SimpleLight,
+                        3 => App.SimpleDark,
                         _ => throw new Exception("Not support theme.")
                     };
                 }

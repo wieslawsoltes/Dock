@@ -6,8 +6,7 @@
     <local:ViewLocator />
   </Application.DataTemplates>
   <Application.Styles>
-    <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
-    <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml" />
+    <SimpleTheme Mode="Light" />
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DockDefaultTheme.axaml" />
     <Style Selector="TabItem">
       <Setter Property="FontWeight" Value="Normal" />

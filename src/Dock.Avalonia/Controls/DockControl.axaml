@@ -15,6 +15,7 @@
                         x:DataType="core:IDock"
                         x:CompileBindings="True">
           <ContentControl.DataTemplates>
+
             <!-- Document Content -->
             <DataTemplate DataType="dmc:IDocumentContent">
               <DockableControl TrackingMode="Visible">
@@ -22,6 +23,7 @@
                                 ContentTemplate="{Binding}" />
               </DockableControl>
             </DataTemplate>
+
             <!-- Tool Content -->
             <DataTemplate DataType="dmc:IToolContent">
               <DockableControl TrackingMode="Visible">
@@ -29,10 +31,12 @@
                                 ContentTemplate="{Binding}" />
               </DockableControl>
             </DataTemplate>
+
             <!-- Proportional Splitter -->
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
               <ProportionalStackPanelSplitter Background="Transparent" />
             </DataTemplate>
+
             <!-- Document Dock -->
             <DataTemplate DataType="dmc:IDocumentDock">
               <DockableControl TrackingMode="Visible"
@@ -40,6 +44,7 @@
                 <DocumentControl IsActive="{Binding IsActive}" />
               </DockableControl>
             </DataTemplate>
+
             <!-- Tool Dock -->
             <DataTemplate DataType="dmc:IToolDock">
               <DockPanel ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
@@ -52,6 +57,7 @@
                 </DockableControl>
               </DockPanel>
             </DataTemplate>
+
             <!-- Proportional Dock -->
             <DataTemplate DataType="dmc:IProportionalDock">
               <DockableControl TrackingMode="Visible"
@@ -75,6 +81,7 @@
                 </ItemsControl>
               </DockableControl>
             </DataTemplate>
+
             <!-- Dock Dock -->
             <DataTemplate DataType="dmc:IDockDock">
               <DockableControl TrackingMode="Visible">
@@ -95,6 +102,7 @@
                 </ItemsControl>
               </DockableControl>
             </DataTemplate>
+
             <!-- Root Dock -->
             <DataTemplate DataType="dmc:IRootDock">
               <DockableControl TrackingMode="Visible">
@@ -103,6 +111,7 @@
                 </DockPanel>
               </DockableControl>
             </DataTemplate>
+
           </ContentControl.DataTemplates>
         </ContentControl>
       </ControlTemplate>

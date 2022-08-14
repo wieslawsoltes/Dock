@@ -11,6 +11,11 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolTabStrip}" TargetType="ToolTabStrip">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="ZIndex" Value="1" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}"
@@ -25,11 +30,17 @@
         </Border>
       </ControlTemplate>
     </Setter>
+
     <Setter Property="ItemsPanel">
       <ItemsPanelTemplate>
-        <WrapPanel />
+        <WrapPanel ClipToBounds="False" />
       </ItemsPanelTemplate>
     </Setter>
+
+    <Style Selector="^:singleitem">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

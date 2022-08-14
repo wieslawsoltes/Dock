@@ -22,6 +22,7 @@
           <ToolTabStrip x:Name="PART_TabStrip"
                         Items="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True">
             <ToolTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
@@ -54,101 +55,22 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip">
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="Focusable" Value="False" />
-      <Setter Property="ClipToBounds" Value="False" />
-      <Setter Property="ZIndex" Value="1" />
-      <Setter Property="DockPanel.Dock" Value="Bottom" />
-      <Setter Property="ItemsPanel">
-        <ItemsPanelTemplate>
-          <WrapPanel ClipToBounds="False" />
-        </ItemsPanelTemplate>
-      </Setter>
-    </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem">
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border x:DataType="dmc:IToolDock" x:CompileBindings="True">
-            <Border.ContextMenu>
-              <ContextMenu>
-                <MenuItem Header="_Float"
-                          Command="{Binding Owner.Factory.FloatDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanFloat}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Hide"
-                          Command="{Binding Owner.Factory.PinDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanPin}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Close"
-                          Command="{Binding Owner.Factory.CloseDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
-              </ContextMenu>
-            </Border.ContextMenu>
-            <Panel>
-              <ContentPresenter x:Name="PART_ContentPresenter"
-                                Background="{TemplateBinding Background}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                TextElement.FontSize="{TemplateBinding FontSize}"
-                                TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}" />
-            </Panel>
-          </Border>
-        </ControlTemplate>
-      </Setter>
-    </Style>
+
     <Style Selector="^/template/ DockPanel#PART_DockPanel">
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="ZIndex" Value="1" />
     </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem">
-      <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
-      <Setter Property="FontWeight" Value="Normal" />
-      <Setter Property="MinHeight" Value="0" />
-      <Setter Property="VerticalContentAlignment" Value="Center" />
-      <Setter Property="Background" Value="Transparent" />
-      <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-      <Setter Property="BorderThickness" Value="0" />
-      <Setter Property="Margin" Value="0" />
-      <Setter Property="Padding" Value="4 1 4 0" />
-    </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
-    </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip:singleitem">
-      <Setter Property="IsVisible" Value="False" />
-    </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:selected">
-      <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-      <Setter Property="BorderThickness" Value="1 0 1 1" />
-      <Setter Property="Margin" Value="0 -1 0 0" />
-      <Setter Property="Padding" Value="4 2 4 0" />
-    </Style>
-    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:selected:pointerover">
-      <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-    </Style>
+
     <Style Selector="^/template/ Separator#PART_Separator">
       <Setter Property="Margin" Value="1,0,1,0" />
       <Setter Property="DockPanel.Dock" Value="Bottom" />
     </Style>
+
     <Style Selector="^/template/ Separator#PART_Separator">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="Height" Value="1" />
     </Style>
+
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="ZIndex" Value="-1" />
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
@@ -156,6 +78,7 @@
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="BorderThickness" Value="1 0 1 0" />
     </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

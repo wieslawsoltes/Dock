@@ -45,6 +45,14 @@ public class DocumentControl : TemplatedControl
         set => SetValue(IsActiveProperty, value);
     }
 
+    /// <summary>
+    /// Initializes new instance of the <see cref="DocumentControl"/> class.
+    /// </summary>
+    public DocumentControl()
+    {
+        UpdatePseudoClasses(IsActive);
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {

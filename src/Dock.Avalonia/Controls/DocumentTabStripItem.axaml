@@ -1,7 +1,7 @@
-﻿<ResourceDictionary
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:CompileBindings="True">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:CompileBindings="True">
   <Design.PreviewWith>
     <Border Padding="20">
       <StackPanel Spacing="20">
@@ -11,9 +11,6 @@
       </StackPanel>
     </Border>
   </Design.PreviewWith>
-
-  <x:Double x:Key="TabStripItemMinHeight">48</x:Double>
-  <x:Double x:Key="TabStripItemPipeThickness">2</x:Double>
 
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
@@ -27,9 +24,15 @@
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 0 4 0" />
 
-    <Setter Property="Template">
+    <Setter Property="Template" x:DataType="core:IDockable">
       <ControlTemplate>
-          <Border>
+          <Border Background="{TemplateBinding Background}"
+                  TextElement.FontFamily="{TemplateBinding FontFamily}"
+                  TextElement.FontSize="{TemplateBinding FontSize}"
+                  TextElement.FontWeight="{TemplateBinding FontWeight}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  Padding="{TemplateBinding Padding}">
             <Border.ContextMenu>
               <ContextMenu>
                 <MenuItem Header="_Float"
@@ -64,37 +67,54 @@
                           x:CompileBindings="False" />
               </ContextMenu>
             </Border.ContextMenu>
-            <Panel>
-              <ContentPresenter x:Name="PART_ContentPresenter"
-                                Background="{TemplateBinding Background}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}"
-                                Content="{TemplateBinding Content}"
-                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                TextElement.FontFamily="{TemplateBinding FontFamily}"
-                                TextElement.FontSize="{TemplateBinding FontSize}"
-                                TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}" />
-            </Panel>
+            <DockableControl TrackingMode="Tab">
+              <StackPanel Background="Transparent"
+                          Orientation="Horizontal"
+                          Spacing="2"
+                          DockProperties.IsDragArea="True"
+                          DockProperties.IsDropArea="True">
+                <Panel Margin="2">
+                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+                                    Content="{Binding}" />
+                </Panel>
+                <Button x:Name="PART_CloseButton"
+                        Command="{Binding Owner.Factory.CloseDockable}"
+                        CommandParameter="{Binding}"
+                        Theme="{StaticResource ButtonCloseButton}"
+                        IsVisible="{Binding CanClose}"
+                        x:CompileBindings="False">
+                  <Path x:Name="PART_ClosePath">
+                    <Path.Styles>
+                      <Style Selector="Path">
+                        <Setter Property="Margin" Value="2" />
+                        <Setter Property="Stretch" Value="Uniform" />
+                        <Setter Property="UseLayoutRounding" Value="False" />
+                        <Setter Property="Data"
+                                Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                      </Style>
+                    </Path.Styles>
+                  </Path>
+                </Button>
+              </StackPanel>
+            </DockableControl>
           </Border>
       </ControlTemplate>
     </Setter>
 
-    <!--
-    <Style Selector="^:not(:active) /template/ DocumentTabStripItem:selected">
+    <Style Selector="^:selected /template/ Path#PART_ClosePath">
+      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:pointerover /template/ Path#PART_ClosePath">
+      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:not(:active):selected">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
     </Style>
 
-    <Style Selector="^:active /template/ DocumentTabStripItem:selected">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-    </Style>
-    -->
- 
-    <Style Selector="^:selected">
+    <Style Selector="^:active:selected">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>

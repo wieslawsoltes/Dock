@@ -37,42 +37,14 @@
                             Items="{Binding VisibleDockables}"
                             SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                             CanCreateItem="{Binding CanCreateDocument}"
+                            IsActive="{TemplateBinding IsActive}"
                             DockPanel.Dock="Top"
                             DockProperties.IsDropArea="True">
-            <DocumentTabStrip.DataTemplates>
-              <DataTemplate DataType="core:IDockable">
-                <DockableControl TrackingMode="Tab">
-                  <StackPanel Background="Transparent"
-                              Orientation="Horizontal"
-                              Spacing="2"
-                              DockProperties.IsDragArea="True"
-                              DockProperties.IsDropArea="True">
-                    <Panel Margin="2">
-                      <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
-                                        Content="{Binding}" />
-                    </Panel>
-                    <Button x:Name="PART_CloseButton"
-                            Command="{Binding Owner.Factory.CloseDockable}"
-                            CommandParameter="{Binding}"
-                            Theme="{StaticResource ButtonCloseButton}"
-                            IsVisible="{Binding CanClose}"
-                            x:CompileBindings="False">
-                      <Path x:Name="PART_ClosePath">
-                        <Path.Styles>
-                          <Style Selector="Path">
-                            <Setter Property="Margin" Value="2" />
-                            <Setter Property="Stretch" Value="Uniform" />
-                            <Setter Property="UseLayoutRounding" Value="False" />
-                            <Setter Property="Data"
-                                    Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-                          </Style>
-                        </Path.Styles>
-                      </Path>
-                    </Button>
-                  </StackPanel>
-                </DockableControl>
-              </DataTemplate>
-            </DocumentTabStrip.DataTemplates>
+            <DocumentTabStrip.Styles>
+              <Style Selector="DocumentTabStripItem">
+                <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
+              </Style>
+            </DocumentTabStrip.Styles>
           </DocumentTabStrip>
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}"

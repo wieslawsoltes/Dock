@@ -11,7 +11,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Document TabStrip custom control.
 /// </summary>
-[PseudoClasses(":create")]
+[PseudoClasses(":create", ":active")]
 public class DocumentTabStrip : TabStrip, IStyleable
 {
     /// <summary>
@@ -19,6 +19,12 @@ public class DocumentTabStrip : TabStrip, IStyleable
     /// </summary>
     public static readonly StyledProperty<bool> CanCreateItemProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(CanCreateItem));
+
+    /// <summary>
+    /// Define the <see cref="IsActive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsActiveProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
 
     /// <summary>
     /// Gets or sets if tab strop dock can create new items.
@@ -29,6 +35,15 @@ public class DocumentTabStrip : TabStrip, IStyleable
         set => SetValue(CanCreateItemProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets if this is the currently active dockable.
+    /// </summary>
+    public bool IsActive
+    {
+        get => GetValue(IsActiveProperty);
+        set => SetValue(IsActiveProperty, value);
+    }
+
     Type IStyleable.StyleKey => typeof(DocumentTabStrip);
 
     /// <summary>
@@ -36,7 +51,8 @@ public class DocumentTabStrip : TabStrip, IStyleable
     /// </summary>
     public DocumentTabStrip()
     {
-        UpdatePseudoClasses(CanCreateItem);
+        UpdatePseudoClassesCreate(CanCreateItem);
+        UpdatePseudoClassesActive(IsActive);
     }
 
     /// <inheritdoc/>
@@ -55,12 +71,22 @@ public class DocumentTabStrip : TabStrip, IStyleable
 
         if (change.Property == CanCreateItemProperty)
         {
-            UpdatePseudoClasses(change.GetNewValue<bool>());
+            UpdatePseudoClassesCreate(change.GetNewValue<bool>());
+        }
+
+        if (change.Property == IsActiveProperty)
+        {
+            UpdatePseudoClassesActive(change.GetNewValue<bool>());
         }
     }
 
-    private void UpdatePseudoClasses(bool canCreate)
+    private void UpdatePseudoClassesCreate(bool canCreate)
     {
         PseudoClasses.Set(":create", canCreate);
+    }
+
+    private void UpdatePseudoClassesActive(bool isActive)
+    {
+        PseudoClasses.Set(":active", isActive);
     }
 }

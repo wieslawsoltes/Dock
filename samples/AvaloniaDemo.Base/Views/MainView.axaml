@@ -85,8 +85,8 @@
           <collections:ArrayList>
             <x:String>Fluent Light</x:String>
             <x:String>Fluent Dark</x:String>
-            <x:String>Default Light</x:String>
-            <x:String>Default Dark</x:String>
+            <x:String>Simple Light</x:String>
+            <x:String>Simple Dark</x:String>
           </collections:ArrayList>
         </ComboBox>
       </Grid>

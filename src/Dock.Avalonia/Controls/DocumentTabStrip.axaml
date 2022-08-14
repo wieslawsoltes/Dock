@@ -75,16 +75,6 @@
       <Setter Property="IsVisible" Value="False" />
     </Style>
 
-    <Style Selector="^:not(:active) /template/ DocumentTabStripItem:selected">
-      <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
-    </Style>
-
-    <Style Selector="^:active /template/ DocumentTabStripItem:selected">
-      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
-      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
-    </Style>
-
     <!-- Create Button -->
 
     <Style

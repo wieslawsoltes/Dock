@@ -22,18 +22,23 @@
         </Panel>
       </ControlTemplate>
     </Setter>
+ 
     <Style Selector="^:fullscreen">
       <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
     </Style>
+
     <Style Selector="^/template/ Border#PART_Background">
       <Setter Property="IsHitTestVisible" Value="False" />
     </Style>
+
     <Style Selector="^:fullscreen /template/ Border#PART_Background">
       <Setter Property="IsHitTestVisible" Value="True" />
     </Style>
+
     <Style Selector="^:fullscreen /template/ Panel#PART_MouseTracker">
       <Setter Property="Background" Value="Transparent" />
     </Style>
+
     <Style Selector="^:fullscreen /template/ Panel#PART_Container">
       <Setter Property="RenderTransform" Value="translateY(-30px)" />
       <Setter Property="Transitions">
@@ -42,9 +47,11 @@
         </Transitions>
       </Setter>
     </Style>
+
     <Style Selector="^:fullscreen:pointerover /template/ Panel#PART_Container">
       <Setter Property="RenderTransform" Value="none" />
     </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

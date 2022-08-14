@@ -112,7 +112,7 @@
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="VerticalAlignment" Value="Stretch" />
       <Setter Property="Margin" Value="0 4 8 4" />
-      <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
+      <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     </Style>
     <Style Selector="^:active /template/ TextBlock#PART_Title">
       <Setter Property="Background" Value="Transparent" />

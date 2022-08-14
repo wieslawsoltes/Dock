@@ -25,7 +25,7 @@
     <Style Selector="^:fullscreen">
       <Setter Property="Background" Value="{DynamicResource SystemAccentColor}" />
     </Style>
-    <Style Selector="^ /template/ Border#PART_Background">
+    <Style Selector="^/template/ Border#PART_Background">
       <Setter Property="IsHitTestVisible" Value="False" />
     </Style>
     <Style Selector="^:fullscreen /template/ Border#PART_Background">

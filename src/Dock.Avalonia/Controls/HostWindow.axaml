@@ -16,6 +16,7 @@
     <Setter Property="SystemDecorations" Value="Full" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
@@ -36,6 +37,7 @@
         </Panel>
       </ControlTemplate>
     </Setter>
+
     <Setter Property="Content">
       <Template>
         <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
@@ -47,10 +49,12 @@
         </Panel>
       </Template>
     </Setter>
+
     <Style Selector="^:toolwindow">
       <Setter Property="SystemDecorations" Value="BorderOnly" />
       <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
       <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+
       <Setter Property="Template">
         <ControlTemplate>
           <Panel>
@@ -71,6 +75,7 @@
           </Panel>
         </ControlTemplate>
       </Setter>
+
       <Setter Property="Content">
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
@@ -80,20 +85,25 @@
           </Panel>
         </Template>
       </Setter>
+
     </Style>
+
     <Style Selector="^:toolwindow">
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="TransparencyLevelHint" Value="None"/>
       <Setter Property="Opacity" Value="1.0" />
     </Style>
+
     <Style Selector="^:toolwindow:dragging">
       <Setter Property="Background" Value="{x:Null}" />
       <Setter Property="TransparencyLevelHint" Value="Transparent"/>
       <Setter Property="Opacity" Value="0.5" />
     </Style>
+
     <Style Selector="^TitleBar /template/ Border#PART_Background">
       <Setter Property="IsHitTestVisible" Value="True" />
     </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

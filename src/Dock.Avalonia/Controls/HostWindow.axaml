@@ -51,7 +51,7 @@
     </Setter>
 
     <Style Selector="^:toolwindow">
-      <Setter Property="SystemDecorations" Value="BorderOnly" />
+      <Setter Property="SystemDecorations" Value="None" />
       <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
       <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
 

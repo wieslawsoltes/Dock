@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <DocumentTabStrip>
+        <DocumentTabStripItem>Item 1</DocumentTabStripItem>
+        <DocumentTabStripItem>Item 2</DocumentTabStripItem>
+        <DocumentTabStripItem IsEnabled="False">Disabled</DocumentTabStripItem>
+      </DocumentTabStrip>
+    </Border>
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type DocumentTabStrip}" TargetType="DocumentTabStrip">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ItemsPresenter Name="PART_ItemsPresenter"
+                          Items="{TemplateBinding Items}"
+                          ItemsPanel="{TemplateBinding ItemsPanel}"
+                          ItemTemplate="{TemplateBinding ItemTemplate}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel />
+      </ItemsPanelTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

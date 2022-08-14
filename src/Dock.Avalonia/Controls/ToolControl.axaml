@@ -19,11 +19,11 @@
                    DockProperties.IsDockTarget="True"
                    x:DataType="dmc:IToolDock"
                    x:CompileBindings="True">
-          <DockTabStrip x:Name="PART_TabStrip"
+          <ToolTabStrip x:Name="PART_TabStrip"
                         Items="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         DockProperties.IsDropArea="True">
-            <DockTabStrip.DataTemplates>
+            <ToolTabStrip.DataTemplates>
               <DataTemplate DataType="core:IDockable">
                 <DockableControl TrackingMode="Tab">
                   <StackPanel x:Name="DragTool"
@@ -39,8 +39,8 @@
                   </StackPanel>
                 </DockableControl>
               </DataTemplate>
-            </DockTabStrip.DataTemplates>
-          </DockTabStrip>
+            </ToolTabStrip.DataTemplates>
+          </ToolTabStrip>
           <Separator x:Name="PART_Separator" />
           <Border x:Name="PART_Border">
             <DockableControl DataContext="{Binding ActiveDockable}"
@@ -54,7 +54,7 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip">
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="Focusable" Value="False" />
       <Setter Property="ClipToBounds" Value="False" />
@@ -66,7 +66,7 @@
         </ItemsPanelTemplate>
       </Setter>
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem">
       <Setter Property="Template">
         <ControlTemplate>
           <Border x:DataType="dmc:IToolDock" x:CompileBindings="True">
@@ -111,7 +111,7 @@
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="ZIndex" Value="1" />
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem">
       <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
       <Setter Property="FontWeight" Value="Normal" />
       <Setter Property="MinHeight" Value="0" />
@@ -123,13 +123,13 @@
       <Setter Property="Margin" Value="0" />
       <Setter Property="Padding" Value="4 1 4 0" />
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip:singleitem">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip:singleitem">
       <Setter Property="IsVisible" Value="False" />
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:selected">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:selected">
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
@@ -137,7 +137,7 @@
       <Setter Property="Margin" Value="0 -1 0 0" />
       <Setter Property="Padding" Value="4 2 4 0" />
     </Style>
-    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
+    <Style Selector="^/template/ ToolTabStrip#PART_TabStrip ToolTabStripItem:selected:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     </Style>

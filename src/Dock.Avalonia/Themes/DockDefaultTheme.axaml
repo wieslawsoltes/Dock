@@ -6,6 +6,10 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://Dock.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DocumentTabStripItem.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/DocumentTabStrip.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolTabStripItem.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolTabStrip.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockTarget.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DocumentControl.axaml" />

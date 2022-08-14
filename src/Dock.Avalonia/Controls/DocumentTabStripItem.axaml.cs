@@ -9,11 +9,11 @@ using Dock.Model.Core;
 namespace Dock.Avalonia.Controls;
 
 /// <summary>
-/// Dock TabStripItem custom control.
+/// Document TabStripItem custom control.
 /// </summary>
-public class DockTabStripItem : TabStripItem, IStyleable
+public class DocumentTabStripItem : TabStripItem, IStyleable
 {
-    Type IStyleable.StyleKey => typeof(TabStripItem);
+    Type IStyleable.StyleKey => typeof(DocumentTabStripItem);
         
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)

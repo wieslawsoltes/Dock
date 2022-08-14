@@ -28,19 +28,19 @@ public class App : Application
         }
     };
 
-    public static readonly Styles DefaultLight = new Styles
+    public static readonly Styles SimpleLight = new Styles
     {
         new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultLight.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/SimpleLight.axaml")
         }
     };
 
-    public static readonly Styles DefaultDark = new Styles
+    public static readonly Styles SimpleDark = new Styles
     {
         new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultDark.axaml")
+            Source = new Uri("avares://AvaloniaDemo.Base/Themes/SimpleDark.axaml")
         },
     };
 

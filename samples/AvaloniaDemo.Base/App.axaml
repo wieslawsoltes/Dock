@@ -3,6 +3,7 @@
              xmlns:local="using:AvaloniaDemo"
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:core="using:Dock.Model.Core"
+             Name="Dock Avalonia Demo"
              x:Class="AvaloniaDemo.App">
   <Application.DataTemplates>
     <local:ViewLocator />

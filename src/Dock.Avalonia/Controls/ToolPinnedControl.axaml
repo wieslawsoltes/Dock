@@ -6,6 +6,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolPinnedControl}" TargetType="ToolPinnedControl">
+
     <Setter Property="Template">
       <ControlTemplate>
         <ItemsControl Items="{Binding PinnedDockables}"

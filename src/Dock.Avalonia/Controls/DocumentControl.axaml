@@ -93,14 +93,14 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem Button#PART_CloseButton Path">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem Button#PART_CloseButton Path#PART_ClosePath">
       <Setter Property="Margin" Value="2" />
       <Setter Property="Stretch" Value="Uniform" />
       <Setter Property="UseLayoutRounding" Value="False" />
       <Setter Property="Data"
               Value="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip">
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="Focusable" Value="False" />
       <Setter Property="ClipToBounds" Value="False" />
@@ -132,10 +132,10 @@
         </ItemsPanelTemplate>
       </Setter>
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip:not(:create):empty">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip:not(:create):empty">
       <Setter Property="IsVisible" Value="False" />
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem">
       <Setter Property="FontSize" Value="{DynamicResource DockFontSizeNormal}" />
       <Setter Property="FontWeight" Value="Normal" />
       <Setter Property="MinHeight" Value="24" />
@@ -201,7 +201,7 @@
         </ControlTemplate>
       </Setter>
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem Button#PART_ButtonCreate Path">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem Button#PART_ButtonCreate Path#PART_PathCreate">
       <Setter Property="Margin" Value="5" />
       <Setter Property="Stretch" Value="Uniform" />
       <Setter Property="UseLayoutRounding" Value="False" />
@@ -210,14 +210,14 @@
               Value="M8.41687 7.57953V2.41851C8.41687 2.18743 8.22932 1.99988 7.99823 1.99988C7.76715 1.99988 7.5796 2.18743 7.5796 2.41851V7.57953H2.41863C2.18755 7.57953 2 7.76708 2 7.99816C2 8.22925 2.18755 8.41679 2.41863 8.41679H7.5796V13.5812C7.5796 13.8123 7.76715 13.9999 7.99823 13.9999C8.22932 13.9999 8.41687 13.8123 8.41687 13.5812V8.41679L13.5799 8.41851C13.811 8.41851 13.9985 8.23096 13.9985 7.99988C13.9985 7.76879 13.811 7.58125 13.5799 7.58125L8.41687 7.57953Z" />
     </Style>
     <Style
-      Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem:selected Button#PART_ButtonCreate Path">
+      Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:selected Button#PART_ButtonCreate Path#PART_PathCreate">
       <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
     <Style
-      Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button#PART_ButtonCreate Path">
+      Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:pointerover Button#PART_ButtonCreate Path">
       <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
@@ -229,11 +229,11 @@
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
-    <Style Selector="^ /template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
+    <Style Selector="^/template/ TabStrip#PART_TabStrip TabStripItem:selected:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
-    <Style Selector="^ /template/ Grid#PART_Grid">
+    <Style Selector="^/template/ Grid#PART_Grid">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="Height" Value="2" />
       <Setter Property="DockPanel.Dock" Value="Top" />
@@ -241,7 +241,7 @@
     <Style Selector="^:active /template/ Grid#PART_Grid">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
     </Style>
-    <Style Selector="^ /template/ Border#PART_Border">
+    <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="BorderThickness" Value="1,1,1,1" />
     </Style>

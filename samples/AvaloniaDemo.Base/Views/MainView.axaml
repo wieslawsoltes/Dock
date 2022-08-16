@@ -7,7 +7,6 @@
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
-             xmlns:collections="clr-namespace:System.Collections;assembly=netstandard"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">

@@ -3,8 +3,8 @@ using Avalonia.Styling;
 namespace Dock.Avalonia.Themes;
 
 /// <summary>
-/// The Dock default theme.
+/// The Dock simple theme.
 /// </summary>
-public class DockDefaultTheme : Styles
+public class DockSimpleTheme : Styles
 {
 }

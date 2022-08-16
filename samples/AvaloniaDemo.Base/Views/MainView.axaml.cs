@@ -1,6 +1,4 @@
-﻿using System;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia;
 
@@ -21,42 +19,44 @@ public class MainView : UserControl
 
     private void InitializeThemes()
     {
-        var themes = this.Find<ComboBox>("Themes");
-
-        themes.SelectionChanged += (_, _) =>
+        var dark = false;
+        var theme = this.Find<Button>("Theme");
+        if (theme is { })
         {
-            if (Application.Current is { })
+            theme.Click += (_, _) =>
             {
-                Application.Current.Styles[0] = themes.SelectedIndex switch
-                {
-                    0 => App.FluentLight,
-                    1 => App.FluentDark,
-                    2 => App.DefaultLight,
-                    3 => App.DefaultDark,
-                    _ => throw new Exception("Not support theme.")
-                };
-            }
-        };
+                dark = !dark;
+                App.ThemeManager?.Switch(dark ? 1 : 0);
+            };
+        }
     }
 
     private void InitializeMenu()
     {
-        this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (_, _) =>
+        var optionsIsDragEnabled = this.FindControl<MenuItem>("OptionsIsDragEnabled");
+        if (optionsIsDragEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDragEnabled.Click += (_, _) =>
             {
-                var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
-                window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
+                }
+            };
+        }
 
-        this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (_, _) =>
+        var optionsIsDropEnabled = this.FindControl<MenuItem>("OptionsIsDropEnabled");
+        if (optionsIsDropEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDropEnabled.Click += (_, _) =>
             {
-                var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
-                window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    var isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
+                }
+            };
+        }
     }
 }

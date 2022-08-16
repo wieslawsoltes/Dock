@@ -55,21 +55,21 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <returns></returns>
     public Control Build()
     {
-        return (Control)Load(Content!).Control;
+        return (Control)Load(Content).Control;
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    object? ITemplate.Build() => Build();
+    object ITemplate.Build() => Build();
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public bool Match(object data)
+    public bool Match(object? data)
     {
         if (DataType == null)
         {
@@ -86,7 +86,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object data) => Build(data, null);
+    public IControl Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -94,7 +94,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object data, IControl? existing)
+    public IControl Build(object? data, IControl? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

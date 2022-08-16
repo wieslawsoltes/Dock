@@ -38,7 +38,7 @@ public class ReferenceExtension
     /// <returns>The referenced <see cref="object"/> instance.</returns>
     public object? ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider.GetService(typeof(INameScope)) is INameScope nameScope)
+        if (serviceProvider.GetService(typeof(INameScope)) is INameScope nameScope && Name is { })
         {
             var element = nameScope.Find(Name);
             return element;

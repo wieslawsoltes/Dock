@@ -13,38 +13,38 @@ public class DockProperties : AvaloniaObject
     /// Defines the IsDockTarget attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDockTargetProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDragArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDragAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDragArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragArea", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDropArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDropAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropArea", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDragEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDragEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDropEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDropEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, IControl, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The IsDockTarget attached property.</returns>
-    public static bool GetIsDockTarget(IControl control)
+    public static bool GetIsDockTarget(AvaloniaObject control)
     {
         return control.GetValue(IsDockTargetProperty);
     }
@@ -54,7 +54,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDockTarget property.</param>
-    public static void SetIsDockTarget(IControl control, bool value)
+    public static void SetIsDockTarget(AvaloniaObject control, bool value)
     {
         control.SetValue(IsDockTargetProperty, value);
     }
@@ -64,7 +64,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The IsDragArea attached property.</returns>
-    public static bool GetIsDragArea(IControl control)
+    public static bool GetIsDragArea(AvaloniaObject control)
     {
         return control.GetValue(IsDragAreaProperty);
     }
@@ -74,7 +74,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDragArea property.</param>
-    public static void SetIsDragArea(IControl control, bool value)
+    public static void SetIsDragArea(AvaloniaObject control, bool value)
     {
         control.SetValue(IsDragAreaProperty, value);
     }
@@ -84,7 +84,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The IsDropArea attached property.</returns>
-    public static bool GetIsDropArea(IControl control)
+    public static bool GetIsDropArea(AvaloniaObject control)
     {
         return control.GetValue(IsDropAreaProperty);
     }
@@ -94,7 +94,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDropArea property.</param>
-    public static void SetIsDropArea(IControl control, bool value)
+    public static void SetIsDropArea(AvaloniaObject control, bool value)
     {
         control.SetValue(IsDropAreaProperty, value);
     }
@@ -104,7 +104,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The IsDragEnabled attached property.</returns>
-    public static bool GetIsDragEnabled(IControl control)
+    public static bool GetIsDragEnabled(AvaloniaObject control)
     {
         return control.GetValue(IsDragEnabledProperty);
     }
@@ -114,7 +114,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDragEnabled property.</param>
-    public static void SetIsDragEnabled(IControl control, bool value)
+    public static void SetIsDragEnabled(Control control, bool value)
     {
         control.SetValue(IsDragEnabledProperty, value);
     }
@@ -124,7 +124,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The IsDropEnabled attached property.</returns>
-    public static bool GetIsDropEnabled(IControl control)
+    public static bool GetIsDropEnabled(AvaloniaObject control)
     {
         return control.GetValue(IsDropEnabledProperty);
     }
@@ -134,7 +134,7 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the IsDropEnabled property.</param>
-    public static void SetIsDropEnabled(IControl control, bool value)
+    public static void SetIsDropEnabled(AvaloniaObject control, bool value)
     {
         control.SetValue(IsDropEnabledProperty, value);
     }

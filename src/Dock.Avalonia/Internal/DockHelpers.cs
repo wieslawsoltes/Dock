@@ -27,33 +27,33 @@ internal static class DockHelpers
         };
     }
 
-    private static IEnumerable<IVisual>? GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
+    private static IEnumerable<IVisual> GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
     {
-        var root = visual.GetVisualRoot();
-        if (root is { })
+        var root = visual?.GetVisualRoot();
+        if (root is { } && visual is { })
         {
             var rootPoint = visual.TranslatePoint(p, root);
             if (rootPoint.HasValue)
             {
-                return root.Renderer?.HitTest(rootPoint.Value, visual, predicate);
+                return root.Renderer.HitTest(rootPoint.Value, visual, predicate);
             }
         }
         return Enumerable.Empty<IVisual>();
     }
 
-    public static IControl? GetControl(IInputElement? input, Point point, AvaloniaProperty<bool> property)
+    public static Control? GetControl(IInputElement? input, Point point, StyledProperty<bool> property)
     {
         IEnumerable<IInputElement>? inputElements = null;
         try
         {
-            inputElements = GetVisualsAt(input, point, IsHitTestVisible)?.Cast<IInputElement>();
+            inputElements = GetVisualsAt(input, point, IsHitTestVisible).Cast<IInputElement>();
         }
         catch (Exception ex)
         {
             Print(ex);
         }
 
-        var controls = inputElements?.OfType<IControl>().ToList();
+        var controls = inputElements?.OfType<Control>().ToList();
         if (controls is { })
         {
             foreach (var control in controls)

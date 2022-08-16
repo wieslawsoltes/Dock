@@ -1,40 +1,26 @@
+﻿using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
 
 /// <summary>
-/// Interaction logic for <see cref="DocumentControl"/> xaml.
+/// Document TabStripItem custom control.
 /// </summary>
 [PseudoClasses(":active")]
-public class DocumentControl : TemplatedControl
+public class DocumentTabStripItem : TabStripItem, IStyleable
 {
-    /// <summary>
-    /// Define the <see cref="HeaderTemplate"/> property.
-    /// </summary>
-    public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
-        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(HeaderTemplate));
-
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
-        AvaloniaProperty.Register<DocumentControl, bool>(nameof(IsActive));
-
-    /// <summary>
-    /// Gets or sets tab header template.
-    /// </summary>
-    public IDataTemplate HeaderTemplate
-    {
-        get => GetValue(HeaderTemplateProperty);
-        set => SetValue(HeaderTemplateProperty, value);
-    }
+        AvaloniaProperty.Register<DocumentTabStripItem, bool>(nameof(IsActive));
 
     /// <summary>
     /// Gets or sets if this is the currently active dockable.
@@ -45,10 +31,12 @@ public class DocumentControl : TemplatedControl
         set => SetValue(IsActiveProperty, value);
     }
 
+    Type IStyleable.StyleKey => typeof(DocumentTabStripItem);
+        
     /// <summary>
-    /// Initializes new instance of the <see cref="DocumentControl"/> class.
+    /// Initializes new instance of the <see cref="DocumentTabStripItem"/> class.
     /// </summary>
-    public DocumentControl()
+    public DocumentTabStripItem()
     {
         UpdatePseudoClasses(IsActive);
     }
@@ -63,11 +51,11 @@ public class DocumentControl : TemplatedControl
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
+        if (e.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
         {
-            if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
+            if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable)
             {
-                factory.SetFocusedDockable(root, dock.ActiveDockable);
+                factory.CloseDockable(dockable);
             }
         }
     }

@@ -1,52 +1,24 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.Styling;
-using Avalonia.Styling;
+using AvaloniaDemo.Themes;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
-using Dock.Model;
 
 namespace AvaloniaDemo;
 
 public class App : Application
-{       
-    public static readonly Styles FluentDark = new Styles
-    {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
-        {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentDark.axaml")
-        }
-    };
-
-    public static readonly Styles FluentLight = new Styles
-    {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
-        {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentLight.axaml")
-        }
-    };
-
-    public static readonly Styles DefaultLight = new Styles
-    {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
-        {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultLight.axaml")
-        }
-    };
-
-    public static readonly Styles DefaultDark = new Styles
-    {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
-        {
-            Source = new Uri("avares://AvaloniaDemo.Base/Themes/DefaultDark.axaml")
-        },
-    };
+{
+    public static IThemeManager? ThemeManager;
 
     public override void Initialize()
     {
-        Styles.Insert(0, FluentLight);
+#if true
+        ThemeManager = new FluentThemeManager();
+#else
+        ThemeManager = new SimpleThemeManager();
+#endif
+        ThemeManager.Initialize(this);
 
         AvaloniaXamlLoader.Load(this);
     }

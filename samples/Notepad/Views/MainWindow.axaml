@@ -22,7 +22,7 @@
     <vm:MainWindowViewModel />
   </Design.DataContext>
   <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
-    <Panel Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Panel Height="30" HorizontalAlignment="Center" VerticalAlignment="Top">
       <Label Content="Notepad"
              Margin="4,0,4,0"
              FontSize="14"

@@ -11,15 +11,15 @@ namespace Dock.Avalonia.Internal;
 
 internal class DockDragState
 {
-    public IControl? DragControl { get; set; }
-    public IControl? DropControl { get; set; }
+    public Control? DragControl { get; set; }
+    public Control? DropControl { get; set; }
     public Point DragStartPoint { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public Point TargetPoint { get; set; }
     public IVisual? TargetDockControl { get; set; }
 
-    public void Start(IControl dragControl, Point point)
+    public void Start(Control dragControl, Point point)
     {
         DragControl = dragControl;
         DropControl = null;
@@ -61,7 +61,6 @@ internal class DockControlState : IDockControlState
     private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-
         if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             _adornerHelper.AddAdorner(control);
@@ -182,7 +181,7 @@ internal class DockControlState : IDockControlState
                 if (dragControl is { })
                 {
                     var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
-                    if (isDragEnabled != true)
+                    if (!isDragEnabled)
                     {
                         break;
                     }
@@ -198,7 +197,7 @@ internal class DockControlState : IDockControlState
                     {
                         var isDropEnabled = true;
 
-                        if (_state.TargetDockControl is IControl targetControl)
+                        if (_state.TargetDockControl is Control targetControl)
                         {
                             isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                         }
@@ -238,7 +237,7 @@ internal class DockControlState : IDockControlState
                 {
                     Point targetPoint = default;
                     IVisual? targetDockControl = null;
-                    IControl? dropControl = null;
+                    Control? dropControl = null;
 
                     foreach (var dockControl in dockControls)
                     {
@@ -283,7 +282,7 @@ internal class DockControlState : IDockControlState
                     {
                         var isDropEnabled = true;
 
-                        if (targetDockControl is IControl targetControl)
+                        if (targetDockControl is Control targetControl)
                         {
                             isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                         }

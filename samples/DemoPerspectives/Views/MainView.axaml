@@ -30,11 +30,11 @@
                Items="{Binding #dockControl.Layout.VisibleDockables, FallbackValue={x:Null}}" 
                Margin="4" 
                Grid.Row="1">
-        <ListBox.DataTemplates>
+        <ListBox.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding Title}" />
           </DataTemplate>
-        </ListBox.DataTemplates>
+        </ListBox.ItemTemplate>
       </ListBox>
     </Grid>
   </Grid>

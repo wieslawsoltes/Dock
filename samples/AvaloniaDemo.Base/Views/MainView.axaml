@@ -7,13 +7,15 @@
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:AvaloniaDemo.ViewModels"
-             xmlns:collections="clr-namespace:System.Collections;assembly=netstandard"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
              x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>
+  <UserControl.Resources>
+    <StreamGeometry x:Key="DarkTheme">M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Zm0-2V4a8 8 0 1 1 0 16Z</StreamGeometry>
+  </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
     <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
       <MenuItem Header="_File">
@@ -76,19 +78,9 @@
                 Grid.Column="3" />
         <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
-        <ComboBox x:Name="Themes" SelectedIndex="0" Grid.Column="6">
-          <ComboBox.ItemTemplate>
-            <DataTemplate x:DataType="x:String">
-              <TextBlock Text="{Binding}" />
-            </DataTemplate> 
-          </ComboBox.ItemTemplate>
-          <collections:ArrayList>
-            <x:String>Fluent Light</x:String>
-            <x:String>Fluent Dark</x:String>
-            <x:String>Default Light</x:String>
-            <x:String>Default Dark</x:String>
-          </collections:ArrayList>
-        </ComboBox>
+        <Button x:Name="Theme" Grid.Column="6" Background="Transparent">
+          <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
+        </Button>
       </Grid>
     </Panel>
     <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"

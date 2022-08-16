@@ -14,7 +14,7 @@ internal class WindowDragState
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
     public Point TargetPoint { get; set; }
-    public IControl? TargetDropControl { get; set; }
+    public Control? TargetDropControl { get; set; }
     public DragAction DragAction { get; set; }
 
     public void Start(Point point)
@@ -194,7 +194,7 @@ internal class HostWindowState : IHostWindowState
                     {
                         var isDropEnabled = true;
 
-                        if (_state.TargetDockControl is IControl targetControl)
+                        if (_state.TargetDockControl is Control targetControl)
                         {
                             isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
                         }

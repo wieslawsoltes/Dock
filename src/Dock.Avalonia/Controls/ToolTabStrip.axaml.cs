@@ -9,16 +9,16 @@ using Avalonia.Styling;
 namespace Dock.Avalonia.Controls;
 
 /// <summary>
-/// Dock TabStrip custom control.
+/// Tool TabStrip custom control.
 /// </summary>
 [PseudoClasses(":create")]
-public class DockTabStrip : TabStrip, IStyleable
+public class ToolTabStrip : TabStrip, IStyleable
 {
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> CanCreateItemProperty =
-        AvaloniaProperty.Register<DockPanel, bool>(nameof(CanCreateItem));
+        AvaloniaProperty.Register<ToolTabStrip, bool>(nameof(CanCreateItem));
 
     /// <summary>
     /// Gets or sets if tab strop dock can create new items.
@@ -29,12 +29,12 @@ public class DockTabStrip : TabStrip, IStyleable
         set => SetValue(CanCreateItemProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(TabStrip);
+    Type IStyleable.StyleKey => typeof(ToolTabStrip);
 
     /// <summary>
-    /// Initializes new instance of the <see cref="DockTabStrip"/> class.
+    /// Initializes new instance of the <see cref="ToolTabStrip"/> class.
     /// </summary>
-    public DockTabStrip()
+    public ToolTabStrip()
     {
         UpdatePseudoClasses(CanCreateItem);
     }
@@ -42,20 +42,20 @@ public class DockTabStrip : TabStrip, IStyleable
     /// <inheritdoc/>
     protected override IItemContainerGenerator CreateItemContainerGenerator()
     {
-        return new ItemContainerGenerator<DockTabStripItem>(
+        return new ItemContainerGenerator<ToolTabStripItem>(
             this,
             ContentControl.ContentProperty,
             ContentControl.ContentTemplateProperty);
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
         if (change.Property == CanCreateItemProperty)
         {
-            UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>());
+            UpdatePseudoClasses(change.GetNewValue<bool>());
         }
     }
 

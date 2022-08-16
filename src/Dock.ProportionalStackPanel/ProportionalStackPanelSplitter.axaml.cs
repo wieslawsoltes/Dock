@@ -20,14 +20,14 @@ public class ProportionalStackPanelSplitter : Thumb
     /// Defines the Proportion attached property.
     /// </summary>
     public static readonly AttachedProperty<double> ProportionProperty =
-        AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("Proportion", double.NaN, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, Control, double>("Proportion", double.NaN, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the Proportion attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The Proportion attached property.</returns>
-    public static double GetProportion(IControl control)
+    public static double GetProportion(AvaloniaObject control)
     {
         return control.GetValue(ProportionProperty);
     }
@@ -37,7 +37,7 @@ public class ProportionalStackPanelSplitter : Thumb
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The value of the Proportion property.</param>
-    public static void SetProportion(IControl control, double value)
+    public static void SetProportion(AvaloniaObject control, double value)
     {
         control.SetValue(ProportionProperty, value);
     }
@@ -52,14 +52,14 @@ public class ProportionalStackPanelSplitter : Thumb
     /// Defines the MinimumProportionSize attached property.
     /// </summary>
     public static readonly AttachedProperty<double> MinimumProportionSizeProperty =
-        AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, IControl, double>("MinimumProportionSize", 75, true);
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, Control, double>("MinimumProportionSize", 75, true);
 
     /// <summary>
     /// Gets the value of the MinimumProportion attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
     /// <returns>The minimum size a proportion can be resized to.</returns>
-    public static double GetMinimumProportionSize(IControl control)
+    public static double GetMinimumProportionSize(AvaloniaObject control)
     {
         return control.GetValue(MinimumProportionSizeProperty);
     }
@@ -69,7 +69,7 @@ public class ProportionalStackPanelSplitter : Thumb
     /// </summary>
     /// <param name="control">The control.</param>
     /// <param name="value">The minimum size a proportion can be resized to.</param>
-    public static void SetMinimumProportionSize(IControl control, double value)
+    public static void SetMinimumProportionSize(AvaloniaObject control, double value)
     {
         control.SetValue(MinimumProportionSizeProperty, value);
     }
@@ -141,7 +141,7 @@ public class ProportionalStackPanelSplitter : Thumb
         var child = children[index];
 
         var targetElementProportion = GetProportion(target);
-        var neighbourProportion = GetProportion(child);
+        var neighbourProportion = child is AvaloniaObject o ? GetProportion(o) : double.NaN;
 
         var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
@@ -176,7 +176,10 @@ public class ProportionalStackPanelSplitter : Thumb
 
         SetProportion(target, targetElementProportion);
 
-        SetProportion(child, neighbourProportion);
+        if (child is { })
+        {
+            SetProportion(child, neighbourProportion);
+        }
 
         panel.InvalidateMeasure();
         panel.InvalidateArrange();

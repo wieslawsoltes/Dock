@@ -1,6 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="Dock.Avalonia.Themes.DockFluentTheme">
+        x:Class="Dock.Avalonia.Themes.DockSimpleTheme">
   <Styles.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -18,7 +18,7 @@
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml" />
-        <ResourceInclude Source="avares://Dock.Avalonia/Themes/Accents/Fluent.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Themes/Accents/Simple.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Styles.Resources>

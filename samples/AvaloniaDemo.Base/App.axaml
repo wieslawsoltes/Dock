@@ -3,11 +3,15 @@
              xmlns:local="using:AvaloniaDemo"
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:core="using:Dock.Model.Core"
+             Name="Dock Avalonia Demo"
              x:Class="AvaloniaDemo.App">
+
   <Application.DataTemplates>
     <local:ViewLocator />
   </Application.DataTemplates>
+
   <Application.Styles>
+
     <Style Selector="idc|DocumentControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable">
@@ -24,6 +28,7 @@
         </DataTemplate>
       </Setter>
     </Style>
+
     <Style Selector="idc|ToolControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable">
@@ -31,5 +36,11 @@
         </DataTemplate>
       </Setter>
     </Style>
+
+    <Style Selector="idc|ToolChromeControl">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+
   </Application.Styles>
+
 </Application>

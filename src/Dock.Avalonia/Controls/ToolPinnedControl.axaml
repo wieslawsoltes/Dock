@@ -1,10 +1,12 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:core="using:Dock.Model.Core">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
     <ToolPinnedControl Width="30" Height="400" />
   </Design.PreviewWith>
-  <Style Selector="ToolPinnedControl">
+
+  <ControlTheme x:Key="{x:Type ToolPinnedControl}" TargetType="ToolPinnedControl">
+
     <Setter Property="Template">
       <ControlTemplate>
         <ItemsControl Items="{Binding PinnedDockables}"
@@ -61,5 +63,6 @@
         </ItemsControl>
       </ControlTemplate>
     </Setter>
-  </Style>
-</Styles>
+  </ControlTheme>
+
+</ResourceDictionary>

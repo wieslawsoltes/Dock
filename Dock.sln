@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Web", "samples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,10 @@ Global
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -209,6 +215,7 @@ Global
 		{2616E786-763F-4A0F-BBC7-46DB6AC32565} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{3606F724-6EF1-4929-9183-A1F8271D522A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

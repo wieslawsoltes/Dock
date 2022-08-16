@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -46,7 +47,7 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     private FileViewModel OpenFileViewModel(string path)
     {
-        Encoding encoding = GetEncoding(path);
+        var encoding = GetEncoding(path);
         string text = File.ReadAllText(path, encoding);
         string title = Path.GetFileName(path);
         return new FileViewModel()
@@ -88,7 +89,7 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     private FileViewModel GetUntitledFileViewModel()
     {
-        return new()
+        return new FileViewModel
         {
             Path = string.Empty,
             Title = "Untitled",
@@ -116,10 +117,15 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     public async void FileOpen()
     {
-        var dlg = new OpenFileDialog();
-        dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
-        dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
-        dlg.AllowMultiple = true;
+        var dlg = new OpenFileDialog
+        {
+            Filters = new List<FileDialogFilter>
+            {
+                new() {Name = "Text document", Extensions = {"txt"}},
+                new() {Name = "All", Extensions = {"*"}}
+            },
+            AllowMultiple = true
+        };
         var window = GetWindow();
         if (window is null)
         {
@@ -164,11 +170,16 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
 
     private async Task FileSaveAsImpl(FileViewModel fileViewModel)
     {
-        var dlg = new SaveFileDialog();
-        dlg.Filters.Add(new FileDialogFilter() { Name = "Text document", Extensions = { "txt" } });
-        dlg.Filters.Add(new FileDialogFilter() { Name = "All", Extensions = { "*" } });
-        dlg.InitialFileName = fileViewModel.Title;
-        dlg.DefaultExtension = "txt";
+        var dlg = new SaveFileDialog
+        {
+            Filters = new List<FileDialogFilter>
+            {
+                new() {Name = "Text document", Extensions = {"txt"}},
+                new() {Name = "All", Extensions = {"*"}}
+            },
+            InitialFileName = fileViewModel.Title,
+            DefaultExtension = "txt"
+        };
         var window = GetWindow();
         if (window is null)
         {

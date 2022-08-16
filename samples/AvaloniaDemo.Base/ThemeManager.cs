@@ -9,19 +9,21 @@ namespace AvaloniaDemo;
 
 public static class ThemeManager
 {
-    private static readonly FluentTheme Fluent = new(new Uri("avares://ControlCatalog/Styles"))
+    private static readonly Uri BaseUri = new("avares://AvaloniaDemo.Base/Styles");
+
+    private static readonly FluentTheme Fluent = new(BaseUri)
     {
         Mode = FluentThemeMode.Light
     };
 
-    private static readonly SimpleTheme Simple = new(new Uri("avares://ControlCatalog/Styles"))
+    private static readonly SimpleTheme Simple = new(BaseUri)
     {
         Mode = SimpleThemeMode.Light
     };
 
     private static readonly Styles DockFluent = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://Dock.Avalonia/Themes/DockFluentTheme.axaml")
         }
@@ -29,7 +31,7 @@ public static class ThemeManager
 
     private static readonly Styles DockSimple = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://Dock.Avalonia/Themes/DockSimpleTheme.axaml")
         }
@@ -37,7 +39,7 @@ public static class ThemeManager
 
     private static readonly Styles FluentDark = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentDark.axaml")
         }
@@ -45,7 +47,7 @@ public static class ThemeManager
 
     private static readonly Styles FluentLight = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://AvaloniaDemo.Base/Themes/FluentLight.axaml")
         }
@@ -53,7 +55,7 @@ public static class ThemeManager
 
     private static readonly Styles SimpleLight = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://AvaloniaDemo.Base/Themes/SimpleLight.axaml")
         }
@@ -61,7 +63,7 @@ public static class ThemeManager
 
     private static readonly Styles SimpleDark = new()
     {
-        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        new StyleInclude(BaseUri)
         {
             Source = new Uri("avares://AvaloniaDemo.Base/Themes/SimpleDark.axaml")
         }

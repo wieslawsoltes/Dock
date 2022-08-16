@@ -32,7 +32,7 @@ public interface INavigateAdapter
     /// </summary>
     /// <param name="root">An object that contains the content to navigate to.</param>
     /// <param name="bSnapshot">The flag indicating whether to make snapshot.</param>
-    void Navigate(object root, bool bSnapshot);
+    void Navigate(object? root, bool bSnapshot);
 
     /// <summary>
     /// Implementation of the <see cref="IRootDock.ShowWindows"/> method.

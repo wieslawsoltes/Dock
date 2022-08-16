@@ -19,12 +19,6 @@ public class MainView : UserControl
 
     private void InitializeThemes()
     {
-        var themes = this.Find<ComboBox>("Themes");
-        if (themes is { })
-        {
-            themes.SelectionChanged += (_, _) => App.ThemeManager?.Switch(themes.SelectedIndex);
-        }
-
         var dark = false;
         var theme = this.Find<Button>("Theme");
         if (theme is { })

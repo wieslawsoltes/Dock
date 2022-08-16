@@ -9,12 +9,12 @@ namespace AvaloniaDemo;
 
 public static class ThemeManager
 {
-    private static FluentTheme Fluent = new(new Uri("avares://ControlCatalog/Styles"))
+    private static readonly FluentTheme Fluent = new(new Uri("avares://ControlCatalog/Styles"))
     {
         Mode = FluentThemeMode.Light
     };
 
-    private static SimpleTheme Simple = new(new Uri("avares://ControlCatalog/Styles"))
+    private static readonly SimpleTheme Simple = new(new Uri("avares://ControlCatalog/Styles"))
     {
         Mode = SimpleThemeMode.Light
     };

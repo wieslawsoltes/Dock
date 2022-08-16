@@ -74,7 +74,7 @@ public class NavigateAdapter : INavigateAdapter
     }
 
     /// <inheritdoc/>
-    public void Navigate(object root, bool bSnapshot)
+    public void Navigate(object? root, bool bSnapshot)
     {
         switch (root)
         {

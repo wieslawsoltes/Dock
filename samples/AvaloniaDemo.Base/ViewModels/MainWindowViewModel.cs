@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Windows.Input;
 using AvaloniaDemo.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
 
 namespace AvaloniaDemo.ViewModels;
 
-public class MainWindowViewModel : ReactiveObject
+public class MainWindowViewModel : ObservableObject
 {
     private readonly IFactory? _factory;
     private IRootDock? _layout;
@@ -15,7 +16,7 @@ public class MainWindowViewModel : ReactiveObject
     public IRootDock? Layout
     {
         get => _layout;
-        set => this.RaiseAndSetIfChanged(ref _layout, value);
+        set => SetProperty(ref _layout, value);
     }
 
     public ICommand NewLayout { get; }
@@ -36,7 +37,7 @@ public class MainWindowViewModel : ReactiveObject
             }
         }
 
-        NewLayout = ReactiveCommand.Create(ResetLayout);
+        NewLayout = new RelayCommand(ResetLayout);
     }
 
     private void DebugFactoryEvents(IFactory factory)

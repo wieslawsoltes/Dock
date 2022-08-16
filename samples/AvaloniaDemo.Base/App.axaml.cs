@@ -14,9 +14,15 @@ namespace AvaloniaDemo;
 
 public class App : Application
 {
-    public static FluentTheme Fluent = new FluentTheme(new Uri("avares://ControlCatalog/Styles"));
+    public static FluentTheme Fluent = new FluentTheme(new Uri("avares://ControlCatalog/Styles"))
+    {
+        Mode = FluentThemeMode.Light
+    };
 
-    public static SimpleTheme Simple = new SimpleTheme(new Uri("avares://ControlCatalog/Styles"));
+    public static SimpleTheme Simple = new SimpleTheme(new Uri("avares://ControlCatalog/Styles"))
+    {
+        Mode = SimpleThemeMode.Light
+    };
 
     public static readonly Styles DockFluent = new Styles
     {
@@ -68,6 +74,7 @@ public class App : Application
 
     public override void Initialize()
     {
+#if true
         Styles.Insert(0, Fluent);
         Styles.Insert(1, DockFluent);
         Styles.Insert(2, FluentLight);

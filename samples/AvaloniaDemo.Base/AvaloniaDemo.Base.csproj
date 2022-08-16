@@ -15,7 +15,6 @@
   <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
   <Import Project="..\..\build\Avalonia.Themes.Simple.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
-  <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />

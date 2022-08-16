@@ -12,7 +12,6 @@
 
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\XUnit.props" />
-  <Import Project="..\..\build\ReactiveUI.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />

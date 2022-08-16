@@ -8,7 +8,6 @@ namespace AvaloniaDemo;
 
 public class App : Application
 {
-
     public override void Initialize()
     {
         ThemeManager.Initialize(this);

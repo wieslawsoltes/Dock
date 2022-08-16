@@ -78,7 +78,11 @@ public class App : Application
         Styles.Insert(0, Fluent);
         Styles.Insert(1, DockFluent);
         Styles.Insert(2, FluentLight);
-
+#else
+        Styles.Insert(0, Simple);
+        Styles.Insert(1, DockSimple);
+        Styles.Insert(2, SimpleDark);
+#endif
         AvaloniaXamlLoader.Load(this);
     }
 

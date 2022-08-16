@@ -22,7 +22,18 @@ public class MainView : UserControl
         var themes = this.Find<ComboBox>("Themes");
         if (themes is { })
         {
-            themes.SelectionChanged += (_, _) => ThemeManager.Switch(themes.SelectedIndex);
+            themes.SelectionChanged += (_, _) => App.ThemeManager?.Switch(themes.SelectedIndex);
+        }
+
+        var dark = false;
+        var theme = this.Find<Button>("Theme");
+        if (theme is { })
+        {
+            theme.Click += (_, _) =>
+            {
+                dark = !dark;
+                App.ThemeManager?.Switch(dark ? 1 : 0);
+            };
         }
     }
 

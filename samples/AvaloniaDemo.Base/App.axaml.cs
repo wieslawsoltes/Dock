@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvaloniaDemo.Themes;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 
@@ -8,8 +9,15 @@ namespace AvaloniaDemo;
 
 public class App : Application
 {
+    public static IThemeManager? ThemeManager;
+
     public override void Initialize()
     {
+#if true
+        ThemeManager = new FluentThemeManager();
+#else
+        ThemeManager = new SimpleThemeManager();
+#endif
         ThemeManager.Initialize(this);
 
         AvaloniaXamlLoader.Load(this);

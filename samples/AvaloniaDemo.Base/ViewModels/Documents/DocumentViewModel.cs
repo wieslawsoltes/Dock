@@ -1,4 +1,4 @@
-﻿using Dock.Model.ReactiveUI.Controls;
+﻿using Dock.Model.Mvvm.Controls;
 
 namespace AvaloniaDemo.ViewModels.Documents;
 

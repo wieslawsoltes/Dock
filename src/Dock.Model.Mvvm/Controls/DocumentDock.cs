@@ -1,10 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
-using Dock.Model.ReactiveUI.Core;
-using ReactiveUI;
+using Dock.Model.Mvvm.Core;
 
-namespace Dock.Model.ReactiveUI.Controls;
+namespace Dock.Model.Mvvm.Controls;
 
 /// <summary>
 /// Document dock.
@@ -19,7 +18,7 @@ public class DocumentDock : DockBase, IDocumentDock
     public bool CanCreateDocument
     {
         get => _canCreateDocument;
-        set => this.RaiseAndSetIfChanged(ref _canCreateDocument, value);
+        set => SetProperty(ref _canCreateDocument, value);
     }
 
     /// <inheritdoc/>

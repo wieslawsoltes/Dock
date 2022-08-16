@@ -4,6 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Styling;
+using Avalonia.Themes.Fluent;
+using Avalonia.Themes.Simple;
 using AvaloniaDemo.ViewModels;
 using AvaloniaDemo.Views;
 using Dock.Model;
@@ -11,7 +13,27 @@ using Dock.Model;
 namespace AvaloniaDemo;
 
 public class App : Application
-{       
+{
+    public static FluentTheme Fluent = new FluentTheme(new Uri("avares://ControlCatalog/Styles"));
+
+    public static SimpleTheme Simple = new SimpleTheme(new Uri("avares://ControlCatalog/Styles"));
+
+    public static readonly Styles DockFluent = new Styles
+    {
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        {
+            Source = new Uri("avares://Dock.Avalonia/Themes/DockFluentTheme.axaml")
+        }
+    };
+
+    public static readonly Styles DockSimple = new Styles
+    {
+        new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
+        {
+            Source = new Uri("avares://Dock.Avalonia/Themes/DockSimpleTheme.axaml")
+        }
+    };
+
     public static readonly Styles FluentDark = new Styles
     {
         new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
@@ -41,12 +63,14 @@ public class App : Application
         new StyleInclude(new Uri("avares://AvaloniaDemo.Base/Styles"))
         {
             Source = new Uri("avares://AvaloniaDemo.Base/Themes/SimpleDark.axaml")
-        },
+        }
     };
 
     public override void Initialize()
     {
-        Styles.Insert(0, FluentLight);
+        Styles.Insert(0, Fluent);
+        Styles.Insert(1, DockFluent);
+        Styles.Insert(2, FluentLight);
 
         AvaloniaXamlLoader.Load(this);
     }

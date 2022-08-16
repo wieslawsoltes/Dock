@@ -1,7 +1,8 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Themes.Fluent;
+using Avalonia.Themes.Simple;
 using Dock.Avalonia;
 
 namespace AvaloniaDemo.Views;
@@ -28,14 +29,59 @@ public class MainView : UserControl
             {
                 if (Application.Current is { })
                 {
-                    Application.Current.Styles[0] = themes.SelectedIndex switch
+                    var index = themes.SelectedIndex;
+
+                    switch (index)
                     {
-                        0 => App.FluentLight,
-                        1 => App.FluentDark,
-                        2 => App.SimpleLight,
-                        3 => App.SimpleDark,
-                        _ => throw new Exception("Not support theme.")
-                    };
+                        // Fluent Light
+                        case 0:
+                        {
+                            if (App.Fluent.Mode != FluentThemeMode.Light)
+                            {
+                                App.Fluent.Mode = FluentThemeMode.Light;
+                            }
+                            Application.Current.Styles[0] = App.Fluent;
+                            Application.Current.Styles[1] = App.DockFluent;
+                            Application.Current.Styles[2] = App.FluentLight;
+                            break;
+                        }
+                        // Fluent Dark
+                        case 1:
+                        {
+                            if (App.Fluent.Mode != FluentThemeMode.Dark)
+                            {
+                                App.Fluent.Mode = FluentThemeMode.Dark;
+                            }
+                            Application.Current.Styles[0] = App.Fluent;
+                            Application.Current.Styles[1] = App.DockFluent;
+                            Application.Current.Styles[2] = App.FluentDark;
+                            break;
+                        }
+                        // Simple Light
+                        case 2:
+                        {
+                            if (App.Simple.Mode != SimpleThemeMode.Light)
+                            {
+                                App.Simple.Mode = SimpleThemeMode.Light;
+                            }
+                            Application.Current.Styles[0] = App.Simple;
+                            Application.Current.Styles[1] = App.DockSimple;
+                            Application.Current.Styles[2] = App.SimpleLight;
+                            break;
+                        }
+                        // Simple Dark
+                        case 3:
+                        {
+                            if (App.Simple.Mode != SimpleThemeMode.Dark)
+                            {
+                                App.Simple.Mode = SimpleThemeMode.Dark;
+                            }
+                            Application.Current.Styles[0] = App.Simple;
+                            Application.Current.Styles[1] = App.DockSimple;
+                            Application.Current.Styles[2] = App.SimpleDark;
+                            break;
+                        }
+                    }
                 }
             };
         }

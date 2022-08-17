@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
@@ -11,6 +11,7 @@
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
   <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />

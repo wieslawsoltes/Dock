@@ -1,39 +1,38 @@
 ﻿
-namespace Dock.Model.Core
+namespace Dock.Model.Core;
+
+/// <summary>
+/// Defines the available dock operations.
+/// </summary>
+public enum DockOperation
 {
     /// <summary>
-    /// Defines the available dock operations.
+    /// Fill dock.
     /// </summary>
-    public enum DockOperation
-    {
-        /// <summary>
-        /// Fill dock.
-        /// </summary>
-        Fill,
+    Fill,
 
-        /// <summary>
-        /// Dock to left.
-        /// </summary>
-        Left,
+    /// <summary>
+    /// Dock to left.
+    /// </summary>
+    Left,
 
-        /// <summary>
-        /// Dock to bottom.
-        /// </summary>
-        Bottom,
+    /// <summary>
+    /// Dock to bottom.
+    /// </summary>
+    Bottom,
 
-        /// <summary>
-        /// Dock to right.
-        /// </summary>
-        Right,
+    /// <summary>
+    /// Dock to right.
+    /// </summary>
+    Right,
 
-        /// <summary>
-        /// Dock to top.
-        /// </summary>
-        Top,
+    /// <summary>
+    /// Dock to top.
+    /// </summary>
+    Top,
 
-        /// <summary>
-        /// Dock to window.
-        /// </summary>
-        Window
-    }
+    /// <summary>
+    /// Dock to window.
+    /// </summary>
+    Window
 }

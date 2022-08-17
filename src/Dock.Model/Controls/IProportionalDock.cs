@@ -1,16 +1,15 @@
 ﻿
 using Dock.Model.Core;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.Controls;
+
+/// <summary>
+/// Proportional dock contract.
+/// </summary>
+public interface IProportionalDock : IDock
 {
     /// <summary>
-    /// Proportional dock contract.
+    /// Gets or sets layout orientation.
     /// </summary>
-    public interface IProportionalDock : IDock
-    {
-        /// <summary>
-        /// Gets or sets layout orientation.
-        /// </summary>
-        Orientation Orientation { get; set; }
-    }
+    Orientation Orientation { get; set; }
 }

@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D
 		build.sh = build.sh
 		global.json = global.json
 		build\dock.public.snk = build\dock.public.snk
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
@@ -42,11 +43,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
 		build\SourceLink.props = build\SourceLink.props
 		build\SignAssembly.props = build\SignAssembly.props
+		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
+		build\Avalonia.Web.Blazor.props = build\Avalonia.Web.Blazor.props
+		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
+		build\Avalonia.Themes.Simple.props = build\Avalonia.Themes.Simple.props
+		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
+		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo.Base", "samples\AvaloniaDemo.Base\AvaloniaDemo.Base.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
 EndProject
@@ -68,11 +75,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad", "samples\Notepad\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia", "src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj", "{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Xaml", "samples\AvaloniaDemo.Xaml\AvaloniaDemo.Xaml.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoXaml", "samples\DemoXaml\DemoXaml.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Debug", "samples\AvaloniaDemo.Debug\AvaloniaDemo.Debug.csproj", "{F2766728-CECC-40E3-A33F-20CA7467CACD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDebug", "samples\DemoDebug\DemoDebug.csproj", "{F2766728-CECC-40E3-A33F-20CA7467CACD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Perspectives", "samples\AvaloniaDemo.Perspectives\AvaloniaDemo.Perspectives.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPerspectives", "samples\DemoPerspectives\DemoPerspectives.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel", "src\Dock.ProportionalStackPanel\Dock.ProportionalStackPanel.csproj", "{93E4EB2E-0784-4E01-928D-2BD57BB2638A}"
 EndProject
@@ -81,6 +88,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.ProportionalStackPanel.UnitTests", "tests\Dock.ProportionalStackPanel.UnitTests\Dock.ProportionalStackPanel.UnitTests.csproj", "{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Desktop", "samples\AvaloniaDemo.Desktop\AvaloniaDemo.Desktop.csproj", "{2616E786-763F-4A0F-BBC7-46DB6AC32565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaDemo.Web", "samples\AvaloniaDemo.Web\AvaloniaDemo.Web.csproj", "{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +169,26 @@ Global
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C43375-BDB6-42DF-90B9-8819DF675C35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2616E786-763F-4A0F-BBC7-46DB6AC32565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2616E786-763F-4A0F-BBC7-46DB6AC32565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2616E786-763F-4A0F-BBC7-46DB6AC32565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2616E786-763F-4A0F-BBC7-46DB6AC32565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F9EF68-6A62-4D70-8A20-D82D36D3598B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -176,6 +213,11 @@ Global
 		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{D1354C0E-83C4-4D48-A5ED-0B153A26DC83} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{7FE070B6-3E4B-4CEB-88BC-DA81D9EFBDF5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{89C43375-BDB6-42DF-90B9-8819DF675C35} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{2616E786-763F-4A0F-BBC7-46DB6AC32565} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{55F9EF68-6A62-4D70-8A20-D82D36D3598B} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{3606F724-6EF1-4929-9183-A1F8271D522A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

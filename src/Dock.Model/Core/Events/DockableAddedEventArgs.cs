@@ -1,24 +1,23 @@
 ﻿using System;
 
-namespace Dock.Model.Core.Events
+namespace Dock.Model.Core.Events;
+
+/// <summary>
+/// Dockable added event args.
+/// </summary>
+public class DockableAddedEventArgs : EventArgs
 {
     /// <summary>
-    /// Dockable added event args.
+    /// Gets added dockable.
     /// </summary>
-    public class DockableAddedEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets added dockable.
-        /// </summary>
-        public IDockable? Dockable { get; }
+    public IDockable? Dockable { get; }
 
-        /// <summary>
-        /// Initializes new instance of the <see cref="DockableAddedEventArgs"/> class.
-        /// </summary>
-        /// <param name="dockable">The added dockable.</param>
-        public DockableAddedEventArgs(IDockable? dockable)
-        {
-            Dockable = dockable;
-        }
+    /// <summary>
+    /// Initializes new instance of the <see cref="DockableAddedEventArgs"/> class.
+    /// </summary>
+    /// <param name="dockable">The added dockable.</param>
+    public DockableAddedEventArgs(IDockable? dockable)
+    {
+        Dockable = dockable;
     }
 }

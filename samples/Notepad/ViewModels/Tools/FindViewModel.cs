@@ -4,28 +4,27 @@ using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
 using ReactiveUI;
 
-namespace Notepad.ViewModels.Tools
+namespace Notepad.ViewModels.Tools;
+
+public class FindViewModel : Tool
 {
-    public class FindViewModel : Tool
+    private string _find = string.Empty;
+
+    public string Find
     {
-        private string _find = string.Empty;
+        get => _find;
+        set => this.RaiseAndSetIfChanged(ref _find, value);
+    }
 
-        public string Find
+    public void FindNext()
+    {
+        if (Context is IRootDock root && root.ActiveDockable is IDock active)
         {
-            get => _find;
-            set => this.RaiseAndSetIfChanged(ref _find, value);
-        }
-
-        public void FindNext()
-        {
-            if (Context is IRootDock root && root.ActiveDockable is IDock active)
+            if (active.Factory?.FindDockable(active, (d) => d.Id == "Files") is IDock files)
             {
-                if (active.Factory?.FindDockable(active, (d) => d.Id == "Files") is IDock files)
+                if (files.ActiveDockable is FileViewModel fileViewModel)
                 {
-                    if (files.ActiveDockable is FileViewModel fileViewModel)
-                    {
-                        // TODO: 
-                    }
+                    // TODO: 
                 }
             }
         }

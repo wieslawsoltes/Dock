@@ -1,23 +1,22 @@
-﻿namespace Dock.Model.Core
+﻿namespace Dock.Model.Core;
+
+/// <summary>
+/// Defines tracking mode.
+/// </summary>
+public enum TrackingMode
 {
     /// <summary>
-    /// Defines tracking mode.
+    /// Visible mode.
     /// </summary>
-    public enum TrackingMode
-    {
-        /// <summary>
-        /// Visible mode.
-        /// </summary>
-        Visible,
+    Visible,
 
-        /// <summary>
-        /// Pinned mode.
-        /// </summary>
-        Pinned,
+    /// <summary>
+    /// Pinned mode.
+    /// </summary>
+    Pinned,
 
-        /// <summary>
-        /// Tab mode.
-        /// </summary>
-        Tab
-    }
+    /// <summary>
+    /// Tab mode.
+    /// </summary>
+    Tab
 }

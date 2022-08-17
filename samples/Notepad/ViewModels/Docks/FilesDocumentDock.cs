@@ -3,33 +3,32 @@ using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
 using ReactiveUI;
 
-namespace Notepad.ViewModels.Docks
+namespace Notepad.ViewModels.Docks;
+
+public class FilesDocumentDock : DocumentDock
 {
-    public class FilesDocumentDock : DocumentDock
+    public FilesDocumentDock()
     {
-        public FilesDocumentDock()
+        CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+    }
+
+    private void CreateNewDocument()
+    {
+        if (!CanCreateDocument)
         {
-            CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+            return;
         }
 
-        private void CreateNewDocument()
+        var document = new FileViewModel()
         {
-            if (!CanCreateDocument)
-            {
-                return;
-            }
+            Path = string.Empty,
+            Title = "Untitled",
+            Text = "",
+            Encoding = Encoding.Default.WebName
+        };
 
-            var document = new FileViewModel()
-            {
-                Path = string.Empty,
-                Title = "Untitled",
-                Text = "",
-                Encoding = Encoding.Default.WebName
-            };
-
-            Factory?.AddDockable(this, document);
-            Factory?.SetActiveDockable(document);
-            Factory?.SetFocusedDockable(this, document);
-        }
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
     }
 }

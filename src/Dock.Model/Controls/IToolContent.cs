@@ -1,16 +1,15 @@
 ﻿
 using Dock.Model.Core;
 
-namespace Dock.Model.Controls
+namespace Dock.Model.Controls;
+
+/// <summary>
+/// Tool content contract.
+/// </summary>
+public interface IToolContent : IDockable
 {
     /// <summary>
-    /// Tool content contract.
+    /// Gets or sets tool content.
     /// </summary>
-    public interface IToolContent : IDockable
-    {
-        /// <summary>
-        /// Gets or sets tool content.
-        /// </summary>
-        object Content { get; set; }
-    }
+    object Content { get; set; }
 }

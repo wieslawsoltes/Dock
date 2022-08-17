@@ -9,103 +9,102 @@ using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 
-namespace Dock.Model.Avalonia.Controls
+namespace Dock.Model.Avalonia.Controls;
+
+/// <summary>
+/// Tool.
+/// </summary>
+[DataContract(IsReference = true)]
+public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Control>, IRecyclingDataTemplate
 {
     /// <summary>
-    /// Tool.
+    /// Defines the <see cref="Content"/> property.
     /// </summary>
-    [DataContract(IsReference = true)]
-    public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Control>, IRecyclingDataTemplate
+    public static readonly StyledProperty<object> ContentProperty =
+        AvaloniaProperty.Register<Tool, object>(nameof(Content));
+
+    /// <summary>
+    /// Initializes new instance of the <see cref="Tool"/> class.
+    /// </summary>
+    public Tool()
     {
-        /// <summary>
-        /// Defines the <see cref="Content"/> property.
-        /// </summary>
-        public static readonly StyledProperty<object> ContentProperty =
-            AvaloniaProperty.Register<Tool, object>(nameof(Content));
+        Id = nameof(ITool);
+        Title = nameof(ITool);
+    }
 
-        /// <summary>
-        /// Initializes new instance of the <see cref="Tool"/> class.
-        /// </summary>
-        public Tool()
+    /// <summary>
+    /// Gets or sets the content to display.
+    /// </summary>
+    [Content]
+    [TemplateContent]
+    [IgnoreDataMember]
+    public object Content
+    {
+        get => GetValue(ContentProperty);
+        set => SetValue(ContentProperty, value);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Type? DataType { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Control Build()
+    {
+        return (Control)Load(Content).Control;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    object ITemplate.Build() => Build();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public bool Match(object? data)
+    {
+        if (DataType == null)
         {
-            Id = nameof(ITool);
-            Title = nameof(ITool);
+            return true;
         }
-
-        /// <summary>
-        /// Gets or sets the content to display.
-        /// </summary>
-        [Content]
-        [TemplateContent]
-        [IgnoreDataMember]
-        public object Content
+        else
         {
-            get => GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
+            return DataType.IsInstanceOfType(data);
         }
+    }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Type? DataType { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public IControl Build(object? data) => Build(data, null);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Control Build()
-        {
-            return (Control)Load(Content!).Control;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        object? ITemplate.Build() => Build();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public bool Match(object data)
-        {
-            if (DataType == null)
-            {
-                return true;
-            }
-            else
-            {
-                return DataType.IsInstanceOfType(data);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public IControl Build(object data) => Build(data, null);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="existing"></param>
-        /// <returns></returns>
-        public IControl Build(object data, IControl? existing)
-        {
-            return existing ?? TemplateContent.Load(Content)?.Control!;
-        }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="existing"></param>
+    /// <returns></returns>
+    public IControl Build(object? data, IControl? existing)
+    {
+        return existing ?? TemplateContent.Load(Content)?.Control!;
+    }
         
-        private static ControlTemplateResult Load(object templateContent)
+    private static ControlTemplateResult Load(object templateContent)
+    {
+        if (templateContent is Func<IServiceProvider, object> direct)
         {
-            if (templateContent is Func<IServiceProvider, object> direct)
-            {
-                return (ControlTemplateResult)direct(null!);
-            }
-            throw new ArgumentException(nameof(templateContent));
+            return (ControlTemplateResult)direct(null!);
         }
+        throw new ArgumentException(nameof(templateContent));
     }
 }

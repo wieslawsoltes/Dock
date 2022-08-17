@@ -23,6 +23,14 @@ public class ToolTabStripItem : TabStripItem, IStyleable
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
     }
 
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        RemoveHandler(PointerPressedEvent, PressedHandler);
+    }
+
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
         if (e.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)

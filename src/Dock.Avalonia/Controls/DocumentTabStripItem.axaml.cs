@@ -6,6 +6,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -21,6 +22,8 @@ public class DocumentTabStripItem : TabStripItem, IStyleable
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStripItem, bool>(nameof(IsActive));
+
+    private readonly ItemDragBehavior _itemDragBehavior;
 
     /// <summary>
     /// Gets or sets if this is the currently active dockable.
@@ -38,6 +41,7 @@ public class DocumentTabStripItem : TabStripItem, IStyleable
     /// </summary>
     public DocumentTabStripItem()
     {
+        _itemDragBehavior = new ItemDragBehavior(this, Orientation.Horizontal);
         UpdatePseudoClasses(IsActive);
     }
 
@@ -46,7 +50,19 @@ public class DocumentTabStripItem : TabStripItem, IStyleable
     {
         base.OnAttachedToVisualTree(e);
 
+        _itemDragBehavior.Attach();
+
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        _itemDragBehavior.Detach();
+
+        RemoveHandler(PointerPressedEvent, PressedHandler);
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)

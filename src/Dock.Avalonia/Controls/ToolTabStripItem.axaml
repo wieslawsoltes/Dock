@@ -26,6 +26,7 @@
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 1 4 0" />
+    <Setter Property="ZIndex" Value="0" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -90,7 +91,11 @@
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     </Style> 
-    
+
+    <Style Selector="^:pressed">
+      <Setter Property="ZIndex" Value="1" />
+    </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

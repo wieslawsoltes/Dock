@@ -35,7 +35,7 @@ public class ToolTabStripItem : TabStripItem, IStyleable
     {
         if (e.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
         {
-            if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable)
+            if (DataContext is IDockable { Owner: IDock { Factory: { } factory }, CanClose: true } dockable)
             {
                 factory.CloseDockable(dockable);
             }

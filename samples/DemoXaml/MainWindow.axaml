@@ -31,7 +31,14 @@
         <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
         <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
           <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
-            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" ActiveDockable="{Binding #Document1}">
+            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1">
+              <DocumentDock.DocumentTemplate>
+                <DocumentTemplate>
+                  <Document Title="Document" x:DataType="Document">
+                    <TextBlock Text="{Binding Title}"/>
+                  </Document>
+                </DocumentTemplate>
+              </DocumentDock.DocumentTemplate>
               <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
                 <TextBlock Text="{Binding Title}"/>
               </Document>
@@ -47,7 +54,7 @@
             </ToolDock>
           </ProportionalDock>
           <ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
-          <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
+          <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="Output">
             <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
               <TextBlock Text="{Binding Title}"/>
             </Tool>

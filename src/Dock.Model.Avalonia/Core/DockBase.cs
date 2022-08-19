@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using Dock.Model.Adapters;
 using Dock.Model.Avalonia.Internal;
@@ -143,6 +144,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
@@ -166,6 +168,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
@@ -174,6 +177,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;

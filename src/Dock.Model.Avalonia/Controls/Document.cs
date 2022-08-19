@@ -38,6 +38,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     [Content]
     [TemplateContent]
     [IgnoreDataMember]
+    [ResolveByName]
     public object Content
     {
         get => GetValue(ContentProperty);

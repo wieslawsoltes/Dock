@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
@@ -61,6 +62,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockWindow? Window
     {
         get => _window;

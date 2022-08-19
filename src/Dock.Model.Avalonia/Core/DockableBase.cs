@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Avalonia;
+using Avalonia.Controls;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
 
@@ -103,6 +104,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [ResolveByName]
     public IDockable? Owner
     {
         get => _owner;

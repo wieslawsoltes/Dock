@@ -104,10 +104,10 @@ public class DockControl : TemplatedControl, IDockControl
         {
             if (_isInitialized)
             {
-                DeInitialize(change.OldValue.GetValueOrDefault<IDock>());
+                DeInitialize(change.GetOldValue<IDock>());
             }
 
-            Initialize(change.NewValue.GetValueOrDefault<IDock>()); 
+            Initialize(change.GetNewValue<IDock>()); 
         }
     }
 

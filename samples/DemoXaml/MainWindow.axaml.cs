@@ -89,6 +89,15 @@ public class MainWindow : Window
         }
     }
 
+    private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var dock = this.FindControl<DockControl>("Dock");
+        if (dock is { })
+        {
+            dock.Layout = null;
+        }
+    }
+
     private Window? GetWindow()
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)

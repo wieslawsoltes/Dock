@@ -104,28 +104,28 @@ public class DockControl : TemplatedControl, IDockControl
         {
             if (_isInitialized)
             {
-                DeInitialize();
+                DeInitialize(change.OldValue.GetValueOrDefault<IDock>());
             }
 
-            Initialize(); 
+            Initialize(change.NewValue.GetValueOrDefault<IDock>()); 
         }
     }
 
-    private void Initialize()
+    private void Initialize(IDock? layout)
     {
-        if (Layout is null)
+        if (layout is null)
         {
             return;
         }
 
-        if (Layout.Factory is null)
+        if (layout.Factory is null)
         {
             if (FactoryType is { })
             {
                 var factory = (IFactory?)Activator.CreateInstance(FactoryType);
                 if (factory is { })
                 {
-                    Layout.Factory = factory;
+                    layout.Factory = factory;
                 }
                 else
                 {
@@ -138,45 +138,45 @@ public class DockControl : TemplatedControl, IDockControl
             }
         }
 
-        Layout.Factory.DockControls.Add(this);
+        layout.Factory.DockControls.Add(this);
 
         if (InitializeFactory)
         {
-            Layout.Factory.ContextLocator = new Dictionary<string, Func<object>>();
-            Layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            layout.Factory.ContextLocator = new Dictionary<string, Func<object>>();
+            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
-            Layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
-            Layout.Factory.DefaultContextLocator = GetContext;
-            Layout.Factory.DefaultHostWindowLocator = GetHostWindow;
+            layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
+            layout.Factory.DefaultContextLocator = GetContext;
+            layout.Factory.DefaultHostWindowLocator = GetHostWindow;
  
             IHostWindow GetHostWindow() => new HostWindow();
-            object GetContext() => Layout;
+            object GetContext() => layout;
         }
 
         if (InitializeLayout)
         {
-            Layout.Factory.InitLayout(Layout);
+            layout.Factory.InitLayout(layout);
         }
 
         _isInitialized = true;
     }
 
-    private void DeInitialize()
+    private void DeInitialize(IDock? layout)
     {
-        if (Layout?.Factory is null)
+        if (layout?.Factory is null)
         {
             return;
         }
 
-        Layout.Factory.DockControls.Remove(this);
+        layout.Factory.DockControls.Remove(this);
 
-        if (InitializeLayout && Layout is { })
+        if (InitializeLayout)
         {
-            if (Layout.Close.CanExecute(null))
+            if (layout.Close.CanExecute(null))
             {
-                Layout.Close.Execute(null);
+                layout.Close.Execute(null);
             }
         }
 
@@ -190,10 +190,10 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (_isInitialized)
         {
-            DeInitialize();
+            DeInitialize(Layout);
         }
 
-        Initialize();
+        Initialize(Layout);
     }
 
     /// <inheritdoc/>
@@ -203,7 +203,7 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (_isInitialized)
         {
-            DeInitialize();
+            DeInitialize(Layout);
         }
     }
 

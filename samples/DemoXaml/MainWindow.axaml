@@ -12,12 +12,13 @@
         <MenuItem Header="_File">
         <MenuItem Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
         <Separator/>
-        <MenuItem Name="FileSaveLayout" Header="Save layout..." Click="FileSaveLayout_OnClick" />
+        <MenuItem Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
+        <Separator/>
+        <MenuItem Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
       </MenuItem>
     </Menu>
     <DockControl Name="Dock" Grid.Row="1" FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
       <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
-        <!--
         <RootDock.Windows>
           <DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="300" Height="400" Topmost="True">
             <RootDock ActiveDockable="{Binding #ToolDock}" Window="{Binding #DockWindow}">
@@ -29,7 +30,6 @@
             </RootDock>
           </DockWindow>
         </RootDock.Windows>
-        -->
         <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
           <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
             <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">

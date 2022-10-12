@@ -64,10 +64,7 @@
                                ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
                 <ItemsControl Items="{Binding VisibleDockables}">
                   <ItemsControl.Styles>
-                    <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
-                      <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
-                    </Style>
-                    <Style Selector="ItemsControl > ContentPresenter > :is(Control)" x:DataType="core:IDock">
+                    <Style Selector="ItemsControl > ContentPresenter > :is(core|IDock)" x:DataType="core:IDock">
                       <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
                     </Style>
                   </ItemsControl.Styles>

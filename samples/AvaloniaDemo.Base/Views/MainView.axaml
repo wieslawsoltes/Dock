@@ -31,8 +31,7 @@
           <MenuItem.Icon>
             <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}"
                       BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
+                      IsHitTestVisible="False" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
@@ -40,8 +39,7 @@
           <MenuItem.Icon>
             <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}"
                       BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
+                      IsHitTestVisible="False" />
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>

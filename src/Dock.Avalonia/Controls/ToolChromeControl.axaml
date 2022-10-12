@@ -31,18 +31,15 @@
                 <MenuItem Header="_Float"
                           Command="{Binding Owner.Factory.FloatDockable}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"/>
                 <MenuItem Header="_Hide"
                           Command="{Binding Owner.Factory.PinDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
                 <MenuItem Header="_Close"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"/>
               </ContextMenu>
             </Border.ContextMenu>
             <Grid x:Name="PART_Grip">
@@ -55,8 +52,7 @@
                         Command="{Binding Owner.Factory.CloseDockable}"
                         CommandParameter="{Binding ActiveDockable}"
                         IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
-                        DockPanel.Dock="Right"
-                        x:CompileBindings="False">
+                        DockPanel.Dock="Right">
                   <Viewbox>
                     <Path x:Name="PART_ClosePath" />
                   </Viewbox>
@@ -65,8 +61,7 @@
                         Command="{Binding Owner.Factory.PinDockable}"
                         CommandParameter="{Binding ActiveDockable}"
                         IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"
-                        DockPanel.Dock="Right"
-                        x:CompileBindings="False">
+                        DockPanel.Dock="Right">
                   <Viewbox>
                     <Path x:Name="PART_PinPath" />
                   </Viewbox>

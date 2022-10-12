@@ -30,8 +30,7 @@
                           BorderThickness="0"
                           Command="{Binding Owner.Factory.PinDockable}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanPin}"
-                          x:CompileBindings="False">
+                          IsVisible="{Binding CanPin}">
                     <TextBlock Text="{Binding Title}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left">
@@ -40,18 +39,15 @@
                           <MenuItem Header="_Float"
                                     Command="{Binding Owner.Factory.FloatDockable}"
                                     CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanFloat}"
-                                    x:CompileBindings="False" />
+                                    IsVisible="{Binding CanFloat}"/>
                           <MenuItem Header="_Show"
                                     Command="{Binding Owner.Factory.PinDockable}"
                                     CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanPin}"
-                                    x:CompileBindings="False" />
+                                    IsVisible="{Binding CanPin}"/>
                           <MenuItem Header="_Close"
                                     Command="{Binding Owner.Factory.CloseDockable}"
                                     CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanClose}"
-                                    x:CompileBindings="False" />
+                                    IsVisible="{Binding CanClose}"/>
                         </ContextMenu>
                       </TextBlock.ContextMenu>
                     </TextBlock>

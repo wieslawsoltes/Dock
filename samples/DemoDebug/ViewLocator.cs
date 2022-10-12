@@ -8,9 +8,9 @@ namespace AvaloniaDemo;
 
 public class ViewLocator : IDataTemplate
 {
-    public IControl Build(object data)
+    public IControl Build(object? data)
     {
-        var name = data.GetType()?.FullName?.Replace("ViewModel", "View");
+        var name = data?.GetType().FullName?.Replace("ViewModel", "View");
         if (name == null)
         {
             return new TextBlock { Text = "Invalid Data Type" };
@@ -34,7 +34,7 @@ public class ViewLocator : IDataTemplate
         }
     }
 
-    public bool Match(object data)
+    public bool Match(object? data)
     {
         return data is StyledElement || data is IDockable;
     }

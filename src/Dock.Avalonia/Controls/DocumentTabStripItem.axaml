@@ -38,33 +38,27 @@
                 <MenuItem Header="_Float"
                           Command="{Binding Owner.Factory.FloatDockable}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanFloat}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanFloat}"/>
                 <MenuItem Header="_Close"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanClose}"/>
                 <MenuItem Header="Close other tabs"
                           Command="{Binding Owner.Factory.CloseOtherDockables}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanClose}"/>
                 <MenuItem Header="Close all tabs"
                           Command="{Binding Owner.Factory.CloseAllDockables}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanClose}"/>
                 <MenuItem Header="_Close tabs to the left"
                           Command="{Binding Owner.Factory.CloseLeftDockables}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanClose}"/>
                 <MenuItem Header="_Close tabs to the right"
                           Command="{Binding Owner.Factory.CloseRightDockables}"
                           CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"
-                          x:CompileBindings="False" />
+                          IsVisible="{Binding CanClose}"/>
               </ContextMenu>
             </Border.ContextMenu>
             <DockableControl TrackingMode="Tab">
@@ -80,8 +74,7 @@
                 <Button x:Name="PART_CloseButton"
                         Command="{Binding Owner.Factory.CloseDockable}"
                         CommandParameter="{Binding}"
-                        IsVisible="{Binding CanClose}"
-                        x:CompileBindings="False">
+                        IsVisible="{Binding CanClose}">
                   <Button.Styles>
                     <Style Selector="Button">
                       <Setter Property="BorderThickness" Value="0" />

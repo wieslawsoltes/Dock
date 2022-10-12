@@ -23,8 +23,7 @@
                 CommandParameter="{Binding #visibleDockables.SelectedItem}" 
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
-                Margin="4,2"
-                x:CompileBindings="False"/>
+                Margin="4,2"/>
       </StackPanel>
       <ListBox x:Name="visibleDockables"
                Items="{Binding #dockControl.Layout.VisibleDockables, FallbackValue={x:Null}}" 

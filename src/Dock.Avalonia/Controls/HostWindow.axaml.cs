@@ -108,16 +108,16 @@ public class HostWindow : Window, IStyleable, IHostWindow
             
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            EndDrag(e.GetPosition(this));
+            EndDrag(e);
         }
     }
 
-    private void EndDrag(Point point)
+    private void EndDrag(PointerEventArgs e)
     {
         PseudoClasses.Set(":dragging", false);
 
         Window?.Factory?.OnWindowMoveDragEnd(Window);
-        _hostWindowState.Process(point, EventType.Released);
+        _hostWindowState.Process(e.GetPosition(this), EventType.Released);
         _mouseDown = false;
         _draggingWindow = false;
     }
@@ -143,7 +143,7 @@ public class HostWindow : Window, IStyleable, IHostWindow
 
         if (_draggingWindow)
         {
-            EndDrag(e.GetPosition(this));
+            EndDrag(e);
         }
     }
 

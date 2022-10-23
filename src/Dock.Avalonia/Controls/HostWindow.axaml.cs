@@ -88,25 +88,6 @@ public class HostWindow : Window, IStyleable, IHostWindow
                 {
                     MoveDrag(args);
                 };
-                
-                //On linux, OnPointerReleased is not called after the drag completed.
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    //Activated gets called once the drag starts and once the drag ends. This way we can detect when the drag has finished.
-                    var activatedSwitch = false;
-                    
-                    Activated += (o, i) =>
-                    {
-                        if (!_draggingWindow) return;
-                        if (activatedSwitch)
-                        {
-                            EndDrag(Position.ToPoint(1.0));
-                            activatedSwitch = false;
-                            return;
-                        }
-                        activatedSwitch = true;
-                    };
-                }
             }
         }
     }

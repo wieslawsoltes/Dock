@@ -44,7 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\SourceLink.props = build\SourceLink.props
 		build\SignAssembly.props = build\SignAssembly.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
-		build\Avalonia.Web.Blazor.props = build\Avalonia.Web.Blazor.props
 		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
 		build\Avalonia.Themes.Simple.props = build\Avalonia.Themes.Simple.props
 		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
@@ -98,6 +97,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{1F5D6BD4-CED0-409F-89D8-096F5F457A6D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\pages.yml = .github\workflows\pages.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -218,6 +223,7 @@ Global
 		{BD08AB20-8604-4EA5-85BF-F2B1AECEF2B8} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{3606F724-6EF1-4929-9183-A1F8271D522A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{1F5D6BD4-CED0-409F-89D8-096F5F457A6D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

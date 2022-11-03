@@ -1,5 +1,8 @@
 name: Deploy to GitHub Pages
 
+env:
+    PROJECT_PATH: samples/AvaloniaDemo.Web/AvaloniaDemo.Web.csproj
+    OUTPUT_PATH: samples/AvaloniaDemo.Web/bin/Release/net7.0/browser-wasm/AppBundle
 on:
   push:
     branches: [ master ]
@@ -14,23 +17,32 @@ jobs:
       uses: actions/setup-dotnet@v1.9.0
 
     - name: Install wasm-tools
-      run: dotnet workload install wasm-tools
+      run: dotnet workload install wasm-tools wasm-experimental
+
+    - name: Install DotNetCompress
+      run: dotnet tool install --global DotNetCompress --version 2.0.0 --no-cache
 
     - name: Publish .NET Project
-      run: dotnet publish samples/AvaloniaDemo.Web/AvaloniaDemo.Web.csproj -c Release -o release --nologo
+      run: dotnet publish $PROJECT_PATH -c Release -o release --nologo
 
-    - name: Change base-tag in index.html from / to Dock
-      run: sed -i 's/<base href="\/" \/>/<base href="\/Dock\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Dock\/" \/>/g' $OUTPUT_PATH/index.html
 
     - name: copy index.html to 404.html
-      run: cp release/wwwroot/index.html release/wwwroot/404.html
+      run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
+
+    - name: Compress Output using Brotli
+      run: DotNetCompress -d $OUTPUT_PATH/ -p "*.dll" "*.js" "*.wasm" --format br --threads 4
+
+    - name: Compress Output using GZip
+      run: DotNetCompress -d $OUTPUT_PATH -p "*.dll" "*.js" "*.wasm" --format gz --threads 4
 
     - name: Add .nojekyll file
-      run: touch release/wwwroot/.nojekyll
+      run: touch $OUTPUT_PATH/.nojekyll
 
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.7
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: release/wwwroot
+        FOLDER: ${{ env.OUTPUT_PATH }}

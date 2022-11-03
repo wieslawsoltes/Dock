@@ -9,7 +9,8 @@
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
-             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+             FontFamily="avares://Avalonia.Themes.Fluent/Assets#Inter">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

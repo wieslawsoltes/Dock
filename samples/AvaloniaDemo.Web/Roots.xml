@@ -13,6 +13,7 @@
   <!-- Dock -->
 
   <assembly fullname="Dock.Avalonia" preserve="All" />
+  <assembly fullname="Dock.ProportionalStackPanel" preserve="All" />
 
   <!-- Avalonia Themes -->
 

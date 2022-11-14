@@ -1,4 +1,7 @@
-﻿using Dock.Model.Controls;
+﻿using System;
+using System.Linq;
+using System.Text;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
 using Notepad.ViewModels.Documents;
@@ -18,13 +21,23 @@ public class FindViewModel : Tool
 
     public void FindNext()
     {
-        if (Context is IRootDock root && root.ActiveDockable is IDock active)
+        if (Context is IRootDock root 
+            && root.ActiveDockable is IDock active
+            && _find.Length > 0)
         {
             if (active.Factory?.FindDockable(active, (d) => d.Id == "Files") is IDock files)
             {
                 if (files.ActiveDockable is FileViewModel fileViewModel)
                 {
-                    // TODO: 
+                    var start = Math.Max(fileViewModel.SelectionStart, 0);
+                    if (fileViewModel.SelectedText == _find)
+                        start++;
+                    var ix = fileViewModel.Text.IndexOf(_find, start);
+                    if (ix >= 0)
+                    {
+                        fileViewModel.SelectionStart = ix;
+                        fileViewModel.SelectionEnd = ix + _find.Length;
+                    }
                 }
             }
         }

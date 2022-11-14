@@ -9,6 +9,9 @@ public class FileViewModel : Document
     private string _text = string.Empty;
     private string _encoding = string.Empty;
 
+    private int _selectionStart = -1;
+    private int _selectionEnd = -1;
+
     public string Path
     {
         get => _path;
@@ -25,5 +28,33 @@ public class FileViewModel : Document
     {
         get => _encoding;
         set => this.RaiseAndSetIfChanged(ref _encoding, value);
+    }
+
+    public int SelectionStart
+    {
+        get => _selectionStart;
+        set => this.RaiseAndSetIfChanged(ref _selectionStart, value);
+    }
+
+    public int SelectionEnd
+    {
+        get => _selectionEnd;
+        set => this.RaiseAndSetIfChanged(ref _selectionEnd, value);
+    }
+
+    public string SelectedText 
+    {
+        get => _selectionStart >= 0 && _selectionEnd > _selectionStart?
+            _text.Substring(_selectionStart, _selectionEnd-_selectionStart)
+            : string.Empty;
+        set
+        {
+            if (SelectionStart < 0
+            || SelectionEnd < 0 
+            || SelectionEnd < SelectionStart)
+                return;
+            Text = _text.Substring(0, SelectionStart) + value + _text.Substring(SelectionEnd);
+            SelectionEnd = SelectionStart + value.Length;
+        }
     }
 }

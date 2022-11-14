@@ -4,6 +4,26 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+   {
+    "name": "DemoDebug",
+    "type": "coreclr",
+    "request": "launch",
+    "program": "${workspaceFolder}/samples/DemoDebug/bin/Debug/net6.0/AvaloniaDemo.dll",
+    "args": [],
+    "cwd": "${workspaceFolder}/samples/DemoDebug/bin/Debug/net6.0",
+    "stopAtEntry": false,
+    "console": "internalConsole"
+   },
+   {
+    "name": "NotePad",
+    "type": "coreclr",
+    "request": "launch",
+    "program": "${workspaceFolder}/samples/Notepad/bin/Debug/net6.0/Notepad.dll",
+    "args": [],
+    "cwd": "${workspaceFolder}/samples/Notepad/bin/Debug/net6.0",
+    "stopAtEntry": false,
+    "console": "internalConsole"
+   },
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",

@@ -122,9 +122,6 @@ public class ProportionalStackPanelSplitter : Thumb
                 var delta = point - _startPoint;
                 _startPoint = point;
                 SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
-#if DEBUG
-                Console.WriteLine($"OnPointerMoved {delta.X}, {delta.Y}");
-#endif
             }
         }
     }

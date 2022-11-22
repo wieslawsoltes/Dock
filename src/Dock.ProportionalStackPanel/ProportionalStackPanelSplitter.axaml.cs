@@ -127,6 +127,14 @@ public class ProportionalStackPanelSplitter : Thumb
     }
 
     /// <inheritdoc/>
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        base.OnPointerCaptureLost(e);
+
+        _isMoving = false;
+    }
+
+    /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
         if (GetPanel() is { } panel)

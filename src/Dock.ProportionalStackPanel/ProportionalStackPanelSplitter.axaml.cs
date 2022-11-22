@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
@@ -84,13 +85,53 @@ public class ProportionalStackPanelSplitter : Thumb
         set => SetValue(ThicknessProperty, value);
     }
 
+    private Point _startPoint;
+    private bool _isMoving;
+
     /// <inheritdoc/>
-    protected override void OnDragDelta(VectorEventArgs e)
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
+        base.OnPointerPressed(e);
+        
         if (GetPanel() is { } panel)
         {
-            SetTargetProportion(panel.Orientation == Orientation.Vertical ? e.Vector.Y : e.Vector.X);
+            var point = e.GetPosition(panel);
+            _startPoint = point;
+            _isMoving = true;
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+        
+        _isMoving = false;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        base.OnPointerMoved(e);
+
+        if (_isMoving)
+        {  
+            if (GetPanel() is { } panel)
+            {
+                var point = e.GetPosition(panel);
+                var delta = point - _startPoint;
+                _startPoint = point;
+                SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        base.OnPointerCaptureLost(e);
+
+        _isMoving = false;
     }
 
     /// <inheritdoc/>

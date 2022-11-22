@@ -5,11 +5,6 @@
   <assembly fullname="AvaloniaDemo.Base" preserve="All" />
   <assembly fullname="AvaloniaDemo.Web" preserve="All" />
 
-  <!-- Behaviors -->
-
-  <assembly fullname="Avalonia.Xaml.Interactions" preserve="All" />
-  <assembly fullname="Avalonia.Xaml.Interactivity" preserve="All" />
-
   <!-- Dock -->
 
   <assembly fullname="Dock.Avalonia" preserve="All" />

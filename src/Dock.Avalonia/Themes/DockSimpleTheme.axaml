@@ -13,6 +13,7 @@
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DocumentControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolChromeControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolPinItemControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolPinnedControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/DockDockControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/DocumentContentControl.axaml" />

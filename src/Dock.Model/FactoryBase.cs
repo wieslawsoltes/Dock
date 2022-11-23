@@ -350,6 +350,12 @@ public abstract partial class FactoryBase : IFactory
         {
             case IToolDock toolDock:
             {
+                var rootDock = FindRoot(dockable, _ => true);
+                if (rootDock is null)
+                {
+                    return;
+                }
+                
                 var isVisible = false;
                 var isPinned = false;
 
@@ -358,22 +364,22 @@ public abstract partial class FactoryBase : IFactory
                     isVisible = toolDock.VisibleDockables.Contains(dockable);
                 }
 
-                if (toolDock.PinnedDockables is not null)
+                if (rootDock.PinnedDockables is not null)
                 {
-                    isPinned = toolDock.PinnedDockables.Contains(dockable);
+                    isPinned = rootDock.PinnedDockables.Contains(dockable);
                 }
 
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
 
-                    toolDock.PinnedDockables ??= CreateList<IDockable>();
+                    rootDock.PinnedDockables ??= CreateList<IDockable>();
 
                     if (toolDock.VisibleDockables is not null)
                     {
                         toolDock.VisibleDockables.Remove(dockable);
                         OnDockableRemoved(dockable);
-                        toolDock.PinnedDockables.Add(dockable);
+                        rootDock.PinnedDockables.Add(dockable);
                         OnDockablePinned(dockable);
                     }
 
@@ -387,9 +393,9 @@ public abstract partial class FactoryBase : IFactory
 
                     toolDock.VisibleDockables ??= CreateList<IDockable>();
 
-                    if (toolDock.PinnedDockables is not null)
+                    if (rootDock.PinnedDockables is not null)
                     {
-                        toolDock.PinnedDockables.Remove(dockable);
+                        rootDock.PinnedDockables.Remove(dockable);
                         OnDockableUnpinned(dockable);
                         toolDock.VisibleDockables.Add(dockable);
                         OnDockableAdded(dockable);
@@ -460,9 +466,21 @@ public abstract partial class FactoryBase : IFactory
             return;
         }
 
-        if (dock.PinnedDockables is not null && dock.PinnedDockables.Count != 0)
+        var rootDock = FindRoot(dock, _ => true);
+        if (rootDock is { })
         {
-            return;
+            if (rootDock.PinnedDockables is not null && rootDock.PinnedDockables.Count != 0)
+            {
+                foreach (var pinnedDockable in rootDock.PinnedDockables)
+                {
+                    if (pinnedDockable.Owner == dock)
+                    {
+                        return;
+                    }
+                }
+
+                return;
+            }
         }
 
         if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
@@ -499,9 +517,9 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
-        if (dock is IRootDock rootDock && rootDock.Window is { })
+        if (dock is IRootDock rootDockDock && rootDockDock.Window is { })
         {
-            RemoveWindow(rootDock.Window);
+            RemoveWindow(rootDockDock.Window);
         }
         else
         {

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
     <ToolPinnedControl Width="30" Height="400" />
@@ -10,7 +11,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <ItemsControl Items="{Binding PinnedDockables}"
-                      x:DataType="core:IDock"
+                      x:DataType="dmc:IRootDock"
                       x:CompileBindings="True">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>

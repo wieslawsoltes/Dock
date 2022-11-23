@@ -21,41 +21,7 @@
           </ItemsControl.ItemsPanel>
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="core:IDockable">
-              <DockableControl TrackingMode="Pinned">
-                <LayoutTransformControl>
-                  <LayoutTransformControl.LayoutTransform>
-                    <RotateTransform Angle="270" />
-                  </LayoutTransformControl.LayoutTransform>
-                  <Button Background="Transparent"
-                          BorderBrush="Transparent"
-                          BorderThickness="0"
-                          CornerRadius="0"
-                          Command="{Binding Owner.Factory.PinDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanPin}">
-                    <TextBlock Text="{Binding Title}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left">
-                      <TextBlock.ContextMenu>
-                        <ContextMenu>
-                          <MenuItem Header="_Float"
-                                    Command="{Binding Owner.Factory.FloatDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanFloat}"/>
-                          <MenuItem Header="_Show"
-                                    Command="{Binding Owner.Factory.PinDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanPin}"/>
-                          <MenuItem Header="_Close"
-                                    Command="{Binding Owner.Factory.CloseDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanClose}"/>
-                        </ContextMenu>
-                      </TextBlock.ContextMenu>
-                    </TextBlock>
-                  </Button>
-                </LayoutTransformControl>
-              </DockableControl>
+              <ToolPinItemControl />
             </DataTemplate>
           </ItemsControl.DataTemplates>
         </ItemsControl>

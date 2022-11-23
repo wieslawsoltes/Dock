@@ -102,6 +102,7 @@
             <DataTemplate DataType="dmc:IRootDock">
               <DockableControl TrackingMode="Visible">
                 <DockPanel DockProperties.IsDropArea="False" Background="Transparent">
+                  <ToolPinnedControl DockPanel.Dock="Left" />
                   <ContentControl Content="{Binding ActiveDockable}" />
                 </DockPanel>
               </DockableControl>

@@ -2,6 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
+
+    <Setter Property="Background" Value="Transparent" />
+    
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}"
@@ -9,6 +12,7 @@
                 BorderThickness="{TemplateBinding BorderThickness}" />
       </ControlTemplate>
     </Setter>
+
   </ControlTheme>
 
 </ResourceDictionary>

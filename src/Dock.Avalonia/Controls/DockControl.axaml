@@ -7,6 +7,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type DockControl}" TargetType="DockControl">
+
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"
@@ -21,7 +22,7 @@
               <ToolContentControl />
             </DataTemplate>
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
-              <ProportionalStackPanelSplitter Background="Transparent" />
+              <ProportionalStackPanelSplitter />
             </DataTemplate>
             <DataTemplate DataType="dmc:IDocumentDock">
               <DocumentDockControl />
@@ -42,6 +43,7 @@
         </ContentControl>
       </ControlTemplate>
     </Setter>
+
   </ControlTheme>
 
 </ResourceDictionary>

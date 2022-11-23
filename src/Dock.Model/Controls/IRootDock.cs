@@ -16,6 +16,16 @@ public interface IRootDock : IDock
     bool IsFocusableRoot { get; set; }
 
     /// <summary>
+    /// Gets or sets hidden dockables.
+    /// </summary>
+    IList<IDockable>? HiddenDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets pinned dockables.
+    /// </summary>
+    IList<IDockable>? PinnedDockables { get; set; }
+
+    /// <summary>
     /// Gets or sets owner window.
     /// </summary>
     IDockWindow? Window { get; set; }

@@ -15,6 +15,8 @@ namespace Dock.Model.Mvvm.Controls;
 public class RootDock : DockBase, IRootDock
 {
     private bool _isFocusableRoot = true;
+    private IList<IDockable>? _hiddenDockables;
+    private IList<IDockable>? _pinnedDockables;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
 
@@ -33,6 +35,22 @@ public class RootDock : DockBase, IRootDock
     {
         get => _isFocusableRoot;
         set => SetProperty(ref _isFocusableRoot, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? HiddenDockables
+    {
+        get => _hiddenDockables;
+        set => SetProperty(ref _hiddenDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? PinnedDockables
+    {
+        get => _pinnedDockables;
+        set => SetProperty(ref _pinnedDockables, value);
     }
 
     /// <inheritdoc/>

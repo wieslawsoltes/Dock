@@ -24,6 +24,18 @@ public class RootDock : DockBase, IRootDock
         AvaloniaProperty.RegisterDirect<RootDock, bool>(nameof(IsFocusableRoot), o => o.IsFocusableRoot, (o, v) => o.IsFocusableRoot = v, true);
 
     /// <summary>
+    /// Defines the <see cref="HiddenDockables"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, IList<IDockable>?> HiddenDockablesProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(nameof(HiddenDockables), o => o.HiddenDockables, (o, v) => o.HiddenDockables = v);
+
+    /// <summary>
+    /// Defines the <see cref="PinnedDockables"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, IList<IDockable>?> PinnedDockablesProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(nameof(PinnedDockables), o => o.PinnedDockables, (o, v) => o.PinnedDockables = v);
+
+    /// <summary>
     /// Defines the <see cref="Window"/> property.
     /// </summary>
     public static readonly DirectProperty<RootDock, IDockWindow?> WindowProperty =
@@ -36,6 +48,8 @@ public class RootDock : DockBase, IRootDock
         AvaloniaProperty.RegisterDirect<RootDock, IList<IDockWindow>?>(nameof(Windows), o => o.Windows, (o, v) => o.Windows = v);
 
     private bool _isFocusableRoot;
+    private IList<IDockable>? _hiddenDockables;
+    private IList<IDockable>? _pinnedDockables;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
 
@@ -45,6 +59,8 @@ public class RootDock : DockBase, IRootDock
     public RootDock()
     {
         _isFocusableRoot = true;
+        _hiddenDockables = new AvaloniaList<IDockable>();
+        _pinnedDockables = new AvaloniaList<IDockable>();
         _windows = new AvaloniaList<IDockWindow>();
         ShowWindows = Command.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = Command.Create(() => _navigateAdapter.ExitWindows());
@@ -58,6 +74,22 @@ public class RootDock : DockBase, IRootDock
     {
         get => _isFocusableRoot;
         set => SetAndRaise(IsFocusableRootProperty, ref _isFocusableRoot, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? HiddenDockables
+    {
+        get => _hiddenDockables;
+        set => SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? PinnedDockables
+    {
+        get => _pinnedDockables;
+        set => SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value);
     }
 
     /// <inheritdoc/>

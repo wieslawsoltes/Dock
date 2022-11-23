@@ -27,10 +27,7 @@
         <DockableControl TrackingMode="Pinned"
                          x:DataType="core:IDockable"
                          x:CompileBindings="True">
-          <LayoutTransformControl>
-            <LayoutTransformControl.LayoutTransform>
-              <RotateTransform Angle="270" />
-            </LayoutTransformControl.LayoutTransform>
+          <LayoutTransformControl x:Name="PART_LayoutTransformControl">
             <Button Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
@@ -48,6 +45,13 @@
         </DockableControl>
       </ControlTemplate>
     </Setter>
+
+    <Style Selector="^/template/ LayoutTransformControl#PART_LayoutTransformControl">
+      <Setter Property="LayoutTransform">
+        <RotateTransform Angle="270" />
+      </Setter>
+    </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

@@ -15,6 +15,13 @@
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolChromeControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/ToolPinnedControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/DockDockControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/DocumentContentControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/DocumentDockControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/ProportionalDockControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/RootDockControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/ToolContentControl.axaml" />
+        <ResourceInclude Source="avares://Dock.Avalonia/Controls/Primitives/ToolDockControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/DockControl.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="avares://Dock.Avalonia/Controls/HostWindow.axaml" />

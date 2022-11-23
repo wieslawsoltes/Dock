@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <RootDockControl />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type ToolDockControl}" TargetType="ToolDockControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockableControl TrackingMode="Visible" 
+                         ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+          <ToolChromeControl IsActive="{Binding IsActive}"
+                             IsVisible="{Binding !!VisibleDockables.Count}">
+            <ToolControl />
+          </ToolChromeControl>
+        </DockableControl>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

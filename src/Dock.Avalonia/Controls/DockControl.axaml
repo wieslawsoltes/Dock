@@ -47,15 +47,13 @@
 
             <!-- Tool Dock -->
             <DataTemplate DataType="dmc:IToolDock">
-              <DockPanel ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
-                <ToolPinnedControl DockPanel.Dock="{Binding Alignment, Converter={x:Static converters:AlignmentConverter.Instance}}" />
-                <DockableControl TrackingMode="Visible">
-                  <ToolChromeControl IsActive="{Binding IsActive}"
-                                     IsVisible="{Binding !!VisibleDockables.Count}">
-                    <ToolControl />
-                  </ToolChromeControl>
-                </DockableControl>
-              </DockPanel>
+              <DockableControl TrackingMode="Visible" 
+                               ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+                <ToolChromeControl IsActive="{Binding IsActive}"
+                                   IsVisible="{Binding !!VisibleDockables.Count}">
+                  <ToolControl />
+                </ToolChromeControl>
+              </DockableControl>
             </DataTemplate>
 
             <!-- Proportional Dock -->

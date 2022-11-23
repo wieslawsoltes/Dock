@@ -22,13 +22,14 @@
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="core:IDockable">
               <DockableControl TrackingMode="Pinned">
-                <LayoutTransformControl Margin="4">
+                <LayoutTransformControl>
                   <LayoutTransformControl.LayoutTransform>
                     <RotateTransform Angle="270" />
                   </LayoutTransformControl.LayoutTransform>
                   <Button Background="Transparent"
                           BorderBrush="Transparent"
                           BorderThickness="0"
+                          CornerRadius="0"
                           Command="{Binding Owner.Factory.PinDockable}"
                           CommandParameter="{Binding}"
                           IsVisible="{Binding CanPin}">

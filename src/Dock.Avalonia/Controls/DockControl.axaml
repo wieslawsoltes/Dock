@@ -82,9 +82,6 @@
             <!-- Dock Dock -->
             <DataTemplate DataType="dmc:IDockDock">
               <DockableControl TrackingMode="Visible">
-                
-                <!-- TODO: ToolPinnedControl -->
-                
                 <ItemsControl Items="{Binding VisibleDockables}">
                   <ItemsControl.Styles>
                     <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
@@ -100,8 +97,6 @@
                     </ItemsPanelTemplate>
                   </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                
-                
               </DockableControl>
             </DataTemplate>
 

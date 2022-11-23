@@ -3,7 +3,7 @@
                     xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
-    <RootDockControl />
+    <RootDockControl Width="300" Height="300" />
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type DockDockControl}" TargetType="DockDockControl">

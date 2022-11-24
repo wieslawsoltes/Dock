@@ -12,7 +12,7 @@
                          x:DataType="dmc:IRootDock"
                          x:CompileBindings="True">
           <DockPanel Background="Transparent"
-                     DockProperties.IsDropArea="False" >
+                     DockProperties.IsDropArea="False">
             <ToolPinnedControl DockPanel.Dock="Top" 
                                Orientation="Horizontal"
                                IsVisible="{Binding !!PinnedDockables.Count}" />

@@ -12,7 +12,7 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <ItemsControl Items="{Binding PinnedDockables}"
+        <ItemsControl Items="{TemplateBinding Items}"
                       x:DataType="dmc:IRootDock"
                       x:CompileBindings="True">
           <ItemsControl.ItemsPanel>

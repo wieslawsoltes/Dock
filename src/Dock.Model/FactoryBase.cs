@@ -594,21 +594,27 @@ public abstract partial class FactoryBase : IFactory
         var rootDock = FindRoot(dock, _ => true);
         if (rootDock is { })
         {
-            if (IsDockPinned(rootDock.LeftPinnedDockables, dock))
+            if (dock is IToolDock toolDock)
             {
-                return;
-            }
-            if (IsDockPinned(rootDock.RightPinnedDockables, dock))
-            {
-                return;
-            }
-            if (IsDockPinned(rootDock.TopPinnedDockables, dock))
-            {
-                return;
-            }
-            if (IsDockPinned(rootDock.BottomPinnedDockables, dock))
-            {
-                return;
+                if (toolDock.Alignment == Alignment.Left && IsDockPinned(rootDock.LeftPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Right && IsDockPinned(rootDock.RightPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Top && IsDockPinned(rootDock.TopPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Bottom && IsDockPinned(rootDock.BottomPinnedDockables, dock))
+                {
+                    return;
+                }
             }
         }
 

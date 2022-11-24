@@ -13,18 +13,22 @@
                          x:CompileBindings="True">
           <DockPanel Background="Transparent"
                      DockProperties.IsDropArea="False">
-            <ToolPinnedControl DockPanel.Dock="Top" 
-                               Orientation="Horizontal"
-                               IsVisible="{Binding !!PinnedDockables.Count}" />
-            <ToolPinnedControl DockPanel.Dock="Bottom" 
-                               Orientation="Horizontal"
-                               IsVisible="{Binding !!PinnedDockables.Count}" />
             <ToolPinnedControl DockPanel.Dock="Left" 
                                Orientation="Vertical"
-                               IsVisible="{Binding !!PinnedDockables.Count}" />
+                               Items="{Binding LeftPinnedDockables}"
+                               IsVisible="{Binding !!LeftPinnedDockables.Count}" />
             <ToolPinnedControl DockPanel.Dock="Right" 
                                Orientation="Vertical"
-                               IsVisible="{Binding !!PinnedDockables.Count}" />
+                               Items="{Binding RightPinnedDockables}"
+                               IsVisible="{Binding !!RightPinnedDockables.Count}" />
+            <ToolPinnedControl DockPanel.Dock="Top" 
+                               Orientation="Horizontal"
+                               Items="{Binding TopPinnedDockables}"
+                               IsVisible="{Binding !!TopPinnedDockables.Count}" />
+            <ToolPinnedControl DockPanel.Dock="Bottom" 
+                               Orientation="Horizontal"
+                               Items="{Binding BottomPinnedDockables}"
+                               IsVisible="{Binding !!BottomPinnedDockables.Count}" />
             <ContentControl Content="{Binding ActiveDockable}" />
           </DockPanel>
         </DockableControl>

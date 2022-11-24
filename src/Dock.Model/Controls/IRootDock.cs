@@ -21,9 +21,24 @@ public interface IRootDock : IDock
     IList<IDockable>? HiddenDockables { get; set; }
 
     /// <summary>
-    /// Gets or sets pinned dockables.
+    /// Gets or sets left pinned dockables.
     /// </summary>
-    IList<IDockable>? PinnedDockables { get; set; }
+    IList<IDockable>? LeftPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets right pinned dockables.
+    /// </summary>
+    IList<IDockable>? RightPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets top pinned dockables.
+    /// </summary>
+    IList<IDockable>? TopPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets bottom pinned dockables.
+    /// </summary>
+    IList<IDockable>? BottomPinnedDockables { get; set; }
 
     /// <summary>
     /// Gets or sets owner window.

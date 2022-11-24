@@ -8,6 +8,8 @@
 
   <ControlTheme x:Key="{x:Type ToolPinnedControl}" TargetType="ToolPinnedControl">
 
+    <Setter Property="Orientation" Value="Vertical" />
+    
     <Setter Property="Template">
       <ControlTemplate>
         <ItemsControl Items="{Binding PinnedDockables}"
@@ -15,13 +17,13 @@
                       x:CompileBindings="True">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <StackPanel Orientation="Vertical"
+              <StackPanel Orientation="{Binding $parent[ToolPinnedControl].Orientation}"
                           DockProperties.IsDropArea="True" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="core:IDockable">
-              <ToolPinItemControl />
+              <ToolPinItemControl Orientation="{Binding $parent[ToolPinnedControl].Orientation}" />
             </DataTemplate>
           </ItemsControl.DataTemplates>
         </ItemsControl>

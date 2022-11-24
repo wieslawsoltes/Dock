@@ -20,7 +20,7 @@ public class ToolPinItemControl : TemplatedControl
     /// </summary>
     public Orientation Orientation
     {
-        get { return GetValue(OrientationProperty); }
-        set { SetValue(OrientationProperty, value); }
+        get => GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 }

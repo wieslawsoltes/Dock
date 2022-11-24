@@ -11,8 +11,20 @@
         <DockableControl TrackingMode="Visible"
                          x:DataType="dmc:IRootDock"
                          x:CompileBindings="True">
-          <DockPanel DockProperties.IsDropArea="False" Background="Transparent">
-            <ToolPinnedControl DockPanel.Dock="Left" IsVisible="{Binding !!PinnedDockables.Count}" />
+          <DockPanel Background="Transparent"
+                     DockProperties.IsDropArea="False" >
+            <ToolPinnedControl DockPanel.Dock="Top" 
+                               Orientation="Horizontal"
+                               IsVisible="{Binding !!PinnedDockables.Count}" />
+            <ToolPinnedControl DockPanel.Dock="Bottom" 
+                               Orientation="Horizontal"
+                               IsVisible="{Binding !!PinnedDockables.Count}" />
+            <ToolPinnedControl DockPanel.Dock="Left" 
+                               Orientation="Vertical"
+                               IsVisible="{Binding !!PinnedDockables.Count}" />
+            <ToolPinnedControl DockPanel.Dock="Right" 
+                               Orientation="Vertical"
+                               IsVisible="{Binding !!PinnedDockables.Count}" />
             <ContentControl Content="{Binding ActiveDockable}" />
           </DockPanel>
         </DockableControl>

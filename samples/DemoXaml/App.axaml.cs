@@ -17,6 +17,12 @@ public class App : Application
         {
             desktopLifetime.MainWindow = new MainWindow();
         }
+
+        if (ApplicationLifetime is ISingleViewApplicationLifetime singleLifetime)
+        {
+            singleLifetime.MainView = new MainView();
+        }
+
         base.OnFrameworkInitializationCompleted();
     }
 }

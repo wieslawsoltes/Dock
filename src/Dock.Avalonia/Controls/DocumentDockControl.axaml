@@ -6,6 +6,8 @@
 
   <ControlTheme x:Key="{x:Type DocumentDockControl}" TargetType="DocumentDockControl">
 
+    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible"

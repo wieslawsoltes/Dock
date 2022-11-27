@@ -5,6 +5,9 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolDockControl}" TargetType="ToolDockControl">
+
+    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible" 

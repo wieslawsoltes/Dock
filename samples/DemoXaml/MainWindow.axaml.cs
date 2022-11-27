@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
@@ -31,72 +34,99 @@ public class MainWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
 
-    private async void FileOpenLayout_OnClick(object? sender, RoutedEventArgs e)
+    private List<FilePickerFileType> GetOpenOpenLayoutFileTypes()
     {
-        var dlg = new OpenFileDialog
+        return new List<FilePickerFileType>
         {
-            Filters = new List<FileDialogFilter>
-            {
-                new() {Name = "Layout", Extensions = {"json"}},
-                new() {Name = "All", Extensions = {"*"}}
-            },
-            AllowMultiple = false
+            StorageService.Json,
+            StorageService.All
         };
-        var window = GetWindow();
-        if (window is null)
+    }
+
+    private List<FilePickerFileType> GetSaveOpenLayoutFileTypes()
+    {
+        return new List<FilePickerFileType>
+        {
+            StorageService.Json,
+            StorageService.All
+        };
+    }
+
+    private async Task OpenLayout()
+    {
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
         {
             return;
         }
-        var result = await dlg.ShowAsync(window);
-        if (result is { Length: 1 })
+
+        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            if (!string.IsNullOrEmpty(result[0]))
+            Title = "Open layout",
+            FileTypeFilter = GetOpenOpenLayoutFileTypes(),
+            AllowMultiple = false
+        });
+
+        var file = result.FirstOrDefault();
+
+        if (file is not null && file.CanOpenRead)
+        {
+            try
             {
-                var path = result[0];
+                await using var stream = await file.OpenReadAsync();
+                using var reader = new StreamReader(stream);
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    await using var stream = File.OpenRead(path);
                     var layout = _serializer.Load<IDock>(stream);
                     dock.Layout = layout;
                 }
             }
-        }
-    }
-
-    private async void FileSaveLayout_OnClick(object? sender, RoutedEventArgs e)
-    {
-        var dlg = new SaveFileDialog
-        {
-            Filters = new List<FileDialogFilter>
+            catch (Exception ex)
             {
-                new() {Name = "Layout", Extensions = {"json"}},
-                new() {Name = "All", Extensions = {"*"}}
-            },
-            InitialFileName = "layout",
-            DefaultExtension = "txt"
-        };
-        var window = GetWindow();
-        if (window is null)
-        {
-            return;
-        }
-        var result = await dlg.ShowAsync(window);
-        if (result is { })
-        {
-            if (!string.IsNullOrEmpty(result))
-            {
-                var dock = this.FindControl<DockControl>("Dock");
-                if (dock?.Layout is { })
-                {
-                    var stream = File.Create(result);
-                    _serializer.Save(stream, dock.Layout);
-                }
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
             }
         }
     }
 
-    private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
+    private async Task SaveLayout()
+    {
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
+        {
+            return;
+        }
+
+        var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Save layout",
+            FileTypeChoices = GetSaveOpenLayoutFileTypes(),
+            SuggestedFileName = "layout",
+            DefaultExtension = "json",
+            ShowOverwritePrompt = true
+        });
+
+        if (file is not null && file.CanOpenWrite)
+        {
+            try
+            {
+                await using var stream = await file.OpenWriteAsync();
+                var dock = this.FindControl<DockControl>("Dock");
+                if (dock?.Layout is { })
+                {
+                    _serializer.Save(stream, dock.Layout);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
+        }
+    }
+
+    private void CloseLayout()
     {
         var dock = this.FindControl<DockControl>("Dock");
         if (dock is { })
@@ -105,12 +135,18 @@ public class MainWindow : Window
         }
     }
 
-    private Window? GetWindow()
+    private async void FileOpenLayout_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-        {
-            return desktopLifetime.MainWindow;
-        }
-        return null;
+        await OpenLayout();
+    }
+
+    private async void FileSaveLayout_OnClick(object? sender, RoutedEventArgs e)
+    {
+        await SaveLayout();
+    }
+
+    private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
+    {
+        CloseLayout();
     }
 }

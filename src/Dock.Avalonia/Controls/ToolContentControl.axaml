@@ -5,6 +5,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolContentControl}" TargetType="ToolContentControl">
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
@@ -13,6 +14,7 @@
         </DockableControl>
       </ControlTemplate>
     </Setter>
+
   </ControlTheme>
 
 </ResourceDictionary>

@@ -24,6 +24,7 @@
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type ToolChromeControl}" TargetType="ToolChromeControl">
+
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="0" />

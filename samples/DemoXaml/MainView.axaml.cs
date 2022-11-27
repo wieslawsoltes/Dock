@@ -18,12 +18,24 @@ namespace AvaloniaDemo.Xaml;
 public class MainView : UserControl
 {
     private readonly IDockSerializer _serializer;
+    private readonly DockState _dockState;
 
     public MainView()
     {
         InitializeComponent();
 
         _serializer = new DockSerializer(typeof(AvaloniaList<>));
+        _dockState = new DockState();
+
+        var dock = this.FindControl<DockControl>("Dock");
+        if (dock is { })
+        {
+            var layout = dock.Layout;
+            if (layout is { })
+            {
+                _dockState.Save(layout);
+            }
+        }
     }
 
     private void InitializeComponent()
@@ -75,8 +87,12 @@ public class MainView : UserControl
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    var layout = _serializer.Load<IDock>(stream);
-                    dock.Layout = layout;
+                    var layout = _serializer.Load<IDock?>(stream);
+                    if (layout is { })
+                    {
+                        _dockState.Restore(layout);
+                        dock.Layout = layout;
+                    }
                 }
             }
             catch (Exception ex)

@@ -7,6 +7,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ProportionalDockControl}" TargetType="ProportionalDockControl">
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible"
@@ -28,6 +29,7 @@
         </DockableControl>
       </ControlTemplate>
     </Setter>
+
   </ControlTheme>
 
 </ResourceDictionary>

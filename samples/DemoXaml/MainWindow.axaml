@@ -7,56 +7,72 @@
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Title="Dock Avalonia Demo" Width="800" Height="600"
         x:CompileBindings="True" x:DataType="DockControl">
-  <DockControl FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
-    <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
-      <!--
-      <RootDock.Windows>
-        <DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="300" Height="400" Topmost="True">
-          <RootDock ActiveDockable="{Binding #ToolDock}" Window="{Binding #DockWindow}">
-            <ToolDock x:Name="ToolDock">
-              <Tool x:Name="ToolWindow" Id="ToolWindow" Title="Tool Window" x:DataType="Tool">
+  <Grid RowDefinitions="Auto,*">
+    <Menu Grid.Row="0">
+        <MenuItem Header="_File">
+        <MenuItem Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
+        <Separator/>
+        <MenuItem Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
+        <Separator/>
+        <MenuItem Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
+      </MenuItem>
+    </Menu>
+    <DockControl Name="Dock" Grid.Row="1" FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
+      <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
+        <RootDock.Windows>
+          <DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="300" Height="400" Topmost="True">
+            <RootDock ActiveDockable="{Binding #ToolDock}" Window="{Binding #DockWindow}">
+              <ToolDock x:Name="ToolDock">
+                <Tool x:Name="ToolWindow" Id="ToolWindow" Title="Tool Window" x:DataType="Tool">
+                  <TextBlock Text="{Binding Title}"/>
+                </Tool>
+              </ToolDock>
+            </RootDock>
+          </DockWindow>
+        </RootDock.Windows>
+        <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+          <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
+            <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
+            </Tool>
+          </ToolDock>
+          <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
+          <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
+            <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
+              <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1">
+                <DocumentDock.DocumentTemplate>
+                  <DocumentTemplate>
+                    <Document Title="Document" x:DataType="Document">
+                      <TextBlock Text="{Binding Title}"/>
+                    </Document>
+                  </DocumentTemplate>
+                </DocumentDock.DocumentTemplate>
+                <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
+                  <TextBlock Text="{Binding Title}"/>
+                </Document>
+                <Document x:Name="Document2" Id="Document2" Title="App.axaml" x:DataType="Document">
+                  <TextBlock Text="{Binding Title}"/>
+                </Document>
+              </DocumentDock>
+              <ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
+              <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right">
+                <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
+                  <TextBlock Text="{Binding Title}"/>
+                </Tool>
+              </ToolDock>
+            </ProportionalDock>
+            <ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
+            <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="Output">
+              <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>
-            </ToolDock>
-          </RootDock>
-        </DockWindow>
-      </RootDock.Windows>
-      -->
-      <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
-        <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
-          <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
-            <TextBlock Text="{Binding Title}"/>
-          </Tool>
-        </ToolDock>
-        <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
-        <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
-          <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
-            <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" ActiveDockable="{Binding #Document1}">
-              <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
-                <TextBlock Text="{Binding Title}"/>
-              </Document>
-              <Document x:Name="Document2" Id="Document2" Title="App.axaml" x:DataType="Document">
-                <TextBlock Text="{Binding Title}"/>
-              </Document>
-            </DocumentDock>
-            <ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
-            <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right">
-              <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
+              <Tool x:Name="Output" Id="Output" Title="Output" x:DataType="Tool">
                 <TextBlock Text="{Binding Title}"/>
               </Tool>
             </ToolDock>
           </ProportionalDock>
-          <ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
-          <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="{Binding #Output}">
-            <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
-              <TextBlock Text="{Binding Title}"/>
-            </Tool>
-            <Tool x:Name="Output" Id="Output" Title="Output" x:DataType="Tool">
-              <TextBlock Text="{Binding Title}"/>
-            </Tool>
-          </ToolDock>
         </ProportionalDock>
-      </ProportionalDock>
-    </RootDock>
-  </DockControl>
+      </RootDock>
+    </DockControl>
+  </Grid>
 </Window>

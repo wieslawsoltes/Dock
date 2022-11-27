@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using Dock.Model.Adapters;
 using Dock.Model.Avalonia.Internal;
@@ -21,18 +22,6 @@ public abstract class DockBase : DockableBase, IDock
     /// </summary>
     public static readonly DirectProperty<DockBase, IList<IDockable>?> VisibleDockablesProperty =
         AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(VisibleDockables), o => o.VisibleDockables, (o, v) => o.VisibleDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="HiddenDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, IList<IDockable>?> HiddenDockablesProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(HiddenDockables), o => o.HiddenDockables, (o, v) => o.HiddenDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="PinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, IList<IDockable>?> PinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(PinnedDockables), o => o.PinnedDockables, (o, v) => o.PinnedDockables = v);
 
     /// <summary>
     /// Defines the <see cref="ActiveDockable"/> property.
@@ -90,8 +79,6 @@ public abstract class DockBase : DockableBase, IDock
 
     internal INavigateAdapter _navigateAdapter;
     private IList<IDockable>? _visibleDockables;
-    private IList<IDockable>? _hiddenDockables;
-    private IList<IDockable>? _pinnedDockables;
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
@@ -109,7 +96,6 @@ public abstract class DockBase : DockableBase, IDock
     {
         _navigateAdapter = new NavigateAdapter(this);
         _visibleDockables = new AvaloniaList<IDockable>();
-        _hiddenDockables = new AvaloniaList<IDockable>();
         GoBack = Command.Create(() => _navigateAdapter.GoBack());
         GoForward = Command.Create(() => _navigateAdapter.GoForward());
         Navigate = Command.Create<object>(root => _navigateAdapter.Navigate(root, true));
@@ -127,22 +113,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? HiddenDockables
-    {
-        get => _hiddenDockables;
-        set => SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? PinnedDockables
-    {
-        get => _pinnedDockables;
-        set => SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
@@ -166,6 +137,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
@@ -174,6 +146,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;

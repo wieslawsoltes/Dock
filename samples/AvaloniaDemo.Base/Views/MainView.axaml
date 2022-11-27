@@ -9,7 +9,8 @@
              xmlns:vm="using:AvaloniaDemo.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1000" d:DesignHeight="550"
-             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+             FontFamily="avares://Avalonia.Themes.Fluent/Assets#Inter">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>
@@ -31,8 +32,7 @@
           <MenuItem.Icon>
             <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}"
                       BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
+                      IsHitTestVisible="False" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
@@ -40,8 +40,7 @@
           <MenuItem.Icon>
             <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}"
                       BorderThickness="0"
-                      IsHitTestVisible="False"
-                      x:CompileBindings="False" />
+                      IsHitTestVisible="False" />
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>

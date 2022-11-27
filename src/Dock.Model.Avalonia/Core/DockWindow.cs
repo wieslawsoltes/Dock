@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Metadata;
 using Dock.Model.Adapters;
 using Dock.Model.Controls;
@@ -160,6 +161,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [ResolveByName]
     public IDockable? Owner
     {
         get => _owner;
@@ -177,6 +179,7 @@ public class DockWindow : StyledElement, IDockWindow
     /// <inheritdoc/>
     [Content]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [ResolveByName]
     public IRootDock? Layout
     {
         get => _layout;
@@ -185,6 +188,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [ResolveByName]
     public IHostWindow? Host
     {
         get => _host;

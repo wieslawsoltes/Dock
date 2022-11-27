@@ -38,6 +38,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     [Content]
     [TemplateContent]
     [IgnoreDataMember]
+    [ResolveByName]
     public object Content
     {
         get => GetValue(ContentProperty);
@@ -98,7 +99,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }
-        
+
     private static ControlTemplateResult Load(object templateContent)
     {
         if (templateContent is Func<IServiceProvider, object> direct)

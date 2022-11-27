@@ -10,6 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Core;
 using Dock.Serializer;
 

@@ -14,16 +14,6 @@ public interface IDock : IDockable
     IList<IDockable>? VisibleDockables { get; set; }
 
     /// <summary>
-    /// Gets or sets hidden dockables.
-    /// </summary>
-    IList<IDockable>? HiddenDockables { get; set; }
-
-    /// <summary>
-    /// Gets or sets pinned dockables.
-    /// </summary>
-    IList<IDockable>? PinnedDockables { get; set; }
-
-    /// <summary>
     /// Gets or sets active dockable.
     /// </summary>
     IDockable? ActiveDockable { get; set; }

@@ -12,6 +12,33 @@
     </Border>
   </Design.PreviewWith>
 
+  <ContextMenu x:Key="DocumentTabStripItemContextMenu" x:DataType="core:IDockable" x:CompileBindings="True">
+    <MenuItem Header="_Float"
+              Command="{Binding Owner.Factory.FloatDockable}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanFloat}"/>
+    <MenuItem Header="_Close"
+              Command="{Binding Owner.Factory.CloseDockable}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanClose}"/>
+    <MenuItem Header="Close other tabs"
+              Command="{Binding Owner.Factory.CloseOtherDockables}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanClose}"/>
+    <MenuItem Header="Close all tabs"
+              Command="{Binding Owner.Factory.CloseAllDockables}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanClose}"/>
+    <MenuItem Header="_Close tabs to the left"
+              Command="{Binding Owner.Factory.CloseLeftDockables}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanClose}"/>
+    <MenuItem Header="_Close tabs to the right"
+              Command="{Binding Owner.Factory.CloseRightDockables}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanClose}"/>
+  </ContextMenu>
+  
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
@@ -32,35 +59,8 @@
                   TextElement.FontWeight="{TemplateBinding FontWeight}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
-                  Padding="{TemplateBinding Padding}">
-            <Border.ContextMenu>
-              <ContextMenu>
-                <MenuItem Header="_Float"
-                          Command="{Binding Owner.Factory.FloatDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanFloat}"/>
-                <MenuItem Header="_Close"
-                          Command="{Binding Owner.Factory.CloseDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"/>
-                <MenuItem Header="Close other tabs"
-                          Command="{Binding Owner.Factory.CloseOtherDockables}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"/>
-                <MenuItem Header="Close all tabs"
-                          Command="{Binding Owner.Factory.CloseAllDockables}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"/>
-                <MenuItem Header="_Close tabs to the left"
-                          Command="{Binding Owner.Factory.CloseLeftDockables}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"/>
-                <MenuItem Header="_Close tabs to the right"
-                          Command="{Binding Owner.Factory.CloseRightDockables}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanClose}"/>
-              </ContextMenu>
-            </Border.ContextMenu>
+                  Padding="{TemplateBinding Padding}"
+                  ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
             <DockableControl TrackingMode="Tab">
               <StackPanel Background="Transparent"
                           Orientation="Horizontal"

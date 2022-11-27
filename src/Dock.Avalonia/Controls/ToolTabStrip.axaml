@@ -11,6 +11,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type ToolTabStrip}" TargetType="ToolTabStrip">
+
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Focusable" Value="False" />
     <Setter Property="ClipToBounds" Value="False" />

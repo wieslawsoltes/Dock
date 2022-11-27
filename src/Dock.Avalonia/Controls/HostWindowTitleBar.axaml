@@ -7,10 +7,12 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type HostWindowTitleBar}" TargetType="HostWindowTitleBar">
+
     <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>    
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="HorizontalAlignment" Value="Stretch" />
     <Setter Property="Background" Value="Transparent" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <Panel HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="Stretch">

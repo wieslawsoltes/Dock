@@ -20,8 +20,8 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
-    public static readonly StyledProperty<object> ContentProperty =
-        AvaloniaProperty.Register<Tool, object>(nameof(Content));
+    public static readonly StyledProperty<object?> ContentProperty =
+        AvaloniaProperty.Register<Tool, object?>(nameof(Content));
 
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
@@ -39,7 +39,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     [TemplateContent]
     [IgnoreDataMember]
     [ResolveByName]
-    public object Content
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);

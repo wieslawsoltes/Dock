@@ -20,8 +20,8 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
-    public static readonly StyledProperty<object> ContentProperty =
-        AvaloniaProperty.Register<Document, object>(nameof(Content));
+    public static readonly StyledProperty<object?> ContentProperty =
+        AvaloniaProperty.Register<Document, object?>(nameof(Content));
 
     /// <summary>
     /// Initializes new instance of the <see cref="Document"/> class.
@@ -39,7 +39,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     [TemplateContent]
     [IgnoreDataMember]
     [ResolveByName]
-    public object Content
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);

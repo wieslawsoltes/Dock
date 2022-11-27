@@ -11,5 +11,5 @@ public interface IDocumentContent : IDockable
     /// <summary>
     /// Gets or sets document content.
     /// </summary>
-    object Content { get; set; }
+    object? Content { get; set; }
 }

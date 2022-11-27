@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using Avalonia;
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
@@ -13,12 +15,15 @@ namespace AvaloniaDemo.Xaml;
 
 public class MainWindow : Window
 {
+    private readonly IDockSerializer _serializer;
+
     public MainWindow()
     {
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();
 #endif
+        _serializer = new DockSerializer(typeof(AvaloniaList<>));
     }
 
     private void InitializeComponent()
@@ -51,7 +56,8 @@ public class MainWindow : Window
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    var layout = new DockSerializer(typeof(ObservableCollection<>)).Load<IDock>(path);
+                    await using var stream = File.OpenRead(path);
+                    var layout = _serializer.Load<IDock>(stream);
                     dock.Layout = layout;
                 }
             }
@@ -83,7 +89,8 @@ public class MainWindow : Window
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock?.Layout is { })
                 {
-                    new DockSerializer(typeof(ObservableCollection<>)).Save(result, dock.Layout);
+                    var stream = File.Create(result);
+                    _serializer.Save(stream, dock.Layout);
                 }
             }
         }

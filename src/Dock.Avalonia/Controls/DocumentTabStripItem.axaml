@@ -40,6 +40,7 @@
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">
+
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontWeight" Value="Normal" />
     <Setter Property="MinHeight" Value="24" />

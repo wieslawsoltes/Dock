@@ -10,23 +10,31 @@ public class MenuView : UserControl
     {
         InitializeComponent();
 
-        this.FindControl<MenuItem>("OptionsIsDragEnabled").Click += (sender, e) =>
+        var optionsIsDragEnabled = this.FindControl<MenuItem>("OptionsIsDragEnabled");
+        if (optionsIsDragEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDragEnabled.Click += (_, _) =>
             {
-                bool isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
-                window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    bool isEnabled = window.GetValue(DockProperties.IsDragEnabledProperty);
+                    window.SetValue(DockProperties.IsDragEnabledProperty, !isEnabled);
+                }
+            };
+        }
 
-        this.FindControl<MenuItem>("OptionsIsDropEnabled").Click += (sender, e) =>
+        var optionsIsDropEnabled = this.FindControl<MenuItem>("OptionsIsDropEnabled");
+        if (optionsIsDropEnabled is { })
         {
-            if (VisualRoot is Window window)
+            optionsIsDropEnabled.Click += (_, _) =>
             {
-                bool isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
-                window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
-            }
-        };
+                if (VisualRoot is Window window)
+                {
+                    bool isEnabled = window.GetValue(DockProperties.IsDropEnabledProperty);
+                    window.SetValue(DockProperties.IsDropEnabledProperty, !isEnabled);
+                }
+            };
+        }
     }
 
     private void InitializeComponent()

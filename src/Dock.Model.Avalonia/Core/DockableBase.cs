@@ -95,7 +95,7 @@ public abstract class DockableBase : StyledElement, IDockable
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public object? Context
     {
         get => _context;

@@ -26,7 +26,7 @@ public abstract partial class FactoryBase : IFactory
     public abstract IList<IHostWindow> HostWindows { get; }
 
     /// <inheritdoc/>
-    public virtual Func<object>? DefaultContextLocator { get; set; }
+    public virtual Func<object?>? DefaultContextLocator { get; set; }
 
     /// <inheritdoc/>
     public virtual Func<IHostWindow>? DefaultHostWindowLocator { get; set; }

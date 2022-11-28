@@ -37,7 +37,7 @@ public partial interface IFactory
     /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> default locator.
     /// </summary>
-    Func<object>? DefaultContextLocator { get; set; }
+    Func<object?>? DefaultContextLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> default locator.

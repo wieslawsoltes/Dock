@@ -34,8 +34,6 @@ public class DocumentDock : DockBase, IDocumentDock
     /// </summary>
     public DocumentDock()
     {
-        Id = nameof(IDocumentDock);
-        Title = nameof(IDocumentDock);
         CreateDocument = new Command(CreateDocumentFromTemplate);
     }
 

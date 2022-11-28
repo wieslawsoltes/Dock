@@ -56,8 +56,8 @@ public class DocumentDock : DockBase, IDocumentDock
     /// </summary>
     public DocumentTemplate? DocumentTemplate
     {
-        get { return GetValue(DocumentTemplateProperty); }
-        set { SetValue(DocumentTemplateProperty, value); }
+        get => GetValue(DocumentTemplateProperty);
+        set => SetValue(DocumentTemplateProperty, value);
     }
 
     /// <summary>

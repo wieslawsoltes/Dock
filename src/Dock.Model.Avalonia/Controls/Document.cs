@@ -74,10 +74,8 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
         {
             return true;
         }
-        else
-        {
-            return DataType.IsInstanceOfType(data);
-        }
+
+        return DataType.IsInstanceOfType(data);
     }
 
     /// <summary>

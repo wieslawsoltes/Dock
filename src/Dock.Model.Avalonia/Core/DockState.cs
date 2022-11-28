@@ -59,31 +59,38 @@ public class DockState : IDockState
 
     private void SaveDockable(IDockable dockable)
     {
-        if (dockable is IToolContent tool)
+        switch (dockable)
         {
-            var id = tool.Id;
-            if (!string.IsNullOrEmpty(id))
+            case IToolContent tool:
             {
-                _toolContents[id] = tool.Content;
-            }
-        }
+                var id = tool.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    _toolContents[id] = tool.Content;
+                }
 
-        if (dockable is IDocumentContent document)
-        {
-            var id = document.Id;
-            if (!string.IsNullOrEmpty(id))
-            {
-                _documentContents[id] = document.Content;
+                break;
             }
-        }
-
-        // TODO: Add IIDocumentDockContent interface?
-        if (dockable is DocumentDock documentDock)
-        {
-            var id = documentDock.Id;
-            if (!string.IsNullOrEmpty(id))
+            case IDocumentContent document:
             {
-                _documentTemplates[id] = documentDock.DocumentTemplate;
+                var id = document.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    _documentContents[id] = document.Content;
+                }
+
+                break;
+            }
+            // TODO: Add IIDocumentDockContent interface?
+            case DocumentDock documentDock:
+            {
+                var id = documentDock.Id;
+                if (!string.IsNullOrEmpty(id))
+                {
+                    _documentTemplates[id] = documentDock.DocumentTemplate;
+                }
+
+                break;
             }
         }
     }
@@ -123,44 +130,51 @@ public class DockState : IDockState
 
     private void RestoreDockable(IDockable dockable)
     {
-        if (dockable is IToolContent tool)
+        switch (dockable)
         {
-            var id = tool.Id;
-            if (!string.IsNullOrEmpty(id))
+            case IToolContent tool:
             {
-                if (_toolContents.TryGetValue(id, out var content) && content is { })
+                var id = tool.Id;
+                if (!string.IsNullOrEmpty(id))
                 {
-                    tool.Content = content;
+                    if (_toolContents.TryGetValue(id, out var content) && content is { })
+                    {
+                        tool.Content = content;
+                    }
                 }
-            }
-        }
 
-        if (dockable is IDocumentContent document)
-        {
-            var id = document.Id;
-            if (!string.IsNullOrEmpty(id))
+                break;
+            }
+            case IDocumentContent document:
             {
-                if (_documentContents.TryGetValue(id, out var content) && content is { })
+                var id = document.Id;
+                if (!string.IsNullOrEmpty(id))
                 {
-                    document.Content = content;
+                    if (_documentContents.TryGetValue(id, out var content) && content is { })
+                    {
+                        document.Content = content;
+                    }
                 }
-            }
-            else
-            {
-                // TODO: Use DocumentTemplate to recreate documents without Id.
-            }
-        }
+                else
+                {
+                    // TODO: Use DocumentTemplate to recreate documents without Id.
+                }
 
-        // TODO: Add IIDocumentDockContent interface?
-        if (dockable is DocumentDock documentDock)
-        {
-            var id = documentDock.Id;
-            if (!string.IsNullOrEmpty(id))
+                break;
+            }
+            // TODO: Add IIDocumentDockContent interface?
+            case DocumentDock documentDock:
             {
-                if (_documentTemplates.TryGetValue(id, out var content) && content is { })
+                var id = documentDock.Id;
+                if (!string.IsNullOrEmpty(id))
                 {
-                    documentDock.DocumentTemplate = content;
+                    if (_documentTemplates.TryGetValue(id, out var content) && content is { })
+                    {
+                        documentDock.DocumentTemplate = content;
+                    }
                 }
+
+                break;
             }
         }
     }

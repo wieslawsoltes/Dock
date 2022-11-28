@@ -19,7 +19,7 @@ public class DockWindow : ObservableObject, IDockWindow
     private double _width;
     private double _height;
     private bool _topmost;
-    private string _title;
+    private string _title = string.Empty;
     private IDockable? _owner;
     private IFactory? _factory;
     private IRootDock? _layout;
@@ -31,7 +31,6 @@ public class DockWindow : ObservableObject, IDockWindow
     public DockWindow()
     {
         _id = nameof(IDockWindow);
-        _title = nameof(IDockWindow);
         _hostAdapter = new HostAdapter(this);
     }
 

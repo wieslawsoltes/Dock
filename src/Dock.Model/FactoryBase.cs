@@ -1139,7 +1139,16 @@ public abstract partial class FactoryBase : IFactory
                     dock.VisibleDockables = CreateList<IDockable>();
                     if (dockable.Owner is IDocumentDock sourceDocumentDock)
                     {
-                        ((target as IDocumentDock)!).CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                        if (target is IDocumentDock documentDock)
+                        {
+                            documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+
+                            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                                && documentDock is IDocumentDockContent documentDockContent)
+                            {
+                                documentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                            }
+                        }
                     }
                     if (dock.VisibleDockables is not null)
                     {

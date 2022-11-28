@@ -158,9 +158,12 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void UpdateDockable(IDockable dockable, IDockable? owner)
     {
-        if (GetContext(dockable.Id) is { } context)
+        if (dockable.Context is null)
         {
-            dockable.Context = context;
+            if (GetContext(dockable.Id) is { } context)
+            {
+                dockable.Context = context;
+            }
         }
 
         dockable.Owner = owner;

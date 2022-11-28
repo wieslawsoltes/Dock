@@ -29,13 +29,13 @@ public abstract partial class FactoryBase : IFactory
     public virtual Func<object?>? DefaultContextLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+    public virtual Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
+    public virtual IDictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
+    public virtual IDictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <inheritdoc/>
     public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }

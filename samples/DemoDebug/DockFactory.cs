@@ -18,7 +18,7 @@ public class DockFactory : Factory
 
     public override void InitLayout(IDockable layout)
     {
-        ContextLocator = new Dictionary<string, Func<object>>
+        ContextLocator = new Dictionary<string, Func<object?>>
         {
             [nameof(IRootDock)] = () => _context,
             [nameof(IProportionalDock)] = () => _context,
@@ -45,7 +45,7 @@ public class DockFactory : Factory
             ["Home"] = () => _context
         };
 
-        HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+        HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
             [nameof(IDockWindow)] = () => new HostWindow()
         };

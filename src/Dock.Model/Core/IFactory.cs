@@ -42,17 +42,17 @@ public partial interface IFactory
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> default locator.
     /// </summary>
-    Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+    Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> locator registry.
     /// </summary>
-    IDictionary<string, Func<object>>? ContextLocator { get; set; }
+    IDictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> locator registry.
     /// </summary>
-    IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
+    IDictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IDockable"/> locator registry.

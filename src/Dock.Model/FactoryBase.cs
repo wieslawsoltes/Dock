@@ -75,8 +75,7 @@ public abstract partial class FactoryBase : IFactory
             return null;
         }
 
-        Func<object>? locator = null;
-        if (ContextLocator?.TryGetValue(id, out locator) == true)
+        if (ContextLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke();
         }
@@ -92,8 +91,7 @@ public abstract partial class FactoryBase : IFactory
             return null;
         }
 
-        Func<IHostWindow>? locator = null;
-        if (HostWindowLocator?.TryGetValue(id, out locator) == true)
+        if (HostWindowLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke();
         }
@@ -109,8 +107,7 @@ public abstract partial class FactoryBase : IFactory
             return default;
         }
 
-        Func<IDockable?>? locator = null;
-        if (DockableLocator?.TryGetValue(id, out locator) == true)
+        if (DockableLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke() as T;
         }

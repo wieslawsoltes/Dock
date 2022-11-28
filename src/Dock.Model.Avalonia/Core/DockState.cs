@@ -34,6 +34,19 @@ public class DockState : IDockState
 
         if (dock is IRootDock rootDock)
         {
+            if (rootDock.HiddenDockables is { })
+            {
+                foreach (var dockable in rootDock.HiddenDockables)
+                {
+                    SaveDockable(dockable);
+
+                    if (dockable is IDock childDock)
+                    {
+                        Save(childDock);
+                    }
+                }
+            }
+
             if (rootDock.Windows is { })
             {
                 foreach (var window in rootDock.Windows)
@@ -53,6 +66,52 @@ public class DockState : IDockState
             if (dockable is IDock childDock)
             {
                 Save(childDock);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Restore(IDock dock)
+    {
+        if (dock.VisibleDockables is null)
+        {
+            return;
+        }
+
+        if (dock is IRootDock rootDock)
+        {
+            if (rootDock.HiddenDockables is { })
+            {
+                foreach (var dockable in rootDock.HiddenDockables)
+                {
+                    RestoreDockable(dockable);
+
+                    if (dockable is IDock childDock)
+                    {
+                        Restore(childDock);
+                    }
+                }
+            }
+
+            if (rootDock.Windows is { })
+            {
+                foreach (var window in rootDock.Windows)
+                {
+                    if (window.Layout is { })
+                    {
+                        Restore(window.Layout);
+                    }
+                }
+            }
+        }
+
+        foreach (var dockable in dock.VisibleDockables)
+        {
+            RestoreDockable(dockable);
+
+            if (dockable is IDock childDock)
+            {
+                Restore(childDock);
             }
         }
     }
@@ -95,39 +154,6 @@ public class DockState : IDockState
         }
     }
 
-    /// <inheritdoc/>
-    public void Restore(IDock dock)
-    {
-        if (dock.VisibleDockables is null)
-        {
-            return;
-        }
-
-        if (dock is IRootDock rootDock)
-        {
-            if (rootDock.Windows is { })
-            {
-                foreach (var window in rootDock.Windows)
-                {
-                    if (window.Layout is { })
-                    {
-                        Restore(window.Layout);
-                    }
-                }
-            }
-        }
-
-        foreach (var dockable in dock.VisibleDockables)
-        {
-            RestoreDockable(dockable);
-
-            if (dockable is IDock childDock)
-            {
-                Restore(childDock);
-            }
-        }
-    }
-
     private void RestoreDockable(IDockable dockable)
     {
         switch (dockable)
@@ -137,7 +163,7 @@ public class DockState : IDockState
                 var id = tool.Id;
                 if (!string.IsNullOrEmpty(id))
                 {
-                    if (_toolContents.TryGetValue(id, out var content) && content is { })
+                    if (_toolContents.TryGetValue(id, out var content))
                     {
                         tool.Content = content;
                     }
@@ -150,7 +176,7 @@ public class DockState : IDockState
                 var id = document.Id;
                 if (!string.IsNullOrEmpty(id))
                 {
-                    if (_documentContents.TryGetValue(id, out var content) && content is { })
+                    if (_documentContents.TryGetValue(id, out var content))
                     {
                         document.Content = content;
                     }
@@ -168,7 +194,7 @@ public class DockState : IDockState
                 var id = documentDock.Id;
                 if (!string.IsNullOrEmpty(id))
                 {
-                    if (_documentTemplates.TryGetValue(id, out var content) && content is { })
+                    if (_documentTemplates.TryGetValue(id, out var content))
                     {
                         documentDock.DocumentTemplate = content;
                     }

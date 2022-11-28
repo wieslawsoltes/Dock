@@ -3,7 +3,9 @@
        xmlns:vmd="clr-namespace:AvaloniaDemo.ViewModels.Documents;assembly=AvaloniaDemo"
        xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
        Selector="DockControl.Default">
+
   <Setter Property="Layout">
+
     <RootDock ActiveDockable="{Binding #Perspective}" DefaultDockable="{Binding #Perspective}" IsCollapsable="False">
       <RootDock x:Name="Perspective"  ActiveDockable="{Binding #MainLayout}">
         <ProportionalDock x:Name="MainLayout" Proportion="NaN" Orientation="Horizontal">
@@ -38,5 +40,7 @@
         </ProportionalDock>
       </RootDock>
     </RootDock>
+
   </Setter>
+
 </Style>

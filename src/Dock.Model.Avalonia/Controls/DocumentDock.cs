@@ -1,11 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using System.Windows.Input;
 using Avalonia;
-using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
-using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -13,7 +11,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock
+public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 {
     /// <summary>
     /// Defines the <see cref="CanCreateDocument"/> property.
@@ -24,8 +22,8 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <summary>
     /// Defines the <see cref="DocumentTemplate"/> property.
     /// </summary>
-    public static readonly StyledProperty<DocumentTemplate?> DocumentTemplateProperty =
-        AvaloniaProperty.Register<DocumentDock, DocumentTemplate?>(nameof(DocumentTemplate));
+    public static readonly StyledProperty<IDocumentTemplate?> DocumentTemplateProperty =
+        AvaloniaProperty.Register<DocumentDock, IDocumentTemplate?>(nameof(DocumentTemplate));
 
     private bool _canCreateDocument;
 
@@ -34,7 +32,7 @@ public class DocumentDock : DockBase, IDocumentDock
     /// </summary>
     public DocumentDock()
     {
-        CreateDocument = new Command(CreateDocumentFromTemplate);
+        CreateDocument = new Command(() => CreateDocumentFromTemplate());
     }
 
     /// <inheritdoc/>
@@ -52,7 +50,8 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <summary>
     /// Gets or sets document template.
     /// </summary>
-    public DocumentTemplate? DocumentTemplate
+    [IgnoreDataMember]
+    public IDocumentTemplate? DocumentTemplate
     {
         get => GetValue(DocumentTemplateProperty);
         set => SetValue(DocumentTemplateProperty, value);
@@ -61,19 +60,23 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <summary>
     /// Creates new document from template.
     /// </summary>
-    protected virtual void CreateDocumentFromTemplate()
+    public virtual object? CreateDocumentFromTemplate()
     {
         if (DocumentTemplate is null || !CanCreateDocument)
         {
-            return;
+            return null;
         }
 
-        var control = (DocumentTemplate as ITemplate)?.Build();
-        if (control is IDockable dockable)
+        var document = new Document
         {
-            Factory?.AddDockable(this, dockable);
-            Factory?.SetActiveDockable(dockable);
-            Factory?.SetFocusedDockable(this, dockable);
-        }
+            Title = $"Document{VisibleDockables?.Count ?? 0}",
+            Content = DocumentTemplate.Content
+        };
+
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
+
+        return document;
     }
 }

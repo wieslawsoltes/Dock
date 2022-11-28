@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -12,7 +11,7 @@ public class DockState : IDockState
 {
     private readonly Dictionary<string, object?> _toolContents;
     private readonly Dictionary<string, object?> _documentContents;
-    private readonly Dictionary<string, DocumentTemplate?> _documentTemplates;
+    private readonly Dictionary<string, IDocumentTemplate?> _documentTemplates;
 
     /// <summary>
     /// 
@@ -21,7 +20,7 @@ public class DockState : IDockState
     {
         _toolContents = new Dictionary<string, object?>();
         _documentContents = new Dictionary<string, object?>();
-        _documentTemplates = new Dictionary<string, DocumentTemplate?>();
+        _documentTemplates = new Dictionary<string, IDocumentTemplate?>();
     }
 
     /// <inheritdoc/>
@@ -140,8 +139,7 @@ public class DockState : IDockState
 
                 break;
             }
-            // TODO: Add IIDocumentDockContent interface?
-            case DocumentDock documentDock:
+            case IDocumentDockContent documentDock:
             {
                 var id = documentDock.Id;
                 if (!string.IsNullOrEmpty(id))
@@ -173,23 +171,31 @@ public class DockState : IDockState
             }
             case IDocumentContent document:
             {
+                var haveContent = false;
                 var id = document.Id;
                 if (!string.IsNullOrEmpty(id))
                 {
                     if (_documentContents.TryGetValue(id, out var content))
                     {
                         document.Content = content;
+                        haveContent = true;
                     }
                 }
-                else
+
+                if (haveContent == false)
                 {
-                    // TODO: Use DocumentTemplate to recreate documents without Id.
+                    if (document.Owner is IDocumentDockContent documentDock)
+                    {
+                        if (documentDock.DocumentTemplate is { })
+                        {
+                           document.Content = documentDock.DocumentTemplate.Content;
+                        }
+                    }
                 }
 
                 break;
             }
-            // TODO: Add IIDocumentDockContent interface?
-            case DocumentDock documentDock:
+            case IDocumentDockContent documentDock:
             {
                 var id = documentDock.Id;
                 if (!string.IsNullOrEmpty(id))

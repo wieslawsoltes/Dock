@@ -4,6 +4,7 @@
           xmlns:vmt="clr-namespace:AvaloniaDemo.ViewModels.Tools;assembly=AvaloniaDemo"
           x:Name="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}"
           IsCollapsable="False">
+
   <RootDock.HiddenDockables>
     <vmt:LeftTopTool1ViewModel x:Name="LeftTop1" Id="LeftTop1" Title="LeftTop1" />
     <vmt:LeftTopTool2ViewModel x:Name="LeftTop2" Id="LeftTop2" Title="LeftTop2" />
@@ -16,6 +17,7 @@
     <vmt:RightBottomTool1ViewModel x:Name="RightBottom1" Id="RightBottom1" Title="RightBottom1" />
     <vmt:RightBottomTool2ViewModel x:Name="RightBottom2" Id="RightBottom2" Title="RightBottom2" />
   </RootDock.HiddenDockables>
+
   <RootDock x:Name="Perspective1" Title="Perspective1" ActiveDockable="{Binding #MainLayout1}">
     <ProportionalDock x:Name="MainLayout1" Proportion="NaN" Orientation="Horizontal">
       <ProportionalDock Proportion="NaN" Orientation="Vertical">
@@ -48,6 +50,7 @@
       </ProportionalDock>
     </ProportionalDock>
   </RootDock>
+
   <RootDock x:Name="Perspective2" Title="Perspective2" ActiveDockable="{Binding #MainLayout2}">
     <ProportionalDock x:Name="MainLayout2" Proportion="NaN" Orientation="Horizontal">
       <ProportionalDock Proportion="NaN" Orientation="Vertical">
@@ -74,6 +77,7 @@
       </ProportionalDock>
     </ProportionalDock>
   </RootDock>
+
   <RootDock x:Name="Perspective3" Title="Perspective3" ActiveDockable="{Binding #MainLayout3}">
     <RootDock.Windows>
       <DockWindow x:Name="DockWindow" X="281" Y="233" Width="300" Height="400" Topmost="True">
@@ -108,4 +112,5 @@
       </ProportionalDock>
     </ProportionalDock>
   </RootDock>
+
 </RootDock>

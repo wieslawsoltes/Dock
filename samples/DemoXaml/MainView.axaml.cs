@@ -91,8 +91,8 @@ public class MainView : UserControl
                     var layout = _serializer.Load<IDock?>(stream);
                     if (layout is { })
                     {
-                        _dockState.Restore(layout);
                         dock.Layout = layout;
+                        _dockState.Restore(layout);
                     }
                 }
             }

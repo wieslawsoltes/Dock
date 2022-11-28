@@ -8,7 +8,7 @@
   <Grid RowDefinitions="Auto,*">
 
     <Menu Grid.Row="0">
-        <MenuItem Header="_File">
+      <MenuItem Header="_File">
         <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
         <Separator/>
         <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />

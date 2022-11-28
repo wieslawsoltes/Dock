@@ -28,8 +28,6 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     public Tool()
     {
-        Id = nameof(ITool);
-        Title = nameof(ITool);
     }
 
     /// <summary>

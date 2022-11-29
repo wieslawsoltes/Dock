@@ -18,6 +18,18 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void InsertDockable(IDock dock, IDockable dockable, int index)
+    {
+        if (index >= 0)
+        {
+            InitDockable(dockable, dock);
+            dock.VisibleDockables ??= CreateList<IDockable>();
+            dock.VisibleDockables.Insert(index, dockable);
+            OnDockableAdded(dockable);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void RemoveDockable(IDockable dockable, bool collapse)
     {
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
@@ -71,18 +83,6 @@ public abstract partial class FactoryBase
         if (collapse)
         {
             CollapseDock(dock);
-        }
-    }
-
-    /// <inheritdoc/>
-    public virtual void InsertDockable(IDock dock, IDockable dockable, int index)
-    {
-        if (index >= 0)
-        {
-            InitDockable(dockable, dock);
-            dock.VisibleDockables ??= CreateList<IDockable>();
-            dock.VisibleDockables.Insert(index, dockable);
-            OnDockableAdded(dockable);
         }
     }
 

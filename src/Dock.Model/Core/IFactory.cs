@@ -202,19 +202,19 @@ public partial interface IFactory
     void AddDockable(IDock dock, IDockable dockable);
 
     /// <summary>
-    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
-    /// </summary>
-    /// <param name="dockable">The dockable to remove.</param>
-    /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
-    void RemoveDockable(IDockable dockable, bool collapse);
-
-    /// <summary>
     /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
     /// </summary>
     /// <param name="dock">The owner dock.</param>
     /// <param name="dockable">The dockable to add.</param>
     /// <param name="index">The dockable index.</param>
     void InsertDockable(IDock dock, IDockable dockable, int index);
+
+    /// <summary>
+    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
+    /// </summary>
+    /// <param name="dockable">The dockable to remove.</param>
+    /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
+    void RemoveDockable(IDockable dockable, bool collapse);
 
     /// <summary>
     /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.

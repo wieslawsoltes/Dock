@@ -10,7 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
-using Dock.Model.Avalonia.Core;
+using Dock.Model;
 using Dock.Model.Core;
 using Dock.Serializer;
 
@@ -19,7 +19,7 @@ namespace AvaloniaDemo.Xaml;
 public class MainView : UserControl
 {
     private readonly IDockSerializer _serializer;
-    private readonly DockState _dockState;
+    private readonly IDockState _dockState;
 
     public MainView()
     {

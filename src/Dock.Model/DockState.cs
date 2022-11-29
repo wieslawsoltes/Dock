@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
-namespace Dock.Model.Avalonia.Core;
+namespace Dock.Model;
 
 /// <summary>
 /// 

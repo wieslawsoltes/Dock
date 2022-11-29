@@ -79,7 +79,6 @@ public class DockManager : IDockManager
         }
 
         var toolDock = factory.CreateToolDock();
-        toolDock.Id = nameof(IToolDock);
         toolDock.Title = nameof(IToolDock);
         toolDock.VisibleDockables = factory.CreateList<IDockable>();
         factory.MoveDockable(sourceDockableOwner, toolDock, sourceDockable, null);
@@ -94,7 +93,6 @@ public class DockManager : IDockManager
         }
 
         var documentDock = factory.CreateDocumentDock();
-        documentDock.Id = nameof(IDocumentDock);
         documentDock.Title = nameof(IDocumentDock);
         documentDock.VisibleDockables = factory.CreateList<IDockable>();
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)

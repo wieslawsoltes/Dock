@@ -92,7 +92,7 @@ public class DockManager : IDockManager
         {
             return;
         }
-            
+
         var documentDock = factory.CreateDocumentDock();
         documentDock.Id = nameof(IDocumentDock);
         documentDock.Title = nameof(IDocumentDock);

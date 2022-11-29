@@ -139,4 +139,50 @@ public abstract partial class FactoryBase
 
         return null;
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<IDockable> Find(Func<IDockable, bool> predicate)
+    {
+        foreach (var dockControl in DockControls)
+        {
+            var dock = dockControl.Layout;
+            if (dock is null)
+            {
+                continue;
+            }
+
+            foreach (var result in Find(dock, predicate))
+            {
+                yield return result;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<IDockable> Find(IDock dock, Func<IDockable, bool> predicate)
+    {
+        if (predicate(dock))
+        {
+            yield return dock;
+        }
+
+        if (dock.VisibleDockables is not null)
+        {
+            foreach (var dockable in dock.VisibleDockables)
+            {
+                if (predicate(dockable))
+                {
+                    yield return dockable;
+                }
+
+                if (dockable is IDock childDock)
+                {
+                    foreach (var result in Find(childDock, predicate))
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+    }
 }

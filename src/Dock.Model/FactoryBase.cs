@@ -121,7 +121,6 @@ public abstract partial class FactoryBase : IFactory
         else
         {
             split = CreateProportionalDock();
-            split.Id = nameof(IProportionalDock);
             split.Title = nameof(IProportionalDock);
             split.VisibleDockables = CreateList<IDockable>();
             if (split.VisibleDockables is not null)
@@ -136,13 +135,11 @@ public abstract partial class FactoryBase : IFactory
         dock.Proportion = double.NaN;
 
         var layout = CreateProportionalDock();
-        layout.Id = nameof(IProportionalDock);
         layout.Title = nameof(IProportionalDock);
         layout.VisibleDockables = CreateList<IDockable>();
         layout.Proportion = containerProportion;
 
         var splitter = CreateProportionalDockSplitter();
-        splitter.Id = nameof(IProportionalDockSplitter);
         splitter.Title = nameof(IProportionalDockSplitter);
 
         switch (operation)
@@ -265,7 +262,6 @@ public abstract partial class FactoryBase : IFactory
             case ITool:
             {
                 target = CreateToolDock();
-                target.Id = nameof(IToolDock);
                 target.Title = nameof(IToolDock);
                 if (target is IDock dock)
                 {
@@ -283,7 +279,6 @@ public abstract partial class FactoryBase : IFactory
             case IDocument:
             {
                 target = CreateDocumentDock();
-                target.Id = nameof(IDocumentDock);
                 target.Title = nameof(IDocumentDock);
                 if (target is IDock dock)
                 {
@@ -348,7 +343,6 @@ public abstract partial class FactoryBase : IFactory
         }
 
         var root = CreateRootDock();
-        root.Id = nameof(IRootDock);
         root.Title = nameof(IRootDock);
         root.VisibleDockables = CreateList<IDockable>();
         if (root.VisibleDockables is not null && target is not null)

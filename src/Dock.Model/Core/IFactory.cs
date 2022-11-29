@@ -314,13 +314,6 @@ public partial interface IFactory
     void RemoveWindow(IDockWindow window);
 
     /// <summary>
-    /// Creates dock window from source dockable.
-    /// </summary>
-    /// <param name="dockable">The dockable to embed into window.</param>
-    /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-    IDockWindow? CreateWindowFrom(IDockable dockable);
-
-    /// <summary>
     /// Collapses dock.
     /// </summary>
     /// <param name="dock">The dock to collapse.</param>
@@ -342,6 +335,13 @@ public partial interface IFactory
     /// <param name="dockable">The optional dockable to add to a split side.</param>
     /// <param name="operation"> The dock operation to perform.</param>
     void SplitToDock(IDock dock, IDockable dockable, DockOperation operation);
+
+    /// <summary>
+    /// Creates dock window from source dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to embed into window.</param>
+    /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+    IDockWindow? CreateWindowFrom(IDockable dockable);
 
     /// <summary>
     /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.

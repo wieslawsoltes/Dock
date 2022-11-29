@@ -18,6 +18,18 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void InsertWindow(IRootDock rootDock, IDockWindow window, int index)
+    {
+        if (index >= 0)
+        {
+            rootDock.Windows ??= CreateList<IDockWindow>();
+            rootDock.Windows.Insert(index, window);
+            OnWindowAdded(window);
+            InitDockWindow(window, rootDock);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void RemoveWindow(IDockWindow window)
     {
         if (window.Owner is IRootDock rootDock)

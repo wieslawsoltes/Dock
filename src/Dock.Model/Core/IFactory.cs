@@ -300,6 +300,14 @@ public partial interface IFactory
     void AddWindow(IRootDock rootDock, IDockWindow window);
 
     /// <summary>
+    /// Inserts window into dock windows list.
+    /// </summary>
+    /// <param name="rootDock">The root dock.</param>
+    /// <param name="window">The window to add.</param>
+    /// <param name="index">The window index.</param>
+    void InsertWindow(IRootDock rootDock, IDockWindow window, int index);
+
+    /// <summary>
     /// Removes window from owner windows list.
     /// </summary>
     /// <param name="window">The window to remove.</param>

@@ -537,7 +537,7 @@ public abstract partial class FactoryBase : IFactory
 
         CloseDockablesRange(dock, 0, dock.VisibleDockables.Count - 1, dockable);
     }
-        
+
     /// <inheritdoc/>
     public virtual void CloseAllDockables(IDockable dockable)
     {
@@ -548,7 +548,7 @@ public abstract partial class FactoryBase : IFactory
 
         CloseDockablesRange(dock, 0, dock.VisibleDockables.Count - 1);
     }
-        
+
     /// <inheritdoc/>
     public virtual void CloseLeftDockables(IDockable dockable)
     {
@@ -565,7 +565,7 @@ public abstract partial class FactoryBase : IFactory
             
         CloseDockablesRange(dock, 0, indexOf - 1);
     }
-        
+
     /// <inheritdoc/>
     public virtual void CloseRightDockables(IDockable dockable)
     {

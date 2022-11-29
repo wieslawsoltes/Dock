@@ -78,7 +78,7 @@ public class DockManager : IDockManager
             return;
         }
 
-        IToolDock toolDock = factory.CreateToolDock();
+        var toolDock = factory.CreateToolDock();
         toolDock.Id = nameof(IToolDock);
         toolDock.Title = nameof(IToolDock);
         toolDock.VisibleDockables = factory.CreateList<IDockable>();
@@ -93,7 +93,7 @@ public class DockManager : IDockManager
             return;
         }
             
-        IDocumentDock documentDock = factory.CreateDocumentDock();
+        var documentDock = factory.CreateDocumentDock();
         documentDock.Id = nameof(IDocumentDock);
         documentDock.Title = nameof(IDocumentDock);
         documentDock.VisibleDockables = factory.CreateList<IDockable>();

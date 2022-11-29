@@ -40,7 +40,7 @@ public abstract partial class FactoryBase
                 dockable.Context = context;
             }
         }
-
+ 
         dockable.Owner = owner;
 
         if (dockable is IDock dock)
@@ -66,6 +66,8 @@ public abstract partial class FactoryBase
                 }
             }
         }
+
+        OnDockableInit(dockable);
     }
 
     /// <inheritdoc/>

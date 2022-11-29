@@ -19,6 +19,11 @@ public partial interface IFactory
     event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
     /// <summary>
+    /// Dockable init event handler.
+    /// </summary>
+    event EventHandler<DockableInitEventArgs>? DockableInit;
+
+    /// <summary>
     /// Dockable added event handler.
     /// </summary>
     event EventHandler<DockableAddedEventArgs>? DockableAdded;
@@ -104,6 +109,12 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The focused dockable.</param>
     void OnFocusedDockableChanged(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable has been init.
+    /// </summary>
+    /// <param name="dockable">The init dockable.</param>
+    void OnDockableInit(IDockable? dockable);
 
     /// <summary>
     /// Called when the dockable has been added.

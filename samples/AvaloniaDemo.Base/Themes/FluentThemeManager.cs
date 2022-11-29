@@ -10,7 +10,7 @@ public class FluentThemeManager : IThemeManager
 {
     private static readonly Uri BaseUri = new("avares://AvaloniaDemo.Base/Styles");
 
-    private static readonly FluentTheme Fluent = new(BaseUri)
+    private static readonly FluentTheme Fluent = new()
     {
         Mode = FluentThemeMode.Light
     };

@@ -100,6 +100,12 @@ public class DockManager : IDockManager
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
         {
             documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+
+            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                && documentDock is IDocumentDockContent documentDockContent)
+            {
+                documentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+            }
         }
         factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, null);
         factory.SplitToDock(targetDock, documentDock, operation);

@@ -28,8 +28,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     public Document()
     {
-        Id = nameof(IDocument);
-        Title = nameof(IDocument);
     }
 
     /// <summary>
@@ -76,10 +74,8 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
         {
             return true;
         }
-        else
-        {
-            return DataType.IsInstanceOfType(data);
-        }
+
+        return DataType.IsInstanceOfType(data);
     }
 
     /// <summary>

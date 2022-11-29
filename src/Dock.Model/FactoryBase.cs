@@ -26,16 +26,16 @@ public abstract partial class FactoryBase : IFactory
     public abstract IList<IHostWindow> HostWindows { get; }
 
     /// <inheritdoc/>
-    public virtual Func<object>? DefaultContextLocator { get; set; }
+    public virtual Func<object?>? DefaultContextLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+    public virtual Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual IDictionary<string, Func<object>>? ContextLocator { get; set; }
+    public virtual IDictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
+    public virtual IDictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <inheritdoc/>
     public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
@@ -75,8 +75,7 @@ public abstract partial class FactoryBase : IFactory
             return null;
         }
 
-        Func<object>? locator = null;
-        if (ContextLocator?.TryGetValue(id, out locator) == true)
+        if (ContextLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke();
         }
@@ -92,8 +91,7 @@ public abstract partial class FactoryBase : IFactory
             return null;
         }
 
-        Func<IHostWindow>? locator = null;
-        if (HostWindowLocator?.TryGetValue(id, out locator) == true)
+        if (HostWindowLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke();
         }
@@ -109,8 +107,7 @@ public abstract partial class FactoryBase : IFactory
             return default;
         }
 
-        Func<IDockable?>? locator = null;
-        if (DockableLocator?.TryGetValue(id, out locator) == true)
+        if (DockableLocator?.TryGetValue(id, out var locator) == true)
         {
             return locator?.Invoke() as T;
         }
@@ -161,9 +158,12 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void UpdateDockable(IDockable dockable, IDockable? owner)
     {
-        if (GetContext(dockable.Id) is { } context)
+        if (dockable.Context is null)
         {
-            dockable.Context = context;
+            if (GetContext(dockable.Id) is { } context)
+            {
+                dockable.Context = context;
+            }
         }
 
         dockable.Owner = owner;
@@ -412,17 +412,25 @@ public abstract partial class FactoryBase : IFactory
                     {
                         case Alignment.Unset:
                         case Alignment.Left:
+                        {
                             rootDock.LeftPinnedDockables ??= CreateList<IDockable>();
                             break;
+                        }
                         case Alignment.Right:
+                        {
                             rootDock.RightPinnedDockables ??= CreateList<IDockable>();
                             break;
+                        }
                         case Alignment.Top:
+                        {
                             rootDock.TopPinnedDockables ??= CreateList<IDockable>();
                             break;
+                        }
                         case Alignment.Bottom:
+                        {
                             rootDock.BottomPinnedDockables ??= CreateList<IDockable>();
                             break;
+                        }
                     }
                     
                     if (toolDock.VisibleDockables is not null)
@@ -435,33 +443,45 @@ public abstract partial class FactoryBase : IFactory
                     {
                         case Alignment.Unset:
                         case Alignment.Left:
+                        {
                             if (rootDock.LeftPinnedDockables is not null)
                             {
                                 rootDock.LeftPinnedDockables.Add(dockable);
                                 OnDockablePinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Right:
+                        {
                             if (rootDock.RightPinnedDockables is not null)
                             {
                                 rootDock.RightPinnedDockables.Add(dockable);
                                 OnDockablePinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Top:
+                        {
                             if (rootDock.TopPinnedDockables is not null)
                             {
                                 rootDock.TopPinnedDockables.Add(dockable);
                                 OnDockablePinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Bottom:
+                        {
                             if (rootDock.BottomPinnedDockables is not null)
                             {
                                 rootDock.BottomPinnedDockables.Add(dockable);
                                 OnDockablePinned(dockable);
                             }
+
                             break;
+                        }
                     }
 
                     // TODO: Handle ActiveDockable state.
@@ -478,33 +498,45 @@ public abstract partial class FactoryBase : IFactory
                     {
                         case Alignment.Unset:
                         case Alignment.Left:
+                        {
                             if (rootDock.LeftPinnedDockables is not null)
                             {
                                 rootDock.LeftPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Right:
+                        {
                             if (rootDock.RightPinnedDockables is not null)
                             {
                                 rootDock.RightPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Top:
+                        {
                             if (rootDock.TopPinnedDockables is not null)
                             {
                                 rootDock.TopPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
+
                             break;
+                        }
                         case Alignment.Bottom:
+                        {
                             if (rootDock.BottomPinnedDockables is not null)
                             {
                                 rootDock.BottomPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
+
                             break;
+                        }
                     }
 
                     toolDock.VisibleDockables.Add(dockable);
@@ -1014,34 +1046,44 @@ public abstract partial class FactoryBase : IFactory
         {
             case DockOperation.Left:
             case DockOperation.Right:
+            {
                 layout.Orientation = Orientation.Horizontal;
                 break;
+            }
             case DockOperation.Top:
             case DockOperation.Bottom:
+            {
                 layout.Orientation = Orientation.Vertical;
                 break;
+            }
         }
 
         switch (operation)
         {
             case DockOperation.Left:
             case DockOperation.Top:
+            {
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(split);
                     OnDockableAdded(split);
                     layout.ActiveDockable = split;
                 }
+
                 break;
+            }
             case DockOperation.Right:
             case DockOperation.Bottom:
+            {
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(dock);
                     OnDockableAdded(dock);
                     layout.ActiveDockable = dock;
                 }
+
                 break;
+            }
         }
 
         layout.VisibleDockables?.Add(splitter);
@@ -1051,22 +1093,28 @@ public abstract partial class FactoryBase : IFactory
         {
             case DockOperation.Left:
             case DockOperation.Top:
+            {
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(dock);
                     OnDockableAdded(dock);
                     layout.ActiveDockable = dock;
                 }
+
                 break;
+            }
             case DockOperation.Right:
             case DockOperation.Bottom:
+            {
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(split);
                     OnDockableAdded(split);
                     layout.ActiveDockable = split;
                 }
+
                 break;
+            }
         }
 
         return layout;
@@ -1096,8 +1144,8 @@ public abstract partial class FactoryBase : IFactory
                         ownerDock.ActiveDockable = layout;
                     }
                 }
-            }
                 break;
+            }
             default:
                 throw new NotSupportedException($"Not supported split operation: {operation}.");
         }
@@ -1127,8 +1175,8 @@ public abstract partial class FactoryBase : IFactory
                     }
                 }
                 topmost = true;
-            }
                 break;
+            }
             case IDocument:
             {
                 target = CreateDocumentDock();
@@ -1139,7 +1187,16 @@ public abstract partial class FactoryBase : IFactory
                     dock.VisibleDockables = CreateList<IDockable>();
                     if (dockable.Owner is IDocumentDock sourceDocumentDock)
                     {
-                        ((target as IDocumentDock)!).CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                        if (target is IDocumentDock documentDock)
+                        {
+                            documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+
+                            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                                && documentDock is IDocumentDockContent documentDockContent)
+                            {
+                                documentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                            }
+                        }
                     }
                     if (dock.VisibleDockables is not null)
                     {
@@ -1149,38 +1206,38 @@ public abstract partial class FactoryBase : IFactory
                     }
                 }
                 topmost = false;
-            }
                 break;
+            }
             case IToolDock:
             {
                 target = dockable;
                 topmost = true;
-            }
                 break;
+            }
             case IDocumentDock:
             {
                 target = dockable;
                 topmost = false;
-            }
                 break;
+            }
             case IProportionalDock proportionalDock:
             {
                 target = proportionalDock;
                 topmost = false;
-            }
                 break;
+            }
             case IDockDock dockDock:
             {
                 target = dockDock;
                 topmost = false;
-            }
                 break;
+            }
             case IRootDock rootDock:
             {
                 target = rootDock.ActiveDockable;
                 topmost = false;
-            }
                 break;
+            }
             default:
             {
                 return null;

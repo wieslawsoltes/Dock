@@ -109,8 +109,6 @@ public class RootDock : DockBase, IRootDock
         _windows = new AvaloniaList<IDockWindow>();
         ShowWindows = Command.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = Command.Create(() => _navigateAdapter.ExitWindows());
-        Id = nameof(IRootDock);
-        Title = nameof(IRootDock);
     }
 
     /// <inheritdoc/>

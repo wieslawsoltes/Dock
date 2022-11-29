@@ -60,9 +60,12 @@
               <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1">
                 <DocumentDock.DocumentTemplate>
                   <DocumentTemplate>
-                    <Document Title="Document" x:DataType="Document">
-                      <TextBlock Text="{Binding Title}"/>
-                    </Document>
+                    <StackPanel x:DataType="Document">
+                      <TextBlock Text="Title"/>
+                      <TextBox Text="{Binding Title}"/>
+                      <TextBlock Text="Context"/>
+                      <TextBox Text="{Binding Context}"/>
+                    </StackPanel>
                   </DocumentTemplate>
                 </DocumentDock.DocumentTemplate>
                 <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">

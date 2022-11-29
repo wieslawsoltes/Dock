@@ -27,6 +27,12 @@ public class DockControl : TemplatedControl, IDockControl
         AvaloniaProperty.Register<DockControl, IDock?>(nameof(Layout));
 
     /// <summary>
+    /// Defines the <see cref="DefaultContext"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> DefaultContextProperty =
+        AvaloniaProperty.Register<DockControl, object?>(nameof(DefaultContext));
+
+    /// <summary>
     /// Defines the <see cref="InitializeLayout"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> InitializeLayoutProperty =
@@ -56,6 +62,13 @@ public class DockControl : TemplatedControl, IDockControl
     {
         get => GetValue(LayoutProperty);
         set => SetValue(LayoutProperty, value);
+    }
+
+    /// <inheritdoc/>
+    public object? DefaultContext
+    {
+        get => GetValue(DefaultContextProperty);
+        set => SetValue(DefaultContextProperty, value);
     }
 
     /// <inheritdoc/>
@@ -152,7 +165,8 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.DefaultHostWindowLocator = GetHostWindow;
  
             IHostWindow GetHostWindow() => new HostWindow();
-            object GetContext() => layout;
+
+            object? GetContext() => DefaultContext;
         }
 
         if (InitializeLayout)

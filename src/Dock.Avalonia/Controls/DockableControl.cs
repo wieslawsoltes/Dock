@@ -139,9 +139,9 @@ public class DockableControl : Panel, IDockableControl
         var width = bounds.Width;
         var height = bounds.Height;
 
-        if (VisualRoot is { })
+        if (VisualRoot is Visual relativeTo)
         {
-            var translatedPosition = this.TranslatePoint(bounds.Position, VisualRoot);
+            var translatedPosition = this.TranslatePoint(bounds.Position, relativeTo);
             if (translatedPosition.HasValue)
             {
                 x = translatedPosition.Value.X;

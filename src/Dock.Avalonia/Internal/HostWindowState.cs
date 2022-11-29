@@ -58,7 +58,7 @@ internal class HostWindowState : IHostWindowState
         _hostWindow = hostWindow;
     }
 
-    private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
@@ -68,7 +68,7 @@ internal class HostWindowState : IHostWindowState
         }
     }
 
-    private void Over(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
         var operation = DockOperation.Fill;
 
@@ -83,7 +83,7 @@ internal class HostWindowState : IHostWindowState
         }
     }
 
-    private void Drop(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
         var operation = DockOperation.Window;
 
@@ -111,7 +111,7 @@ internal class HostWindowState : IHostWindowState
         }
     }
 
-    private bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+    private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_state.TargetDropControl is null)
         {
@@ -124,7 +124,7 @@ internal class HostWindowState : IHostWindowState
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
-            if (relativeTo.VisualRoot is null)
+            if (relativeTo.GetVisualRoot() is null)
             {
                 return false;
             }
@@ -137,7 +137,7 @@ internal class HostWindowState : IHostWindowState
         return false;
     }
 
-    private void Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+    private void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_state.TargetDropControl is null)
         {
@@ -150,7 +150,7 @@ internal class HostWindowState : IHostWindowState
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
-            if (relativeTo.VisualRoot is null)
+            if (relativeTo.GetVisualRoot() is null)
             {
                 return;
             }

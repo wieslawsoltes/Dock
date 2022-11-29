@@ -83,7 +83,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object? data) => Build(data, null);
+    public Control Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -91,7 +91,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object? data, IControl? existing)
+    public Control Build(object? data, Control? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

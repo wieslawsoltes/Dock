@@ -51,7 +51,7 @@ public class ProportionalStackPanel : Panel
     //         case NotifyCollectionChangedAction.Add:
     //             if (e.NewItems is not null)
     //             {
-    //                 foreach (var item in e.NewItems.OfType<IControl>())
+    //                 foreach (var item in e.NewItems.OfType<Control>())
     //                 {
     //                     ProportionalStackPanelSplitter.SetProportion(item, double.NaN);
     //                 }

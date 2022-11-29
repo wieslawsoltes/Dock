@@ -1,6 +1,6 @@
 using System.Runtime.Versioning;
 using Avalonia;
-using Avalonia.Web;
+using Avalonia.Browser;
 using AvaloniaDemo;
 
 [assembly:SupportedOSPlatform("browser")]

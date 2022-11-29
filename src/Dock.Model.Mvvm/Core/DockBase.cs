@@ -51,16 +51,7 @@ public abstract class DockBase : DockableBase, IDock
         set
         {
             SetProperty(ref _activeDockable, value);
-            Factory?.OnActiveDockableChanged(value);
-            if (value is { })
-            {
-                Factory?.UpdateDockable(value, this);
-                value.OnSelected();
-            }
-            if (value is { })
-            {
-                Factory?.SetFocusedDockable(this, value);
-            }
+            Factory?.InitActiveDockable(value, this);
             OnPropertyChanged(nameof(CanGoBack));
             OnPropertyChanged(nameof(CanGoForward));
         }

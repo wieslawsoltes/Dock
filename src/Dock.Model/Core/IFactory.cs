@@ -144,18 +144,41 @@ public partial interface IFactory
     void InitLayout(IDockable layout);
 
     /// <summary>
-    /// Updates dock window.
-    /// </summary>
-    /// <param name="window">The window to update.</param>
-    /// <param name="owner">The window owner dockable.</param>
-    void UpdateDockWindow(IDockWindow window, IDockable? owner);
-
-    /// <summary>
-    /// Updates dockable.
+    /// Initialize dockable.
     /// </summary>
     /// <param name="dockable">The dockable to update.</param>
     /// <param name="owner">The owner dockable.</param>
-    void UpdateDockable(IDockable dockable, IDockable? owner);
+    void InitDockable(IDockable dockable, IDockable? owner);
+
+    /// <summary>
+    /// Initialize dock window.
+    /// </summary>
+    /// <param name="window">The window to update.</param>
+    /// <param name="owner">The window owner dockable.</param>
+    void InitDockWindow(IDockWindow window, IDockable? owner);
+
+    /// <summary>
+    /// Initialize active dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to update.</param>
+    /// <param name="owner">The owner dockable.</param>
+    void InitActiveDockable(IDockable? dockable, IDock owner);
+
+    /// <summary>
+    /// Searches for root dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to find root for.</param>
+    /// <param name="predicate">The predicate to filter root docks.</param>
+    /// <returns>The root dockable instance or null if root dockable was not found.</returns>
+    IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate);
+
+    /// <summary>
+    /// Searches dock for dockable.
+    /// </summary>
+    /// <param name="dock">The dock.</param>
+    /// <param name="predicate">The predicate to filter dockables.</param>
+    /// <returns>The dockable instance or null if dockable was not found.</returns>
+    IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
     /// <summary>
     /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
@@ -198,22 +221,6 @@ public partial interface IFactory
     /// <param name="dock">The dock to set the focused dockable on.</param>
     /// <param name="dockable">The dockable to set.</param>
     void SetFocusedDockable(IDock dock, IDockable? dockable);
-
-    /// <summary>
-    /// Searches for root dockable.
-    /// </summary>
-    /// <param name="dockable">The dockable to find root for.</param>
-    /// <param name="predicate">The predicate to filter root docks.</param>
-    /// <returns>The root dockable instance or null if root dockable was not found.</returns>
-    IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate);
-
-    /// <summary>
-    /// Searches dock for dockable.
-    /// </summary>
-    /// <param name="dock">The dock.</param>
-    /// <param name="predicate">The predicate to filter dockables.</param>
-    /// <returns>The dockable instance or null if dockable was not found.</returns>
-    IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
     /// <summary>
     /// Pins dockable.

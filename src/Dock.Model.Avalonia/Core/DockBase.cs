@@ -120,16 +120,7 @@ public abstract class DockBase : DockableBase, IDock
         set
         {
             SetAndRaise(ActiveDockableProperty, ref _activeDockable, value);
-            Factory?.OnActiveDockableChanged(value);
-            if (value != null)
-            {
-                Factory?.UpdateDockable(value, this);
-                value.OnSelected();
-            }
-            if (value != null)
-            {
-                Factory?.SetFocusedDockable(this, value);
-            }
+            Factory?.InitActiveDockable(value, this);
             SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
             SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
         }

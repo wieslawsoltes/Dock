@@ -11,192 +11,9 @@ namespace Dock.Model;
 public abstract partial class FactoryBase : IFactory
 {
     /// <inheritdoc/>
-    public abstract IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
-
-    /// <inheritdoc/>
-    public abstract IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
-
-    /// <inheritdoc/>
-    public abstract IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
-
-    /// <inheritdoc/>
-    public abstract IList<IDockControl> DockControls { get; }
-
-    /// <inheritdoc/>
-    public abstract IList<IHostWindow> HostWindows { get; }
-
-    /// <inheritdoc/>
-    public virtual Func<object?>? DefaultContextLocator { get; set; }
-
-    /// <inheritdoc/>
-    public virtual Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
-
-    /// <inheritdoc/>
-    public virtual IDictionary<string, Func<object?>>? ContextLocator { get; set; }
-
-    /// <inheritdoc/>
-    public virtual IDictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
-
-    /// <inheritdoc/>
-    public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
-
-    /// <inheritdoc/>
-    public abstract IList<T> CreateList<T>(params T[] items);
-
-    /// <inheritdoc/>
-    public abstract IRootDock CreateRootDock();
-
-    /// <inheritdoc/>
-    public abstract IProportionalDock CreateProportionalDock();
-
-    /// <inheritdoc/>
-    public abstract IDockDock CreateDockDock();
-
-    /// <inheritdoc/>
-    public abstract IProportionalDockSplitter CreateProportionalDockSplitter();
-
-    /// <inheritdoc/>
-    public abstract IToolDock CreateToolDock();
-
-    /// <inheritdoc/>
-    public abstract IDocumentDock CreateDocumentDock();
-
-    /// <inheritdoc/>
-    public abstract IDockWindow CreateDockWindow();
-
-    /// <inheritdoc/>
-    public abstract IRootDock? CreateLayout();
-
-    /// <inheritdoc/>
-    public virtual object? GetContext(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            return null;
-        }
-
-        if (ContextLocator?.TryGetValue(id, out var locator) == true)
-        {
-            return locator?.Invoke();
-        }
-
-        return DefaultContextLocator?.Invoke();
-    }
-
-    /// <inheritdoc/>
-    public virtual IHostWindow? GetHostWindow(string id)
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            return null;
-        }
-
-        if (HostWindowLocator?.TryGetValue(id, out var locator) == true)
-        {
-            return locator?.Invoke();
-        }
-
-        return DefaultHostWindowLocator?.Invoke();
-    }
-
-    /// <inheritdoc/>
-    public virtual T? GetDockable<T>(string id) where T: class, IDockable
-    {
-        if (string.IsNullOrEmpty(id))
-        {
-            return default;
-        }
-
-        if (DockableLocator?.TryGetValue(id, out var locator) == true)
-        {
-            return locator?.Invoke() as T;
-        }
-
-        return default;
-    }
-
-    /// <inheritdoc/>
-    public virtual void InitLayout(IDockable layout)
-    {
-        UpdateDockable(layout, null);
-
-        if (layout is IDock dock)
-        {
-            if (dock.DefaultDockable is not null)
-            {
-                dock.ActiveDockable = dock.DefaultDockable;
-            }
-        }
-
-        if (layout is IRootDock rootDock)
-        {
-            if (rootDock.ShowWindows.CanExecute(null))
-            {
-                rootDock.ShowWindows.Execute(null);
-            }
-        }
-    }
-
-    /// <inheritdoc/>
-    public virtual void UpdateDockWindow(IDockWindow window, IDockable? owner)
-    {
-        window.Host = GetHostWindow(window.Id);
-        if (window.Host is not null)
-        {
-            window.Host.Window = window;
-        }
-
-        window.Owner = owner;
-        window.Factory = this;
-
-        if (window.Layout is not null)
-        {
-            UpdateDockable(window.Layout, window.Layout.Owner);
-        }
-    }
-
-    /// <inheritdoc/>
-    public virtual void UpdateDockable(IDockable dockable, IDockable? owner)
-    {
-        if (dockable.Context is null)
-        {
-            if (GetContext(dockable.Id) is { } context)
-            {
-                dockable.Context = context;
-            }
-        }
-
-        dockable.Owner = owner;
-
-        if (dockable is IDock dock)
-        {
-            dock.Factory = this;
-
-            if (dock.VisibleDockables is not null)
-            {
-                foreach (var child in dock.VisibleDockables)
-                {
-                    UpdateDockable(child, dockable);
-                }
-            }
-        }
-
-        if (dockable is IRootDock rootDock)
-        {
-            if (rootDock.Windows is not null)
-            {
-                foreach (var child in rootDock.Windows)
-                {
-                    UpdateDockWindow(child, dockable);
-                }
-            }
-        }
-    }
-
-    /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
-        UpdateDockable(dockable, dock);
+        InitDockable(dockable, dock);
         dock.VisibleDockables ??= CreateList<IDockable>();
         dock.VisibleDockables.Add(dockable);
         OnDockableAdded(dockable);
@@ -207,7 +24,7 @@ public abstract partial class FactoryBase : IFactory
     {
         if (index >= 0)
         {
-            UpdateDockable(dockable, dock);
+            InitDockable(dockable, dock);
             dock.VisibleDockables ??= CreateList<IDockable>();
             dock.VisibleDockables.Insert(index, dockable);
             OnDockableAdded(dockable);
@@ -220,7 +37,7 @@ public abstract partial class FactoryBase : IFactory
         rootDock.Windows ??= CreateList<IDockWindow>();
         rootDock.Windows.Add(window);
         OnWindowAdded(window);
-        UpdateDockWindow(window, rootDock);
+        InitDockWindow(window, rootDock);
     }
 
     /// <inheritdoc/>
@@ -276,73 +93,6 @@ public abstract partial class FactoryBase : IFactory
         }
     }
 
-    /// <inheritdoc/>
-    public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate)
-    {
-        if (dockable.Owner is null)
-        {
-            return null;
-        }
-        if (dockable.Owner is IRootDock rootDock && predicate(rootDock))
-        {
-            return rootDock;
-        }
-        return FindRoot(dockable.Owner, predicate);
-    }
-
-    /// <inheritdoc/>
-    public virtual IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate)
-    {
-        if (predicate(dock))
-        {
-            return dock;
-        }
-
-        if (dock.VisibleDockables is not null)
-        {
-            foreach (var dockable in dock.VisibleDockables)
-            {
-                if (predicate(dockable))
-                {
-                    return dockable;
-                }
-
-                if (dockable is IDock childDock)
-                {
-                    var result = FindDockable(childDock, predicate);
-                    if (result is not null)
-                    {
-                        return result;
-                    }
-                }
-            }
-        }
-
-        if (dock is IRootDock rootDock && rootDock.Windows is not null)
-        {
-            foreach (var window in rootDock.Windows)
-            {
-                if (window.Layout is null)
-                {
-                    continue;
-                }
-
-                if (predicate(window.Layout))
-                {
-                    return window.Layout;
-                }
-
-                var result = FindDockable(window.Layout, predicate);
-                if (result is not null)
-                {
-                    return result;
-                }
-            }
-        }
-
-        return null;
-    }
-
     private bool IsPinned(IDockable dockable, IRootDock rootDock)
     {
         if (rootDock.LeftPinnedDockables is not null)
@@ -377,6 +127,22 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
+        return false;
+    }
+
+    private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
+    {
+        if (pinnedDockables is not null && pinnedDockables.Count != 0)
+        {
+            foreach (var pinnedDockable in pinnedDockables)
+            {
+                if (pinnedDockable.Owner == dock)
+                {
+                    return true;
+                }
+            }
+            return true;
+        }
         return false;
     }
 
@@ -597,22 +363,6 @@ public abstract partial class FactoryBase : IFactory
         }
 
         SplitToWindow(dock, dockable, dockablePointerScreenX, dockablePointerScreenY, dockableWidth, dockableHeight);
-    }
-
-    private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
-    {
-        if (pinnedDockables is not null && pinnedDockables.Count != 0)
-        {
-            foreach (var pinnedDockable in pinnedDockables)
-            {
-                if (pinnedDockable.Owner == dock)
-                {
-                    return true;
-                }
-            }
-            return true;
-        }
-        return false;
     }
 
     /// <inheritdoc/>
@@ -944,7 +694,7 @@ public abstract partial class FactoryBase : IFactory
                 targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
                 OnDockableAdded(sourceDockable);
                 OnDockableMoved(sourceDockable);
-                UpdateDockable(sourceDockable, targetDock);
+                InitDockable(sourceDockable, targetDock);
                 targetDock.ActiveDockable = sourceDockable;
             }
         }
@@ -995,8 +745,8 @@ public abstract partial class FactoryBase : IFactory
             sourceDock.VisibleDockables[sourceIndex] = originalTargetDockable;
             targetDock.VisibleDockables[targetIndex] = originalSourceDockable;
                 
-            UpdateDockable(originalSourceDockable, targetDock);
-            UpdateDockable(originalTargetDockable, sourceDock);
+            InitDockable(originalSourceDockable, targetDock);
+            InitDockable(originalTargetDockable, sourceDock);
 
             OnDockableSwapped(originalTargetDockable);
             OnDockableSwapped(originalSourceDockable);
@@ -1140,7 +890,7 @@ public abstract partial class FactoryBase : IFactory
                         OnDockableRemoved(dockable);
                         ownerDock.VisibleDockables.Insert(index, layout);
                         OnDockableAdded(dockable);
-                        UpdateDockable(layout, ownerDock);
+                        InitDockable(layout, ownerDock);
                         ownerDock.ActiveDockable = layout;
                     }
                 }

@@ -287,6 +287,7 @@ public abstract partial class FactoryBase : IFactory
                     {
                         if (target is IDocumentDock targetDocumentDock)
                         {
+                            targetDocumentDock.Id = sourceDocumentDock.Id;
                             targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
 
                             if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent

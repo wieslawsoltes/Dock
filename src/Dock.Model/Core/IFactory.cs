@@ -188,12 +188,53 @@ public partial interface IFactory
     void AddDockable(IDock dock, IDockable dockable);
 
     /// <summary>
+    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
+    /// </summary>
+    /// <param name="dockable">The dockable to remove.</param>
+    /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
+    void RemoveDockable(IDockable dockable, bool collapse);
+
+    /// <summary>
     /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
     /// </summary>
     /// <param name="dock">The owner dock.</param>
     /// <param name="dockable">The dockable to add.</param>
     /// <param name="index">The dockable index.</param>
     void InsertDockable(IDock dock, IDockable dockable, int index);
+
+    /// <summary>
+    /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.
+    /// </summary>
+    /// <param name="dock">The dock.</param>
+    /// <param name="sourceDockable">The source dockable.</param>
+    /// <param name="targetDockable">The target dockable.</param>
+    void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
+
+    /// <summary>
+    /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
+    /// </summary>
+    /// <param name="sourceDock">The source dock.</param>
+    /// <param name="targetDock">The target dock.</param>
+    /// <param name="sourceDockable">The source dockable.</param>
+    /// <param name="targetDockable">The target dockable.</param>
+    void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable);
+
+    /// <summary>
+    /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
+    /// </summary>
+    /// <param name="dock">The dock.</param>
+    /// <param name="sourceDockable">The source dockable.</param>
+    /// <param name="targetDockable">The target dockable.</param>
+    void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
+
+    /// <summary>
+    /// Swaps dockable into between <see cref="IDock.VisibleDockables"/> collections.
+    /// </summary>
+    /// <param name="sourceDock">The source dock.</param>
+    /// <param name="targetDock">The target dock.</param>
+    /// <param name="sourceDockable">The source dockable.</param>
+    /// <param name="targetDockable">The target dockable.</param>
+    void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
     /// <summary>
     /// Adds window into dock windows list.
@@ -241,13 +282,6 @@ public partial interface IFactory
     void CollapseDock(IDock dock);
 
     /// <summary>
-    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
-    /// </summary>
-    /// <param name="dockable">The dockable to remove.</param>
-    /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
-    void RemoveDockable(IDockable dockable, bool collapse);
-
-    /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>
@@ -276,40 +310,6 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseRightDockables(IDockable dockable);
-
-    /// <summary>
-    /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.
-    /// </summary>
-    /// <param name="dock">The dock.</param>
-    /// <param name="sourceDockable">The source dockable.</param>
-    /// <param name="targetDockable">The target dockable.</param>
-    void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
-
-    /// <summary>
-    /// Moves dockable into another <see cref="IDock.VisibleDockables"/> collection.
-    /// </summary>
-    /// <param name="sourceDock">The source dock.</param>
-    /// <param name="targetDock">The target dock.</param>
-    /// <param name="sourceDockable">The source dockable.</param>
-    /// <param name="targetDockable">The target dockable.</param>
-    void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable);
-
-    /// <summary>
-    /// Swaps dockable in inside <see cref="IDock.VisibleDockables"/> collections.
-    /// </summary>
-    /// <param name="dock">The dock.</param>
-    /// <param name="sourceDockable">The source dockable.</param>
-    /// <param name="targetDockable">The target dockable.</param>
-    void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable);
-
-    /// <summary>
-    /// Swaps dockable into between <see cref="IDock.VisibleDockables"/> collections.
-    /// </summary>
-    /// <param name="sourceDock">The source dock.</param>
-    /// <param name="targetDock">The target dock.</param>
-    /// <param name="sourceDockable">The source dockable.</param>
-    /// <param name="targetDockable">The target dockable.</param>
-    void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
     /// <summary>
     /// Creates a new split layout from source dockable.

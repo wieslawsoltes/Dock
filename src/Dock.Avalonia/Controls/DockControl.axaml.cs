@@ -155,8 +155,8 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (InitializeFactory)
         {
-            layout.Factory.ContextLocator = new Dictionary<string, Func<object>>();
-            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
+            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };

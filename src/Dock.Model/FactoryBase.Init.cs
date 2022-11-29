@@ -127,6 +127,24 @@ public abstract partial class FactoryBase
     {
         if (dock.ActiveDockable is not null && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is { } root)
         {
+            if (dockable is not null)
+            {
+                var results = Find(x => x is IRootDock);
+
+                foreach (var result in results)
+                {
+                    if (result is IRootDock rootDock 
+                        && rootDock.IsFocusableRoot
+                        && rootDock != root)
+                    {
+                        if (rootDock.FocusedDockable?.Owner is not null)
+                        {
+                            SetIsActive(rootDock.FocusedDockable.Owner, false);
+                        }
+                    }
+                }
+            }
+
             if (root.FocusedDockable?.Owner is not null)
             {
                 SetIsActive(root.FocusedDockable.Owner, false);

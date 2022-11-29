@@ -165,6 +165,20 @@ public partial interface IFactory
     void InitActiveDockable(IDockable? dockable, IDock owner);
 
     /// <summary>
+    /// Sets an active dockable. If the dockable is contained inside an dock it
+    /// will become the selected dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to select.</param>
+    void SetActiveDockable(IDockable dockable);
+
+    /// <summary>
+    /// Sets the currently focused dockable updating IsActive flags.
+    /// </summary>
+    /// <param name="dock">The dock to set the focused dockable on.</param>
+    /// <param name="dockable">The dockable to set.</param>
+    void SetFocusedDockable(IDock dock, IDockable? dockable);
+
+    /// <summary>
     /// Searches for root dockable.
     /// </summary>
     /// <param name="dockable">The dockable to find root for.</param>
@@ -237,33 +251,6 @@ public partial interface IFactory
     void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
     /// <summary>
-    /// Adds window into dock windows list.
-    /// </summary>
-    /// <param name="rootDock">The root dock.</param>
-    /// <param name="window">The window to add.</param>
-    void AddWindow(IRootDock rootDock, IDockWindow window);
-
-    /// <summary>
-    /// Removes window from owner windows list.
-    /// </summary>
-    /// <param name="window">The window to remove.</param>
-    void RemoveWindow(IDockWindow window);
-
-    /// <summary>
-    /// Sets an active dockable. If the dockable is contained inside an dock it
-    /// will become the selected dockable.
-    /// </summary>
-    /// <param name="dockable">The dockable to select.</param>
-    void SetActiveDockable(IDockable dockable);
-
-    /// <summary>
-    /// Sets the currently focused dockable updating IsActive flags.
-    /// </summary>
-    /// <param name="dock">The dock to set the focused dockable on.</param>
-    /// <param name="dockable">The dockable to set.</param>
-    void SetFocusedDockable(IDock dock, IDockable? dockable);
-
-    /// <summary>
     /// Pins dockable.
     /// </summary>
     /// <param name="dockable">The dockable to pin.</param>
@@ -274,12 +261,6 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to float.</param>
     void FloatDockable(IDockable dockable);
-
-    /// <summary>
-    /// Collapses dock.
-    /// </summary>
-    /// <param name="dock">The dock to collapse.</param>
-    void CollapseDock(IDock dock);
 
     /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
@@ -312,6 +293,32 @@ public partial interface IFactory
     void CloseRightDockables(IDockable dockable);
 
     /// <summary>
+    /// Adds window into dock windows list.
+    /// </summary>
+    /// <param name="rootDock">The root dock.</param>
+    /// <param name="window">The window to add.</param>
+    void AddWindow(IRootDock rootDock, IDockWindow window);
+
+    /// <summary>
+    /// Removes window from owner windows list.
+    /// </summary>
+    /// <param name="window">The window to remove.</param>
+    void RemoveWindow(IDockWindow window);
+
+    /// <summary>
+    /// Creates dock window from source dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to embed into window.</param>
+    /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
+    IDockWindow? CreateWindowFrom(IDockable dockable);
+
+    /// <summary>
+    /// Collapses dock.
+    /// </summary>
+    /// <param name="dock">The dock to collapse.</param>
+    void CollapseDock(IDock dock);
+
+    /// <summary>
     /// Creates a new split layout from source dockable.
     /// </summary>
     /// <param name="dock">The dock to perform operation on.</param>
@@ -327,13 +334,6 @@ public partial interface IFactory
     /// <param name="dockable">The optional dockable to add to a split side.</param>
     /// <param name="operation"> The dock operation to perform.</param>
     void SplitToDock(IDock dock, IDockable dockable, DockOperation operation);
-
-    /// <summary>
-    /// Creates dock window from source dockable.
-    /// </summary>
-    /// <param name="dockable">The dockable to embed into window.</param>
-    /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
-    IDockWindow? CreateWindowFrom(IDockable dockable);
 
     /// <summary>
     /// Splits dock to the <see cref="DockOperation.Window"/> and updates <see cref="IDockable.Owner"/> layout.

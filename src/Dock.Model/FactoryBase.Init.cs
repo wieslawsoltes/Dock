@@ -102,4 +102,46 @@ public abstract partial class FactoryBase
             SetFocusedDockable(owner, dockable);
         } 
     }
+    
+    /// <inheritdoc/>
+    public virtual void SetActiveDockable(IDockable dockable)
+    {
+        if (dockable.Owner is IDock dock)
+        {
+            dock.ActiveDockable = dockable;
+        }
+    }
+
+    private void SetIsActive(IDockable dockable, bool active)
+    {
+        if (dockable is IDock dock)
+        {
+            dock.IsActive = active;
+        }
+    }
+
+    /// <inheritdoc />
+    public virtual void SetFocusedDockable(IDock dock, IDockable? dockable)
+    {
+        if (dock.ActiveDockable is not null && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is { } root)
+        {
+            if (root.FocusedDockable?.Owner is not null)
+            {
+                SetIsActive(root.FocusedDockable.Owner, false);
+            }
+
+            if (dockable is not null)
+            {
+                if (root.FocusedDockable != dockable)
+                {
+                    root.FocusedDockable = dockable;
+                }
+            }
+
+            if (root.FocusedDockable?.Owner is not null)
+            {
+                SetIsActive(root.FocusedDockable.Owner, true);
+            }
+        }
+    }
 }

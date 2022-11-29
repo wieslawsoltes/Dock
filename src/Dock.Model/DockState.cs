@@ -26,39 +26,112 @@ public class DockState : IDockState
     /// <inheritdoc/>
     public void Save(IDock dock)
     {
-        if (dock.VisibleDockables is null)
-        {
-            return;
-        }
-
         if (dock is IRootDock rootDock)
         {
             if (rootDock.HiddenDockables is { })
             {
-                foreach (var dockable in rootDock.HiddenDockables)
-                {
-                    SaveDockable(dockable);
+                SaveDockables(rootDock.HiddenDockables);
+            }
 
-                    if (dockable is IDock childDock)
-                    {
-                        Save(childDock);
-                    }
-                }
+            if (rootDock.LeftPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.LeftPinnedDockables);
+            }
+
+            if (rootDock.RightPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.RightPinnedDockables);
+            }
+
+            if (rootDock.TopPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.TopPinnedDockables);
+            }
+
+            if (rootDock.BottomPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.BottomPinnedDockables);
             }
 
             if (rootDock.Windows is { })
             {
-                foreach (var window in rootDock.Windows)
-                {
-                    if (window.Layout is { })
-                    {
-                        Save(window.Layout);
-                    }
-                }
+                SaveWindows(rootDock.Windows);
             }
         }
 
-        foreach (var dockable in dock.VisibleDockables)
+        if (dock.VisibleDockables is { })
+        {
+            SaveDockables(dock.VisibleDockables);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Restore(IDock dock)
+    {
+        if (dock is IRootDock rootDock)
+        {
+            if (rootDock.HiddenDockables is { })
+            {
+                RestoreDockables(rootDock.HiddenDockables);
+            }
+
+            if (rootDock.LeftPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.LeftPinnedDockables);
+            }
+
+            if (rootDock.RightPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.RightPinnedDockables);
+            }
+
+            if (rootDock.TopPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.TopPinnedDockables);
+            }
+
+            if (rootDock.BottomPinnedDockables is { })
+            {
+                RestoreDockables(rootDock.BottomPinnedDockables);
+            }
+
+            if (rootDock.Windows is { })
+            {
+                RestoreWindows(rootDock.Windows);
+            }
+        }
+
+        if (dock.VisibleDockables is { })
+        {
+            RestoreDockables(dock.VisibleDockables);
+        }
+    }
+
+    private void SaveWindows(IList<IDockWindow> windows)
+    {
+        foreach (var window in windows)
+        {
+            if (window.Layout is { })
+            {
+                Save(window.Layout);
+            }
+        }
+    }
+
+    private void RestoreWindows(IList<IDockWindow> windows)
+    {
+        foreach (var window in windows)
+        {
+            if (window.Layout is { })
+            {
+                Restore(window.Layout);
+            }
+        }
+    }
+
+    private void SaveDockables(IList<IDockable> dockables)
+    {
+        foreach (var dockable in dockables)
         {
             SaveDockable(dockable);
 
@@ -69,42 +142,9 @@ public class DockState : IDockState
         }
     }
 
-    /// <inheritdoc/>
-    public void Restore(IDock dock)
+    private void RestoreDockables(IList<IDockable> dockables)
     {
-        if (dock.VisibleDockables is null)
-        {
-            return;
-        }
-
-        if (dock is IRootDock rootDock)
-        {
-            if (rootDock.HiddenDockables is { })
-            {
-                foreach (var dockable in rootDock.HiddenDockables)
-                {
-                    RestoreDockable(dockable);
-
-                    if (dockable is IDock childDock)
-                    {
-                        Restore(childDock);
-                    }
-                }
-            }
-
-            if (rootDock.Windows is { })
-            {
-                foreach (var window in rootDock.Windows)
-                {
-                    if (window.Layout is { })
-                    {
-                        Restore(window.Layout);
-                    }
-                }
-            }
-        }
-
-        foreach (var dockable in dock.VisibleDockables)
+        foreach (var dockable in dockables)
         {
             RestoreDockable(dockable);
 

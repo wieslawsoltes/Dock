@@ -32,7 +32,15 @@ public class MainView : UserControl
 
         static void ModifyTypeInfo(JsonTypeInfo ti)
         {
+            Console.WriteLine($"{ti.Type}");
+
+            foreach (var property in ti.Properties)
+            {
+                Console.WriteLine($"  {property.Name}");
+            }
+
             // TODO:
+            //ti.Properties.Clear();
         }
 
         // TODO:

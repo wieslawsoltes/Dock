@@ -14,6 +14,7 @@ namespace Dock.Model.Avalonia.Core;
 /// </summary>
 [DataContract(IsReference = true)]
 [JsonSerializable(typeof(DockWindow), GenerationMode = JsonSourceGenerationMode.Metadata)]
+[JsonPolymorphic]
 public class DockWindow : StyledElement, IDockWindow
 {
     /// <summary>

@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\Dock.ProportionalStackPanel\Dock.ProportionalStackPanel.csproj" />
   </ItemGroup>
 
 </Project>

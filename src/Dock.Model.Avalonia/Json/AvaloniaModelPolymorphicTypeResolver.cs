@@ -8,7 +8,6 @@ using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Json;
 
-
 /// <inheritdoc/>
 public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
 {

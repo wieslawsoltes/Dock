@@ -12,6 +12,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Json;
 using Dock.Model.Core;
 using Dock.Serializer;
@@ -104,7 +105,7 @@ public class MainView : UserControl
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    var layout = JsonSerializer.Deserialize<IDock?>(stream, _options);
+                    var layout = JsonSerializer.Deserialize<RootDock?>(stream, _options);
 
                     // TODO:
                     // var layout = _serializer.Load<IDock?>(stream);

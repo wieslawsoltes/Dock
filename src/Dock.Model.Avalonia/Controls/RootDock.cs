@@ -16,7 +16,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Root dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(RootDock))]
+[JsonSerializable(typeof(RootDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class RootDock : DockBase, IRootDock
 {
     /// <summary>

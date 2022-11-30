@@ -14,8 +14,8 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document template.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DocumentTemplate))]
-public class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
+[JsonSerializable(typeof(DocumentTemplate), GenerationMode = JsonSourceGenerationMode.Metadata)]
+public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
 {
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentTemplate"/> class.

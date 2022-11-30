@@ -9,7 +9,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Proportional dock splitter.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(ProportionalDockSplitter))]
+[JsonSerializable(typeof(ProportionalDockSplitter), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class ProportionalDockSplitter : DockBase, IProportionalDockSplitter
 {
     /// <summary>

@@ -11,7 +11,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Proportional dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(ProportionalDock))]
+[JsonSerializable(typeof(ProportionalDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class ProportionalDock : DockBase, IProportionalDock
 {
     /// <summary>

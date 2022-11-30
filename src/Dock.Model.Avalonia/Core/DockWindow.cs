@@ -13,7 +13,7 @@ namespace Dock.Model.Avalonia.Core;
 /// Dock window.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DockWindow))]
+[JsonSerializable(typeof(DockWindow), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class DockWindow : StyledElement, IDockWindow
 {
     /// <summary>

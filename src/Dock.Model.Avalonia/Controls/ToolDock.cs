@@ -11,7 +11,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Tool dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(ToolDock))]
+[JsonSerializable(typeof(ToolDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class ToolDock : DockBase, IToolDock
 {
     /// <summary>

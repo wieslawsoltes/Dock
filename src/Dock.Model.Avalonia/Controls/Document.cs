@@ -16,7 +16,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(Document))]
+[JsonSerializable(typeof(Document), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Control>, IRecyclingDataTemplate
 {
     /// <summary>

@@ -12,7 +12,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DocumentDock))]
+[JsonSerializable(typeof(DocumentDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 {
     /// <summary>

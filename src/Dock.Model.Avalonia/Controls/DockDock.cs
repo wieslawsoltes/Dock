@@ -10,7 +10,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Docking panel dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DockDock))]
+[JsonSerializable(typeof(DockDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class DockDock : DockBase, IDockDock
 {        
     /// <summary>

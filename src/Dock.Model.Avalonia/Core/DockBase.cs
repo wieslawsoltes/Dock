@@ -16,7 +16,7 @@ namespace Dock.Model.Avalonia.Core;
 /// Dock base class.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DockBase))]
+[JsonSerializable(typeof(DockBase), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public abstract class DockBase : DockableBase, IDock
 {
     /// <summary>

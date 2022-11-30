@@ -195,6 +195,21 @@ public partial interface IFactory
     IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
     /// <summary>
+    /// Searches for dockables in all registered <see cref="IDockControl"/>.
+    /// </summary>
+    /// <param name="predicate">The predicate to filter dockables.></param>
+    /// <returns>The dockables collection.</returns>
+    IEnumerable<IDockable> Find(Func<IDockable, bool> predicate);
+
+    /// <summary>
+    /// Searches dock for dockables in all registered <see cref="IDockControl"/>.
+    /// </summary>
+    /// <param name="dock"></param>
+    /// <param name="predicate">The predicate to filter dockables.></param>
+    /// <returns>The dockables collection.</returns>
+    IEnumerable<IDockable> Find(IDock dock, Func<IDockable, bool> predicate);
+
+    /// <summary>
     /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
     /// </summary>
     /// <param name="dock">The owner dock.</param>

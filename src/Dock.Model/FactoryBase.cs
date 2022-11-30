@@ -389,6 +389,11 @@ public abstract partial class FactoryBase : IFactory
             window.Width = width;
             window.Height = height;
             window.Present(false);
+
+            if (window.Layout is { })
+            {
+                SetFocusedDockable(window.Layout, dockable);
+            }
         }
     }
 }

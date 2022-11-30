@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -11,6 +12,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Avalonia.Json;
 using Dock.Model.Core;
 using Dock.Serializer;
 
@@ -18,12 +20,26 @@ namespace AvaloniaDemo.Xaml;
 
 public class MainView : UserControl
 {
+    private readonly JsonSerializerOptions _options;
     private readonly IDockSerializer _serializer;
     private readonly IDockState _dockState;
 
     public MainView()
     {
         InitializeComponent();
+
+        // TODO:
+        _options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            ReferenceHandler = ReferenceHandler.Preserve,
+            IncludeFields = false,
+            IgnoreReadOnlyFields = true,
+            IgnoreReadOnlyProperties = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+            TypeInfoResolver = new AvaloniaModelPolymorphicTypeResolver()
+        };
 
         _serializer = new DockSerializer(typeof(AvaloniaList<>));
         _dockState = new DockState();
@@ -88,7 +104,10 @@ public class MainView : UserControl
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    var layout = _serializer.Load<IDock?>(stream);
+                    var layout = JsonSerializer.Deserialize<IDock?>(stream, _options);
+
+                    // TODO:
+                    // var layout = _serializer.Load<IDock?>(stream);
                     if (layout is { })
                     {
                         dock.Layout = layout;
@@ -128,7 +147,11 @@ public class MainView : UserControl
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock?.Layout is { })
                 {
-                    _serializer.Save(stream, dock.Layout);
+                    // TODO:
+                    // _serializer.Save(stream, dock.Layout);
+
+                    // ReSharper disable once MethodHasAsyncOverload
+                    JsonSerializer.Serialize(stream, dock.Layout, _options);
                 }
             }
             catch (Exception e)

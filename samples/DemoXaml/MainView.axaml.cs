@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -29,6 +30,11 @@ public class MainView : UserControl
     {
         InitializeComponent();
 
+        static void ModifyTypeInfo(JsonTypeInfo ti)
+        {
+            // TODO:
+        }
+
         // TODO:
         _options = new JsonSerializerOptions
         {
@@ -40,6 +46,9 @@ public class MainView : UserControl
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
             TypeInfoResolver = new AvaloniaModelPolymorphicTypeResolver()
+            {
+                Modifiers = { ModifyTypeInfo }
+            }
         };
 
         _serializer = new DockSerializer(typeof(AvaloniaList<>));

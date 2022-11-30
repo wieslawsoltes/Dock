@@ -179,10 +179,7 @@ public class HostWindow : Window, IStyleable, IHostWindow
     {
         if (chromeControl.CloseButton is not null)
         {
-            Observable.FromEventPattern(chromeControl.CloseButton, nameof(Button.Click)).Subscribe(_ =>
-            {
-                Exit();
-            });
+            chromeControl.CloseButton.Click += (_, _) => Exit();
         }
 
         _chromeGrip = chromeControl.Grip;

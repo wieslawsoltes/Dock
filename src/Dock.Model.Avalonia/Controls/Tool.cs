@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -15,6 +16,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Tool.
 /// </summary>
 [DataContract(IsReference = true)]
+[JsonSerializable(typeof(Tool))]
 public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Control>, IRecyclingDataTemplate
 {
     /// <summary>
@@ -26,6 +28,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
     /// </summary>
+    [JsonConstructor]
     public Tool()
     {
     }
@@ -35,8 +38,9 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
+    [JsonIgnore]
     public object? Content
     {
         get => GetValue(ContentProperty);
@@ -46,6 +50,8 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
     public Type? DataType { get; set; }
 
     /// <summary>

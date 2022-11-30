@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
@@ -13,20 +14,32 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document template.
 /// </summary>
 [DataContract(IsReference = true)]
+[JsonSerializable(typeof(DocumentTemplate))]
 public class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
 {
+    /// <summary>
+    /// Initializes new instance of the <see cref="DocumentTemplate"/> class.
+    /// </summary>
+    [JsonConstructor]
+    public DocumentTemplate()
+    {
+    }
+
     /// <summary>
     /// Gets or sets document content.
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
+    [JsonIgnore]
     public object? Content { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
     public Type? DataType { get; set; }
 
     /// <summary>

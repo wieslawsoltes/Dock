@@ -16,6 +16,7 @@
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\System.Text.Json.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />

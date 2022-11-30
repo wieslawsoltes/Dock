@@ -9,7 +9,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
 
-namespace Dock.ProportionalStackPanel;
+namespace Dock.Avalonia.Controls;
 
 /// <summary>
 /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.

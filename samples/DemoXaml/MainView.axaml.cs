@@ -96,10 +96,9 @@ public class MainView : UserControl
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }
@@ -132,10 +131,9 @@ public class MainView : UserControl
                     _serializer.Save(stream, dock.Layout);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }

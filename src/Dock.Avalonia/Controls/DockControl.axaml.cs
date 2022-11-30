@@ -45,10 +45,10 @@ public class DockControl : TemplatedControl, IDockControl
         AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
     /// <summary>
-    /// Defines the <see cref="FactoryType"/> property.
+    /// Defines the <see cref="Factory"/> property.
     /// </summary>
-    public static readonly StyledProperty<Type?> FactoryTypeProperty =
-        AvaloniaProperty.Register<DockControl, Type?>(nameof(FactoryType));
+    public static readonly StyledProperty<IFactory?> FactoryProperty =
+        AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
@@ -86,10 +86,10 @@ public class DockControl : TemplatedControl, IDockControl
     }
 
     /// <inheritdoc/>
-    public Type? FactoryType
+    public IFactory? Factory
     {
-        get => GetValue(FactoryTypeProperty);
-        set => SetValue(FactoryTypeProperty, value);
+        get => GetValue(FactoryProperty);
+        set => SetValue(FactoryProperty, value);
     }
 
     /// <summary>
@@ -133,17 +133,9 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (layout.Factory is null)
         {
-            if (FactoryType is { })
+            if (Factory is { })
             {
-                var factory = (IFactory?)Activator.CreateInstance(FactoryType);
-                if (factory is { })
-                {
-                    layout.Factory = factory;
-                }
-                else
-                {
-                    return;
-                }
+                layout.Factory = Factory;
             }
             else
             {

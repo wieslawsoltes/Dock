@@ -38,7 +38,7 @@ public interface IDockControl
     bool InitializeFactory { get; set; }
 
     /// <summary>
-    /// Gets or sets the factory type.
+    /// Gets or sets the factory.
     /// </summary>
-    Type? FactoryType { get; set; }
+    IFactory? Factory { get; set; }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -10,7 +9,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// Docking panel dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DockDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class DockDock : DockBase, IDockDock
 {        
     /// <summary>
@@ -24,14 +22,12 @@ public class DockDock : DockBase, IDockDock
     /// <summary>
     /// Initializes new instance of the <see cref="DockDock"/> class.
     /// </summary>
-    [JsonConstructor]
     public DockDock()
     {
     }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public bool LastChildFill
     {
         get => _lastChildFill;

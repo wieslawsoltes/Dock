@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -11,7 +10,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// Tool dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(ToolDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class ToolDock : DockBase, IToolDock
 {
     /// <summary>
@@ -46,14 +44,12 @@ public class ToolDock : DockBase, IToolDock
     /// <summary>
     /// Initializes new instance of the <see cref="ToolDock"/> class.
     /// </summary>
-    [JsonConstructor]
     public ToolDock()
     {
     }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public Alignment Alignment
     {
         get => _alignment;
@@ -62,7 +58,6 @@ public class ToolDock : DockBase, IToolDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public bool IsExpanded
     {
         get => _isExpanded;
@@ -71,7 +66,6 @@ public class ToolDock : DockBase, IToolDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public bool AutoHide
     {
         get => _autoHide;
@@ -80,7 +74,6 @@ public class ToolDock : DockBase, IToolDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public GripMode GripMode
     {
         get => _gripMode;

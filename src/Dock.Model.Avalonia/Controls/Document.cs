@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -16,7 +15,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(Document), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Control>, IRecyclingDataTemplate
 {
     /// <summary>
@@ -28,7 +26,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <summary>
     /// Initializes new instance of the <see cref="Document"/> class.
     /// </summary>
-    [JsonConstructor]
     public Document()
     {
     }
@@ -40,7 +37,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     [TemplateContent]
     [ResolveByName]
     [IgnoreDataMember]
-    [JsonIgnore]
     public object? Content
     {
         get => GetValue(ContentProperty);
@@ -51,7 +47,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// 
     /// </summary>
     [IgnoreDataMember]
-    [JsonIgnore]
     public Type? DataType { get; set; }
 
     /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
@@ -12,7 +11,6 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-[JsonSerializable(typeof(DocumentDock), GenerationMode = JsonSourceGenerationMode.Metadata)]
 public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 {
     /// <summary>
@@ -32,7 +30,6 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentDock"/> class.
     /// </summary>
-    [JsonConstructor]
     public DocumentDock()
     {
         CreateDocument = new Command(() => CreateDocumentFromTemplate());
@@ -40,7 +37,6 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonInclude]
     public bool CanCreateDocument
     {
         get => _canCreateDocument;
@@ -49,14 +45,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [JsonIgnore]
     public ICommand? CreateDocument { get; set; }
 
     /// <summary>
     /// Gets or sets document template.
     /// </summary>
     [IgnoreDataMember]
-    [JsonIgnore]
     public IDocumentTemplate? DocumentTemplate
     {
         get => GetValue(DocumentTemplateProperty);

@@ -13,7 +13,7 @@
     <PublishAot>true</PublishAot>
     <SelfContained>true</SelfContained>
     <StripSymbols>true</StripSymbols>
-  </PropertyGroup>-->
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' == 'win-x64'">
     <PublishTrimmed>true</PublishTrimmed>

@@ -7,7 +7,7 @@ using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
-namespace Dock.Model.Avalonia.Json;
+namespace AvaloniaDemo.Xaml.Json;
 
 /// <inheritdoc/>
 public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver

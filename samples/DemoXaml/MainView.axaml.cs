@@ -14,7 +14,9 @@ using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Json;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
 
@@ -26,21 +28,446 @@ public class MainView : UserControl
     private readonly IDockSerializer _serializer;
     private readonly IDockState _dockState;
 
+    private Dictionary<Type, List<string>> _properties;
+
     public MainView()
     {
         InitializeComponent();
 
-        static void ModifyTypeInfo(JsonTypeInfo ti)
+        _properties = new()
         {
-            Console.WriteLine($"{ti.Type}");
-
-            foreach (var property in ti.Properties)
+            [typeof(IDockable)] = new List<string>
             {
-                Console.WriteLine($"  {property.Name}");
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(IDocument)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(IDocumentContent)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(ITool)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(IToolContent)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(IDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+            },
+            [typeof(IDockDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IDockDock
+                "LastChildFill",
+            },
+            [typeof(IDocumentDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IDocumentDock
+                "CanCreateDocument",
+            },
+            [typeof(IDocumentDockContent)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+            },
+            [typeof(IProportionalDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IProportionalDock
+                "Orientation",
+            },
+            [typeof(IProportionalDockSplitter)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+            },
+            [typeof(IRootDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IRootDock
+                "IsFocusableRoot",
+                "HiddenDockables",
+                "LeftPinnedDockables",
+                "RightPinnedDockables",
+                "TopPinnedDockables",
+                "BottomPinnedDockables",
+                "Window",
+                "Windows",
+            },
+            [typeof(IToolDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IToolDock
+                "Alignment",
+                "IsExpanded",
+                "AutoHide",
+                "GripMode",
+            },
+            [typeof(DockableBase)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(DockBase)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+            },
+            [typeof(Document)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(Tool)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+            },
+            [typeof(DockDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IDockDock
+                "LastChildFill",
+            },
+            [typeof(DocumentDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IDocumentDock
+                "CanCreateDocument",
+            },
+            [typeof(ProportionalDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IProportionalDock
+                "Orientation",
+            },
+            [typeof(ProportionalDockSplitter)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+            },
+            [typeof(RootDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IRootDock
+                "IsFocusableRoot",
+                "HiddenDockables",
+                "LeftPinnedDockables",
+                "RightPinnedDockables",
+                "TopPinnedDockables",
+                "BottomPinnedDockables",
+                "Window",
+                "Windows",
+            },
+            [typeof(ToolDock)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsCollapsable",
+                // IToolDock
+                "Alignment",
+                "IsExpanded",
+                "AutoHide",
+                "GripMode",
+            },
+        };
+
+        void ModifyTypeInfo(JsonTypeInfo ti)
+        {
+            if (ti.Kind != JsonTypeInfoKind.Object)
+            {
+                return;
             }
 
-            // TODO:
-            //ti.Properties.Clear();
+            if (_properties.TryGetValue(ti.Type, out var properties))
+            {
+                //Console.WriteLine($"{ti.Type}");
+
+                var allowedProperties = ti.Properties.Where(x => properties.Contains(x.Name)).ToList();
+
+                ti.Properties.Clear();
+
+                foreach (var property in allowedProperties)
+                {
+                    //Console.WriteLine($"  {property.Name}");
+                    ti.Properties.Add(property);
+                }
+            }
+            else
+            {
+                ti.Properties.Clear();
+            }
         }
 
         // TODO:
@@ -53,10 +480,10 @@ public class MainView : UserControl
             IgnoreReadOnlyProperties = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            TypeInfoResolver = new AvaloniaModelPolymorphicTypeResolver()
+            TypeInfoResolver = new AvaloniaModelPolymorphicTypeResolver
             {
                 Modifiers = { ModifyTypeInfo }
-            }
+            },
         };
 
         _serializer = new DockSerializer(typeof(AvaloniaList<>));

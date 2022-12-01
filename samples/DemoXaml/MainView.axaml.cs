@@ -549,7 +549,7 @@ public class MainView : UserControl
                 var dock = this.FindControl<DockControl>("Dock");
                 if (dock is { })
                 {
-                    var layout = JsonSerializer.Deserialize<RootDock?>(stream, _options);
+                    var layout = JsonSerializer.Deserialize<IDock?>(stream, _options);
 
                     // TODO:
                     // var layout = _serializer.Load<IDock?>(stream);

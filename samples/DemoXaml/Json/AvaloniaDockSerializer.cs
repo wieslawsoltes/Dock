@@ -427,6 +427,30 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "AutoHide",
                 "GripMode",
             },
+            [typeof(IDockWindow)] = new List<string>
+            {
+                // IDockWindow
+                "Id",
+                "X",
+                "Y",
+                "Width",
+                "Height",
+                "Topmost",
+                "Title",
+                "Layout",
+            },
+            [typeof(DockWindow)] = new List<string>
+            {
+                // IDockWindow
+                "Id",
+                "X",
+                "Y",
+                "Width",
+                "Height",
+                "Topmost",
+                "Title",
+                "Layout",
+            },
         };
 
         void ModifyTypeInfo(JsonTypeInfo ti)

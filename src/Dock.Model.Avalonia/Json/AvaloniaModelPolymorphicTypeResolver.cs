@@ -17,7 +17,10 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
     {
         var jsonTypeInfo = base.GetTypeInfo(type, options);
 
-        if (jsonTypeInfo.Type == typeof(IDockable))
+        Console.WriteLine($"{jsonTypeInfo.Type}");
+
+        if (jsonTypeInfo.Type == typeof(IDockable)
+            || jsonTypeInfo.Type == typeof(DockableBase))
         {
             jsonTypeInfo.PolymorphismOptions =
                 new JsonPolymorphismOptions
@@ -39,7 +42,8 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 };
         }
 
-        if (jsonTypeInfo.Type == typeof(IDock))
+        if (jsonTypeInfo.Type == typeof(IDock)
+            || jsonTypeInfo.Type == typeof(DockBase))
         {
             jsonTypeInfo.PolymorphismOptions =
                 new JsonPolymorphismOptions

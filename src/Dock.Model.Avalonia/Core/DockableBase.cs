@@ -10,7 +10,6 @@ namespace Dock.Model.Avalonia.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-//[JsonPolymorphic]
 public abstract class DockableBase : StyledElement, IDockable
 {
     /// <summary>

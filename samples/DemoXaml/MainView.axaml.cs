@@ -24,11 +24,11 @@ namespace AvaloniaDemo.Xaml;
 
 public class MainView : UserControl
 {
-    private readonly JsonSerializerOptions _options;
     private readonly IDockSerializer _serializer;
     private readonly IDockState _dockState;
 
-    private Dictionary<Type, List<string>> _properties;
+    private readonly Dictionary<Type, List<string>> _properties;
+    private readonly JsonSerializerOptions _options;
 
     public MainView()
     {

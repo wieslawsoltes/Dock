@@ -63,7 +63,24 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 };
         }
 
-        if (jsonTypeInfo.Type == typeof(IDockWindow))
+        if (jsonTypeInfo.Type == typeof(IRootDock)
+            || jsonTypeInfo.Type == typeof(RootDock))
+        {
+            jsonTypeInfo.PolymorphismOptions =
+                new JsonPolymorphismOptions
+                {
+                    TypeDiscriminatorPropertyName = "$type",
+                    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor,
+                    IgnoreUnrecognizedTypeDiscriminators = true,
+                    DerivedTypes =
+                    {
+                        new JsonDerivedType(typeof(RootDock), "RootDock"),
+                    }
+                };
+        }
+
+        if (jsonTypeInfo.Type == typeof(IDockWindow)
+            || jsonTypeInfo.Type == typeof(DockWindow))
         {
             jsonTypeInfo.PolymorphismOptions =
                 new JsonPolymorphismOptions
@@ -78,7 +95,8 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                 };
         }
 
-        if (jsonTypeInfo.Type == typeof(IDocumentTemplate))
+        if (jsonTypeInfo.Type == typeof(IDocumentTemplate)
+            || jsonTypeInfo.Type == typeof(DocumentTemplate))
         {
             jsonTypeInfo.PolymorphismOptions =
                 new JsonPolymorphismOptions

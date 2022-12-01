@@ -12,7 +12,6 @@ namespace Dock.Model.Avalonia.Core;
 /// Dock window.
 /// </summary>
 [DataContract(IsReference = true)]
-//[JsonPolymorphic]
 public class DockWindow : StyledElement, IDockWindow
 {
     /// <summary>

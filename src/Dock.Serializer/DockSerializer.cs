@@ -42,13 +42,13 @@ public sealed class DockSerializer : IDockSerializer
     }
 
     /// <inheritdoc/>
-    public T Deserialize<T>(string text)
+    public T? Deserialize<T>(string text)
     {
-        return JsonConvert.DeserializeObject<T>(text, _settings)!;
+        return JsonConvert.DeserializeObject<T>(text, _settings);
     }
 
     /// <inheritdoc/>
-    public T Load<T>(Stream stream)
+    public T? Load<T>(Stream stream)
     {
         using var streamReader = new StreamReader(stream, Encoding.UTF8);
         var text = streamReader.ReadToEnd();

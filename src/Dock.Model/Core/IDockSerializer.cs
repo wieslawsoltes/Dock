@@ -22,7 +22,7 @@ public interface IDockSerializer
     /// <param name="text"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    T Deserialize<T>(string text);
+    T? Deserialize<T>(string text);
 
     /// <summary>
     /// 
@@ -30,7 +30,7 @@ public interface IDockSerializer
     /// <param name="stream"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    T Load<T>(Stream stream);
+    T? Load<T>(Stream stream);
 
     /// <summary>
     /// 

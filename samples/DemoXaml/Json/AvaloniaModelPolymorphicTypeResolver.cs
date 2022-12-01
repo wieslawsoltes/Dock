@@ -17,7 +17,7 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
     {
         var jsonTypeInfo = base.GetTypeInfo(type, options);
 
-        Console.WriteLine($"{jsonTypeInfo.Type}");
+        // Console.WriteLine($"{jsonTypeInfo.Type}");
 
         if (jsonTypeInfo.Type == typeof(IDockable)
             || jsonTypeInfo.Type == typeof(DockableBase))

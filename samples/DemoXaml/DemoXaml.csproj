@@ -9,13 +9,13 @@
     <RootNamespace>AvaloniaDemo.Xaml</RootNamespace>
   </PropertyGroup>
 
-  <!--<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' == 'win-x64'">
     <PublishAot>true</PublishAot>
     <SelfContained>true</SelfContained>
     <StripSymbols>true</StripSymbols>
   </PropertyGroup>-->
 
-  <!--<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(RuntimeIdentifier)' == 'win-x64'">
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>full</TrimMode>
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -28,7 +28,7 @@
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <IncludeSatelliteDllsProjectOutputGroup>false</IncludeSatelliteDllsProjectOutputGroup>
-  </PropertyGroup>-->
+  </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />

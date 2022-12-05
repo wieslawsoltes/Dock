@@ -35,8 +35,8 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
     public object? Content
     {
         get => GetValue(ContentProperty);
@@ -46,6 +46,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
     public Type? DataType { get; set; }
 
     /// <summary>
@@ -85,7 +86,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object? data) => Build(data, null);
+    public Control Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -93,7 +94,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object? data, IControl? existing)
+    public Control Build(object? data, Control? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

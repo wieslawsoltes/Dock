@@ -103,8 +103,8 @@ public abstract class DockableBase : StyledElement, IDockable
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
     public IDockable? Owner
     {
         get => _owner;

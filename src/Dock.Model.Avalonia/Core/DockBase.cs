@@ -112,8 +112,8 @@ public abstract class DockBase : DockableBase, IDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
@@ -127,8 +127,8 @@ public abstract class DockBase : DockableBase, IDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
@@ -136,8 +136,8 @@ public abstract class DockBase : DockableBase, IDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;

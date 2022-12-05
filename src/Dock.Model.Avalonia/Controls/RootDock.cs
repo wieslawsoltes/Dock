@@ -160,8 +160,8 @@ public class RootDock : DockBase, IRootDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockWindow? Window
     {
         get => _window;

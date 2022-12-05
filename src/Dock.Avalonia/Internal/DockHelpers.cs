@@ -16,37 +16,36 @@ namespace Dock.Avalonia.Internal;
 /// </summary>
 internal static class DockHelpers
 {
-    private static bool IsHitTestVisible(IVisual visual)
+    private static bool IsHitTestVisible(Visual visual)
     {
-        return visual is IInputElement
-        {
-            IsVisible: true, 
-            IsHitTestVisible: true, 
-            IsEffectivelyEnabled: true, 
-            IsAttachedToVisualTree: true
-        };
+        var element = visual as IInputElement;
+        return element != null &&
+               visual.IsVisible &&
+               element.IsHitTestVisible &&
+               element.IsEffectivelyEnabled &&
+               visual.GetVisualRoot() != null;
     }
 
-    private static IEnumerable<IVisual> GetVisualsAt(IVisual? visual, Point p, Func<IVisual, bool> predicate)
+    private static IEnumerable<Visual> GetVisualsAt(Visual? visual, Point p, Func<Visual, bool> predicate)
     {
-        var root = visual?.GetVisualRoot();
-        if (root is { } && visual is { })
+        var visualRoot = visual?.GetVisualRoot();
+        if (visualRoot is Visual root && visual is { })
         {
             var rootPoint = visual.TranslatePoint(p, root);
             if (rootPoint.HasValue)
             {
-                return root.Renderer.HitTest(rootPoint.Value, visual, predicate);
+                return visualRoot.Renderer.HitTest(rootPoint.Value, visual, predicate);
             }
         }
-        return Enumerable.Empty<IVisual>();
+        return Enumerable.Empty<Visual>();
     }
 
-    public static Control? GetControl(IInputElement? input, Point point, StyledProperty<bool> property)
+    public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
     {
-        IEnumerable<IInputElement>? inputElements = null;
+        IEnumerable<Visual>? inputElements = null;
         try
         {
-            inputElements = GetVisualsAt(input, point, IsHitTestVisible).Cast<IInputElement>();
+            inputElements = GetVisualsAt(input, point, IsHitTestVisible).Cast<Visual>();
         }
         catch (Exception ex)
         {

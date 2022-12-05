@@ -17,7 +17,7 @@ internal class DockDragState
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public Point TargetPoint { get; set; }
-    public IVisual? TargetDockControl { get; set; }
+    public Visual? TargetDockControl { get; set; }
 
     public void Start(Control dragControl, Point point)
     {
@@ -58,7 +58,7 @@ internal class DockControlState : IDockControlState
         DockManager = dockManager;
     }
 
-    private void Enter(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
         if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
@@ -67,7 +67,7 @@ internal class DockControlState : IDockControlState
         }
     }
 
-    private void Over(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
         var operation = DockOperation.Fill;
 
@@ -79,7 +79,7 @@ internal class DockControlState : IDockControlState
         Validate(point, operation, dragAction, relativeTo);
     }
 
-    private void Drop(Point point, DragAction dragAction, IVisual relativeTo)
+    private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
         var operation = DockOperation.Window;
 
@@ -104,7 +104,7 @@ internal class DockControlState : IDockControlState
         }
     }
 
-    private bool Validate(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+    private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_state.DragControl is null || _state.DropControl is null)
         {
@@ -115,7 +115,7 @@ internal class DockControlState : IDockControlState
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
-            if (relativeTo.VisualRoot is null)
+            if (relativeTo.GetVisualRoot() is null)
             {
                 return false;
             }
@@ -129,7 +129,7 @@ internal class DockControlState : IDockControlState
         return false;
     }
 
-    private void Execute(Point point, DockOperation operation, DragAction dragAction, IVisual relativeTo)
+    private void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_state.DragControl is null || _state.DropControl is null)
         {
@@ -140,7 +140,7 @@ internal class DockControlState : IDockControlState
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
-            if (relativeTo.VisualRoot is null)
+            if (relativeTo.GetVisualRoot() is null)
             {
                 return;
             }
@@ -166,9 +166,9 @@ internal class DockControlState : IDockControlState
     /// <param name="dragAction">The input drag action.</param>
     /// <param name="activeDockControl">The active dock control.</param>
     /// <param name="dockControls">The dock controls.</param>
-    public void Process(Point point, Vector delta, EventType eventType, DragAction dragAction, IVisual activeDockControl, IList<IDockControl> dockControls)
+    public void Process(Point point, Vector delta, EventType eventType, DragAction dragAction, Visual activeDockControl, IList<IDockControl> dockControls)
     {
-        if (activeDockControl is not IInputElement inputActiveDockControl)
+        if (activeDockControl is not { } inputActiveDockControl)
         {
             return;
         }
@@ -236,24 +236,24 @@ internal class DockControlState : IDockControlState
                 if (_state.DoDragDrop)
                 {
                     Point targetPoint = default;
-                    IVisual? targetDockControl = null;
+                    Visual? targetDockControl = null;
                     Control? dropControl = null;
 
                     foreach (var dockControl in dockControls)
                     {
-                        if (dockControl is not IInputElement inputDockControl ||
+                        if (dockControl is not Visual inputDockControl ||
                             inputDockControl == inputActiveDockControl)
                         {
                             continue;
                         }
 
-                        if (inputActiveDockControl.VisualRoot is null)
+                        if (inputActiveDockControl.GetVisualRoot() is null)
                         {
                             continue;
                         }
                         var screenPoint = inputActiveDockControl.PointToScreen(point);
 
-                        if (inputDockControl.VisualRoot is null)
+                        if (inputDockControl.GetVisualRoot() is null)
                         {
                             continue;
                         }

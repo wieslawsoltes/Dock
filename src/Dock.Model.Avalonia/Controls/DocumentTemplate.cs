@@ -13,20 +13,28 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document template.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
+public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
 {
+    /// <summary>
+    /// Initializes new instance of the <see cref="DocumentTemplate"/> class.
+    /// </summary>
+    public DocumentTemplate()
+    {
+    }
+
     /// <summary>
     /// Gets or sets document content.
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
     public object? Content { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
     public Type? DataType { get; set; }
 
     /// <summary>
@@ -64,7 +72,7 @@ public class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclin
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object? data) => Build(data, null);
+    public Control Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -72,7 +80,7 @@ public class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclin
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object? data, IControl? existing)
+    public Control Build(object? data, Control? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using AvaloniaDemo.Xaml.Json;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Core;
@@ -25,7 +25,9 @@ public class MainView : UserControl
     {
         InitializeComponent();
 
-        _serializer = new DockSerializer(typeof(AvaloniaList<>));
+        // _serializer = new DockSerializer(typeof(AvaloniaList<>));
+        _serializer = new AvaloniaDockSerializer();
+
         _dockState = new DockState();
 
         var dock = this.FindControl<DockControl>("Dock");
@@ -96,10 +98,9 @@ public class MainView : UserControl
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }
@@ -132,10 +133,9 @@ public class MainView : UserControl
                     _serializer.Save(stream, dock.Layout);
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(e);
             }
         }
     }

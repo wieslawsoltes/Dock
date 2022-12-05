@@ -10,7 +10,7 @@ public class SimpleThemeManager : IThemeManager
 {
     private static readonly Uri BaseUri = new("avares://AvaloniaDemo.Base/Styles");
 
-    private static readonly SimpleTheme Simple = new(BaseUri)
+    private static readonly SimpleTheme Simple = new()
     {
         Mode = SimpleThemeMode.Light
     };

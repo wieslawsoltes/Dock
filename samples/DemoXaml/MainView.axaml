@@ -17,7 +17,10 @@
       </MenuItem>
     </Menu>
 
-    <DockControl x:Name="Dock" Grid.Row="1" FactoryType="{x:Type Factory}" InitializeLayout="True" InitializeFactory="True">
+    <DockControl x:Name="Dock" Grid.Row="1" InitializeLayout="True" InitializeFactory="True">
+      <DockControl.Factory>
+        <Factory />
+      </DockControl.Factory>
 
       <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
 

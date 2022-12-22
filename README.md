@@ -59,7 +59,6 @@ Install-Package Dock.Model.ReactiveUI -Pre
 ## Resources
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
-* [Sample Dock application.](https://github.com/wieslawsoltes/AvaloniaDockApplication)
 
 ## License
 

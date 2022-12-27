@@ -3,36 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:views="clr-namespace:DockPerspectivesSample.Views;assembly=DockPerspectivesSample"
              xmlns:vm="clr-namespace:DockPerspectivesSample.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
-  <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,200" Background="Transparent">
-    <views:MenuView Grid.Row="0" Grid.Column="0" />
+  <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,500" Background="Transparent">
     <DockControl x:Name="dockControl" 
                  Layout="{Load avares://DockPerspectivesSample/Layouts/RootDockPerspectives.axaml}" 
                  Margin="4" 
                  Grid.Row="2" Grid.Column="0" />
-    <Grid RowDefinitions="Auto,*" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
-      <StackPanel Grid.Row="0">
-        <Button Content="Apply Layout" 
-                Command="{Binding ApplyLayout}" 
-                CommandParameter="{Binding #visibleDockables.SelectedItem}" 
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center"
-                Margin="4,2"/>
-      </StackPanel>
-      <ListBox x:Name="visibleDockables"
-               Items="{Binding #dockControl.Layout.VisibleDockables, FallbackValue={x:Null}}" 
-               Margin="4" 
-               Grid.Row="1">
-        <ListBox.ItemTemplate>
-          <DataTemplate>
-            <TextBlock Text="{Binding Title}" />
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
-    </Grid>
+    <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+      <TabItem Header="Perspectives">
+        <Grid RowDefinitions="Auto,*">
+          <StackPanel Grid.Row="0">
+            <Button Content="Apply Layout" 
+                    Command="{Binding ApplyLayout}" 
+                    CommandParameter="{Binding #visibleDockables.SelectedItem}" 
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="4,2"/>
+          </StackPanel>
+          <ListBox x:Name="visibleDockables"
+                   Items="{Binding #dockControl.Layout.VisibleDockables, FallbackValue={x:Null}}" 
+                   Margin="4" 
+                   Grid.Row="1">
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Title}" />
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Grid>
+      </TabItem>
+      <TabItem Header="Debug">
+        <RootDockDebug DataContext="{Binding #dockControl.Layout}" />
+      </TabItem>
+    </TabControl>
   </Grid>
 </UserControl>

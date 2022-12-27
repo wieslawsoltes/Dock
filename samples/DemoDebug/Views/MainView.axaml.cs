@@ -13,7 +13,7 @@ public class MainView : UserControl
     public MainView()
     {
         InitializeComponent();
-        _dockControl = this.FindControl<DockControl>("dockControl");
+        _dockControl = this.FindControl<DockControl>("DockControl");
     }
 
     private void InitializeComponent()

@@ -27,7 +27,7 @@
         <!-- Windows -->
 
         <RootDock.Windows>
-          <DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="250" Height="400" Topmost="True">
+          <!--<DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="250" Height="400" Topmost="True">
             <RootDock ActiveDockable="{Binding #ToolDock}" Window="{Binding #DockWindow}">
               <ToolDock x:Name="ToolDock">
                 <Tool x:Name="ToolWindow" Id="ToolWindow" Title="Tool Window" x:DataType="Tool">
@@ -35,7 +35,7 @@
                 </Tool>
               </ToolDock>
             </RootDock>
-          </DockWindow>
+          </DockWindow>-->
         </RootDock.Windows>
 
         <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">

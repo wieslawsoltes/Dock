@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Name="Dock Avalonia Demo"
              x:Class="DockXamlSample.App">
+
   <Application.Styles>
     <FluentTheme Mode="Light" />
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
@@ -10,4 +11,9 @@
       <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
   </Application.Styles>
+  
+  <Application.Resources>
+    <Color x:Key="RegionColor">White</Color>
+  </Application.Resources>
+
 </Application>

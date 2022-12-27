@@ -2,7 +2,9 @@
           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
           xmlns:vmd="clr-namespace:DockPerspectivesSample.ViewModels.Documents;assembly=DockPerspectivesSample"
           xmlns:vmt="clr-namespace:DockPerspectivesSample.ViewModels.Tools;assembly=DockPerspectivesSample"
-          x:Name="Root" ActiveDockable="{Binding #Perspective1}" DefaultDockable="{Binding #Perspective1}"
+          x:Name="Root" 
+          ActiveDockable="{Binding #Perspective1}" 
+          DefaultDockable="{Binding #Perspective1}"
           IsCollapsable="False">
 
   <RootDock.HiddenDockables>

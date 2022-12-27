@@ -54,7 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaDemo", "samples\AvaloniaDemo\AvaloniaDemo.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample", "samples\DockMvvmSample\DockMvvmSample.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
 EndProject
@@ -76,9 +76,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad", "samples\Notepad\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia", "src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj", "{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoXaml", "samples\DemoXaml\DemoXaml.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockXamlSample", "samples\DockXamlSample\DockXamlSample.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoPerspectives", "samples\DemoPerspectives\DemoPerspectives.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockPerspectivesSample", "samples\DockPerspectivesSample\DockPerspectivesSample.csproj", "{CCA4614A-15A7-453A-A34E-EC82E217CA0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}"
 EndProject

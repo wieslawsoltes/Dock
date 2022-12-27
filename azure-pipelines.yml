@@ -12,7 +12,7 @@ variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'Any CPU'
   PublishFramework: 'net7.0'
-  PublishProject: 'AvaloniaDemo'
+  PublishProject: 'DockMvvmSample'
   PublishRuntime: ''
   Workloads: 'wasm-tools wasm-experimental'
 

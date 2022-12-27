@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="DockPerspectivesSample.Views.MenuView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:vm="clr-namespace:DockPerspectivesSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="20"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
+  <Menu>
+    <MenuItem Header="_View">
+      <MenuItem Header="_Windows" DataContext="{Binding DockControl.Layout, FallbackValue={x:Null}}" >
+        <MenuItem Header="_Exit" Command="{Binding ExitWindows}" x:DataType="RootDock" />
+        <Separator />
+        <MenuItem Header="_Show" Command="{Binding ShowWindows}" x:DataType="RootDock" />
+      </MenuItem>
+    </MenuItem>
+    <MenuItem Header="_Options">
+      <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
+        <MenuItem.Icon>
+          <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}" BorderThickness="0" IsHitTestVisible="False" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <Separator />
+      <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
+        <MenuItem.Icon>
+          <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}" BorderThickness="0" IsHitTestVisible="False" />
+        </MenuItem.Icon>
+      </MenuItem>
+    </MenuItem>
+  </Menu>
+</UserControl>

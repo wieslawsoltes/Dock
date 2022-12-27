@@ -8,7 +8,7 @@ namespace DockMvvmSample.Themes;
 
 public class SimpleThemeManager : IThemeManager
 {
-    private static readonly Uri BaseUri = new("avares://DockMvvmSample.Base/Styles");
+    private static readonly Uri BaseUri = new("avares://DockMvvmSample/Styles");
 
     private static readonly SimpleTheme Simple = new()
     {
@@ -27,7 +27,7 @@ public class SimpleThemeManager : IThemeManager
     {
         new StyleInclude(BaseUri)
         {
-            Source = new Uri("avares://DockMvvmSample.Base/Themes/SimpleLight.axaml")
+            Source = new Uri("avares://DockMvvmSample/Themes/SimpleLight.axaml")
         }
     };
 
@@ -35,7 +35,7 @@ public class SimpleThemeManager : IThemeManager
     {
         new StyleInclude(BaseUri)
         {
-            Source = new Uri("avares://DockMvvmSample.Base/Themes/SimpleDark.axaml")
+            Source = new Uri("avares://DockMvvmSample/Themes/SimpleDark.axaml")
         }
     };
 

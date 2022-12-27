@@ -8,7 +8,7 @@ namespace DockMvvmSample.Themes;
 
 public class FluentThemeManager : IThemeManager
 {
-    private static readonly Uri BaseUri = new("avares://DockMvvmSample.Base/Styles");
+    private static readonly Uri BaseUri = new("avares://DockMvvmSample/Styles");
 
     private static readonly FluentTheme Fluent = new()
     {
@@ -27,7 +27,7 @@ public class FluentThemeManager : IThemeManager
     {
         new StyleInclude(BaseUri)
         {
-            Source = new Uri("avares://DockMvvmSample.Base/Themes/FluentDark.axaml")
+            Source = new Uri("avares://DockMvvmSample/Themes/FluentDark.axaml")
         }
     };
 
@@ -35,7 +35,7 @@ public class FluentThemeManager : IThemeManager
     {
         new StyleInclude(BaseUri)
         {
-            Source = new Uri("avares://DockMvvmSample.Base/Themes/FluentLight.axaml")
+            Source = new Uri("avares://DockMvvmSample/Themes/FluentLight.axaml")
         }
     };
 

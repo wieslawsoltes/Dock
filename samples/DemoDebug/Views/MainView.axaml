@@ -12,9 +12,9 @@
     <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.axaml" />
   </UserControl.Styles>
   <Grid ColumnDefinitions="*,Auto,280" RowDefinitions="Auto,Auto,*" Background="Transparent">
-    <views:DebugView DataContext="{Binding #dockControl.Layout}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" />
+    <RootDockDebug DataContext="{Binding #DockControl.Layout}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" />
     <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Width="6" />
     <views:MenuView Grid.Row="0" Grid.Column="0" />
-    <DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Column="0" Grid.Row="2" />
+    <DockControl x:Name="DockControl" Classes="Default" Margin="4" Grid.Column="0" Grid.Row="2" />
   </Grid>
 </UserControl>

@@ -1,11 +1,17 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace AvaloniaDemo.Views;
+namespace Dock.Avalonia.Controls;
 
-public class DebugView : UserControl
+/// <summary>
+/// 
+/// </summary>
+public class RootDockDebug : UserControl
 {
-    public DebugView()
+    /// <summary>
+    /// 
+    /// </summary>
+    public RootDockDebug()
     {
         InitializeComponent();
     }

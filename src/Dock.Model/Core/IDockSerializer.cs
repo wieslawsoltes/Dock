@@ -1,42 +1,40 @@
-﻿
-using System.IO;
+﻿using System.IO;
 
 namespace Dock.Model.Core;
-
 /// <summary>
 /// Docking serializer contract.
 /// </summary>
 public interface IDockSerializer
 {
     /// <summary>
-    /// 
+    /// Serializes the specified object to a string.
     /// </summary>
-    /// <param name="value"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="value">The object to serialize.</param>
+    /// <typeparam name="T">The type of the object to serialize.</typeparam>
+    /// <returns>A string representation of the serialized object.</returns>
     string Serialize<T>(T value);
 
     /// <summary>
-    /// 
+    /// Deserializes the specified string to an object.
     /// </summary>
-    /// <param name="text"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="text">The string to deserialize.</param>
+    /// <typeparam name="T">The type of the object to deserialize.</typeparam>
+    /// <returns>The deserialized object, or null if the deserialization fails.</returns>
     T? Deserialize<T>(string text);
 
     /// <summary>
-    /// 
+    /// Loads an object from the specified stream.
     /// </summary>
-    /// <param name="stream"></param>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
+    /// <param name="stream">The stream to read from.</param>
+    /// <typeparam name="T">The type of the object to load.</typeparam>
+    /// <returns>The loaded object, or null if the deserialization fails.</returns>
     T? Load<T>(Stream stream);
 
     /// <summary>
-    /// 
+    /// Saves the specified object to the specified stream.
     /// </summary>
-    /// <param name="stream"></param>
-    /// <param name="value"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="stream">The stream to write to.</param>
+    /// <param name="value">The object to save.</param>
+    /// <typeparam name="T">The type of the object to save.</typeparam>
     void Save<T>(Stream stream, T value);
 }

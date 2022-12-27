@@ -6,7 +6,6 @@
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
-    <AssemblyName>AvaloniaDemo</AssemblyName>
     <RootNamespace>AvaloniaDemo</RootNamespace>
   </PropertyGroup>
 
@@ -19,9 +18,10 @@
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
   </ItemGroup>
 
 </Project>

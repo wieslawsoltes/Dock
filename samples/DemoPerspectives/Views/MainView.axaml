@@ -8,13 +8,8 @@
              mc:Ignorable="d"
              d:DesignWidth="1280" d:DesignHeight="680"
              x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
-  <UserControl.Styles>
-    <StyleInclude Source="avares://AvaloniaDemo/Layouts/Default.axaml"/>
-  </UserControl.Styles>
   <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,200" Background="Transparent">
     <views:MenuView Grid.Row="0" Grid.Column="0" />
-    <!--<DockControl x:Name="dockControl" Classes="Default" Margin="4" Grid.Row="2" Grid.Column="0"/>-->
-    <!--<DockControl x:Name="dockControl" Layout="{Load avares://AvaloniaDemo/Layouts/RootDock.axaml}" Margin="4" Grid.Row="2" Grid.Column="0"/>-->
     <DockControl x:Name="dockControl" Layout="{Load avares://AvaloniaDemo/Layouts/RootDockPerspectives.axaml}" Margin="4" Grid.Row="2" Grid.Column="0" />
     <Grid RowDefinitions="Auto,*" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
       <StackPanel Grid.Row="0">

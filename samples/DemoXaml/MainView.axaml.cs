@@ -8,9 +8,9 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using AvaloniaDemo.Xaml.Json;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Avalonia.Json;
 using Dock.Model.Core;
 using Dock.Serializer;
 

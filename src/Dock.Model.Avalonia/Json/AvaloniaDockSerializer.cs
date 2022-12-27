@@ -11,13 +11,19 @@ using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
-namespace AvaloniaDemo.Xaml.Json;
+namespace Dock.Model.Avalonia.Json;
 
+/// <summary>
+/// 
+/// </summary>
 public class AvaloniaDockSerializer : IDockSerializer
 {
     private readonly Dictionary<Type, List<string>> _properties;
     private readonly JsonSerializerOptions _options;
 
+    /// <summary>
+    /// 
+    /// </summary>
     public AvaloniaDockSerializer()
     {
         _properties = new()
@@ -496,16 +502,19 @@ public class AvaloniaDockSerializer : IDockSerializer
         };
     }
 
+    /// <inheritdoc/>
     public string Serialize<T>(T value)
     {
         return JsonSerializer.Serialize(value, _options);
     }
 
+    /// <inheritdoc/>
     public T? Deserialize<T>(string text)
     {
         return JsonSerializer.Deserialize<T>(text, _options);
     }
 
+    /// <inheritdoc/>
     public T? Load<T>(Stream stream)
     {
         using var streamReader = new StreamReader(stream, Encoding.UTF8);
@@ -513,6 +522,7 @@ public class AvaloniaDockSerializer : IDockSerializer
         return Deserialize<T>(text);
     }
 
+    /// <inheritdoc/>
     public void Save<T>(Stream stream, T value)
     {
         var text = Serialize(value);

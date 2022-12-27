@@ -8,16 +8,16 @@ using Newtonsoft.Json.Converters;
 namespace Dock.Serializer;
 
 /// <summary>
-/// 
+/// A class that implements the <see cref="IDockSerializer"/> interface using JSON serialization.
 /// </summary>
 public sealed class DockSerializer : IDockSerializer
 {
     private readonly JsonSerializerSettings _settings;
 
     /// <summary>
-    /// 
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type.
     /// </summary>
-    /// <param name="listType"></param>
+    /// <param name="listType">The type of list to use in the serialization process.</param>
     public DockSerializer(Type listType)
     {
         _settings = new JsonSerializerSettings()

@@ -13,7 +13,7 @@
   </Application.Styles>
   
   <Application.Resources>
-    <Color x:Key="RegionColor">White</Color>
+    <Color x:Key="RegionColor">Transparent</Color>
   </Application.Resources>
 
 </Application>

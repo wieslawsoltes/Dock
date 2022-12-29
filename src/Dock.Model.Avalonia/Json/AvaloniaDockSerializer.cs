@@ -501,6 +501,11 @@ public class AvaloniaDockSerializer : IDockSerializer
             {
                 Modifiers = { ModifyTypeInfo }
             },
+            Converters =
+            {
+                new AvaloniaListJsonConverter<IDockable>(),
+                new AvaloniaListJsonConverter<IDockWindow>(),
+            }
         };
     }
 

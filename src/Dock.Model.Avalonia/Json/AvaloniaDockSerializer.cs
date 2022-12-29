@@ -503,8 +503,8 @@ public class AvaloniaDockSerializer : IDockSerializer
             },
             Converters =
             {
-                new AvaloniaListJsonConverter<IDockable>(),
-                new AvaloniaListJsonConverter<IDockWindow>(),
+                // TODO:
+                // new JsonConverterFactoryAvaloniaList()
             }
         };
     }

@@ -230,7 +230,7 @@ public class HostWindow : Window, IStyleable, IHostWindow
     }
 
     /// <inheritdoc/>
-    protected override void OnClosing(CancelEventArgs e)
+    protected override void OnClosing(WindowClosingEventArgs e)
     {
         base.OnClosing(e);
 

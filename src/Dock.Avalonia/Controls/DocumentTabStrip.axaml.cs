@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Generators;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
@@ -56,12 +55,9 @@ public class DocumentTabStrip : TabStrip, IStyleable
     }
 
     /// <inheritdoc/>
-    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    protected override Control CreateContainerForItemOverride()
     {
-        return new ItemContainerGenerator<DocumentTabStripItem>(
-            this,
-            ContentControl.ContentProperty,
-            ContentControl.ContentTemplateProperty);
+        return new DocumentTabStripItem();
     }
 
     /// <inheritdoc/>

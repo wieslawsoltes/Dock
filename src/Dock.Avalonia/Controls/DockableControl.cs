@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Reactive;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 
@@ -37,25 +38,29 @@ public class DockableControl : Panel, IDockableControl
     {
         base.OnAttachedToVisualTree(e);
 
-        _dataContextDisposable = this.GetObservable(DataContextProperty).Subscribe((dataContext) =>
-        {
-            if (_currentDockable is not null)
-            {
-                UnRegister(_currentDockable);
-                _currentDockable = null;
-            }
-
-            if (dataContext is IDockable dockableChanged)
-            {
-                _currentDockable = dockableChanged;
-                Register(dockableChanged);
-            }
-        });
+        _dataContextDisposable = this.GetObservable(DataContextProperty).Subscribe(
+            new AnonymousObserver<object?>(DataContextTracking));
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Tunnel);
 
-        _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe(SetBoundsTracking);
+        _boundsDisposable = this.GetObservable(BoundsProperty).Subscribe(
+            new AnonymousObserver<Rect>(SetBoundsTracking));
+    }
+
+    private void DataContextTracking(object? dataContext)
+    {
+        if (_currentDockable is not null)
+        {
+            UnRegister(_currentDockable);
+            _currentDockable = null;
+        }
+
+        if (dataContext is IDockable dockableChanged)
+        {
+            _currentDockable = dockableChanged;
+            Register(dockableChanged);
+        }
     }
 
     /// <inheritdoc/>

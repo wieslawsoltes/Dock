@@ -59,9 +59,7 @@
             </Path>
           </Button>
           <ItemsPresenter x:Name="PART_ItemsPresenter"
-                          Items="{TemplateBinding Items}"
-                          ItemsPanel="{TemplateBinding ItemsPanel}"
-                          ItemTemplate="{TemplateBinding ItemTemplate}" />
+                          ItemsPanel="{TemplateBinding ItemsPanel}" />
         </DockPanel>
       </ControlTemplate>
     </Setter>

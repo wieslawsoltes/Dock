@@ -12,7 +12,6 @@ public class FluentThemeManager : IThemeManager
 
     private static readonly FluentTheme Fluent = new()
     {
-        Mode = FluentThemeMode.Light
     };
 
     private static readonly Styles DockFluent = new()
@@ -51,10 +50,7 @@ public class FluentThemeManager : IThemeManager
             // Fluent Light
             case 0:
             {
-                if (Fluent.Mode != FluentThemeMode.Light)
-                {
-                    Fluent.Mode = FluentThemeMode.Light;
-                }
+                Application.Current.RequestedThemeVariant = ThemeVariant.Light;
                 Application.Current.Styles[0] = Fluent;
                 Application.Current.Styles[1] = DockFluent;
                 Application.Current.Styles[2] = FluentLight;
@@ -63,10 +59,7 @@ public class FluentThemeManager : IThemeManager
             // Fluent Dark
             case 1:
             {
-                if (Fluent.Mode != FluentThemeMode.Dark)
-                {
-                    Fluent.Mode = FluentThemeMode.Dark;
-                }
+                Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
                 Application.Current.Styles[0] = Fluent;
                 Application.Current.Styles[1] = DockFluent;
                 Application.Current.Styles[2] = FluentDark;

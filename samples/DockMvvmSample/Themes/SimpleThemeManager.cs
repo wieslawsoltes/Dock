@@ -12,7 +12,6 @@ public class SimpleThemeManager : IThemeManager
 
     private static readonly SimpleTheme Simple = new()
     {
-        Mode = SimpleThemeMode.Light
     };
 
     private static readonly Styles DockSimple = new()
@@ -51,10 +50,7 @@ public class SimpleThemeManager : IThemeManager
             // Simple Light
             case 0:
             {
-                if (Simple.Mode != SimpleThemeMode.Light)
-                {
-                    Simple.Mode = SimpleThemeMode.Light;
-                }
+                Application.Current.RequestedThemeVariant = ThemeVariant.Light;
                 Application.Current.Styles[0] = Simple;
                 Application.Current.Styles[1] = DockSimple;
                 Application.Current.Styles[2] = SimpleLight;
@@ -63,10 +59,7 @@ public class SimpleThemeManager : IThemeManager
             // Simple Dark
             case 1:
             {
-                if (Simple.Mode != SimpleThemeMode.Dark)
-                {
-                    Simple.Mode = SimpleThemeMode.Dark;
-                }
+                Application.Current.RequestedThemeVariant = ThemeVariant.Dark;
                 Application.Current.Styles[0] = Simple;
                 Application.Current.Styles[1] = DockSimple;
                 Application.Current.Styles[2] = SimpleDark;

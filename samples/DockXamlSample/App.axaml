@@ -1,10 +1,11 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DockXamlSample.App"
              Name="Dock Avalonia Demo"
-             x:Class="DockXamlSample.App">
+             RequestedThemeVariant="Light">
 
   <Application.Styles>
-    <FluentTheme Mode="Light" />
+    <FluentTheme />
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
     <Style Selector="TextBlock">
       <Setter Property="HorizontalAlignment" Value="Center" />

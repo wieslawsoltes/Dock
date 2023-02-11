@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <WasmMainJSPath>AppBundle/main.js</WasmMainJSPath>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WasmExtraFilesToDeploy Include="AppBundle\app.css" />
+    <WasmExtraFilesToDeploy Include="AppBundle\favicon.ico" />
+    <WasmExtraFilesToDeploy Include="AppBundle\index.html" />
+    <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg" />
+    <WasmExtraFilesToDeploy Include="AppBundle\main.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Browser" Version="11.0.0-preview5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DockMvvmSample\DockMvvmSample.csproj" />
+  </ItemGroup>
+</Project>

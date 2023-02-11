@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\build\Avalonia.Diagnostics.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\DockMvvmSample\DockMvvmSample.csproj" />
+  </ItemGroup>
+
+</Project>

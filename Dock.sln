@@ -1,17 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28315.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.nuke = .nuke
+		azure-pipelines.yml = azure-pipelines.yml
 		build.ps1 = build.ps1
 		build.sh = build.sh
-		global.json = global.json
 		build\dock.public.snk = build\dock.public.snk
-		azure-pipelines.yml = azure-pipelines.yml
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
@@ -36,20 +35,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
 		build\Avalonia.Diagnostics.props = build\Avalonia.Diagnostics.props
 		build\Avalonia.props = build\Avalonia.props
-		build\Base.props = build\Base.props
-		build\ReactiveUI.props = build\ReactiveUI.props
-		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
-		build\XUnit.props = build\XUnit.props
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
-		build\SourceLink.props = build\SourceLink.props
-		build\SignAssembly.props = build\SignAssembly.props
-		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
 		build\Avalonia.Themes.Simple.props = build\Avalonia.Themes.Simple.props
-		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
-		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
 		build\Avalonia.Web.props = build\Avalonia.Web.props
+		build\Base.props = build\Base.props
+		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
+		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
+		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
+		build\ReactiveUI.props = build\ReactiveUI.props
+		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
+		build\SignAssembly.props = build\SignAssembly.props
+		build\SourceLink.props = build\SourceLink.props
 		build\System.Text.Json.props = build\System.Text.Json.props
+		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
@@ -74,24 +73,28 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\build\_buil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notepad", "samples\Notepad\Notepad.csproj", "{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia", "src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj", "{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia", "src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj", "{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockXamlSample", "samples\DockXamlSample\DockXamlSample.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockXamlSample", "samples\DockXamlSample\DockXamlSample.csproj", "{E84B9270-FF6F-46EE-9B86-C1E922582645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{1F5D6BD4-CED0-409F-89D8-096F5F457A6D}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample.Desktop", "samples\DockMvvmSample.Desktop\DockMvvmSample.Desktop.csproj", "{6A54A10B-C15D-4F59-9EC9-37C55135C9A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample.Web", "samples\DockMvvmSample.Web\DockMvvmSample.Web.csproj", "{A3365782-A4E9-4B4E-81BF-105E992A8725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,6 +162,14 @@ Global
 		{3606F724-6EF1-4929-9183-A1F8271D522A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3606F724-6EF1-4929-9183-A1F8271D522A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A54A10B-C15D-4F59-9EC9-37C55135C9A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A54A10B-C15D-4F59-9EC9-37C55135C9A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A54A10B-C15D-4F59-9EC9-37C55135C9A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A54A10B-C15D-4F59-9EC9-37C55135C9A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3365782-A4E9-4B4E-81BF-105E992A8725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3365782-A4E9-4B4E-81BF-105E992A8725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3365782-A4E9-4B4E-81BF-105E992A8725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3365782-A4E9-4B4E-81BF-105E992A8725}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -169,12 +180,12 @@ Global
 		{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 		{CFA60BDB-A297-44F6-8CEA-6D0B0B753367} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{4B46A85D-102E-46F5-9B74-F1616E850605} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-		{D96A5888-05F6-482D-87EA-CC4608172F4D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
-		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{3920BA8E-AED3-425C-8F3A-BEC14E30673A} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{2A9959DB-769C-4524-A817-507C554615EA} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{AF88A77D-F4E0-4573-B7C9-DC846E51E5E2} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{D96A5888-05F6-482D-87EA-CC4608172F4D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+		{6B9A56E5-2DCD-4046-8CC6-5C552D720FDF} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{D5A6FFB2-58A7-4888-9867-BB27EB8EB9D4} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{E84B9270-FF6F-46EE-9B86-C1E922582645} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
@@ -183,6 +194,8 @@ Global
 		{55F9EF68-6A62-4D70-8A20-D82D36D3598B} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{3606F724-6EF1-4929-9183-A1F8271D522A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{1F5D6BD4-CED0-409F-89D8-096F5F457A6D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
+		{6A54A10B-C15D-4F59-9EC9-37C55135C9A7} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{A3365782-A4E9-4B4E-81BF-105E992A8725} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

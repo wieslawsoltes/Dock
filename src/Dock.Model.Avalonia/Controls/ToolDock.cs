@@ -46,8 +46,6 @@ public class ToolDock : DockBase, IToolDock
     /// </summary>
     public ToolDock()
     {
-        Id = nameof(IToolDock);
-        Title = nameof(IToolDock);
     }
 
     /// <inheritdoc/>

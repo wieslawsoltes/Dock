@@ -11,5 +11,5 @@ public interface IToolContent : IDockable
     /// <summary>
     /// Gets or sets tool content.
     /// </summary>
-    object Content { get; set; }
+    object? Content { get; set; }
 }

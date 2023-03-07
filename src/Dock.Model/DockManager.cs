@@ -78,12 +78,11 @@ public class DockManager : IDockManager
             return;
         }
 
-        IToolDock toolDock = factory.CreateToolDock();
-        toolDock.Id = nameof(IToolDock);
-        toolDock.Title = nameof(IToolDock);
-        toolDock.VisibleDockables = factory.CreateList<IDockable>();
-        factory.MoveDockable(sourceDockableOwner, toolDock, sourceDockable, null);
-        factory.SplitToDock(targetDock, toolDock, operation);
+        var targetToolDock = factory.CreateToolDock();
+        targetToolDock.Title = nameof(IToolDock);
+        targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
+        factory.MoveDockable(sourceDockableOwner, targetToolDock, sourceDockable, null);
+        factory.SplitToDock(targetDock, targetToolDock, operation);
     }
 
     private void SplitDocumentDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation)
@@ -92,17 +91,23 @@ public class DockManager : IDockManager
         {
             return;
         }
-            
-        IDocumentDock documentDock = factory.CreateDocumentDock();
-        documentDock.Id = nameof(IDocumentDock);
-        documentDock.Title = nameof(IDocumentDock);
-        documentDock.VisibleDockables = factory.CreateList<IDockable>();
+
+        var targetDocumentDock = factory.CreateDocumentDock();
+        targetDocumentDock.Title = nameof(IDocumentDock);
+        targetDocumentDock.VisibleDockables = factory.CreateList<IDockable>();
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
         {
-            documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+            targetDocumentDock.Id = sourceDocumentDock.Id;
+            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+
+            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
+            {
+                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+            }
         }
-        factory.MoveDockable(sourceDockableOwner, documentDock, sourceDockable, null);
-        factory.SplitToDock(targetDock, documentDock, operation);
+        factory.MoveDockable(sourceDockableOwner, targetDocumentDock, sourceDockable, null);
+        factory.SplitToDock(targetDock, targetDocumentDock, operation);
     }
 
     private bool SplitDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)

@@ -160,8 +160,8 @@ public class DockWindow : StyledElement, IDockWindow
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
     public IDockable? Owner
     {
         get => _owner;
@@ -178,8 +178,8 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [Content]
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IRootDock? Layout
     {
         get => _layout;
@@ -187,8 +187,8 @@ public class DockWindow : StyledElement, IDockWindow
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
     [ResolveByName]
+    [IgnoreDataMember]
     public IHostWindow? Host
     {
         get => _host;

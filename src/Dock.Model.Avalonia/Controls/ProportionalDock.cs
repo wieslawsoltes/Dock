@@ -25,8 +25,6 @@ public class ProportionalDock : DockBase, IProportionalDock
     /// </summary>
     public ProportionalDock()
     {
-        Id = nameof(IProportionalDock);
-        Title = nameof(IProportionalDock);
     }
 
     /// <inheritdoc/>

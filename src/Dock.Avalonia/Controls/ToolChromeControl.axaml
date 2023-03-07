@@ -6,7 +6,25 @@
     <ToolChromeControl Width="300" Height="400" />
   </Design.PreviewWith>
 
+  <ContextMenu x:Key="ToolChromeControlContextMenu" 
+               x:DataType="controls:IToolDock" x:CompileBindings="True"
+               IsVisible="{Binding !!ActiveDockable}">
+    <MenuItem Header="_Float"
+              Command="{Binding Owner.Factory.FloatDockable}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"/>
+    <MenuItem Header="_Hide"
+              Command="{Binding Owner.Factory.PinDockable}"
+              CommandParameter="{Binding ActiveDockable}"
+              IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
+    <MenuItem Header="_Close"
+              Command="{Binding Owner.Factory.CloseDockable}"
+              CommandParameter="{Binding ActiveDockable}"
+              IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"/>
+  </ContextMenu>
+  
   <ControlTheme x:Key="{x:Type ToolChromeControl}" TargetType="ToolChromeControl">
+
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="0" />
@@ -25,26 +43,8 @@
           <Border x:Name="PART_Border"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   VerticalAlignment="Top"
+                  ContextMenu="{DynamicResource ToolChromeControlContextMenu}"
                   Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
-            <Border.ContextMenu>
-              <ContextMenu IsVisible="{Binding !!ActiveDockable}">
-                <MenuItem Header="_Float"
-                          Command="{Binding Owner.Factory.FloatDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Hide"
-                          Command="{Binding Owner.Factory.PinDockable}"
-                          CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"
-                          x:CompileBindings="False" />
-                <MenuItem Header="_Close"
-                          Command="{Binding Owner.Factory.CloseDockable}"
-                          CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
-                          x:CompileBindings="False" />
-              </ContextMenu>
-            </Border.ContextMenu>
             <Grid x:Name="PART_Grip">
               <DockPanel LastChildFill="True" Margin="8 0">
                 <Panel DockPanel.Dock="Left">
@@ -55,8 +55,7 @@
                         Command="{Binding Owner.Factory.CloseDockable}"
                         CommandParameter="{Binding ActiveDockable}"
                         IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
-                        DockPanel.Dock="Right"
-                        x:CompileBindings="False">
+                        DockPanel.Dock="Right">
                   <Viewbox>
                     <Path x:Name="PART_ClosePath" />
                   </Viewbox>
@@ -65,8 +64,7 @@
                         Command="{Binding Owner.Factory.PinDockable}"
                         CommandParameter="{Binding ActiveDockable}"
                         IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"
-                        DockPanel.Dock="Right"
-                        x:CompileBindings="False">
+                        DockPanel.Dock="Right">
                   <Viewbox>
                     <Path x:Name="PART_PinPath" />
                   </Viewbox>

@@ -1,10 +1,7 @@
 using System;
-using System.ComponentModel;
-using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -179,10 +176,7 @@ public class HostWindow : Window, IStyleable, IHostWindow
     {
         if (chromeControl.CloseButton is not null)
         {
-            Observable.FromEventPattern(chromeControl.CloseButton, nameof(Button.Click)).Subscribe(_ =>
-            {
-                Exit();
-            });
+            chromeControl.CloseButton.Click += (_, _) => Exit();
         }
 
         _chromeGrip = chromeControl.Grip;
@@ -233,7 +227,7 @@ public class HostWindow : Window, IStyleable, IHostWindow
     }
 
     /// <inheritdoc/>
-    protected override void OnClosing(CancelEventArgs e)
+    protected override void OnClosing(WindowClosingEventArgs e)
     {
         base.OnClosing(e);
 

@@ -24,18 +24,6 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(VisibleDockables), o => o.VisibleDockables, (o, v) => o.VisibleDockables = v);
 
     /// <summary>
-    /// Defines the <see cref="HiddenDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, IList<IDockable>?> HiddenDockablesProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(HiddenDockables), o => o.HiddenDockables, (o, v) => o.HiddenDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="PinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, IList<IDockable>?> PinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, IList<IDockable>?>(nameof(PinnedDockables), o => o.PinnedDockables, (o, v) => o.PinnedDockables = v);
-
-    /// <summary>
     /// Defines the <see cref="ActiveDockable"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, IDockable?> ActiveDockableProperty =
@@ -91,8 +79,6 @@ public abstract class DockBase : DockableBase, IDock
 
     internal INavigateAdapter _navigateAdapter;
     private IList<IDockable>? _visibleDockables;
-    private IList<IDockable>? _hiddenDockables;
-    private IList<IDockable>? _pinnedDockables;
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
@@ -110,7 +96,6 @@ public abstract class DockBase : DockableBase, IDock
     {
         _navigateAdapter = new NavigateAdapter(this);
         _visibleDockables = new AvaloniaList<IDockable>();
-        _hiddenDockables = new AvaloniaList<IDockable>();
         GoBack = Command.Create(() => _navigateAdapter.GoBack());
         GoForward = Command.Create(() => _navigateAdapter.GoForward());
         Navigate = Command.Create<object>(root => _navigateAdapter.Navigate(root, true));
@@ -127,48 +112,23 @@ public abstract class DockBase : DockableBase, IDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? HiddenDockables
-    {
-        get => _hiddenDockables;
-        set => SetAndRaise(HiddenDockablesProperty, ref _hiddenDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? PinnedDockables
-    {
-        get => _pinnedDockables;
-        set => SetAndRaise(PinnedDockablesProperty, ref _pinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
         set
         {
             SetAndRaise(ActiveDockableProperty, ref _activeDockable, value);
-            Factory?.OnActiveDockableChanged(value);
-            if (value != null)
-            {
-                Factory?.UpdateDockable(value, this);
-                value.OnSelected();
-            }
-            if (value != null)
-            {
-                Factory?.SetFocusedDockable(this, value);
-            }
+            Factory?.InitActiveDockable(value, this);
             SetAndRaise(CanGoBackProperty, ref _canGoBack, _navigateAdapter?.CanGoBack ?? false);
             SetAndRaise(CanGoForwardProperty, ref _canGoForward, _navigateAdapter?.CanGoForward ?? false);
         }
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
@@ -176,8 +136,8 @@ public abstract class DockBase : DockableBase, IDock
     }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [ResolveByName]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;

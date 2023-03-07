@@ -27,6 +27,12 @@ public class DockControl : TemplatedControl, IDockControl
         AvaloniaProperty.Register<DockControl, IDock?>(nameof(Layout));
 
     /// <summary>
+    /// Defines the <see cref="DefaultContext"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> DefaultContextProperty =
+        AvaloniaProperty.Register<DockControl, object?>(nameof(DefaultContext));
+
+    /// <summary>
     /// Defines the <see cref="InitializeLayout"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> InitializeLayoutProperty =
@@ -39,10 +45,10 @@ public class DockControl : TemplatedControl, IDockControl
         AvaloniaProperty.Register<DockControl, bool>(nameof(InitializeFactory));
 
     /// <summary>
-    /// Defines the <see cref="FactoryType"/> property.
+    /// Defines the <see cref="Factory"/> property.
     /// </summary>
-    public static readonly StyledProperty<Type?> FactoryTypeProperty =
-        AvaloniaProperty.Register<DockControl, Type?>(nameof(FactoryType));
+    public static readonly StyledProperty<IFactory?> FactoryProperty =
+        AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
@@ -56,6 +62,13 @@ public class DockControl : TemplatedControl, IDockControl
     {
         get => GetValue(LayoutProperty);
         set => SetValue(LayoutProperty, value);
+    }
+
+    /// <inheritdoc/>
+    public object? DefaultContext
+    {
+        get => GetValue(DefaultContextProperty);
+        set => SetValue(DefaultContextProperty, value);
     }
 
     /// <inheritdoc/>
@@ -73,10 +86,10 @@ public class DockControl : TemplatedControl, IDockControl
     }
 
     /// <inheritdoc/>
-    public Type? FactoryType
+    public IFactory? Factory
     {
-        get => GetValue(FactoryTypeProperty);
-        set => SetValue(FactoryTypeProperty, value);
+        get => GetValue(FactoryProperty);
+        set => SetValue(FactoryProperty, value);
     }
 
     /// <summary>
@@ -120,17 +133,9 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (layout.Factory is null)
         {
-            if (FactoryType is { })
+            if (Factory is { })
             {
-                var factory = (IFactory?)Activator.CreateInstance(FactoryType);
-                if (factory is { })
-                {
-                    layout.Factory = factory;
-                }
-                else
-                {
-                    return;
-                }
+                layout.Factory = Factory;
             }
             else
             {
@@ -142,8 +147,8 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (InitializeFactory)
         {
-            layout.Factory.ContextLocator = new Dictionary<string, Func<object>>();
-            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
+            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
@@ -152,7 +157,8 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.DefaultHostWindowLocator = GetHostWindow;
  
             IHostWindow GetHostWindow() => new HostWindow();
-            object GetContext() => layout;
+
+            object? GetContext() => DefaultContext;
         }
 
         if (InitializeLayout)

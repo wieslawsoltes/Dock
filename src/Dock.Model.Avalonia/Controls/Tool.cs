@@ -20,16 +20,14 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
-    public static readonly StyledProperty<object> ContentProperty =
-        AvaloniaProperty.Register<Tool, object>(nameof(Content));
+    public static readonly StyledProperty<object?> ContentProperty =
+        AvaloniaProperty.Register<Tool, object?>(nameof(Content));
 
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
     /// </summary>
     public Tool()
     {
-        Id = nameof(ITool);
-        Title = nameof(ITool);
     }
 
     /// <summary>
@@ -37,9 +35,9 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
-    public object Content
+    [IgnoreDataMember]
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
@@ -48,6 +46,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
     public Type? DataType { get; set; }
 
     /// <summary>
@@ -87,7 +86,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object? data) => Build(data, null);
+    public Control Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -95,7 +94,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object? data, IControl? existing)
+    public Control Build(object? data, Control? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

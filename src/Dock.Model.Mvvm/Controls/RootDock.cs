@@ -15,6 +15,11 @@ namespace Dock.Model.Mvvm.Controls;
 public class RootDock : DockBase, IRootDock
 {
     private bool _isFocusableRoot = true;
+    private IList<IDockable>? _hiddenDockables;
+    private IList<IDockable>? _leftPinnedDockables;
+    private IList<IDockable>? _rightPinnedDockables;
+    private IList<IDockable>? _topPinnedDockables;
+    private IList<IDockable>? _bottomPinnedDockables;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
 
@@ -33,6 +38,46 @@ public class RootDock : DockBase, IRootDock
     {
         get => _isFocusableRoot;
         set => SetProperty(ref _isFocusableRoot, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? HiddenDockables
+    {
+        get => _hiddenDockables;
+        set => SetProperty(ref _hiddenDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? LeftPinnedDockables
+    {
+        get => _leftPinnedDockables;
+        set => SetProperty(ref _leftPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? RightPinnedDockables
+    {
+        get => _rightPinnedDockables;
+        set => SetProperty(ref _rightPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? TopPinnedDockables
+    {
+        get => _topPinnedDockables;
+        set => SetProperty(ref _topPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IList<IDockable>? BottomPinnedDockables
+    {
+        get => _bottomPinnedDockables;
+        set => SetProperty(ref _bottomPinnedDockables, value);
     }
 
     /// <inheritdoc/>

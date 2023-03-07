@@ -20,16 +20,14 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
-    public static readonly StyledProperty<object> ContentProperty =
-        AvaloniaProperty.Register<Document, object>(nameof(Content));
+    public static readonly StyledProperty<object?> ContentProperty =
+        AvaloniaProperty.Register<Document, object?>(nameof(Content));
 
     /// <summary>
     /// Initializes new instance of the <see cref="Document"/> class.
     /// </summary>
     public Document()
     {
-        Id = nameof(IDocument);
-        Title = nameof(IDocument);
     }
 
     /// <summary>
@@ -37,9 +35,9 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     [Content]
     [TemplateContent]
-    [IgnoreDataMember]
     [ResolveByName]
-    public object Content
+    [IgnoreDataMember]
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
@@ -48,6 +46,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <summary>
     /// 
     /// </summary>
+    [IgnoreDataMember]
     public Type? DataType { get; set; }
 
     /// <summary>
@@ -76,10 +75,8 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
         {
             return true;
         }
-        else
-        {
-            return DataType.IsInstanceOfType(data);
-        }
+
+        return DataType.IsInstanceOfType(data);
     }
 
     /// <summary>
@@ -87,7 +84,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public IControl Build(object? data) => Build(data, null);
+    public Control Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -95,7 +92,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public IControl Build(object? data, IControl? existing)
+    public Control Build(object? data, Control? existing)
     {
         return existing ?? TemplateContent.Load(Content)?.Control!;
     }

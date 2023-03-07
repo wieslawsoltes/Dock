@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core">
   <Design.PreviewWith>
     <ToolPinnedControl Width="30" Height="400" />
@@ -7,57 +8,22 @@
 
   <ControlTheme x:Key="{x:Type ToolPinnedControl}" TargetType="ToolPinnedControl">
 
+    <Setter Property="Orientation" Value="Vertical" />
+
     <Setter Property="Template">
       <ControlTemplate>
-        <ItemsControl Items="{Binding PinnedDockables}"
-                      x:DataType="core:IDock"
+        <ItemsControl Items="{TemplateBinding Items}"
+                      x:DataType="dmc:IRootDock"
                       x:CompileBindings="True">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <StackPanel Orientation="Vertical"
+              <StackPanel Orientation="{Binding $parent[ToolPinnedControl].Orientation}"
                           DockProperties.IsDropArea="True" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
           <ItemsControl.DataTemplates>
             <DataTemplate DataType="core:IDockable">
-              <DockableControl TrackingMode="Pinned">
-                <LayoutTransformControl Margin="4">
-                  <LayoutTransformControl.LayoutTransform>
-                    <RotateTransform Angle="270" />
-                  </LayoutTransformControl.LayoutTransform>
-                  <Button Background="Transparent"
-                          BorderBrush="Transparent"
-                          BorderThickness="0"
-                          Command="{Binding Owner.Factory.PinDockable}"
-                          CommandParameter="{Binding}"
-                          IsVisible="{Binding CanPin}"
-                          x:CompileBindings="False">
-                    <TextBlock Text="{Binding Title}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Left">
-                      <TextBlock.ContextMenu>
-                        <ContextMenu>
-                          <MenuItem Header="_Float"
-                                    Command="{Binding Owner.Factory.FloatDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanFloat}"
-                                    x:CompileBindings="False" />
-                          <MenuItem Header="_Show"
-                                    Command="{Binding Owner.Factory.PinDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanPin}"
-                                    x:CompileBindings="False" />
-                          <MenuItem Header="_Close"
-                                    Command="{Binding Owner.Factory.CloseDockable}"
-                                    CommandParameter="{Binding}"
-                                    IsVisible="{Binding CanClose}"
-                                    x:CompileBindings="False" />
-                        </ContextMenu>
-                      </TextBlock.ContextMenu>
-                    </TextBlock>
-                  </Button>
-                </LayoutTransformControl>
-              </DockableControl>
+              <ToolPinItemControl Orientation="{Binding $parent[ToolPinnedControl].Orientation}" />
             </DataTemplate>
           </ItemsControl.DataTemplates>
         </ItemsControl>

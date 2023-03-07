@@ -37,22 +37,22 @@ public partial interface IFactory
     /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> default locator.
     /// </summary>
-    Func<object>? DefaultContextLocator { get; set; }
+    Func<object?>? DefaultContextLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> default locator.
     /// </summary>
-    Func<IHostWindow>? DefaultHostWindowLocator { get; set; }
+    Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> locator registry.
     /// </summary>
-    IDictionary<string, Func<object>>? ContextLocator { get; set; }
+    IDictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> locator registry.
     /// </summary>
-    IDictionary<string, Func<IHostWindow>>? HostWindowLocator { get; set; }
+    IDictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IDockable"/> locator registry.
@@ -144,46 +144,25 @@ public partial interface IFactory
     void InitLayout(IDockable layout);
 
     /// <summary>
-    /// Updates dock window.
-    /// </summary>
-    /// <param name="window">The window to update.</param>
-    /// <param name="owner">The window owner dockable.</param>
-    void UpdateDockWindow(IDockWindow window, IDockable? owner);
-
-    /// <summary>
-    /// Updates dockable.
+    /// Initialize dockable.
     /// </summary>
     /// <param name="dockable">The dockable to update.</param>
     /// <param name="owner">The owner dockable.</param>
-    void UpdateDockable(IDockable dockable, IDockable? owner);
+    void InitDockable(IDockable dockable, IDockable? owner);
 
     /// <summary>
-    /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
+    /// Initialize dock window.
     /// </summary>
-    /// <param name="dock">The owner dock.</param>
-    /// <param name="dockable">The dockable to add.</param>
-    void AddDockable(IDock dock, IDockable dockable);
+    /// <param name="window">The window to update.</param>
+    /// <param name="owner">The window owner dockable.</param>
+    void InitDockWindow(IDockWindow window, IDockable? owner);
 
     /// <summary>
-    /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
+    /// Initialize active dockable.
     /// </summary>
-    /// <param name="dock">The owner dock.</param>
-    /// <param name="dockable">The dockable to add.</param>
-    /// <param name="index">The dockable index.</param>
-    void InsertDockable(IDock dock, IDockable dockable, int index);
-
-    /// <summary>
-    /// Adds window into dock windows list.
-    /// </summary>
-    /// <param name="rootDock">The root dock.</param>
-    /// <param name="window">The window to add.</param>
-    void AddWindow(IRootDock rootDock, IDockWindow window);
-
-    /// <summary>
-    /// Removes window from owner windows list.
-    /// </summary>
-    /// <param name="window">The window to remove.</param>
-    void RemoveWindow(IDockWindow window);
+    /// <param name="dockable">The dockable to update.</param>
+    /// <param name="owner">The owner dockable.</param>
+    void InitActiveDockable(IDockable? dockable, IDock owner);
 
     /// <summary>
     /// Sets an active dockable. If the dockable is contained inside an dock it
@@ -216,22 +195,34 @@ public partial interface IFactory
     IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate);
 
     /// <summary>
-    /// Pins dockable.
+    /// Searches for dockables in all registered <see cref="IDockControl"/>.
     /// </summary>
-    /// <param name="dockable">The dockable to pin.</param>
-    void PinDockable(IDockable dockable);
+    /// <param name="predicate">The predicate to filter dockables.></param>
+    /// <returns>The dockables collection.</returns>
+    IEnumerable<IDockable> Find(Func<IDockable, bool> predicate);
 
     /// <summary>
-    /// Floats dockable.
+    /// Searches dock for dockables in all registered <see cref="IDockControl"/>.
     /// </summary>
-    /// <param name="dockable">The dockable to float.</param>
-    void FloatDockable(IDockable dockable);
+    /// <param name="dock"></param>
+    /// <param name="predicate">The predicate to filter dockables.></param>
+    /// <returns>The dockables collection.</returns>
+    IEnumerable<IDockable> Find(IDock dock, Func<IDockable, bool> predicate);
 
     /// <summary>
-    /// Collapses dock.
+    /// Adds <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
     /// </summary>
-    /// <param name="dock">The dock to collapse.</param>
-    void CollapseDock(IDock dock);
+    /// <param name="dock">The owner dock.</param>
+    /// <param name="dockable">The dockable to add.</param>
+    void AddDockable(IDock dock, IDockable dockable);
+
+    /// <summary>
+    /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.
+    /// </summary>
+    /// <param name="dock">The owner dock.</param>
+    /// <param name="dockable">The dockable to add.</param>
+    /// <param name="index">The dockable index.</param>
+    void InsertDockable(IDock dock, IDockable dockable, int index);
 
     /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection.
@@ -239,36 +230,6 @@ public partial interface IFactory
     /// <param name="dockable">The dockable to remove.</param>
     /// <param name="collapse">The flag indicating whether to collapse empty dock.</param>
     void RemoveDockable(IDockable dockable, bool collapse);
-
-    /// <summary>
-    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
-    /// </summary>
-    /// <param name="dockable">The dockable to remove.</param>
-    void CloseDockable(IDockable dockable);
-        
-    /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
-    /// </summary>
-    /// <param name="dockable">The dockable owner source.</param>
-    void CloseOtherDockables(IDockable dockable);
-
-    /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner.
-    /// </summary>
-    /// <param name="dockable">The dockable owner source.</param>
-    void CloseAllDockables(IDockable dockable);
-
-    /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
-    /// </summary>
-    /// <param name="dockable">The dockable owner source.</param>
-    void CloseLeftDockables(IDockable dockable);
-
-    /// <summary>
-    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
-    /// </summary>
-    /// <param name="dockable">The dockable owner source.</param>
-    void CloseRightDockables(IDockable dockable);
 
     /// <summary>
     /// Moves dockable inside <see cref="IDock.VisibleDockables"/> collection.
@@ -303,6 +264,75 @@ public partial interface IFactory
     /// <param name="sourceDockable">The source dockable.</param>
     /// <param name="targetDockable">The target dockable.</param>
     void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
+
+    /// <summary>
+    /// Pins dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to pin.</param>
+    void PinDockable(IDockable dockable);
+
+    /// <summary>
+    /// Floats dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to float.</param>
+    void FloatDockable(IDockable dockable);
+
+    /// <summary>
+    /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
+    /// </summary>
+    /// <param name="dockable">The dockable to remove.</param>
+    void CloseDockable(IDockable dockable);
+        
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void CloseOtherDockables(IDockable dockable);
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void CloseAllDockables(IDockable dockable);
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the left of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void CloseLeftDockables(IDockable dockable);
+
+    /// <summary>
+    /// Calls <see cref="IFactory.CloseDockable"/> on all tabs to the right of the dockable, from the <see cref="IDock.VisibleDockables"/> collection of the dockable owner.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void CloseRightDockables(IDockable dockable);
+
+    /// <summary>
+    /// Adds window into dock windows list.
+    /// </summary>
+    /// <param name="rootDock">The root dock.</param>
+    /// <param name="window">The window to add.</param>
+    void AddWindow(IRootDock rootDock, IDockWindow window);
+
+    /// <summary>
+    /// Inserts window into dock windows list.
+    /// </summary>
+    /// <param name="rootDock">The root dock.</param>
+    /// <param name="window">The window to add.</param>
+    /// <param name="index">The window index.</param>
+    void InsertWindow(IRootDock rootDock, IDockWindow window, int index);
+
+    /// <summary>
+    /// Removes window from owner windows list.
+    /// </summary>
+    /// <param name="window">The window to remove.</param>
+    void RemoveWindow(IDockWindow window);
+
+    /// <summary>
+    /// Collapses dock.
+    /// </summary>
+    /// <param name="dock">The dock to collapse.</param>
+    void CollapseDock(IDock dock);
 
     /// <summary>
     /// Creates a new split layout from source dockable.

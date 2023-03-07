@@ -121,13 +121,13 @@ public class NotepadFactory : Factory
 
     public override void InitLayout(IDockable layout)
     {
-        ContextLocator = new Dictionary<string, Func<object>>
+        ContextLocator = new Dictionary<string, Func<object?>>
         {
             ["Find"] = () => layout,
             ["Replace"] = () => layout
         };
 
-        DockableLocator = new Dictionary<string, Func<IDockable?>>()
+        DockableLocator = new Dictionary<string, Func<IDockable?>>
         {
             ["Root"] = () => _rootDock,
             ["Files"] = () => _documentDock,
@@ -135,7 +135,7 @@ public class NotepadFactory : Factory
             ["Replace"] = () => _replaceTool
         };
 
-        HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+        HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
             [nameof(IDockWindow)] = () => new HostWindow()
         };

@@ -42,7 +42,7 @@ public class DockTarget : TemplatedControl
         _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
     }
 
-    internal DockOperation GetDockOperation(Point point, IVisual relativeTo, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
+    internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction, Func<Point, DockOperation, DragAction, Visual, bool> validate)
     {
         var result = DockOperation.Window;
 
@@ -74,7 +74,7 @@ public class DockTarget : TemplatedControl
         return result;
     }
 
-    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, IVisual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, IVisual, bool> validate)
+    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, Visual, bool> validate)
     {
         if (selector is null || indicator is null)
         {

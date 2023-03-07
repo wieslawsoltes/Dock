@@ -40,13 +40,11 @@ public class ToolTabStrip : TabStrip, IStyleable
     }
 
     /// <inheritdoc/>
-    protected override IItemContainerGenerator CreateItemContainerGenerator()
+    protected override Control CreateContainerForItemOverride()
     {
-        return new ItemContainerGenerator<ToolTabStripItem>(
-            this,
-            ContentControl.ContentProperty,
-            ContentControl.ContentTemplateProperty);
+        return new ToolTabStripItem();
     }
+
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

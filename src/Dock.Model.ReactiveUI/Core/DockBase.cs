@@ -15,8 +15,6 @@ public abstract class DockBase : DockableBase, IDock
 {
     internal readonly INavigateAdapter _navigateAdapter;
     private IList<IDockable>? _visibleDockables;
-    private IList<IDockable>? _hiddenDockables;
-    private IList<IDockable>? _pinnedDockables;
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
@@ -47,38 +45,13 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? HiddenDockables
-    {
-        get => _hiddenDockables;
-        set => this.RaiseAndSetIfChanged(ref _hiddenDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? PinnedDockables
-    {
-        get => _pinnedDockables;
-        set => this.RaiseAndSetIfChanged(ref _pinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
         set
         {
             this.RaiseAndSetIfChanged(ref _activeDockable, value);
-            Factory?.OnActiveDockableChanged(value);
-            if (value is { })
-            {
-                Factory?.UpdateDockable(value, this);
-                value.OnSelected();
-            }
-            if (value is { })
-            {
-                Factory?.SetFocusedDockable(this, value);
-            }
+            Factory?.InitActiveDockable(value, this);
             this.RaisePropertyChanged(nameof(CanGoBack));
             this.RaisePropertyChanged(nameof(CanGoForward));
         }

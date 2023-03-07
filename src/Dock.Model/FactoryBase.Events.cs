@@ -16,6 +16,9 @@ public abstract partial class FactoryBase
     public event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
     /// <inheritdoc />
+    public event EventHandler<DockableInitEventArgs>? DockableInit;
+
+    /// <inheritdoc />
     public event EventHandler<DockableAddedEventArgs>? DockableAdded;
 
     /// <inheritdoc />
@@ -130,6 +133,22 @@ public abstract partial class FactoryBase
     public virtual void OnWindowOpened(IDockWindow? window)
     {
         WindowOpened?.Invoke(this, new WindowOpenedEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableInit(IDockable? dockable)
+    {
+        var eventArgs = new DockableInitEventArgs(dockable)
+        {
+            Context = dockable?.Context
+        };
+
+        DockableInit?.Invoke(this, eventArgs);
+
+        if (dockable is { } && eventArgs.Context != dockable.Context)
+        {
+            dockable.Context = eventArgs.Context;
+        }
     }
 
     /// <inheritdoc />

@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
@@ -10,7 +11,7 @@ internal class AdornerHelper
 {
     public Control? Adorner;
 
-    public void AddAdorner(IVisual visual)
+    public void AddAdorner(Visual visual)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
@@ -34,7 +35,7 @@ internal class AdornerHelper
         layer.Children.Add(Adorner);
     }
 
-    public void RemoveAdorner(IVisual visual)
+    public void RemoveAdorner(Visual visual)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is { })

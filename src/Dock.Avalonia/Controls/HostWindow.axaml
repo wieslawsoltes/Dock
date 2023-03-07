@@ -6,6 +6,7 @@
   </Design.PreviewWith>
 
   <ControlTheme x:Key="{x:Type HostWindow}" TargetType="HostWindow">
+
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
     <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
@@ -51,6 +52,7 @@
     </Setter>
 
     <Style Selector="^:toolwindow">
+
       <Setter Property="SystemDecorations" Value="None" />
       <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
       <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />

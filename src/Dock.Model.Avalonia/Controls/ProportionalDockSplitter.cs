@@ -15,7 +15,5 @@ public class ProportionalDockSplitter : DockBase, IProportionalDockSplitter
     /// </summary>
     public ProportionalDockSplitter()
     {
-        Id = nameof(IProportionalDockSplitter);
-        Title = nameof(IProportionalDockSplitter);
     }
 }

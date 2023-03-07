@@ -23,6 +23,11 @@ public interface IDockControl
     IDock? Layout { get; set; }
 
     /// <summary>
+    /// Gets or sets default context.
+    /// </summary>
+    object? DefaultContext { get; set; }
+
+    /// <summary>
     /// Gets or sets the flag indicating whether to initialize layout.
     /// </summary>
     bool InitializeLayout { get; set; }
@@ -33,7 +38,7 @@ public interface IDockControl
     bool InitializeFactory { get; set; }
 
     /// <summary>
-    /// Gets or sets the factory type.
+    /// Gets or sets the factory.
     /// </summary>
-    Type? FactoryType { get; set; }
+    IFactory? Factory { get; set; }
 }

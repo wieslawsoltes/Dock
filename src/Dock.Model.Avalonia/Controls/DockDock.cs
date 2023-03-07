@@ -24,8 +24,6 @@ public class DockDock : DockBase, IDockDock
     /// </summary>
     public DockDock()
     {
-        Id = nameof(IDockDock);
-        Title = nameof(IDockDock);
     }
 
     /// <inheritdoc/>

@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using Dock.Model.Adapters;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Core;
 
@@ -15,6 +17,13 @@ namespace Dock.Model.Avalonia.Core;
 /// Dock base class.
 /// </summary>
 [DataContract(IsReference = true)]
+[JsonPolymorphic]
+[JsonDerivedType(typeof(DockDock), typeDiscriminator: "DockDock")]
+[JsonDerivedType(typeof(DocumentDock), typeDiscriminator: "DocumentDock")]
+[JsonDerivedType(typeof(ProportionalDock), typeDiscriminator: "ProportionalDock")]
+[JsonDerivedType(typeof(ProportionalDockSplitter), typeDiscriminator: "ProportionalDockSplitter")]
+[JsonDerivedType(typeof(RootDock), typeDiscriminator: "RootDock")]
+[JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 public abstract class DockBase : DockableBase, IDock
 {
     /// <summary>
@@ -105,6 +114,7 @@ public abstract class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [Content]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("VisibleDockables")]
     public IList<IDockable>? VisibleDockables
     {
         get => _visibleDockables;
@@ -114,6 +124,7 @@ public abstract class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [ResolveByName]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("ActiveDockable")]
     public IDockable? ActiveDockable
     {
         get => _activeDockable;
@@ -129,6 +140,7 @@ public abstract class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [ResolveByName]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("DefaultDockable")]
     public IDockable? DefaultDockable
     {
         get => _defaultDockable;
@@ -138,6 +150,7 @@ public abstract class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [ResolveByName]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("FocusedDockable")]
     public IDockable? FocusedDockable
     {
         get => _focusedDockable;
@@ -150,6 +163,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Proportion")]
     public double Proportion
     {
         get => _proportion;
@@ -158,6 +172,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Dock")]
     public DockMode Dock
     {
         get => _dock;
@@ -166,6 +181,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsActive")]
     public bool IsActive
     {
         get => _isActive;
@@ -174,6 +190,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsCollapsable")]
     public bool IsCollapsable
     {
         get => _isCollapsable;
@@ -182,6 +199,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public bool CanGoBack
     {
         get => _navigateAdapter?.CanGoBack ?? false;
@@ -190,6 +208,7 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public bool CanGoForward
     {
         get => _navigateAdapter?.CanGoForward ?? false;
@@ -198,17 +217,21 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand GoBack { get; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand GoForward { get; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand Navigate { get; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand Close { get; }
 }

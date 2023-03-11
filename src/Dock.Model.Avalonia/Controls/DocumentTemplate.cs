@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
@@ -29,12 +30,14 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IR
     [TemplateContent]
     [ResolveByName]
     [IgnoreDataMember]
+    [JsonIgnore]
     public object? Content { get; set; }
 
     /// <summary>
     /// 
     /// </summary>
     [IgnoreDataMember]
+    [JsonIgnore]
     public Type? DataType { get; set; }
 
     /// <summary>

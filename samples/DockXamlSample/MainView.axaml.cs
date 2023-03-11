@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -10,6 +11,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Dock.Avalonia.Controls;
 using Dock.Model;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Json;
 using Dock.Model.Core;
 using Dock.Serializer;
@@ -91,6 +93,10 @@ public class MainView : UserControl
                 if (dock is { })
                 {
                     var layout = _serializer.Load<IDock?>(stream);
+                    // TODO:
+                    // var layout = await JsonSerializer.DeserializeAsync(
+                    //     stream, 
+                    //     AvaloniaDockSerializer.s_serializerContext.RootDock);
                     if (layout is { })
                     {
                         dock.Layout = layout;
@@ -131,6 +137,10 @@ public class MainView : UserControl
                 if (dock?.Layout is { })
                 {
                     _serializer.Save(stream, dock.Layout);
+                    // TODO:
+                    // await JsonSerializer.SerializeAsync(
+                    //     stream, 
+                    //     (RootDock)dock.Layout, AvaloniaDockSerializer.s_serializerContext.RootDock);
                 }
             }
             catch (Exception e)

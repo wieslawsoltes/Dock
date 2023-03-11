@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -37,6 +38,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     [TemplateContent]
     [ResolveByName]
     [IgnoreDataMember]
+    [JsonIgnore]
     public object? Content
     {
         get => GetValue(ContentProperty);
@@ -47,6 +49,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// 
     /// </summary>
     [IgnoreDataMember]
+    [JsonIgnore]
     public Type? DataType { get; set; }
 
     /// <summary>

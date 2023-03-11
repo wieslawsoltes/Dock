@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Metadata;
@@ -105,6 +106,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Id")]
     public string Id
     {
         get => _id;
@@ -113,6 +115,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [JsonPropertyName("X")]
     public double X
     {
         get => _x;
@@ -121,6 +124,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [JsonPropertyName("Y")]
     public double Y
     {
         get => _y;
@@ -129,6 +133,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [JsonPropertyName("Width")]
     public double Width
     {
         get => _width;
@@ -137,6 +142,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
+    [JsonPropertyName("Height")]
     public double Height
     {
         get => _height;
@@ -145,6 +151,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Topmost")]
     public bool Topmost
     {
         get => _topmost;
@@ -153,6 +160,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Title")]
     public string Title
     {
         get => _title;
@@ -162,6 +170,7 @@ public class DockWindow : StyledElement, IDockWindow
     /// <inheritdoc/>
     [ResolveByName]
     [IgnoreDataMember]
+    [JsonIgnore]
     public IDockable? Owner
     {
         get => _owner;
@@ -170,6 +179,7 @@ public class DockWindow : StyledElement, IDockWindow
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public IFactory? Factory
     {
         get => _factory;
@@ -180,6 +190,7 @@ public class DockWindow : StyledElement, IDockWindow
     [Content]
     [ResolveByName]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Layout")]
     public IRootDock? Layout
     {
         get => _layout;
@@ -189,6 +200,7 @@ public class DockWindow : StyledElement, IDockWindow
     /// <inheritdoc/>
     [ResolveByName]
     [IgnoreDataMember]
+    [JsonIgnore]
     public IHostWindow? Host
     {
         get => _host;

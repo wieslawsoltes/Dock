@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Collections;
@@ -113,6 +114,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsFocusableRoot")]
     public bool IsFocusableRoot
     {
         get => _isFocusableRoot;
@@ -121,6 +123,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("HiddenDockables")]
     public IList<IDockable>? HiddenDockables
     {
         get => _hiddenDockables;
@@ -129,6 +132,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("LeftPinnedDockables")]
     public IList<IDockable>? LeftPinnedDockables
     {
         get => _leftPinnedDockables;
@@ -137,6 +141,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("RightPinnedDockables")]
     public IList<IDockable>? RightPinnedDockables
     {
         get => _rightPinnedDockables;
@@ -145,6 +150,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("TopPinnedDockables")]
     public IList<IDockable>? TopPinnedDockables
     {
         get => _topPinnedDockables;
@@ -153,6 +159,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("BottomPinnedDockables")]
     public IList<IDockable>? BottomPinnedDockables
     {
         get => _bottomPinnedDockables;
@@ -162,6 +169,7 @@ public class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [ResolveByName]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Window")]
     public IDockWindow? Window
     {
         get => _window;
@@ -170,6 +178,7 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Windows")]
     public IList<IDockWindow>? Windows
     {
         get => _windows;
@@ -178,9 +187,11 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand ShowWindows { get; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public ICommand ExitWindows { get; }
 }

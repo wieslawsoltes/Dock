@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -28,6 +29,7 @@ public class DockDock : DockBase, IDockDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("LastChildFill")]
     public bool LastChildFill
     {
         get => _lastChildFill;

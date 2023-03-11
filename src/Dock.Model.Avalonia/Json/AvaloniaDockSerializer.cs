@@ -18,6 +18,24 @@ namespace Dock.Model.Avalonia.Json;
 /// </summary>
 public class AvaloniaDockSerializer : IDockSerializer
 {
+    // TODO:
+    /*
+    /// <summary>
+    /// Dock json serializer default context.
+    /// </summary>
+    public static readonly DockJsonContext s_serializerContext = new(
+        new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            ReferenceHandler = ReferenceHandler.Preserve,
+            IncludeFields = false,
+            IgnoreReadOnlyFields = true,
+            IgnoreReadOnlyProperties = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
+        });
+    */
+    
     private readonly Dictionary<Type, List<string>> _properties;
     private readonly JsonSerializerOptions _options;
 

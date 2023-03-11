@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
 using Avalonia.Collections;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Avalonia.Core;
@@ -26,18 +27,23 @@ public class Factory : FactoryBase
     }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public override IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public override IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public override IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public override IList<IDockControl> DockControls { get; }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public override IList<IHostWindow> HostWindows { get; }
 
     /// <inheritdoc/>

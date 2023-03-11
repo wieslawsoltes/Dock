@@ -1,7 +1,9 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Model.Adapters;
+using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Core;
@@ -10,6 +12,16 @@ namespace Dock.Model.Avalonia.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
+[JsonPolymorphic]
+[JsonDerivedType(typeof(DockDock), typeDiscriminator: "DockDock")]
+[JsonDerivedType(typeof(Document), typeDiscriminator: "Document")]
+[JsonDerivedType(typeof(DocumentDock), typeDiscriminator: "DocumentDock")]
+[JsonDerivedType(typeof(ProportionalDock), typeDiscriminator: "ProportionalDock")]
+[JsonDerivedType(typeof(ProportionalDockSplitter), typeDiscriminator: "ProportionalDockSplitter")]
+[JsonDerivedType(typeof(RootDock), typeDiscriminator: "RootDock")]
+[JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
+[JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
+[JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
 public abstract class DockableBase : StyledElement, IDockable
 {
     /// <summary>
@@ -80,6 +92,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Id")]
     public string Id
     {
         get => _id;
@@ -88,6 +101,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Title")]
     public string Title
     {
         get => _title;
@@ -96,6 +110,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Context")]
     public object? Context
     {
         get => _context;
@@ -105,6 +120,7 @@ public abstract class DockableBase : StyledElement, IDockable
     /// <inheritdoc/>
     [ResolveByName]
     [IgnoreDataMember]
+    [JsonIgnore]
     public IDockable? Owner
     {
         get => _owner;
@@ -113,6 +129,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [JsonIgnore]
     public IFactory? Factory
     {
         get => _factory;
@@ -121,6 +138,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanClose")]
     public bool CanClose
     {
         get => _canClose;
@@ -129,6 +147,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanPin")]
     public bool CanPin
     {
         get => _canPin;
@@ -137,6 +156,7 @@ public abstract class DockableBase : StyledElement, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanFloat")]
     public bool CanFloat
     {
         get => _canFloat;

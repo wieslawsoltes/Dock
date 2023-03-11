@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -29,6 +30,7 @@ public class ProportionalDock : DockBase, IProportionalDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Orientation")]
     public Orientation Orientation
     {
         get => _orientation;

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DockXamlSample"
         mc:Ignorable="d" 
         d:DesignWidth="800" d:DesignHeight="600"
-        x:Name="MainWindow"
+        x:Name="MainWindowView"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Background="{x:Null}"
@@ -26,8 +26,8 @@
                                      MaterialOpacity="0.55" />
       </ExperimentalAcrylicBorder.Material>
     </ExperimentalAcrylicBorder>
-    <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
-      <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+    <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
+      <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
         <local:MainView />
       </Panel>
     </Panel>

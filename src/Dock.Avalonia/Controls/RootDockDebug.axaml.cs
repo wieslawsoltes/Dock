@@ -6,7 +6,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// 
 /// </summary>
-public class RootDockDebug : UserControl
+public partial class RootDockDebug : UserControl
 {
     /// <summary>
     /// 
@@ -14,10 +14,5 @@ public class RootDockDebug : UserControl
     public RootDockDebug()
     {
         InitializeComponent();
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 }

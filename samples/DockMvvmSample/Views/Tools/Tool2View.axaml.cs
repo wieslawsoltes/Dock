@@ -3,15 +3,10 @@ using Avalonia.Markup.Xaml;
 
 namespace DockMvvmSample.Views.Tools;
 
-public class Tool2View : UserControl
+public partial class Tool2View : UserControl
 {
     public Tool2View()
     {
         InitializeComponent();
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 }

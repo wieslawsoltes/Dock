@@ -5,7 +5,7 @@ using Notepad.ViewModels;
 
 namespace Notepad.Views;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     public MainView()
     {
@@ -28,10 +28,5 @@ public class MainView : UserControl
         {
             dropTarget.Drop(sender, e);
         }
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 }

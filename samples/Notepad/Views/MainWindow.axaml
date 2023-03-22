@@ -8,7 +8,7 @@
         xmlns:views="using:Notepad.Views"
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
-        x:Name="MainWindow"
+        x:Name="MainWindowView"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource DockThemeForegroundBrush}"
@@ -21,7 +21,7 @@
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>
-  <Panel Margin="{Binding #MainWindow.OffScreenMargin}">
+  <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
     <Panel Height="30" HorizontalAlignment="Center" VerticalAlignment="Top">
       <Label Content="Notepad"
              Margin="4,0,4,0"
@@ -30,7 +30,7 @@
              VerticalAlignment="Center"
              VerticalContentAlignment="Center" />
     </Panel>
-    <Panel Margin="{Binding #MainWindow.WindowDecorationMargin}">
+    <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
       <views:MainView />
     </Panel>
   </Panel>

@@ -273,7 +273,8 @@ public class ProportionalStackPanelSplitter : Thumb
                 return null;
             }
 
-            var index = panel.Children.IndexOf(Parent);
+            var parent = Parent as Control;
+            var index = parent is null ? -1 :panel.Children.IndexOf(parent);
             if (index > 0 && panel.Children.Count > 0)
             {
                 if (panel.Children[index - 1] is ContentPresenter contentPresenter)

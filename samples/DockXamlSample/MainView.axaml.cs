@@ -18,7 +18,7 @@ using Dock.Serializer;
 
 namespace DockXamlSample;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     private readonly IDockSerializer _serializer;
     private readonly IDockState _dockState;
@@ -32,20 +32,14 @@ public class MainView : UserControl
 
         _dockState = new DockState();
 
-        var dock = this.FindControl<DockControl>("Dock");
-        if (dock is { })
+        if (Dock is { })
         {
-            var layout = dock.Layout;
+            var layout = Dock.Layout;
             if (layout is { })
             {
                 _dockState.Save(layout);
             }
         }
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 
     private List<FilePickerFileType> GetOpenOpenLayoutFileTypes()
@@ -83,7 +77,7 @@ public class MainView : UserControl
 
         var file = result.FirstOrDefault();
 
-        if (file is not null && file.CanOpenRead)
+        if (file is not null)
         {
             try
             {
@@ -128,7 +122,7 @@ public class MainView : UserControl
             ShowOverwritePrompt = true
         });
 
-        if (file is not null && file.CanOpenWrite)
+        if (file is not null)
         {
             try
             {

@@ -4,17 +4,13 @@ using Dock.Avalonia;
 
 namespace DockMvvmSample.Views;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     public MainView()
     {
         InitializeComponent();
         InitializeThemes();
         InitializeMenu();
-    }
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
     }
 
     private void InitializeThemes()

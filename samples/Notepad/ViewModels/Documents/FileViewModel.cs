@@ -1,5 +1,4 @@
-﻿using Dock.Model.ReactiveUI.Controls;
-using ReactiveUI;
+﻿using Dock.Model.Mvvm.Controls;
 
 namespace Notepad.ViewModels.Documents;
 
@@ -12,18 +11,18 @@ public class FileViewModel : Document
     public string Path
     {
         get => _path;
-        set => this.RaiseAndSetIfChanged(ref _path, value);
+        set => SetProperty(ref _path, value);
     }
 
     public string Text
     {
         get => _text;
-        set => this.RaiseAndSetIfChanged(ref _text, value);
+        set => SetProperty(ref _text, value);
     }
 
     public string Encoding
     {
         get => _encoding;
-        set => this.RaiseAndSetIfChanged(ref _encoding, value);
+        set => SetProperty(ref _encoding, value);
     }
 }

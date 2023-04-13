@@ -6,14 +6,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
-using ReactiveUI;
 
 namespace Notepad.ViewModels;
 
-public class MainWindowViewModel : ReactiveObject, IDropTarget
+public class MainWindowViewModel : ObservableObject, IDropTarget
 {
     private readonly IFactory? _factory;
     private IRootDock? _layout;
@@ -21,7 +21,7 @@ public class MainWindowViewModel : ReactiveObject, IDropTarget
     public IRootDock? Layout
     {
         get => _layout;
-        set => this.RaiseAndSetIfChanged(ref _layout, value);
+        set => SetProperty(ref _layout, value);
     }
 
     public MainWindowViewModel()

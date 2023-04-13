@@ -1,8 +1,7 @@
 ﻿using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.Mvvm.Controls;
 using Notepad.ViewModels.Documents;
-using ReactiveUI;
 
 namespace Notepad.ViewModels.Tools;
 
@@ -14,13 +13,13 @@ public class ReplaceViewModel : Tool
     public string Find
     {
         get => _find;
-        set => this.RaiseAndSetIfChanged(ref _find, value);
+        set => SetProperty(ref _find, value);
     }
 
     public string Replace
     {
         get => _replace;
-        set => this.RaiseAndSetIfChanged(ref _replace, value);
+        set => SetProperty(ref _replace, value);
     }
 
     public void ReplaceNext()

@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Dock.Model.ReactiveUI.Controls;
+using CommunityToolkit.Mvvm.Input;
+using Dock.Model.Mvvm.Controls;
 using Notepad.ViewModels.Documents;
-using ReactiveUI;
 
 namespace Notepad.ViewModels.Docks;
 
@@ -9,7 +9,7 @@ public class FilesDocumentDock : DocumentDock
 {
     public FilesDocumentDock()
     {
-        CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+        CreateDocument = new RelayCommand(CreateNewDocument);
     }
 
     private void CreateNewDocument()

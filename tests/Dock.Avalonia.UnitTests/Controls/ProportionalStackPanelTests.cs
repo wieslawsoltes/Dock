@@ -170,7 +170,7 @@ public class ProportionalStackPanelTests
                     Orientation = Orientation.Horizontal
                 }
             },
-            ItemsSource = new List<Control>()
+            Items = new List<Control>()
             {
                 new Border()
                 {
@@ -191,7 +191,7 @@ public class ProportionalStackPanelTests
                             Orientation = Orientation.Vertical,
                         }
                     },
-                    ItemsSource = new List<Control>()
+                    Items = new List<Control>()
                     {
                         new Border()
                         {

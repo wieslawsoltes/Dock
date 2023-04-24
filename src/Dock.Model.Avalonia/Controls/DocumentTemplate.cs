@@ -14,7 +14,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document template.
 /// </summary>
 [DataContract(IsReference = true)]
-public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IRecyclingDataTemplate
+public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentTemplate"/> class.
@@ -46,14 +46,14 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IR
     /// <returns></returns>
     public Control Build()
     {
-        return (Control)Load(Content).Control;
+        return Load(Content)?.Result;
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <returns></returns>
-    object ITemplate.Build() => Build();
+    object? ITemplate.Build() => Build();
 
     /// <summary>
     /// 
@@ -75,7 +75,7 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IR
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public Control Build(object? data) => Build(data, null);
+    public Control? Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -83,16 +83,16 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control>, IR
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public Control Build(object? data, Control? existing)
+    public Control? Build(object? data, Control? existing)
     {
-        return existing ?? TemplateContent.Load(Content)?.Control!;
+        return existing ?? TemplateContent.Load(Content)?.Result;
     }
 
-    private static ControlTemplateResult Load(object templateContent)
+    private static TemplateResult<Control>? Load(object? templateContent)
     {
         if (templateContent is Func<IServiceProvider, object> direct)
         {
-            return (ControlTemplateResult)direct(null!);
+            return (TemplateResult<Control>)direct(null!);
         }
         throw new ArgumentException(nameof(templateContent));
     }

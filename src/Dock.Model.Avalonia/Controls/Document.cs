@@ -16,7 +16,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Control>, IRecyclingDataTemplate
+public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>
     /// Defines the <see cref="Content"/> property.
@@ -58,7 +58,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <returns></returns>
     public Control Build()
     {
-        return (Control)Load(Content).Control;
+        return Load(Content)?.Result;
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public Control Build(object? data) => Build(data, null);
+    public Control? Build(object? data) => Build(data, null);
 
     /// <summary>
     /// 
@@ -95,16 +95,16 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <param name="data"></param>
     /// <param name="existing"></param>
     /// <returns></returns>
-    public Control Build(object? data, Control? existing)
+    public Control? Build(object? data, Control? existing)
     {
-        return existing ?? TemplateContent.Load(Content)?.Control!;
+        return existing ?? TemplateContent.Load(Content)?.Result;
     }
 
-    private static ControlTemplateResult Load(object templateContent)
+    private static TemplateResult<Control>? Load(object? templateContent)
     {
         if (templateContent is Func<IServiceProvider, object> direct)
         {
-            return (ControlTemplateResult)direct(null!);
+            return (TemplateResult<Control>)direct(null!);
         }
         throw new ArgumentException(nameof(templateContent));
     }

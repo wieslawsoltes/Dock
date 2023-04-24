@@ -13,7 +13,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
-          <ItemsControl Items="{Binding VisibleDockables}">
+          <ItemsControl ItemsSource="{Binding VisibleDockables}">
             <ItemsControl.Styles>
               <Style Selector="ItemsControl > ContentPresenter" x:DataType="core:IDock">
                 <Setter Property="(DockPanel.Dock)"

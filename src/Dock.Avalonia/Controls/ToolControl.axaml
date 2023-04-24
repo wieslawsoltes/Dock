@@ -22,7 +22,7 @@
                    x:DataType="dmc:IToolDock"
                    x:CompileBindings="True">
           <ToolTabStrip x:Name="PART_TabStrip"
-                        Items="{Binding VisibleDockables}"
+                        ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True" />

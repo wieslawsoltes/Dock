@@ -46,7 +46,7 @@
               <ProportionalStackPanel Orientation="Horizontal" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
-          <ItemsControl.Items>
+          <ItemsControl.ItemsSource>
             <Rectangle Fill="Green" />
             <ProportionalStackPanelSplitter />
             <Rectangle Fill="Blue" />
@@ -57,15 +57,15 @@
                   <ProportionalStackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
               </ItemsControl.ItemsPanel>
-              <ItemsControl.Items>
+              <ItemsControl.ItemsSource>
                 <Rectangle Fill="Green" />
                 <ProportionalStackPanelSplitter />
                 <Rectangle Fill="Blue" />
                 <ProportionalStackPanelSplitter />
                 <Rectangle Fill="Red" />
-              </ItemsControl.Items>
+              </ItemsControl.ItemsSource>
             </ItemsControl>
-          </ItemsControl.Items>
+          </ItemsControl.ItemsSource>
         </ItemsControl>
       </TabItem>
     </TabControl>

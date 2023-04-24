@@ -24,7 +24,7 @@
                    x:DataType="dmc:IDocumentDock"
                    x:CompileBindings="True">
           <DocumentTabStrip x:Name="PART_TabStrip"
-                            Items="{Binding VisibleDockables}"
+                            ItemsSource="{Binding VisibleDockables}"
                             SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                             CanCreateItem="{Binding CanCreateDocument}"
                             IsActive="{TemplateBinding IsActive}"

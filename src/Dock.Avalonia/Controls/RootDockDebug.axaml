@@ -53,7 +53,7 @@
   <TabControl>
     <TabItem Header="Layout">
       <TreeView x:Name="Visible" 
-                Items="{Binding VisibleDockables}">
+                ItemsSource="{Binding VisibleDockables}">
         <TreeView.Styles>
           <Style Selector="TreeViewItem">
             <Setter Property="IsExpanded" Value="True" />
@@ -92,7 +92,7 @@
     <TabItem Header="Windows">
       <TreeView x:Name="Windows" 
                 DataContext="{Binding #Visible.SelectedItem}" 
-                Items="{Binding Windows}"
+                ItemsSource="{Binding Windows}"
                 x:DataType="controls:IRootDock">
         <TreeView.Styles>
           <Style Selector="TreeViewItem">

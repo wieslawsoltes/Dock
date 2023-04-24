@@ -43,7 +43,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\SignAssembly.props = build\SignAssembly.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
-		build\Avalonia.Themes.Simple.props = build\Avalonia.Themes.Simple.props
 		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
 		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
 		build\Avalonia.Web.props = build\Avalonia.Web.props

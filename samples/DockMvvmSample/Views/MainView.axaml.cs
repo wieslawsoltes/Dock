@@ -16,7 +16,7 @@ public partial class MainView : UserControl
     private void InitializeThemes()
     {
         var dark = false;
-        var theme = this.Find<Button>("Theme");
+        var theme = this.Find<Button>("ThemeButton");
         if (theme is { })
         {
             theme.Click += (_, _) =>

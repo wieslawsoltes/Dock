@@ -77,7 +77,7 @@
                 Grid.Column="3" />
         <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
-        <Button x:Name="Theme" Grid.Column="6" Background="Transparent">
+        <Button x:Name="ThemeButton" Grid.Column="6" Background="Transparent">
           <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
         </Button>
       </Grid>

@@ -13,11 +13,7 @@ public class App : Application
 
     public override void Initialize()
     {
-#if true
         ThemeManager = new FluentThemeManager();
-#else
-        ThemeManager = new SimpleThemeManager();
-#endif
         ThemeManager.Initialize(this);
 
         AvaloniaXamlLoader.Load(this);

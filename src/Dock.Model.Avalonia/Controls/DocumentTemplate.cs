@@ -44,7 +44,7 @@ public sealed class DocumentTemplate : IDocumentTemplate, ITemplate<Control?>, I
     /// 
     /// </summary>
     /// <returns></returns>
-    public Control Build()
+    public Control? Build()
     {
         return Load(Content)?.Result;
     }

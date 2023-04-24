@@ -56,7 +56,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// 
     /// </summary>
     /// <returns></returns>
-    public Control Build()
+    public Control? Build()
     {
         return Load(Content)?.Result;
     }

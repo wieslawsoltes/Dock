@@ -56,7 +56,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// 
     /// </summary>
     /// <returns></returns>
-    public Control Build()
+    public Control? Build()
     {
         return Load(Content)?.Result;
     }

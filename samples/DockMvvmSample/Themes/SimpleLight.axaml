@@ -1,9 +1,0 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-  <Styles.Resources>
-    <Color x:Key="RegionColor">#FFFAFAFA</Color>
-    <Color x:Key="AcrylicFallbackColor">#E2E2E2</Color>
-  </Styles.Resources>
-
-</Styles>

@@ -65,7 +65,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// 
     /// </summary>
     /// <returns></returns>
-    object ITemplate.Build() => Build();
+    object? ITemplate.Build() => Build();
 
     /// <summary>
     /// 

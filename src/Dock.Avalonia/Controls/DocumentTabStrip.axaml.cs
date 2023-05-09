@@ -55,10 +55,11 @@ public class DocumentTabStrip : TabStrip, IStyleable
     }
 
     /// <inheritdoc/>
-    protected override Control CreateContainerForItemOverride()
+    protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
         return new DocumentTabStripItem();
     }
+
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

@@ -47,12 +47,12 @@ public partial interface IFactory
     /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> locator registry.
     /// </summary>
-    Dictionary<string, Func<object?>> ContextLocator { get; set; }
+    Dictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IHostWindow"/> locator registry.
     /// </summary>
-    Dictionary<string, Func<IHostWindow?>> HostWindowLocator { get; set; }
+    Dictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <summary>
     /// Gets or sets <see cref="IDockable"/> locator registry.

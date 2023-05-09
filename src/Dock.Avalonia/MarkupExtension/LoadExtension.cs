@@ -31,7 +31,7 @@ public class LoadExtension
     /// <returns>The loaded <see cref="object"/> instance.</returns>
     public object? ProvideValue(IServiceProvider serviceProvider)
     {
-        if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext)
+        if (serviceProvider.GetService(typeof(IUriContext)) is IUriContext uriContext && Source is not null)
         {
             var baseUri = uriContext.BaseUri;
             var obj = AvaloniaXamlLoader.Load(Source, baseUri);

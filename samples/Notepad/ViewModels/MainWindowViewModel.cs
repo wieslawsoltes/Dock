@@ -206,7 +206,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     public void DragOver(object? sender, DragEventArgs e)
     {
-        if (!e.Data.Contains(DataFormats.FileNames))
+        if (!e.Data.Contains(DataFormats.Files))
         {
             e.DragEffects = DragDropEffects.None; 
             e.Handled = true;
@@ -215,7 +215,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     public void Drop(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.FileNames))
+        if (e.Data.Contains(DataFormats.Files))
         {
             var result = e.Data.GetFileNames();
             if (result is {})

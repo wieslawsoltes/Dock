@@ -139,7 +139,7 @@ public class DockFactory : Factory
 
     public override void InitLayout(IDockable layout)
     {
-        ContextLocator = new Dictionary<string, Func<object>>
+        ContextLocator = new Dictionary<string, Func<object?>>
         {
             ["Document1"] = () => new DemoDocument(),
             ["Document2"] = () => new DemoDocument(),
@@ -162,7 +162,7 @@ public class DockFactory : Factory
             ["Documents"] = () => _documentDock
         };
 
-        HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+        HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
             [nameof(IDockWindow)] = () => new HostWindow()
         };

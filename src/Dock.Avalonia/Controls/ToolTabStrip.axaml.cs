@@ -40,7 +40,7 @@ public class ToolTabStrip : TabStrip, IStyleable
     }
 
     /// <inheritdoc/>
-    protected override Control CreateContainerForItemOverride()
+    protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
         return new ToolTabStripItem();
     }

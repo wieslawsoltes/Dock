@@ -17,10 +17,10 @@ public abstract partial class FactoryBase
     public virtual Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual Dictionary<string, Func<object?>> ContextLocator { get; set; }
+    public virtual Dictionary<string, Func<object?>>? ContextLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual Dictionary<string, Func<IHostWindow?>> HostWindowLocator { get; set; }
+    public virtual Dictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
 
     /// <inheritdoc/>
     public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }

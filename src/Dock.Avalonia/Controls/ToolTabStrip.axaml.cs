@@ -45,6 +45,11 @@ public class ToolTabStrip : TabStrip, IStyleable
         return new ToolTabStripItem();
     }
 
+    /// <inheritdoc/>
+    protected override bool NeedsContainerOverride(object? item, int index, out object? recycleKey)
+    {
+        return NeedsContainer<ToolTabStripItem>(item, out recycleKey);
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

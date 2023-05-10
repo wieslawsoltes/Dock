@@ -60,6 +60,11 @@ public class DocumentTabStrip : TabStrip, IStyleable
         return new DocumentTabStripItem();
     }
 
+    /// <inheritdoc/>
+    protected override bool NeedsContainerOverride(object? item, int index, out object? recycleKey)
+    {
+        return NeedsContainer<DocumentTabStripItem>(item, out recycleKey);
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

@@ -31,14 +31,14 @@ public class ProportionalStackPanel : Panel
 
     internal List<Control?> GetChildren()
     {
-        return Children.OfType<Control>().Select(c =>
+        return Children.OfType<Control?>().Select(c =>
         {
             if (c is ContentPresenter cp)
             {
                 cp.UpdateChild();
-                return (Control?)cp.Child;
+                return cp.Child;
             }
-            return (Control?)c;
+            return c;
         }).ToList();
     }
 

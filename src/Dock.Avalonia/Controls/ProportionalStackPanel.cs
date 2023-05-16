@@ -93,7 +93,7 @@ public class ProportionalStackPanel : Panel
     private double GetTotalSplitterThickness(global::Avalonia.Controls.Controls children)
     {
         var result = children
-            .Where(c => !ProportionalStackPanelSplitter.IsSplitter(c))
+            .Where(c => ProportionalStackPanelSplitter.IsSplitter(c))
             .Select(c =>
             {
                 if (c is ContentPresenter contentPresenter)

@@ -28,24 +28,6 @@ public class ProportionalStackPanel : Panel
         set => SetValue(OrientationProperty, value);
     }
 
-    // /// <inheritdoc/>
-    // protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    // {
-    //     base.ChildrenChanged(sender, e);
-    //     switch (e.Action)
-    //     {
-    //         case NotifyCollectionChangedAction.Add:
-    //             if (e.NewItems is not null)
-    //             {
-    //                 foreach (var item in e.NewItems.OfType<Control>())
-    //                 {
-    //                     SetControlProportion(item, double.NaN);
-    //                 }
-    //             }
-    //             break;
-    //     }
-    // }
-
     private void AssignProportions(global::Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;

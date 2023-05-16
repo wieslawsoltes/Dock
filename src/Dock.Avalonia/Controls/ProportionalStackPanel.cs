@@ -98,7 +98,11 @@ public class ProportionalStackPanel : Panel
             {
                 if (c is ContentPresenter contentPresenter)
                 {
-                    contentPresenter.UpdateChild();
+                    if (contentPresenter.Child is null)
+                    {
+                        contentPresenter.UpdateChild();
+                    }
+
                     return contentPresenter.Child as ProportionalStackPanelSplitter;
                 }
 

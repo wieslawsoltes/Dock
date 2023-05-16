@@ -91,7 +91,10 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         if (control is ContentPresenter contentPresenter)
         {
-            contentPresenter.UpdateChild();
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
 
             return contentPresenter.Child is ProportionalStackPanelSplitter;
         }
@@ -103,7 +106,10 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         if (control is ContentPresenter contentPresenter)
         {
-            contentPresenter.UpdateChild();
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
 
             if (contentPresenter.Child is not null)
             {
@@ -123,7 +129,10 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         if (control is ContentPresenter contentPresenter)
         {
-            contentPresenter.UpdateChild();
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
 
             if (contentPresenter.Child is not null)
             {
@@ -236,7 +245,11 @@ public class ProportionalStackPanelSplitter : Thumb
         var child = children[nextIndex];
         if (child is ContentPresenter contentPresenter)
         {
-            contentPresenter.UpdateChild();
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
             return contentPresenter.Child;
         }
 

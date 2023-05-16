@@ -280,4 +280,15 @@ public class ProportionalStackPanel : Panel
 
         return arrangeSize;
     }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == OrientationProperty)
+        {
+            InvalidateMeasure();
+        }
+    }
 }

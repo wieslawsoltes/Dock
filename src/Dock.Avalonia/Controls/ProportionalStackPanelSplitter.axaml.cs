@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
@@ -88,6 +87,69 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
+    internal static bool IsSplitter(Control? control)
+    {
+        if (control is ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
+            return contentPresenter.Child is ProportionalStackPanelSplitter;
+        }
+
+        return control is ProportionalStackPanelSplitter;
+    }
+
+    internal static void SetControlProportion(Control? control, double proportion)
+    {
+        if (control is ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
+            if (contentPresenter.Child is not null)
+            {
+                SetProportion(contentPresenter.Child, proportion);
+            }
+        }
+        else
+        {
+            if (control is not null)
+            {
+                SetProportion(control, proportion);
+            }
+        }
+    }
+
+    internal static double GetControlProportion(Control? control)
+    {
+        if (control is ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
+            if (contentPresenter.Child is not null)
+            {
+                return GetProportion(contentPresenter.Child);
+            }
+
+            return double.NaN;
+        }
+
+        if (control is not null)
+        {
+            return GetProportion(control);
+        }
+
+        return double.NaN;
+    }
+
     /// <inheritdoc/>
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
@@ -166,6 +228,34 @@ public class ProportionalStackPanelSplitter : Thumb
         UpdateHeightOrWidth();
     }
 
+    private Control? FindNextChild(ProportionalStackPanel panel)
+    {
+        var children = panel.Children;
+        int nextIndex;
+
+        if (Parent is ContentPresenter parentContentPresenter)
+        {
+            nextIndex = children.IndexOf(parentContentPresenter) + 1;
+        }
+        else
+        {
+            nextIndex = children.IndexOf(this) + 1;
+        }
+
+        var child = children[nextIndex];
+        if (child is ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
+            return contentPresenter.Child;
+        }
+
+        return child;
+    }
+
     private void SetTargetProportion(double dragDelta)
     {
         var target = GetTargetElement();
@@ -175,14 +265,10 @@ public class ProportionalStackPanelSplitter : Thumb
             return;
         }
 
-        var children = panel.GetChildren();
+        var child = FindNextChild(panel);
 
-        var index = children.IndexOf(this) + 1;
-
-        var child = children[index];
-
-        var targetElementProportion = GetProportion(target);
-        var neighbourProportion = child is AvaloniaObject o ? GetProportion(o) : double.NaN;
+        var targetElementProportion = GetControlProportion(target);
+        var neighbourProportion = child is not null ? GetControlProportion(child) : double.NaN;
 
         var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
 
@@ -217,7 +303,7 @@ public class ProportionalStackPanelSplitter : Thumb
 
         SetProportion(target, targetElementProportion);
 
-        if (child is { })
+        if (child is not null)
         {
             SetProportion(child, neighbourProportion);
         }
@@ -279,7 +365,7 @@ public class ProportionalStackPanelSplitter : Thumb
             {
                 if (panel.Children[index - 1] is ContentPresenter contentPresenter)
                 {
-                    return contentPresenter.Child as Control;
+                    return contentPresenter.Child;
                 }
                 else
                 {
@@ -290,12 +376,12 @@ public class ProportionalStackPanelSplitter : Thumb
         else
         {
             var panel = GetPanel();
-            if (panel is { })
+            if (panel is not null)
             {
                 var index = panel.Children.IndexOf(this);
                 if (index > 0 && panel.Children.Count > 0)
                 {
-                    return panel.Children[index - 1] as Control;
+                    return panel.Children[index - 1];
                 }
             }
         }

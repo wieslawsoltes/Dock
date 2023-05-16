@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -29,47 +28,16 @@ public class ProportionalStackPanel : Panel
         set => SetValue(OrientationProperty, value);
     }
 
-    internal List<Control?> GetChildren()
-    {
-        return Children.OfType<Control?>().Select(c =>
-        {
-            if (c is ContentPresenter cp)
-            {
-                cp.UpdateChild();
-                return cp.Child;
-            }
-            return c;
-        }).ToList();
-    }
-
-    // /// <inheritdoc/>
-    // protected override void ChildrenChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    // {
-    //     base.ChildrenChanged(sender, e);
-    //     switch (e.Action)
-    //     {
-    //         case NotifyCollectionChangedAction.Add:
-    //             if (e.NewItems is not null)
-    //             {
-    //                 foreach (var item in e.NewItems.OfType<Control>())
-    //                 {
-    //                     ProportionalStackPanelSplitter.SetProportion(item, double.NaN);
-    //                 }
-    //             }
-    //             break;
-    //     }
-    // }
-
-    private void AssignProportions(IList<Control?> children)
+    private void AssignProportions(global::Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;
         var unassignedProportions = 0;
 
         foreach (var control in children)
         {
-            if (control is { } and not ProportionalStackPanelSplitter)
+            if (control is { } && !ProportionalStackPanelSplitter.IsSplitter(control))
             {
-                var proportion = ProportionalStackPanelSplitter.GetProportion(control);
+                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
 
                 if (double.IsNaN(proportion))
                 {
@@ -85,12 +53,12 @@ public class ProportionalStackPanel : Panel
         if (unassignedProportions > 0)
         {
             var toAssign = assignedProportion;
-            foreach (var control in children.Where(c => c is { } && double.IsNaN(ProportionalStackPanelSplitter.GetProportion(c))))
+            foreach (var control in children.Where(c => double.IsNaN(ProportionalStackPanelSplitter.GetControlProportion(c))))
             {
-                if (control is { } and not ProportionalStackPanelSplitter)
+                if (!ProportionalStackPanelSplitter.IsSplitter(control))
                 {
                     var proportion = (1.0 - toAssign) / unassignedProportions;
-                    ProportionalStackPanelSplitter.SetProportion(control, proportion);
+                    ProportionalStackPanelSplitter.SetControlProportion(control, proportion);
                     assignedProportion += (1.0 - toAssign) / unassignedProportions;
                 }
             }
@@ -98,39 +66,50 @@ public class ProportionalStackPanel : Panel
 
         if (assignedProportion < 1)
         {
-            var numChildren = (double)children.Count(c => c is not ProportionalStackPanelSplitter);
+            var numChildren = (double)children.Count(c => !ProportionalStackPanelSplitter.IsSplitter(c));
 
             var toAdd = (1.0 - assignedProportion) / numChildren;
 
-            foreach (var child in children.Where(c => c is not ProportionalStackPanelSplitter))
+            foreach (var child in children.Where(c => !ProportionalStackPanelSplitter.IsSplitter(c)))
             {
-                if (child is { })
-                {
-                    var proportion = ProportionalStackPanelSplitter.GetProportion(child) + toAdd;
-                    ProportionalStackPanelSplitter.SetProportion(child, proportion);
-                }
+                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) + toAdd;
+                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
             }
         }
         else if (assignedProportion > 1)
         {
-            var numChildren = (double)children.Count(c => c is not ProportionalStackPanelSplitter);
+            var numChildren = (double)children.Count(c => !ProportionalStackPanelSplitter.IsSplitter(c));
 
             var toRemove = (assignedProportion - 1.0) / numChildren;
 
-            foreach (var child in children.Where(c => c is not ProportionalStackPanelSplitter))
+            foreach (var child in children.Where(c => !ProportionalStackPanelSplitter.IsSplitter(c)))
             {
-                if (child is { })
-                {
-                    var proportion = ProportionalStackPanelSplitter.GetProportion(child) - toRemove;
-                    ProportionalStackPanelSplitter.SetProportion(child, proportion);
-                }
+                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) - toRemove;
+                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
             }
         }
     }
 
-    private double GetTotalSplitterThickness(IList<Control?> children)
+    private double GetTotalSplitterThickness(global::Avalonia.Controls.Controls children)
     {
-        var result = children.OfType<ProportionalStackPanelSplitter>().Sum(c => c.Thickness);
+        var result = children
+            .Where(c => ProportionalStackPanelSplitter.IsSplitter(c))
+            .Select(c =>
+            {
+                if (c is ContentPresenter contentPresenter)
+                {
+                    if (contentPresenter.Child is null)
+                    {
+                        contentPresenter.UpdateChild();
+                    }
+
+                    return contentPresenter.Child as ProportionalStackPanelSplitter;
+                }
+
+                return c as ProportionalStackPanelSplitter;
+            })
+            .Where(x => x != null)
+            .Sum(c => c!.Thickness);
 
         return double.IsNaN(result) ? 0 : result;
     }
@@ -151,13 +130,12 @@ public class ProportionalStackPanel : Panel
         var usedHeight = 0.0;
         var maximumWidth = 0.0;
         var maximumHeight = 0.0;
-        var children = GetChildren();
-        var splitterThickness = GetTotalSplitterThickness(children);
+        var splitterThickness = GetTotalSplitterThickness(Children);
 
-        AssignProportions(children);
+        AssignProportions(Children);
 
         // Measure each of the Children
-        foreach (var control in children)
+        foreach (var control in Children)
         {
             if (control is null)
             {
@@ -169,9 +147,9 @@ public class ProportionalStackPanel : Panel
                 Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
                 Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
 
-            var proportion = ProportionalStackPanelSplitter.GetProportion(control);
+            var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
 
-            if (control is not ProportionalStackPanelSplitter)
+            if (!ProportionalStackPanelSplitter.IsSplitter(control))
             {
                 Debug.Assert(!double.IsNaN(proportion));
 
@@ -199,7 +177,7 @@ public class ProportionalStackPanel : Panel
                 case Orientation.Horizontal:
                     maximumHeight = Math.Max(maximumHeight, usedHeight + desiredSize.Height);
 
-                    if (control is ProportionalStackPanelSplitter)
+                    if (ProportionalStackPanelSplitter.IsSplitter(control))
                     {
                         usedWidth += desiredSize.Width;
                     }
@@ -211,7 +189,7 @@ public class ProportionalStackPanel : Panel
                 case Orientation.Vertical:
                     maximumWidth = Math.Max(maximumWidth, usedWidth + desiredSize.Width);
 
-                    if (control is ProportionalStackPanelSplitter)
+                    if (ProportionalStackPanelSplitter.IsSplitter(control))
                     {
                         usedHeight += desiredSize.Height;
                     }
@@ -238,13 +216,12 @@ public class ProportionalStackPanel : Panel
         var bottom = 0.0;
 
         // Arrange each of the Children
-        var children = GetChildren();
-        var splitterThickness = GetTotalSplitterThickness(children);
+        var splitterThickness = GetTotalSplitterThickness(Children);
         var index = 0;
 
-        AssignProportions(children);
+        AssignProportions(Children);
 
-        foreach (var control in children)
+        foreach (var control in Children)
         {
             if (control is null)
             {
@@ -261,15 +238,15 @@ public class ProportionalStackPanel : Panel
             // Trim the remaining Rect to the docked size of the element
             // (unless the element should fill the remaining space because
             // of LastChildFill)
-            if (index < children.Count)
+            if (index < Children.Count)
             {
                 var desiredSize = control.DesiredSize;
-                var proportion = ProportionalStackPanelSplitter.GetProportion(control);
+                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
 
                 switch (Orientation)
                 {
                     case Orientation.Horizontal:
-                        if (control is ProportionalStackPanelSplitter)
+                        if (ProportionalStackPanelSplitter.IsSplitter(control))
                         {
                             left += desiredSize.Width;
                             remainingRect = remainingRect.WithWidth(desiredSize.Width);
@@ -282,7 +259,7 @@ public class ProportionalStackPanel : Panel
                         }
                         break;
                     case Orientation.Vertical:
-                        if (control is ProportionalStackPanelSplitter)
+                        if (ProportionalStackPanelSplitter.IsSplitter(control))
                         {
                             top += desiredSize.Height;
                             remainingRect = remainingRect.WithHeight(desiredSize.Height);
@@ -302,5 +279,16 @@ public class ProportionalStackPanel : Panel
         }
 
         return arrangeSize;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == OrientationProperty)
+        {
+            InvalidateMeasure();
+        }
     }
 }

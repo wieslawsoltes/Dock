@@ -14,7 +14,7 @@ namespace Dock.Avalonia.Controls;
 /// Document TabStripItem custom control.
 /// </summary>
 [PseudoClasses(":active")]
-public class DocumentTabStripItem : TabStripItem, IStyleable
+public class DocumentTabStripItem : TabStripItem
 {
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
@@ -31,7 +31,8 @@ public class DocumentTabStripItem : TabStripItem, IStyleable
         set => SetValue(IsActiveProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(DocumentTabStripItem);
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(DocumentTabStripItem);
         
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentTabStripItem"/> class.

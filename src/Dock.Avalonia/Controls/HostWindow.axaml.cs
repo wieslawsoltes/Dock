@@ -16,7 +16,7 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
 [PseudoClasses(":toolwindow", ":dragging")]
-public class HostWindow : Window, IStyleable, IHostWindow
+public class HostWindow : Window, IHostWindow
 {
     private readonly DockManager _dockManager;
     private readonly HostWindowState _hostWindowState;
@@ -30,7 +30,8 @@ public class HostWindow : Window, IStyleable, IHostWindow
     public static readonly StyledProperty<bool> IsToolWindowProperty = 
         AvaloniaProperty.Register<HostWindow, bool>(nameof(IsToolWindow));
 
-    Type IStyleable.StyleKey => typeof(HostWindow);
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(HostWindow);
 
     /// <summary>
     /// Gets or sets if this is the tool window.

@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls;
 /// Tool TabStrip custom control.
 /// </summary>
 [PseudoClasses(":create")]
-public class ToolTabStrip : TabStrip, IStyleable
+public class ToolTabStrip : TabStrip
 {
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -29,7 +29,8 @@ public class ToolTabStrip : TabStrip, IStyleable
         set => SetValue(CanCreateItemProperty, value);
     }
 
-    Type IStyleable.StyleKey => typeof(ToolTabStrip);
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(ToolTabStrip);
 
     /// <summary>
     /// Initializes new instance of the <see cref="ToolTabStrip"/> class.

@@ -11,9 +11,10 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Tool TabStripItem custom control.
 /// </summary>
-public class ToolTabStripItem : TabStripItem, IStyleable
+public class ToolTabStripItem : TabStripItem
 {
-    Type IStyleable.StyleKey => typeof(ToolTabStripItem);
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(ToolTabStripItem);
         
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)

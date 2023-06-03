@@ -26,26 +26,12 @@ internal static class DockHelpers
                visual.GetVisualRoot() != null;
     }
 
-    private static IEnumerable<Visual> GetVisualsAt(Visual? visual, Point p, Func<Visual, bool> predicate)
-    {
-        var visualRoot = visual?.GetVisualRoot();
-        if (visualRoot is Visual root && visual is { })
-        {
-            var rootPoint = visual.TranslatePoint(p, root);
-            if (rootPoint.HasValue)
-            {
-                return visualRoot.Renderer.HitTest(rootPoint.Value, visual, predicate);
-            }
-        }
-        return Enumerable.Empty<Visual>();
-    }
-
     public static Control? GetControl(Visual? input, Point point, StyledProperty<bool> property)
     {
         IEnumerable<Visual>? inputElements = null;
         try
         {
-            inputElements = GetVisualsAt(input, point, IsHitTestVisible).Cast<Visual>();
+            inputElements = input?.GetVisualsAt(point, IsHitTestVisible);
         }
         catch (Exception ex)
         {

@@ -31,7 +31,7 @@ internal static class DockHelpers
         IEnumerable<Visual>? inputElements = null;
         try
         {
-            inputElements = input?.GetVisualsAt(point, IsHitTestVisible).Cast<Visual>();
+            inputElements = input?.GetVisualsAt(point, IsHitTestVisible);
         }
         catch (Exception ex)
         {

@@ -13,7 +13,8 @@ namespace Dock.Avalonia.Controls;
 public class HostWindowTitleBar : TitleBar
 {
     internal Control? BackgroundControl { get; private set; }
-        
+
+    /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindowTitleBar);
 
     /// <inheritdoc/>

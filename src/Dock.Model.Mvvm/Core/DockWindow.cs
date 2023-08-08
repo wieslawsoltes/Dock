@@ -14,11 +14,11 @@ public class DockWindow : ObservableObject, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;
     private string _id;
-    private readonly double _x;
-    private readonly double _y;
-    private readonly double _width;
-    private readonly double _height;
-    private readonly bool _topmost;
+    private double _x;
+    private double _y;
+    private double _width;
+    private double _height;
+    private bool _topmost;
     private string _title;
     private IDockable? _owner;
     private IFactory? _factory;

@@ -14,7 +14,7 @@ namespace Dock.Model.Mvvm.Controls;
 [DataContract(IsReference = true)]
 public class RootDock : DockBase, IRootDock
 {
-    private readonly bool _isFocusableRoot = true;
+    private bool _isFocusableRoot = true;
     private IList<IDockable>? _hiddenDockables;
     private IList<IDockable>? _leftPinnedDockables;
     private IList<IDockable>? _rightPinnedDockables;

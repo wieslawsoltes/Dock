@@ -11,7 +11,7 @@ namespace Dock.Model.Mvvm.Controls;
 [DataContract(IsReference = true)]
 public class DocumentDock : DockBase, IDocumentDock
 {
-    private readonly bool _canCreateDocument;
+    private bool _canCreateDocument;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

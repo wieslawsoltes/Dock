@@ -10,7 +10,7 @@ namespace Dock.Model.Mvvm.Controls;
 [DataContract(IsReference = true)]
 public class DockDock : DockBase, IDockDock
 {        
-    private readonly bool _lastChildFill = true;
+    private bool _lastChildFill = true;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

@@ -12,8 +12,8 @@ namespace Dock.Model.Mvvm.Controls;
 public class ToolDock : DockBase, IToolDock
 {
     private Alignment _alignment = Alignment.Unset;
-    private bool _isExpanded;
-    private bool _autoHide = true;
+    private readonly bool _isExpanded;
+    private readonly bool _autoHide = true;
     private GripMode _gripMode = GripMode.Visible;
 
     /// <inheritdoc/>

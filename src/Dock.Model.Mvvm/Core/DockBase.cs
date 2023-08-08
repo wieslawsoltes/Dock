@@ -18,10 +18,10 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private double _proportion = double.NaN;
+    private readonly double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
-    private bool _isCollapsable = true;
-    private bool _isActive;
+    private readonly bool _isCollapsable = true;
+    private readonly bool _isActive;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.

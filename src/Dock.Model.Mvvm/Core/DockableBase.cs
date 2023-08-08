@@ -17,9 +17,9 @@ public abstract class DockableBase : ObservableObject, IDockable
     private object? _context;
     private IDockable? _owner;
     private IFactory? _factory;
-    private bool _canClose = true;
-    private bool _canPin = true;
-    private bool _canFloat = true;
+    private readonly bool _canClose = true;
+    private readonly bool _canPin = true;
+    private readonly bool _canFloat = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.

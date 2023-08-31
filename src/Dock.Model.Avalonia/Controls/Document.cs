@@ -98,7 +98,8 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        if (data is null)
+        var content = Content;
+        if (content is null)
         {
             return null;
         }
@@ -106,20 +107,20 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
         var controlRecycling = DockProperties.GetControlRecycling(this);
         if (controlRecycling is not null)
         {
-            if (controlRecycling.TryGetValue(data, out var control))
+            if (controlRecycling.TryGetValue(content, out var control))
             {
 #if DEBUG
-                Console.WriteLine($"[Cached] {data}, {control}");
+                Console.WriteLine($"[Cached] {content}, {control}");
 #endif
                 return control as Control;
             }
 
-            control = TemplateContent.Load(Content)?.Result;
+            control = TemplateContent.Load(content)?.Result;
             if (control is not null)
             {
-                controlRecycling.Add(data, control);
+                controlRecycling.Add(content, control);
 #if DEBUG
-                Console.WriteLine($"[Added] {data}, {control}");
+                Console.WriteLine($"[Added] {content}, {control}");
 #endif
             }
 

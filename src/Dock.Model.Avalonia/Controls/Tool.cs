@@ -4,12 +4,10 @@ using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
-using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -59,7 +57,7 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <returns></returns>
     public Control? Build()
     {
-        return Load(Content)?.Result;
+        return TemplateHelper.Load(Content)?.Result;
     }
 
     /// <summary>
@@ -79,10 +77,8 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
         {
             return true;
         }
-        else
-        {
-            return DataType.IsInstanceOfType(data);
-        }
+
+        return DataType.IsInstanceOfType(data);
     }
 
     /// <summary>
@@ -100,44 +96,6 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        var content = Content;
-        if (content is null)
-        {
-            return null;
-        }
-
-        var controlRecycling = DockProperties.GetControlRecycling(this);
-        if (controlRecycling is not null)
-        {
-            if (controlRecycling.TryGetValue(content, out var control))
-            {
-#if DEBUG
-                Console.WriteLine($"[Cached] {content}, {control}");
-#endif
-                return control as Control;
-            }
-
-            control = TemplateContent.Load(content)?.Result;
-            if (control is not null)
-            {
-                controlRecycling.Add(content, control);
-#if DEBUG
-                Console.WriteLine($"[Added] {content}, {control}");
-#endif
-            }
-
-            return control as Control;
-        }
-
-        return TemplateContent.Load(Content)?.Result;
-    }
-
-    private static TemplateResult<Control>? Load(object? templateContent)
-    {
-        if (templateContent is Func<IServiceProvider, object> direct)
-        {
-            return (TemplateResult<Control>?)direct(null!);
-        }
-        throw new ArgumentException(nameof(templateContent));
+        return TemplateHelper.Build(Content, this);
     }
 }

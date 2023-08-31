@@ -10,7 +10,7 @@ namespace Dock.Avalonia.Controls.Recycling;
 /// </summary>
 public class ControlRecycling
 {
-    private readonly Dictionary<object?, Control> _cache = new();
+    private readonly Dictionary<object, Control> _cache = new();
 
     private bool TryGetValue(object? data, out Control? control)
     {

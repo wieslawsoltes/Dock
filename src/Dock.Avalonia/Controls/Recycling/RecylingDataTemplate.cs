@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls.Recycling;
 
@@ -9,13 +11,11 @@ namespace Dock.Avalonia.Controls.Recycling;
 /// </summary>
 public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTemplate
 {
-    private static readonly ControlRecycling s_controlRecycling = new();
-    
     /// <summary>
     /// 
     /// </summary>
     public static readonly StyledProperty<Control?> ParentProperty =
-        AvaloniaProperty.Register<ControlRecyclingDataTemplate, Control?>("Parent");
+        AvaloniaProperty.Register<ControlRecyclingDataTemplate, Control?>(nameof(Parent));
 
     /// <summary>
     /// 
@@ -54,6 +54,17 @@ public class ControlRecyclingDataTemplate : AvaloniaObject, IRecyclingDataTempla
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return s_controlRecycling.Build(data, existing, Parent);
+        if (Parent is not { } parent)
+        {
+            return null;
+        }
+
+        var controlRecycling = DockProperties.GetControlRecycling(parent);
+        if (controlRecycling is not null)
+        {
+            return controlRecycling.Build(data, existing, parent) as Control;
+        }
+
+        return parent.FindDataTemplate(data)?.Build(data);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia;
+using Dock.Settings;
 
 namespace DockMvvmSample.Views;
 

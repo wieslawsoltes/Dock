@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\Dock.Settings\Dock.Settings.csproj" />
   </ItemGroup>
 
 </Project>

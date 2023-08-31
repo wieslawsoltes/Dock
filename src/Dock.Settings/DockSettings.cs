@@ -1,5 +1,5 @@
 ﻿
-namespace Dock.Avalonia;
+namespace Dock.Settings;
 
 /// <summary>
 /// Dock settings.

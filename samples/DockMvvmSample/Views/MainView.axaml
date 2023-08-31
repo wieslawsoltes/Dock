@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+             xmlns:ids="using:Dock.Settings"
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:DockMvvmSample.ViewModels"
@@ -30,7 +30,7 @@
       <MenuItem Header="_Options">
         <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
           <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDragEnabled)}"
+            <CheckBox IsChecked="{Binding $parent[Window].(ids:DockProperties.IsDragEnabled)}"
                       BorderThickness="0"
                       IsHitTestVisible="False" />
           </MenuItem.Icon>
@@ -38,7 +38,7 @@
         <Separator />
         <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
           <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(id:DockProperties.IsDropEnabled)}"
+            <CheckBox IsChecked="{Binding $parent[Window].(ids:DockProperties.IsDropEnabled)}"
                       BorderThickness="0"
                       IsHitTestVisible="False" />
           </MenuItem.Icon>

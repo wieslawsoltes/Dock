@@ -9,6 +9,7 @@ using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
+using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -23,8 +24,6 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// </summary>
     public static readonly StyledProperty<object?> ContentProperty =
         AvaloniaProperty.Register<Tool, object?>(nameof(Content));
-
-    private Control? _cached;
 
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
@@ -101,16 +100,35 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        if (_cached is not null)
+        if (data is null)
         {
-            return _cached;
+            return null;
         }
-        var control = TemplateContent.Load(Content)?.Result;
-        if (control is not null)
+
+        var controlRecycling = DockProperties.GetControlRecycling(this);
+        if (controlRecycling is not null)
         {
-            _cached = control;
+            if (controlRecycling.TryGetValue(data, out var control))
+            {
+#if DEBUG
+                Console.WriteLine($"[Cached] {data}, {control}");
+#endif
+                return control as Control;
+            }
+
+            control = TemplateContent.Load(Content)?.Result;
+            if (control is not null)
+            {
+                controlRecycling.Add(data, control);
+#if DEBUG
+                Console.WriteLine($"[Added] {data}, {control}");
+#endif
+            }
+
+            return control as Control;
         }
-        return control;
+
+        return TemplateContent.Load(Content)?.Result;
     }
 
     private static TemplateResult<Control>? Load(object? templateContent)

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Dock.Avalonia</PackageId>
+    <PackageId>Dock.Settings</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -16,7 +16,6 @@
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
-  <Import Project="..\..\build\Avalonia.Diagnostics.props" Condition="'$(Configuration)' == 'Debug'" />
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
@@ -24,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\Dock.Settings\Dock.Settings.csproj" />
   </ItemGroup>
 
 </Project>

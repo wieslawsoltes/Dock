@@ -267,7 +267,7 @@ public class HostWindow : Window, IHostWindow
                     Window.Factory?.OnWindowOpened(Window);
                 }
 
-                ShowDialog(null); // FIXME: Set correct parent window.
+                ShowDialog(null!); // FIXME: Set correct parent window.
             }
         }
         else

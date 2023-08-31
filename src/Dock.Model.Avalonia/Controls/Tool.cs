@@ -24,6 +24,8 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     public static readonly StyledProperty<object?> ContentProperty =
         AvaloniaProperty.Register<Tool, object?>(nameof(Content));
 
+    private Control? _cached;
+
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
     /// </summary>
@@ -99,7 +101,16 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        return existing ?? TemplateContent.Load(Content)?.Result;
+        if (_cached is not null)
+        {
+            return _cached;
+        }
+        var control = TemplateContent.Load(Content)?.Result;
+        if (control is not null)
+        {
+            _cached = control;
+        }
+        return control;
     }
 
     private static TemplateResult<Control>? Load(object? templateContent)

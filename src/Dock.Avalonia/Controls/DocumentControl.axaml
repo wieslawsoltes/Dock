@@ -44,7 +44,11 @@
               <ContentControl x:Name="PART_ContentPresenter"
                               Content="{Binding}"
                               HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch" />
+                              VerticalAlignment="Stretch">
+                <ContentControl.ContentTemplate>
+                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                </ContentControl.ContentTemplate>
+              </ContentControl>
             </DockableControl>
           </Border>
         </DockPanel>

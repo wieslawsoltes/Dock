@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
@@ -23,8 +22,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// </summary>
     public static readonly StyledProperty<object?> ContentProperty =
         AvaloniaProperty.Register<Document, object?>(nameof(Content));
-
-    private Control? _cached;
 
     /// <summary>
     /// Initializes new instance of the <see cref="Document"/> class.
@@ -60,7 +57,7 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <returns></returns>
     public Control? Build()
     {
-        return Load(Content)?.Result;
+        return TemplateHelper.Load(Content)?.Result;
     }
 
     /// <summary>
@@ -99,24 +96,6 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     /// <returns></returns>
     public Control? Build(object? data, Control? existing)
     {
-        if (_cached is not null)
-        {
-            return _cached;
-        }
-        var control = TemplateContent.Load(Content)?.Result;
-        if (control is not null)
-        {
-            _cached = control;
-        }
-        return control;
-    }
-
-    private static TemplateResult<Control>? Load(object? templateContent)
-    {
-        if (templateContent is Func<IServiceProvider, object> direct)
-        {
-            return (TemplateResult<Control>)direct(null!);
-        }
-        throw new ArgumentException(nameof(templateContent));
+        return TemplateHelper.Build(Content, this);
     }
 }

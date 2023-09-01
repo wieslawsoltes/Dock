@@ -1,7 +1,9 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockMvvmSample"
+             xmlns:ids="using:Dock.Settings"
              xmlns:idc="using:Dock.Avalonia.Controls"
+             xmlns:idcr="using:Dock.Avalonia.Controls.Recycling"
              xmlns:core="using:Dock.Model.Core"
              Name="Dock Avalonia Demo"
              x:Class="DockMvvmSample.App">
@@ -10,7 +12,15 @@
     <local:ViewLocator />
   </Application.DataTemplates>
 
+  <Application.Resources>
+    <idcr:ControlRecycling x:Key="ControlRecyclingKey" />
+  </Application.Resources>
+
   <Application.Styles>
+
+    <Style Selector="idc|DockControl">
+      <Setter Property="(ids:DockProperties.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
 
     <Style Selector="idc|DocumentControl">
       <Setter Property="HeaderTemplate">

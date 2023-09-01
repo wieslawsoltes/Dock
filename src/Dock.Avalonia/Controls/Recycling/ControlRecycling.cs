@@ -2,17 +2,24 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls.Recycling;
 
 /// <summary>
 /// 
 /// </summary>
-public class ControlRecycling
+public class ControlRecycling : IControlRecycling
 {
-    private readonly Dictionary<object, Control> _cache = new();
+    private readonly Dictionary<object, object> _cache = new();
 
-    private bool TryGetValue(object? data, out Control? control)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="control"></param>
+    /// <returns></returns>
+    public bool TryGetValue(object? data, out object? control)
     {
         if (data is null)
         {
@@ -23,7 +30,12 @@ public class ControlRecycling
         return _cache.TryGetValue(data, out control);
     }
 
-    private void Add(object data, Control control)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="control"></param>
+    public void Add(object data, object control)
     {
         _cache[data] = control;
     }
@@ -35,7 +47,7 @@ public class ControlRecycling
     /// <param name="existing"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    public Control? Build(object? data, Control? existing, Control? parent)
+    public object? Build(object? data, object? existing, object? parent)
     {
         if (data is null)
         {
@@ -50,7 +62,7 @@ public class ControlRecycling
             return control;
         }
 
-        var dataTemplate = parent?.FindDataTemplate(data, null);
+        var dataTemplate = (parent as Control)?.FindDataTemplate(data);
 
         control = dataTemplate?.Build(data);
         if (control is null)
@@ -63,5 +75,13 @@ public class ControlRecycling
         Console.WriteLine($"[Added] {data}, {control}");
 #endif
         return control;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Clear()
+    {
+        _cache.Clear();
     }
 }

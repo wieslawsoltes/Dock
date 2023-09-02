@@ -8,6 +8,11 @@ public interface IControlRecycling
     /// <summary>
     /// 
     /// </summary>
+    public bool TryToUseIdAsKey { get; set; }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="data"></param>
     /// <param name="control"></param>
     /// <returns></returns>

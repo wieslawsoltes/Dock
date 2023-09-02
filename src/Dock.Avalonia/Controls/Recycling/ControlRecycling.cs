@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
@@ -9,9 +10,25 @@ namespace Dock.Avalonia.Controls.Recycling;
 /// <summary>
 /// 
 /// </summary>
-public class ControlRecycling : IControlRecycling
+public class ControlRecycling : AvaloniaObject, IControlRecycling
 {
     private readonly Dictionary<object, object> _cache = new();
+    private bool _tryToUseIdAsKey;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static readonly DirectProperty<ControlRecycling, bool> TryToUseIdAsKeyProperty =
+        AvaloniaProperty.RegisterDirect<ControlRecycling, bool>(nameof(TryToUseIdAsKey), o => o.TryToUseIdAsKey, (o, v) => o.TryToUseIdAsKey = v);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool TryToUseIdAsKey
+    {
+        get => _tryToUseIdAsKey;
+        set => SetAndRaise(TryToUseIdAsKeyProperty, ref _tryToUseIdAsKey, value);
+    }
 
     /// <summary>
     /// 
@@ -54,10 +71,23 @@ public class ControlRecycling : IControlRecycling
             return null;
         }
 
-        if (TryGetValue(data, out var control))
+        var key = data;
+
+        if (TryToUseIdAsKey && data is IDockable dockable)
         {
 #if DEBUG
-            Console.WriteLine($"[Cached] {data}, {control}");
+            Console.WriteLine($"Build: {data}, Id='{dockable.Id}'");
+#endif
+            if (!string.IsNullOrWhiteSpace(dockable.Id))
+            {
+                key = dockable.Id;
+            }
+        }
+
+        if (TryGetValue(key, out var control))
+        {
+#if DEBUG
+            Console.WriteLine($"[Cached] {key}, {control}");
 #endif
             return control;
         }
@@ -70,9 +100,9 @@ public class ControlRecycling : IControlRecycling
             return null;
         }
 
-        Add(data, control);
+        Add(key, control);
 #if DEBUG
-        Console.WriteLine($"[Added] {data}, {control}");
+        Console.WriteLine($"[Added] {key}, {control}");
 #endif
         return control;
     }

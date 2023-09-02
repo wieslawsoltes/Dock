@@ -8,7 +8,7 @@
              RequestedThemeVariant="Light">
 
   <Application.Resources>
-    <idcr:ControlRecycling x:Key="ControlRecyclingKey" />
+    <idcr:ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
     <Color x:Key="RegionColor">Transparent</Color>
   </Application.Resources>
 

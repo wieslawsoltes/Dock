@@ -27,8 +27,8 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
 
-        // _serializer = new DockSerializer(typeof(AvaloniaList<>));
-        _serializer = new AvaloniaDockSerializer();
+        _serializer = new DockSerializer(typeof(AvaloniaList<>));
+        // _serializer = new AvaloniaDockSerializer();
 
         _dockState = new DockState();
 

@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Settings", "src\Dock.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI", "src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{2CDD7BD2-3432-4F47-8865-EC8D7E652628}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{E6A49621-154E-4A00-A54A-39C3BA55799A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,6 +158,10 @@ Global
 		{2CDD7BD2-3432-4F47-8865-EC8D7E652628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CDD7BD2-3432-4F47-8865-EC8D7E652628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CDD7BD2-3432-4F47-8865-EC8D7E652628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +186,7 @@ Global
 		{1F5D6BD4-CED0-409F-89D8-096F5F457A6D} = {C4E2763D-8CA1-4332-808F-E32E9F4DDA94}
 		{6ACDD1B2-CC63-4F4D-8E99-3F8948CA2A6E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{2CDD7BD2-3432-4F47-8865-EC8D7E652628} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{E6A49621-154E-4A00-A54A-39C3BA55799A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

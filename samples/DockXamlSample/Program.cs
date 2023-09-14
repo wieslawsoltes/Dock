@@ -18,6 +18,7 @@ internal class Program
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace();
+            .LogToTrace()
+            .AfterSetup(builder => builder.Instance!.AttachDevTools());
     }
 }

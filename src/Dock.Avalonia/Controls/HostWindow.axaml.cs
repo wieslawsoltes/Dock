@@ -64,9 +64,6 @@ public class HostWindow : Window, IHostWindow
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
-#if DEBUG
-        this.AttachDevTools();
-#endif
         UpdatePseudoClasses(IsToolWindow);
     }
 

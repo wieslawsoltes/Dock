@@ -113,7 +113,7 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
-    internal static bool IsSplitter(Control? control)
+    internal static bool IsSplitter(Control? control, out ProportionalStackPanelSplitter? proportionalStackPanelSplitter)
     {
         if (control is ContentPresenter contentPresenter)
         {
@@ -122,10 +122,21 @@ public class ProportionalStackPanelSplitter : Thumb
                 contentPresenter.UpdateChild();
             }
 
-            return contentPresenter.Child is ProportionalStackPanelSplitter;
+            if (contentPresenter.Child is ProportionalStackPanelSplitter childSplitter)
+            {
+                proportionalStackPanelSplitter = childSplitter;
+                return true;
+            }
         }
 
-        return control is ProportionalStackPanelSplitter;
+        if (control is ProportionalStackPanelSplitter splitter)
+        {
+            proportionalStackPanelSplitter = splitter;
+            return true;
+        }
+
+        proportionalStackPanelSplitter = null;
+        return false;
     }
 
     internal static void SetControlProportion(Control? control, double proportion)

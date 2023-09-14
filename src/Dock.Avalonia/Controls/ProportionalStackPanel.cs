@@ -171,8 +171,8 @@ public class ProportionalStackPanel : Panel
             var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
             if (isEmpty)
             {
-                control.Measure(new Size());
                 previousIsEmpty = true;
+                control.Measure(new Size());
                 continue;
             }
 

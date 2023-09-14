@@ -197,7 +197,14 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                if (previousIsEmpty)
+                var nextIsEmpty = false;
+                if (i + 1 < Children.Count)
+                {
+                    var nextControl = Children[i + 1];
+                    nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                }
+
+                if (previousIsEmpty || nextIsEmpty)
                 {
                     control.Measure(new Size());
                     previousIsEmpty = true;
@@ -285,7 +292,14 @@ public class ProportionalStackPanel : Panel
                 continue;
             }
 
-            if (ProportionalStackPanelSplitter.IsSplitter(control) && previousIsEmpty)
+            var nextIsEmpty = false;
+            if (i + 1 < Children.Count)
+            {
+                var nextControl = Children[i + 1];
+                nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+            }
+
+            if (ProportionalStackPanelSplitter.IsSplitter(control) && (previousIsEmpty || nextIsEmpty))
             {
                 control.Arrange(new Rect());
                 index++;

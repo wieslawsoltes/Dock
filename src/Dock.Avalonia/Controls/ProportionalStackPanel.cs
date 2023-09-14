@@ -154,6 +154,8 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
+        var previousIsEmpty = false;
+        
         // Measure each of the Children
         for (var i = 0; i < Children.Count; i++)
         {
@@ -170,6 +172,7 @@ public class ProportionalStackPanel : Panel
             if (isEmpty)
             {
                 control.Measure(new Size());
+                previousIsEmpty = true;
                 continue;
             }
 
@@ -193,8 +196,19 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                control.Measure(remainingSize);
+                if (previousIsEmpty)
+                {
+                    control.Measure(new Size());
+                    previousIsEmpty = true;
+                    continue;
+                }
+                else
+                {
+                    control.Measure(remainingSize);
+                }
             }
+
+            previousIsEmpty = false;
 
             var desiredSize = control.DesiredSize;
 
@@ -254,6 +268,8 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
+        var previousIsEmpty = false;
+
         for (var i = 0; i < Children.Count; i++)
         {
             var control = Children[i];
@@ -261,10 +277,20 @@ public class ProportionalStackPanel : Panel
             var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
             if (isEmpty)
             {
+                previousIsEmpty = true;
                 control.Arrange(new Rect());
                 index++;
                 continue;
             }
+
+            if (ProportionalStackPanelSplitter.IsSplitter(control) && previousIsEmpty)
+            {
+                control.Arrange(new Rect());
+                index++;
+                continue;
+            }
+
+            previousIsEmpty = false;
 
             // Determine the remaining space left to arrange the element
             var remainingRect = new Rect(

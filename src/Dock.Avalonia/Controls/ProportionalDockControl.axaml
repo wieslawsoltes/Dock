@@ -8,7 +8,8 @@
 
   <ControlTheme x:Key="{x:Type ProportionalDockControl}" TargetType="ProportionalDockControl">
 
-    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" x:DataType="core:IDock" />
+    <Setter Property="(ProportionalStackPanelSplitter.IsEmpty)" Value="{Binding IsEmpty}" x:DataType="core:IDock" />
 
     <Setter Property="Template">
       <ControlTemplate>

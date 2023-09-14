@@ -42,6 +42,11 @@ public partial class MainView : UserControl
         }
     }
 
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
     private List<FilePickerFileType> GetOpenOpenLayoutFileTypes()
     {
         return new List<FilePickerFileType>

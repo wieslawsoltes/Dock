@@ -9,4 +9,9 @@ public partial class ProportionalStackPanelView : UserControl
     {
         InitializeComponent();
     }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 }

@@ -14,6 +14,11 @@ public partial class MainView : UserControl
         InitializeMenu();
     }
 
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+
     private void InitializeThemes()
     {
         var dark = false;

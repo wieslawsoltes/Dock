@@ -14,6 +14,5 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace()
-            .AfterSetup(builder => builder.Instance!.AttachDevTools());
+            .LogToTrace();
 }

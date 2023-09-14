@@ -126,6 +126,7 @@ public abstract partial class FactoryBase : IFactory
             if (split.VisibleDockables is not null)
             {
                 split.VisibleDockables.Add(dockable);
+                split.IsEmpty = split.VisibleDockables.Count == 0;
                 OnDockableAdded(dockable);
                 split.ActiveDockable = dockable;
             }
@@ -166,6 +167,7 @@ public abstract partial class FactoryBase : IFactory
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(split);
+                    layout.IsEmpty = layout.VisibleDockables.Count == 0;
                     OnDockableAdded(split);
                     layout.ActiveDockable = split;
                 }
@@ -178,6 +180,7 @@ public abstract partial class FactoryBase : IFactory
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(dock);
+                    layout.IsEmpty = layout.VisibleDockables.Count == 0;
                     OnDockableAdded(dock);
                     layout.ActiveDockable = dock;
                 }
@@ -187,6 +190,7 @@ public abstract partial class FactoryBase : IFactory
         }
 
         layout.VisibleDockables?.Add(splitter);
+        layout.IsEmpty = layout.VisibleDockables?.Count == 0;
         OnDockableAdded(splitter);
 
         switch (operation)
@@ -197,6 +201,7 @@ public abstract partial class FactoryBase : IFactory
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(dock);
+                    layout.IsEmpty = layout.VisibleDockables.Count == 0;
                     OnDockableAdded(dock);
                     layout.ActiveDockable = dock;
                 }
@@ -209,6 +214,7 @@ public abstract partial class FactoryBase : IFactory
                 if (layout.VisibleDockables is not null)
                 {
                     layout.VisibleDockables.Add(split);
+                    layout.IsEmpty = layout.VisibleDockables.Count == 0;
                     OnDockableAdded(split);
                     layout.ActiveDockable = split;
                 }
@@ -237,8 +243,10 @@ public abstract partial class FactoryBase : IFactory
                     {
                         var layout = CreateSplitLayout(dock, dockable, operation);
                         ownerDock.VisibleDockables.RemoveAt(index);
+                        ownerDock.IsEmpty = ownerDock.VisibleDockables.Count == 0;
                         OnDockableRemoved(dockable);
                         ownerDock.VisibleDockables.Insert(index, layout);
+                        layout.IsEmpty = layout.VisibleDockables?.Count == 0;
                         OnDockableAdded(dockable);
                         InitDockable(layout, ownerDock);
                         ownerDock.ActiveDockable = layout;
@@ -269,6 +277,7 @@ public abstract partial class FactoryBase : IFactory
                     if (dock.VisibleDockables is not null)
                     {
                         dock.VisibleDockables.Add(dockable);
+                        dock.IsEmpty = dock.VisibleDockables.Count == 0;
                         OnDockableAdded(dockable);
                         dock.ActiveDockable = dockable;
                     }
@@ -301,6 +310,7 @@ public abstract partial class FactoryBase : IFactory
                     if (dock.VisibleDockables is not null)
                     {
                         dock.VisibleDockables.Add(dockable);
+                        dock.IsEmpty = dock.VisibleDockables.Count == 0;
                         OnDockableAdded(dockable);
                         dock.ActiveDockable = dockable;
                     }
@@ -350,6 +360,7 @@ public abstract partial class FactoryBase : IFactory
         if (root.VisibleDockables is not null && target is not null)
         {
             root.VisibleDockables.Add(target);
+            root.IsEmpty = root.VisibleDockables.Count == 0;
             OnDockableAdded(target);
             root.ActiveDockable = target;
             root.DefaultDockable = target;

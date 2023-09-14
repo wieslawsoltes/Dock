@@ -113,6 +113,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
             },
             [typeof(IDockDock)] = new List<string>
@@ -132,6 +133,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IDockDock
                 "LastChildFill",
@@ -153,6 +155,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IDocumentDock
                 "CanCreateDocument",
@@ -174,6 +177,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
             },
             [typeof(IProportionalDock)] = new List<string>
@@ -193,6 +197,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IProportionalDock
                 "Orientation",
@@ -214,6 +219,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
             },
             [typeof(IRootDock)] = new List<string>
@@ -233,6 +239,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IRootDock
                 "IsFocusableRoot",
@@ -261,6 +268,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IToolDock
                 "Alignment",
@@ -295,6 +303,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
             },
             [typeof(Document)] = new List<string>
@@ -334,6 +343,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IDockDock
                 "LastChildFill",
@@ -355,6 +365,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IDocumentDock
                 "CanCreateDocument",
@@ -376,6 +387,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IProportionalDock
                 "Orientation",
@@ -397,6 +409,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
             },
             [typeof(RootDock)] = new List<string>
@@ -416,6 +429,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IRootDock
                 "IsFocusableRoot",
@@ -444,6 +458,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Proportion",
                 "Dock",
                 "IsActive",
+                "IsEmpty",
                 "IsCollapsable",
                 // IToolDock
                 "Alignment",

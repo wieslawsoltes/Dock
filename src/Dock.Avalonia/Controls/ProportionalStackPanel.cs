@@ -203,12 +203,16 @@ public class ProportionalStackPanel : Panel
                 {
                     case Orientation.Horizontal:
                     {
-                        control.Measure(constraint.WithWidth(Math.Max(0, (constraint.Width - splitterThickness) * proportion)));
+                        var width = Math.Max(0, (constraint.Width - splitterThickness) * proportion);
+                        var size = constraint.WithWidth(width);
+                        control.Measure(size);
                         break;
                     }
                     case Orientation.Vertical:
                     {
-                        control.Measure(constraint.WithHeight(Math.Max(0, (constraint.Height - splitterThickness) * proportion)));
+                        var height = Math.Max(0, (constraint.Height - splitterThickness) * proportion);
+                        var size = constraint.WithHeight(height);
+                        control.Measure(size);
                         break;
                     }
                 }
@@ -224,14 +228,13 @@ public class ProportionalStackPanel : Panel
 
                 if (previousIsEmpty || nextIsEmpty)
                 {
-                    control.Measure(new Size());
+                    var size = new Size();
+                    control.Measure(size);
                     previousIsEmpty = true;
                     continue;
                 }
-                else
-                {
-                    control.Measure(remainingSize);
-                }
+
+                control.Measure(remainingSize);
             }
 
             previousIsEmpty = false;
@@ -305,7 +308,8 @@ public class ProportionalStackPanel : Panel
             {
                 // TODO: Also handle next is empty.
                 previousIsEmpty = true;
-                control.Arrange(new Rect());
+                var rect = new Rect();
+                control.Arrange(rect);
                 index++;
                 continue;
             }
@@ -321,7 +325,8 @@ public class ProportionalStackPanel : Panel
 
             if (isSplitter && (previousIsEmpty || nextIsEmpty))
             {
-                control.Arrange(new Rect());
+                var rect = new Rect();
+                control.Arrange(rect);
                 index++;
                 continue;
             }
@@ -355,9 +360,9 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            remainingRect = remainingRect.WithWidth(
-                                Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion));
-                            left += Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
+                            var width = Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
+                            remainingRect = remainingRect.WithWidth(width);
+                            left += width;
                         }
 
                         break;
@@ -372,9 +377,9 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            remainingRect = remainingRect.WithHeight(
-                                Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion));
-                            top += Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion);
+                            var height = Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion);
+                            remainingRect = remainingRect.WithHeight(height);
+                            top += height;
                         }
 
                         break;

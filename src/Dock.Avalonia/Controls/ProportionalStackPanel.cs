@@ -191,7 +191,8 @@ public class ProportionalStackPanel : Panel
             {
                 // TODO: Also handle next is empty.
                 previousIsEmpty = true;
-                control.Measure(new Size());
+                var size = new Size();
+                control.Measure(size);
                 continue;
             }
 

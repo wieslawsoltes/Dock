@@ -44,6 +44,11 @@ public interface IDock : IDockable
     bool IsActive { get; set; }
 
     /// <summary>
+    /// Gets if the dockable is empty.
+    /// </summary>
+    bool IsEmpty { get; set; }
+
+    /// <summary>
     /// Gets or sets if the Dock collapses when all its children are removed.
     /// </summary>
     bool IsCollapsable { get; set; }

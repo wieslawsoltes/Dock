@@ -53,9 +53,10 @@
 
     <Style Selector="^:toolwindow">
 
-      <Setter Property="SystemDecorations" Value="None" />
+      <Setter Property="SystemDecorations" Value="Full" />
       <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-      <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+      <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+      <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
 
       <Setter Property="Template">
         <ControlTemplate>

@@ -43,6 +43,32 @@ public class ProportionalStackPanelSplitter : Thumb
     }
 
     /// <summary>
+    /// Defines the IsEmpty attached property.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsEmptyProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanelSplitter, Control, bool>("IsEmpty", false, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the IsEmpty attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The IsEmpty attached property.</returns>
+    public static bool GetIsEmpty(AvaloniaObject control)
+    {
+        return control.GetValue(IsEmptyProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the IsEmpty attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the IsEmpty property.</param>
+    public static void SetIsEmpty(AvaloniaObject control, bool value)
+    {
+        control.SetValue(IsEmptyProperty, value);
+    }
+
+    /// <summary>
     /// Defines the <see cref="Thickness"/> property.
     /// </summary>
     public static readonly StyledProperty<double> ThicknessProperty =
@@ -87,7 +113,7 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
-    internal static bool IsSplitter(Control? control)
+    internal static bool IsSplitter(Control? control, out ProportionalStackPanelSplitter? proportionalStackPanelSplitter)
     {
         if (control is ContentPresenter contentPresenter)
         {
@@ -96,10 +122,21 @@ public class ProportionalStackPanelSplitter : Thumb
                 contentPresenter.UpdateChild();
             }
 
-            return contentPresenter.Child is ProportionalStackPanelSplitter;
+            if (contentPresenter.Child is ProportionalStackPanelSplitter childSplitter)
+            {
+                proportionalStackPanelSplitter = childSplitter;
+                return true;
+            }
         }
 
-        return control is ProportionalStackPanelSplitter;
+        if (control is ProportionalStackPanelSplitter splitter)
+        {
+            proportionalStackPanelSplitter = splitter;
+            return true;
+        }
+
+        proportionalStackPanelSplitter = null;
+        return false;
     }
 
     internal static void SetControlProportion(Control? control, double proportion)
@@ -148,6 +185,31 @@ public class ProportionalStackPanelSplitter : Thumb
         }
 
         return double.NaN;
+    }
+
+    internal static bool GetControlIsEmpty(Control? control)
+    {
+        if (control is ContentPresenter contentPresenter)
+        {
+            if (contentPresenter.Child is null)
+            {
+                contentPresenter.UpdateChild();
+            }
+
+            if (contentPresenter.Child is not null)
+            {
+                return GetIsEmpty(contentPresenter.Child);
+            }
+
+            return false;
+        }
+
+        if (control is not null)
+        {
+            return GetIsEmpty(control);
+        }
+
+        return false;
     }
 
     /// <inheritdoc/>

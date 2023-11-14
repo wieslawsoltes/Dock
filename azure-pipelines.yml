@@ -11,7 +11,7 @@ resources:
 variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'Any CPU'
-  PublishFramework: 'net7.0'
+  PublishFramework: 'net8.0'
   PublishProject: 'DockMvvmSample'
   PublishRuntime: ''
   Workloads: 'wasm-tools wasm-experimental'

@@ -16,8 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE.TXT = LICENSE.TXT
 		README.md = README.md
-		COPYING = COPYING
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "git", "git", "{E58CB250-1197-4D0F-BBC1-F9733B1B48DC}"

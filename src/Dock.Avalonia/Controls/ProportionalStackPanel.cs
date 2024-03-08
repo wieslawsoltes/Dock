@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Data;
 using Avalonia.Layout;
 
 namespace Dock.Avalonia.Controls;
@@ -28,6 +29,58 @@ public class ProportionalStackPanel : Panel
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Defines the Proportion attached property.
+    /// </summary>
+    public static readonly AttachedProperty<double> ProportionProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, double>("Proportion", double.NaN, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the Proportion attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The Proportion attached property.</returns>
+    public static double GetProportion(AvaloniaObject control)
+    {
+        return control.GetValue(ProportionProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the Proportion attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the Proportion property.</param>
+    public static void SetProportion(AvaloniaObject control, double value)
+    {
+        control.SetValue(ProportionProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the IsEmpty attached property.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsEmptyProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, bool>("IsEmpty", false, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the IsEmpty attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The IsEmpty attached property.</returns>
+    public static bool GetIsEmpty(AvaloniaObject control)
+    {
+        return control.GetValue(IsEmptyProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the IsEmpty attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the IsEmpty property.</param>
+    public static void SetIsEmpty(AvaloniaObject control, bool value)
+    {
+        control.SetValue(IsEmptyProperty, value);
+    }
+
     private void AssignProportions(global::Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;
@@ -36,12 +89,12 @@ public class ProportionalStackPanel : Panel
         for (var i = 0; i < children.Count; i++)
         {
             var control = children[i];
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
+            var isEmpty = GetIsEmpty(control);
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
 
             if (!isSplitter)
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+                var proportion = GetProportion(control);
 
                 if (isEmpty)
                 {
@@ -64,14 +117,14 @@ public class ProportionalStackPanel : Panel
             var toAssign = assignedProportion;
             foreach (var control in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
-                         return !isEmpty && double.IsNaN(ProportionalStackPanelSplitter.GetControlProportion(c));
+                         var isEmpty = GetIsEmpty(c);
+                         return !isEmpty && double.IsNaN(GetProportion(c));
                      }))
             {
                 if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
                 {
                     var proportion = (1.0 - toAssign) / unassignedProportions;
-                    ProportionalStackPanelSplitter.SetControlProportion(control, proportion);
+                    SetProportion(control, proportion);
                     assignedProportion += (1.0 - toAssign) / unassignedProportions;
                 }
             }
@@ -85,12 +138,12 @@ public class ProportionalStackPanel : Panel
 
             foreach (var child in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
+                         var isEmpty = GetIsEmpty(c);
                          return !isEmpty && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
                      }))
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) + toAdd;
-                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
+                var proportion = GetProportion(child) + toAdd;
+                SetProportion(child, proportion);
             }
         }
         else if (assignedProportion > 1)
@@ -101,12 +154,12 @@ public class ProportionalStackPanel : Panel
 
             foreach (var child in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
+                         var isEmpty = GetIsEmpty(c);
                          return !isEmpty && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
                      }))
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) - toRemove;
-                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
+                var proportion = GetProportion(child) - toRemove;
+                SetProportion(child, proportion);
             }
         }
     }
@@ -132,7 +185,7 @@ public class ProportionalStackPanel : Panel
                 if (i + 1 < Children.Count)
                 {
                     var nextControl = Children[i + 1];
-                    var nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                    var nextIsEmpty = GetIsEmpty(nextControl);
                     if (nextIsEmpty)
                     {
                         continue;
@@ -144,7 +197,7 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                previousIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
+                previousIsEmpty = GetIsEmpty(c);
             }
         }
 
@@ -184,9 +237,9 @@ public class ProportionalStackPanel : Panel
                 Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
                 Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
 
-            var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+            var proportion = GetProportion(control);
 
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
+            var isEmpty = !isSplitter && GetIsEmpty(control);
             if (isEmpty)
             {
                 // TODO: Also handle next is empty.
@@ -224,7 +277,7 @@ public class ProportionalStackPanel : Panel
                 if (i + 1 < Children.Count)
                 {
                     var nextControl = Children[i + 1];
-                    nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                    nextIsEmpty = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _ ) && GetIsEmpty(nextControl);
                 }
 
                 if (previousIsEmpty || nextIsEmpty)
@@ -304,7 +357,9 @@ public class ProportionalStackPanel : Panel
         {
             var control = Children[i];
 
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
+            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
+
+            var isEmpty = !isSplitter && GetIsEmpty(control);
             if (isEmpty)
             {
                 // TODO: Also handle next is empty.
@@ -315,13 +370,11 @@ public class ProportionalStackPanel : Panel
                 continue;
             }
 
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
-            
             var nextIsEmpty = false;
             if (i + 1 < Children.Count)
             {
                 var nextControl = Children[i + 1];
-                nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                nextIsEmpty = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _) && GetIsEmpty(nextControl);
             }
 
             if (isSplitter && (previousIsEmpty || nextIsEmpty))
@@ -347,7 +400,7 @@ public class ProportionalStackPanel : Panel
             if (index < Children.Count)
             {
                 var desiredSize = control.DesiredSize;
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+                var proportion = GetProportion(control);
 
                 switch (Orientation)
                 {
@@ -404,5 +457,13 @@ public class ProportionalStackPanel : Panel
         {
             InvalidateMeasure();
         }
+    }
+
+    static ProportionalStackPanel()
+    {
+        AffectsParentMeasure<ProportionalStackPanel>(IsEmptyProperty);
+        AffectsParentArrange<ProportionalStackPanel>(IsEmptyProperty);
+        AffectsParentMeasure<ProportionalStackPanel>(ProportionProperty);
+        AffectsParentArrange<ProportionalStackPanel>(ProportionProperty);
     }
 }

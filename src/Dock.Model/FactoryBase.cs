@@ -246,7 +246,7 @@ public abstract partial class FactoryBase : IFactory
                         ownerDock.IsEmpty = ownerDock.VisibleDockables.Count == 0;
                         OnDockableRemoved(dockable);
                         ownerDock.VisibleDockables.Insert(index, layout);
-                        layout.IsEmpty = layout.VisibleDockables?.Count == 0;
+                        ownerDock.IsEmpty = ownerDock.VisibleDockables?.Count == 0;
                         OnDockableAdded(dockable);
                         InitDockable(layout, ownerDock);
                         ownerDock.ActiveDockable = layout;

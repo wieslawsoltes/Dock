@@ -10,7 +10,7 @@ namespace Dock.Avalonia.Internal;
 
 internal class WindowDragState
 {
-    public Point DragStartPoint { get; set; }
+    public PixelPoint DragStartPoint { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
@@ -18,7 +18,7 @@ internal class WindowDragState
     public Control? TargetDropControl { get; set; }
     public DragAction DragAction { get; set; }
 
-    public void Start(Point point)
+    public void Start(PixelPoint point)
     {
         DragStartPoint = point;
         PointerPressed = true;
@@ -162,7 +162,7 @@ internal class HostWindowState : IHostWindowState
         }
     }
 
-    private bool IsMinimumDragDistance(Vector diff)
+    private bool IsMinimumDragDistance(PixelPoint diff)
     {
         return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
                 || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
@@ -173,7 +173,7 @@ internal class HostWindowState : IHostWindowState
     /// </summary>
     /// <param name="point">The pointer position.</param>
     /// <param name="eventType">The pointer event type.</param>
-    public void Process(Point point, EventType eventType)
+    public void Process(PixelPoint point, EventType eventType)
     {
         switch (eventType)
         {
@@ -219,7 +219,7 @@ internal class HostWindowState : IHostWindowState
 
                 if (_state.DoDragDrop == false)
                 {
-                    Vector diff = _state.DragStartPoint - point;
+                    var diff = _state.DragStartPoint - point;
                     var haveMinimumDragDistance = IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {

@@ -15,7 +15,14 @@
             <ItemsControl.Styles>
               <Style Selector="ItemsControl > ContentPresenter">
                 <Setter x:DataType="core:IDock" Property="(ProportionalStackPanel.Proportion)" Value="{Binding Proportion}" />
-                <Setter x:DataType="core:IDock" Property="(ProportionalStackPanel.IsEmpty)" Value="{Binding IsEmpty}" />
+                <Setter Property="(ProportionalStackPanel.IsCollapsed)">
+                  <Setter.Value>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}" x:DataType="core:IDock">
+                      <CompiledBinding Path="IsCollapsable" />
+                      <CompiledBinding Path="IsEmpty" />
+                    </MultiBinding>
+                  </Setter.Value>
+                </Setter>
               </Style>
             </ItemsControl.Styles>
             <ItemsControl.ItemsPanel>

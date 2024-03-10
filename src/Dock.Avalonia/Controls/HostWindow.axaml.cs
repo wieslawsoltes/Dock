@@ -100,11 +100,6 @@ public class HostWindow : Window, IHostWindow
         PseudoClasses.Set(":dragging", true);
         _draggingWindow = true;
         BeginMoveDrag(e);
-            
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            EndDrag(e);
-        }
     }
 
     private void EndDrag(PointerEventArgs e)
@@ -148,9 +143,7 @@ public class HostWindow : Window, IHostWindow
         {
             Window.Save();
 
-            if ((_chromeGrip is { } && _chromeGrip.IsPointerOver)
-                || (_hostWindowTitleBar?.BackgroundControl is { } && (_hostWindowTitleBar?.BackgroundControl?.IsPointerOver ?? false))
-                && _mouseDown)
+            if (_mouseDown)
             {
                 Window.Factory?.OnWindowMoveDrag(Window);
                 _hostWindowState.Process(Position.ToPoint(1.0), EventType.Moved);

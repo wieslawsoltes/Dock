@@ -263,7 +263,6 @@ public abstract partial class FactoryBase : IFactory
     public virtual IDockWindow? CreateWindowFrom(IDockable dockable)
     {
         IDockable? target;
-        bool topmost;
 
         switch (dockable)
         {
@@ -282,7 +281,6 @@ public abstract partial class FactoryBase : IFactory
                         dock.ActiveDockable = dockable;
                     }
                 }
-                topmost = true;
                 break;
             }
             case IDocument:
@@ -315,37 +313,31 @@ public abstract partial class FactoryBase : IFactory
                         dock.ActiveDockable = dockable;
                     }
                 }
-                topmost = false;
                 break;
             }
             case IToolDock:
             {
                 target = dockable;
-                topmost = true;
                 break;
             }
             case IDocumentDock:
             {
                 target = dockable;
-                topmost = false;
                 break;
             }
             case IProportionalDock proportionalDock:
             {
                 target = proportionalDock;
-                topmost = false;
                 break;
             }
             case IDockDock dockDock:
             {
                 target = dockDock;
-                topmost = false;
                 break;
             }
             case IRootDock rootDock:
             {
                 target = rootDock.ActiveDockable;
-                topmost = false;
                 break;
             }
             default:
@@ -372,7 +364,6 @@ public abstract partial class FactoryBase : IFactory
         window.Title = "";
         window.Width = double.NaN;
         window.Height = double.NaN;
-        window.Topmost = topmost;
         window.Layout = root;
 
         root.Window = window;

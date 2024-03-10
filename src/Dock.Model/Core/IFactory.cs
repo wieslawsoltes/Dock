@@ -184,7 +184,7 @@ public partial interface IFactory
     /// <param name="dockable">The dockable to find root for.</param>
     /// <param name="predicate">The predicate to filter root docks.</param>
     /// <returns>The root dockable instance or null if root dockable was not found.</returns>
-    IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate);
+    IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool>? predicate = null);
 
     /// <summary>
     /// Searches dock for dockable.
@@ -266,10 +266,35 @@ public partial interface IFactory
     void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable);
 
     /// <summary>
-    /// Pins dockable.
+    /// Pins or unpins a dockable.
     /// </summary>
-    /// <param name="dockable">The dockable to pin.</param>
+    /// <param name="dockable">The dockable to pin/unpin.</param>
     void PinDockable(IDockable dockable);
+
+    /// <summary>
+    /// Unpins a dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to unpin.</param>
+    void UnpinDockable(IDockable dockable);
+
+    /// <summary>
+    /// Temporarily shows a pinned dockable.
+    /// </summary>
+    /// <param name="dockable">The dockable to show.</param>
+    void PreviewPinnedDockable(IDockable dockable);
+
+    /// <summary>
+    /// Hides all temporarily shown pinned dockables.
+    /// </summary>
+    /// <param name="rootDock">The owner of the pinned dockables</param>
+    void HidePreviewingDockables(IRootDock rootDock);
+
+    /// <summary>
+    /// Returns true if dockable is pinned.
+    /// </summary>
+    /// <param name="dockable">The dockable to check.</param>
+    /// <param name="rootDock">The root dock. If null, the root will be automatically found.</param>
+    bool IsDockablePinned(IDockable dockable, IRootDock? rootDock = null);
 
     /// <summary>
     /// Floats dockable.

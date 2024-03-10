@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -33,6 +34,9 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void RemoveDockable(IDockable dockable, bool collapse)
     {
+        // to correctly remove a pinned dockable, it needs to be unpinned
+        UnpinDockable(dockable);
+
         if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
         {
             return;
@@ -112,6 +116,8 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)
     {
+        UnpinDockable(sourceDockable);
+
         if (targetDock.VisibleDockables is null)
         {
             targetDock.VisibleDockables = CreateList<IDockable>();
@@ -260,8 +266,19 @@ public abstract partial class FactoryBase
         }
     }
 
-    private bool IsDockablePinned(IDockable dockable, IRootDock rootDock)
+    /// <inheritdoc/>
+    public bool IsDockablePinned(IDockable dockable, IRootDock? rootDock = null)
     {
+        if (rootDock == null)
+        {
+            rootDock = FindRoot(dockable);
+
+            if (rootDock == null)
+            {
+                return false;
+            }
+        }
+
         if (rootDock.LeftPinnedDockables is not null)
         {
             if (rootDock.LeftPinnedDockables.Contains(dockable))
@@ -298,6 +315,51 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public void HidePreviewingDockables(IRootDock rootDock)
+    {
+        if (rootDock.PinnedDock == null)
+            return;
+
+        if (rootDock.PinnedDock.VisibleDockables != null)
+        {
+            foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+            {
+                dockable.Owner = dockable.OriginalOwner;
+                dockable.OriginalOwner = null;
+            }
+            RemoveAllVisibleDockables(rootDock.PinnedDock);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void PreviewPinnedDockable(IDockable dockable)
+    {
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        HidePreviewingDockables(rootDock);
+
+        var alignment = (dockable.Owner as IToolDock)?.Alignment ?? Alignment.Unset;
+
+        if (rootDock.PinnedDock == null)
+        {
+            rootDock.PinnedDock = CreateToolDock();
+            InitDockable(rootDock.PinnedDock, rootDock);
+        }
+        rootDock.PinnedDock.Alignment = alignment;
+
+        Debug.Assert(rootDock.PinnedDock != null);
+
+        RemoveAllVisibleDockables(rootDock.PinnedDock);
+
+        dockable.OriginalOwner = dockable.Owner;
+        AddVisibleDockable(rootDock.PinnedDock, dockable);
+    }
+
+    /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
         switch (dockable.Owner)
@@ -319,7 +381,9 @@ public abstract partial class FactoryBase
 
                 var isPinned = IsDockablePinned(dockable, rootDock);
 
-                var alignment = toolDock.Alignment;
+                var originalToolDock = dockable.OriginalOwner as IToolDock;
+
+                var alignment = originalToolDock?.Alignment ?? toolDock.Alignment;
 
                 if (isVisible && !isPinned)
                 {
@@ -405,7 +469,7 @@ public abstract partial class FactoryBase
                     // TODO: Handle IsExpanded property of IToolDock.
                     // TODO: Handle AutoHide property of IToolDock.
                 }
-                else if (!isVisible && isPinned)
+                else if (isPinned)
                 {
                     // Unpin dockable.
 
@@ -456,7 +520,17 @@ public abstract partial class FactoryBase
                         }
                     }
 
-                    AddVisibleDockable(toolDock, dockable);
+                    if (!isVisible)
+                    {
+                        AddVisibleDockable(toolDock, dockable);
+                    }
+                    else
+                    {
+                        Debug.Assert(dockable.OriginalOwner is IDock);
+                        var originalOwner = (IDock)dockable.OriginalOwner;
+                        HidePreviewingDockables(rootDock);
+                        AddVisibleDockable(originalOwner, dockable);
+                    }
                     OnDockableAdded(dockable);
                     
                     // TODO: Handle ActiveDockable state.
@@ -474,12 +548,23 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public void UnpinDockable(IDockable dockable)
+    {
+        if (IsDockablePinned(dockable))
+        {
+            PinDockable(dockable);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void FloatDockable(IDockable dockable)
     {
         if (dockable.Owner is not IDock dock)
         {
             return;
         }
+
+        UnpinDockable(dockable);
 
         dock.GetPointerScreenPosition(out var dockPointerScreenX, out var dockPointerScreenY);
         dockable.GetPointerScreenPosition(out var dockablePointerScreenX, out var dockablePointerScreenY);
@@ -633,6 +718,21 @@ public abstract partial class FactoryBase
         {
             dock.VisibleDockables.Remove(dockable);
             UpdateIsEmpty(dock);
+        }
+    }
+
+    /// <summary>
+    /// Removes all visible dockable of the dock.
+    /// </summary>
+    protected void RemoveAllVisibleDockables(IDock dock)
+    {
+        if (dock.VisibleDockables != null)
+        {
+            if (dock.VisibleDockables.Count > 0)
+            {
+                dock.VisibleDockables.Clear();
+                UpdateIsEmpty(dock);
+            }
         }
     }
 

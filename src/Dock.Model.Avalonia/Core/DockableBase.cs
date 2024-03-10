@@ -49,6 +49,12 @@ public abstract class DockableBase : StyledElement, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, IDockable?>(nameof(Owner), o => o.Owner, (o, v) => o.Owner = v);
 
     /// <summary>
+    /// Defines the <see cref="OriginalOwner"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, IDockable?> OriginalOwnerProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, IDockable?>(nameof(OriginalOwner), o => o.OriginalOwner, (o, v) => o.OriginalOwner = v);
+
+    /// <summary>
     /// Defines the <see cref="Factory"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, IFactory?> FactoryProperty =
@@ -77,6 +83,7 @@ public abstract class DockableBase : StyledElement, IDockable
     private string _title = string.Empty;
     private object? _context;
     private IDockable? _owner;
+    private IDockable? _originalOwner;
     private IFactory? _factory;
     private bool _canClose = true;
     private bool _canPin = true;
@@ -125,6 +132,16 @@ public abstract class DockableBase : StyledElement, IDockable
     {
         get => _owner;
         set => SetAndRaise(OwnerProperty, ref _owner, value);
+    }
+
+    /// <inheritdoc/>
+    [ResolveByName]
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public IDockable? OriginalOwner
+    {
+        get => _originalOwner;
+        set => SetAndRaise(OriginalOwnerProperty, ref _originalOwner, value);
     }
 
     /// <inheritdoc/>

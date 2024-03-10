@@ -46,6 +46,14 @@ public class RootDock : DockBase, IRootDock
             (o, v) => o.LeftPinnedDockables = v);
 
     /// <summary>
+    /// Defines the <see cref="PinnedDock"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, IToolDock?> PinnedDockProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, IToolDock?>(
+            nameof(PinnedDock), o => o.PinnedDock,
+            (o, v) => o.PinnedDock = v);
+
+    /// <summary>
     /// Defines the <see cref="RightPinnedDockables"/> property.
     /// </summary>
     public static readonly DirectProperty<RootDock, IList<IDockable>?> RightPinnedDockablesProperty =
@@ -93,6 +101,7 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _rightPinnedDockables;
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
+    private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
 
@@ -137,6 +146,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _leftPinnedDockables;
         set => SetAndRaise(LeftPinnedDockablesProperty, ref _leftPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
+    public IToolDock? PinnedDock
+    {
+        get => _pinnedDock;
+        set => SetAndRaise(PinnedDockProperty, ref _pinnedDock, value);
     }
 
     /// <inheritdoc/>

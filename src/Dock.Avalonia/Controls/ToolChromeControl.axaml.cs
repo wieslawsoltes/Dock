@@ -141,6 +141,9 @@ public class ToolChromeControl : ContentControl
         CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         AttachToWindow();
+
+        var maximizeRestoreButton = e.NameScope.Get<Button>("PART_MaximizeRestoreButton");
+        maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
     }
 
     private void AttachToWindow()
@@ -157,9 +160,6 @@ public class ToolChromeControl : ContentControl
 
             SetCurrentValue(IsFloatingProperty, true);
         }
-
-        var maximizeRestoreButton = e.NameScope.Get<Button>("PART_MaximizeRestoreButton");
-        maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
     }
 
     private void OnMaximizeRestoreButtonClicked(object? sender, RoutedEventArgs e)

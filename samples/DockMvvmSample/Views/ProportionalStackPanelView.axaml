@@ -14,8 +14,8 @@
     <TabControl>
       <TabItem Header="Default">
         <ProportionalStackPanel Orientation="Horizontal">
-          <ProportionalStackPanel ProportionalStackPanelSplitter.Proportion="0.5">
-            <Rectangle Fill="Red" ProportionalStackPanelSplitter.Proportion="0.5" />
+          <ProportionalStackPanel ProportionalStackPanel.Proportion="0.5">
+            <Rectangle Fill="Red" ProportionalStackPanel.Proportion="0.5" />
             <ProportionalStackPanelSplitter />
             <Rectangle Fill="Green" />
             <ProportionalStackPanelSplitter />
@@ -35,7 +35,7 @@
             <ProportionalStackPanelSplitter />
             <Rectangle Fill="Blue" />
             <ProportionalStackPanelSplitter />
-            <Rectangle Fill="Red" ProportionalStackPanelSplitter.Proportion="0.5" />
+            <Rectangle Fill="Red" ProportionalStackPanel.Proportion="0.5" />
           </ProportionalStackPanel>
         </ProportionalStackPanel>
       </TabItem>

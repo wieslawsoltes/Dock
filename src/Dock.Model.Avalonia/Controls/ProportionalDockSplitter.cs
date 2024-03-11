@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
+using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 

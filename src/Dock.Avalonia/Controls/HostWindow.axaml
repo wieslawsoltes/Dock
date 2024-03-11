@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:core="using:Dock.Model.Core">
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
   <Design.PreviewWith>
     <HostWindow IsToolWindow="False" Width="300" Height="400" />
   </Design.PreviewWith>
@@ -14,6 +15,7 @@
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
+    <Setter Property="Topmost" Value="{Binding Window.Topmost}" x:DataType="controls:IRootDock" />
     <Setter Property="SystemDecorations" Value="Full" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
     <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />

@@ -254,7 +254,7 @@ public abstract partial class FactoryBase
             var originalTargetDockable = targetDock.VisibleDockables[targetIndex];
             sourceDock.VisibleDockables[sourceIndex] = originalTargetDockable;
             targetDock.VisibleDockables[targetIndex] = originalSourceDockable;
-                
+
             InitDockable(originalSourceDockable, targetDock);
             InitDockable(originalTargetDockable, sourceDock);
 
@@ -371,7 +371,7 @@ public abstract partial class FactoryBase
                 {
                     return;
                 }
-                
+
                 var isVisible = false;
 
                 if (toolDock.VisibleDockables is not null)
@@ -413,7 +413,7 @@ public abstract partial class FactoryBase
                             break;
                         }
                     }
-                    
+
                     if (toolDock.VisibleDockables is not null)
                     {
                         RemoveVisibleDockable(toolDock, dockable);
@@ -531,8 +531,9 @@ public abstract partial class FactoryBase
                         HidePreviewingDockables(rootDock);
                         AddVisibleDockable(originalOwner, dockable);
                     }
+
                     OnDockableAdded(dockable);
-                    
+
                     // TODO: Handle ActiveDockable state.
                     // TODO: Handle IsExpanded property of IToolDock.
                     // TODO: Handle AutoHide property of IToolDock.
@@ -604,7 +605,7 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
-        if (dockable.OnClose())
+        if (dockable.CanClose && dockable.OnClose())
         {
             RemoveDockable(dockable, true);
             OnDockableClosed(dockable);
@@ -662,7 +663,7 @@ public abstract partial class FactoryBase
         {
             return;
         }
-            
+
         CloseDockablesRange(dock, 0, indexOf - 1);
     }
 
@@ -679,7 +680,7 @@ public abstract partial class FactoryBase
         {
             return;
         }
-            
+
         CloseDockablesRange(dock, indexOf + 1, dock.VisibleDockables.Count - 1);
     }
 

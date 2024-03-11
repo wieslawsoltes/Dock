@@ -85,7 +85,7 @@ public class ProportionalStackPanelTests
                         new Border()
                         {
                             Background = Brushes.Red,
-                            [ProportionalStackPanelSplitter.ProportionProperty] = 0.5
+                            [ProportionalStackPanel.ProportionProperty] = 0.5
                         },
                         new ProportionalStackPanelSplitter(),
                         new Border()
@@ -138,7 +138,7 @@ public class ProportionalStackPanelTests
                         new Border()
                         {
                             Background=Brushes.Red,
-                            [ProportionalStackPanelSplitter.ProportionProperty] = 0.5
+                            [ProportionalStackPanel.ProportionProperty] = 0.5
                         }
                     }
                 },

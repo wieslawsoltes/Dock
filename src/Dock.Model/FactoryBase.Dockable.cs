@@ -1,4 +1,5 @@
-﻿using Dock.Model.Controls;
+﻿using System.Linq;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Model;
@@ -13,8 +14,7 @@ public abstract partial class FactoryBase
     {
         InitDockable(dockable, dock);
         dock.VisibleDockables ??= CreateList<IDockable>();
-        dock.VisibleDockables.Add(dockable);
-        dock.IsEmpty = dock.VisibleDockables.Count == 0;
+        AddVisibleDockable(dock, dockable);
         OnDockableAdded(dockable);
     }
 
@@ -25,8 +25,7 @@ public abstract partial class FactoryBase
         {
             InitDockable(dockable, dock);
             dock.VisibleDockables ??= CreateList<IDockable>();
-            dock.VisibleDockables.Insert(index, dockable);
-            dock.IsEmpty = dock.VisibleDockables.Count == 0;
+            InsertVisibleDockable(dock, index, dockable);
             OnDockableAdded(dockable);
         }
     }
@@ -45,8 +44,7 @@ public abstract partial class FactoryBase
             return;
         }
 
-        dock.VisibleDockables.Remove(dockable);
-        dock.IsEmpty = dock.VisibleDockables.Count == 0;
+        RemoveVisibleDockable(dock, dockable);
         OnDockableRemoved(dockable);
 
         var indexActiveDockable = index > 0 ? index - 1 : 0;
@@ -102,11 +100,9 @@ public abstract partial class FactoryBase
 
         if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
         {
-            dock.VisibleDockables.RemoveAt(sourceIndex);
-            dock.IsEmpty = dock.VisibleDockables.Count == 0;
+            RemoveVisibleDockableAt(dock, sourceIndex);
             OnDockableRemoved(sourceDockable);
-            dock.VisibleDockables.Insert(targetIndex, sourceDockable);
-            dock.IsEmpty = dock.VisibleDockables.Count == 0;
+            InsertVisibleDockable(dock, targetIndex, sourceDockable);
             OnDockableAdded(sourceDockable);
             OnDockableMoved(sourceDockable);
             dock.ActiveDockable = sourceDockable;
@@ -177,11 +173,9 @@ public abstract partial class FactoryBase
                 var sourceIndex = sourceDock.VisibleDockables.IndexOf(sourceDockable);
                 if (sourceIndex < targetIndex)
                 {
-                    targetDock.VisibleDockables.Insert(targetIndex + 1, sourceDockable);
-                    targetDock.IsEmpty = targetDock.VisibleDockables.Count == 0;
+                    InsertVisibleDockable(targetDock, targetIndex + 1, sourceDockable);
                     OnDockableAdded(sourceDockable);
-                    targetDock.VisibleDockables.RemoveAt(sourceIndex);
-                    targetDock.IsEmpty = targetDock.VisibleDockables.Count == 0;
+                    RemoveVisibleDockableAt(targetDock, sourceIndex);
                     OnDockableRemoved(sourceDockable);
                     OnDockableMoved(sourceDockable);
                 }
@@ -190,11 +184,9 @@ public abstract partial class FactoryBase
                     var removeIndex = sourceIndex + 1;
                     if (targetDock.VisibleDockables.Count + 1 > removeIndex)
                     {
-                        targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
-                        targetDock.IsEmpty = targetDock.VisibleDockables.Count == 0;
+                        InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
                         OnDockableAdded(sourceDockable);
-                        targetDock.VisibleDockables.RemoveAt(removeIndex);
-                        targetDock.IsEmpty = targetDock.VisibleDockables.Count == 0;
+                        RemoveVisibleDockableAt(targetDock, removeIndex);
                         OnDockableRemoved(sourceDockable);
                         OnDockableMoved(sourceDockable);
                     }
@@ -203,8 +195,7 @@ public abstract partial class FactoryBase
             else
             {
                 RemoveDockable(sourceDockable, true);
-                targetDock.VisibleDockables.Insert(targetIndex, sourceDockable);
-                targetDock.IsEmpty = targetDock.VisibleDockables.Count == 0;
+                InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
                 OnDockableAdded(sourceDockable);
                 OnDockableMoved(sourceDockable);
                 InitDockable(sourceDockable, targetDock);
@@ -230,11 +221,9 @@ public abstract partial class FactoryBase
             var originalTargetDockable = dock.VisibleDockables[targetIndex];
 
             dock.VisibleDockables[targetIndex] = originalSourceDockable;
-            dock.IsEmpty = dock.VisibleDockables.Count == 0;
             OnDockableRemoved(originalTargetDockable);
             OnDockableAdded(originalSourceDockable);
             dock.VisibleDockables[sourceIndex] = originalTargetDockable;
-            dock.IsEmpty = dock.VisibleDockables.Count == 0;
             OnDockableAdded(originalTargetDockable);
             OnDockableSwapped(originalSourceDockable);
             OnDockableSwapped(originalTargetDockable);
@@ -363,8 +352,7 @@ public abstract partial class FactoryBase
 
                     if (toolDock.VisibleDockables is not null)
                     {
-                        toolDock.VisibleDockables.Remove(dockable);
-                        toolDock.IsEmpty = toolDock.VisibleDockables.Count == 0;
+                        RemoveVisibleDockable(toolDock, dockable);
                         OnDockableRemoved(dockable);
                     }
 
@@ -468,8 +456,7 @@ public abstract partial class FactoryBase
                         }
                     }
 
-                    toolDock.VisibleDockables.Add(dockable);
-                    toolDock.IsEmpty = toolDock.VisibleDockables.Count == 0;
+                    AddVisibleDockable(toolDock, dockable);
                     OnDockableAdded(dockable);
 
                     // TODO: Handle ActiveDockable state.
@@ -609,5 +596,71 @@ public abstract partial class FactoryBase
         }
 
         CloseDockablesRange(dock, indexOf + 1, dock.VisibleDockables.Count - 1);
+    }
+
+    /// <summary>
+    /// Adds the dockable to the visible dockables list of the dock.
+    /// </summary>
+    protected void AddVisibleDockable(IDock dock, IDockable dockable)
+    {
+        if (dock.VisibleDockables == null)
+        {
+            dock.VisibleDockables = CreateList<IDockable>();
+        }
+        dock.VisibleDockables.Add(dockable);
+        UpdateIsEmpty(dock);
+    }
+
+    /// <summary>
+    /// Inserts the dockable to the visible dockables list of the dock at the specified index.
+    /// </summary>
+    protected void InsertVisibleDockable(IDock dock, int index, IDockable dockable)
+    {
+        if (dock.VisibleDockables == null)
+        {
+            dock.VisibleDockables = CreateList<IDockable>();
+        }
+        dock.VisibleDockables.Insert(index, dockable);
+        UpdateIsEmpty(dock);
+    }
+
+    /// <summary>
+    /// Removes the dockable from the visible dockables list of the dock.
+    /// </summary>
+    protected void RemoveVisibleDockable(IDock dock, IDockable dockable)
+    {
+        if (dock.VisibleDockables != null)
+        {
+            dock.VisibleDockables.Remove(dockable);
+            UpdateIsEmpty(dock);
+        }
+    }
+
+    /// <summary>
+    /// Removes the dockable at the specified index from the visible dockables list of the dock.
+    /// </summary>
+    protected void RemoveVisibleDockableAt(IDock dock, int index)
+    {
+        if (dock.VisibleDockables != null)
+        {
+            dock.VisibleDockables.RemoveAt(index);
+            UpdateIsEmpty(dock);
+        }
+    }
+
+    private void UpdateIsEmpty(IDock dock)
+    {
+        bool oldIsEmpty = dock.IsEmpty;
+
+        var newIsEmpty = dock.VisibleDockables == null
+                         || dock.VisibleDockables?.Count == 0
+                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true } or IProportionalDockSplitter);
+
+        if (oldIsEmpty != newIsEmpty)
+        {
+            dock.IsEmpty = newIsEmpty;
+            if (dock.Owner is IDock parent)
+                UpdateIsEmpty(parent);
+        }
     }
 }

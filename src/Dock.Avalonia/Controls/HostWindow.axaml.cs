@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
@@ -6,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Core;
@@ -108,11 +110,6 @@ public class HostWindow : Window, IHostWindow
         PseudoClasses.Set(":dragging", true);
         _draggingWindow = true;
         BeginMoveDrag(e);
-            
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            EndDrag(e);
-        }
     }
 
     private void EndDrag(PointerEventArgs e)
@@ -156,9 +153,7 @@ public class HostWindow : Window, IHostWindow
         {
             Window.Save();
 
-            if ((_chromeGrip is { } && _chromeGrip.IsPointerOver)
-                || (_hostWindowTitleBar?.BackgroundControl is { } && (_hostWindowTitleBar?.BackgroundControl?.IsPointerOver ?? false))
-                && _mouseDown)
+            if (_mouseDown)
             {
                 Window.Factory?.OnWindowMoveDrag(Window);
                 _hostWindowState.Process(Position, EventType.Moved);
@@ -284,7 +279,15 @@ public class HostWindow : Window, IHostWindow
                     Window.Factory?.OnWindowOpened(Window);
                 }
 
-                Show();
+                var ownerDockControl = Window?.Layout?.Factory?.DockControls.FirstOrDefault();
+                if (ownerDockControl is Control control && control.GetVisualRoot() is Window parentWindow)
+                {
+                    Show(parentWindow);
+                }
+                else
+                {
+                    Show();
+                }
             }
         }
     }
@@ -340,12 +343,6 @@ public class HostWindow : Window, IHostWindow
     {
         width = Width;
         height = Height;
-    }
-
-    /// <inheritdoc/>
-    public void SetTopmost(bool topmost)
-    {
-        Topmost = topmost;
     }
 
     /// <inheritdoc/>

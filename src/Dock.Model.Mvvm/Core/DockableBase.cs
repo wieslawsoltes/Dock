@@ -16,6 +16,7 @@ public abstract class DockableBase : ObservableObject, IDockable
     private string _title = string.Empty;
     private object? _context;
     private IDockable? _owner;
+    private IDockable? _originalOwner;
     private IFactory? _factory;
     private bool _canClose = true;
     private bool _canPin = true;
@@ -59,6 +60,14 @@ public abstract class DockableBase : ObservableObject, IDockable
     {
         get => _owner;
         set => SetProperty(ref _owner, value);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public IDockable? OriginalOwner
+    {
+        get => _originalOwner;
+        set => SetProperty(ref _originalOwner, value);
     }
 
     /// <inheritdoc/>

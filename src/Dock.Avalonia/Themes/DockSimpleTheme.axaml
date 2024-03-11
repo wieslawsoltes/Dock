@@ -18,6 +18,7 @@
         <ResourceInclude Source="/Controls/DockDockControl.axaml" />
         <ResourceInclude Source="/Controls/DocumentContentControl.axaml" />
         <ResourceInclude Source="/Controls/DocumentDockControl.axaml" />
+        <ResourceInclude Source="/Controls/PinnedDockControl.axaml" />
         <ResourceInclude Source="/Controls/ProportionalDockControl.axaml" />
         <ResourceInclude Source="/Controls/RootDockControl.axaml" />
         <ResourceInclude Source="/Controls/ToolContentControl.axaml" />

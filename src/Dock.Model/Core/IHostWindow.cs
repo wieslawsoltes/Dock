@@ -65,12 +65,6 @@ public interface IHostWindow
     void GetSize(out double width, out double height);
 
     /// <summary>
-    /// Sets host topmost.
-    /// </summary>
-    /// <param name="topmost">The host topmost.</param>
-    void SetTopmost(bool topmost);
-
-    /// <summary>
     /// Sets host title.
     /// </summary>
     /// <param name="title">The host title.</param>

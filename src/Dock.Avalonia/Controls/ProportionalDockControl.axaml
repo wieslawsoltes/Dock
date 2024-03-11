@@ -8,17 +8,21 @@
 
   <ControlTheme x:Key="{x:Type ProportionalDockControl}" TargetType="ProportionalDockControl">
 
-    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" x:DataType="core:IDock" />
-    <Setter Property="(ProportionalStackPanelSplitter.IsEmpty)" Value="{Binding IsEmpty}" x:DataType="core:IDock" />
-
     <Setter Property="Template">
       <ControlTemplate>
-        <DockableControl TrackingMode="Visible"
-                         ProportionalStackPanelSplitter.Proportion="{Binding Proportion}">
+        <DockableControl TrackingMode="Visible">
           <ItemsControl ItemsSource="{Binding VisibleDockables}">
             <ItemsControl.Styles>
-              <Style Selector="ItemsControl > ContentPresenter > :is(core|IDock)" x:DataType="core:IDock">
-                <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" />
+              <Style Selector="ItemsControl > ContentPresenter">
+                <Setter x:DataType="core:IDock" Property="(ProportionalStackPanel.Proportion)" Value="{Binding Proportion}" />
+                <Setter Property="(ProportionalStackPanel.IsCollapsed)">
+                  <Setter.Value>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}" x:DataType="core:IDock">
+                      <CompiledBinding Path="IsCollapsable" />
+                      <CompiledBinding Path="IsEmpty" />
+                    </MultiBinding>
+                  </Setter.Value>
+                </Setter>
               </Style>
             </ItemsControl.Styles>
             <ItemsControl.ItemsPanel>

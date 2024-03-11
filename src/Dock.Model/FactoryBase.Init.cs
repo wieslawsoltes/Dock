@@ -54,7 +54,7 @@ public abstract partial class FactoryBase
                     InitDockable(child, dockable);
                 }
 
-                dock.IsEmpty = dock.VisibleDockables.Count == 0;
+                UpdateIsEmpty(dock);
             }
         }
 

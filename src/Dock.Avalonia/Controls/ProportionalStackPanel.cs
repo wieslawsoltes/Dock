@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using Avalonia.Data;
 using Avalonia.Layout;
 
 namespace Dock.Avalonia.Controls;
@@ -28,6 +29,58 @@ public class ProportionalStackPanel : Panel
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Defines the Proportion attached property.
+    /// </summary>
+    public static readonly AttachedProperty<double> ProportionProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, double>("Proportion", double.NaN, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the Proportion attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The Proportion attached property.</returns>
+    public static double GetProportion(AvaloniaObject control)
+    {
+        return control.GetValue(ProportionProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the Proportion attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the Proportion property.</param>
+    public static void SetProportion(AvaloniaObject control, double value)
+    {
+        control.SetValue(ProportionProperty, value);
+    }
+
+    /// <summary>
+    /// Defines the IsCollapsed attached property.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsCollapsedProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, bool>("IsCollapsed", false, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the IsCollapsed attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The IsCollapsed attached property.</returns>
+    public static bool GetIsCollapsed(AvaloniaObject control)
+    {
+        return control.GetValue(IsCollapsedProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the IsCollapsed attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the IsCollapsed property.</param>
+    public static void SetIsCollapsed(AvaloniaObject control, bool value)
+    {
+        control.SetValue(IsCollapsedProperty, value);
+    }
+
     private void AssignProportions(global::Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;
@@ -36,14 +89,14 @@ public class ProportionalStackPanel : Panel
         for (var i = 0; i < children.Count; i++)
         {
             var control = children[i];
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
+            var isCollapsed = GetIsCollapsed(control);
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
 
             if (!isSplitter)
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+                var proportion = GetProportion(control);
 
-                if (isEmpty)
+                if (isCollapsed)
                 {
                     proportion = 0.0;
                 }
@@ -64,14 +117,14 @@ public class ProportionalStackPanel : Panel
             var toAssign = assignedProportion;
             foreach (var control in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
-                         return !isEmpty && double.IsNaN(ProportionalStackPanelSplitter.GetControlProportion(c));
+                         var isCollapsed = GetIsCollapsed(c);
+                         return !isCollapsed && double.IsNaN(GetProportion(c));
                      }))
             {
                 if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
                 {
                     var proportion = (1.0 - toAssign) / unassignedProportions;
-                    ProportionalStackPanelSplitter.SetControlProportion(control, proportion);
+                    SetProportion(control, proportion);
                     assignedProportion += (1.0 - toAssign) / unassignedProportions;
                 }
             }
@@ -85,12 +138,12 @@ public class ProportionalStackPanel : Panel
 
             foreach (var child in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
-                         return !isEmpty && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
+                         var isCollapsed = GetIsCollapsed(c);
+                         return !isCollapsed && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
                      }))
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) + toAdd;
-                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
+                var proportion = GetProportion(child) + toAdd;
+                SetProportion(child, proportion);
             }
         }
         else if (assignedProportion > 1)
@@ -101,19 +154,19 @@ public class ProportionalStackPanel : Panel
 
             foreach (var child in children.Where(c =>
                      {
-                         var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
-                         return !isEmpty && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
+                         var isCollapsed = GetIsCollapsed(c);
+                         return !isCollapsed && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
                      }))
             {
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(child) - toRemove;
-                ProportionalStackPanelSplitter.SetControlProportion(child, proportion);
+                var proportion = GetProportion(child) - toRemove;
+                SetProportion(child, proportion);
             }
         }
     }
 
     private double GetTotalSplitterThickness(global::Avalonia.Controls.Controls children)
     {
-        var previousIsEmpty = false;
+        var previousisCollapsed = false;
         var totalThickness = 0.0;
 
         for (var i = 0; i < children.Count; i++)
@@ -123,17 +176,17 @@ public class ProportionalStackPanel : Panel
 
             if (isSplitter && proportionalStackPanelSplitter is not null)
             {
-                if (previousIsEmpty)
+                if (previousisCollapsed)
                 {
-                    previousIsEmpty = false;
+                    previousisCollapsed = false;
                     continue;
                 }
 
                 if (i + 1 < Children.Count)
                 {
                     var nextControl = Children[i + 1];
-                    var nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
-                    if (nextIsEmpty)
+                    var nextisCollapsed = GetIsCollapsed(nextControl);
+                    if (nextisCollapsed)
                     {
                         continue;
                     }
@@ -144,7 +197,7 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                previousIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(c);
+                previousisCollapsed = GetIsCollapsed(c);
             }
         }
 
@@ -171,7 +224,7 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
-        var previousIsEmpty = false;
+        var previousisCollapsed = false;
         
         // Measure each of the Children
         for (var i = 0; i < Children.Count; i++)
@@ -184,13 +237,13 @@ public class ProportionalStackPanel : Panel
                 Math.Max(0.0, constraint.Width - usedWidth - splitterThickness),
                 Math.Max(0.0, constraint.Height - usedHeight - splitterThickness));
 
-            var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+            var proportion = GetProportion(control);
 
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
-            if (isEmpty)
+            var isCollapsed = !isSplitter && GetIsCollapsed(control);
+            if (isCollapsed)
             {
                 // TODO: Also handle next is empty.
-                previousIsEmpty = true;
+                previousisCollapsed = true;
                 var size = new Size();
                 control.Measure(size);
                 continue;
@@ -220,25 +273,25 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                var nextIsEmpty = false;
+                var nextisCollapsed = false;
                 if (i + 1 < Children.Count)
                 {
                     var nextControl = Children[i + 1];
-                    nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                    nextisCollapsed = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _ ) && GetIsCollapsed(nextControl);
                 }
 
-                if (previousIsEmpty || nextIsEmpty)
+                if (previousisCollapsed || nextisCollapsed)
                 {
                     var size = new Size();
                     control.Measure(size);
-                    previousIsEmpty = true;
+                    previousisCollapsed = true;
                     continue;
                 }
 
                 control.Measure(remainingSize);
             }
 
-            previousIsEmpty = false;
+            previousisCollapsed = false;
 
             var desiredSize = control.DesiredSize;
 
@@ -298,33 +351,33 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
-        var previousIsEmpty = false;
+        var previousisCollapsed = false;
 
         for (var i = 0; i < Children.Count; i++)
         {
             var control = Children[i];
 
-            var isEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(control);
-            if (isEmpty)
+            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
+
+            var isCollapsed = !isSplitter && GetIsCollapsed(control);
+            if (isCollapsed)
             {
                 // TODO: Also handle next is empty.
-                previousIsEmpty = true;
+                previousisCollapsed = true;
                 var rect = new Rect();
                 control.Arrange(rect);
                 index++;
                 continue;
             }
 
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
-            
-            var nextIsEmpty = false;
+            var nextisCollapsed = false;
             if (i + 1 < Children.Count)
             {
                 var nextControl = Children[i + 1];
-                nextIsEmpty = ProportionalStackPanelSplitter.GetControlIsEmpty(nextControl);
+                nextisCollapsed = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _) && GetIsCollapsed(nextControl);
             }
 
-            if (isSplitter && (previousIsEmpty || nextIsEmpty))
+            if (isSplitter && (previousisCollapsed || nextisCollapsed))
             {
                 var rect = new Rect();
                 control.Arrange(rect);
@@ -332,7 +385,7 @@ public class ProportionalStackPanel : Panel
                 continue;
             }
 
-            previousIsEmpty = false;
+            previousisCollapsed = false;
 
             // Determine the remaining space left to arrange the element
             var remainingRect = new Rect(
@@ -347,7 +400,7 @@ public class ProportionalStackPanel : Panel
             if (index < Children.Count)
             {
                 var desiredSize = control.DesiredSize;
-                var proportion = ProportionalStackPanelSplitter.GetControlProportion(control);
+                var proportion = GetProportion(control);
 
                 switch (Orientation)
                 {
@@ -404,5 +457,13 @@ public class ProportionalStackPanel : Panel
         {
             InvalidateMeasure();
         }
+    }
+
+    static ProportionalStackPanel()
+    {
+        AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
+        AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
+        AffectsParentMeasure<ProportionalStackPanel>(ProportionProperty);
+        AffectsParentArrange<ProportionalStackPanel>(ProportionProperty);
     }
 }

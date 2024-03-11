@@ -27,6 +27,11 @@ public interface IDockable
     IDockable? Owner { get; set; }
 
     /// <summary>
+    /// Gets or sets dockable original owner.
+    /// </summary>
+    IDockable? OriginalOwner { get; set; }
+
+    /// <summary>
     /// Gets or sets dockable factory.
     /// </summary>
     IFactory? Factory { get; set; }

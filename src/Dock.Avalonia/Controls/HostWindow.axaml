@@ -6,6 +6,8 @@
     <HostWindow IsToolWindow="False" Width="300" Height="400" />
   </Design.PreviewWith>
 
+  <IntLessThanConverter x:Key="LessThan2" TrueIfLessThan="2" />
+
   <ControlTheme x:Key="{x:Type HostWindow}" TargetType="HostWindow">
 
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
@@ -17,7 +19,8 @@
     <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
     <Setter Property="Topmost" Value="{Binding Window.Topmost}" x:DataType="controls:IRootDock" />
     <Setter Property="SystemDecorations" Value="Full" />
-    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+    <Setter Property="ToolChromeControlsWholeWindow" Value="{CompiledBinding OpenedDockablesCount, Converter={StaticResource LessThan2}}" x:DataType="controls:IRootDock" />
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
     <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
 
     <Setter Property="Template">
@@ -56,9 +59,12 @@
     <Style Selector="^:toolwindow">
 
       <Setter Property="SystemDecorations" Value="Full" />
-      <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
-      <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
       <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
+
+      <Style Selector="^:toolchromecontrolswindow">
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+      </Style>
 
       <Setter Property="Template">
         <ControlTemplate>

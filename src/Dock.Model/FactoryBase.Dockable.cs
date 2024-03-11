@@ -662,5 +662,28 @@ public abstract partial class FactoryBase
             if (dock.Owner is IDock parent)
                 UpdateIsEmpty(parent);
         }
+
+        UpdateOpenedDockablesCount(dock);
+    }
+
+    private void UpdateOpenedDockablesCount(IDockable dockable)
+    {
+        switch (dockable)
+        {
+            case IProportionalDock proportionalDock:
+                proportionalDock.OpenedDockablesCount = proportionalDock.VisibleDockables?.Sum(x => (x as IDock)?.OpenedDockablesCount ?? 0) ?? 0;
+                break;
+            case IRootDock rootDock:
+                rootDock.OpenedDockablesCount = rootDock.VisibleDockables?.Sum(x => (x as IDock)?.OpenedDockablesCount ?? 0) ?? 0;
+                break;
+            case IDock dock:
+                dock.OpenedDockablesCount = 1;
+                break;
+            default:
+                break;
+        }
+
+        if (dockable.Owner != null)
+            UpdateOpenedDockablesCount(dockable.Owner);
     }
 }

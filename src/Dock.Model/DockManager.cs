@@ -422,6 +422,25 @@ public class DockManager : IDockManager
         };
     }
 
+    private bool ValidateProportionalDock(IProportionalDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null ||
+            sourceDock.VisibleDockables.Count == 0)
+            return false;
+
+        bool all = true;
+        for (int i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
+        {
+            var dockable = sourceDock.VisibleDockables[i];
+            if (dockable is not IDock dock)
+                continue;
+
+            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+        }
+
+        return all;
+    }
+
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
@@ -431,6 +450,7 @@ public class DockManager : IDockManager
             IDocumentDock documentDock => ValidateDock(documentDock, targetDockable, action, operation, bExecute),
             ITool tool => ValidateTool(tool, targetDockable, action, operation, bExecute),
             IDocument document => ValidateDocument(document, targetDockable, action, operation, bExecute),
+            IProportionalDock proportionalDock => ValidateProportionalDock(proportionalDock, targetDockable, action, operation, bExecute),
             _ => false
         };
     }

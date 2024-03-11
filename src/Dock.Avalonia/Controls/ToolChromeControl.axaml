@@ -135,7 +135,7 @@
     </Style>
 
     <Style Selector="^:floating /template/ Grid#PART_Grip">
-      <Setter Property="(DockProperties.IsDragArea)" Value="False" />
+      <Setter Property="(DockProperties.IsDragArea)" Value="{Binding $parent[HostWindow].ToolChromeControlsWholeWindow, Mode=OneWay, Converter={x:Static BoolConverters.Not}}" />
     </Style>
 
     <Style Selector="^:active /template/ Grid#PART_Grip">

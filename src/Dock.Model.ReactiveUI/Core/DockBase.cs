@@ -23,6 +23,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _isCollapsable = true;
     private bool _isActive;
     private bool _isEmpty;
+    private int _openedDockablesCount;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -108,6 +109,14 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _isEmpty;
         set => this.RaiseAndSetIfChanged(ref _isEmpty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public int OpenedDockablesCount
+    {
+        get => _openedDockablesCount;
+        set => this.RaiseAndSetIfChanged(ref _openedDockablesCount, value);
     }
 
     /// <inheritdoc/>

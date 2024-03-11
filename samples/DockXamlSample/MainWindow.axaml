@@ -16,19 +16,33 @@
         Title="Dock Avalonia Demo" Width="800" Height="600"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome">
+  <Window.Resources>
+    <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                 TintColor="{DynamicResource SystemAltHighColor}"
+                                 TintOpacity="1"
+                                 FallbackColor="{DynamicResource AcrylicFallbackColor}"
+                                 MaterialOpacity="0.55"
+                                 x:Key="AcrylicMaterial"/>
+  </Window.Resources>
   <Panel>
-    <ExperimentalAcrylicBorder IsHitTestVisible="False">
-      <ExperimentalAcrylicBorder.Material>
-        <ExperimentalAcrylicMaterial BackgroundSource="Digger"
-                                     TintColor="{DynamicResource SystemAltHighColor}"
-                                     TintOpacity="1"
-                                     FallbackColor="{DynamicResource AcrylicFallbackColor}"
-                                     MaterialOpacity="0.55" />
-      </ExperimentalAcrylicBorder.Material>
-    </ExperimentalAcrylicBorder>
+    <ExperimentalAcrylicBorder IsHitTestVisible="False" Material="{StaticResource AcrylicMaterial}" />
     <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
       <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
-        <local:MainView />
+        <local:MainView>
+          <local:MainView.Styles>
+            <Style Selector="GridSplitter">
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Border Background="Transparent">
+                      <ExperimentalAcrylicBorder Material="{StaticResource AcrylicMaterial}" />
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </local:MainView.Styles>
+        </local:MainView>
       </Panel>
     </Panel>
   </Panel>

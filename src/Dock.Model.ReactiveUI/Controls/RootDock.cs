@@ -20,6 +20,7 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _rightPinnedDockables;
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
+    private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
 
@@ -78,6 +79,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _bottomPinnedDockables;
         set => this.RaiseAndSetIfChanged(ref _bottomPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IToolDock? PinnedDock
+    {
+        get => _pinnedDock;
+        set => this.RaiseAndSetIfChanged(ref _pinnedDock, value);
     }
 
     /// <inheritdoc/>

@@ -80,6 +80,7 @@ public class DockManager : IDockManager
 
         var targetToolDock = factory.CreateToolDock();
         targetToolDock.Title = nameof(IToolDock);
+        targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
         factory.MoveDockable(sourceDockableOwner, targetToolDock, sourceDockable, null);
         factory.SplitToDock(targetDock, targetToolDock, operation);

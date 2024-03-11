@@ -30,7 +30,10 @@
                                Orientation="Horizontal"
                                Items="{Binding BottomPinnedDockables}"
                                IsVisible="{Binding !!BottomPinnedDockables.Count}" />
-            <ContentControl Content="{Binding ActiveDockable}" />
+            <Panel>
+              <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
+              <PinnedDockControl />
+            </Panel>
           </DockPanel>
         </DockableControl>
       </ControlTemplate>

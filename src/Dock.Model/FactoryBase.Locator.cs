@@ -74,13 +74,13 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
-    public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool> predicate)
+    public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool>? predicate = null)
     {
         if (dockable.Owner is null)
         {
             return null;
         }
-        if (dockable.Owner is IRootDock rootDock && predicate(rootDock))
+        if (dockable.Owner is IRootDock rootDock && (predicate?.Invoke(rootDock) ?? true))
         {
             return rootDock;
         }

@@ -7,14 +7,11 @@
 
   <ControlTheme x:Key="{x:Type ToolDockControl}" TargetType="ToolDockControl">
 
-    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" x:DataType="core:IDock" />
-    <Setter Property="(ProportionalStackPanelSplitter.IsEmpty)" Value="{Binding IsEmpty}" x:DataType="core:IDock" />
-
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl Name="PART_DockableControl"
-                         TrackingMode="Visible" 
-                         ProportionalStackPanelSplitter.Proportion="{Binding Proportion}"
+                         TrackingMode="Visible"
+                         Background="{TemplateBinding Background}"
                          x:DataType="core:IDock">
           <ToolChromeControl IsActive="{Binding IsActive}"
                              IsVisible="{Binding !!VisibleDockables.Count}"

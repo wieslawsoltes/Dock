@@ -8,9 +8,6 @@
 
   <ControlTheme x:Key="{x:Type DockDockControl}" TargetType="DockDockControl">
 
-    <Setter Property="(ProportionalStackPanelSplitter.Proportion)" Value="{Binding Proportion}" x:DataType="core:IDock" />
-    <Setter Property="(ProportionalStackPanelSplitter.IsEmpty)" Value="{Binding IsEmpty}" x:DataType="core:IDock" />
-
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">

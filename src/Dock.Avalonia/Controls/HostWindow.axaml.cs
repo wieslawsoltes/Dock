@@ -89,6 +89,14 @@ public class HostWindow : Window, IHostWindow
         }
     }
 
+    private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
+    {
+        var absScreenPoint = this.PointToScreen(clientPoint);
+        var absScreenWindowPoint = this.PointToScreen(new Point(0, 0));
+        var relativeScreenDiff = absScreenPoint - absScreenWindowPoint;
+        return relativeScreenDiff;
+    }
+
     private void MoveDrag(PointerPressedEventArgs e)
     {
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
@@ -97,7 +105,7 @@ public class HostWindow : Window, IHostWindow
         }
 
         _mouseDown = true;
-        _hostWindowState.Process(e.GetPosition(this), EventType.Pressed);
+        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Pressed);
 
         PseudoClasses.Set(":dragging", true);
         _draggingWindow = true;
@@ -109,7 +117,7 @@ public class HostWindow : Window, IHostWindow
         PseudoClasses.Set(":dragging", false);
 
         Window?.Factory?.OnWindowMoveDragEnd(Window);
-        _hostWindowState.Process(e.GetPosition(this), EventType.Released);
+        _hostWindowState.Process(ClientPointToScreenRelativeToWindow(e.GetPosition(this)), EventType.Released);
         _mouseDown = false;
         _draggingWindow = false;
     }
@@ -148,7 +156,7 @@ public class HostWindow : Window, IHostWindow
             if (_mouseDown)
             {
                 Window.Factory?.OnWindowMoveDrag(Window);
-                _hostWindowState.Process(Position.ToPoint(1.0), EventType.Moved);
+                _hostWindowState.Process(Position, EventType.Moved);
             }
         }
     }

@@ -121,7 +121,7 @@ internal class HostWindowState : IHostWindowState
 
         var layout = _hostWindow.Window?.Layout;
 
-        if (layout?.ActiveDockable is { } sourceDockable && _state.TargetDropControl.DataContext is IDockable targetDockable)
+        if (layout?.FocusedDockable is { } sourceDockable && _state.TargetDropControl.DataContext is IDockable targetDockable)
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
@@ -232,9 +232,9 @@ internal class HostWindowState : IHostWindowState
                     break;
                 }
 
-                foreach (var visual in factory.DockControls)
+                foreach (var dockControl in factory.DockControls.GetZOrderedDockControls())
                 {
-                    if (visual is not DockControl dockControl || dockControl.Layout == _hostWindow.Window?.Layout)
+                    if (dockControl.Layout == _hostWindow.Window?.Layout)
                     {
                         continue;
                     }
@@ -283,15 +283,6 @@ internal class HostWindowState : IHostWindowState
                             Enter(_state.TargetPoint, _state.DragAction, _state.TargetDockControl);
                             break;
                         }
-                    }
-                    else
-                    {
-                        Leave();
-                        _state.TargetDockControl = null;
-                        _state.TargetPoint = default;
-                        _state.TargetDropControl = null;
-                        _state.DragAction = DragAction.Move;
-                        break;
                     }
                 }
 

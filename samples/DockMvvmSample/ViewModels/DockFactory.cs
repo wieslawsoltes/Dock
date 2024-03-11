@@ -137,6 +137,17 @@ public class DockFactory : Factory
         return rootDock;
     }
 
+    public override IDockWindow? CreateWindowFrom(IDockable dockable)
+    {
+        var window = base.CreateWindowFrom(dockable);
+
+        if (window != null)
+        {
+            window.Title = "Dock Avalonia Demo";
+        }
+        return window;
+    }
+
     public override void InitLayout(IDockable layout)
     {
         ContextLocator = new Dictionary<string, Func<object?>>

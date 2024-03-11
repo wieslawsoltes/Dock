@@ -15,6 +15,8 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":floating", ":active", ":pinned", ":maximized")]
 public class ToolChromeControl : ContentControl
 {
+    private HostWindow? _attachedWindow;
+
     /// <summary>
     /// Define <see cref="Title"/> property.
     /// </summary>
@@ -106,9 +108,20 @@ public class ToolChromeControl : ContentControl
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
-        AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+        AttachToWindow();
     }
-        
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        if (_attachedWindow != null)
+        {
+            _attachedWindow.DetachGrip(this);
+            _attachedWindow = null;
+        }
+    }
+
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
         if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
@@ -124,15 +137,23 @@ public class ToolChromeControl : ContentControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+        Grip = e.NameScope.Find<Control>("PART_Grip");
+        CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
+        AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+        AttachToWindow();
+    }
+
+    private void AttachToWindow()
+    {
+        if (Grip == null)
+            return;
 
         //On linux we dont attach to the HostWindow because of inconsistent drag behaviour
-        if (VisualRoot is HostWindow window 
+        if (VisualRoot is HostWindow window
             && (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            Grip = e.NameScope.Find<Control>("PART_Grip");
-            CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
-
             window.AttachGrip(this);
+            _attachedWindow = window;
 
             SetCurrentValue(IsFloatingProperty, true);
         }

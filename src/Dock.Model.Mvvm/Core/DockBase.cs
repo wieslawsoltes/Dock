@@ -21,6 +21,7 @@ public abstract class DockBase : DockableBase, IDock
     private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
     private bool _isCollapsable = true;
+    private int _openedDockablesCount = 0;
     private bool _isActive;
     private bool _isEmpty;
 
@@ -116,6 +117,14 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _isCollapsable;
         set => SetProperty(ref _isCollapsable, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public int OpenedDockablesCount
+    {
+        get => _openedDockablesCount;
+        set => SetProperty(ref _openedDockablesCount, value);
     }
 
     /// <inheritdoc/>

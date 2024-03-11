@@ -247,14 +247,8 @@ internal class DockControlState : IDockControlState
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
 
-                    foreach (var dockControl in dockControls)
+                    foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
-                        if (dockControl is not Visual inputDockControl ||
-                            inputDockControl == inputActiveDockControl)
-                        {
-                            continue;
-                        }
-
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {
                             continue;

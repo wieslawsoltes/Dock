@@ -41,6 +41,11 @@ public interface IRootDock : IDock
     IList<IDockable>? BottomPinnedDockables { get; set; }
 
     /// <summary>
+    /// Gets or sets pinned tool dock.
+    /// </summary>
+    IToolDock? PinnedDock { get; set; }
+
+    /// <summary>
     /// Gets or sets owner window.
     /// </summary>
     IDockWindow? Window { get; set; }

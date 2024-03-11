@@ -11,6 +11,7 @@
       <ControlTemplate>
         <DockableControl Name="PART_DockableControl"
                          TrackingMode="Visible"
+                         Background="{TemplateBinding Background}"
                          x:DataType="core:IDock">
           <ToolChromeControl IsActive="{Binding IsActive}"
                              IsVisible="{Binding !!VisibleDockables.Count}"

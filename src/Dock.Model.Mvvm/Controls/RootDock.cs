@@ -22,6 +22,7 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _bottomPinnedDockables;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private IToolDock? _pinnedDock;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -30,6 +31,14 @@ public class RootDock : DockBase, IRootDock
     {
         ShowWindows = new RelayCommand(() => _navigateAdapter.ShowWindows());
         ExitWindows = new RelayCommand(() => _navigateAdapter.ExitWindows());
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IToolDock? PinnedDock
+    {
+        get => _pinnedDock;
+        set => SetProperty(ref _pinnedDock, value);
     }
 
     /// <inheritdoc/>

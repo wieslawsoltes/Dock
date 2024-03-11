@@ -52,6 +52,12 @@ public class DockControl : TemplatedControl, IDockControl
     public static readonly StyledProperty<IFactory?> FactoryProperty =
         AvaloniaProperty.Register<DockControl, IFactory?>(nameof(Factory));
 
+    /// <summary>
+    /// Defines the <see cref="IsDraggingDock"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsDraggingDockProperty =
+        AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
+
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
 
@@ -92,6 +98,15 @@ public class DockControl : TemplatedControl, IDockControl
     {
         get => GetValue(FactoryProperty);
         set => SetValue(FactoryProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether any dock is being dragged.
+    /// </summary>
+    public bool IsDraggingDock
+    {
+        get => GetValue(IsDraggingDockProperty);
+        set => SetValue(IsDraggingDockProperty, value);
     }
 
     /// <summary>

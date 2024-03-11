@@ -140,9 +140,14 @@ internal class DockControlState : IDockControlState
         if (_state.DragControl.DataContext is IDockable sourceDockable && _state.DropControl.DataContext is IDockable targetDockable)
         {
             if (sourceDockable is IDock dock)
+            {
                 sourceDockable = dock.ActiveDockable;
+            }
+
             if (sourceDockable == null)
+            {
                 return;
+            }
 
             DockManager.Position = DockHelpers.ToDockPoint(point);
 

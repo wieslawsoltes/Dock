@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -168,26 +169,19 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private Control? FindNextChild(ProportionalStackPanel panel)
     {
-        var children = panel.Children;
-        int nextIndex;
-
-        if (Parent is ContentPresenter parentContentPresenter)
-        {
-            nextIndex = children.IndexOf(parentContentPresenter) + 1;
-        }
-        else
-        {
-            nextIndex = children.IndexOf(this) + 1;
-        }
-
-        return children[nextIndex];
+        return GetSiblingInDirection(panel, 1);
     }
 
     private void SetTargetProportion(double dragDelta)
     {
-        var target = GetTargetElement();
         var panel = GetPanel();
-        if (target is null || panel is null)
+        if (panel == null)
+        {
+            return;
+        }
+        
+        var target = GetTargetElement(panel);
+        if (target is null)
         {
             return;
         }
@@ -274,35 +268,33 @@ public class ProportionalStackPanelSplitter : Thumb
         return null;
     }
 
-    private Control? GetTargetElement()
+    private Control? GetSiblingInDirection(ProportionalStackPanel panel, int direction)
     {
-        if (Parent is ContentPresenter presenter)
-        {
-            if (presenter.GetVisualParent() is not Panel panel)
-            {
-                return null;
-            }
+        Debug.Assert(direction == -1 || direction == 1);
+        
+        var children = panel.Children;
+        int siblingIndex;
 
-            var parent = Parent as Control;
-            var index = parent is null ? -1 : panel.Children.IndexOf(parent);
-            if (index > 0 && panel.Children.Count > 0)
-            {
-                return panel.Children[index - 1];
-            }
+        if (Parent is ContentPresenter parentContentPresenter)
+        {
+            siblingIndex = children.IndexOf(parentContentPresenter) + direction;
         }
         else
         {
-            var panel = GetPanel();
-            if (panel is not null)
-            {
-                var index = panel.Children.IndexOf(this);
-                if (index > 0 && panel.Children.Count > 0)
-                {
-                    return panel.Children[index - 1];
-                }
-            }
+            siblingIndex = children.IndexOf(this) + direction;
         }
 
-        return null;
+        while (siblingIndex >= 0 && siblingIndex < children.Count && 
+               (ProportionalStackPanel.GetIsCollapsed(children[siblingIndex]) || IsSplitter(children[siblingIndex], out _)))
+        {
+            siblingIndex += direction;
+        }
+
+        return siblingIndex >= 0 && siblingIndex < children.Count ? children[siblingIndex] : null;
+    }
+    
+    private Control? GetTargetElement(ProportionalStackPanel panel)
+    {
+        return GetSiblingInDirection(panel, -1);
     }
 }

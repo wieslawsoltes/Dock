@@ -224,7 +224,7 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
-        var previousisCollapsed = false;
+        var needsNextSplitter = false;
         
         // Measure each of the Children
         for (var i = 0; i < Children.Count; i++)
@@ -242,8 +242,6 @@ public class ProportionalStackPanel : Panel
             var isCollapsed = !isSplitter && GetIsCollapsed(control);
             if (isCollapsed)
             {
-                // TODO: Also handle next is empty.
-                previousisCollapsed = true;
                 var size = new Size();
                 control.Measure(size);
                 continue;
@@ -270,28 +268,21 @@ public class ProportionalStackPanel : Panel
                         break;
                     }
                 }
+
+                needsNextSplitter = true;
             }
             else
             {
-                var nextisCollapsed = false;
-                if (i + 1 < Children.Count)
-                {
-                    var nextControl = Children[i + 1];
-                    nextisCollapsed = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _ ) && GetIsCollapsed(nextControl);
-                }
-
-                if (previousisCollapsed || nextisCollapsed)
+                if (!needsNextSplitter)
                 {
                     var size = new Size();
                     control.Measure(size);
-                    previousisCollapsed = true;
                     continue;
                 }
 
                 control.Measure(remainingSize);
+                needsNextSplitter = false;
             }
-
-            previousisCollapsed = false;
 
             var desiredSize = control.DesiredSize;
 
@@ -351,7 +342,7 @@ public class ProportionalStackPanel : Panel
 
         AssignProportions(Children);
 
-        var previousisCollapsed = false;
+        var needsNextSplitter = false;
 
         for (var i = 0; i < Children.Count; i++)
         {
@@ -362,30 +353,22 @@ public class ProportionalStackPanel : Panel
             var isCollapsed = !isSplitter && GetIsCollapsed(control);
             if (isCollapsed)
             {
-                // TODO: Also handle next is empty.
-                previousisCollapsed = true;
                 var rect = new Rect();
                 control.Arrange(rect);
                 index++;
                 continue;
             }
 
-            var nextisCollapsed = false;
-            if (i + 1 < Children.Count)
-            {
-                var nextControl = Children[i + 1];
-                nextisCollapsed = !ProportionalStackPanelSplitter.IsSplitter(nextControl, out _) && GetIsCollapsed(nextControl);
-            }
-
-            if (isSplitter && (previousisCollapsed || nextisCollapsed))
+            if (!isSplitter)
+                needsNextSplitter = true;
+            else if (isSplitter && !needsNextSplitter)
             {
                 var rect = new Rect();
                 control.Arrange(rect);
                 index++;
+                needsNextSplitter = false;
                 continue;
             }
-
-            previousisCollapsed = false;
 
             // Determine the remaining space left to arrange the element
             var remainingRect = new Rect(

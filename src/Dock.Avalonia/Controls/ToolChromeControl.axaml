@@ -23,7 +23,7 @@
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
-          <Binding Path="ActiveDockable.CanPin" FallbackValue="False" />
+          <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
           <Binding Path="$parent[ToolChromeControl].IsFloating" Converter="{x:Static BoolConverters.Not}" />
         </MultiBinding>
       </MenuItem.IsVisible>
@@ -87,7 +87,7 @@
                           Theme="{StaticResource ChromeButton}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="ActiveDockable.CanPin" FallbackValue="False" />
+                        <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
                         <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
                       </MultiBinding>
                     </Button.IsVisible>

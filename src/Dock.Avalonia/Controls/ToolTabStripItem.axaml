@@ -31,7 +31,7 @@
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
-          <Binding Path="CanPin" FallbackValue="False" />
+          <Binding Path="CanPin" FallbackValue="{x:False}" />
           <Binding Path="$parent[HostWindow]" Converter="{x:Static ObjectConverters.IsNull}" />
         </MultiBinding>
       </MenuItem.IsVisible>

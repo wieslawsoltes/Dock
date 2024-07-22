@@ -10,23 +10,35 @@ namespace Dock.Avalonia.Internal;
 
 internal static class Extensions
 {
+    private static int IndexOf(this Window[] windowsArray, Window? windowToFind)
+    {
+        if (windowToFind == null)
+            return -1;
+
+        for (var i = 0; i < windowsArray.Length; i++)
+        {
+            if (ReferenceEquals(windowsArray[i], windowToFind))
+                return i;
+        }
+
+        return -1;
+    }
+
     public static IEnumerable<DockControl> GetZOrderedDockControls(this IList<IDockControl> dockControls)
     {
-        // Note: we should traverse the dock controls in their windows' z-order.
-        // However there is no way to get the z-order of a window in Avalonia.
-        // Uncomment once this PR is merged and a new Avalonia version is released
-        // https://github.com/AvaloniaUI/Avalonia/pull/14909
-        // return dockControls
-        //     .OfType<DockControl>()
-        //     .Select(dock => (dock, order: (dock.GetVisualRoot() as Window)?.WindowZOrder ?? IntPtr.Zero))
-        //     .OrderByDescending(x => x.order)
-        //     .Select(pair => pair.dock);
+        var windows = dockControls
+            .OfType<DockControl>()
+            .Select(dock => dock.GetVisualRoot() as Window)
+            .OfType<Window>()
+            .Distinct()
+            .ToArray();
 
-        // For now, as a workaround, iterating in the reverse order of the dock controls is better then the regular order,
-        // because the main window dock control is always at index 0 and all the other windows are always
-        // on top of the main window.
+        Window.SortWindowsByZOrder(windows);
+
         return dockControls
             .OfType<DockControl>()
-            .Reverse();
+            .Select(dock => (dock, order: windows.IndexOf(dock.GetVisualRoot() as Window)))
+            .OrderByDescending(x => x.order)
+            .Select(pair => pair.dock);
     }
 }

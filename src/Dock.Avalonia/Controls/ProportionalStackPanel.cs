@@ -441,7 +441,7 @@ public class ProportionalStackPanel : Panel
             return Math.Max(0, flooredChildDimension);
         else
         {
-            // if so, it assigns the divided pixel to the first control in proportional split
+            // if it leaves, it assigns the divided pixel to the first control in proportional split
             int isFirst = childIndex == 0 ? 1 : 0;
             return Math.Max(0, flooredChildDimension + isFirst);
         }

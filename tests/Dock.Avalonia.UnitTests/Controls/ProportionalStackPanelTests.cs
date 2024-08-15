@@ -65,7 +65,7 @@ public class ProportionalStackPanelTests
         yield return [0.5, 604, 300, 300];
         yield return [0.25, 604, 150, 450];
         yield return [0.6283185307179586476925286766559, 604, 377, 223];
-        yield return [0.3141592653589793238462643383279, 604, 189, 411];
+        yield return [0.3141592653589793238462643383279, 604, 188, 412];
     }
 
     [Theory]
@@ -187,10 +187,11 @@ public class ProportionalStackPanelTests
         target.Measure(Size.Infinity);
         target.Arrange(new Rect(target.DesiredSize));
 
+        // values have to add up to width/height of the parent control
         Assert.Equal(new Size(1000, 500), target.Bounds.Size);
-        Assert.Equal(new Rect(0, 0, 331, 500), target.Children[0].Bounds);
-        Assert.Equal(new Rect(331, 0, 4, 500), target.Children[1].Bounds);
-        Assert.Equal(new Rect(335, 0, 331, 500), target.Children[2].Bounds);
+        Assert.Equal(new Rect(0, 0, 330, 500), target.Children[0].Bounds);
+        Assert.Equal(new Rect(330, 0, 4, 500), target.Children[1].Bounds);
+        Assert.Equal(new Rect(334, 0, 331, 500), target.Children[2].Bounds);
         Assert.Equal(new Rect(665, 0, 4, 500), target.Children[3].Bounds);
         Assert.Equal(new Rect(669, 0, 331, 500), target.Children[4].Bounds);
     }

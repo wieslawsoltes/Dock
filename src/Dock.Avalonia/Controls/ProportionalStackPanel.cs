@@ -255,14 +255,14 @@ public class ProportionalStackPanel : Panel
                 {
                     case Orientation.Horizontal:
                     {
-                        var width = Math.Max(0, (constraint.Width - splitterThickness) * proportion);
+                        var width = CalculateDimension(constraint.Width - splitterThickness, proportion, i);
                         var size = constraint.WithWidth(width);
                         control.Measure(size);
                         break;
                     }
                     case Orientation.Vertical:
                     {
-                        var height = Math.Max(0, (constraint.Height - splitterThickness) * proportion);
+                        var height = CalculateDimension(constraint.Height - splitterThickness, proportion, i);
                         var size = constraint.WithHeight(height);
                         control.Measure(size);
                         break;
@@ -299,7 +299,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedWidth += Math.Max(0, (constraint.Width - splitterThickness) * proportion);
+                        usedWidth += CalculateDimension(constraint.Width - splitterThickness, proportion, i);
                     }
 
                     break;
@@ -314,7 +314,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedHeight += Math.Max(0, (constraint.Height - splitterThickness) * proportion);
+                        usedHeight += CalculateDimension(constraint.Height - splitterThickness, proportion, i);
                     }
 
                     break;
@@ -397,7 +397,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var width = Math.Max(0, (arrangeSize.Width - splitterThickness) * proportion);
+                            var width = CalculateDimension(arrangeSize.Width - splitterThickness, proportion, i);
                             remainingRect = remainingRect.WithWidth(width);
                             left += width;
                         }
@@ -414,7 +414,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var height = Math.Max(0, (arrangeSize.Height - splitterThickness) * proportion);
+                            var height = CalculateDimension(arrangeSize.Height - splitterThickness, proportion, i);
                             remainingRect = remainingRect.WithHeight(height);
                             top += height;
                         }
@@ -429,6 +429,22 @@ public class ProportionalStackPanel : Panel
         }
 
         return arrangeSize;
+    }
+    
+    private double CalculateDimension(double dimension, double proportion, int childIndex)
+    {
+        var childDimension = dimension * proportion;
+        var flooredChildDimension = Math.Floor(childDimension);
+    
+        // checks whether division doesn't leave a fraction
+        if (childDimension == flooredChildDimension)
+            return Math.Max(0, flooredChildDimension);
+        else
+        {
+            // if so, it assigns the divided pixel to the first control in proportional split
+            int isFirst = childIndex == 0 ? 1 : 0;
+            return Math.Max(0, flooredChildDimension + isFirst);
+        }
     }
 
     /// <inheritdoc/>

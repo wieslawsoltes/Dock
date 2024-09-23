@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.MarkupExtension;
+namespace Avalonia.MarkupExtension;
 
 /// <summary>
 /// Loads XAML <see cref="object"/> from a URI.

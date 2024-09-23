@@ -2,12 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="DockXamlSample.App"
              xmlns:idc="using:Dock.Avalonia.Controls"
-             xmlns:idcr="using:Dock.Avalonia.Controls.Recycling"
+             xmlns:acr="using:Avalonia.Controls.Recycling"
              Name="Dock Avalonia Demo"
              RequestedThemeVariant="Light">
 
   <Application.Resources>
-    <idcr:ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
+    <acr:ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
     <Color x:Key="RegionColor">Transparent</Color>
   </Application.Resources>
 
@@ -23,7 +23,7 @@
     </Style>
 
     <Style Selector="idc|DockControl">
-      <Setter Property="(idcr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+      <Setter Property="(acr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
   </Application.Styles>

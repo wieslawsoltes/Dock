@@ -1,12 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Layout;
 
-namespace Dock.Avalonia.Controls;
+namespace Avalonia.Controls;
 
 /// <summary>
 /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.
@@ -452,13 +450,31 @@ public class ProportionalStackPanel : Panel
         sumOfFractions += childDimension - flooredChildDimension;
 
         // if the sum of fractions made up a whole pixel/pixels, add it to the dimension
-        if (Math.Round(sumOfFractions, 1) - Math.Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue) >= 0)
+        var round = Math.Round(sumOfFractions, 1);
+        
+#if NETSTANDARD2_0
+        var clamp = Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
+#else
+        var clamp = Math.Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
+#endif
+        if (round - clamp >= 0)
         {
             sumOfFractions -= Math.Round(sumOfFractions);
             return Math.Max(0, flooredChildDimension + 1);
         }
 
         return Math.Max(0, flooredChildDimension);
+
+#if NETSTANDARD2_0
+        static T Clamp<T>(T value, T min, T max) where T : IComparable<T>
+        {
+            if (value.CompareTo(min) < 0)
+                return min;
+            if (value.CompareTo(max) > 0)
+                return max;
+            return value;
+        }
+#endif
     }
 
     /// <inheritdoc/>

@@ -103,6 +103,9 @@ public abstract class DockableBase : ReactiveObject, IDockable
     }
 
     /// <inheritdoc/>
+    public string? GetControlRecyclingId() => _id;
+
+    /// <inheritdoc/>
     public virtual bool OnClose()
     {
         return true;

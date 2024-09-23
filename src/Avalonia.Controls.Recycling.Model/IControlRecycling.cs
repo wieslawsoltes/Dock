@@ -1,4 +1,4 @@
-namespace Dock.Model.Core;
+namespace Avalonia.Controls.Recycling.Model;
 
 /// <summary>
 /// 

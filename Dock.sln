@@ -92,6 +92,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{E6A49621-154E-4A00-A54A-39C3BA55799A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.ProportionalStackPanel", "src\Avalonia.Controls.ProportionalStackPanel\Avalonia.Controls.ProportionalStackPanel.csproj", "{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.Recycling", "src\Avalonia.Controls.Recycling\Avalonia.Controls.Recycling.csproj", "{9FF95B40-ECA7-440B-9342-688C53F1AE8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.MarkupExtension", "src\Avalonia.MarkupExtension\Avalonia.MarkupExtension.csproj", "{B6762749-9061-49AE-A994-777DB6018A45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.Recycling.Model", "src\Avalonia.Controls.Recycling.Model\Avalonia.Controls.Recycling.Model.csproj", "{B1858CD4-5477-4AEF-A31E-AC7F92927D64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +170,22 @@ Global
 		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6A49621-154E-4A00-A54A-39C3BA55799A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FF95B40-ECA7-440B-9342-688C53F1AE8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FF95B40-ECA7-440B-9342-688C53F1AE8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FF95B40-ECA7-440B-9342-688C53F1AE8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FF95B40-ECA7-440B-9342-688C53F1AE8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6762749-9061-49AE-A994-777DB6018A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6762749-9061-49AE-A994-777DB6018A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6762749-9061-49AE-A994-777DB6018A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6762749-9061-49AE-A994-777DB6018A45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1858CD4-5477-4AEF-A31E-AC7F92927D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1858CD4-5477-4AEF-A31E-AC7F92927D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1858CD4-5477-4AEF-A31E-AC7F92927D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1858CD4-5477-4AEF-A31E-AC7F92927D64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +211,10 @@ Global
 		{6ACDD1B2-CC63-4F4D-8E99-3F8948CA2A6E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{2CDD7BD2-3432-4F47-8865-EC8D7E652628} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{E6A49621-154E-4A00-A54A-39C3BA55799A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{9FF95B40-ECA7-440B-9342-688C53F1AE8E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{B6762749-9061-49AE-A994-777DB6018A45} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{B1858CD4-5477-4AEF-A31E-AC7F92927D64} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

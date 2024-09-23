@@ -1,10 +1,12 @@
 ﻿
+using Avalonia.Controls.Recycling.Model;
+
 namespace Dock.Model.Core;
 
 /// <summary>
 /// Dockable contract.
 /// </summary>
-public interface IDockable
+public interface IDockable : IControlRecyclingIdProvider
 {
     /// <summary>
     /// Gets or sets dockable id.

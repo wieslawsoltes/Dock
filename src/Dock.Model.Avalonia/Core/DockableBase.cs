@@ -181,6 +181,9 @@ public abstract class DockableBase : StyledElement, IDockable
     }
 
     /// <inheritdoc/>
+    public string? GetControlRecyclingId() => _id;
+
+    /// <inheritdoc/>
     public virtual bool OnClose()
     {
         return true;

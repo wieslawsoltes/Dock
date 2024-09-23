@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
-using Dock.Model.Core;
 
-namespace Dock.Avalonia.Controls.Recycling;
+namespace Avalonia.Controls.Recycling;
 
 /// <summary>
 /// 
@@ -73,14 +71,14 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
         var key = data;
 
-        if (TryToUseIdAsKey && data is IDockable dockable)
+        if (TryToUseIdAsKey && data is IControlRecyclingIdProvider idProvider)
         {
 #if DEBUG
-            Console.WriteLine($"Build: {data}, Id='{dockable.Id}'");
+            Console.WriteLine($"Build: {data}, Id='{idProvider.GetControlRecyclingId()}'");
 #endif
-            if (!string.IsNullOrWhiteSpace(dockable.Id))
+            if (!string.IsNullOrWhiteSpace(idProvider.GetControlRecyclingId()))
             {
-                key = dockable.Id;
+                key = idProvider.GetControlRecyclingId();
             }
         }
 

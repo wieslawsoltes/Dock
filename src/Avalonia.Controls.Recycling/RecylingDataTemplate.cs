@@ -1,11 +1,8 @@
-using Avalonia;
-using Avalonia.Controls;
+using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
-using Dock.Model.Core;
-using Dock.Settings;
 
-namespace Dock.Avalonia.Controls.Recycling;
+namespace Avalonia.Controls.Recycling;
 
 /// <summary>
 /// 

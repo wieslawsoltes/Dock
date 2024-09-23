@@ -1,10 +1,9 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
-using Dock.Avalonia.Controls.Recycling;
-using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
 

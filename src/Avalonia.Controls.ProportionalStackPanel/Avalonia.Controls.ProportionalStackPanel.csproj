@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Dock.Avalonia</PackageId>
+    <PackageId>Avalonia.Controls.ProportionalStackPanel</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\Base.props" />
@@ -19,14 +19,6 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Avalonia.Controls.ProportionalStackPanel\Avalonia.Controls.ProportionalStackPanel.csproj" />
-    <ProjectReference Include="..\Avalonia.Controls.Recycling\Avalonia.Controls.Recycling.csproj" />
-    <ProjectReference Include="..\Avalonia.MarkupExtension\Avalonia.MarkupExtension.csproj" />
-    <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
-    <ProjectReference Include="..\Dock.Settings\Dock.Settings.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.MarkupExtension;
+namespace Avalonia.MarkupExtension;
 
 /// <summary>
 /// References named object.

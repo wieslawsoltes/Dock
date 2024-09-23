@@ -1,16 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using Avalonia;
-using Avalonia.Controls;
+﻿using System.Diagnostics;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
 
-namespace Dock.Avalonia.Controls;
+namespace Avalonia.Controls;
 
 /// <summary>
 /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.

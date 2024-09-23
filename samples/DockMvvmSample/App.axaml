@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockMvvmSample"
              xmlns:idc="using:Dock.Avalonia.Controls"
-             xmlns:idcr="using:Dock.Avalonia.Controls.Recycling"
+             xmlns:acr="using:Avalonia.Controls.Recycling"
              xmlns:core="using:Dock.Model.Core"
              Name="Dock Avalonia Demo"
              x:Class="DockMvvmSample.App">
@@ -12,13 +12,13 @@
   </Application.DataTemplates>
 
   <Application.Resources>
-    <idcr:ControlRecycling x:Key="ControlRecyclingKey" />
+    <acr:ControlRecycling x:Key="ControlRecyclingKey" />
   </Application.Resources>
 
   <Application.Styles>
 
     <Style Selector="idc|DockControl">
-      <Setter Property="(idcr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+      <Setter Property="(acr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
     <Style Selector="idc|DocumentControl">

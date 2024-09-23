@@ -404,7 +404,8 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var width = CalculateDimension(arrangeSize.Width - splitterThickness, proportion, ref sumOfFractions);
+                            var width = CalculateDimension(arrangeSize.Width - splitterThickness, proportion,
+                                ref sumOfFractions);
                             remainingRect = remainingRect.WithWidth(width);
                             left += width;
                         }
@@ -421,7 +422,8 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var height = CalculateDimension(arrangeSize.Height - splitterThickness, proportion, ref sumOfFractions);
+                            var height = CalculateDimension(arrangeSize.Height - splitterThickness, proportion,
+                                ref sumOfFractions);
                             remainingRect = remainingRect.WithHeight(height);
                             top += height;
                         }
@@ -439,13 +441,13 @@ public class ProportionalStackPanel : Panel
     }
 
     private double CalculateDimension(
-        double dimension, 
-        double proportion, 
+        double dimension,
+        double proportion,
         ref double sumOfFractions)
     {
         var childDimension = dimension * proportion;
         var flooredChildDimension = Math.Floor(childDimension);
-       
+
         // sums fractions from the division
         sumOfFractions += childDimension - flooredChildDimension;
 
@@ -455,7 +457,7 @@ public class ProportionalStackPanel : Panel
             sumOfFractions -= Math.Round(sumOfFractions);
             return Math.Max(0, flooredChildDimension + 1);
         }
-        
+
         return Math.Max(0, flooredChildDimension);
     }
 

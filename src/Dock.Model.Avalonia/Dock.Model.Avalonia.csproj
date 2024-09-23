@@ -19,6 +19,7 @@
   <Import Project="..\..\build\System.Text.Json.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\Dock.Settings\Dock.Settings.csproj" />
   </ItemGroup>

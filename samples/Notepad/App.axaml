@@ -1,7 +1,6 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Notepad"
-             xmlns:ids="using:Dock.Settings"
              xmlns:idc="using:Dock.Avalonia.Controls"
              xmlns:idcr="using:Dock.Avalonia.Controls.Recycling"
              x:Class="Notepad.App"
@@ -23,7 +22,7 @@
     <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
 
     <Style Selector="idc|DockControl">
-      <Setter Property="(ids:DockProperties.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+      <Setter Property="(idcr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
   </Application.Styles>

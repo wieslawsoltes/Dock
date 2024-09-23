@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml.Templates;
+using Dock.Avalonia.Controls.Recycling;
 using Dock.Settings;
 
 namespace Dock.Model.Avalonia.Controls;
@@ -16,7 +17,7 @@ internal static class TemplateHelper
             return null;
         }
 
-        var controlRecycling = DockProperties.GetControlRecycling(parent);
+        var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
             if (controlRecycling.TryGetValue(content, out var control))

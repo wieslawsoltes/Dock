@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
-using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -10,12 +9,6 @@ namespace Dock.Settings;
 /// </summary>
 public class DockProperties : AvaloniaObject
 {
-    /// <summary>
-    /// Defines the ControlRecycling attached property.
-    /// </summary>
-    public static readonly AttachedProperty<IControlRecycling?> ControlRecyclingProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, IControlRecycling?>("ControlRecycling", null, true, BindingMode.TwoWay);
-
     /// <summary>
     /// Defines the IsDockTarget attached property.
     /// </summary>
@@ -45,26 +38,6 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     public static readonly StyledProperty<bool> IsDropEnabledProperty =
         AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
-
-    /// <summary>
-    /// Gets the value of the ControlRecycling attached property on the specified control.
-    /// </summary>
-    /// <param name="control">The control.</param>
-    /// <returns>The ControlRecycling attached property.</returns>
-    public static IControlRecycling? GetControlRecycling(AvaloniaObject control)
-    {
-        return control.GetValue(ControlRecyclingProperty);
-    }
-
-    /// <summary>
-    /// Sets the value of the ControlRecycling attached property on the specified control.
-    /// </summary>
-    /// <param name="control">The control.</param>
-    /// <param name="value">The value of the ControlRecycling property.</param>
-    public static void SetControlRecycling(AvaloniaObject control, IControlRecycling? value)
-    {
-        control.SetValue(ControlRecyclingProperty, value);
-    }
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.

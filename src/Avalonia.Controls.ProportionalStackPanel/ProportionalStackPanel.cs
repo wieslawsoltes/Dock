@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Avalonia.Data;
 using Avalonia.Layout;
+using Avalonia.VisualTree;
 
 namespace Avalonia.Controls;
 
@@ -11,6 +12,8 @@ namespace Avalonia.Controls;
 /// </summary>
 public class ProportionalStackPanel : Panel
 {
+    private bool isAssigningProportions;
+
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
     /// </summary>
@@ -80,7 +83,20 @@ public class ProportionalStackPanel : Panel
         control.SetValue(IsCollapsedProperty, value);
     }
 
-    private void AssignProportions(global::Avalonia.Controls.Controls children)
+    private void AssignProportions()
+    {
+        isAssigningProportions = true;
+        try
+        {
+            AssignProportionsInternal(Children);
+        }
+        finally
+        {
+            isAssigningProportions = false;
+        }
+    }
+
+    private static void AssignProportionsInternal(global::Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;
         var unassignedProportions = 0;
@@ -221,7 +237,7 @@ public class ProportionalStackPanel : Panel
         var maximumHeight = 0.0;
         var splitterThickness = GetTotalSplitterThickness(Children);
 
-        AssignProportions(Children);
+        AssignProportions();
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -344,7 +360,7 @@ public class ProportionalStackPanel : Panel
         var splitterThickness = GetTotalSplitterThickness(Children);
         var index = 0;
 
-        AssignProportions(Children);
+        AssignProportions();
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -492,7 +508,17 @@ public class ProportionalStackPanel : Panel
     {
         AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
         AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
-        AffectsParentMeasure<ProportionalStackPanel>(ProportionProperty);
-        AffectsParentArrange<ProportionalStackPanel>(ProportionProperty);
+
+        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
+                return;
+
+            if (parent.isAssigningProportions)
+                return;
+
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        });
     }
 }

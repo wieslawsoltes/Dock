@@ -13,7 +13,8 @@
 
     <FluentTheme />
 
-    <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
+    <!-- <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" /> -->
+    <DockFluentTheme />
 
     <Style Selector="TextBlock">
       <Setter Property="HorizontalAlignment" Value="Center" />

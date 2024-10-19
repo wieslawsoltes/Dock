@@ -1,8 +1,6 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Notepad"
-             xmlns:idc="using:Dock.Avalonia.Controls"
-             xmlns:acr="using:Avalonia.Controls.Recycling"
              x:Class="Notepad.App"
              Name="Notepad"
              RequestedThemeVariant="Light">
@@ -12,17 +10,18 @@
   </Application.DataTemplates>
 
   <Application.Resources>
-    <acr:ControlRecycling x:Key="ControlRecyclingKey" />
+    <ControlRecycling x:Key="ControlRecyclingKey" />
   </Application.Resources>
 
   <Application.Styles>
 
     <FluentTheme />
 
-    <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
+    <!--<StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />-->
+    <DockFluentTheme />
 
-    <Style Selector="idc|DockControl">
-      <Setter Property="(acr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
   </Application.Styles>

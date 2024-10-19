@@ -1,8 +1,6 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockMvvmSample"
-             xmlns:idc="using:Dock.Avalonia.Controls"
-             xmlns:acr="using:Avalonia.Controls.Recycling"
              xmlns:core="using:Dock.Model.Core"
              Name="Dock Avalonia Demo"
              x:Class="DockMvvmSample.App">
@@ -12,16 +10,16 @@
   </Application.DataTemplates>
 
   <Application.Resources>
-    <acr:ControlRecycling x:Key="ControlRecyclingKey" />
+    <ControlRecycling x:Key="ControlRecyclingKey" />
   </Application.Resources>
 
   <Application.Styles>
 
-    <Style Selector="idc|DockControl">
-      <Setter Property="(acr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
-    <Style Selector="idc|DocumentControl">
+    <Style Selector="DocumentControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable">
           <StackPanel Orientation="Horizontal">
@@ -38,7 +36,7 @@
       </Setter>
     </Style>
 
-    <Style Selector="idc|ToolControl">
+    <Style Selector="ToolControl">
       <Setter Property="HeaderTemplate">
         <DataTemplate DataType="core:IDockable">
           <TextBlock Text="{Binding Title}" Padding="2" />
@@ -46,7 +44,7 @@
       </Setter>
     </Style>
 
-    <Style Selector="idc|ToolChromeControl">
+    <Style Selector="ToolChromeControl">
       <Setter Property="Background" Value="Transparent" />
     </Style>
 

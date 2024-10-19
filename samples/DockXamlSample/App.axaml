@@ -1,13 +1,11 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="DockXamlSample.App"
-             xmlns:idc="using:Dock.Avalonia.Controls"
-             xmlns:acr="using:Avalonia.Controls.Recycling"
              Name="Dock Avalonia Demo"
              RequestedThemeVariant="Light">
 
   <Application.Resources>
-    <acr:ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
+    <ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
     <Color x:Key="RegionColor">Transparent</Color>
   </Application.Resources>
 
@@ -22,8 +20,8 @@
       <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
-    <Style Selector="idc|DockControl">
-      <Setter Property="(acr:ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
     </Style>
 
   </Application.Styles>

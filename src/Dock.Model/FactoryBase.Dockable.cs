@@ -755,7 +755,7 @@ public abstract partial class FactoryBase
 
         var newIsEmpty = dock.VisibleDockables == null
                          || dock.VisibleDockables?.Count == 0
-                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true } or IProportionalDockSplitter);
+                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true, IsCollapsable: true } or IProportionalDockSplitter);
 
         if (oldIsEmpty != newIsEmpty)
         {

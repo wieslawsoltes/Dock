@@ -12,7 +12,6 @@
 
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     <Setter Property="(TextElement.FontSize)" Value="{DynamicResource DockFontSizeNormal}" />
-    <Setter Property="FontFamily" Value="{TemplateBinding FontFamily}" />
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />

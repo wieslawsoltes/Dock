@@ -21,9 +21,6 @@ internal static class TemplateHelper
         {
             if (controlRecycling.TryGetValue(content, out var control))
             {
-#if DEBUG
-                Console.WriteLine($"[Cached] {content}, {control}");
-#endif
                 return control as Control;
             }
 
@@ -31,9 +28,6 @@ internal static class TemplateHelper
             if (control is not null)
             {
                 controlRecycling.Add(content, control);
-#if DEBUG
-                Console.WriteLine($"[Added] {content}, {control}");
-#endif
             }
 
             return control as Control;

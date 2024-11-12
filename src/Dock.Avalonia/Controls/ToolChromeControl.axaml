@@ -50,7 +50,7 @@
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="IsPinned" Value="{CompiledBinding ActiveDockable.OriginalOwner, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" x:DataType="controls:IToolDock" />
-    <Setter Property="IsMaximized" Value="{CompiledBinding $parent[HostWindow].WindowState, FallbackValue=False, Converter={x:Static IsMaximizedConverter.Instance}}" />
+    <Setter Property="IsMaximized" Value="{CompiledBinding $parent[Window].WindowState, FallbackValue=False, Converter={x:Static IsMaximizedConverter.Instance}}" />
 
     <Setter Property="Template">
       <ControlTemplate>

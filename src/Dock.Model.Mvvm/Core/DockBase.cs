@@ -18,12 +18,9 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
-    private bool _isCollapsable = true;
     private int _openedDockablesCount = 0;
     private bool _isActive;
-    private bool _isEmpty;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -81,14 +78,6 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double Proportion
-    {
-        get => _proportion;
-        set => SetProperty(ref _proportion, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public DockMode Dock
     {
         get => _dock;
@@ -101,22 +90,6 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _isActive;
         set => SetProperty(ref _isActive, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsEmpty
-    {
-        get => _isEmpty;
-        set => SetProperty(ref _isEmpty, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsCollapsable
-    {
-        get => _isCollapsable;
-        set => SetProperty(ref _isCollapsable, value);
     }
 
     /// <inheritdoc/>

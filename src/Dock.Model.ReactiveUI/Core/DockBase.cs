@@ -18,11 +18,8 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
-    private bool _isCollapsable = true;
     private bool _isActive;
-    private bool _isEmpty;
     private int _openedDockablesCount;
 
     /// <summary>
@@ -81,14 +78,6 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double Proportion
-    {
-        get => _proportion;
-        set => this.RaiseAndSetIfChanged(ref _proportion, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public DockMode Dock
     {
         get => _dock;
@@ -105,26 +94,10 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsEmpty
-    {
-        get => _isEmpty;
-        set => this.RaiseAndSetIfChanged(ref _isEmpty, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public int OpenedDockablesCount
     {
         get => _openedDockablesCount;
         set => this.RaiseAndSetIfChanged(ref _openedDockablesCount, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsCollapsable
-    {
-        get => _isCollapsable;
-        set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
     }
 
     /// <inheritdoc/>

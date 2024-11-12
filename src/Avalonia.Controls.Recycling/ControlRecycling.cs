@@ -73,9 +73,6 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
         if (TryToUseIdAsKey && data is IControlRecyclingIdProvider idProvider)
         {
-#if DEBUG
-            Console.WriteLine($"Build: {data}, Id='{idProvider.GetControlRecyclingId()}'");
-#endif
             if (!string.IsNullOrWhiteSpace(idProvider.GetControlRecyclingId()))
             {
                 key = idProvider.GetControlRecyclingId();
@@ -84,9 +81,6 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
         if (TryGetValue(key, out var control))
         {
-#if DEBUG
-            Console.WriteLine($"[Cached] {key}, {control}");
-#endif
             return control;
         }
 
@@ -99,9 +93,7 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
         }
 
         Add(key, control);
-#if DEBUG
-        Console.WriteLine($"[Added] {key}, {control}");
-#endif
+
         return control;
     }
 

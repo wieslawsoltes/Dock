@@ -51,13 +51,7 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, IDockable?>(nameof(FocusedDockable), o => o.FocusedDockable, (o, v) => o.FocusedDockable = v);
 
     /// <summary>
-    /// Defines the <see cref="Proportion"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, double> ProportionProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, double>(nameof(Proportion), o => o.Proportion, (o, v) => o.Proportion = v, double.NaN);
-
-    /// <summary>
-    /// Defines the <see cref="Proportion"/> property.
+    /// Defines the <see cref="Dock"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, DockMode> DockProperty =
         AvaloniaProperty.RegisterDirect<DockBase, DockMode>(nameof(Dock), o => o.Dock, (o, v) => o.Dock = v);
@@ -69,22 +63,10 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(IsActive), o => o.IsActive, (o, v) => o.IsActive = v);
 
     /// <summary>
-    /// Defines the <see cref="IsEmpty"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, bool> IsEmptyProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(IsEmpty), o => o.IsEmpty, (o, v) => o.IsEmpty = v);
-
-    /// <summary>
     /// Defines the <see cref="OpenedDockablesCount"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, int> OpenedDockablesCountProperty =
         AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(OpenedDockablesCount), o => o.OpenedDockablesCount, (o, v) => o.OpenedDockablesCount = v);
-
-    /// <summary>
-    /// Defines the <see cref="IsCollapsable"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, bool> IsCollapsableProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(IsCollapsable), o => o.IsCollapsable, (o, v) => o.IsCollapsable = v, true);
 
     /// <summary>
     /// Defines the <see cref="CanGoBack"/> property.
@@ -103,11 +85,8 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private double _proportion = double.NaN;
     private DockMode _dock = DockMode.Center;
     private bool _isActive;
-    private bool _isEmpty;
-    private bool _isCollapsable = true;
     private bool _canGoBack;
     private bool _canGoForward;
     private int _openedDockablesCount;
@@ -177,15 +156,6 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("Proportion")]
-    public double Proportion
-    {
-        get => _proportion;
-        set => SetAndRaise(ProportionProperty, ref _proportion, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [JsonPropertyName("Dock")]
     public DockMode Dock
     {
@@ -204,29 +174,11 @@ public abstract class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("IsEmpty")]
-    public bool IsEmpty
-    {
-        get => _isEmpty;
-        set => SetAndRaise(IsEmptyProperty, ref _isEmpty, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [JsonIgnore]
     public int OpenedDockablesCount
     {
         get => _openedDockablesCount;
         set => SetAndRaise(OpenedDockablesCountProperty, ref _openedDockablesCount, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("IsCollapsable")]
-    public bool IsCollapsable
-    {
-        get => _isCollapsable;
-        set => SetAndRaise(IsCollapsableProperty, ref _isCollapsable, value);
     }
 
     /// <inheritdoc/>

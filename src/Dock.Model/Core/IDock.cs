@@ -29,11 +29,6 @@ public interface IDock : IDockable
     IDockable? FocusedDockable { get; set; }
 
     /// <summary> 
-    /// Gets or sets splitter proportion. 
-    /// </summary> 
-    double Proportion { get; set; }
-
-    /// <summary> 
     /// Gets or sets docking mode. 
     /// </summary> 
     DockMode Dock { get; set; }
@@ -42,16 +37,6 @@ public interface IDock : IDockable
     /// Gets or sets if the dockable is the currently active.
     /// </summary>
     bool IsActive { get; set; }
-
-    /// <summary>
-    /// Gets if the dockable is empty.
-    /// </summary>
-    bool IsEmpty { get; set; }
-
-    /// <summary>
-    /// Gets or sets if the Dock collapses when all its children are removed.
-    /// </summary>
-    bool IsCollapsable { get; set; }
 
     /// <summary>
     /// Gets the number of currently opened and visible dockables

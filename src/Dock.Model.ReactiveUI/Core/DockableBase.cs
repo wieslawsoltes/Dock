@@ -18,6 +18,9 @@ public abstract class DockableBase : ReactiveObject, IDockable
     private IDockable? _owner;
     private IDockable? _originalOwner;
     private IFactory? _factory;
+    private bool _isEmpty;
+    private bool _isCollapsable = true;
+    private double _proportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _canFloat = true;
@@ -76,6 +79,30 @@ public abstract class DockableBase : ReactiveObject, IDockable
     {
         get => _factory;
         set => this.RaiseAndSetIfChanged(ref _factory, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool IsEmpty
+    {
+        get => _isEmpty;
+        set => this.RaiseAndSetIfChanged(ref _isEmpty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool IsCollapsable
+    {
+        get => _isCollapsable;
+        set => this.RaiseAndSetIfChanged(ref _isCollapsable, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double Proportion
+    {
+        get => _proportion;
+        set => this.RaiseAndSetIfChanged(ref _proportion, value);
     }
 
     /// <inheritdoc/>

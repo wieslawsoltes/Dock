@@ -39,6 +39,21 @@ public interface IDockable : IControlRecyclingIdProvider
     IFactory? Factory { get; set; }
 
     /// <summary>
+    /// Gets if the dockable is empty.
+    /// </summary>
+    bool IsEmpty { get; set; }
+
+    /// <summary>
+    /// Gets or sets if the dockable collapses when all its children are removed.
+    /// </summary>
+    bool IsCollapsable { get; set; }
+
+    /// <summary> 
+    /// Gets or sets splitter proportion. 
+    /// </summary> 
+    double Proportion { get; set; }
+
+    /// <summary>
     /// Gets or sets if the dockable can be closed.
     /// </summary>
     bool CanClose { get; set; }

@@ -43,7 +43,13 @@ public class Factory : FactoryBase
     public override IList<T> CreateList<T>(params T[] items) => new ObservableCollection<T>(items);
 
     /// <inheritdoc/>
-    public override IRootDock CreateRootDock() => new RootDock();
+    public override IRootDock CreateRootDock() => new RootDock
+    {
+        LeftPinnedDockables = CreateList<IDockable>(), 
+        RightPinnedDockables = CreateList<IDockable>(),
+        TopPinnedDockables = CreateList<IDockable>(),
+        BottomPinnedDockables = CreateList<IDockable>()
+    };
 
     /// <inheritdoc/>
     public override IProportionalDock CreateProportionalDock() => new ProportionalDock();

@@ -60,7 +60,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(0, 152, 100, 148), target.Children[2].Bounds);
     }
 
-    private static IEnumerable<object[]> GetBorderTestsData()
+    public static IEnumerable<object[]> GetBorderTestsData()
     {
         yield return [0.5, 604, 300, 300];
         yield return [0.25, 604, 150, 450];

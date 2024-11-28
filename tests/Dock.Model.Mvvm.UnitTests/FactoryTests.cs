@@ -22,7 +22,7 @@ public class FactoryTests
         var actual = factory.CreateList<IDockable>();
         Assert.NotNull(actual);
         Assert.IsType<ObservableCollection<IDockable>>(actual);
-        Assert.Equal(0, actual.Count);
+        Assert.Empty(actual);
     }
 
     [Fact]

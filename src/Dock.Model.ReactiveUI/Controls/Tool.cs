@@ -8,6 +8,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Tool.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Tool : DockableBase, ITool, IDocument
+public partial class Tool : DockableBase, ITool, IDocument
 {
 }

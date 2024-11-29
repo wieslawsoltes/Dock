@@ -1,7 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -9,15 +8,18 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Docking panel dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DockDock : DockBase, IDockDock
-{        
-    private bool _lastChildFill = true;
+public partial class DockDock : DockBase, IDockDock
+{
+    /// <summary>
+    /// Initializes new instance of the <see cref="DockDock"/> class.
+    /// </summary>
+    public DockDock()
+    {
+        _lastChildFill = true;
+    }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool LastChildFill
-    {
-        get => _lastChildFill;
-        set => this.RaiseAndSetIfChanged(ref _lastChildFill, value);
-    }
+    [Reactive]
+    public partial bool LastChildFill { get; set; }
 }

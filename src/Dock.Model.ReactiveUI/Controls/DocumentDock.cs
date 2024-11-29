@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -10,17 +9,12 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock
+public partial class DocumentDock : DockBase, IDocumentDock
 {
-    private bool _canCreateDocument;
-
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool CanCreateDocument
-    {
-        get => _canCreateDocument;
-        set => this.RaiseAndSetIfChanged(ref _canCreateDocument, value);
-    }
+    [Reactive]
+    public partial bool CanCreateDocument { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]

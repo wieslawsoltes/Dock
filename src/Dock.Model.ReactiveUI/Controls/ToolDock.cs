@@ -2,7 +2,6 @@
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -10,42 +9,35 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Tool dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class ToolDock : DockBase, IToolDock
+public partial class ToolDock : DockBase, IToolDock
 {
-    private Alignment _alignment = Alignment.Unset;
-    private bool _isExpanded;
-    private bool _autoHide = true;
-    private GripMode _gripMode = GripMode.Visible;
+    /// <summary>
+    /// Initializes new instance of the <see cref="ToolDock"/> class.
+    /// </summary>
+    public ToolDock()
+    {
+        _alignment = Alignment.Unset;
+        _autoHide = true;
+        _gripMode = GripMode.Visible;
+    }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial Alignment Alignment { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public Alignment Alignment
-    {
-        get => _alignment;
-        set => this.RaiseAndSetIfChanged(ref _alignment, value);
-    }
+    [Reactive]
+    public partial bool IsExpanded { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsExpanded
-    {
-        get => _isExpanded;
-        set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
-    }
+    [Reactive]
+    public partial bool AutoHide { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool AutoHide
-    {
-        get => _autoHide;
-        set => this.RaiseAndSetIfChanged(ref _autoHide, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public GripMode GripMode
-    {
-        get => _gripMode;
-        set => this.RaiseAndSetIfChanged(ref _gripMode, value);
-    }
+    [Reactive]
+    public partial GripMode GripMode { get; set; }
 }

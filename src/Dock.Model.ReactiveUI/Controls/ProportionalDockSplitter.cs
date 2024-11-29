@@ -8,6 +8,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Proportional dock splitter.
 /// </summary>
 [DataContract(IsReference = true)]
-public class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
+public partial class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
 {
 }

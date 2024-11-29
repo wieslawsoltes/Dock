@@ -8,6 +8,6 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Document : DockableBase, IDocument
+public partial class Document : DockableBase, IDocument
 {
 }

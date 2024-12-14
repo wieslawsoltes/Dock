@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
@@ -64,14 +63,13 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     /// <returns></returns>
     public object? Build(object? data, object? existing, object? parent)
     {
-        if (data is null)
+        var key = data;
+        if (key is null)
         {
             return null;
         }
 
-        var key = data;
-
-        if (TryToUseIdAsKey && data is IControlRecyclingIdProvider idProvider)
+        if (TryToUseIdAsKey && key is IControlRecyclingIdProvider idProvider)
         {
             if (!string.IsNullOrWhiteSpace(idProvider.GetControlRecyclingId()))
             {
@@ -84,15 +82,15 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return control;
         }
 
-        var dataTemplate = (parent as Control)?.FindDataTemplate(data);
+        var dataTemplate = (parent as Control)?.FindDataTemplate(key);
 
-        control = dataTemplate?.Build(data);
+        control = dataTemplate?.Build(key);
         if (control is null)
         {
             return null;
         }
 
-        Add(key, control);
+        Add(key!, control);
 
         return control;
     }

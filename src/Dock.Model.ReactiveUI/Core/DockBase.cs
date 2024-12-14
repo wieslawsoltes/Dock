@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reactive;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Adapters;
@@ -11,16 +12,9 @@ namespace Dock.Model.ReactiveUI.Core;
 /// Dock base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockBase : DockableBase, IDock
+public abstract partial class DockBase : DockableBase, IDock
 {
     internal readonly INavigateAdapter _navigateAdapter;
-    private IList<IDockable>? _visibleDockables;
-    private IDockable? _activeDockable;
-    private IDockable? _defaultDockable;
-    private IDockable? _focusedDockable;
-    private DockMode _dock = DockMode.Center;
-    private bool _isActive;
-    private int _openedDockablesCount;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -28,77 +22,61 @@ public abstract class DockBase : DockableBase, IDock
     protected DockBase()
     {
         _navigateAdapter = new NavigateAdapter(this);
+        _dock = DockMode.Center;
         GoBack = ReactiveCommand.Create(() => _navigateAdapter.GoBack());
         GoForward = ReactiveCommand.Create(() => _navigateAdapter.GoForward());
         Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));
         Close = ReactiveCommand.Create(() => _navigateAdapter.Close());
+
+        this.WhenAnyActiveDockable()
+            .Subscribe(new AnonymousObserver<IDockable?>(x =>
+            {
+                Factory?.InitActiveDockable(x, this);
+                this.RaisePropertyChanged(nameof(CanGoBack));
+                this.RaisePropertyChanged(nameof(CanGoForward));
+            }));
+
+        this.WhenAnyFocusedDockable()
+            .Subscribe(new AnonymousObserver<IDockable?>(x =>
+            {
+                Factory?.OnFocusedDockableChanged(x);
+            }));
     }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? VisibleDockables
-    {
-        get => _visibleDockables;
-        set => this.RaiseAndSetIfChanged(ref _visibleDockables, value);
-    }
+    [Reactive]
+    public partial IList<IDockable>? VisibleDockables { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IDockable? ActiveDockable
-    {
-        get => _activeDockable;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _activeDockable, value);
-            Factory?.InitActiveDockable(value, this);
-            this.RaisePropertyChanged(nameof(CanGoBack));
-            this.RaisePropertyChanged(nameof(CanGoForward));
-        }
-    }
+    [Reactive]
+    public partial IDockable? ActiveDockable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IDockable? DefaultDockable
-    {
-        get => _defaultDockable;
-        set => this.RaiseAndSetIfChanged(ref _defaultDockable, value);
-    }
+    [Reactive]
+    public partial IDockable? DefaultDockable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IDockable? FocusedDockable
-    {
-        get => _focusedDockable;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _focusedDockable, value);
-            Factory?.OnFocusedDockableChanged(value);
-        }
-    }
+    [Reactive]
+    public partial IDockable? FocusedDockable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public DockMode Dock
-    {
-        get => _dock;
-        set => this.RaiseAndSetIfChanged(ref _dock, value);
-    }
+    [Reactive]
+    public partial DockMode Dock { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsActive
-    {
-        get => _isActive;
-        set => this.RaiseAndSetIfChanged(ref _isActive, value);
-    }
+    [Reactive]
+    public partial bool IsActive { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int OpenedDockablesCount
-    {
-        get => _openedDockablesCount;
-        set => this.RaiseAndSetIfChanged(ref _openedDockablesCount, value);
-    }
+    [Reactive]
+    public partial int OpenedDockablesCount { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]

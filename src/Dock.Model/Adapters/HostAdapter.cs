@@ -53,12 +53,12 @@ public class HostAdapter : IHostAdapter
 
         if (_window.Host is not null)
         {
-            _window.Host.Present(isDialog);
             _window.Host.SetPosition(_window.X, _window.Y);
             _window.Host.SetSize(_window.Width, _window.Height);
             _window.Host.SetTitle(_window.Title);
             _window.Host.SetLayout(_window.Layout);
             _window.Host.IsTracked = true;
+            _window.Host.Present(isDialog);
         }
     }
 

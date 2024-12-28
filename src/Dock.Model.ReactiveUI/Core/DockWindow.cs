@@ -9,6 +9,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// <summary>
 /// Dock window.
 /// </summary>
+[Reactive]
 [DataContract(IsReference = true)]
 public partial class DockWindow : ReactiveObject, IDockWindow
 {
@@ -26,57 +27,46 @@ public partial class DockWindow : ReactiveObject, IDockWindow
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial string Id { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
-    [Reactive]
     public partial double X { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
-    [Reactive]
     public partial double Y { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
-    [Reactive]
     public partial double Width { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = true, EmitDefaultValue = true)]
-    [Reactive]
     public partial double Height { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool Topmost { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial string Title { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IDockable? Owner { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IFactory? Factory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial IRootDock? Layout { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IHostWindow? Host { get; set; }
 
     /// <inheritdoc/>

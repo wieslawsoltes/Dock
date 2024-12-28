@@ -13,7 +13,6 @@ public partial class DocumentDock : DockBase, IDocumentDock
 {
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool CanCreateDocument { get; set; }
 
     /// <inheritdoc/>

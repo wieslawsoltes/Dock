@@ -2,16 +2,14 @@
 using Dock.Model.Adapters;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Core;
 
 /// <summary>
 /// Dock window.
 /// </summary>
-[Reactive]
 [DataContract(IsReference = true)]
-public partial class DockWindow : ReactiveObject, IDockWindow
+public partial class DockWindow : ReactiveBase, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;
 

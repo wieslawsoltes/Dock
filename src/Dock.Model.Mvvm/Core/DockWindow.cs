@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Adapters;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -10,7 +9,7 @@ namespace Dock.Model.Mvvm.Core;
 /// Dock window.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DockWindow : ObservableObject, IDockWindow
+public class DockWindow : ReactiveBase, IDockWindow
 {
     private readonly IHostAdapter _hostAdapter;
     private string _id;

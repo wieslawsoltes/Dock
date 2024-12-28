@@ -1,16 +1,14 @@
 ﻿using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Core;
 
 /// <summary>
 /// Dockable base class.
 /// </summary>
-[Reactive]
 [DataContract(IsReference = true)]
-public abstract partial class DockableBase : ReactiveObject, IDockable
+public abstract partial class DockableBase : ReactiveBase, IDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
 

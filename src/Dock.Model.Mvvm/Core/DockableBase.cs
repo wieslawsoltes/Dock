@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
 
@@ -9,7 +8,7 @@ namespace Dock.Model.Mvvm.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : ObservableObject, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;

@@ -13,7 +13,7 @@ namespace Dock.Model.Avalonia.Core;
 /// Dock window.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DockWindow : StyledElement, IDockWindow
+public class DockWindow : ReactiveBase, IDockWindow
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.

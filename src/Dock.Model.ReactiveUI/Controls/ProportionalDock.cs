@@ -13,6 +13,5 @@ public partial class ProportionalDock : DockBase, IProportionalDock
 {
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial Orientation Orientation { get; set; }
 }

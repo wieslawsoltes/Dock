@@ -1,7 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Core;
 
@@ -9,7 +8,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract partial class DockableBase : ReactiveObject, IDockable
+public abstract partial class DockableBase : ReactiveBase, IDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
 
@@ -30,62 +29,50 @@ public abstract partial class DockableBase : ReactiveObject, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial string Id { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial string Title { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial object? Context { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IDockable? Owner { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IDockable? OriginalOwner { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
-    [Reactive]
     public partial IFactory? Factory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool IsEmpty { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool IsCollapsable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial double Proportion { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool CanClose { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool CanPin { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool CanFloat { get; set; }
 
     /// <inheritdoc/>

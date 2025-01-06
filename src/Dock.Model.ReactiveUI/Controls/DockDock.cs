@@ -20,6 +20,5 @@ public partial class DockDock : DockBase, IDockDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool LastChildFill { get; set; }
 }

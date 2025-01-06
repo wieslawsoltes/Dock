@@ -23,21 +23,17 @@ public partial class ToolDock : DockBase, IToolDock
     
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial Alignment Alignment { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool IsExpanded { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial bool AutoHide { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [Reactive]
     public partial GripMode GripMode { get; set; }
 }

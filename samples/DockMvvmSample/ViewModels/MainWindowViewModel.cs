@@ -160,8 +160,8 @@ public class MainWindowViewModel : ObservableObject
         var layout = _factory?.CreateLayout();
         if (layout is not null)
         {
-            Layout = layout;
             _factory?.InitLayout(layout);
+            Layout = layout;
         }
     }
 }

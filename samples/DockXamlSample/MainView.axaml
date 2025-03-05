@@ -67,15 +67,15 @@
                       <TextBlock Text="Title"/>
                       <TextBox Text="{Binding Title}"/>
                       <TextBlock Text="Context"/>
-                      <TextBox Text="{Binding Context}"/>
+                      <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
                     </StackPanel>
                   </DocumentTemplate>
                 </DocumentDock.DocumentTemplate>
-                <Document x:Name="Document1" Id="Document1" Title="Program.cs" x:DataType="Document">
-                  <TextBlock Text="{Binding Title}"/>
+                <Document x:Name="Document1" Id="Document1" Title="Program.cs" Context="" x:DataType="Document">
+                  <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
                 </Document>
-                <Document x:Name="Document2" Id="Document2" Title="App.axaml" x:DataType="Document">
-                  <TextBlock Text="{Binding Title}"/>
+                <Document x:Name="Document2" Id="Document2" Title="App.axaml" Context="" x:DataType="Document">
+                  <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
                 </Document>
               </DocumentDock>
 

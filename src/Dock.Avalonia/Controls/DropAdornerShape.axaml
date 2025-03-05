@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <StackPanel>
+        <DropAdornerShape />
+      </StackPanel>
+    </Border>
+  </Design.PreviewWith>
+  <ControlTheme x:Key="{x:Type DropAdornerShape}" TargetType="DropAdornerShape">
+    <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeForegroundBrush}" />
+    <Setter Property="Margin" Value="4" />
+  </ControlTheme>
+</ResourceDictionary>

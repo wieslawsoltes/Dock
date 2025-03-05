@@ -82,9 +82,9 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
             return control;
         }
 
-        var dataTemplate = (parent as Control)?.FindDataTemplate(key);
+        var dataTemplate = (parent as Control)?.FindDataTemplate(data);
 
-        control = dataTemplate?.Build(key);
+        control = dataTemplate?.Build(data);
         if (control is null)
         {
             return null;

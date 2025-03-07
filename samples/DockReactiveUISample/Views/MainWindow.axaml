@@ -1,0 +1,56 @@
+﻿<Window x:Class="DockReactiveUISample.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ids="using:Dock.Settings"
+        xmlns:vm="using:DockReactiveUISample.ViewModels"
+        xmlns:views="using:DockReactiveUISample.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="1200" d:DesignHeight="680"
+        x:Name="MainWindowView"
+        UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Background="{x:Null}"
+        TransparencyLevelHint="AcrylicBlur"
+        Foreground="{DynamicResource DockThemeForegroundBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
+        Title="Dock Avalonia Demo" Height="680" Width="1200"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True">
+  <Window.Resources>
+    <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                 TintColor="{DynamicResource SystemAltHighColor}"
+                                 TintOpacity="1"
+                                 FallbackColor="{DynamicResource AcrylicFallbackColor}"
+                                 MaterialOpacity="0.55"
+                                 x:Key="AcrylicMaterial"/>
+  </Window.Resources>
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <Panel>
+    <ExperimentalAcrylicBorder IsHitTestVisible="False" Material="{StaticResource AcrylicMaterial}" />
+    <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
+      <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
+        <views:MainView>
+          <views:MainView.Styles>
+            <Style Selector="GridSplitter">
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Border Background="Transparent">
+                      <ExperimentalAcrylicBorder Material="{StaticResource AcrylicMaterial}" />
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </views:MainView.Styles>
+        </views:MainView>
+      </Panel>
+    </Panel>
+  </Panel>
+</Window>

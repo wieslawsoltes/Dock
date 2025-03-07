@@ -1,0 +1,16 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Styles.Resources>
+    <SolidColorBrush x:Key="TextControlBackground">#EFEFEF</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBackgroundFocused">#EFEFEF</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBackgroundPointerOver">#EFEFEF</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlForeground">#212121</SolidColorBrush>
+    <SolidColorBrush x:Key="TextForegroundColor">#212121</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrush">#33323232</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver">#33323232</SolidColorBrush>
+    <Color x:Key="RegionColor">#FFFAFAFA</Color>
+    <Color x:Key="AcrylicFallbackColor">#E2E2E2</Color>
+  </Styles.Resources>
+
+</Styles>

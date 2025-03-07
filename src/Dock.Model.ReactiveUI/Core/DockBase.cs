@@ -29,6 +29,7 @@ public abstract partial class DockBase : DockableBase, IDock
         Close = ReactiveCommand.Create(() => _navigateAdapter.Close());
 
         this.WhenAnyActiveDockable()
+        //this.WhenAnyValue(x => x.ActiveDockable)
             .Subscribe(new AnonymousObserver<IDockable?>(x =>
             {
                 Factory?.InitActiveDockable(x, this);

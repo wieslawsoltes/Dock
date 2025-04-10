@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Git;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.IO;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 class Build : NukeBuild
@@ -48,20 +47,21 @@ class Build : NukeBuild
         VersionSuffix = VersionSuffix ?? "";
     }
 
-    private void DeleteDirectories(IReadOnlyCollection<string> directories)
+    private void DeleteDirectories(IReadOnlyCollection<AbsolutePath> directories)
     {
         foreach (var directory in directories)
         {
-            DeleteDirectory(directory);
+            directory.DeleteDirectory();
         }
     }
 
     Target Clean => _ => _
         .Executes(() =>
         {
-            DeleteDirectories(GlobDirectories(SourceDirectory, "**/bin", "**/obj"));
-            DeleteDirectories(GlobDirectories(TestsDirectory, "**/bin", "**/obj"));
-            EnsureCleanDirectory(ArtifactsDirectory);
+            
+            DeleteDirectories(SourceDirectory.GlobDirectories("**/bin", "**/obj"));
+            DeleteDirectories(TestsDirectory.GlobDirectories("**/bin", "**/obj"));
+            ArtifactsDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
@@ -117,7 +117,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             DotNetPublish(s => s
-                .SetProject(Solution.GetProject(PublishProject))
+                .SetProject( Solution.AllProjects.FirstOrDefault(x => x.Name == PublishProject))
                 .SetConfiguration(Configuration)
                 .SetVersionSuffix(VersionSuffix)
                 .SetFramework(PublishFramework)

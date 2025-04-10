@@ -11,7 +11,6 @@
     <PackageId>Dock.Serializer</PackageId>
   </PropertyGroup>
 
-  <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\SignAssembly.props" />
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\Newtonsoft.Json.props" />

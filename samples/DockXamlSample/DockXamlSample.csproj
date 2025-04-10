@@ -30,7 +30,6 @@
     <IncludeSatelliteDllsProjectOutputGroup>false</IncludeSatelliteDllsProjectOutputGroup>
   </PropertyGroup>
 
-  <Import Project="..\..\build\Base.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />

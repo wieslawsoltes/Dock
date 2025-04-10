@@ -1,5 +1,20 @@
 ﻿<Project>
   <PropertyGroup>
+    <VersionPrefix>11.2.6</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>Wiesław Šoltés</Authors>
+    <Company>Wiesław Šoltés</Company>
+    <Description>A docking layout system.</Description>
+    <Copyright>Copyright © Wiesław Šoltés 2025</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/wieslawsoltes/Dock</PackageProjectUrl>
+    <PackageTags>dock;docking;layout;avalonia</PackageTags>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisLevel>latest</AnalysisLevel>
     <LangVersion>13</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 </Project>

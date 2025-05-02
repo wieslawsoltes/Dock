@@ -13,8 +13,8 @@
                          TrackingMode="Visible"
                          Background="{TemplateBinding Background}"
                          x:DataType="core:IDock">
-          <ToolChromeControl IsActive="{Binding IsActive}"
-                             IsVisible="{Binding !!VisibleDockables.Count}"
+          <ToolChromeControl IsActive="{CompiledBinding IsActive}"
+                             IsVisible="{CompiledBinding !!VisibleDockables.Count}"
                              x:DataType="core:IDock">
             <ToolControl />
           </ToolChromeControl>

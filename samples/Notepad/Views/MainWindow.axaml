@@ -17,11 +17,12 @@
         Title="Notepad" Height="600" Width="900"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome"
-        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True">
+        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True"
+        x:CompileBindings="True">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>
-  <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
+  <Panel Margin="{CompiledBinding #MainWindowView.OffScreenMargin}">
     <Panel Height="30" HorizontalAlignment="Center" VerticalAlignment="Top">
       <Label Content="Notepad"
              Margin="4,0,4,0"
@@ -30,7 +31,7 @@
              VerticalAlignment="Center"
              VerticalContentAlignment="Center" />
     </Panel>
-    <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
+    <Panel Margin="{CompiledBinding #MainWindowView.WindowDecorationMargin}">
       <views:MainView />
     </Panel>
   </Panel>

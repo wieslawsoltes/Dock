@@ -9,8 +9,8 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <DockableControl TrackingMode="Visible">
-          <DocumentControl IsActive="{Binding IsActive}" />
+        <DockableControl TrackingMode="Visible" x:DataType="core:IDock" x:CompileBindings="True">
+          <DocumentControl IsActive="{CompiledBinding IsActive}" />
         </DockableControl>
       </ControlTemplate>
     </Setter>

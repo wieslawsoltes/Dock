@@ -10,7 +10,7 @@
 
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
-        <TextBlock Text="{Binding Title}" Padding="2" />
+        <TextBlock Text="{CompiledBinding Title}" Padding="2" />
       </DataTemplate>
     </Setter>
 
@@ -22,19 +22,19 @@
                    x:DataType="dmc:IToolDock"
                    x:CompileBindings="True">
           <ToolTabStrip x:Name="PART_TabStrip"
-                        ItemsSource="{Binding VisibleDockables}"
-                        SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                        ItemsSource="{CompiledBinding VisibleDockables}"
+                        SelectedItem="{CompiledBinding ActiveDockable, Mode=TwoWay}"
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True" />
           <Border x:Name="PART_Border">
-            <DockableControl DataContext="{Binding ActiveDockable}"
+            <DockableControl DataContext="{CompiledBinding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"
-                              Content="{Binding}"
+                              Content="{CompiledBinding}"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">
                 <ContentControl.ContentTemplate>
-                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  <ControlRecyclingDataTemplate Parent="{CompiledBinding #PART_ContentPresenter}" />
                 </ContentControl.ContentTemplate>
               </ContentControl>
             </DockableControl>

@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:Notepad.ViewModels.Tools"
              mc:Ignorable="d"
-             d:DesignWidth="400" d:DesignHeight="150">
+             d:DesignWidth="400" d:DesignHeight="150"
+             x:CompileBindings="True"
+             x:DataType="vm:FindViewModel">
   <Grid RowDefinitions="Auto,Auto">
-    <TextBox Text="{Binding Find}" Margin="4" Grid.Row="0" />
+    <TextBox Text="{CompiledBinding Find}" Margin="4" Grid.Row="0" />
     <Button Content="Find Next"
-            Command="{Binding FindNext}"
+            Command="{CompiledBinding FindNext}"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Center"
             Margin="4"

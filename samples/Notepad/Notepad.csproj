@@ -7,6 +7,7 @@
     <IsPackable>False</IsPackable>
     <Nullable>enable</Nullable>
     <AvaloniaNameGeneratorBehavior>OnlyProperties</AvaloniaNameGeneratorBehavior>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <Import Project="..\..\build\ReferenceAssemblies.props" />

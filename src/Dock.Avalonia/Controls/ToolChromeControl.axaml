@@ -9,29 +9,29 @@
   <MenuFlyout x:Key="ToolChromeControlContextMenu"
                x:DataType="controls:IToolDock" x:CompileBindings="True">
     <MenuItem Header="_Float"
-              Command="{Binding Owner.Factory.FloatDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"/>
+              Command="{CompiledBinding Owner.Factory.FloatDockable}"
+              CommandParameter="{CompiledBinding ActiveDockable}"
+              IsVisible="{CompiledBinding ActiveDockable.CanFloat, FallbackValue=False}"/>
     <MenuItem Header="_Dock"
-              Command="{Binding Owner.Factory.PinDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
-              IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
+              Command="{CompiledBinding Owner.Factory.PinDockable}"
+              CommandParameter="{CompiledBinding ActiveDockable}"
+              IsEnabled="{CompiledBinding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
+              IsVisible="{CompiledBinding ActiveDockable.CanPin, FallbackValue=False}"/>
     <MenuItem Header="_Auto Hide"
-              Command="{Binding Owner.Factory.PinDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
+              Command="{CompiledBinding Owner.Factory.PinDockable}"
+              CommandParameter="{CompiledBinding ActiveDockable}"
+              IsEnabled="{CompiledBinding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
       <MenuItem.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.And}">
-          <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
-          <Binding Path="$parent[ToolChromeControl].IsFloating" Converter="{x:Static BoolConverters.Not}" />
+          <CompiledBinding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
+          <CompiledBinding Path="$parent[ToolChromeControl].IsFloating" Converter="{x:Static BoolConverters.Not}" />
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="_Close"
-              Command="{Binding Owner.Factory.CloseDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"/>
+              Command="{CompiledBinding Owner.Factory.CloseDockable}"
+              CommandParameter="{CompiledBinding ActiveDockable}"
+              IsVisible="{CompiledBinding ActiveDockable.CanClose, FallbackValue=False}"/>
   </MenuFlyout>
 
   <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
@@ -66,12 +66,12 @@
                   BorderBrush="{TemplateBinding BorderBrush}"
                   VerticalAlignment="Top"
                   ContextFlyout="{DynamicResource ToolChromeControlContextMenu}"
-                  Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
+                  Grid.Row="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
               <DockPanel LastChildFill="True" Margin="8 0">
                 <Panel DockPanel.Dock="Left">
                   <TextBlock x:Name="PART_Title"
-                             Text="{Binding ActiveDockable.Title, FallbackValue=TITLE}" />
+                             Text="{CompiledBinding ActiveDockable.Title, FallbackValue=TITLE}" />
                 </Panel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
@@ -82,12 +82,12 @@
                     </Viewbox>
                   </Button>
                   <Button x:Name="PART_PinButton"
-                          Command="{Binding Owner.Factory.PinDockable}"
-                          CommandParameter="{Binding ActiveDockable}"
+                          Command="{CompiledBinding Owner.Factory.PinDockable}"
+                          CommandParameter="{CompiledBinding ActiveDockable}"
                           Theme="{StaticResource ChromeButton}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
+                        <CompiledBinding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
                         <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
                       </MultiBinding>
                     </Button.IsVisible>
@@ -103,9 +103,9 @@
                     </Viewbox>
                   </Button>
                   <Button x:Name="PART_CloseButton"
-                          Command="{Binding Owner.Factory.CloseDockable}"
-                          CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
+                          Command="{CompiledBinding Owner.Factory.CloseDockable}"
+                          CommandParameter="{CompiledBinding ActiveDockable}"
+                          IsVisible="{CompiledBinding ActiveDockable.CanClose, FallbackValue=False}"
                           Theme="{StaticResource ChromeButton}">
                     <Viewbox>
                       <Path x:Name="PART_ClosePath" />
@@ -120,7 +120,7 @@
                  Background="{TemplateBinding BorderBrush}"
                  Height="1"
                  VerticalAlignment="Top"
-                 Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}" />
+                 Grid.Row="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}" />
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -128,12 +128,14 @@
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="BorderThickness" Value="1 1 1 0" />
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleConverter}}" />
+              Value="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleConverter}}"
+              x:DataType="controls:IToolDock" />
     </Style>
 
     <Style Selector="^:pointerover /template/ Border#PART_Border">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrVisibleConverter}}" />
+              Value="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrVisibleConverter}}"
+              x:DataType="controls:IToolDock" />
     </Style>
 
     <Style Selector="^:floating /template/ Border#PART_Border">
@@ -142,12 +144,14 @@
 
     <Style Selector="^/template/ Panel#PART_Panel">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrHiddenConverter}}" />
+              Value="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrHiddenConverter}}"
+              x:DataType="controls:IToolDock" />
     </Style>
 
     <Style Selector="^:pointerover /template/ Panel#PART_Panel">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleOrHiddenConverter}}" />
+              Value="{CompiledBinding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleOrHiddenConverter}}"
+              x:DataType="controls:IToolDock" />
     </Style>
 
     <Style Selector="^:floating:pointerover /template/ Panel#PART_Panel">
@@ -178,7 +182,8 @@
     </Style>
 
     <Style Selector="^:floating /template/ Grid#PART_Grip">
-      <Setter Property="(DockProperties.IsDragArea)" Value="{Binding $parent[HostWindow].ToolChromeControlsWholeWindow, Mode=OneWay, Converter={x:Static BoolConverters.Not}}" />
+      <Setter Property="(DockProperties.IsDragArea)" Value="{CompiledBinding $parent[HostWindow].ToolChromeControlsWholeWindow, Mode=OneWay, Converter={x:Static BoolConverters.Not}}"
+              x:DataType="controls:IToolDock" />
     </Style>
 
     <Style Selector="^:active /template/ Grid#PART_Grip">

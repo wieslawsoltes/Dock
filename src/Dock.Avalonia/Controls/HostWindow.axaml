@@ -15,8 +15,8 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />
-    <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
-    <Setter Property="Topmost" Value="{Binding Window.Topmost}" x:DataType="controls:IRootDock" />
+    <Setter Property="Title" Value="{CompiledBinding ActiveDockable.Title}" x:DataType="controls:IRootDock" />
+    <Setter Property="Topmost" Value="{CompiledBinding Window.Topmost}" x:DataType="controls:IRootDock" />
     <Setter Property="SystemDecorations" Value="Full" />
     <Setter Property="ToolChromeControlsWholeWindow" Value="{CompiledBinding OpenedDockablesCount, Converter={StaticResource LessThan2}}" x:DataType="controls:IRootDock" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
@@ -45,9 +45,9 @@
 
     <Setter Property="Content">
       <Template>
-        <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-          <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
-            <DockControl Layout="{Binding}"
+        <Panel Margin="{CompiledBinding $parent[HostWindow].OffScreenMargin}" x:DataType="core:IHostWindow">
+          <Panel Margin="{CompiledBinding $parent[HostWindow].WindowDecorationMargin}">
+            <DockControl Layout="{CompiledBinding}"
                          x:DataType="core:IHostWindow"
                          x:CompileBindings="True" />
           </Panel>
@@ -88,8 +88,8 @@
 
       <Setter Property="Content">
         <Template>
-          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-            <DockControl Layout="{Binding}"
+          <Panel Margin="{CompiledBinding $parent[HostWindow].OffScreenMargin}" x:DataType="core:IHostWindow">
+            <DockControl Layout="{CompiledBinding}"
                          x:DataType="core:IHostWindow"
                          x:CompileBindings="True" />
           </Panel>

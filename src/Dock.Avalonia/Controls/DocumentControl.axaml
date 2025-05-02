@@ -10,7 +10,7 @@
 
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
-        <TextBlock Text="{Binding Title}" Padding="2" />
+        <TextBlock Text="{CompiledBinding Title}" Padding="2" />
       </DataTemplate>
     </Setter>
 
@@ -24,29 +24,29 @@
                    x:DataType="dmc:IDocumentDock"
                    x:CompileBindings="True">
           <DocumentTabStrip x:Name="PART_TabStrip"
-                            ItemsSource="{Binding VisibleDockables}"
-                            SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
-                            CanCreateItem="{Binding CanCreateDocument}"
+                            ItemsSource="{CompiledBinding VisibleDockables}"
+                            SelectedItem="{CompiledBinding ActiveDockable, Mode=TwoWay}"
+                            CanCreateItem="{CompiledBinding CanCreateDocument}"
                             IsActive="{TemplateBinding IsActive}"
                             DockPanel.Dock="Top"
                             DockProperties.IsDropArea="True">
             <DocumentTabStrip.Styles>
               <Style Selector="DocumentTabStripItem">
-                <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />
+                <Setter Property="IsActive" Value="{CompiledBinding $parent[DocumentTabStrip].IsActive}" />
               </Style>
             </DocumentTabStrip.Styles>
           </DocumentTabStrip>
           <Grid x:Name="PART_Grid"
-                IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+                IsVisible="{CompiledBinding #PART_TabStrip.IsVisible}" />
           <Border x:Name="PART_Border">
-            <DockableControl DataContext="{Binding ActiveDockable}"
+            <DockableControl DataContext="{CompiledBinding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"
-                              Content="{Binding}"
+                              Content="{CompiledBinding}"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">
                 <ContentControl.ContentTemplate>
-                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  <ControlRecyclingDataTemplate Parent="{CompiledBinding #PART_ContentPresenter}" />
                 </ContentControl.ContentTemplate>
               </ContentControl>
             </DockableControl>

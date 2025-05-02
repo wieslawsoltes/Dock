@@ -3,6 +3,10 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Core;
+using Notepad.ViewModels.Documents;
+using Notepad.ViewModels.Tools;
+using Notepad.Views.Documents;
+using Notepad.Views.Tools;
 
 namespace Notepad;
 
@@ -10,27 +14,16 @@ public class ViewLocator : IDataTemplate
 {
     public Control Build(object? data)
     {
-        var name = data?.GetType().FullName?.Replace("ViewModel", "View");
-        if (name is null)
+        switch (data)
         {
-            return new TextBlock { Text = "Invalid Data Type" };
-        }
-        var type = Type.GetType(name);
-        if (type is { })
-        {
-            var instance = Activator.CreateInstance(type);
-            if (instance is { })
-            {
-                return (Control)instance;
-            }
-            else
-            {
-                return new TextBlock { Text = "Create Instance Failed: " + type.FullName };
-            }
-        }
-        else
-        {
-            return new TextBlock { Text = "Not Found: " + name };
+            case FileViewModel:
+                return new FileView();
+            case FindViewModel:
+                return new FindView();
+            case ReplaceViewModel:
+                return new ReplaceView();
+            default:
+                return new TextBlock { Text = "Create Instance Failed: " };
         }
     }
 

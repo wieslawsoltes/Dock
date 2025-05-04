@@ -6,7 +6,8 @@
              xmlns:views="using:Notepad.Views"
              xmlns:vm="using:Notepad.ViewModels"
              mc:Ignorable="d"
-             d:DesignWidth="700" d:DesignHeight="350">
+             d:DesignWidth="700" d:DesignHeight="350"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

@@ -9,6 +9,7 @@
         mc:Ignorable="d"
         d:DesignWidth="900" d:DesignHeight="600"
         x:Name="MainWindowView"
+        x:CompileBindings="True" x:DataType="vm:MainWindowViewModel"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Foreground="{DynamicResource DockThemeForegroundBrush}"

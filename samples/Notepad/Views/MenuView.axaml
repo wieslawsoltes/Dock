@@ -6,8 +6,7 @@
              xmlns:vm="using:Notepad.ViewModels"
              mc:Ignorable="d"
              d:DesignWidth="600" d:DesignHeight="20"
-             x:CompileBindings="True"
-             x:DataType="vm:MainWindowViewModel">
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Menu>
     <MenuItem Header="_File">
       <MenuItem Header="_New" Command="{CompiledBinding FileNew}" />

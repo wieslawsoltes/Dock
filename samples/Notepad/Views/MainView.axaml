@@ -8,8 +8,7 @@
              xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
              mc:Ignorable="d"
              d:DesignWidth="700" d:DesignHeight="350"
-             x:CompileBindings="True"
->
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

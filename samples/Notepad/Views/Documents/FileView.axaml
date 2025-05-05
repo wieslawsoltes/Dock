@@ -6,8 +6,7 @@
              xmlns:vm="using:Notepad.ViewModels.Documents"
              mc:Ignorable="d"
              d:DesignWidth="300" d:DesignHeight="400"
-             x:CompileBindings="True"
-             x:DataType="vm:FileViewModel">
+             x:CompileBindings="True" x:DataType="vm:FileViewModel">
   <Grid RowDefinitions="*,Auto">
     <TextBox BorderThickness="0"
              AcceptsReturn="True"

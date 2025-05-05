@@ -18,8 +18,7 @@
         Title="Notepad" Height="600" Width="900"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome"
-        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True"
-        x:CompileBindings="True">
+        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

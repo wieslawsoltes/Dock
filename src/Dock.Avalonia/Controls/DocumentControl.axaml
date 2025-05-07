@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
-                    xmlns:core="using:Dock.Model.Core">
+                    xmlns:core="using:Dock.Model.Core"
+                    x:CompileBindings="True" 
+                    x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>
     <DocumentControl Width="300" Height="400" />
   </Design.PreviewWith>
@@ -10,7 +12,8 @@
 
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
-        <TextBlock Text="{Binding Title}" Padding="2" />
+        <TextBlock Text="{Binding Title}" 
+                   Padding="2"  />
       </DataTemplate>
     </Setter>
 
@@ -20,9 +23,7 @@
                    DockProperties.IsDropArea="True"
                    DockProperties.IsDockTarget="True"
                    Background="Transparent"
-                   ZIndex="1"
-                   x:DataType="dmc:IDocumentDock"
-                   x:CompileBindings="True">
+                   ZIndex="1">
           <DocumentTabStrip x:Name="PART_TabStrip"
                             ItemsSource="{Binding VisibleDockables}"
                             SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"

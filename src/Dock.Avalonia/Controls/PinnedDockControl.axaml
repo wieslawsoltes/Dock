@@ -1,6 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+                    xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+                    x:DataType="dmc:IRootDock"
+                    x:CompileBindings="True">
   <Design.PreviewWith>
     <Border>
       <PinnedDockControl />
@@ -9,30 +11,29 @@
 
   <ControlTheme x:Key="{x:Type PinnedDockControl}" TargetType="PinnedDockControl">
 
-    <Setter Property="PinnedDockAlignment" Value="{CompiledBinding PinnedDock.Alignment}" x:DataType="dmc:IRootDock" />
+    <Setter Property="PinnedDockAlignment" Value="{Binding PinnedDock.Alignment}" />
 
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Name="PART_PinnedDockGrid"
-              IsVisible="{Binding !PinnedDock.IsEmpty, FallbackValue=False}"
-              x:DataType="dmc:IRootDock"
-              x:CompileBindings="True">
+              IsVisible="{Binding !PinnedDock.IsEmpty, FallbackValue=False}">
           <ContentControl Content="{Binding PinnedDock}" Name="PART_PinnedDock">
             <ContentControl.Styles>
               <Style Selector="ToolDockControl">
                 <Setter Property="Background">
                   <MultiBinding Converter="{x:Static EitherNotNullConverter.Instance}">
-                    <CompiledBinding Path="$parent[Window].Background" />
-                    <CompiledBinding Path="$parent[Window].TransparencyBackgroundFallback" />
+                    <Binding Path="$parent[Window].Background" />
+                    <Binding Path="$parent[Window].TransparencyBackgroundFallback" />
                   </MultiBinding>
                 </Setter>
               </Style>
               <Style Selector="ToolControl">
-                <Setter Property="IsHitTestVisible" Value="{CompiledBinding !$parent[DockControl].IsDraggingDock}" />
+                <Setter Property="IsHitTestVisible" Value="{Binding !$parent[DockControl].IsDraggingDock}" />
               </Style>
             </ContentControl.Styles>
           </ContentControl>
-          <GridSplitter Grid.Column="1" Grid.Row="1" Background="{CompiledBinding $parent[Window].Background, TargetNullValue={x:Static Brushes.Transparent}}" />
+          <GridSplitter Grid.Column="1" Grid.Row="1" 
+                        Background="{Binding $parent[Window].Background, TargetNullValue={x:Static Brushes.Transparent}}" />
         </Grid>
       </ControlTemplate>
     </Setter>

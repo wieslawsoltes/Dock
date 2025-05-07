@@ -3,35 +3,28 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Core;
+using StaticViewLocator;
 
 namespace DockMvvmSample;
 
-public class ViewLocator : IDataTemplate
+[StaticViewLocator]
+public partial class ViewLocator : IDataTemplate
 {
-    public Control Build(object? data)
+    public Control? Build(object? data)
     {
-        var name = data?.GetType().FullName?.Replace("ViewModel", "View");
-        if (name is null)
+        if (data is null)
         {
-            return new TextBlock { Text = "Invalid Data Type" };
+            return null;
         }
-        var type = Type.GetType(name);
-        if (type is { })
+
+        var type = data.GetType();
+
+        if (s_views.TryGetValue(type, out var func))
         {
-            var instance = Activator.CreateInstance(type);
-            if (instance is { })
-            {
-                return (Control)instance;
-            }
-            else
-            {
-                return new TextBlock { Text = "Create Instance Failed: " + type.FullName };
-            }
+            return func.Invoke();
         }
-        else
-        {
-            return new TextBlock { Text = "Not Found: " + name };
-        }
+
+        throw new Exception($"Unable to create view for type: {type}");
     }
 
     public bool Match(object? data)

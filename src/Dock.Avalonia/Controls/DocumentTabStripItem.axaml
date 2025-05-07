@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="using:Dock.Model.Core"
+                    x:DataType="core:IDockable"
                     x:CompileBindings="True">
   <Design.PreviewWith>
     <Border Padding="20">
@@ -12,7 +13,7 @@
     </Border>
   </Design.PreviewWith>
 
-  <ContextMenu x:Key="DocumentTabStripItemContextMenu" x:DataType="core:IDockable" x:CompileBindings="True">
+  <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="_Float"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
@@ -52,7 +53,7 @@
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 0 4 0" />
 
-    <Setter Property="Template" x:DataType="core:IDockable">
+    <Setter Property="Template">
       <ControlTemplate>
           <Border Background="{TemplateBinding Background}"
                   TextElement.FontFamily="{TemplateBinding FontFamily}"

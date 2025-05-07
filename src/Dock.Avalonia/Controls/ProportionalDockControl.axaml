@@ -1,8 +1,9 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="using:Dock.Avalonia.Converters"
-                    xmlns:core="using:Dock.Model.Core"
-                    xmlns:dmc="using:Dock.Model.Controls">
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:DataType="dmc:IProportionalDock"
+                    x:CompileBindings="True">
   <Design.PreviewWith>
     <ProportionalDockControl Width="300" Height="300" />
   </Design.PreviewWith>
@@ -13,18 +14,16 @@
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
           <ItemsControl ItemsSource="{Binding VisibleDockables}" 
-                        Classes="ProportionalStackPanel"
-                        x:DataType="dmc:IProportionalDock">
+                        Classes="ProportionalStackPanel">
             <ItemsControl.Styles>
               <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">
-                <Setter x:DataType="core:IDockable" 
-                        Property="(ProportionalStackPanel.Proportion)" 
+                <Setter Property="(ProportionalStackPanel.Proportion)" 
                         Value="{Binding Proportion}" />
                 <Setter Property="(ProportionalStackPanel.IsCollapsed)">
                   <Setter.Value>
-                    <MultiBinding Converter="{x:Static BoolConverters.And}" x:DataType="core:IDockable">
-                      <CompiledBinding Path="IsCollapsable" />
-                      <CompiledBinding Path="IsEmpty" />
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="IsCollapsable" />
+                      <Binding Path="IsEmpty" />
                     </MultiBinding>
                   </Setter.Value>
                 </Setter>
@@ -34,7 +33,6 @@
               <ItemsPanelTemplate>
                 <ProportionalStackPanel DockProperties.IsDropArea="True"
                                         Background="Transparent"
-                                        x:DataType="dmc:IProportionalDock" 
                                         Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>

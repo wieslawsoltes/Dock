@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:core="using:Dock.Model.Core"
-                    xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model">
+                    xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+                    x:CompileBindings="True"
+                    x:DataType="controls:IRootDock">
   <Design.PreviewWith>
     <HostWindow IsToolWindow="False" Width="300" Height="400" />
   </Design.PreviewWith>
@@ -15,10 +16,10 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />
-    <Setter Property="Title" Value="{Binding ActiveDockable.Title}" />
-    <Setter Property="Topmost" Value="{Binding Window.Topmost}" x:DataType="controls:IRootDock" />
+    <Setter Property="Title" Value="{Binding ActiveDockable.Title}"  />
+    <Setter Property="Topmost" Value="{Binding Window.Topmost}" />
     <Setter Property="SystemDecorations" Value="Full" />
-    <Setter Property="ToolChromeControlsWholeWindow" Value="{CompiledBinding OpenedDockablesCount, Converter={StaticResource LessThan2}}" x:DataType="controls:IRootDock" />
+    <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
     <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
 
@@ -47,9 +48,7 @@
       <Template>
         <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
           <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
-            <DockControl Layout="{Binding}"
-                         x:DataType="core:IHostWindow"
-                         x:CompileBindings="True" />
+            <DockControl Layout="{Binding}" />
           </Panel>
         </Panel>
       </Template>
@@ -89,9 +88,7 @@
       <Setter Property="Content">
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-            <DockControl Layout="{Binding}"
-                         x:DataType="core:IHostWindow"
-                         x:CompileBindings="True" />
+            <DockControl Layout="{Binding}" />
           </Panel>
         </Template>
       </Setter>

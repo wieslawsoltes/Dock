@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
-                    xmlns:core="using:Dock.Model.Core">
+                    xmlns:core="using:Dock.Model.Core"
+                    x:DataType="core:IDock"
+                    x:CompileBindings="True">
   <Design.PreviewWith>
     <DockControl Width="600" Height="400" />
   </Design.PreviewWith>
@@ -11,9 +13,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"
-                        Content="{TemplateBinding Layout}"
-                        x:DataType="core:IDock"
-                        x:CompileBindings="True">
+                        Content="{TemplateBinding Layout}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="dmc:IDocumentContent">
               <DocumentContentControl />

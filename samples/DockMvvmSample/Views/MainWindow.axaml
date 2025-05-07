@@ -8,6 +8,7 @@
         xmlns:views="using:DockMvvmSample.Views"
         mc:Ignorable="d"
         d:DesignWidth="1200" d:DesignHeight="680"
+        x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
         x:Name="MainWindowView"
         UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
         WindowState="Normal" WindowStartupLocation="CenterScreen"

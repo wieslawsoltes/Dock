@@ -28,8 +28,7 @@ public abstract partial class DockBase : DockableBase, IDock
         Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));
         Close = ReactiveCommand.Create(() => _navigateAdapter.Close());
 
-        this.WhenAnyActiveDockable()
-        //this.WhenAnyValue(x => x.ActiveDockable)
+        this.WhenAnyValue(x => x.ActiveDockable)
             .Subscribe(new AnonymousObserver<IDockable?>(x =>
             {
                 Factory?.InitActiveDockable(x, this);
@@ -37,7 +36,7 @@ public abstract partial class DockBase : DockableBase, IDock
                 this.RaisePropertyChanged(nameof(CanGoForward));
             }));
 
-        this.WhenAnyFocusedDockable()
+        this.WhenAnyValue(x => x.FocusedDockable)
             .Subscribe(new AnonymousObserver<IDockable?>(x =>
             {
                 Factory?.OnFocusedDockableChanged(x);

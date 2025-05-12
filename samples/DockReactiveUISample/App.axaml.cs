@@ -14,7 +14,6 @@ public class App : Application
     public override void Initialize()
     {
         ThemeManager = new FluentThemeManager();
-        ThemeManager.Initialize(this);
 
         AvaloniaXamlLoader.Load(this);
     }

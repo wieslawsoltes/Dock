@@ -16,7 +16,7 @@
   <Import Project="..\..\build\ReferenceAssemblies.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Avalonia.Controls.Recycling.Model\Avalonia.Controls.Recycling.Model.csproj" />
+    <ProjectReference Include="..\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj" />
   </ItemGroup>
 
 </Project>

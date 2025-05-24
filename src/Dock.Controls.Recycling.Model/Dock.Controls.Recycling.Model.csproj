@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
+    <RootNamespace>Avalonia.Controls.Recycling.Model</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Avalonia.Controls.Recycling.Model</PackageId>
+    <PackageId>Dock.Controls.Recycling.Model</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\SignAssembly.props" />

@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
+    <RootNamespace>Avalonia.Controls.Recycling</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Avalonia.MarkupExtension</PackageId>
+    <PackageId>Dock.Controls.Recycling</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\SignAssembly.props" />
@@ -18,6 +19,10 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj" />
   </ItemGroup>
 
 </Project>

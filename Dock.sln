@@ -95,13 +95,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveUI.UnitTests", "tests\Dock.Model.ReactiveUI.UnitTests\Dock.Model.ReactiveUI.UnitTests.csproj", "{E6A49621-154E-4A00-A54A-39C3BA55799A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.ProportionalStackPanel", "src\Avalonia.Controls.ProportionalStackPanel\Avalonia.Controls.ProportionalStackPanel.csproj", "{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.ProportionalStackPanel", "src\Dock.Controls.ProportionalStackPanel\Dock.Controls.ProportionalStackPanel.csproj", "{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.Recycling", "src\Avalonia.Controls.Recycling\Avalonia.Controls.Recycling.csproj", "{9FF95B40-ECA7-440B-9342-688C53F1AE8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling", "src\Dock.Controls.Recycling\Dock.Controls.Recycling.csproj", "{9FF95B40-ECA7-440B-9342-688C53F1AE8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.MarkupExtension", "src\Avalonia.MarkupExtension\Avalonia.MarkupExtension.csproj", "{B6762749-9061-49AE-A994-777DB6018A45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.MarkupExtension", "src\Dock.MarkupExtension\Dock.MarkupExtension.csproj", "{B6762749-9061-49AE-A994-777DB6018A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.Recycling.Model", "src\Avalonia.Controls.Recycling.Model\Avalonia.Controls.Recycling.Model.csproj", "{B1858CD4-5477-4AEF-A31E-AC7F92927D64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Model", "src\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj", "{B1858CD4-5477-4AEF-A31E-AC7F92927D64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUISample", "samples\DockReactiveUISample\DockReactiveUISample.csproj", "{2A2C622B-3001-4DEB-833E-BEF8A94A3343}"
 EndProject

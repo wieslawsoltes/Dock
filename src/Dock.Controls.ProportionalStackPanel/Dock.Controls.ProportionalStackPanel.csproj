@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
+    <RootNamespace>Avalonia.Controls.ProportionalStackPanel</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Avalonia.Controls.Recycling</PackageId>
+    <PackageId>Dock.Controls.ProportionalStackPanel</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\SignAssembly.props" />
@@ -18,10 +19,6 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Avalonia.Controls.Recycling.Model\Avalonia.Controls.Recycling.Model.csproj" />
   </ItemGroup>
 
 </Project>

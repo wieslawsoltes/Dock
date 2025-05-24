@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
+    <RootNamespace>Avalonia.MarkupExtension</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Avalonia.Controls.ProportionalStackPanel</PackageId>
+    <PackageId>Dock.MarkupExtension</PackageId>
   </PropertyGroup>
 
   <Import Project="..\..\build\SignAssembly.props" />

@@ -14,9 +14,11 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [ReactiveUI Guide](dock-reactiveui.md) – ReactiveUI equivalent of the MVVM guide.
 - [XAML Guide](dock-xaml.md) – Declare layouts purely in XAML.
 - [Reference Guide](dock-reference.md) – Overview of the core APIs.
+- [Glossary](dock-glossary.md) – Definitions of common Dock terms.
 - [Advanced Guide](dock-advanced.md) – Custom factories and runtime features.
 - [Events Guide](dock-events.md) – Subscribing to dock and window events.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
+- [Serialization and Persistence](dock-serialization.md) – Saving and restoring layouts.
 - [Architecture Overview](dock-architecture.md) – High level design of the docking system.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex Layout Tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

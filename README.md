@@ -66,14 +66,6 @@ Install-Package Dock.Model.Mvvm -Pre
 
 ## Resources
 * [Documentation index](docs/README.md)
-* [MVVM Guide](docs/dock-mvvm.md)
-* [ReactiveUI Guide](docs/dock-reactiveui.md)
-* [XAML Guide](docs/dock-xaml.md)
-* [Reference Guide](docs/dock-reference.md)
-* [Advanced Guide](docs/dock-advanced.md)
-* [Events Guide](docs/dock-events.md)
-* [API Scenarios](docs/dock-api-scenarios.md)
-* [Deep Dive](docs/dock-deep-dive.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project.
 

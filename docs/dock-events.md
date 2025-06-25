@@ -1,14 +1,10 @@
 # Dock Events Guide
 
-Dock exposes a large set of runtime events through `FactoryBase` so that
-applications can react to changes in the layout.  The existing guides only
-briefly mention these hooks.  This document lists the most commonly used events
-and shows how to subscribe to them.
+Dock exposes a large set of runtime events through `FactoryBase` so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.
 
 ## Common events
 
-`FactoryBase` publishes events via the `IFactory` interface.  Each event passes
-an arguments object containing the affected dockable or window.
+`FactoryBase` publishes events via the `IFactory` interface. Each event passes an arguments object containing the affected dockable or window.
 
 | Event | Description |
 | ----- | ----------- |
@@ -21,8 +17,7 @@ an arguments object containing the affected dockable or window.
 | `DockablePinned` / `DockableUnpinned` | Signalled when a tool is pinned or unpinned. |
 | `WindowOpened` / `WindowClosed` | Fired when a floating window is created or closed. |
 
-Other specialized events like `WindowMoveDragBegin`, `WindowMoveDrag` and
-`WindowMoveDragEnd` allow intercepting drag operations.
+Other specialized events like `WindowMoveDragBegin`, `WindowMoveDrag` and `WindowMoveDragEnd` allow intercepting drag operations.
 
 ## Subscribing to events
 
@@ -30,18 +25,19 @@ Create a factory instance and attach handlers before initializing the layout:
 
 ```csharp
 var factory = new DockFactory();
+
 factory.ActiveDockableChanged += (_, args) =>
-    Debug.WriteLine($"Active dockable: {args.Dockable?.Title}");
+    Console.WriteLine($"Active dockable: {args.Dockable?.Title}");
+factory.DockableAdded += (_, args) =>
+    Console.WriteLine($"Added: {args.Dockable?.Title}");
 factory.WindowOpened += (_, args) =>
-    Debug.WriteLine($"Opened window: {args.Window?.Title}");
+    Console.WriteLine($"Window opened: {args.Window?.Title}");
 
 var layout = factory.CreateLayout();
 factory.InitLayout(layout);
 ```
 
-Each event provides enough information to update the view model or perform
-logging.  Cancelling operations is possible for some events by setting the
-`Cancel` property on the event args instance.
+Some events allow the operation to be cancelled by setting the `Cancel` property on the event args instance.
 
 ## When to use events
 
@@ -51,5 +47,4 @@ Events are useful for:
 - Persisting window placement after the user moves a floating window.
 - Implementing custom logic when new documents are created at runtime.
 
-Consult the samples for practical examples where events are wired to view models
-and commands.
+Consult the samples for practical examples where events are wired to view models and commands.

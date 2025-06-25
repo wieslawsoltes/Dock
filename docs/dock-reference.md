@@ -24,6 +24,16 @@ The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Doc
 - Runtime operations like `AddDockable`, `InsertDockable`, `MoveDockable`, `SwapDockable`, `PinDockable`, `FloatDockable` and the various `Close*` methods.
 - Events (found in `IFactory.Events`) that signal changes to the layout such as `DockableAdded`, `DockableRemoved`, `WindowOpened` and many more.
 
+A minimal example of creating a layout manually:
+
+```csharp
+var factory = new DockFactory();
+var root = factory.CreateRootDock();
+var docDock = factory.CreateDocumentDock();
+root.VisibleDockables = factory.CreateList<IDockable>(docDock);
+factory.InitLayout(root);
+```
+
 Refer to the factory classes under `samples/DockMvvmSample` and `samples/DockReactiveUISample` for practical examples of these methods in use.
 
 ## Using the MVVM library
@@ -45,4 +55,3 @@ The XAML sample shows that a layout can be declared entirely in markup using `Do
 - `samples/DockMvvmSample` – full MVVM example.
 - `samples/DockReactiveUISample` – ReactiveUI variant.
 - `samples/DockXamlSample` – XAML-only layout with serialization.
-

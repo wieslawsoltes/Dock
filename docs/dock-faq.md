@@ -66,4 +66,24 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 }
 ```
 
+**Can I cancel switching the active dockable or closing a dock?**
+
+Dock currently raises `ActiveDockableChanged` only *after* the active dockable
+has been updated, so the change cannot be cancelled. Likewise there is no
+pre-close event for dockables. The only cancellable closing hook is
+`WindowClosing`, which is fired when a host window is about to close. Set the
+`Cancel` property on the event arguments to keep the window open:
+
+```csharp
+factory.WindowClosing += (_, args) =>
+{
+    if (!CanShutdown())
+    {
+        args.Cancel = true; // prevents the window from closing
+    }
+};
+```
+
+Cancelling individual dockables is not supported.
+
 For a general overview of Dock see the [documentation index](README.md).

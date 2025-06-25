@@ -101,3 +101,5 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 ## Conclusion
 
 Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.
+
+For an overview of all guides see the [documentation index](README.md).

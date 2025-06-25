@@ -118,3 +118,5 @@ OpenDocument = ReactiveCommand.Create(() =>
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.
 
 Use the ReactiveUI sample as a template when building your own layouts.
+
+For an overview of all guides see the [documentation index](README.md).

@@ -128,3 +128,5 @@ _factory.DockableAdded += (_, e) => Console.WriteLine($"Added {e.Dockable?.Id}")
 ## Next steps
 
 Use the MVVM sample as a starting point for your application. You can extend the factory to create custom docks, documents and tools.
+
+For an overview of all guides see the [documentation index](README.md).

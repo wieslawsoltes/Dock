@@ -64,3 +64,5 @@ _dockManager.MoveDockable(document, targetDock, index);
 ## Putting it together
 
 When the user drags a tab or tool the pointer handlers in `DockControl` delegate the event stream to `DockControlState`. The state object determines the target area and executes the appropriate operation through `DockManager`. The manager calls the factory which updates collections on the dock view models, completing the layout update.
+
+For an overview of all guides see the [documentation index](README.md).

@@ -101,3 +101,5 @@ Use `SaveFilePickerAsync` and `OpenFilePickerAsync` from Avalonia to choose the 
 ## Next steps
 
 Use the XAML sample as a template if you prefer declaring layouts in markup rather than creating them via a factory. You can combine this approach with MVVM or ReactiveUI view models for additional logic.
+
+For an overview of all guides see the [documentation index](README.md).

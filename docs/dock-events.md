@@ -48,3 +48,5 @@ Events are useful for:
 - Implementing custom logic when new documents are created at runtime.
 
 Consult the samples for practical examples where events are wired to view models and commands.
+
+For an overview of all guides see the [documentation index](README.md).

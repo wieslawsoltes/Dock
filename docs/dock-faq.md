@@ -114,4 +114,21 @@ factory.WindowClosing += (_, args) =>
 
 Cancelling individual dockables is not supported.
 
+**How do I disable undocking or drag-and-drop?**
+
+Set the attached `DockProperties.IsDragEnabled` property to `false` on your
+`DockControl` (or parent window) to prevent dockables from being dragged.  You
+can also disable drop targets with `DockProperties.IsDropEnabled`:
+
+```xml
+<Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
+        dockSettings:DockProperties.IsDragEnabled="False"
+        dockSettings:DockProperties.IsDropEnabled="False">
+    <DockControl />
+</Window>
+```
+
+Dockables may still be floated programmatically unless their `CanFloat` property
+is set to `false`.
+
 For a general overview of Dock see the [documentation index](README.md).

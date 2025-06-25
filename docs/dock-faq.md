@@ -40,6 +40,15 @@ DockableLocator = new Dictionary<string, Func<IDockable?>>
 
 If a dockable cannot be resolved the serializer will return `null`.
 
+**What is `DockableLocator` and `ContextLocator`?**
+
+`DockableLocator` is a dictionary of functions that create view models. The
+serializer and factory query it using the identifiers stored in a layout to
+recreate dockables at runtime. `ContextLocator` works the same way but returns
+objects that become the `DataContext` of the views. Populate both dictionaries
+when initializing your factory so that Dock can resolve your custom documents
+and tools.
+
 ## Other questions
 
 **Floating windows appear in the wrong place**
@@ -56,5 +65,41 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
     return window;
 }
 ```
+
+**Pinned tools show up on the wrong side**
+
+When a tool is pinned the framework looks at the `Alignment` of its
+containing `ToolDock`.  If no alignment is specified the dock defaults to
+`Left`, which can make right–hand panels collapse to the left when pinned.
+Set `Alignment` to `Right`, `Left`, `Top` or `Bottom` depending on where the
+dock should live:
+
+```csharp
+new ToolDock
+{
+    VisibleDockables = CreateList<IDockable>(myTool),
+    Alignment = Alignment.Right
+};
+```
+
+**Can I cancel switching the active dockable or closing a dock?**
+
+Dock currently raises `ActiveDockableChanged` only *after* the active dockable
+has been updated, so the change cannot be cancelled. Likewise there is no
+pre-close event for dockables. The only cancellable closing hook is
+`WindowClosing`, which is fired when a host window is about to close. Set the
+`Cancel` property on the event arguments to keep the window open:
+
+```csharp
+factory.WindowClosing += (_, args) =>
+{
+    if (!CanShutdown())
+    {
+        args.Cancel = true; // prevents the window from closing
+    }
+};
+```
+
+Cancelling individual dockables is not supported.
 
 For a general overview of Dock see the [documentation index](README.md).

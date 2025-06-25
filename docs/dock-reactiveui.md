@@ -1,6 +1,9 @@
 # Dock ReactiveUI Guide
 
-This document mirrors the MVVM instructions for projects that use ReactiveUI. The API surface is the same but the view models derive from ReactiveUI types.
+This document mirrors the MVVM instructions for projects that use ReactiveUI.
+The API surface is the same but the view models derive from ReactiveUI types and
+commands are implemented using `ReactiveCommand`. The sample project
+`DockReactiveUISample` demonstrates these concepts in a working application.
 
 ## Step-by-step tutorial
 

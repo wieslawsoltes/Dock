@@ -33,6 +33,14 @@ Target framework `netstandard2.0`:
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
 ```
 
+Alternatively execute the repository build script which restores,
+builds and tests all projects. The scripts work on Windows and Unix
+like systems:
+
+```bash
+./build.sh       # or .\build.cmd on Windows
+```
+
 ## NuGet
 
 Dock is delivered as a NuGet package.
@@ -66,6 +74,8 @@ Install-Package Dock.Model.Mvvm -Pre
 * [Events Guide](docs/dock-events.md)
 * [API Scenarios](docs/dock-api-scenarios.md)
 * [Deep Dive](docs/dock-deep-dive.md)
+* Sample applications can be found under the [samples](samples/) directory
+  which illustrate each approach in a working project.
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

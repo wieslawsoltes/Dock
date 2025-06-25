@@ -2,6 +2,11 @@
 
 This guide explains how to get started with the MVVM version of Dock and describes the available features. It assumes you already have a basic Avalonia application.
 
+The MVVM helpers provided by `Dock.Model.Mvvm` add `INotifyPropertyChanged`
+support to the core interfaces and expose a `Factory` base class that wires up
+commands and events for you.  The sample project `DockMvvmSample` in the
+repository shows a full implementation.
+
 ## Step-by-step tutorial
 
 The following steps walk you through creating a very small application that uses Dock with the MVVM helpers.
@@ -49,6 +54,11 @@ The following steps walk you through creating a very small application that uses
    Layout = _factory.CreateLayout();
    _factory.InitLayout(Layout);
    ```
+
+   `InitLayout` configures services such as `ContextLocator` and
+   `DockableLocator` which the view models use to resolve their
+   corresponding views. Override this method in your factory if you need
+   to register additional mappings or perform custom initialization logic.
 
 5. **Add `DockControl` to `MainWindow.axaml`**
 

@@ -2,6 +2,10 @@
 
 This document explains how `DockControl` routes pointer input through the docking pipeline. Reading this guide together with the source code will help you understand how layout changes are performed.
 
+While the high level guides focus on using the provided factories this section
+dives into the low level mechanics. Understanding these classes is useful when
+you need behaviour not covered by the default implementation.
+
 ## DockControl
 
 `DockControl` is the main Avalonia control that hosts a layout. Its constructor registers pointer handlers and creates both a `DockManager` and a `DockControlState`:
@@ -64,5 +68,9 @@ _dockManager.MoveDockable(document, targetDock, index);
 ## Putting it together
 
 When the user drags a tab or tool the pointer handlers in `DockControl` delegate the event stream to `DockControlState`. The state object determines the target area and executes the appropriate operation through `DockManager`. The manager calls the factory which updates collections on the dock view models, completing the layout update.
+
+If you wish to extend this pipeline—for example to implement custom drag
+restrictions—you can subclass `DockManager` and override its methods before
+assigning it to the `DockControl` instance.
 
 For an overview of all guides see the [documentation index](README.md).

@@ -50,6 +50,10 @@ The MVVM sample demonstrates how to subscribe to factory events and update the U
 
 The XAML sample shows that a layout can be declared entirely in markup using `DockControl` and the various dock types. The `Dock.Serializer` package can persist these layouts to disk. In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` elements inside a `DockControl`, optionally providing a factory for runtime behaviour.
 
+`DockSerializer` from the same package can save or load layouts as JSON. The
+samples register an instance of this serializer through dependency injection so
+commands can call `SaveAsync` and `LoadAsync` to persist user changes.
+
 ## Further reading
 
 - `samples/DockMvvmSample` – full MVVM example.

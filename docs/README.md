@@ -19,11 +19,8 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [Architecture Overview](dock-architecture.md) – High level design of the docking system.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
-<<<<<<< codex/add-end-to-end-tutorials-for-layouts
 - [Complex Layout Tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
-=======
 - [FAQ](dock-faq.md) – Solutions to common issues.
->>>>>>> master
 
 See the sample applications under the [samples](../samples/) directory for real-world usage.
 The [project README](../README.md) also lists the available guides and provides

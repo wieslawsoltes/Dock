@@ -13,6 +13,7 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [MVVM Guide](dock-mvvm.md) – Build layouts using MVVM view models.
 - [ReactiveUI Guide](dock-reactiveui.md) – ReactiveUI equivalent of the MVVM guide.
 - [XAML Guide](dock-xaml.md) – Declare layouts purely in XAML.
+- [Dock Operation Guide](dock-operation.md) – Explanation of docking operation values.
 - [Code-Only Guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [Reference Guide](dock-reference.md) – Overview of the core APIs.
 - [Glossary](dock-glossary.md) – Definitions of common Dock terms.

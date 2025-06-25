@@ -61,6 +61,7 @@ Install-Package Dock.Model.Mvvm -Pre
 * [ReactiveUI Guide](docs/dock-reactiveui.md)
 * [XAML Guide](docs/dock-xaml.md)
 * [Reference Guide](docs/dock-reference.md)
+* [Advanced Guide](docs/dock-advanced.md)
 
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)

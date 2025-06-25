@@ -49,6 +49,14 @@ objects that become the `DataContext` of the views. Populate both dictionaries
 when initializing your factory so that Dock can resolve your custom documents
 and tools.
 
+**Are dock `Id`s unique?**
+
+No. The `Id` string on a dockable acts as a lookup key for `DockSerializer`.
+When a document dock is split or cloned the factory copies the source `Id` so
+that both docks resolve to the same view model type when a layout is
+deserialized. If you need to distinguish individual document docks, store a
+separate unique identifier on your view models.
+
 ## Other questions
 
 **Floating windows appear in the wrong place**
@@ -65,6 +73,10 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
     return window;
 }
 ```
+
+**Can I give a tool a fixed size?**
+
+Set `MinWidth` and `MaxWidth` (or the height equivalents) on the tool view model. When both values are the same the tool cannot be resized. `DockManager` has a `PreventSizeConflicts` flag which stops docking tools together if their fixed sizes are incompatible.
 
 **Pinned tools show up on the wrong side**
 
@@ -101,5 +113,22 @@ factory.WindowClosing += (_, args) =>
 ```
 
 Cancelling individual dockables is not supported.
+
+**How do I disable undocking or drag-and-drop?**
+
+Set the attached `DockProperties.IsDragEnabled` property to `false` on your
+`DockControl` (or parent window) to prevent dockables from being dragged.  You
+can also disable drop targets with `DockProperties.IsDropEnabled`:
+
+```xml
+<Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
+        dockSettings:DockProperties.IsDragEnabled="False"
+        dockSettings:DockProperties.IsDropEnabled="False">
+    <DockControl />
+</Window>
+```
+
+Dockables may still be floated programmatically unless their `CanFloat` property
+is set to `false`.
 
 For a general overview of Dock see the [documentation index](README.md).

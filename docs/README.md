@@ -16,6 +16,7 @@ start with the MVVM guide and work your way towards the deep dive.
 - [Events Guide](dock-events.md) – Subscribing to dock and window events.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
+- [Complex Layout Tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 
 See the sample applications under the [samples](../samples/) directory for real-world usage.
 The [project README](../README.md) also lists the available guides and provides

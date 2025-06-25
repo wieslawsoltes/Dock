@@ -118,7 +118,7 @@ public class ProportionalStackPanelSplitter : Thumb
                 var point = e.GetPosition(panel);
                 var delta = point - _startPoint;
                 _startPoint = point;
-                SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+                AdjustTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
             }
         }
     }
@@ -168,7 +168,7 @@ public class ProportionalStackPanelSplitter : Thumb
         return GetSiblingInDirection(panel, 1);
     }
 
-    private void SetTargetProportion(double dragDelta)
+    internal void AdjustTargetProportion(double dragDelta)
     {
         var panel = GetPanel();
         if (panel == null)

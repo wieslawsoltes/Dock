@@ -292,10 +292,6 @@ public class DockManager : IDockManager
             DockOperation.Right => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
             DockOperation.Top => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
             DockOperation.Bottom => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.TopLeft => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, DockOperation.Top, bExecute),
-            DockOperation.TopRight => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, DockOperation.Top, bExecute),
-            DockOperation.BottomLeft => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, DockOperation.Bottom, bExecute),
-            DockOperation.BottomRight => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, DockOperation.Bottom, bExecute),
             DockOperation.Window => DockDockableIntoWindow(sourceDockable, targetDock, bExecute),
             _ => false
         };

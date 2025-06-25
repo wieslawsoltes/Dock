@@ -17,6 +17,7 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [Advanced Guide](dock-advanced.md) – Custom factories and runtime features.
 - [Events Guide](dock-events.md) – Subscribing to dock and window events.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
+- [Serialization and Persistence](dock-serialization.md) – Saving and restoring layouts.
 - [Architecture Overview](dock-architecture.md) – High level design of the docking system.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex Layout Tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

@@ -61,6 +61,9 @@ public class Factory : FactoryBase
     public override IProportionalDockSplitter CreateProportionalDockSplitter() => new ProportionalDockSplitter();
 
     /// <inheritdoc/>
+    public override IProportionalCornerDockSplitter CreateProportionalCornerDockSplitter() => new ProportionalCornerDockSplitter();
+
+    /// <inheritdoc/>
     public override IToolDock CreateToolDock() => new ToolDock();
 
     /// <inheritdoc/>

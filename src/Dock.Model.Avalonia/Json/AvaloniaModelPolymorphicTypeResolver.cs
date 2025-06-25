@@ -36,6 +36,8 @@ public class AvaloniaModelPolymorphicTypeResolver : DefaultJsonTypeInfoResolver
                         new JsonDerivedType(typeof(DocumentDock), "DocumentDock"),
                         new JsonDerivedType(typeof(ProportionalDock), "ProportionalDock"),
                         new JsonDerivedType(typeof(ProportionalDockSplitter), "ProportionalDockSplitter"),
+                        new JsonDerivedType(typeof(ProportionalCornerDockSplitter), "ProportionalCornerDockSplitter"),
+                        new JsonDerivedType(typeof(ProportionalCornerDockSplitter), "ProportionalCornerDockSplitter"),
                         new JsonDerivedType(typeof(RootDock), "RootDock"),
                         new JsonDerivedType(typeof(ToolDock), "ToolDock"),
                     }

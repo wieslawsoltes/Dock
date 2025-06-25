@@ -1,0 +1,69 @@
+# Dock XAML Guide
+
+This guide shows how to create Dock layouts entirely in XAML. The
+[DockXamlSample](../samples/DockXamlSample) demonstrates these
+techniques.
+
+## Installing
+
+Add the core Dock packages to your project:
+
+```powershell
+Install-Package Dock.Avalonia
+Install-Package Dock.Model.Avalonia
+Install-Package Dock.Serializer
+```
+
+These packages provide the `DockControl` and layout serialization helpers.
+
+## Defining the layout
+
+Layouts can be declared directly in your XAML files. The sample's
+`MainView.axaml` contains a `DockControl` that initializes the default
+`Factory` and loads the layout from markup:
+
+```xaml
+<DockControl x:Name="Dock" Grid.Row="1" InitializeLayout="True" InitializeFactory="True">
+  <DockControl.Factory>
+    <Factory />
+  </DockControl.Factory>
+  <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
+    <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+      <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
+        <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" />
+      </ToolDock>
+      <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
+      <!-- Additional docks omitted -->
+    </ProportionalDock>
+  </RootDock>
+</DockControl>
+```
+
+The hierarchy of `RootDock`, `ProportionalDock`, `ToolDock` and
+`DocumentDock` mirrors the structure you would build from code. Setting
+`InitializeLayout` and `InitializeFactory` to `True` instructs
+`DockControl` to create and initialize the layout automatically.
+
+## Saving and loading layouts
+
+`DockSerializer` can persist layouts to disk. `MainView.axaml.cs`
+implements simple commands for loading and saving a JSON file:
+
+```csharp
+var layout = _serializer.Load<IDock?>(stream);
+if (layout is { })
+{
+    dock.Layout = layout;
+    _dockState.Restore(layout);
+}
+```
+
+Use `SaveFilePickerAsync` and `OpenFilePickerAsync` from Avalonia to
+choose the file location. The sample stores the current dock state so it
+can be restored after loading a saved layout.
+
+## Next steps
+
+Use the XAML sample as a template if you prefer declaring layouts in
+markup rather than creating them via a factory. You can combine this
+approach with MVVM or ReactiveUI view models for additional logic.

@@ -49,6 +49,14 @@ objects that become the `DataContext` of the views. Populate both dictionaries
 when initializing your factory so that Dock can resolve your custom documents
 and tools.
 
+**Are dock `Id`s unique?**
+
+No. The `Id` string on a dockable acts as a lookup key for `DockSerializer`.
+When a document dock is split or cloned the factory copies the source `Id` so
+that both docks resolve to the same view model type when a layout is
+deserialized. If you need to distinguish individual document docks, store a
+separate unique identifier on your view models.
+
 ## Other questions
 
 **Floating windows appear in the wrong place**
@@ -65,6 +73,10 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
     return window;
 }
 ```
+
+**Can I give a tool a fixed size?**
+
+Set `MinWidth` and `MaxWidth` (or the height equivalents) on the tool view model. When both values are the same the tool cannot be resized. `DockManager` has a `PreventSizeConflicts` flag which stops docking tools together if their fixed sizes are incompatible.
 
 **Pinned tools show up on the wrong side**
 

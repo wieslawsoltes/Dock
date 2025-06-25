@@ -40,4 +40,13 @@ Before calling `Load` ensure that custom dockables are registered with `Dockable
 
 Following this pattern keeps the window arrangement consistent across sessions.
 
+## Dockable identifiers
+
+Every dockable stores an `Id` string that is written to the layout file. During
+deserialization `DockableLocator` receives this identifier and returns the view
+model to instantiate. The value is a type key, not a unique runtime ID. When a
+document dock is split or cloned the framework copies the original `Id` so each
+section resolves to the same view model type. Track your own unique identifier
+if your application must distinguish individual document docks.
+
 For an overview of all guides see the [documentation index](README.md).

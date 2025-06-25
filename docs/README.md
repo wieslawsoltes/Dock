@@ -18,6 +18,7 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [Glossary](dock-glossary.md) – Definitions of common Dock terms.
 - [Advanced Guide](dock-advanced.md) – Custom factories and runtime features.
 - [Events Guide](dock-events.md) – Subscribing to dock and window events.
+- [Active Document](dock-active-document.md) – Retrieve the currently focused document.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [Serialization and Persistence](dock-serialization.md) – Saving and restoring layouts.
 - [Architecture Overview](dock-architecture.md) – High level design of the docking system.

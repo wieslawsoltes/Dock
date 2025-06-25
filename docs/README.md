@@ -15,6 +15,7 @@ start with the MVVM guide and work your way towards the deep dive.
 - [Advanced Guide](dock-advanced.md) – Custom factories and runtime features.
 - [Events Guide](dock-events.md) – Subscribing to dock and window events.
 - [API Scenarios](dock-api-scenarios.md) – Common coding patterns.
+- [Architecture Overview](dock-architecture.md) – High level design of the docking system.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
 
 See the sample applications under the [samples](../samples/) directory for real-world usage.

@@ -1,7 +1,7 @@
 # Dock Advanced Guide
 
 This guide highlights advanced features from the Dock samples. The API is shared across the MVVM, ReactiveUI and XAML versions so the same concepts apply no matter which approach you use.
-This guide assumes you are familiar with the basics from the other guides. It focuses on runtime customization and advanced APIs.
+This guide assumes you are familiar with the basics from the other guides. Interface descriptions are available in the [Dock API Reference](dock-reference.md). It focuses on runtime customization and advanced APIs.
 
 ## Custom factories
 
@@ -109,5 +109,7 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 ## Conclusion
 
 Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.
+
+If you are new to Dock, start with the [MVVM Guide](dock-mvvm.md) before diving into these topics.
 
 For an overview of all guides see the [documentation index](README.md).

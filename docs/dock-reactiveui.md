@@ -3,7 +3,9 @@
 This document mirrors the MVVM instructions for projects that use ReactiveUI.
 The API surface is the same but the view models derive from ReactiveUI types and
 commands are implemented using `ReactiveCommand`. The sample project
-`DockReactiveUISample` demonstrates these concepts in a working application.
+`DockReactiveUISample` demonstrates these concepts in a working application. For
+interface details refer to the [Dock API Reference](dock-reference.md) and see
+the [Advanced Guide](dock-advanced.md) for more customization options.
 
 ## Step-by-step tutorial
 
@@ -121,5 +123,6 @@ OpenDocument = ReactiveCommand.Create(() =>
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.
 
 Use the ReactiveUI sample as a template when building your own layouts.
+See the [Advanced Guide](dock-advanced.md) for details on customizing factory methods and consult the [Dock API Reference](dock-reference.md) for the available interfaces.
 
 For an overview of all guides see the [documentation index](README.md).

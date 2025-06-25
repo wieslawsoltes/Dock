@@ -5,7 +5,8 @@ This guide explains how to get started with the MVVM version of Dock and describ
 The MVVM helpers provided by `Dock.Model.Mvvm` add `INotifyPropertyChanged`
 support to the core interfaces and expose a `Factory` base class that wires up
 commands and events for you.  The sample project `DockMvvmSample` in the
-repository shows a full implementation.
+repository shows a full implementation. For a breakdown of interfaces such as
+`IDockable` or `IRootDock` see the [Dock API Reference](dock-reference.md).
 
 ## Step-by-step tutorial
 
@@ -83,7 +84,7 @@ Install-Package Dock.Model.Mvvm
 
 ## Creating a layout
 
-You usually derive from `Factory` and build the layout by composing docks. The sample `DockFactory` shows how tools and documents are created and added to a root layout:
+You usually derive from `Factory` and build the layout by composing docks. The sample `DockFactory` shows how tools and documents are created and added to a root layout. More customization options such as overriding `CreateWindowFrom` are covered in the [Advanced Guide](dock-advanced.md):
 
 ```csharp
 public override IRootDock CreateLayout()
@@ -138,5 +139,6 @@ _factory.DockableAdded += (_, e) => Console.WriteLine($"Added {e.Dockable?.Id}")
 ## Next steps
 
 Use the MVVM sample as a starting point for your application. You can extend the factory to create custom docks, documents and tools.
+See the [Advanced Guide](dock-advanced.md) for details on overriding factory methods and consult the [Dock API Reference](dock-reference.md) for a complete list of interfaces.
 
 For an overview of all guides see the [documentation index](README.md).

@@ -34,6 +34,10 @@
           <Panel x:Name="PART_BottomIndicator" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" />
           <Panel x:Name="PART_LeftIndicator" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" />
           <Panel x:Name="PART_RightIndicator" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" />
+          <Panel x:Name="PART_TopLeftIndicator" Grid.Row="0" Grid.Column="0" />
+          <Panel x:Name="PART_TopRightIndicator" Grid.Row="0" Grid.Column="1" />
+          <Panel x:Name="PART_BottomLeftIndicator" Grid.Row="1" Grid.Column="0" />
+          <Panel x:Name="PART_BottomRightIndicator" Grid.Row="1" Grid.Column="1" />
           <Panel x:Name="PART_CenterIndicator" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
           <Panel x:Name="PART_SelectorPanel" Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
             <Grid x:Name="PART_SelectorGrid" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
@@ -41,6 +45,10 @@
               <Image x:Name="PART_BottomSelector" Grid.Row="2" Grid.Column="1" />
               <Image x:Name="PART_LeftSelector" Grid.Row="1" Grid.Column="0" />
               <Image x:Name="PART_RightSelector" Grid.Row="1" Grid.Column="2" />
+              <Image x:Name="PART_TopLeftSelector" Grid.Row="0" Grid.Column="0" />
+              <Image x:Name="PART_TopRightSelector" Grid.Row="0" Grid.Column="2" />
+              <Image x:Name="PART_BottomLeftSelector" Grid.Row="2" Grid.Column="0" />
+              <Image x:Name="PART_BottomRightSelector" Grid.Row="2" Grid.Column="2" />
               <Image x:Name="PART_CenterSelector" Grid.Row="1" Grid.Column="1" />
             </Grid>
           </Panel>
@@ -73,6 +81,26 @@
       <Setter Property="Opacity" Value="0" />
     </Style>
 
+    <Style Selector="^/template/ Panel#PART_TopLeftIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_TopRightIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_BottomLeftIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_BottomRightIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
     <Style Selector="^/template/ Panel#PART_CenterIndicator">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
       <Setter Property="Opacity" Value="0" />
@@ -97,6 +125,30 @@
     </Style>
 
     <Style Selector="^/template/ Image#PART_RightSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_TopLeftSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableLeft.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_TopRightSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_BottomLeftSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableLeft.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_BottomRightSelector">
       <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" />
       <Setter Property="Width" Value="40" />
       <Setter Property="Height" Value="40" />

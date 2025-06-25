@@ -17,11 +17,19 @@ public class DockTarget : TemplatedControl
     private Panel? _bottomIndicator;
     private Panel? _leftIndicator;
     private Panel? _rightIndicator;
+    private Panel? _topLeftIndicator;
+    private Panel? _topRightIndicator;
+    private Panel? _bottomLeftIndicator;
+    private Panel? _bottomRightIndicator;
     private Panel? _centerIndicator;
     private Control? _topSelector;
     private Control? _bottomSelector;
     private Control? _leftSelector;
     private Control? _rightSelector;
+    private Control? _topLeftSelector;
+    private Control? _topRightSelector;
+    private Control? _bottomLeftSelector;
+    private Control? _bottomRightSelector;
     private Control? _centerSelector;
 
     /// <inheritdoc/>
@@ -33,12 +41,20 @@ public class DockTarget : TemplatedControl
         _bottomIndicator = e.NameScope.Find<Panel>("PART_BottomIndicator");
         _leftIndicator = e.NameScope.Find<Panel>("PART_LeftIndicator");
         _rightIndicator = e.NameScope.Find<Panel>("PART_RightIndicator");
+        _topLeftIndicator = e.NameScope.Find<Panel>("PART_TopLeftIndicator");
+        _topRightIndicator = e.NameScope.Find<Panel>("PART_TopRightIndicator");
+        _bottomLeftIndicator = e.NameScope.Find<Panel>("PART_BottomLeftIndicator");
+        _bottomRightIndicator = e.NameScope.Find<Panel>("PART_BottomRightIndicator");
         _centerIndicator = e.NameScope.Find<Panel>("PART_CenterIndicator");
 
         _topSelector = e.NameScope.Find<Control>("PART_TopSelector");
         _bottomSelector = e.NameScope.Find<Control>("PART_BottomSelector");
         _leftSelector = e.NameScope.Find<Control>("PART_LeftSelector");
         _rightSelector = e.NameScope.Find<Control>("PART_RightSelector");
+        _topLeftSelector = e.NameScope.Find<Control>("PART_TopLeftSelector");
+        _topRightSelector = e.NameScope.Find<Control>("PART_TopRightSelector");
+        _bottomLeftSelector = e.NameScope.Find<Control>("PART_BottomLeftSelector");
+        _bottomRightSelector = e.NameScope.Find<Control>("PART_BottomRightSelector");
         _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
     }
 
@@ -54,6 +70,26 @@ public class DockTarget : TemplatedControl
         if (InvalidateIndicator(_rightSelector, _rightIndicator, point, relativeTo, DockOperation.Right, dragAction, validate))
         {
             result = DockOperation.Right;
+        }
+
+        if (InvalidateIndicator(_topLeftSelector, _topLeftIndicator, point, relativeTo, DockOperation.TopLeft, dragAction, validate))
+        {
+            result = DockOperation.TopLeft;
+        }
+
+        if (InvalidateIndicator(_topRightSelector, _topRightIndicator, point, relativeTo, DockOperation.TopRight, dragAction, validate))
+        {
+            result = DockOperation.TopRight;
+        }
+
+        if (InvalidateIndicator(_bottomLeftSelector, _bottomLeftIndicator, point, relativeTo, DockOperation.BottomLeft, dragAction, validate))
+        {
+            result = DockOperation.BottomLeft;
+        }
+
+        if (InvalidateIndicator(_bottomRightSelector, _bottomRightIndicator, point, relativeTo, DockOperation.BottomRight, dragAction, validate))
+        {
+            result = DockOperation.BottomRight;
         }
 
         if (InvalidateIndicator(_topSelector, _topIndicator, point, relativeTo, DockOperation.Top, dragAction, validate))

@@ -146,12 +146,16 @@ public abstract partial class FactoryBase : IFactory
         {
             case DockOperation.Left:
             case DockOperation.Right:
+            case DockOperation.TopLeft:
+            case DockOperation.TopRight:
             {
                 layout.Orientation = Orientation.Horizontal;
                 break;
             }
             case DockOperation.Top:
             case DockOperation.Bottom:
+            case DockOperation.BottomLeft:
+            case DockOperation.BottomRight:
             {
                 layout.Orientation = Orientation.Vertical;
                 break;
@@ -162,6 +166,8 @@ public abstract partial class FactoryBase : IFactory
         {
             case DockOperation.Left:
             case DockOperation.Top:
+            case DockOperation.TopLeft:
+            case DockOperation.TopRight:
             {
                 if (layout.VisibleDockables is not null)
                 {
@@ -174,6 +180,8 @@ public abstract partial class FactoryBase : IFactory
             }
             case DockOperation.Right:
             case DockOperation.Bottom:
+            case DockOperation.BottomLeft:
+            case DockOperation.BottomRight:
             {
                 if (layout.VisibleDockables is not null)
                 {
@@ -193,6 +201,8 @@ public abstract partial class FactoryBase : IFactory
         {
             case DockOperation.Left:
             case DockOperation.Top:
+            case DockOperation.TopLeft:
+            case DockOperation.TopRight:
             {
                 if (layout.VisibleDockables is not null)
                 {
@@ -205,6 +215,8 @@ public abstract partial class FactoryBase : IFactory
             }
             case DockOperation.Right:
             case DockOperation.Bottom:
+            case DockOperation.BottomLeft:
+            case DockOperation.BottomRight:
             {
                 if (layout.VisibleDockables is not null)
                 {
@@ -229,6 +241,10 @@ public abstract partial class FactoryBase : IFactory
             case DockOperation.Right:
             case DockOperation.Top:
             case DockOperation.Bottom:
+            case DockOperation.TopLeft:
+            case DockOperation.TopRight:
+            case DockOperation.BottomLeft:
+            case DockOperation.BottomRight:
             {
                 if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
                 {

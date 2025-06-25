@@ -34,5 +34,25 @@ public enum DockOperation
     /// <summary>
     /// Dock to window.
     /// </summary>
-    Window
+    Window,
+
+    /// <summary>
+    /// Dock to top left corner.
+    /// </summary>
+    TopLeft,
+
+    /// <summary>
+    /// Dock to top right corner.
+    /// </summary>
+    TopRight,
+
+    /// <summary>
+    /// Dock to bottom left corner.
+    /// </summary>
+    BottomLeft,
+
+    /// <summary>
+    /// Dock to bottom right corner.
+    /// </summary>
+    BottomRight
 }

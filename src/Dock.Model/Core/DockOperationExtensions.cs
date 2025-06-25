@@ -10,6 +10,10 @@ internal static class DockOperationExtensions
             DockOperation.Bottom => Alignment.Bottom,
             DockOperation.Right => Alignment.Right,
             DockOperation.Top => Alignment.Top,
+            DockOperation.TopLeft => Alignment.Top,
+            DockOperation.TopRight => Alignment.Top,
+            DockOperation.BottomLeft => Alignment.Bottom,
+            DockOperation.BottomRight => Alignment.Bottom,
             _ => Alignment.Unset
         };
     }

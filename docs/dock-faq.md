@@ -57,4 +57,8 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 }
 ```
 
+**Can I give a tool a fixed size?**
+
+Set `MinWidth` and `MaxWidth` (or the height equivalents) on the tool view model. When both values are the same the tool cannot be resized. `DockManager` has a `PreventSizeConflicts` flag which stops docking tools together if their fixed sizes are incompatible.
+
 For a general overview of Dock see the [documentation index](README.md).

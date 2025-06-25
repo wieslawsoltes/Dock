@@ -18,6 +18,11 @@ public interface IDockManager
     DockPoint ScreenPosition { get; set; }
 
     /// <summary>
+    /// Gets or sets flag that prevents docking when fixed sizes conflict.
+    /// </summary>
+    bool PreventSizeConflicts { get; set; }
+
+    /// <summary>
     /// Validates tool docking operation.
     /// </summary>
     /// <param name="sourceTool">The source tool.</param>

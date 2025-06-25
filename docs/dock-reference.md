@@ -11,6 +11,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IRootDock` | The top level container. In addition to the `IDock` members it exposes pinned dock collections and commands to manage windows. |
 | `IProportionalDock` | A dock that lays out its children horizontally or vertically using a `Proportion` value. |
 | `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. |
+| `ITool` | Represents a tool pane. Tools can specify `MinWidth`, `MaxWidth`, `MinHeight` and `MaxHeight` to control their size. |
 | `IProportionalDockSplitter` | Thin splitter placed between proportional docks. |
 | `IDockWindow` / `IHostWindow` | Interfaces representing floating windows created when dockables are detached. |
 

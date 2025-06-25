@@ -18,6 +18,8 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(DocumentDock), typeDiscriminator: "DocumentDock")]
 [JsonDerivedType(typeof(ProportionalDock), typeDiscriminator: "ProportionalDock")]
 [JsonDerivedType(typeof(ProportionalDockSplitter), typeDiscriminator: "ProportionalDockSplitter")]
+[JsonDerivedType(typeof(PixelDock), typeDiscriminator: "PixelDock")]
+[JsonDerivedType(typeof(PixelDockSplitter), typeDiscriminator: "PixelDockSplitter")]
 [JsonDerivedType(typeof(RootDock), typeDiscriminator: "RootDock")]
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]

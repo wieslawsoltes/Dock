@@ -24,6 +24,9 @@
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
               <ProportionalStackPanelSplitter />
             </DataTemplate>
+            <DataTemplate DataType="dmc:IPixelDockSplitter">
+              <ProportionalStackPanelSplitter />
+            </DataTemplate>
             <DataTemplate DataType="dmc:IDocumentDock">
               <DocumentDockControl />
             </DataTemplate>
@@ -32,6 +35,9 @@
             </DataTemplate>
             <DataTemplate DataType="dmc:IProportionalDock">
               <ProportionalDockControl />
+            </DataTemplate>
+            <DataTemplate DataType="dmc:IPixelDock">
+              <PixelDockControl />
             </DataTemplate>
             <DataTemplate DataType="dmc:IDockDock">
               <DockDockControl />

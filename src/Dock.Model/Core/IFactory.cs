@@ -92,6 +92,18 @@ public partial interface IFactory
     IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <summary>
+    /// Creates <see cref="IPixelDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IPixelDock"/> class.</returns>
+    IPixelDock CreatePixelDock();
+
+    /// <summary>
+    /// Creates <see cref="IPixelDockSplitter"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IPixelDockSplitter"/> class.</returns>
+    IPixelDockSplitter CreatePixelDockSplitter();
+
+    /// <summary>
     /// Creates <see cref="IToolDock"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IToolDock"/> class.</returns>

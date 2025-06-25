@@ -40,6 +40,12 @@ public abstract partial class FactoryBase
     public abstract IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <inheritdoc/>
+    public abstract IPixelDock CreatePixelDock();
+
+    /// <inheritdoc/>
+    public abstract IPixelDockSplitter CreatePixelDockSplitter();
+
+    /// <inheritdoc/>
     public abstract IToolDock CreateToolDock();
 
     /// <inheritdoc/>

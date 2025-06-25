@@ -41,7 +41,7 @@ public class DockFactory : Factory
         var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
         var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
 
-        var leftDock = new ProportionalDock
+        var leftDock = new PixelDock
         {
             Proportion = 0.25,
             Orientation = Orientation.Vertical,
@@ -50,13 +50,15 @@ public class DockFactory : Factory
             (
                 new ToolDock
                 {
+                    Proportion = 150,
                     ActiveDockable = tool1,
                     VisibleDockables = CreateList<IDockable>(tool1, tool2),
                     Alignment = Alignment.Left
                 },
-                new ProportionalDockSplitter(),
+                new PixelDockSplitter(),
                 new ToolDock
                 {
+                    Proportion = 150,
                     ActiveDockable = tool3,
                     VisibleDockables = CreateList<IDockable>(tool3, tool4),
                     Alignment = Alignment.Bottom

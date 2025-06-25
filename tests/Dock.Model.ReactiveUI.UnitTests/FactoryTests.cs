@@ -72,6 +72,16 @@ public class FactoryTests
     }
 
     [Fact]
+    public void Tool_Default_Sizes_Are_NaN()
+    {
+        var tool = new Tool();
+        Assert.True(double.IsNaN(tool.MinWidth));
+        Assert.True(double.IsNaN(tool.MaxWidth));
+        Assert.True(double.IsNaN(tool.MinHeight));
+        Assert.True(double.IsNaN(tool.MaxHeight));
+    }
+
+    [Fact]
     public void CreateDocumentDock_Creates_DocumentDock()
     {
         var factory = new TestFactory();

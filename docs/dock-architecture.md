@@ -9,7 +9,8 @@ the [deep dive](dock-deep-dive.md).
 - **DockControl** – Avalonia control that hosts the layout and forwards
   pointer input to the docking pipeline.
 - **DockManager** – Implements the algorithms that move, swap or split
-  dockables during drag operations.
+  dockables during drag operations. It exposes a `PreventSizeConflicts`
+  property that stops docking tools together when their fixed sizes clash.
 - **DockControlState** – Tracks pointer interactions and validates potential
   drop targets using `DockManager`.
 - **Factories** – Build and initialize dock view models. They expose

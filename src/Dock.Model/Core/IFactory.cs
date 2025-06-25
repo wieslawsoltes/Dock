@@ -92,6 +92,12 @@ public partial interface IFactory
     IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <summary>
+    /// Creates <see cref="IProportionalCornerDockSplitter"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IProportionalCornerDockSplitter"/> class.</returns>
+    IProportionalCornerDockSplitter CreateProportionalCornerDockSplitter();
+
+    /// <summary>
     /// Creates <see cref="IToolDock"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IToolDock"/> class.</returns>

@@ -222,6 +222,26 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsEmpty",
                 "IsCollapsable",
             },
+            [typeof(IProportionalCornerDockSplitter)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsEmpty",
+                "IsCollapsable",
+            },
             [typeof(IRootDock)] = new List<string>
             {
                 // IDockable
@@ -393,6 +413,26 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "Orientation",
             },
             [typeof(ProportionalDockSplitter)] = new List<string>
+            {
+                // IDockable
+                "Id",
+                "Title",
+                "Context",
+                "CanClose",
+                "CanPin",
+                "CanFloat",
+                // IDock
+                "VisibleDockables",
+                "ActiveDockable",
+                "DefaultDockable",
+                "FocusedDockable",
+                "Proportion",
+                "Dock",
+                "IsActive",
+                "IsEmpty",
+                "IsCollapsable",
+            },
+            [typeof(ProportionalCornerDockSplitter)] = new List<string>
             {
                 // IDockable
                 "Id",

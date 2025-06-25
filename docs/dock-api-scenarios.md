@@ -1,0 +1,60 @@
+# Dock API Scenarios
+
+This short document collects the most common ways the Dock API is used.  The examples apply equally to the MVVM, ReactiveUI and XAML approaches.
+
+## Dock controls
+
+Dock provides several themed controls that host parts of a layout.
+
+### DockControl
+
+The main control placed in your view to display a layout.  Set the `Layout` and optionally the `Factory` properties from code or XAML:
+
+```xaml
+<DockControl Layout="{Binding Layout}"
+             InitializeLayout="True"
+             InitializeFactory="True">
+    <DockControl.Factory>
+        <Factory />
+    </DockControl.Factory>
+</DockControl>
+```
+
+### DocumentDockControl
+
+Displayed inside a `DocumentDock` to render documents.  The control automatically binds to the active document and shows the `DocumentControl` template.
+
+### ToolDockControl
+
+Used within a `ToolDock` to host tools or side bars.  This control handles layout grip behaviour and interacts with `PinnedDockControl` when tools are pinned or auto-hidden.
+
+## Factories
+
+All runtime operations go through a factory.  Pick the implementation that matches your project style:
+
+### `Dock.Model.Avalonia.Factory`
+
+The plain Avalonia variant.  Useful when creating layouts directly in code or XAML without MVVM helpers.
+
+### `Dock.Model.Mvvm.Factory`
+
+Provides base classes implementing `INotifyPropertyChanged`.  Ideal for traditional MVVM view models.
+
+### `Dock.Model.ReactiveUI.Factory`
+
+Wraps the same API with ReactiveUI types.  Commands become `ReactiveCommand` and properties derive from `ReactiveObject`.
+
+A typical initialization sequence looks like:
+
+```csharp
+var factory = new DockFactory();
+var layout = factory.CreateLayout();
+factory.InitLayout(layout);
+dockControl.Factory = factory;
+dockControl.Layout = layout;
+```
+
+These factories expose methods such as `AddDockable`, `MoveDockable` or `FloatDockable` and raise events like `ActiveDockableChanged` so you can react to changes.
+
+Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.
+

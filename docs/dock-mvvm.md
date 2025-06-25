@@ -16,7 +16,6 @@ Install-Package Dock.Model.Mvvm
 You usually derive from `Factory` and build the layout by composing docks. The sample `DockFactory` shows how tools and documents are created and added to a root layout:
 
 ```csharp
-```
         public override IRootDock CreateLayout()
         {
             var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
@@ -80,12 +79,10 @@ You usually derive from `Factory` and build the layout by composing docks. The s
             };
 ```
 
-```
 
 Once the factory is defined, the view model creates and initializes the layout. The sample shows this logic:
 
 ```csharp
-```
         public MainWindowViewModel()
         {
             _factory = new DockFactory(new DemoData());
@@ -109,7 +106,6 @@ Once the factory is defined, the view model creates and initializes the layout. 
 The helper method `DebugFactoryEvents` from the sample subscribes to a wide range of factory events so you can react to changes:
 
 ```csharp
-```
         private void DebugFactoryEvents(IFactory factory)
         {
             factory.ActiveDockableChanged += (_, args) =>

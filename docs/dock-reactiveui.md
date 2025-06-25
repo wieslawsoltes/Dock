@@ -124,12 +124,10 @@ Create a factory exactly as with the MVVM version. The `DockFactory` in the Reac
             return rootDock;
         }
 ```
-```
 
 The main view model uses ReactiveUI helpers for property change notifications and commands:
 
 ```csharp
-```
         {
             _factory = new DockFactory(new DemoData());
     
@@ -153,7 +151,6 @@ The main view model uses ReactiveUI helpers for property change notifications an
 Event subscription works the same way and the sample attaches handlers to all factory events:
 
 ```csharp
-```
         {
             factory.ActiveDockableChanged += (_, args) =>
             {

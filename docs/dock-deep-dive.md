@@ -1,47 +1,64 @@
 # Dock Deep Dive
 
-This document explains the internals of `DockControl` and the docking pipeline used by Dock. It references the source code so you can trace how pointer events translate into layout changes.
+This document explains how `DockControl` routes pointer input through the docking pipeline. Reading this guide together with the source code will help you understand how layout changes are performed.
 
 ## DockControl
 
-`DockControl` is the main Avalonia control that hosts a layout. The constructor registers pointer handlers and creates both a `DockManager` and a `DockControlState` instance:
+`DockControl` is the main Avalonia control that hosts a layout. Its constructor registers pointer handlers and creates both a `DockManager` and a `DockControlState`:
 
 ```csharp
-// DockControl.axaml.cs
+_dockManager = new DockManager();
+_dockControlState = new DockControlState();
+AddHandler(PointerPressedEvent, PressedHandler);
+AddHandler(PointerReleasedEvent, ReleasedHandler);
+AddHandler(PointerMovedEvent, MovedHandler);
 ```
 
-When the `Layout` property changes `OnPropertyChanged` reinitializes the control with the new root dock:
+When the `Layout` property changes the control is reinitialised with the new root dock:
 
 ```csharp
-// DockControl.axaml.cs
+protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs e)
+{
+    if (e.Property == LayoutProperty)
+        Initialize(e.NewValue as IDock);
+    base.OnPropertyChanged(e);
+}
 ```
 
 The private `Initialize` method wires up the factory and optionally calls `InitLayout`:
 
 ```csharp
-// DockControl.axaml.cs
+private void Initialize(IDock? layout)
+{
+    if (layout is null)
+        return;
+
+    Layout = layout;
+    Layout.Factory?.InitLayout(layout);
+}
 ```
 
 Pointer events are forwarded to `DockControlState.Process` which performs hit testing and drag logic:
 
 ```csharp
-// DockControl.axaml.cs
+private void PressedHandler(object? sender, PointerPressedEventArgs e)
+{
+    var position = e.GetPosition(this);
+    _dockControlState.Process(position, Vector.Zero, EventType.Pressed, ToDragAction(e), this, Layout?.Factory?.DockControls);
+}
 ```
 
 ## DockControlState
 
-`DockControlState` keeps track of the drag state. It validates potential drop targets using `DockManager` and displays `DockTarget` adorners when appropriate. Once the user releases the pointer the state object calls `DockManager.ValidateDockable` with execution enabled.
-
-```csharp
-// DockControlState.cs
-```
+`DockControlState` keeps track of the current drag operation. It validates potential drop targets using `DockManager` and displays `DockTarget` adorners when appropriate. Once the user releases the pointer the state calls `DockManager.ValidateDockable` with execution enabled.
 
 ## DockManager
 
 `DockManager` implements the algorithms that move, swap or split dockables. Methods such as `MoveDockable`, `SwapDockable` and `SplitToolDockable` call back into the factory to modify the view models.
 
 ```csharp
-// DockManager.cs
+// Example: move a document
+_dockManager.MoveDockable(document, targetDock, index);
 ```
 
 ## Putting it together

@@ -1,6 +1,7 @@
 # Dock Advanced Guide
 
 This guide highlights advanced features from the Dock samples. The API is shared across the MVVM, ReactiveUI and XAML versions so the same concepts apply no matter which approach you use.
+This guide assumes you are familiar with the basics from the other guides. It focuses on runtime customization and advanced APIs.
 
 ## Custom factories
 
@@ -46,6 +47,12 @@ factory.DockableAdded += (_, args) =>
 };
 ```
 
+// Example: track created and active documents
+```csharp
+factory.DockableAdded += (_, e) => Console.WriteLine($"Added {e.Dockable?.Id}");
+factory.ActiveDockableChanged += (_, e) => Console.WriteLine($"Active {e.Dockable?.Id}");
+```
+
 You can react to focus changes, window moves or when dockables are pinned and unpinned.
 
 ## Saving and loading layouts
@@ -78,8 +85,19 @@ Drag-and-drop handlers and file dialogs are used to open and save documents on t
 
 ## Floating windows
 
-Calling `FloatDockable` opens a dockable in a separate window. Override `CreateWindowFrom` to set window properties or provide a custom `HostWindow` type.
+Calling `FloatDockable` opens a dockable in a separate window. You can override `CreateWindowFrom` to tweak the new window:
+
+```csharp
+public override IHostWindow CreateWindowFrom(IDockWindow source)
+{
+    var window = base.CreateWindowFrom(source);
+    window.Title = $"Floating - {source.Title}";
+    window.Width = 800;
+    window.Height = 600;
+    return window;
+}
+```
 
 ## Conclusion
 
-Explore the samples under `samples/` for complete implementations of these features. They combine MVVM or ReactiveUI view models with Dock controls to build complex layouts that can be persisted and restored.
+Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.

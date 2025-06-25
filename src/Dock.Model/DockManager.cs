@@ -15,6 +15,18 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public DockPoint ScreenPosition { get; set; }
 
+    /// <inheritdoc/>
+    public bool PreventSizeConflicts { get; set; } = true;
+
+    private static bool IsFixed(double min, double max) => !double.IsNaN(min) && !double.IsNaN(max) && min == max;
+
+    private static bool HasSizeConflict(ITool a, ITool b)
+    {
+        var widthConflict = IsFixed(a.MinWidth, a.MaxWidth) && IsFixed(b.MinWidth, b.MaxWidth) && a.MinWidth != b.MinWidth;
+        var heightConflict = IsFixed(a.MinHeight, a.MaxHeight) && IsFixed(b.MinHeight, b.MaxHeight) && a.MinHeight != b.MinHeight;
+        return widthConflict || heightConflict;
+    }
+
     private bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
     {
         if (sourceDockableOwner == targetDock)
@@ -389,9 +401,12 @@ public class DockManager : IDockManager
         return targetDockable switch
         {
             IRootDock _ => DockDockableIntoWindow(sourceTool, targetDockable, bExecute),
-            IToolDock toolDock => DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
+            IToolDock toolDock =>
+                (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
+                && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute),
-            ITool tool => DockDockableIntoDockable(sourceTool, tool, action, bExecute),
+            ITool tool => (!PreventSizeConflicts || !HasSizeConflict(sourceTool, tool)) &&
+                           DockDockableIntoDockable(sourceTool, tool, action, bExecute),
             IDocument document => DockDockableIntoDockable(sourceTool, document, action, bExecute),
             _ => false
         };

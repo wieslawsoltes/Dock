@@ -40,6 +40,23 @@ DockableLocator = new Dictionary<string, Func<IDockable?>>
 
 If a dockable cannot be resolved the serializer will return `null`.
 
+**What is `DockableLocator` and `ContextLocator`?**
+
+`DockableLocator` is a dictionary of functions that create view models. The
+serializer and factory query it using the identifiers stored in a layout to
+recreate dockables at runtime. `ContextLocator` works the same way but returns
+objects that become the `DataContext` of the views. Populate both dictionaries
+when initializing your factory so that Dock can resolve your custom documents
+and tools.
+
+**Are dock `Id`s unique?**
+
+No. The `Id` string on a dockable acts as a lookup key for `DockSerializer`.
+When a document dock is split or cloned the factory copies the source `Id` so
+that both docks resolve to the same view model type when a layout is
+deserialized. If you need to distinguish individual document docks, store a
+separate unique identifier on your view models.
+
 ## Other questions
 
 **Floating windows appear in the wrong place**
@@ -56,5 +73,62 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
     return window;
 }
 ```
+
+**Can I give a tool a fixed size?**
+
+Set `MinWidth` and `MaxWidth` (or the height equivalents) on the tool view model. When both values are the same the tool cannot be resized. `DockManager` has a `PreventSizeConflicts` flag which stops docking tools together if their fixed sizes are incompatible.
+
+**Pinned tools show up on the wrong side**
+
+When a tool is pinned the framework looks at the `Alignment` of its
+containing `ToolDock`.  If no alignment is specified the dock defaults to
+`Left`, which can make right–hand panels collapse to the left when pinned.
+Set `Alignment` to `Right`, `Left`, `Top` or `Bottom` depending on where the
+dock should live:
+
+```csharp
+new ToolDock
+{
+    VisibleDockables = CreateList<IDockable>(myTool),
+    Alignment = Alignment.Right
+};
+```
+
+**Can I cancel switching the active dockable or closing a dock?**
+
+Dock currently raises `ActiveDockableChanged` only *after* the active dockable
+has been updated, so the change cannot be cancelled. Likewise there is no
+pre-close event for dockables. The only cancellable closing hook is
+`WindowClosing`, which is fired when a host window is about to close. Set the
+`Cancel` property on the event arguments to keep the window open:
+
+```csharp
+factory.WindowClosing += (_, args) =>
+{
+    if (!CanShutdown())
+    {
+        args.Cancel = true; // prevents the window from closing
+    }
+};
+```
+
+Cancelling individual dockables is not supported.
+
+**How do I disable undocking or drag-and-drop?**
+
+Set the attached `DockProperties.IsDragEnabled` property to `false` on your
+`DockControl` (or parent window) to prevent dockables from being dragged.  You
+can also disable drop targets with `DockProperties.IsDropEnabled`:
+
+```xml
+<Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
+        dockSettings:DockProperties.IsDragEnabled="False"
+        dockSettings:DockProperties.IsDropEnabled="False">
+    <DockControl />
+</Window>
+```
+
+Dockables may still be floated programmatically unless their `CanFloat` property
+is set to `false`.
 
 For a general overview of Dock see the [documentation index](README.md).

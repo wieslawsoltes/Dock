@@ -8,4 +8,23 @@ namespace Dock.Model.Controls;
 /// </summary>
 public interface ITool : IDockable
 {
+    /// <summary>
+    /// Gets or sets minimum width.
+    /// </summary>
+    double MinWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets maximum width.
+    /// </summary>
+    double MaxWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets minimum height.
+    /// </summary>
+    double MinHeight { get; set; }
+
+    /// <summary>
+    /// Gets or sets maximum height.
+    /// </summary>
+    double MaxHeight { get; set; }
 }

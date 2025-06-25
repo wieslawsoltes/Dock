@@ -1,6 +1,9 @@
 # Dock XAML Guide
 
-This guide shows how to create Dock layouts entirely in XAML. The [DockXamlSample](../samples/DockXamlSample) demonstrates these techniques.
+This guide shows how to create Dock layouts entirely in XAML.  Using XAML can be
+convenient when the layout rarely changes or when you wish to edit it without
+recompiling. The [DockXamlSample](../samples/DockXamlSample) demonstrates these
+techniques.
 
 ## Step-by-step tutorial
 
@@ -40,7 +43,12 @@ These steps outline how to set up a small Dock application that defines its layo
 
 4. **Save and load layouts**
 
-   Use `DockSerializer` from code-behind to persist or restore the layout.
+Use `DockSerializer` from code-behind to persist or restore the layout.
+
+When declaring layouts this way you typically still provide a small
+`Factory` implementation. The factory allows you to resolve your view
+models and hook into runtime events while keeping the layout defined in
+markup.
 
 5. **Run the application**
 

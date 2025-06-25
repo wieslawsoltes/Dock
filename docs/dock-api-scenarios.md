@@ -58,5 +58,24 @@ These factories expose methods such as `AddDockable`, `MoveDockable` or `FloatDo
 
 Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.
 
+### Saving and restoring a layout
+
+Layouts can be persisted using `DockSerializer` from the `Dock.Serializer` package.
+This allows users to keep their preferred window arrangement between sessions.
+
+```csharp
+await using var stream = File.Create(path);
+_serializer.Save(layout, stream);
+```
+
+Likewise you can restore a saved layout and reinitialise the factory:
+
+```csharp
+await using var stream = File.OpenRead(path);
+var layout = _serializer.Load<IDock>(stream);
+factory.InitLayout(layout);
+dockControl.Layout = layout;
+```
+
 For an overview of all guides see the [documentation index](README.md).
 

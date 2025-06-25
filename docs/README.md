@@ -1,6 +1,10 @@
 # Dock Documentation
 
-Welcome to the Dock documentation. This directory contains all official guides for using the library.
+Welcome to the Dock documentation.  The files in this folder describe how to
+use the Dock layout system from simple getting started examples to
+advanced customization scenarios.  The documents assume you have an
+Avalonia application created with the .NET SDK.  If you are new to Dock
+start with the MVVM guide and work your way towards the deep dive.
 
 ## Guides
 
@@ -14,3 +18,5 @@ Welcome to the Dock documentation. This directory contains all official guides f
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
 
 See the sample applications under the [samples](../samples/) directory for real-world usage.
+The [project README](../README.md) also lists the available guides and provides
+basic build instructions.

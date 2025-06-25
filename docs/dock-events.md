@@ -2,6 +2,10 @@
 
 Dock exposes a large set of runtime events through `FactoryBase` so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.
 
+Each event uses a dedicated arguments type that exposes the affected
+dockable or window along with optional cancelation tokens. This makes it
+possible to intercept an operation before it completes.
+
 ## Common events
 
 `FactoryBase` publishes events via the `IFactory` interface. Each event passes an arguments object containing the affected dockable or window.

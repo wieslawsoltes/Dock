@@ -11,7 +11,11 @@ All samples derive from `Factory` and override methods to configure the layout. 
 - `CreateDocumentDock` to provide a custom `IDocumentDock` implementation
 - `InitLayout` to wire up `ContextLocator`, `DockableLocator` and `HostWindowLocator`
 
-The MVVM and ReactiveUI samples use these hooks to register view models and window factories:
+The MVVM and ReactiveUI samples use these hooks to register view models,
+window factories and other services required at runtime. By overriding the
+factory methods you can control how floating windows are created, inject your
+own tool or document types and tie into application specific services such as
+dependency injection containers.
 
 ```csharp
 public override void InitLayout(IDockable layout)
@@ -35,6 +39,10 @@ public override void InitLayout(IDockable layout)
 ## Handling events
 
 `FactoryBase` exposes events for virtually every docking action. The samples subscribe to them to trace runtime changes:
+
+Events are useful for hooking into your application's own logging or
+analytics system. For example you might record when documents are opened
+or closed so that the next run can restore them.
 
 ```csharp
 factory.ActiveDockableChanged += (_, args) =>

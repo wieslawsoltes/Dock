@@ -4,10 +4,12 @@ Welcome to the Dock documentation.  The files in this folder describe how to
 use the Dock layout system from simple getting started examples to
 advanced customization scenarios.  The documents assume you have an
 Avalonia application created with the .NET SDK.  If you are new to Dock
-start with the MVVM guide and work your way towards the deep dive.
+start with the MVVM guide and work your way towards the deep dive. If you
+just want to see Dock running quickly, check out the Quick Start below.
 
 ## Guides
 
+- [Quick Start](quick-start.md) – Install the packages and run a simple layout.
 - [MVVM Guide](dock-mvvm.md) – Build layouts using MVVM view models.
 - [ReactiveUI Guide](dock-reactiveui.md) – ReactiveUI equivalent of the MVVM guide.
 - [XAML Guide](dock-xaml.md) – Declare layouts purely in XAML.

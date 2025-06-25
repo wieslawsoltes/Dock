@@ -57,4 +57,20 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 }
 ```
 
+**Pinned tools show up on the wrong side**
+
+When a tool is pinned the framework looks at the `Alignment` of its
+containing `ToolDock`.  If no alignment is specified the dock defaults to
+`Left`, which can make right–hand panels collapse to the left when pinned.
+Set `Alignment` to `Right`, `Left`, `Top` or `Bottom` depending on where the
+dock should live:
+
+```csharp
+new ToolDock
+{
+    VisibleDockables = CreateList<IDockable>(myTool),
+    Alignment = Alignment.Right
+};
+```
+
 For a general overview of Dock see the [documentation index](README.md).

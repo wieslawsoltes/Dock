@@ -62,8 +62,8 @@ Install-Package Dock.Model.Mvvm -Pre
 * [XAML Guide](docs/dock-xaml.md)
 * [Reference Guide](docs/dock-reference.md)
 * [Advanced Guide](docs/dock-advanced.md)
+* [Events Guide](docs/dock-events.md)
 * [Deep Dive](docs/dock-deep-dive.md)
-
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

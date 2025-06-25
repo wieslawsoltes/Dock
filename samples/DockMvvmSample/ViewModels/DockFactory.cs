@@ -6,11 +6,11 @@ using DockMvvmSample.ViewModels.Docks;
 using DockMvvmSample.ViewModels.Documents;
 using DockMvvmSample.ViewModels.Tools;
 using DockMvvmSample.ViewModels.Views;
-using Dock.Avalonia.Controls;
+using AvaloniaControls = Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
-using Dock.Model.Mvvm.Controls;
+using ModelControls = Dock.Model.Mvvm.Controls;
 
 namespace DockMvvmSample.ViewModels;
 
@@ -41,22 +41,22 @@ public class DockFactory : Factory
         var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
         var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
 
-        var leftDock = new PixelDock
+        var leftDock = new ModelControls.PixelDock
         {
             Proportion = 0.25,
             Orientation = Orientation.Vertical,
             ActiveDockable = null,
             VisibleDockables = CreateList<IDockable>
             (
-                new ToolDock
+                new ModelControls.ToolDock
                 {
                     Proportion = 150,
                     ActiveDockable = tool1,
                     VisibleDockables = CreateList<IDockable>(tool1, tool2),
                     Alignment = Alignment.Left
                 },
-                new PixelDockSplitter(),
-                new ToolDock
+                new ModelControls.PixelDockSplitter(),
+                new ModelControls.ToolDock
                 {
                     Proportion = 150,
                     ActiveDockable = tool3,
@@ -66,22 +66,22 @@ public class DockFactory : Factory
             )
         };
 
-        var rightDock = new ProportionalDock
+        var rightDock = new ModelControls.ProportionalDock
         {
             Proportion = 0.25,
             Orientation = Orientation.Vertical,
             ActiveDockable = null,
             VisibleDockables = CreateList<IDockable>
             (
-                new ToolDock
+                new ModelControls.ToolDock
                 {
                     ActiveDockable = tool5,
                     VisibleDockables = CreateList<IDockable>(tool5, tool6),
                     Alignment = Alignment.Top,
                     GripMode = GripMode.Hidden
                 },
-                new ProportionalDockSplitter(),
-                new ToolDock
+                new ModelControls.ProportionalDockSplitter(),
+                new ModelControls.ToolDock
                 {
                     ActiveDockable = tool7,
                     VisibleDockables = CreateList<IDockable>(tool7, tool8),
@@ -99,15 +99,15 @@ public class DockFactory : Factory
             CanCreateDocument = true
         };
 
-        var mainLayout = new ProportionalDock
+        var mainLayout = new ModelControls.ProportionalDock
         {
             Orientation = Orientation.Horizontal,
             VisibleDockables = CreateList<IDockable>
             (
                 leftDock,
-                new ProportionalDockSplitter(),
+                new ModelControls.ProportionalDockSplitter(),
                 documentDock,
-                new ProportionalDockSplitter(),
+                new ModelControls.ProportionalDockSplitter(),
                 rightDock
             )
         };
@@ -177,7 +177,7 @@ public class DockFactory : Factory
 
         HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
-            [nameof(IDockWindow)] = () => new HostWindow()
+            [nameof(IDockWindow)] = () => new AvaloniaControls.HostWindow()
         };
 
         base.InitLayout(layout);

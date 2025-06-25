@@ -55,3 +55,5 @@ The XAML sample shows that a layout can be declared entirely in markup using `Do
 - `samples/DockMvvmSample` – full MVVM example.
 - `samples/DockReactiveUISample` – ReactiveUI variant.
 - `samples/DockXamlSample` – XAML-only layout with serialization.
+
+For an overview of all guides see the [documentation index](README.md).

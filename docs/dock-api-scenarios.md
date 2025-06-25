@@ -58,3 +58,5 @@ These factories expose methods such as `AddDockable`, `MoveDockable` or `FloatDo
 
 Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.
 
+For an overview of all guides see the [documentation index](README.md).
+

@@ -40,6 +40,15 @@ DockableLocator = new Dictionary<string, Func<IDockable?>>
 
 If a dockable cannot be resolved the serializer will return `null`.
 
+**What is `DockableLocator` and `ContextLocator`?**
+
+`DockableLocator` is a dictionary of functions that create view models. The
+serializer and factory query it using the identifiers stored in a layout to
+recreate dockables at runtime. `ContextLocator` works the same way but returns
+objects that become the `DataContext` of the views. Populate both dictionaries
+when initializing your factory so that Dock can resolve your custom documents
+and tools.
+
 ## Other questions
 
 **Floating windows appear in the wrong place**

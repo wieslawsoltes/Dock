@@ -2,6 +2,48 @@
 
 This guide explains how to get started with the MVVM version of Dock and describes the available features.
 
+## Step-by-step tutorial
+
+The following steps walk you through creating a very small application that uses Dock with the MVVM helpers.
+
+1. **Create a new Avalonia project**
+
+   ```bash
+   dotnet new avalonia.app -o MyDockApp
+   cd MyDockApp
+   ```
+
+2. **Install the Dock packages**
+
+   ```powershell
+   dotnet add package Dock.Avalonia
+   dotnet add package Dock.Model.Mvvm
+   ```
+
+3. **Create a factory and view models**
+
+   Derive from `Dock.Model.Mvvm.Factory` and build the layout by composing docks. Documents and tools should derive from the MVVM versions of `Document` and `Tool`.
+
+4. **Initialize the layout in your main view model**
+
+   ```csharp
+   _factory = new DockFactory();
+   Layout = _factory.CreateLayout();
+   _factory.InitLayout(Layout);
+   ```
+
+5. **Add `DockControl` to `MainWindow.axaml`**
+
+   ```xaml
+   <DockControl x:Name="Dock" Layout="{Binding Layout}" />
+   ```
+
+6. **Run the project**
+
+   ```bash
+   dotnet run
+   ```
+
 ## Installing
 
 Add the packages for Dock and the MVVM model to your project:

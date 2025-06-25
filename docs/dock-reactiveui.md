@@ -2,6 +2,48 @@
 
 This document mirrors the MVVM instructions for projects that use ReactiveUI.
 
+## Step-by-step tutorial
+
+Follow these instructions to create a minimal ReactiveUI based application using Dock.
+
+1. **Create a new Avalonia project**
+
+   ```bash
+   dotnet new avalonia.app -o MyDockApp
+   cd MyDockApp
+   ```
+
+2. **Install the Dock packages**
+
+   ```powershell
+   dotnet add package Dock.Avalonia
+   dotnet add package Dock.Model.ReactiveUI
+   ```
+
+3. **Create a factory and view models**
+
+   Derive from `Dock.Model.ReactiveUI.Factory` and implement `CreateLayout`. Your documents and tools should inherit from the ReactiveUI versions of `Document` and `Tool`.
+
+4. **Initialize the layout using Reactive commands**
+
+   ```csharp
+   _factory = new DockFactory();
+   Layout = _factory.CreateLayout();
+   _factory.InitLayout(Layout);
+   ```
+
+5. **Add `DockControl` to the main view**
+
+   ```xaml
+   <DockControl x:Name="Dock" Layout="{Binding Layout}" />
+   ```
+
+6. **Run the application**
+
+   ```bash
+   dotnet run
+   ```
+
 ## Installing
 
 ```powershell

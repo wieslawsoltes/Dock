@@ -4,6 +4,48 @@ This guide shows how to create Dock layouts entirely in XAML. The
 [DockXamlSample](../samples/DockXamlSample) demonstrates these
 techniques.
 
+## Step-by-step tutorial
+
+These steps outline how to set up a small Dock application that defines its layout in XAML.
+
+1. **Create a new Avalonia project**
+
+   ```bash
+   dotnet new avalonia.app -o MyDockApp
+   cd MyDockApp
+   ```
+
+2. **Install the Dock packages**
+
+   ```powershell
+   dotnet add package Dock.Avalonia
+   dotnet add package Dock.Model.Avalonia
+   dotnet add package Dock.Serializer
+   ```
+
+3. **Declare the layout in XAML**
+
+   Add a `DockControl` and the initial docks in `MainWindow.axaml`.
+
+   ```xaml
+   <DockControl x:Name="Dock" InitializeLayout="True" InitializeFactory="True">
+       <DockControl.Factory>
+           <Factory />
+       </DockControl.Factory>
+       <!-- layout elements here -->
+   </DockControl>
+   ```
+
+4. **Save and load layouts**
+
+   Use `DockSerializer` from code-behind to persist or restore the layout.
+
+5. **Run the application**
+
+   ```bash
+   dotnet run
+   ```
+
 ## Installing
 
 Add the core Dock packages to your project:

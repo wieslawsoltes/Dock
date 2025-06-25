@@ -22,6 +22,7 @@ just want to see Dock running quickly, check out the Quick Start below.
 - [Architecture Overview](dock-architecture.md) – High level design of the docking system.
 - [Deep Dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex Layout Tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
+- [Styling and Theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [FAQ](dock-faq.md) – Solutions to common issues.
 
 See the sample applications under the [samples](../samples/) directory for real-world usage.

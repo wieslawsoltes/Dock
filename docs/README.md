@@ -21,6 +21,7 @@ guides under *Getting started*.
 - [Events guide](dock-events.md) – Subscribe to dock and window events.
 - [API scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
+- [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

@@ -18,7 +18,18 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    dotnet add package Dock.Model.Mvvm
    ```
 
-3. **Add a simple layout**
+3. **Add Dock styles**
+
+   Reference one of the built-in themes in `App.axaml` so the controls are styled:
+
+   ```xaml
+   <Application.Styles>
+     <FluentTheme Mode="Dark" />
+     <DockFluentTheme />
+   </Application.Styles>
+   ```
+
+4. **Add a simple layout**
 
    Create a `DockFactory` that derives from `Dock.Model.Mvvm.Factory` and returns a basic layout:
 
@@ -33,13 +44,15 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
        {
            var document = new Document { Id = "Doc1", Title = "Document" };
 
-           return CreateRootDock().With(root =>
-           {
-               root.VisibleDockables = CreateList<IDockable>(
-                   new DocumentDock { VisibleDockables = CreateList<IDockable>(document), ActiveDockable = document }
-               );
-               root.DefaultDockable = root.VisibleDockables[0];
-           });
+           var root = CreateRootDock();
+           root.VisibleDockables = CreateList<IDockable>(
+               new DocumentDock
+               {
+                   VisibleDockables = CreateList<IDockable>(document),
+                   ActiveDockable = document
+               });
+           root.DefaultDockable = root.VisibleDockables[0];
+           return root;
        }
    }
    ```
@@ -67,7 +80,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    <DockControl x:Name="Dock" />
    ```
 
-4. **Run the application**
+5. **Run the application**
 
    ```bash
    dotnet run

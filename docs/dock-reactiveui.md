@@ -37,13 +37,19 @@ Follow these instructions to create a minimal ReactiveUI based application using
            var doc = new DocumentViewModel { Id = "Doc1", Title = "Document" };
            var tool = new Tool1ViewModel { Id = "Tool1", Title = "Tool1" };
 
-           return CreateRootDock().With(root =>
-           {
-               root.VisibleDockables = CreateList<IDockable>(
-                   new DocumentDock { VisibleDockables = CreateList<IDockable>(doc), ActiveDockable = doc },
-                   new ToolDock { VisibleDockables = CreateList<IDockable>(tool), ActiveDockable = tool }
-               );
-           });
+           var root = CreateRootDock();
+           root.VisibleDockables = CreateList<IDockable>(
+               new DocumentDock
+               {
+                   VisibleDockables = CreateList<IDockable>(doc),
+                   ActiveDockable = doc
+               },
+               new ToolDock
+               {
+                   VisibleDockables = CreateList<IDockable>(tool),
+                   ActiveDockable = tool
+               });
+           return root;
        }
    }
    ```
@@ -85,22 +91,21 @@ public override IRootDock CreateLayout()
     var document1 = new DocumentViewModel { Id = "Document1", Title = "Doc1" };
     var tool1 = new Tool1ViewModel { Id = "Tool1", Title = "Tool1" };
 
-    return CreateRootDock().With(root =>
-    {
-        root.VisibleDockables = CreateList<IDockable>(
-            new DocumentDock
-            {
-                VisibleDockables = CreateList<IDockable>(document1),
-                ActiveDockable = document1
-            },
-            new ToolDock
-            {
-                VisibleDockables = CreateList<IDockable>(tool1),
-                ActiveDockable = tool1,
-                Alignment = Alignment.Left
-            }
-        );
-    });
+    var root = CreateRootDock();
+    root.VisibleDockables = CreateList<IDockable>(
+        new DocumentDock
+        {
+            VisibleDockables = CreateList<IDockable>(document1),
+            ActiveDockable = document1
+        },
+        new ToolDock
+        {
+            VisibleDockables = CreateList<IDockable>(tool1),
+            ActiveDockable = tool1,
+            Alignment = Alignment.Left
+        }
+    );
+    return root;
 }
 ```
 

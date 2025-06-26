@@ -26,12 +26,15 @@ The default factory can open any dockable in a separate window. This allows you 
        public override IRootDock CreateLayout()
        {
            var doc1 = new DocumentViewModel { Id = "Doc1", Title = "Document" };
-           return CreateRootDock().With(root =>
-           {
-               root.VisibleDockables = CreateList<IDockable>(
-                   new DocumentDock { VisibleDockables = CreateList<IDockable>(doc1), ActiveDockable = doc1 }
-               );
-           });
+
+           var root = CreateRootDock();
+           root.VisibleDockables = CreateList<IDockable>(
+               new DocumentDock
+               {
+                   VisibleDockables = CreateList<IDockable>(doc1),
+                   ActiveDockable = doc1
+               });
+           return root;
        }
    }
    ```

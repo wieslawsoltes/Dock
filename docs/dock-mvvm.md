@@ -37,13 +37,16 @@ The following steps walk you through creating a very small application that uses
        {
            var document = new DocumentViewModel { Id = "Doc1", Title = "Document" };
            var documents = CreateList<IDockable>(document);
-           return CreateRootDock().With(dock =>
-           {
-               dock.VisibleDockables = CreateList<IDockable>(
-                   new DocumentDock { VisibleDockables = documents, ActiveDockable = document }
-               );
-               dock.DefaultDockable = dock.VisibleDockables[0];
-           });
+
+           var root = CreateRootDock();
+           root.VisibleDockables = CreateList<IDockable>(
+               new DocumentDock
+               {
+                   VisibleDockables = documents,
+                   ActiveDockable = document
+               });
+           root.DefaultDockable = root.VisibleDockables[0];
+           return root;
        }
    }
    ```
@@ -92,22 +95,21 @@ public override IRootDock CreateLayout()
     var doc1 = new DocumentViewModel { Id = "Document1", Title = "Document1" };
     var tool1 = new Tool1ViewModel { Id = "Tool1", Title = "Tool1" };
 
-    return CreateRootDock().With(root =>
-    {
-        root.VisibleDockables = CreateList<IDockable>(
-            new DocumentDock
-            {
-                VisibleDockables = CreateList<IDockable>(doc1),
-                ActiveDockable = doc1
-            },
-            new ToolDock
-            {
-                VisibleDockables = CreateList<IDockable>(tool1),
-                ActiveDockable = tool1,
-                Alignment = Alignment.Left
-            }
-        );
-    });
+    var root = CreateRootDock();
+    root.VisibleDockables = CreateList<IDockable>(
+        new DocumentDock
+        {
+            VisibleDockables = CreateList<IDockable>(doc1),
+            ActiveDockable = doc1
+        },
+        new ToolDock
+        {
+            VisibleDockables = CreateList<IDockable>(tool1),
+            ActiveDockable = tool1,
+            Alignment = Alignment.Left
+        }
+    );
+    return root;
 }
 ```
 

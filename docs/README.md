@@ -25,6 +25,7 @@ guides under *Getting started*.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
+- [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference

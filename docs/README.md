@@ -1,9 +1,11 @@
 # Dock documentation
 
-Welcome to the Dock documentation. These articles explain how to use the Dock
-layout system from basic setup through advanced customization. The examples
-assume an Avalonia application created with the .NET SDK. If you are new to
-Dock, start with the guides under *Getting started*.
+Welcome to the Dock documentation. This page is the entry point for the
+documentation site and collects links to guides, reference topics and other
+resources. These articles explain how to use the Dock layout system from basic
+setup through advanced customization. The examples assume an Avalonia
+application created with the .NET SDK. If you are new to Dock, start with the
+guides under *Getting started*.
 
 ## Getting started
 
@@ -37,3 +39,8 @@ Dock, start with the guides under *Getting started*.
 See the sample applications under the [samples](../samples/) directory for
 real‑world usage. The [project README](../README.md) also lists the available
 guides and provides basic build instructions.
+
+For the complete source code visit the
+[GitHub repository](https://github.com/wieslawsoltes/Dock). NuGet packages are
+published on [NuGet.org](https://www.nuget.org/packages/Dock.Avalonia/),
+including both `Dock.Avalonia` and `Dock.Model.Mvvm`.

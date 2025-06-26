@@ -60,6 +60,27 @@ As documents are opened and closed the same `DocumentControl` is reused for a gi
 controlRecycling.Clear();
 ```
 
-Control recycling works for both MVVM and ReactiveUI samples as well as the XAML‑only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples.
+### XAML-only layouts
+
+Control recycling also applies when the layout is declared purely in XAML. Dockables defined in markup can specify an `Id` which the recycling cache uses to match and reuse visuals. This lets tools and documents retain their internal state even when no view models or bindings are present.
+
+```xaml
+<DockControl x:Name="Dock" InitializeLayout="True" InitializeFactory="True">
+  <RootDock>
+    <DocumentDock>
+      <Document Id="Doc1" Title="Welcome">
+        <TextBox Text="Edit me" />
+      </Document>
+    </DocumentDock>
+    <ToolDock>
+      <Tool Id="Tool1" Title="Settings">
+        <Slider Minimum="0" Maximum="100" Value="40" />
+      </Tool>
+    </ToolDock>
+  </RootDock>
+</DockControl>
+```
+
+With recycling enabled the `Document` and `Tool` above keep their content each time they are reopened or toggled. Even without bindings the `TextBox` and `Slider` values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML‑only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples.
 
 For an overview of all guides see the [documentation index](README.md).

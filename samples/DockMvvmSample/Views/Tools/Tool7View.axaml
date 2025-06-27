@@ -12,6 +12,7 @@
       <TextBlock Text="{Binding Id}" Padding="2" />
       <TextBlock Text="{Binding Title}" Padding="2" />
       <TextBlock Text="{Binding Context}" Padding="2" />
+      <TextBox Text="Tool7" />
     </StackPanel>
   </Grid>
 </UserControl>

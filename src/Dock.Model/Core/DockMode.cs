@@ -1,4 +1,6 @@
-﻿namespace Dock.Model.Core;
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+namespace Dock.Model.Core;
 
 /// <summary>
 /// Defines the available docking modes.

@@ -116,9 +116,16 @@ Cancelling individual dockables is not supported.
 
 **How do I disable undocking or drag-and-drop?**
 
-Set the attached `DockProperties.IsDragEnabled` property to `false` on your
-`DockControl` (or parent window) to prevent dockables from being dragged.  You
-can also disable drop targets with `DockProperties.IsDropEnabled`:
+Disable undocking per dockable by setting its `CanDrag` or `CanDrop` property to
+`false`:
+
+```csharp
+document.CanDrag = false;
+tool.CanDrop = false;
+```
+
+You can still toggle drag or drop globally using the attached `DockProperties`
+from `Dock.Settings`:
 
 ```xml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"

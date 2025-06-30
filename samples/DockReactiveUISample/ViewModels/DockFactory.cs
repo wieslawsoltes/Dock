@@ -34,9 +34,9 @@ public class DockFactory : Factory
         var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
         var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
         var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
-        var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3"};
-        var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4"};
-        var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5"};
+        var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3", CanDrag = false };
+        var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4", CanDrag = false };
+        var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5" };
         var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6", CanClose = true, CanPin = true};
         var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
         var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
@@ -52,16 +52,20 @@ public class DockFactory : Factory
                 {
                     ActiveDockable = tool1,
                     VisibleDockables = CreateList<IDockable>(tool1, tool2),
-                    Alignment = Alignment.Left
+                    Alignment = Alignment.Left,
+                    // CanDrop = false
                 },
                 new ProportionalDockSplitter(),
                 new ToolDock
                 {
                     ActiveDockable = tool3,
                     VisibleDockables = CreateList<IDockable>(tool3, tool4),
-                    Alignment = Alignment.Bottom
+                    Alignment = Alignment.Bottom,
+                    CanDrag = false,
+                    CanDrop = false
                 }
-            )
+            ),
+            // CanDrop = false
         };
 
         var rightDock = new ProportionalDock
@@ -86,7 +90,8 @@ public class DockFactory : Factory
                     Alignment = Alignment.Right,
                     GripMode = GripMode.AutoHide
                 }
-            )
+            ),
+            // CanDrop = false
         };
 
         var documentDock = new CustomDocumentDock
@@ -94,7 +99,8 @@ public class DockFactory : Factory
             IsCollapsable = false,
             ActiveDockable = document1,
             VisibleDockables = CreateList<IDockable>(document1, document2, document3),
-            CanCreateDocument = true
+            CanCreateDocument = true,
+            // CanDrop = false
         };
 
         var mainLayout = new ProportionalDock

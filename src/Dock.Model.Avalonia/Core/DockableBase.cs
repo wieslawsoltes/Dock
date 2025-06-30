@@ -98,6 +98,18 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public static readonly DirectProperty<DockableBase, bool> CanFloatProperty =
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanFloat), o => o.CanFloat, (o, v) => o.CanFloat = v);
 
+    /// <summary>
+    /// Defines the <see cref="CanDrag"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> CanDragProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrag), o => o.CanDrag, (o, v) => o.CanDrag = v);
+
+    /// <summary>
+    /// Defines the <see cref="CanDrop"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> CanDropProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrop), o => o.CanDrop, (o, v) => o.CanDrop = v);
+
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
     private string _title = string.Empty;
@@ -111,6 +123,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _canFloat = true;
+    private bool _canDrag = true;
+    private bool _canDrop = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -228,6 +242,24 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canFloat;
         set => SetAndRaise(CanFloatProperty, ref _canFloat, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanDrag")]
+    public bool CanDrag
+    {
+        get => _canDrag;
+        set => SetAndRaise(CanDragProperty, ref _canDrag, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanDrop")]
+    public bool CanDrop
+    {
+        get => _canDrop;
+        set => SetAndRaise(CanDropProperty, ref _canDrop, value);
     }
 
     /// <inheritdoc/>

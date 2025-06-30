@@ -10,6 +10,9 @@
 
   <ControlTheme x:Key="{x:Type ToolControl}" TargetType="ToolControl">
 
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" Padding="2" />

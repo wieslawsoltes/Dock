@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ids="using:Dock.Settings"
         xmlns:vm="using:DockMvvmSample.ViewModels"
         xmlns:views="using:DockMvvmSample.Views"
         mc:Ignorable="d"
@@ -19,8 +18,7 @@
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Dock Avalonia Demo" Height="680" Width="1200"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome"
-        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True">
+        ExtendClientAreaChromeHints="PreferSystemChrome">
   <Window.Resources>
     <ExperimentalAcrylicMaterial BackgroundSource="Digger"
                                  TintColor="{DynamicResource SystemAltHighColor}"

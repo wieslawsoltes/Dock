@@ -9,6 +9,9 @@
 
   <ControlTheme x:Key="{x:Type DocumentDockControl}" TargetType="DocumentDockControl">
 
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">

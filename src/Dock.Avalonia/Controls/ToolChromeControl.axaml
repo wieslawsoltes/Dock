@@ -46,6 +46,9 @@
 
   <ControlTheme x:Key="{x:Type ToolChromeControl}" TargetType="ToolChromeControl">
 
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+
     <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="0" />

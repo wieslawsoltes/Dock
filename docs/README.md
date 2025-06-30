@@ -33,6 +33,7 @@ guides under *Getting started*.
 
 - [Reference guide](dock-reference.md) – Overview of the core APIs.
 - [Glossary](dock-glossary.md) – Definitions of common Dock terms.
+- [Dockable property settings](dock-dockable-properties.md) – Configure per item behaviour.
 
 ## Troubleshooting
 

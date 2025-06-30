@@ -98,6 +98,18 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public static readonly DirectProperty<DockableBase, bool> CanFloatProperty =
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanFloat), o => o.CanFloat, (o, v) => o.CanFloat = v);
 
+    /// <summary>
+    /// Defines the <see cref="CanDrag"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> CanDragProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrag), o => o.CanDrag, (o, v) => o.CanDrag = v);
+
+    /// <summary>
+    /// Defines the <see cref="CanDrop"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> CanDropProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrop), o => o.CanDrop, (o, v) => o.CanDrop = v);
+
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
     private string _title = string.Empty;
@@ -238,7 +250,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public bool CanDrag
     {
         get => _canDrag;
-        set => SetAndRaise(CanFloatProperty, ref _canDrag, value);
+        set => SetAndRaise(CanDragProperty, ref _canDrag, value);
     }
 
     /// <inheritdoc/>
@@ -247,7 +259,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public bool CanDrop
     {
         get => _canDrop;
-        set => SetAndRaise(CanFloatProperty, ref _canDrop, value);
+        set => SetAndRaise(CanDropProperty, ref _canDrop, value);
     }
 
     /// <inheritdoc/>

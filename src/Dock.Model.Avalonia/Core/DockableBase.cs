@@ -111,6 +111,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _canFloat = true;
+    private bool _canDrag = true;
+    private bool _canDrop = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -228,6 +230,24 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canFloat;
         set => SetAndRaise(CanFloatProperty, ref _canFloat, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanDrag")]
+    public bool CanDrag
+    {
+        get => _canDrag;
+        set => SetAndRaise(CanFloatProperty, ref _canDrag, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanDrop")]
+    public bool CanDrop
+    {
+        get => _canDrop;
+        set => SetAndRaise(CanFloatProperty, ref _canDrop, value);
     }
 
     /// <inheritdoc/>

@@ -71,6 +71,16 @@ public interface IDockable : IControlRecyclingIdProvider
     bool CanFloat { get; set; }
 
     /// <summary>
+    /// Gets or sets if the dockable can be dragged.
+    /// </summary>
+    bool CanDrag { get; set; }
+
+    /// <summary>
+    /// Gets or sets if the dockable can be dropped on.
+    /// </summary>
+    bool CanDrop { get; set; }
+
+    /// <summary>
     /// Called when the dockable is closed.
     /// </summary>
     /// <returns>true to accept the close, and false to cancel the close.</returns>

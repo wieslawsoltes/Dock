@@ -26,6 +26,8 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _canClose = true;
         _canPin = true;
         _canFloat = true;
+        _canDrag = true;
+        _canDrop = true;
         _trackingAdapter = new TrackingAdapter();
     }
 
@@ -71,11 +73,19 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CanFloat { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanPin { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial bool CanFloat { get; set; }
+    public partial bool CanDrag { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CanDrop { get; set; }
 
     /// <inheritdoc/>
     public string? GetControlRecyclingId() => _id;

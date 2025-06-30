@@ -202,6 +202,12 @@ internal class DockControlState : IDockControlState
                     {
                         break;
                     }
+                    
+                    if (dragControl.DataContext is IDockable { CanDrag: false })
+                    {
+                        break;
+                    }
+
                     _state.Start(dragControl, point);
                     activeDockControl.IsDraggingDock = true;
                 }
@@ -211,15 +217,9 @@ internal class DockControlState : IDockControlState
             {
                 if (_state.DoDragDrop)
                 {
-                    if (_state.DropControl is { } && _state.TargetDockControl is { })
+                    if (_state.DropControl is { } dropControl && _state.TargetDockControl is { })
                     {
-                        var isDropEnabled = true;
-
-                        if (_state.TargetDockControl is Control targetControl)
-                        {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
-                        }
-
+                        var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
                             Drop(_state.TargetPoint, dragAction, _state.TargetDockControl);
@@ -293,13 +293,7 @@ internal class DockControlState : IDockControlState
 
                     if (dropControl is { } && targetDockControl is { })
                     {
-                        var isDropEnabled = true;
-
-                        if (targetDockControl is Control targetControl)
-                        {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
-                        }
-
+                        var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
                             if (_state.DropControl == dropControl)

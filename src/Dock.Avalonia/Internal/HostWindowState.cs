@@ -186,6 +186,12 @@ internal class HostWindowState : IHostWindowState
                 {
                     break;
                 }
+  
+                if (_hostWindow.DataContext is IDockable { CanDrag: false })
+                {
+                    break;
+                }
+
                 _state.Start(point);
                 break;
             }
@@ -197,9 +203,9 @@ internal class HostWindowState : IHostWindowState
                     {
                         var isDropEnabled = true;
 
-                        if (_state.TargetDockControl is Control targetControl)
+                        if (_state.TargetDropControl is { } targetDropControl)
                         {
-                            isDropEnabled = targetControl.GetValue(DockProperties.IsDropEnabledProperty);
+                            isDropEnabled = targetDropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         }
 
                         if (isDropEnabled)
@@ -252,7 +258,7 @@ internal class HostWindowState : IHostWindowState
                     var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                     if (dropControl is { })
                     {
-                        var isDropEnabled = dockControl.GetValue(DockProperties.IsDropEnabledProperty);
+                        var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (!isDropEnabled)
                         {
                             Leave();

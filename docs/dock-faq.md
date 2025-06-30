@@ -135,6 +135,11 @@ from `Dock.Settings`:
 </Window>
 ```
 
+The default templates bind these attached properties to the `CanDrag` and `CanDrop`
+properties of each dockable. In most cases you simply toggle the boolean
+properties on your view models and let the templates update `DockProperties` for
+you.
+
 Dockables may still be floated programmatically unless their `CanFloat` property
 is set to `false`.
 

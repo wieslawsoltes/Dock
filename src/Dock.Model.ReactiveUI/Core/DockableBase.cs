@@ -73,11 +73,11 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial bool CanFloat { get; set; }
+    public partial bool CanPin { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial bool CanPin { get; set; }
+    public partial bool CanFloat { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

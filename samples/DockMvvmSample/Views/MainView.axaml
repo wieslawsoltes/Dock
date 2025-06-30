@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ids="using:Dock.Settings"
              xmlns:dm="using:Dock.Model.Core"
              xmlns:dmc="using:Dock.Model.Controls"
              xmlns:vm="using:DockMvvmSample.ViewModels"
@@ -26,23 +25,6 @@
         <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}" />
         <Separator />
         <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}" />
-      </MenuItem>
-      <MenuItem Header="_Options">
-        <MenuItem x:Name="OptionsIsDragEnabled" Header="Enable Drag">
-          <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(ids:DockProperties.IsDragEnabled)}"
-                      BorderThickness="0"
-                      IsHitTestVisible="False" />
-          </MenuItem.Icon>
-        </MenuItem>
-        <Separator />
-        <MenuItem x:Name="OptionsIsDropEnabled" Header="Enable Drop">
-          <MenuItem.Icon>
-            <CheckBox IsChecked="{Binding $parent[Window].(ids:DockProperties.IsDropEnabled)}"
-                      BorderThickness="0"
-                      IsHitTestVisible="False" />
-          </MenuItem.Icon>
-        </MenuItem>
       </MenuItem>
     </Menu>
     <Panel x:Name="ToolBar" DataContext="{Binding Layout}" Grid.Row="0" Grid.Column="1">

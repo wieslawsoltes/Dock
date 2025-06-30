@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:ids="using:Dock.Settings"
         xmlns:vm="using:Notepad.ViewModels"
         xmlns:views="using:Notepad.Views"
         mc:Ignorable="d"
@@ -17,8 +16,7 @@
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Notepad" Height="600" Width="900"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="PreferSystemChrome"
-        ids:DockProperties.IsDragEnabled="True" ids:DockProperties.IsDropEnabled="True">
+        ExtendClientAreaChromeHints="PreferSystemChrome">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

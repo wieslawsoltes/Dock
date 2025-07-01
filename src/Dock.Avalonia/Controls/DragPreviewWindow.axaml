@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     x:CompileBindings="True">
-  <ControlTheme x:Key="{x:Type DragPreviewWindow}" TargetType="DragPreviewWindow">
+  <ControlTheme x:Key="{x:Type DragPreviewWindow}" TargetType="DragPreviewWindow"
+                BasedOn="{StaticResource {x:Type Window}}">
     <Setter Property="SystemDecorations" Value="None" />
     <Setter Property="ShowInTaskbar" Value="False" />
     <Setter Property="CanResize" Value="False" />
@@ -10,10 +11,5 @@
     <Setter Property="TransparencyLevelHint" Value="Transparent" />
     <Setter Property="SizeToContent" Value="WidthAndHeight" />
     <Setter Property="Topmost" Value="True" />
-    <Setter Property="Template">
-      <ControlTemplate>
-        <ContentPresenter />
-      </ControlTemplate>
-    </Setter>
   </ControlTheme>
 </ResourceDictionary>

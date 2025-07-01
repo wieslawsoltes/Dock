@@ -7,6 +7,7 @@
         <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
                 Padding="4" CornerRadius="4">
           <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+            <Image Source="{TemplateBinding Preview}" Height="32" Stretch="Uniform" />
             <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Center" />
             <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
               <Path x:Name="PART_StatusIcon" />

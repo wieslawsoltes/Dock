@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Avalonia.Controls;
+using Avalonia.Media.Imaging;
 
 namespace Dock.Avalonia.Internal;
 
@@ -9,14 +10,38 @@ internal class DragPreviewHelper
     private Window? _window;
     private DragPreviewControl? _control;
 
-    public void Show(string title, PixelPoint position)
+    private static IBitmap? Capture(Visual visual)
+    {
+        if (visual.VisualRoot is null)
+        {
+            return null;
+        }
+
+        var width = (int)visual.Bounds.Width;
+        var height = (int)visual.Bounds.Height;
+
+        if (width <= 0 || height <= 0)
+        {
+            return null;
+        }
+
+        var size = new PixelSize(width, height);
+        var bitmap = new RenderTargetBitmap(size);
+        bitmap.Render(visual);
+        return bitmap;
+    }
+
+    public void Show(Visual preview, string title, PixelPoint position)
     {
         Hide();
+
+        var bitmap = Capture(preview);
 
         _control = new DragPreviewControl
         {
             Title = title,
-            Status = string.Empty
+            Status = string.Empty,
+            Preview = bitmap
         };
 
         _window = new Window

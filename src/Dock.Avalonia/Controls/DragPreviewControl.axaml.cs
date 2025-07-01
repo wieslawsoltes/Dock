@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Media.Imaging;
 
 namespace Dock.Avalonia.Controls;
 
@@ -23,6 +24,12 @@ public class DragPreviewControl : TemplatedControl
         AvaloniaProperty.Register<DragPreviewControl, string>(nameof(Status));
 
     /// <summary>
+    /// Defines <see cref="Preview"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IBitmap?> PreviewProperty =
+        AvaloniaProperty.Register<DragPreviewControl, IBitmap?>(nameof(Preview));
+
+    /// <summary>
     /// Gets or sets the preview title.
     /// </summary>
     public string Title
@@ -38,6 +45,15 @@ public class DragPreviewControl : TemplatedControl
     {
         get => GetValue(StatusProperty);
         set => SetValue(StatusProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the visual preview image.
+    /// </summary>
+    public IBitmap? Preview
+    {
+        get => GetValue(PreviewProperty);
+        set => SetValue(PreviewProperty, value);
     }
 }
 

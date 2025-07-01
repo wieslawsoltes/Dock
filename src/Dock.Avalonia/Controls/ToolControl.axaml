@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     x:DataType="dmc:IToolDock"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -30,6 +31,13 @@
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True" />
           <Border x:Name="PART_Border">
+            <Border.Clip>
+              <MultiBinding Converter="{x:Static converters:ToolControlClipConverter.Instance}">
+                <Binding ElementName="PART_Border" />
+                <Binding ElementName="PART_TabStrip" />
+                <Binding ElementName="PART_TabStrip" Path="SelectedItem" />
+              </MultiBinding>
+            </Border.Clip>
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"

@@ -8,7 +8,8 @@
           <Border x:Name="PART_Border"
                   Background="{DynamicResource DockApplicationAccentBrushLow}"
                   BorderBrush="{DynamicResource DockApplicationAccentBrushHigh}"
-                  BorderThickness="1">
+                  BorderThickness="1"
+                  Panel.ZIndex="1">
             <TextBlock Text="{TemplateBinding Title}" Margin="4" />
           </Border>
         </Canvas>

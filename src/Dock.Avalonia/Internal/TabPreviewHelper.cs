@@ -28,6 +28,7 @@ internal class TabPreviewHelper
             [AdornerLayer.AdornedElementProperty] = visual,
             IsHitTestVisible = false
         };
+        Panel.SetZIndex(Preview, int.MaxValue);
 
         ((ISetLogicalParent)Preview).SetParent(visual as ILogical);
         layer.Children.Add(Preview);

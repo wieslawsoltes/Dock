@@ -68,6 +68,8 @@ Install-Package Dock.Model.Mvvm -Pre
 * [Documentation index](docs/README.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project.
+* Tab strips display a preview item while dragging dockables to show the
+  insertion point.
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

@@ -353,14 +353,12 @@ public class ProportionalStackPanel : Panel
     /// <inheritdoc/>
     protected override Size ArrangeOverride(Size arrangeSize)
     {
-        var left = 0.0;
-        var top = 0.0;
-        var right = 0.0;
-        var bottom = 0.0;
+        var horizontal = Orientation == Orientation.Horizontal;
+
+        var offset = 0.0;
 
         // Arrange each of the Children
         var splitterThickness = GetTotalSplitterThickness(Children);
-        var index = 0;
 
         AssignProportions();
 
@@ -376,81 +374,41 @@ public class ProportionalStackPanel : Panel
             var isCollapsed = !isSplitter && GetIsCollapsed(control);
             if (isCollapsed)
             {
-                var rect = new Rect();
-                control.Arrange(rect);
-                index++;
+                control.Arrange(new Rect());
                 continue;
             }
 
-            if (!isSplitter)
-                needsNextSplitter = true;
-            else if (isSplitter && !needsNextSplitter)
+            if (isSplitter && !needsNextSplitter)
             {
-                var rect = new Rect();
-                control.Arrange(rect);
-                index++;
-                needsNextSplitter = false;
+                control.Arrange(new Rect());
                 continue;
             }
 
-            // Determine the remaining space left to arrange the element
-            var remainingRect = new Rect(
-                left,
-                top,
-                Math.Max(0.0, arrangeSize.Width - left - right),
-                Math.Max(0.0, arrangeSize.Height - top - bottom));
+            Rect rect;
 
-            // Trim the remaining Rect to the docked size of the element
-            // (unless the element should fill the remaining space because
-            // of LastChildFill)
-            if (index < Children.Count)
+            if (horizontal)
             {
-                var desiredSize = control.DesiredSize;
-                var proportion = GetProportion(control);
+                var width = isSplitter
+                    ? control.DesiredSize.Width
+                    : CalculateDimension(arrangeSize.Width - splitterThickness, GetProportion(control),
+                        ref sumOfFractions);
 
-                switch (Orientation)
-                {
-                    case Orientation.Horizontal:
-                    {
-                        if (isSplitter)
-                        {
-                            left += desiredSize.Width;
-                            remainingRect = remainingRect.WithWidth(desiredSize.Width);
-                        }
-                        else
-                        {
-                            Debug.Assert(!double.IsNaN(proportion));
-                            var width = CalculateDimension(arrangeSize.Width - splitterThickness, proportion,
-                                ref sumOfFractions);
-                            remainingRect = remainingRect.WithWidth(width);
-                            left += width;
-                        }
+                rect = new Rect(offset, 0, width, arrangeSize.Height);
+                offset += width;
+            }
+            else
+            {
+                var height = isSplitter
+                    ? control.DesiredSize.Height
+                    : CalculateDimension(arrangeSize.Height - splitterThickness, GetProportion(control),
+                        ref sumOfFractions);
 
-                        break;
-                    }
-                    case Orientation.Vertical:
-                    {
-                        if (isSplitter)
-                        {
-                            top += desiredSize.Height;
-                            remainingRect = remainingRect.WithHeight(desiredSize.Height);
-                        }
-                        else
-                        {
-                            Debug.Assert(!double.IsNaN(proportion));
-                            var height = CalculateDimension(arrangeSize.Height - splitterThickness, proportion,
-                                ref sumOfFractions);
-                            remainingRect = remainingRect.WithHeight(height);
-                            top += height;
-                        }
-
-                        break;
-                    }
-                }
+                rect = new Rect(0, offset, arrangeSize.Width, height);
+                offset += height;
             }
 
-            control.Arrange(remainingRect);
-            index++;
+            control.Arrange(rect);
+            needsNextSplitter = !isSplitter;
         }
 
         return arrangeSize;

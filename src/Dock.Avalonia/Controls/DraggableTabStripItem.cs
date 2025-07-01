@@ -21,7 +21,6 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
 {
     private bool _enableDrag;
     private bool _dragStarted;
-    private bool _detached;
     private bool _captured;
     private Point _start;
     private int _draggedIndex;
@@ -66,7 +65,6 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
         {
             _enableDrag = true;
             _dragStarted = false;
-            _detached = false;
             _start = e.GetPosition(tabStrip);
             _draggedIndex = -1;
             _targetIndex = -1;
@@ -111,7 +109,7 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
             }
         }
 
-        if (_dragStarted && !_detached && _draggedIndex >= 0 && _targetIndex >= 0 && _draggedIndex != _targetIndex)
+        if (_dragStarted && _draggedIndex >= 0 && _targetIndex >= 0 && _draggedIndex != _targetIndex)
         {
             MoveDockable(_draggedIndex, _targetIndex);
         }
@@ -166,14 +164,9 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
             }
         }
 
-        if (!_detached && !_tabStrip.Bounds.Contains(position) &&
+        if (!_tabStrip.Bounds.Contains(position) &&
             (Math.Abs(delta) > DockSettings.FloatDragDistance || Math.Abs(_start.Y - position.Y) > DockSettings.FloatDragDistance))
         {
-            if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable)
-            {
-                factory.FloatDockable(dockable);
-                _detached = true;
-            }
             return;
         }
 

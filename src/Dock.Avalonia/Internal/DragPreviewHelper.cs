@@ -26,6 +26,7 @@ internal class DragPreviewHelper
             CanResize = false,
             ShowActivated = false,
             Background = null,
+            TransparencyLevelHint = [WindowTransparencyLevel.Transparent],
             SizeToContent = SizeToContent.WidthAndHeight,
             Content = _control,
             Topmost = true,

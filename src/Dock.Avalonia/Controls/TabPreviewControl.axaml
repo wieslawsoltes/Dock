@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+  <ControlTheme x:Key="{x:Type TabPreviewControl}" TargetType="TabPreviewControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Canvas>
+          <Border x:Name="PART_Border"
+                  Background="{DynamicResource DockApplicationAccentBrushLow}"
+                  BorderBrush="{DynamicResource DockApplicationAccentBrushHigh}"
+                  BorderThickness="1">
+            <TextBlock Text="{TemplateBinding Title}" Margin="4" />
+          </Border>
+        </Canvas>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

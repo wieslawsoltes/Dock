@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -52,6 +54,7 @@ internal class DockControlState : IDockControlState
     private readonly AdornerHelper _adornerHelper = new();
     private readonly DockDragState _state = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
+    private readonly TabPreviewHelper _tabPreviewHelper = new();
 
     /// <inheritdoc/>
     public IDockManager DockManager { get; set; }
@@ -64,9 +67,17 @@ internal class DockControlState : IDockControlState
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.DropControl is { } control)
         {
-            _adornerHelper.AddAdorner(control);
+            if (control.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                _adornerHelper.AddAdorner(control);
+            }
+
+            if (control is TabStrip tabStrip && isValid)
+            {
+                _tabPreviewHelper.AddAdorner(tabStrip);
+            }
         }
     }
 
@@ -91,9 +102,17 @@ internal class DockControlState : IDockControlState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.DropControl is { } control)
         {
-            _adornerHelper.RemoveAdorner(control);
+            if (control.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                _adornerHelper.RemoveAdorner(control);
+            }
+
+            if (control is TabStrip)
+            {
+                _tabPreviewHelper.RemoveAdorner();
+            }
         }
 
         Execute(point, operation, dragAction, relativeTo);
@@ -101,9 +120,17 @@ internal class DockControlState : IDockControlState
 
     private void Leave()
     {
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (_state.DropControl is { } control)
         {
-            _adornerHelper.RemoveAdorner(control);
+            if (control.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                _adornerHelper.RemoveAdorner(control);
+            }
+
+            if (control is TabStrip)
+            {
+                _tabPreviewHelper.RemoveAdorner();
+            }
         }
     }
 
@@ -182,6 +209,48 @@ internal class DockControlState : IDockControlState
         factory.FloatDockable(dockable);
     }
 
+    private static int GetInsertIndex(TabStrip tabStrip, Point point)
+    {
+        for (int i = 0; i < tabStrip.ItemCount; i++)
+        {
+            if (tabStrip.ItemContainerGenerator.ContainerFromIndex(i) is Control c)
+            {
+                var p = point - c.Bounds.Position;
+                if (p.X <= c.Bounds.Width / 2)
+                    return i;
+                if (p.X <= c.Bounds.Width)
+                    return i + 1;
+            }
+        }
+        return tabStrip.ItemCount;
+    }
+
+    private static Rect GetPreviewRect(TabStrip tabStrip, int index)
+    {
+        if (tabStrip.ItemCount == 0)
+            return new Rect(0, 0, 80, 24);
+
+        if (index < 0)
+            index = 0;
+        else if (index > tabStrip.ItemCount)
+            index = tabStrip.ItemCount;
+
+        if (index < tabStrip.ItemCount)
+        {
+            if (tabStrip.ItemContainerGenerator.ContainerFromIndex(index) is Control c)
+            {
+                return new Rect(c.Bounds.Position, c.Bounds.Size);
+            }
+        }
+
+        if (tabStrip.ItemContainerGenerator.ContainerFromIndex(tabStrip.ItemCount - 1) is Control last)
+        {
+            return new Rect(last.Bounds.Right, last.Bounds.Top, last.Bounds.Width, last.Bounds.Height);
+        }
+
+        return new Rect(0, 0, 80, 24);
+    }
+
     /// <summary>
     /// Process pointer event.
     /// </summary>
@@ -245,6 +314,7 @@ internal class DockControlState : IDockControlState
                 }
 
                 _dragPreviewHelper.Hide();
+                _tabPreviewHelper.RemoveAdorner();
 
                 Leave();
                 _state.End();
@@ -348,6 +418,19 @@ internal class DockControlState : IDockControlState
                             preview = valid
                                 ? operation == DockOperation.Window ? "Float" : "Dock"
                                 : "None";
+
+                            if (dropControl is TabStrip tabStrip && _state.DragControl?.DataContext is IDockable dragDockable)
+                            {
+                                var tp = tabStrip.PointToClient(screenPoint);
+                                int index = GetInsertIndex(tabStrip, tp);
+                                var rect = GetPreviewRect(tabStrip, index);
+                                _tabPreviewHelper.AddAdorner(tabStrip);
+                                _tabPreviewHelper.Move(rect, dragDockable.Title ?? string.Empty);
+                            }
+                            else
+                            {
+                                _tabPreviewHelper.RemoveAdorner();
+                            }
                         }
                         else
                         {
@@ -359,6 +442,7 @@ internal class DockControlState : IDockControlState
                                 _state.TargetDockControl = null;
                             }
                             preview = "Float";
+                            _tabPreviewHelper.RemoveAdorner();
                         }
                     }
                     else
@@ -368,6 +452,7 @@ internal class DockControlState : IDockControlState
                         _state.TargetPoint = default;
                         _state.TargetDockControl = null;
                         preview = "Float";
+                        _tabPreviewHelper.RemoveAdorner();
                     }
 
                     _dragPreviewHelper.Move(screenPoint, preview);
@@ -385,6 +470,7 @@ internal class DockControlState : IDockControlState
             case EventType.CaptureLost:
             {
                 _dragPreviewHelper.Hide();
+                _tabPreviewHelper.RemoveAdorner();
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;

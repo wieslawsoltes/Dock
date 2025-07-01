@@ -4,12 +4,12 @@ using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
-internal static class DragPreviewHelper
+internal class DragPreviewHelper
 {
-    private static Window? _window;
-    private static DragPreviewControl? _control;
+    private Window? _window;
+    private DragPreviewControl? _control;
 
-    public static void Show(string title, PixelPoint position)
+    public void Show(string title, PixelPoint position)
     {
         Hide();
 
@@ -35,7 +35,7 @@ internal static class DragPreviewHelper
         _window.Show();
     }
 
-    public static void Move(PixelPoint position, string status)
+    public void Move(PixelPoint position, string status)
     {
         if (_window is { } && _control is { })
         {
@@ -44,7 +44,7 @@ internal static class DragPreviewHelper
         }
     }
 
-    public static void Hide()
+    public void Hide()
     {
         if (_window is { })
         {

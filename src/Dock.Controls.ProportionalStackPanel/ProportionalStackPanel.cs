@@ -3,11 +3,13 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
 
-namespace Avalonia.Controls;
+namespace Dock.Controls.ProportionalStackPanel;
 
 /// <summary>
 /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.
@@ -98,7 +100,7 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private static void AssignProportionsInternal(global::Avalonia.Controls.Controls children)
+    private static void AssignProportionsInternal(Avalonia.Controls.Controls children)
     {
         var assignedProportion = 0.0;
         var unassignedProportions = 0;
@@ -189,7 +191,7 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private double GetTotalSplitterThickness(global::Avalonia.Controls.Controls children)
+    private double GetTotalSplitterThickness(Avalonia.Controls.Controls children)
     {
         var previousisCollapsed = false;
         var totalThickness = 0.0;
@@ -210,8 +212,8 @@ public class ProportionalStackPanel : Panel
                 if (i + 1 < Children.Count)
                 {
                     var nextControl = Children[i + 1];
-                    var nextisCollapsed = GetIsCollapsed(nextControl);
-                    if (nextisCollapsed)
+                    var nextIsCollapsed = GetIsCollapsed(nextControl);
+                    if (nextIsCollapsed)
                     {
                         continue;
                     }
@@ -519,7 +521,7 @@ public class ProportionalStackPanel : Panel
         AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
         AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
 
-        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
+        ProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
         {
             if (sender.GetVisualParent() is not ProportionalStackPanel parent)
                 return;

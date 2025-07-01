@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <Nullable>enable</Nullable>
-    <RootNamespace>Avalonia.Controls.ProportionalStackPanel</RootNamespace>
+    <RootNamespace>Dock.Controls.ProportionalStackPanel</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>

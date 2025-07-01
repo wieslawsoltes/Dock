@@ -28,29 +28,33 @@ internal class DragPreviewHelper
             Background = null,
             SizeToContent = SizeToContent.WidthAndHeight,
             Content = _control,
-            Topmost = true
+            Topmost = true,
+            Position = position
         };
 
-        _window.Position = position;
         _window.Show();
     }
 
     public void Move(PixelPoint position, string status)
     {
-        if (_window is { } && _control is { })
+        if (_window is null || _control is null)
         {
-            _control.Status = status;
-            _window.Position = position;
+            return;
         }
+
+        _control.Status = status;
+        _window.Position = position;
     }
 
     public void Hide()
     {
-        if (_window is { })
+        if (_window is null)
         {
-            _window.Close();
-            _window = null;
-            _control = null;
+            return;
         }
+ 
+        _window.Close();
+        _window = null;
+        _control = null;
     }
 }

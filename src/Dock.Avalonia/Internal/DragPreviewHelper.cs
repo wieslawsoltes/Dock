@@ -6,7 +6,7 @@ namespace Dock.Avalonia.Internal;
 
 internal class DragPreviewHelper
 {
-    private Window? _window;
+    private DragPreviewWindow? _window;
     private DragPreviewControl? _control;
 
     public void Show(string title, PixelPoint position)
@@ -19,17 +19,9 @@ internal class DragPreviewHelper
             Status = string.Empty
         };
 
-        _window = new Window
+        _window = new DragPreviewWindow
         {
-            SystemDecorations = SystemDecorations.None,
-            ShowInTaskbar = false,
-            CanResize = false,
-            ShowActivated = false,
-            Background = null,
-            TransparencyLevelHint = [WindowTransparencyLevel.Transparent],
-            SizeToContent = SizeToContent.WidthAndHeight,
             Content = _control,
-            Topmost = true,
             Position = position
         };
 

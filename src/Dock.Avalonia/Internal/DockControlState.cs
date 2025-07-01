@@ -226,6 +226,7 @@ internal class DockControlState : IDockControlState
                         }
                     }
                 }
+                DragPreviewHelper.Hide();
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;
@@ -247,6 +248,8 @@ internal class DockControlState : IDockControlState
                         if (_state.DragControl?.DataContext is IDockable targetDockable)
                         {
                             DockHelpers.ShowWindows(targetDockable);
+                            var sp = inputActiveDockControl.PointToScreen(point);
+                            DragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
                         }
                         _state.DoDragDrop = true;
                     }
@@ -258,13 +261,15 @@ internal class DockControlState : IDockControlState
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
 
+                    var screenPoint = inputActiveDockControl.PointToScreen(point);
+                    DragPreviewHelper.Move(screenPoint);
+
                     foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {
                             continue;
                         }
-                        var screenPoint = inputActiveDockControl.PointToScreen(point);
 
                         if (inputDockControl.GetVisualRoot() is null)
                         {
@@ -347,6 +352,7 @@ internal class DockControlState : IDockControlState
             }
             case EventType.CaptureLost:
             {
+                DragPreviewHelper.Hide();
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;

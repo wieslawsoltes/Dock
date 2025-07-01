@@ -262,7 +262,7 @@ internal class DockControlState : IDockControlState
                     Control? dropControl = null;
 
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
-                    DragPreviewHelper.Move(screenPoint);
+                    string preview = "None";
 
                     foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
@@ -320,6 +320,17 @@ internal class DockControlState : IDockControlState
                                 _state.TargetDockControl = targetDockControl;
                                 Enter(targetPoint, dragAction, targetDockControl);
                             }
+
+                            var operation = DockOperation.Window;
+                            if (_adornerHelper.Adorner is DockTarget target)
+                            {
+                                operation = target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate);
+                            }
+
+                            var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
+                            preview = valid
+                                ? operation == DockOperation.Window ? "Float" : "Dock"
+                                : "None";
                         }
                         else
                         {
@@ -330,6 +341,7 @@ internal class DockControlState : IDockControlState
                                 _state.TargetPoint = default;
                                 _state.TargetDockControl = null;
                             }
+                            preview = "None";
                         }
                     }
                     else
@@ -338,7 +350,10 @@ internal class DockControlState : IDockControlState
                         _state.DropControl = null;
                         _state.TargetPoint = default;
                         _state.TargetDockControl = null;
+                        preview = "None";
                     }
+
+                    DragPreviewHelper.Move(screenPoint, preview);
                 }
                 break;
             }

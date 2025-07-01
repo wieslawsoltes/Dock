@@ -1,34 +1,33 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
+using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
 internal static class DragPreviewHelper
 {
     private static Window? _window;
+    private static DragPreviewControl? _control;
 
     public static void Show(string title, PixelPoint position)
     {
         Hide();
 
-        var border = new Border
+        _control = new DragPreviewControl
         {
-            Background = Brushes.Gray,
-            Padding = new Thickness(4,2),
-            Child = new TextBlock { Text = title, Foreground = Brushes.White }
+            Title = title,
+            Status = string.Empty
         };
 
         _window = new Window
         {
-            Width = 120,
-            Height = 30,
             SystemDecorations = SystemDecorations.None,
             ShowInTaskbar = false,
             CanResize = false,
             ShowActivated = false,
             Background = null,
-            Content = border,
+            SizeToContent = SizeToContent.WidthAndHeight,
+            Content = _control,
             Topmost = true
         };
 
@@ -36,10 +35,11 @@ internal static class DragPreviewHelper
         _window.Show();
     }
 
-    public static void Move(PixelPoint position)
+    public static void Move(PixelPoint position, string status)
     {
-        if (_window is { })
+        if (_window is { } && _control is { })
         {
+            _control.Status = status;
             _window.Position = position;
         }
     }
@@ -50,6 +50,7 @@ internal static class DragPreviewHelper
         {
             _window.Close();
             _window = null;
+            _control = null;
         }
     }
 }

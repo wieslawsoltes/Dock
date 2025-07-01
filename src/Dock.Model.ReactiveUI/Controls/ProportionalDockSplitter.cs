@@ -3,7 +3,6 @@
 using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
-using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -13,13 +12,15 @@ namespace Dock.Model.ReactiveUI.Controls;
 [DataContract(IsReference = true)]
 public partial class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
 {
-    private bool _canResize = true;
-
+    /// <summary>
+    /// Initializes new instance of the <see cref="ProportionalDockSplitter"/> class.
+    /// </summary>
+    public ProportionalDockSplitter()
+    {
+        _canResize = true;
+    }
+    
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool CanResize
-    {
-        get => _canResize;
-        set => this.RaiseAndSetIfChanged(ref _canResize, value);
-    }
+    public partial bool CanResize { get; set; }
 }

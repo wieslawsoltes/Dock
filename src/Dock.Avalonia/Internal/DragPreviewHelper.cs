@@ -32,7 +32,15 @@ internal class DragPreviewHelper
         };
 
         var screen = _window.Screens.ScreenFromPoint(position);
-        _window.Position = position;
+        if (screen is { })
+        {
+            var offset = position - screen.Bounds.Position;
+            _window.Position = offset;
+        }
+        else
+        {
+            _window.Position = position;
+        }
 
         _window.Show();
     }
@@ -46,7 +54,15 @@ internal class DragPreviewHelper
 
         _control.Status = status;
         var screen = _window.Screens.ScreenFromPoint(position);
-        _window.Position = position;
+        if (screen is { })
+        {
+            var offset = position - screen.Bounds.Position;
+            _window.Position = offset;
+        }
+        else
+        {
+            _window.Position = position;
+        }
     }
 
     public void Hide()

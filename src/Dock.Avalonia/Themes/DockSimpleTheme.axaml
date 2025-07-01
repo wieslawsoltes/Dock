@@ -27,6 +27,7 @@
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewControl.axaml" />
+        <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
         <ResourceInclude Source="/Themes/Accents/Simple.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

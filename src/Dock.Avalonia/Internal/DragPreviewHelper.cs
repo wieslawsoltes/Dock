@@ -28,9 +28,11 @@ internal class DragPreviewHelper
             Background = null,
             SizeToContent = SizeToContent.WidthAndHeight,
             Content = _control,
-            Topmost = true,
-            Position = position
+            Topmost = true
         };
+
+        var screen = _window.Screens.ScreenFromPoint(position);
+        _window.Position = position;
 
         _window.Show();
     }
@@ -43,6 +45,7 @@ internal class DragPreviewHelper
         }
 
         _control.Status = status;
+        var screen = _window.Screens.ScreenFromPoint(position);
         _window.Position = position;
     }
 

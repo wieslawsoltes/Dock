@@ -149,7 +149,11 @@ public class ProportionalStackPanel : Panel
 
         if (assignedProportion < 1)
         {
-            var numChildren = (double)children.Count(c => !ProportionalStackPanelSplitter.IsSplitter(c, out _));
+            var numChildren = (double)children.Count(c =>
+            {
+                var isCollapsed = GetIsCollapsed(c);
+                return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
+            });
 
             var toAdd = (1.0 - assignedProportion) / numChildren;
 
@@ -165,7 +169,11 @@ public class ProportionalStackPanel : Panel
         }
         else if (assignedProportion > 1)
         {
-            var numChildren = (double)children.Count(c => !ProportionalStackPanelSplitter.IsSplitter(c, out _));
+            var numChildren = (double)children.Count(c =>
+            {
+                var isCollapsed = GetIsCollapsed(c);
+                return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
+            });
 
             var toRemove = (assignedProportion - 1.0) / numChildren;
 

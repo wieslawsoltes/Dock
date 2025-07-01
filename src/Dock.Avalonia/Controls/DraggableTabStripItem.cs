@@ -300,6 +300,10 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
         if (!ReferenceEquals(target, dockable))
         {
             factory.MoveDockable(owner, owner, dockable, target);
+            if (_tabStrip is SelectingItemsControl selecting)
+            {
+                selecting.SelectedIndex = targetIndex;
+            }
         }
     }
 

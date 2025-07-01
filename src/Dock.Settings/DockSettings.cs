@@ -17,4 +17,9 @@ public static class DockSettings
     /// Minimum vertical drag distance to initiate drag operation.
     /// </summary>
     public static double MinimumVerticalDragDistance = 4;
+
+    /// <summary>
+    /// Additional drag distance required to float a dockable.
+    /// </summary>
+    public static double FloatDragDistance = 24;
 }

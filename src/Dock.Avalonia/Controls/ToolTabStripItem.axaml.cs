@@ -9,6 +9,7 @@ using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Settings;
+using System.Linq;
 
 namespace Dock.Avalonia.Controls;
 
@@ -74,7 +75,13 @@ public class ToolTabStripItem : TabStripItem
                 if (this.FindAncestorOfType<ToolTabStrip>() is { } tabStrip)
                 {
                     var pt = e.GetPosition(tabStrip);
-                    if (!tabStrip.Bounds.Contains(pt))
+
+                    if (tabStrip.Bounds.Contains(pt))
+                    {
+                        ReorderDockable(tabStrip, pt);
+                    }
+                    else if (Math.Abs(diff.X) > DockSettings.FloatDragDistance ||
+                             Math.Abs(diff.Y) > DockSettings.FloatDragDistance)
                     {
                         if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable)
                         {
@@ -83,6 +90,48 @@ public class ToolTabStripItem : TabStripItem
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void ReorderDockable(TabStrip tabStrip, Point pointer)
+    {
+        if (DataContext is not IDockable { Owner: IDock { Factory: { } factory } owner } dockable)
+        {
+            return;
+        }
+
+        if (owner.VisibleDockables is not { } list)
+        {
+            return;
+        }
+
+        var from = list.IndexOf(dockable);
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (tabStrip.ItemContainerGenerator.ContainerFromIndex(i) is not TabStripItem container)
+            {
+                continue;
+            }
+
+            var bounds = container.Bounds;
+            var mid = bounds.X + bounds.Width / 2;
+            if (pointer.X < mid)
+            {
+                if (i != from && list[i] is IDockable target)
+                {
+                    factory.MoveDockable(owner, owner, dockable, target);
+                }
+                return;
+            }
+        }
+
+        if (list.Count > 0 && from != list.Count - 1)
+        {
+            var last = list[list.Count - 1] as IDockable;
+            if (last is not null)
+            {
+                factory.MoveDockable(owner, owner, dockable, last);
             }
         }
     }

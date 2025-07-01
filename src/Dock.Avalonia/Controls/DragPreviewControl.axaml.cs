@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media.Imaging;
+using Avalonia.Media;
 
 namespace Dock.Avalonia.Controls;
 
@@ -24,10 +24,16 @@ public class DragPreviewControl : TemplatedControl
         AvaloniaProperty.Register<DragPreviewControl, string>(nameof(Status));
 
     /// <summary>
-    /// Defines <see cref="Preview"/> property.
+    /// Defines <see cref="PreviewVisual"/> property.
     /// </summary>
-    public static readonly StyledProperty<IBitmap?> PreviewProperty =
-        AvaloniaProperty.Register<DragPreviewControl, IBitmap?>(nameof(Preview));
+    public static readonly StyledProperty<Visual?> PreviewVisualProperty =
+        AvaloniaProperty.Register<DragPreviewControl, Visual?>(nameof(PreviewVisual));
+
+    /// <summary>
+    /// Defines <see cref="PreviewHeight"/> property.
+    /// </summary>
+    public static readonly StyledProperty<double> PreviewHeightProperty =
+        AvaloniaProperty.Register<DragPreviewControl, double>(nameof(PreviewHeight), 32d);
 
     /// <summary>
     /// Gets or sets the preview title.
@@ -48,12 +54,21 @@ public class DragPreviewControl : TemplatedControl
     }
 
     /// <summary>
-    /// Gets or sets the visual preview image.
+    /// Gets or sets the visual used for live preview.
     /// </summary>
-    public IBitmap? Preview
+    public Visual? PreviewVisual
     {
-        get => GetValue(PreviewProperty);
-        set => SetValue(PreviewProperty, value);
+        get => GetValue(PreviewVisualProperty);
+        set => SetValue(PreviewVisualProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the height of the preview.
+    /// </summary>
+    public double PreviewHeight
+    {
+        get => GetValue(PreviewHeightProperty);
+        set => SetValue(PreviewHeightProperty, value);
     }
 }
 

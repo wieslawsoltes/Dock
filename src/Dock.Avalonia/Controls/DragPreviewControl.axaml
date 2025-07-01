@@ -1,0 +1,18 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:CompileBindings="True">
+  <ControlTheme x:Key="{x:Type DragPreviewControl}" TargetType="DragPreviewControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
+                Padding="4" CornerRadius="4">
+          <StackPanel>
+            <TextBlock Text="{TemplateBinding Title}"/>
+            <TextBlock Text="{TemplateBinding Status}" FontSize="10"/>
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>
+

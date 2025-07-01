@@ -243,6 +243,8 @@ internal class DockControlState : IDockControlState
                     }
                 }
 
+                DragPreviewHelper.Hide();
+
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;
@@ -264,6 +266,8 @@ internal class DockControlState : IDockControlState
                         if (_state.DragControl?.DataContext is IDockable targetDockable)
                         {
                             DockHelpers.ShowWindows(targetDockable);
+                            var sp = inputActiveDockControl.PointToScreen(point);
+                            DragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
                         }
                         _state.DoDragDrop = true;
                     }
@@ -275,13 +279,15 @@ internal class DockControlState : IDockControlState
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
 
+                    var screenPoint = inputActiveDockControl.PointToScreen(point);
+                    string preview = "None";
+
                     foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {
                             continue;
                         }
-                        var screenPoint = inputActiveDockControl.PointToScreen(point);
 
                         if (inputDockControl.GetVisualRoot() is null)
                         {
@@ -332,6 +338,17 @@ internal class DockControlState : IDockControlState
                                 _state.TargetDockControl = targetDockControl;
                                 Enter(targetPoint, dragAction, targetDockControl);
                             }
+
+                            var operation = DockOperation.Window;
+                            if (_adornerHelper.Adorner is DockTarget target)
+                            {
+                                operation = target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate);
+                            }
+
+                            var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
+                            preview = valid
+                                ? operation == DockOperation.Window ? "Float" : "Dock"
+                                : "None";
                         }
                         else
                         {
@@ -342,6 +359,7 @@ internal class DockControlState : IDockControlState
                                 _state.TargetPoint = default;
                                 _state.TargetDockControl = null;
                             }
+                            preview = "None";
                         }
                     }
                     else
@@ -350,7 +368,10 @@ internal class DockControlState : IDockControlState
                         _state.DropControl = null;
                         _state.TargetPoint = default;
                         _state.TargetDockControl = null;
+                        preview = "None";
                     }
+
+                    DragPreviewHelper.Move(screenPoint, preview);
                 }
                 break;
             }
@@ -364,6 +385,7 @@ internal class DockControlState : IDockControlState
             }
             case EventType.CaptureLost:
             {
+                DragPreviewHelper.Hide();
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;

@@ -25,7 +25,7 @@
               <ToolContentControl />
             </DataTemplate>
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
-              <ProportionalStackPanelSplitter />
+              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" />
             </DataTemplate>
             <DataTemplate DataType="dmc:IDocumentDock">
               <DocumentDockControl />

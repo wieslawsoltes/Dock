@@ -12,7 +12,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IProportionalDock` | A dock that lays out its children horizontally or vertically using a `Proportion` value. |
 | `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. |
 | `ITool` | Represents a tool pane. Tools can specify `MinWidth`, `MaxWidth`, `MinHeight` and `MaxHeight` to control their size. |
-| `IProportionalDockSplitter` | Thin splitter placed between proportional docks. |
+| `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` to enable or disable dragging. |
 | `IDockWindow` / `IHostWindow` | Interfaces representing floating windows created when dockables are detached. |
 
 ## Factory API

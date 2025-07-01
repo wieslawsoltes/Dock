@@ -60,6 +60,7 @@ public class FactoryTests
         var actual = factory.CreateProportionalDockSplitter();
         Assert.NotNull(actual);
         Assert.IsType<ProportionalDockSplitter>(actual);
+        Assert.True(actual.CanResize);
     }
 
     [Fact]

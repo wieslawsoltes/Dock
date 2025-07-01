@@ -23,6 +23,12 @@ public class ProportionalStackPanelSplitter : Thumb
         AvaloniaProperty.Register<ProportionalStackPanelSplitter, double>(nameof(Thickness), 4.0);
 
     /// <summary>
+    /// Defines the <see cref="IsResizingEnabled"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsResizingEnabledProperty =
+        AvaloniaProperty.Register<ProportionalStackPanelSplitter, bool>(nameof(IsResizingEnabled), true);
+
+    /// <summary>
     /// Defines the MinimumProportionSize attached property.
     /// </summary>
     public static readonly AttachedProperty<double> MinimumProportionSizeProperty =
@@ -58,6 +64,15 @@ public class ProportionalStackPanelSplitter : Thumb
         set => SetValue(ThicknessProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether resizing is enabled.
+    /// </summary>
+    public bool IsResizingEnabled
+    {
+        get => GetValue(IsResizingEnabledProperty);
+        set => SetValue(IsResizingEnabledProperty, value);
+    }
+
     private Point _startPoint;
     private bool _isMoving;
 
@@ -91,8 +106,8 @@ public class ProportionalStackPanelSplitter : Thumb
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         base.OnPointerPressed(e);
-        
-        if (GetPanel() is { } panel)
+
+        if (IsResizingEnabled && GetPanel() is { } panel)
         {
             var point = e.GetPosition(panel);
             _startPoint = point;
@@ -113,8 +128,8 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnPointerMoved(e);
 
-        if (_isMoving)
-        {  
+        if (_isMoving && IsResizingEnabled)
+        {
             if (GetPanel() is { } panel)
             {
                 var point = e.GetPosition(panel);

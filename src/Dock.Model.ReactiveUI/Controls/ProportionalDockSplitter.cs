@@ -12,4 +12,15 @@ namespace Dock.Model.ReactiveUI.Controls;
 [DataContract(IsReference = true)]
 public partial class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
 {
+    /// <summary>
+    /// Initializes new instance of the <see cref="ProportionalDockSplitter"/> class.
+    /// </summary>
+    public ProportionalDockSplitter()
+    {
+        _canResize = true;
+    }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CanResize { get; set; }
 }

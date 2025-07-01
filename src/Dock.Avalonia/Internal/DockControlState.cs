@@ -51,6 +51,7 @@ internal class DockControlState : IDockControlState
 {
     private readonly AdornerHelper _adornerHelper = new();
     private readonly DockDragState _state = new();
+    private readonly DragPreviewHelper _dragPreviewHelper = new();
 
     /// <inheritdoc/>
     public IDockManager DockManager { get; set; }
@@ -243,7 +244,7 @@ internal class DockControlState : IDockControlState
                     }
                 }
 
-                DragPreviewHelper.Hide();
+                _dragPreviewHelper.Hide();
 
                 Leave();
                 _state.End();
@@ -267,7 +268,7 @@ internal class DockControlState : IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
-                            DragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
+                            _dragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
                         }
                         _state.DoDragDrop = true;
                     }
@@ -371,7 +372,7 @@ internal class DockControlState : IDockControlState
                         preview = "None";
                     }
 
-                    DragPreviewHelper.Move(screenPoint, preview);
+                    _dragPreviewHelper.Move(screenPoint, preview);
                 }
                 break;
             }
@@ -385,7 +386,7 @@ internal class DockControlState : IDockControlState
             }
             case EventType.CaptureLost:
             {
-                DragPreviewHelper.Hide();
+                _dragPreviewHelper.Hide();
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;

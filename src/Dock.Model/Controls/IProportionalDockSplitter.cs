@@ -9,4 +9,8 @@ namespace Dock.Model.Controls;
 /// </summary>
 public interface IProportionalDockSplitter : IDockable
 {
+    /// <summary>
+    /// Gets or sets whether the splitter allows resizing.
+    /// </summary>
+    bool CanResize { get; set; }
 }

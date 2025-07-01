@@ -340,11 +340,9 @@ internal class DockControlState : IDockControlState
                                 Enter(targetPoint, dragAction, targetDockControl);
                             }
 
-                            var operation = DockOperation.Window;
-                            if (_adornerHelper.Adorner is DockTarget target)
-                            {
-                                operation = target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate);
-                            }
+                            var operation = _adornerHelper.Adorner is DockTarget target
+                                ? target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                                : DockOperation.Fill;
 
                             var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
                             preview = valid

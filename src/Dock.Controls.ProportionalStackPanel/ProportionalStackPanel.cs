@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Specialized;
 using Avalonia.Data;
 using Avalonia.Layout;
 using Avalonia.VisualTree;
@@ -15,6 +16,18 @@ namespace Avalonia.Controls;
 public class ProportionalStackPanel : Panel
 {
     private bool isAssigningProportions;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProportionalStackPanel"/> class.
+    /// </summary>
+    public ProportionalStackPanel()
+    {
+        Children.CollectionChanged += (_, _) =>
+        {
+            InvalidateMeasure();
+            InvalidateArrange();
+        };
+    }
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.

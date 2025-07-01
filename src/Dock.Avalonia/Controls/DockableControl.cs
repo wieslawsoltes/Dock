@@ -81,6 +81,12 @@ public class DockableControl : Panel, IDockableControl
 
         _boundsDisposable?.Dispose();
         _dataContextDisposable?.Dispose();
+
+        if (Parent is Control parent)
+        {
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        }
     }
 
     private void Register(IDockable dockable)

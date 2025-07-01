@@ -217,15 +217,27 @@ internal class DockControlState : IDockControlState
             {
                 if (_state.DoDragDrop)
                 {
+                    var executed = false;
+
                     if (_state.DropControl is { } dropControl && _state.TargetDockControl is { })
                     {
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
                             Drop(_state.TargetPoint, dragAction, _state.TargetDockControl);
+                            executed = true;
                         }
                     }
+
+                    if (!executed && _state.DragControl?.DataContext is IDockable dockable &&
+                        inputActiveDockControl.Layout?.Factory is { } factory)
+                    {
+                        var screen = inputActiveDockControl.PointToScreen(point);
+                        dockable.SetPointerScreenPosition(screen.X, screen.Y);
+                        factory.FloatDockable(dockable);
+                    }
                 }
+
                 Leave();
                 _state.End();
                 activeDockControl.IsDraggingDock = false;

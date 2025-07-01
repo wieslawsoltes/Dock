@@ -164,10 +164,21 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
             }
         }
 
-        if (!_tabStrip.Bounds.Contains(position) &&
-            (Math.Abs(delta) > DockSettings.FloatDragDistance || Math.Abs(_start.Y - position.Y) > DockSettings.FloatDragDistance))
+        if (!_tabStrip.Bounds.Contains(position))
         {
-            return;
+            var bounds = _tabStrip.Bounds;
+            var overshootX = position.X < 0 ? -position.X : position.X - bounds.Width;
+            var overshootY = position.Y < 0 ? -position.Y : position.Y - bounds.Height;
+            overshootX = Math.Max(overshootX, 0);
+            overshootY = Math.Max(overshootY, 0);
+
+            if (overshootX > DockSettings.FloatDragDistance || overshootY > DockSettings.FloatDragDistance)
+            {
+                Released();
+                _captured = false;
+                FloatDockable();
+                return;
+            }
         }
 
         SetTranslateTransform(_draggedContainer, delta, 0);
@@ -211,6 +222,14 @@ public abstract class DraggableTabStripItem<TTabStrip> : TabStripItem
             }
 
             i++;
+        }
+    }
+
+    private void FloatDockable()
+    {
+        if (DataContext is IDockable { Owner: IDock { Factory: { } factory } } dockable && dockable.CanFloat)
+        {
+            factory.FloatDockable(dockable);
         }
     }
 

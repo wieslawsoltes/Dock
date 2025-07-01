@@ -79,6 +79,9 @@ public class PinnedDockControl : TemplatedControl
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        InvalidateMeasure();
+        InvalidateArrange();
     }
 
     /// <inheritdoc/>

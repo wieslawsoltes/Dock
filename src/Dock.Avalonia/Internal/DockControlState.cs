@@ -359,7 +359,7 @@ internal class DockControlState : IDockControlState
                                 _state.TargetPoint = default;
                                 _state.TargetDockControl = null;
                             }
-                            preview = "None";
+                            preview = "Float";
                         }
                     }
                     else
@@ -368,7 +368,7 @@ internal class DockControlState : IDockControlState
                         _state.DropControl = null;
                         _state.TargetPoint = default;
                         _state.TargetDockControl = null;
-                        preview = "None";
+                        preview = "Float";
                     }
 
                     DragPreviewHelper.Move(screenPoint, preview);

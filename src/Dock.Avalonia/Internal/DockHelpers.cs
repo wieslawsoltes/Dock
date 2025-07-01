@@ -54,6 +54,20 @@ internal static class DockHelpers
         return null;
     }
 
+    public static T? FindAncestor<T>(Visual? visual) where T : Visual
+    {
+        var current = visual?.VisualParent;
+        while (current is { })
+        {
+            if (current is T result)
+            {
+                return result;
+            }
+            current = current.VisualParent;
+        }
+        return null;
+    }
+
     private static void Print(Exception ex)
     {
         Debug.WriteLine(ex.Message);

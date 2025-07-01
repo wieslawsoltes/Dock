@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -15,6 +16,7 @@ internal class DockDragState
 {
     public Control? DragControl { get; set; }
     public Control? DropControl { get; set; }
+    public Control? TabStrip { get; set; }
     public Point DragStartPoint { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
@@ -25,6 +27,7 @@ internal class DockDragState
     {
         DragControl = dragControl;
         DropControl = null;
+        TabStrip = DockHelpers.FindAncestor<TabStrip>(dragControl);
         DragStartPoint = point;
         PointerPressed = true;
         DoDragDrop = false;
@@ -36,6 +39,7 @@ internal class DockDragState
     {
         DragControl = null;
         DropControl = null;
+        TabStrip = null;
         DragStartPoint = default;
         PointerPressed = false;
         DoDragDrop = false;
@@ -262,15 +266,31 @@ internal class DockControlState : IDockControlState
                 {
                     Vector diff = _state.DragStartPoint - point;
                     var haveMinimumDragDistance = IsMinimumDragDistance(diff);
-                    if (haveMinimumDragDistance)
+                    if (_state.DragControl?.DataContext is IDockable dragDockable &&
+                        dragDockable.Owner is IDock dock && dock.Factory is { } factory &&
+                        _state.TabStrip is { } tabStrip)
                     {
-                        if (_state.DragControl?.DataContext is IDockable targetDockable)
+                        var tabPoint = inputActiveDockControl.TranslatePoint(point, tabStrip);
+                        if (tabPoint.HasValue && tabStrip.Bounds.Contains(tabPoint.Value))
                         {
-                            DockHelpers.ShowWindows(targetDockable);
-                            var sp = inputActiveDockControl.PointToScreen(point);
-                            _dragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
+                            var over = DockHelpers.GetControl(tabStrip, tabPoint.Value, DockProperties.IsDragAreaProperty);
+                            if (over?.DataContext is IDockable targetDockable && targetDockable != dragDockable)
+                            {
+                                factory.MoveDockable(dock, dragDockable, targetDockable);
+                            }
+                            break;
                         }
-                        _state.DoDragDrop = true;
+                        else if (haveMinimumDragDistance)
+                        {
+                            DockHelpers.ShowWindows(dragDockable);
+                            var sp = inputActiveDockControl.PointToScreen(point);
+                            _dragPreviewHelper.Show(dragDockable.Title ?? string.Empty, sp);
+                            _state.DoDragDrop = true;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
 

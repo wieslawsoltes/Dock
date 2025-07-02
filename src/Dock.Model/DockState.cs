@@ -37,22 +37,22 @@ public class DockState : IDockState
 
             if (rootDock.LeftPinnedDockables is { })
             {
-                RestoreDockables(rootDock.LeftPinnedDockables);
+                SaveDockables(rootDock.LeftPinnedDockables);
             }
 
             if (rootDock.RightPinnedDockables is { })
             {
-                RestoreDockables(rootDock.RightPinnedDockables);
+                SaveDockables(rootDock.RightPinnedDockables);
             }
 
             if (rootDock.TopPinnedDockables is { })
             {
-                RestoreDockables(rootDock.TopPinnedDockables);
+                SaveDockables(rootDock.TopPinnedDockables);
             }
 
             if (rootDock.BottomPinnedDockables is { })
             {
-                RestoreDockables(rootDock.BottomPinnedDockables);
+                SaveDockables(rootDock.BottomPinnedDockables);
             }
 
             if (rootDock.Windows is { })

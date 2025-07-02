@@ -85,17 +85,7 @@ public class ProportionalStackPanelSplitter : Thumb
 
         if (change.Property == IsResizingEnabledProperty)
         {
-            if (change.NewValue is bool enabled)
-            {
-                if (enabled)
-                {
-                    UpdateHeightOrWidth();
-                }
-                else
-                {
-                    Cursor = new Cursor(StandardCursorType.Arrow);
-                }
-            }
+            UpdateVisualState();
         }
     }
 
@@ -200,7 +190,7 @@ public class ProportionalStackPanelSplitter : Thumb
             return;
         }
 
-        UpdateHeightOrWidth();
+        UpdateVisualState();
     }
 
     private Control? FindNextChild(ProportionalStackPanel panel)
@@ -266,7 +256,7 @@ public class ProportionalStackPanelSplitter : Thumb
         }
     }
 
-    private void UpdateHeightOrWidth()
+    private void UpdateVisualState()
     {
         if (GetPanel() is { } panel)
         {
@@ -274,14 +264,18 @@ public class ProportionalStackPanelSplitter : Thumb
             {
                 Height = Thickness;
                 Width = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeNorthSouth);
+                Cursor = IsResizingEnabled
+                    ? new Cursor(StandardCursorType.SizeNorthSouth)
+                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":vertical");
             }
             else
             {
                 Width = Thickness;
                 Height = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                Cursor = IsResizingEnabled
+                    ? new Cursor(StandardCursorType.SizeWestEast)
+                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":horizontal");
             }
         }

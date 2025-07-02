@@ -78,6 +78,17 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsResizingEnabledProperty)
+        {
+            UpdateVisualState();
+        }
+    }
+
     internal static bool IsSplitter(Control? control, out ProportionalStackPanelSplitter? proportionalStackPanelSplitter)
     {
         if (control is ContentPresenter contentPresenter)
@@ -179,7 +190,7 @@ public class ProportionalStackPanelSplitter : Thumb
             return;
         }
 
-        UpdateHeightOrWidth();
+        UpdateVisualState();
     }
 
     private Control? FindNextChild(ProportionalStackPanel panel)
@@ -245,7 +256,7 @@ public class ProportionalStackPanelSplitter : Thumb
         }
     }
 
-    private void UpdateHeightOrWidth()
+    private void UpdateVisualState()
     {
         if (GetPanel() is { } panel)
         {
@@ -253,14 +264,18 @@ public class ProportionalStackPanelSplitter : Thumb
             {
                 Height = Thickness;
                 Width = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeNorthSouth);
+                Cursor = IsResizingEnabled
+                    ? new Cursor(StandardCursorType.SizeNorthSouth)
+                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":vertical");
             }
             else
             {
                 Width = Thickness;
                 Height = double.NaN;
-                Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                Cursor = IsResizingEnabled
+                    ? new Cursor(StandardCursorType.SizeWestEast)
+                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":horizontal");
             }
         }

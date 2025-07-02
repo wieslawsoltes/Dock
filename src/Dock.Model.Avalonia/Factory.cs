@@ -24,6 +24,9 @@ public class Factory : FactoryBase
         VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
         PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
         TabDockableControls = new Dictionary<IDockable, IDockableControl>();
+        VisibleRootControls = new Dictionary<IDockable, object>();
+        PinnedRootControls = new Dictionary<IDockable, object>();
+        TabRootControls = new Dictionary<IDockable, object>();
         DockControls = new ObservableCollection<IDockControl>();
         HostWindows = new ObservableCollection<IHostWindow>();
     }
@@ -34,11 +37,23 @@ public class Factory : FactoryBase
 
     /// <inheritdoc/>
     [JsonIgnore]
+    public override IDictionary<IDockable, object> VisibleRootControls { get; }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
     public override IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
     /// <inheritdoc/>
     [JsonIgnore]
+    public override IDictionary<IDockable, object> PinnedRootControls { get; }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
     public override IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+    /// <inheritdoc/>
+    [JsonIgnore]
+    public override IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <inheritdoc/>
     [JsonIgnore]

@@ -15,10 +15,19 @@ public abstract partial class FactoryBase
     public abstract IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
     /// <inheritdoc/>
+    public abstract IDictionary<IDockable, object> VisibleRootControls { get; }
+
+    /// <inheritdoc/>
     public abstract IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
     /// <inheritdoc/>
+    public abstract IDictionary<IDockable, object> PinnedRootControls { get; }
+
+    /// <inheritdoc/>
     public abstract IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+    /// <inheritdoc/>
+    public abstract IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <inheritdoc/>
     public abstract IList<IDockControl> DockControls { get; }

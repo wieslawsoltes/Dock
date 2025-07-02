@@ -188,8 +188,7 @@ public class ProportionalStackPanel : Panel
                 else
                 {
                     var stored = GetCollapsedProportion(control);
-                    if ((double.IsNaN(proportion) || proportion == 0.0) &&
-                        !double.IsNaN(stored))
+                    if (!double.IsNaN(stored))
                     {
                         proportion = stored;
                     }
@@ -599,13 +598,18 @@ public class ProportionalStackPanel : Panel
         AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
         AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
 
-        ProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
+        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
         {
             if (sender.GetVisualParent() is not ProportionalStackPanel parent)
                 return;
 
             if (parent.isAssigningProportions)
                 return;
+
+            if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
+            {
+                SetCollapsedProportion(sender, value);
+            }
 
             parent.InvalidateMeasure();
             parent.InvalidateArrange();

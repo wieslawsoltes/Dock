@@ -61,7 +61,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? Owner
     {
         get => _owner;
@@ -69,7 +69,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public IDockable? OriginalOwner
     {
         get => _originalOwner;

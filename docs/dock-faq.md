@@ -125,7 +125,7 @@ tool.CanDrop = false;
 ```
 
 You can still toggle drag or drop globally using the attached `DockProperties`
-from `Dock.Settings`:
+from [`Dock.Settings`](dock-settings.md):
 
 ```xml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"

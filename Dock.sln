@@ -133,6 +133,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-sizing.md = docs\dock-sizing.md
 		docs\dock-enums.md = docs\dock-enums.md
 		docs\dock-adapters.md = docs\dock-adapters.md
+		docs\dock-windows.md = docs\dock-windows.md
+		docs\dock-settings.md = docs\dock-settings.md
 	EndProjectSection
 EndProject
 Global

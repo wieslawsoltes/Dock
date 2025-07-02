@@ -607,5 +607,17 @@ public class ProportionalStackPanel : Panel
             parent.InvalidateMeasure();
             parent.InvalidateArrange();
         });
+
+        CollapsedProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
+                return;
+
+            if (parent.isAssigningProportions)
+                return;
+
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        });
     }
 }

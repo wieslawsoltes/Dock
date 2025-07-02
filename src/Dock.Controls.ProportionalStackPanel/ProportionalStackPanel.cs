@@ -87,12 +87,12 @@ public class ProportionalStackPanel : Panel
         control.SetValue(IsCollapsedProperty, value);
     }
 
-    private void AssignProportions()
+    private void AssignProportions(Size size, double splitterThickness)
     {
         isAssigningProportions = true;
         try
         {
-            AssignProportionsInternal(Children);
+            AssignProportionsInternal(Children, size, splitterThickness, Orientation);
         }
         finally
         {
@@ -100,14 +100,49 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private static void AssignProportionsInternal(Avalonia.Controls.Controls children)
+    private static double ClampProportion(
+        Control control,
+        Orientation orientation,
+        double available,
+        double proportion)
     {
+        double min = orientation == Orientation.Horizontal ? control.MinWidth : control.MinHeight;
+        double max = orientation == Orientation.Horizontal ? control.MaxWidth : control.MaxHeight;
+
+        var minProp = !double.IsNaN(min) && min > 0 ? min / available : 0.0;
+        var maxProp = !double.IsNaN(max) && !double.IsPositiveInfinity(max) ? max / available : double.PositiveInfinity;
+
+#if NETSTANDARD2_0
+        var clamped = Clamp(proportion, minProp, maxProp);
+#else
+        var clamped = Math.Clamp(proportion, minProp, maxProp);
+#endif
+        return clamped;
+
+#if NETSTANDARD2_0
+        static double Clamp(double value, double min, double max)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+#endif
+    }
+
+    private static void AssignProportionsInternal(
+        Avalonia.Controls.Controls children,
+        Size size,
+        double splitterThickness,
+        Orientation orientation)
+    {
+        var dimension = orientation == Orientation.Horizontal ? size.Width : size.Height;
+        var dimensionWithoutSplitters = Math.Max(1.0, dimension - splitterThickness);
+
         var assignedProportion = 0.0;
         var unassignedProportions = 0;
 
-        for (var i = 0; i < children.Count; i++)
+        foreach (var control in children.OfType<Control>())
         {
-            var control = children[i];
             var isCollapsed = GetIsCollapsed(control);
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
 
@@ -126,6 +161,8 @@ public class ProportionalStackPanel : Panel
                 }
                 else
                 {
+                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
+                    SetProportion(control, proportion);
                     assignedProportion += proportion;
                 }
             }
@@ -143,8 +180,9 @@ public class ProportionalStackPanel : Panel
                 if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
                 {
                     var proportion = (1.0 - toAssign) / unassignedProportions;
+                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
                     SetProportion(control, proportion);
-                    assignedProportion += (1.0 - toAssign) / unassignedProportions;
+                    assignedProportion += proportion;
                 }
             }
         }
@@ -156,9 +194,7 @@ public class ProportionalStackPanel : Panel
                 var isCollapsed = GetIsCollapsed(c);
                 return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
             });
-
             var toAdd = (1.0 - assignedProportion) / numChildren;
-
             foreach (var child in children.Where(c =>
                      {
                          var isCollapsed = GetIsCollapsed(c);
@@ -176,9 +212,7 @@ public class ProportionalStackPanel : Panel
                 var isCollapsed = GetIsCollapsed(c);
                 return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
             });
-
             var toRemove = (assignedProportion - 1.0) / numChildren;
-
             foreach (var child in children.Where(c =>
                      {
                          var isCollapsed = GetIsCollapsed(c);
@@ -249,7 +283,7 @@ public class ProportionalStackPanel : Panel
         var maximumHeight = 0.0;
         var splitterThickness = GetTotalSplitterThickness(Children);
 
-        AssignProportions();
+        AssignProportions(constraint, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -372,7 +406,7 @@ public class ProportionalStackPanel : Panel
         var splitterThickness = GetTotalSplitterThickness(Children);
         var index = 0;
 
-        AssignProportions();
+        AssignProportions(arrangeSize, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;

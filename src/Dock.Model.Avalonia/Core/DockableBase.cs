@@ -110,6 +110,30 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public static readonly DirectProperty<DockableBase, bool> CanDropProperty =
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrop), o => o.CanDrop, (o, v) => o.CanDrop = v);
 
+    /// <summary>
+    /// Defines the <see cref="MinWidth"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, double> MinWidthProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(MinWidth), o => o.MinWidth, (o, v) => o.MinWidth = v, double.NaN);
+
+    /// <summary>
+    /// Defines the <see cref="MaxWidth"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, double> MaxWidthProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(MaxWidth), o => o.MaxWidth, (o, v) => o.MaxWidth = v, double.NaN);
+
+    /// <summary>
+    /// Defines the <see cref="MinHeight"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, double> MinHeightProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(MinHeight), o => o.MinHeight, (o, v) => o.MinHeight = v, double.NaN);
+
+    /// <summary>
+    /// Defines the <see cref="MaxHeight"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, double> MaxHeightProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(MaxHeight), o => o.MaxHeight, (o, v) => o.MaxHeight = v, double.NaN);
+
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
     private string _title = string.Empty;
@@ -125,6 +149,10 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
+    private double _minWidth = double.NaN;
+    private double _maxWidth = double.NaN;
+    private double _minHeight = double.NaN;
+    private double _maxHeight = double.NaN;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -215,6 +243,42 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _proportion;
         set => SetAndRaise(ProportionProperty, ref _proportion, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MinWidth")]
+    public double MinWidth
+    {
+        get => _minWidth;
+        set => SetAndRaise(MinWidthProperty, ref _minWidth, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MaxWidth")]
+    public double MaxWidth
+    {
+        get => _maxWidth;
+        set => SetAndRaise(MaxWidthProperty, ref _maxWidth, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MinHeight")]
+    public double MinHeight
+    {
+        get => _minHeight;
+        set => SetAndRaise(MinHeightProperty, ref _minHeight, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MaxHeight")]
+    public double MaxHeight
+    {
+        get => _maxHeight;
+        set => SetAndRaise(MaxHeightProperty, ref _maxHeight, value);
     }
 
     /// <inheritdoc/>

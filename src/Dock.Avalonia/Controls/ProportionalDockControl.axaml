@@ -20,7 +20,7 @@
                         Classes="ProportionalStackPanel">
             <ItemsControl.Styles>
               <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">
-                <Setter Property="(ProportionalStackPanel.Proportion)" 
+                <Setter Property="(ProportionalStackPanel.Proportion)"
                         Value="{Binding Proportion}" />
                 <Setter Property="(ProportionalStackPanel.IsCollapsed)">
                   <Setter.Value>
@@ -30,6 +30,10 @@
                     </MultiBinding>
                   </Setter.Value>
                 </Setter>
+                <Setter Property="MinWidth" Value="{Binding MinWidth}" />
+                <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
+                <Setter Property="MinHeight" Value="{Binding MinHeight}" />
+                <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
               </Style>
             </ItemsControl.Styles>
             <ItemsControl.ItemsPanel>

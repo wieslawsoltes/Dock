@@ -27,6 +27,10 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
+    private double _minWidth = double.NaN;
+    private double _maxWidth = double.NaN;
+    private double _minHeight = double.NaN;
+    private double _maxHeight = double.NaN;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -106,6 +110,38 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _proportion;
         set => SetProperty(ref _proportion, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double MinWidth
+    {
+        get => _minWidth;
+        set => SetProperty(ref _minWidth, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double MaxWidth
+    {
+        get => _maxWidth;
+        set => SetProperty(ref _maxWidth, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double MinHeight
+    {
+        get => _minHeight;
+        set => SetProperty(ref _minHeight, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double MaxHeight
+    {
+        get => _maxHeight;
+        set => SetProperty(ref _maxHeight, value);
     }
 
     /// <inheritdoc/>

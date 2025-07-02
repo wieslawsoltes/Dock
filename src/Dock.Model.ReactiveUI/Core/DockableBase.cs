@@ -28,6 +28,10 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _canFloat = true;
         _canDrag = true;
         _canDrop = true;
+        _minWidth = double.NaN;
+        _maxWidth = double.NaN;
+        _minHeight = double.NaN;
+        _maxHeight = double.NaN;
         _trackingAdapter = new TrackingAdapter();
     }
 
@@ -67,6 +71,22 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial double Proportion { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial double MinWidth { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial double MaxWidth { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial double MinHeight { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial double MaxHeight { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

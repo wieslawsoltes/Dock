@@ -328,7 +328,7 @@ public abstract partial class FactoryBase
 
         foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
         {
-            dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+            dockable.GetPinnedBounds(out _, out _, out var width, out var height);
             var proportion = dockable.Proportion;
             if (!double.IsNaN(width) && !double.IsNaN(height))
             {
@@ -370,7 +370,7 @@ public abstract partial class FactoryBase
         {
             if (!double.IsNaN(size.Width) && !double.IsNaN(size.Height))
             {
-                dockable.SetVisibleBounds(double.NaN, double.NaN, size.Width, size.Height);
+                dockable.SetPinnedBounds(double.NaN, double.NaN, size.Width, size.Height);
             }
             if (!double.IsNaN(size.Proportion))
             {

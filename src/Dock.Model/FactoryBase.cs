@@ -144,7 +144,7 @@ public abstract partial class FactoryBase : IFactory
         var splitter = CreateProportionalDockSplitter();
         splitter.Title = nameof(IProportionalDockSplitter);
 
-        switch (operation)
+        switch (operation.ToLocal())
         {
             case DockOperation.Left:
             case DockOperation.Right:
@@ -160,7 +160,7 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
-        switch (operation)
+        switch (operation.ToLocal())
         {
             case DockOperation.Left:
             case DockOperation.Top:
@@ -191,7 +191,7 @@ public abstract partial class FactoryBase : IFactory
         AddVisibleDockable(layout, splitter);
         OnDockableAdded(splitter);
 
-        switch (operation)
+        switch (operation.ToLocal())
         {
             case DockOperation.Left:
             case DockOperation.Top:
@@ -225,7 +225,7 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void SplitToDock(IDock dock, IDockable dockable, DockOperation operation)
     {
-        switch (operation)
+        switch (operation.ToLocal())
         {
             case DockOperation.Left:
             case DockOperation.Right:

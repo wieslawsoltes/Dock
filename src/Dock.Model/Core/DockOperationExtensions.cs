@@ -12,7 +12,23 @@ internal static class DockOperationExtensions
             DockOperation.Bottom => Alignment.Bottom,
             DockOperation.Right => Alignment.Right,
             DockOperation.Top => Alignment.Top,
+            DockOperation.GlobalLeft => Alignment.Left,
+            DockOperation.GlobalBottom => Alignment.Bottom,
+            DockOperation.GlobalRight => Alignment.Right,
+            DockOperation.GlobalTop => Alignment.Top,
             _ => Alignment.Unset
+        };
+    }
+
+    public static DockOperation ToLocal(this DockOperation operation)
+    {
+        return operation switch
+        {
+            DockOperation.GlobalLeft => DockOperation.Left,
+            DockOperation.GlobalBottom => DockOperation.Bottom,
+            DockOperation.GlobalRight => DockOperation.Right,
+            DockOperation.GlobalTop => DockOperation.Top,
+            _ => operation
         };
     }
 }

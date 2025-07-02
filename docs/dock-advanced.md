@@ -106,6 +106,14 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 }
 ```
 
+## Global side docking
+
+Dockables can also be docked to the edges of the root layout. Dropping a tab on
+the outer borders of `RootDockControl` splits the root in that direction,
+anchoring the dockable globally to the chosen side just like in Visual Studio.
+The dock manager exposes new operations `GlobalLeft`, `GlobalRight`,
+`GlobalTop` and `GlobalBottom` to represent these targets.
+
 ## Conclusion
 
 Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.

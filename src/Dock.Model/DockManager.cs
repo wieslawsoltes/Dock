@@ -302,10 +302,9 @@ public class DockManager : IDockManager
         return operation switch
         {
             DockOperation.Fill => MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
-            DockOperation.Left => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Right => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Top => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Bottom => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
+            DockOperation.Left or DockOperation.Right or DockOperation.Top or DockOperation.Bottom or
+            DockOperation.GlobalLeft or DockOperation.GlobalRight or DockOperation.GlobalTop or DockOperation.GlobalBottom
+                => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation.ToLocal(), bExecute),
             DockOperation.Window => DockDockableIntoWindow(sourceDockable, targetDock, bExecute),
             _ => false
         };
@@ -402,7 +401,10 @@ public class DockManager : IDockManager
     {
         return targetDockable switch
         {
-            IRootDock _ => DockDockableIntoWindow(sourceTool, targetDockable, bExecute),
+            IRootDock rootDock =>
+                operation == DockOperation.Window
+                    ? DockDockableIntoWindow(sourceTool, targetDockable, bExecute)
+                    : DockDockableIntoDock(sourceTool, rootDock, action, operation, bExecute),
             IToolDock toolDock =>
                 (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
                 && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
@@ -419,7 +421,10 @@ public class DockManager : IDockManager
     {
         return targetDockable switch
         {
-            IRootDock _ => DockDockableIntoWindow(sourceDocument, targetDockable, bExecute),
+            IRootDock rootDock =>
+                operation == DockOperation.Window
+                    ? DockDockableIntoWindow(sourceDocument, targetDockable, bExecute)
+                    : DockDockableIntoDock(sourceDocument, rootDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
             IDocument document => DockDockableIntoDockable(sourceDocument, document, action, bExecute),
             _ => false
@@ -431,7 +436,10 @@ public class DockManager : IDockManager
     {
         return targetDockable switch
         {
-            IRootDock _ => DockDockableIntoWindow(sourceDock, targetDockable, bExecute),
+            IRootDock rootDock =>
+                operation == DockOperation.Window
+                    ? DockDockableIntoWindow(sourceDock, targetDockable, bExecute)
+                    : DockDockable(sourceDock, targetDockable, rootDock, action, operation, bExecute),
             IToolDock toolDock => sourceDock != toolDock &&
                                   DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
             IDocumentDock documentDock => sourceDock != documentDock &&

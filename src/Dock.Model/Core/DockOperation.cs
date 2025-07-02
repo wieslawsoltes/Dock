@@ -34,6 +34,26 @@ public enum DockOperation
     Top,
 
     /// <summary>
+    /// Dock to global left.
+    /// </summary>
+    GlobalLeft,
+
+    /// <summary>
+    /// Dock to global bottom.
+    /// </summary>
+    GlobalBottom,
+
+    /// <summary>
+    /// Dock to global right.
+    /// </summary>
+    GlobalRight,
+
+    /// <summary>
+    /// Dock to global top.
+    /// </summary>
+    GlobalTop,
+
+    /// <summary>
     /// Dock to window.
     /// </summary>
     Window

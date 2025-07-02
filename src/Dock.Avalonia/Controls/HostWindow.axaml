@@ -50,7 +50,9 @@
     <Setter Property="Content">
       <Template>
         <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-          <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
+          <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}"
+                 dockSettings:DockProperties.IsDropArea="True"
+                 dockSettings:DockProperties.IsDockTarget="True">
             <DockControl Layout="{Binding}" />
           </Panel>
         </Panel>
@@ -90,7 +92,9 @@
 
       <Setter Property="Content">
         <Template>
-          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}" 
+                 dockSettings:DockProperties.IsDropArea="True"
+                 dockSettings:DockProperties.IsDockTarget="True">
             <DockControl Layout="{Binding}" />
           </Panel>
         </Template>

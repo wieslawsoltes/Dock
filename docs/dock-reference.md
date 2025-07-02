@@ -15,6 +15,29 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` to enable or disable dragging. |
 | `IDockWindow` / `IHostWindow` | Interfaces representing floating windows created when dockables are detached. |
 
+## Tracking bounds and pointer positions
+
+`IDockable` includes a set of methods used by the docking logic to remember the
+position of a dockable and the pointer during drag operations. These methods are
+implemented by `DockableBase` which stores the values in a `TrackingAdapter`.
+The adapter starts with `NaN` coordinates until a value is set.
+
+- `GetVisibleBounds(out x, out y, out width, out height)` and
+  `SetVisibleBounds(x, y, width, height)` return or store the last known bounds
+  of the dockable while it is visible in a dock. `OnVisibleBoundsChanged` is
+  invoked whenever the values are updated.
+- `GetPinnedBounds`/`SetPinnedBounds`/`OnPinnedBoundsChanged` track the
+  dimensions used when a tool is pinned to one of the layout edges.
+- `GetTabBounds`/`SetTabBounds`/`OnTabBoundsChanged` hold the bounds of a
+  dockable displayed as a tab inside another dock.
+- `GetPointerPosition`/`SetPointerPosition`/`OnPointerPositionChanged` store the
+  pointer coordinates relative to the dock control.
+- `GetPointerScreenPosition`/`SetPointerScreenPosition`/
+  `OnPointerScreenPositionChanged` do the same using screen coordinates.
+
+These values are consulted when calculating drop targets or restoring a layout
+from a saved state.
+
 ## Factory API
 
 The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`) contains numerous helpers used by the samples to build and manipulate layouts. Important members include:

@@ -131,6 +131,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-markup-extensions.md = docs\dock-markup-extensions.md
 		docs\dock-proportional-stackpanel.md = docs\dock-proportional-stackpanel.md
 		docs\dock-sizing.md = docs\dock-sizing.md
+		docs\dock-enums.md = docs\dock-enums.md
+		docs\dock-adapters.md = docs\dock-adapters.md
 	EndProjectSection
 EndProject
 Global

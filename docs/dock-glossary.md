@@ -13,5 +13,10 @@ This page defines common terms used throughout the Dock documentation and sample
 - **Factory** – Class responsible for creating and modifying layouts at runtime.
 - **DockSerializer** – Component that saves or loads layouts so user customisations persist across sessions.
 - **DockManager** – Implements the algorithms that move or swap dockables during drag and drop.
+- **HostAdapter** – Bridges an `IDockWindow` with the platform window used to display it.
+- **NavigateAdapter** – Provides back and forward history navigation for docks.
+- **TrackingAdapter** – Stores bounds information while dockables are moved or pinned.
+- **DockMode** – Enumerates the default docking location such as Left, Right or Center.
+- **DockPoint** – Simple structure representing an X/Y coordinate.
 
 For an overview of all guides see the [documentation index](README.md).

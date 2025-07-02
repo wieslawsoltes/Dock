@@ -37,6 +37,8 @@ guides under *Getting started*.
 - [Glossary](dock-glossary.md) – Definitions of common Dock terms.
 - [Dockable property settings](dock-dockable-properties.md) – Configure per item behaviour.
 - [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
+- [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
+- [Enumerations](dock-enums.md) – Values used by Dock APIs.
 
 ## Troubleshooting
 

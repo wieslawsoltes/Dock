@@ -45,10 +45,11 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial IDockable? Owner { get; set; }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial IDockable? OriginalOwner { get; set; }
 
     /// <inheritdoc/>

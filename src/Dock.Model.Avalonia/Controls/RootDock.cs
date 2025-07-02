@@ -151,7 +151,8 @@ public class RootDock : DockBase, IRootDock
     }
 
     /// <inheritdoc/>
-    [JsonIgnore]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("PinnedDock")]
     public IToolDock? PinnedDock
     {
         get => _pinnedDock;

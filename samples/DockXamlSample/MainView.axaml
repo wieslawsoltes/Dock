@@ -15,6 +15,7 @@
         <Separator/>
         <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
       </MenuItem>
+      <MenuItem Header="_View" x:Name="ViewsMenu" />
     </Menu>
 
     <DockControl x:Name="DockControl" Grid.Row="1" InitializeLayout="True" InitializeFactory="True">

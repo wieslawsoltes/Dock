@@ -78,6 +78,27 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsResizingEnabledProperty)
+        {
+            if (change.NewValue is bool enabled)
+            {
+                if (enabled)
+                {
+                    UpdateHeightOrWidth();
+                }
+                else
+                {
+                    Cursor = new Cursor(StandardCursorType.Arrow);
+                }
+            }
+        }
+    }
+
     internal static bool IsSplitter(Control? control, out ProportionalStackPanelSplitter? proportionalStackPanelSplitter)
     {
         if (control is ContentPresenter contentPresenter)

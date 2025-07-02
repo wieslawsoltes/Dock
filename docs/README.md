@@ -28,6 +28,7 @@ guides under *Getting started*.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
+- [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference

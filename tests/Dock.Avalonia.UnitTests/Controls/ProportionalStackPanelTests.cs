@@ -252,4 +252,91 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(0, 0, 0, 0), items2?[2].Bounds);
         Assert.Equal(new Rect(0, 0, 0, 0), items2?[3].Bounds);
     }
+
+    [Fact]
+    public void Respects_MinWidth_When_Assigning_Proportion()
+    {
+        var target = new ProportionalStackPanel
+        {
+            Width = 500,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children =
+            {
+                new Border
+                {
+                    MinWidth = 150,
+                    [ProportionalStackPanel.ProportionProperty] = 0.1
+                },
+                new ProportionalStackPanelSplitter(),
+                new Border
+                {
+                    [ProportionalStackPanel.ProportionProperty] = 0.5
+                }
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.True(target.Children[0].Bounds.Width >= 150);
+    }
+
+    [Fact]
+    public void Respects_MaxWidth_When_Assigning_Proportion()
+    {
+        var target = new ProportionalStackPanel
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children =
+            {
+                new Border
+                {
+                    MaxWidth = 100,
+                    [ProportionalStackPanel.ProportionProperty] = 0.9
+                },
+                new ProportionalStackPanelSplitter(),
+                new Border
+                {
+                    [ProportionalStackPanel.ProportionProperty] = 0.7
+                }
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.True(target.Children[0].Bounds.Width <= 100);
+    }
+
+    [Fact]
+    public void Respects_MinHeight_In_Vertical_Mode()
+    {
+        var target = new ProportionalStackPanel
+        {
+            Width = 100,
+            Height = 500,
+            Orientation = Orientation.Vertical,
+            Children =
+            {
+                new Border
+                {
+                    MinHeight = 200,
+                    [ProportionalStackPanel.ProportionProperty] = 0.1
+                },
+                new ProportionalStackPanelSplitter(),
+                new Border
+                {
+                    [ProportionalStackPanel.ProportionProperty] = 0.5
+                }
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.True(target.Children[0].Bounds.Height >= 200);
+    }
 }

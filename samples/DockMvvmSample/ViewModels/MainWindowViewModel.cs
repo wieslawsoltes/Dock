@@ -28,16 +28,54 @@ public class MainWindowViewModel : ObservableObject
         DebugFactoryEvents(_factory);
 
         Layout = _factory?.CreateLayout();
-        if (Layout is { })
+
+        InitLayout();
+
+        if (Layout is { } root)
         {
-            _factory?.InitLayout(Layout);
-            if (Layout is { } root)
-            {
-                root.Navigate.Execute("Home");
-            }
+            root.Navigate.Execute("Home");
         }
 
         NewLayout = new RelayCommand(ResetLayout);
+    }
+
+    public void InitLayout()
+    {
+        if (Layout is null)
+        {
+            return;
+        }
+
+        _factory?.InitLayout(Layout);
+    }
+
+    public void CloseLayout()
+    {
+        if (Layout is IDock dock)
+        {
+            if (dock.Close.CanExecute(null))
+            {
+                dock.Close.Execute(null);
+            }
+        }
+    }
+
+    public void ResetLayout()
+    {
+        if (Layout is not null)
+        {
+            if (Layout.Close.CanExecute(null))
+            {
+                Layout.Close.Execute(null);
+            }
+        }
+
+        var layout = _factory?.CreateLayout();
+        if (layout is not null)
+        {
+            _factory?.InitLayout(layout);
+            Layout = layout;
+        }
     }
 
     private void DebugFactoryEvents(IFactory factory)
@@ -134,34 +172,5 @@ public class MainWindowViewModel : ObservableObject
         {
             Debug.WriteLine($"[WindowMoveDragEnd] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
         };
-    }
-
-    public void CloseLayout()
-    {
-        if (Layout is IDock dock)
-        {
-            if (dock.Close.CanExecute(null))
-            {
-                dock.Close.Execute(null);
-            }
-        }
-    }
-
-    public void ResetLayout()
-    {
-        if (Layout is not null)
-        {
-            if (Layout.Close.CanExecute(null))
-            {
-                Layout.Close.Execute(null);
-            }
-        }
-
-        var layout = _factory?.CreateLayout();
-        if (layout is not null)
-        {
-            _factory?.InitLayout(layout);
-            Layout = layout;
-        }
     }
 }

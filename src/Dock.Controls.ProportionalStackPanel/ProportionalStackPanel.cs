@@ -186,7 +186,8 @@ public class ProportionalStackPanel : Panel
                 else
                 {
                     var stored = GetCollapsedProportion(control);
-                    if (!double.IsNaN(stored))
+                    if ((double.IsNaN(proportion) || proportion == 0.0) &&
+                        !double.IsNaN(stored))
                     {
                         proportion = stored;
                     }

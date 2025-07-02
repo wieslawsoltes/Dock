@@ -106,6 +106,26 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 }
 ```
 
+## Tracking bounds
+
+`DockableBase` keeps track of several coordinate sets used while dragging or
+pinning dockables. Methods like `SetVisibleBounds`, `SetPinnedBounds` and
+`SetTabBounds` store the latest position, whereas the matching `Get*` methods
+return the values. Two additional methods record the pointer location relative to
+the dock control and to the screen.
+
+```csharp
+// Record the bounds of a tool while it is pinned
+tool.SetPinnedBounds(x, y, width, height);
+
+// Retrieve the saved pointer location from the last drag
+tool.GetPointerScreenPosition(out var screenX, out var screenY);
+```
+
+Override `OnVisibleBoundsChanged`, `OnPinnedBoundsChanged`, `OnTabBoundsChanged`
+and the pointer variants if you need to react when these coordinates change,
+for example to persist them or to show custom overlays.
+
 ## Conclusion
 
 Explore the samples under `samples/` for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.

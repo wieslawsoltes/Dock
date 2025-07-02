@@ -105,6 +105,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUISample", "samples\DockReactiveUISample\DockReactiveUISample.csproj", "{2A2C622B-3001-4DEB-833E-BEF8A94A3343}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{B6494977-A4A3-4492-8344-2D093694D49E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\quick-start.md = docs\quick-start.md
+		docs\dock-reference.md = docs\dock-reference.md
+		docs\dock-xaml.md = docs\dock-xaml.md
+		docs\dock-styling.md = docs\dock-styling.md
+		docs\dock-serialization.md = docs\dock-serialization.md
+		docs\dock-serialization-state.md = docs\dock-serialization-state.md
+		docs\dock-reactiveui.md = docs\dock-reactiveui.md
+		docs\dock-mvvm.md = docs\dock-mvvm.md
+		docs\dock-glossary.md = docs\dock-glossary.md
+		docs\dock-faq.md = docs\dock-faq.md
+		docs\dock-events.md = docs\dock-events.md
+		docs\dock-dockable-properties.md = docs\dock-dockable-properties.md
+		docs\dock-deep-dive.md = docs\dock-deep-dive.md
+		docs\dock-control-recycling.md = docs\dock-control-recycling.md
+		docs\dock-complex-layouts.md = docs\dock-complex-layouts.md
+		docs\dock-code-only.md = docs\dock-code-only.md
+		docs\dock-architecture.md = docs\dock-architecture.md
+		docs\dock-api-scenarios.md = docs\dock-api-scenarios.md
+		docs\dock-advanced.md = docs\dock-advanced.md
+		docs\dock-active-document.md = docs\dock-active-document.md
+		docs\README.md = docs\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

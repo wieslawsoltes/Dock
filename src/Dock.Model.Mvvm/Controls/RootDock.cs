@@ -37,14 +37,6 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IToolDock? PinnedDock
-    {
-        get => _pinnedDock;
-        set => SetProperty(ref _pinnedDock, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public bool IsFocusableRoot
     {
         get => _isFocusableRoot;
@@ -89,6 +81,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _bottomPinnedDockables;
         set => SetProperty(ref _bottomPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public IToolDock? PinnedDock
+    {
+        get => _pinnedDock;
+        set => SetProperty(ref _pinnedDock, value);
     }
 
     /// <inheritdoc/>

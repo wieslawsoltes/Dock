@@ -100,81 +100,91 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private static double? GetFixedSize(Control control, Orientation orientation)
+    private static double ClampProportion(
+        Control control,
+        Orientation orientation,
+        double available,
+        double proportion)
     {
-        if (orientation == Orientation.Horizontal)
-        {
-            if (!double.IsNaN(control.MinWidth) && control.MinWidth > 0)
-                return control.MinWidth;
-            if (!double.IsNaN(control.MaxWidth) && !double.IsPositiveInfinity(control.MaxWidth))
-                return control.MaxWidth;
-        }
-        else
-        {
-            if (!double.IsNaN(control.MinHeight) && control.MinHeight > 0)
-                return control.MinHeight;
-            if (!double.IsNaN(control.MaxHeight) && !double.IsPositiveInfinity(control.MaxHeight))
-                return control.MaxHeight;
-        }
+        double min = orientation == Orientation.Horizontal ? control.MinWidth : control.MinHeight;
+        double max = orientation == Orientation.Horizontal ? control.MaxWidth : control.MaxHeight;
 
-        return null;
+        var minProp = !double.IsNaN(min) && min > 0 ? min / available : 0.0;
+        var maxProp = !double.IsNaN(max) && !double.IsPositiveInfinity(max) ? max / available : double.PositiveInfinity;
+
+#if NETSTANDARD2_0
+        var clamped = Clamp(proportion, minProp, maxProp);
+#else
+        var clamped = Math.Clamp(proportion, minProp, maxProp);
+#endif
+        return clamped;
+
+#if NETSTANDARD2_0
+        static double Clamp(double value, double min, double max)
+        {
+            if (value < min) return min;
+            if (value > max) return max;
+            return value;
+        }
+#endif
     }
 
-    private static void AssignProportionsInternal(Avalonia.Controls.Controls children, Size size, double splitterThickness, Orientation orientation)
+    private static void AssignProportionsInternal(
+        Avalonia.Controls.Controls children,
+        Size size,
+        double splitterThickness,
+        Orientation orientation)
     {
         var dimension = orientation == Orientation.Horizontal ? size.Width : size.Height;
         var dimensionWithoutSplitters = Math.Max(1.0, dimension - splitterThickness);
 
         var assignedProportion = 0.0;
-        var dynamicChildren = children.OfType<Control>().Where(c =>
-        {
-            var isCollapsed = GetIsCollapsed(c);
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(c, out _);
-            return !isSplitter && !isCollapsed && GetFixedSize(c, orientation) == null;
-        }).ToList();
-        double dynamicSum = 0.0;
+        var unassignedProportions = 0;
 
         foreach (var control in children.OfType<Control>())
         {
             var isCollapsed = GetIsCollapsed(control);
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
-            if (isSplitter)
-                continue;
 
-            var proportion = GetProportion(control);
-            if (isCollapsed)
+            if (!isSplitter)
             {
-                proportion = 0.0;
-            }
+                var proportion = GetProportion(control);
 
-            var fixedSize = GetFixedSize(control, orientation);
-            if (fixedSize.HasValue)
-            {
-                proportion = fixedSize.Value / dimensionWithoutSplitters;
-                SetProportion(control, proportion);
-                assignedProportion += proportion;
-            }
-            else
-            {
+                if (isCollapsed)
+                {
+                    proportion = 0.0;
+                }
+
                 if (double.IsNaN(proportion))
                 {
-                    proportion = 1.0;
+                    unassignedProportions++;
                 }
-                dynamicSum += proportion;
+                else
+                {
+                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
+                    SetProportion(control, proportion);
+                    assignedProportion += proportion;
+                }
             }
         }
 
-        if (dynamicChildren.Count > 0)
+        if (unassignedProportions > 0)
         {
-            var available = Math.Max(0.0, 1.0 - assignedProportion);
-            foreach (var control in dynamicChildren)
+            var toAssign = assignedProportion;
+            foreach (var control in children.Where(c =>
+                     {
+                         var isCollapsed = GetIsCollapsed(c);
+                         return !isCollapsed && double.IsNaN(GetProportion(c));
+                     }))
             {
-                var p = GetProportion(control);
-                if (double.IsNaN(p)) p = 1.0;
-                var newProp = dynamicSum > 0 ? (p / dynamicSum) * available : available / dynamicChildren.Count;
-                SetProportion(control, newProp);
+                if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
+                {
+                    var proportion = (1.0 - toAssign) / unassignedProportions;
+                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
+                    SetProportion(control, proportion);
+                    assignedProportion += proportion;
+                }
             }
-            assignedProportion = 1.0;
         }
 
         if (assignedProportion < 1)

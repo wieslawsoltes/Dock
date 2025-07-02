@@ -27,6 +27,7 @@ guides under *Getting started*.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
+- [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference
@@ -34,6 +35,7 @@ guides under *Getting started*.
 - [Reference guide](dock-reference.md) – Overview of the core APIs.
 - [Glossary](dock-glossary.md) – Definitions of common Dock terms.
 - [Dockable property settings](dock-dockable-properties.md) – Configure per item behaviour.
+- [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
 
 ## Troubleshooting
 

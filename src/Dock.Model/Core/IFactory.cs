@@ -17,14 +17,29 @@ public partial interface IFactory
     IDictionary<IDockable, IDockableControl> VisibleDockableControls { get; }
 
     /// <summary>
+    /// Gets visible dockable root controls.
+    /// </summary>
+    IDictionary<IDockable, object> VisibleRootControls { get; }
+
+    /// <summary>
     /// Gets pinned dockable controls.
     /// </summary>
     IDictionary<IDockable, IDockableControl> PinnedDockableControls { get; }
 
     /// <summary>
+    /// Gets pinned dockable root controls.
+    /// </summary>
+    IDictionary<IDockable, object> PinnedRootControls { get; }
+
+    /// <summary>
     /// Gets tab dockable controls.
     /// </summary>
     IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+    /// <summary>
+    /// Gets tab dockable root controls.
+    /// </summary>
+    IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <summary>
     /// Gets dock controls.

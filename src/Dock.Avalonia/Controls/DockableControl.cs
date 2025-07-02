@@ -85,24 +85,28 @@ public class DockableControl : Panel, IDockableControl
 
     private void Register(IDockable dockable)
     {
+        var root = TemplatedParent ?? this;
         switch (TrackingMode)
         {
             case TrackingMode.Visible:
                 if (dockable.Factory is not null)
                 {
                     dockable.Factory.VisibleDockableControls[dockable] = this;
+                    dockable.Factory.VisibleRootControls[dockable] = root;
                 }
                 break;
             case TrackingMode.Pinned:
                 if (dockable.Factory is not null)
                 {
                     dockable.Factory.PinnedDockableControls[dockable] = this;
+                    dockable.Factory.PinnedRootControls[dockable] = root;
                 }
                 break;
             case TrackingMode.Tab:
                 if (dockable.Factory is not null)
                 {
                     dockable.Factory.TabDockableControls[dockable] = this;
+                    dockable.Factory.TabRootControls[dockable] = root;
                 }
                 break;
         }
@@ -113,13 +117,25 @@ public class DockableControl : Panel, IDockableControl
         switch (TrackingMode)
         {
             case TrackingMode.Visible:
-                dockable.Factory?.VisibleDockableControls.Remove(dockable);
+                if (dockable.Factory is not null)
+                {
+                    dockable.Factory.VisibleDockableControls.Remove(dockable);
+                    dockable.Factory.VisibleRootControls.Remove(dockable);
+                }
                 break;
             case TrackingMode.Pinned:
-                dockable.Factory?.PinnedDockableControls.Remove(dockable);
+                if (dockable.Factory is not null)
+                {
+                    dockable.Factory.PinnedDockableControls.Remove(dockable);
+                    dockable.Factory.PinnedRootControls.Remove(dockable);
+                }
                 break;
             case TrackingMode.Tab:
-                dockable.Factory?.TabDockableControls.Remove(dockable);
+                if (dockable.Factory is not null)
+                {
+                    dockable.Factory.TabDockableControls.Remove(dockable);
+                    dockable.Factory.TabRootControls.Remove(dockable);
+                }
                 break;
         }
     }

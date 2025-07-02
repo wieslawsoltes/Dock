@@ -48,7 +48,6 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     public partial object? Context { get; set; }
 
     /// <inheritdoc/>
-    [IgnoreDataMember]
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial IDockable? Owner { get; set; }
 

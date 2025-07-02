@@ -15,6 +15,10 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `IsEmpty` | Indicates a placeholder dockable with no content. |
 | `IsCollapsable` | When `false`, the dock will remain even if it contains no children. |
 | `Proportion` | Size ratio used by `ProportionalDock`. |
+| `MinWidth` | Optional minimum width. Overrides the current proportion if larger. |
+| `MaxWidth` | Optional maximum width. Overrides the proportion if smaller. |
+| `MinHeight` | Optional minimum height. Overrides the current proportion if larger. |
+| `MaxHeight` | Optional maximum height. Overrides the proportion if smaller. |
 | `CanClose` | Whether the user can close the dockable via UI commands. |
 | `CanPin` | Allows pinning and unpinning of tools. |
 | `CanFloat` | Controls if the item may be detached into a floating window. |

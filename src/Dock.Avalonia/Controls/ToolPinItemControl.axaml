@@ -7,16 +7,20 @@
     <ToolPinItemControl Width="30" Height="400" />
   </Design.PreviewWith>
 
+  <x:String x:Key="ToolPinItemControlFloatString">_Float</x:String>
+  <x:String x:Key="ToolPinItemControlShowString">_Show</x:String>
+  <x:String x:Key="ToolPinItemControlCloseString">_Close</x:String>
+
   <ContextMenu x:Key="ToolPinItemControlContextMenu">
-    <MenuItem Header="_Float"
+    <MenuItem Header="{DynamicResource ToolPinItemControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
-    <MenuItem Header="_Show"
+    <MenuItem Header="{DynamicResource ToolPinItemControlShowString}"
               Command="{Binding Owner.Factory.PreviewPinnedDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanPin}"/>
-    <MenuItem Header="_Close"
+    <MenuItem Header="{DynamicResource ToolPinItemControlCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>

@@ -13,7 +13,7 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
-    private readonly Dictionary<IDockable, (double Width, double Height)> _pinnedPreviewSizes = new();
+    private readonly Dictionary<IDockable, (double Width, double Height, double Proportion)> _pinnedPreviewSizes = new();
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -328,6 +328,13 @@ public abstract partial class FactoryBase
 
         foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
         {
+            dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+            var proportion = dockable.Proportion;
+            if (!double.IsNaN(width) && !double.IsNaN(height))
+            {
+                _pinnedPreviewSizes[dockable] = (width, height, proportion);
+            }
+
             dockable.Owner = dockable.OriginalOwner;
             dockable.OriginalOwner = null;
         }
@@ -364,6 +371,10 @@ public abstract partial class FactoryBase
             if (!double.IsNaN(size.Width) && !double.IsNaN(size.Height))
             {
                 dockable.SetVisibleBounds(double.NaN, double.NaN, size.Width, size.Height);
+            }
+            if (!double.IsNaN(size.Proportion))
+            {
+                dockable.Proportion = size.Proportion;
             }
         }
 
@@ -402,9 +413,10 @@ public abstract partial class FactoryBase
                     // Pin dockable.
 
                     dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+                    var proportion = dockable.Proportion;
                     if (!double.IsNaN(width) && !double.IsNaN(height))
                     {
-                        _pinnedPreviewSizes[dockable] = (width, height);
+                        _pinnedPreviewSizes[dockable] = (width, height, proportion);
                     }
 
                     switch (alignment)

@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -43,7 +45,7 @@ public abstract partial class FactoryBase
             }
         }
  
-        dockable.Owner = owner;
+        dockable.Owner ??= owner;
 
         if (dockable is IDock dock)
         {
@@ -51,10 +53,7 @@ public abstract partial class FactoryBase
 
             if (dock.VisibleDockables is not null)
             {
-                foreach (var child in dock.VisibleDockables)
-                {
-                    InitDockable(child, dockable);
-                }
+                InitDockables(dockable, dock.VisibleDockables);
 
                 UpdateIsEmpty(dock);
             }
@@ -62,6 +61,31 @@ public abstract partial class FactoryBase
 
         if (dockable is IRootDock rootDock)
         {
+            if (rootDock.HiddenDockables is not null)
+            {
+                InitDockables(dockable, rootDock.HiddenDockables);
+            }
+
+            if (rootDock.LeftPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.LeftPinnedDockables);
+            }
+
+            if (rootDock.RightPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.RightPinnedDockables);
+            }
+
+            if (rootDock.TopPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.TopPinnedDockables);
+            }
+
+            if (rootDock.BottomPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.BottomPinnedDockables);
+            }
+
             if (rootDock.Windows is not null)
             {
                 foreach (var child in rootDock.Windows)
@@ -74,6 +98,14 @@ public abstract partial class FactoryBase
         OnDockableInit(dockable);
     }
 
+    private void InitDockables(IDockable dockable, IList<IDockable> dockables)
+    {
+        foreach (var child in dockables)
+        {
+            InitDockable(child, dockable);
+        }
+    }
+
     /// <inheritdoc/>
     public virtual void InitDockWindow(IDockWindow window, IDockable? owner)
     {
@@ -83,7 +115,8 @@ public abstract partial class FactoryBase
             window.Host.Window = window;
         }
 
-        window.Owner = owner;
+        window.Owner ??= owner;
+
         window.Factory = this;
 
         if (window.Layout is not null)

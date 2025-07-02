@@ -27,6 +27,7 @@ guides under *Getting started*.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
+- [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference

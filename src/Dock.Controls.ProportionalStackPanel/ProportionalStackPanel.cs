@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -17,6 +18,46 @@ namespace Dock.Controls.ProportionalStackPanel;
 public class ProportionalStackPanel : Panel
 {
     private bool isAssigningProportions;
+    private readonly Dictionary<Control, double> _savedProportions = new();
+
+    private void BackupProportions()
+    {
+        _savedProportions.Clear();
+        foreach (var child in Children)
+        {
+            if (!ProportionalStackPanelSplitter.IsSplitter(child, out _))
+            {
+                _savedProportions[child] = GetProportion(child);
+            }
+        }
+    }
+
+    private void RestoreProportions()
+    {
+        foreach (var kvp in _savedProportions)
+        {
+            SetProportion(kvp.Key, kvp.Value);
+        }
+        _savedProportions.Clear();
+    }
+
+    private void OnIsCollapsedChanged(Control? control, bool isCollapsed)
+    {
+        if (control == null)
+            return;
+
+        if (isCollapsed)
+        {
+            BackupProportions();
+        }
+        else if (_savedProportions.Count > 0)
+        {
+            RestoreProportions();
+        }
+
+        InvalidateMeasure();
+        InvalidateArrange();
+    }
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
@@ -520,6 +561,14 @@ public class ProportionalStackPanel : Panel
     {
         AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
         AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
+
+        IsCollapsedProperty.Changed.AddClassHandler<Control>((sender, e) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel panel)
+                return;
+
+            panel.OnIsCollapsedChanged(sender as Control, e.NewValue is bool b && b);
+        });
 
         ProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
         {

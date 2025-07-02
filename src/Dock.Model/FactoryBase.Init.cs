@@ -45,7 +45,7 @@ public abstract partial class FactoryBase
             }
         }
  
-        dockable.Owner ??= owner;
+        dockable.Owner = owner;
 
         if (dockable is IDock dock)
         {
@@ -115,7 +115,7 @@ public abstract partial class FactoryBase
             window.Host.Window = window;
         }
 
-        window.Owner ??= owner;
+        window.Owner = owner;
 
         window.Factory = this;
 

@@ -163,8 +163,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     [ResolveByName]
-    [IgnoreDataMember]
-    [JsonIgnore]
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Owner")]
     public IDockable? Owner
     {
         get => _owner;

@@ -357,6 +357,12 @@ public abstract partial class FactoryBase
 
         RemoveAllVisibleDockables(rootDock.PinnedDock!);
 
+        dockable.GetPinnedBounds(out _, out _, out var width, out var height);
+        if (!double.IsNaN(width) || !double.IsNaN(height))
+        {
+            dockable.SetVisibleBounds(double.NaN, double.NaN, width, height);
+        }
+
         dockable.OriginalOwner = dockable.Owner;
         AddVisibleDockable(rootDock.PinnedDock!, dockable);
     }
@@ -390,6 +396,9 @@ public abstract partial class FactoryBase
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
+
+                    dockable.GetVisibleBounds(out var x, out var y, out var width, out var height);
+                    dockable.SetPinnedBounds(x, y, width, height);
 
                     switch (alignment)
                     {

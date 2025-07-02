@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
@@ -12,6 +13,7 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    private readonly Dictionary<IDockable, (double Width, double Height)> _pinnedPreviewSizes = new();
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -357,10 +359,12 @@ public abstract partial class FactoryBase
 
         RemoveAllVisibleDockables(rootDock.PinnedDock!);
 
-        dockable.GetPinnedBounds(out _, out _, out var width, out var height);
-        if (!double.IsNaN(width) && !double.IsNaN(height))
+        if (_pinnedPreviewSizes.TryGetValue(dockable, out var size))
         {
-            dockable.SetVisibleBounds(double.NaN, double.NaN, width, height);
+            if (!double.IsNaN(size.Width) && !double.IsNaN(size.Height))
+            {
+                dockable.SetVisibleBounds(double.NaN, double.NaN, size.Width, size.Height);
+            }
         }
 
         dockable.OriginalOwner = dockable.Owner;
@@ -397,10 +401,10 @@ public abstract partial class FactoryBase
                 {
                     // Pin dockable.
 
-                    dockable.GetVisibleBounds(out var x, out var y, out var width, out var height);
+                    dockable.GetVisibleBounds(out _, out _, out var width, out var height);
                     if (!double.IsNaN(width) && !double.IsNaN(height))
                     {
-                        dockable.SetPinnedBounds(x, y, width, height);
+                        _pinnedPreviewSizes[dockable] = (width, height);
                     }
 
                     switch (alignment)
@@ -498,6 +502,7 @@ public abstract partial class FactoryBase
                             {
                                 rootDock.LeftPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
+                                _pinnedPreviewSizes.Remove(dockable);
                             }
 
                             break;
@@ -508,6 +513,7 @@ public abstract partial class FactoryBase
                             {
                                 rootDock.RightPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
+                                _pinnedPreviewSizes.Remove(dockable);
                             }
 
                             break;
@@ -518,6 +524,7 @@ public abstract partial class FactoryBase
                             {
                                 rootDock.TopPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
+                                _pinnedPreviewSizes.Remove(dockable);
                             }
 
                             break;
@@ -528,6 +535,7 @@ public abstract partial class FactoryBase
                             {
                                 rootDock.BottomPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
+                                _pinnedPreviewSizes.Remove(dockable);
                             }
 
                             break;

@@ -27,6 +27,11 @@ public partial interface IFactory
     IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
     /// <summary>
+    /// Gets stored dockable proportions.
+    /// </summary>
+    IDictionary<IDockable, double> DockableProportions { get; }
+
+    /// <summary>
     /// Gets dock controls.
     /// </summary>
     IList<IDockControl> DockControls { get; }

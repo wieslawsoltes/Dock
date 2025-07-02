@@ -22,6 +22,7 @@ public class Factory : FactoryBase
         VisibleDockableControls = new Dictionary<IDockable, IDockableControl>();
         PinnedDockableControls = new Dictionary<IDockable, IDockableControl>();
         TabDockableControls = new Dictionary<IDockable, IDockableControl>();
+        DockableProportions = new Dictionary<IDockable, double>();
         DockControls = new ObservableCollection<IDockControl>();
         HostWindows = new ObservableCollection<IHostWindow>();
     }
@@ -34,6 +35,9 @@ public class Factory : FactoryBase
 
     /// <inheritdoc/>
     public override IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
+
+    /// <inheritdoc/>
+    public override IDictionary<IDockable, double> DockableProportions { get; }
 
     /// <inheritdoc/>
     public override IList<IDockControl> DockControls { get; }

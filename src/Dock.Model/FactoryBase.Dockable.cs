@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
@@ -390,6 +391,7 @@ public abstract partial class FactoryBase
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
+                    DockableProportions[dockable] = dockable.Proportion;
 
                     switch (alignment)
                     {
@@ -474,6 +476,11 @@ public abstract partial class FactoryBase
                 else if (isPinned)
                 {
                     // Unpin dockable.
+                    if (DockableProportions.TryGetValue(dockable, out var proportion))
+                    {
+                        dockable.Proportion = proportion;
+                        DockableProportions.Remove(dockable);
+                    }
 
                     toolDock.VisibleDockables ??= CreateList<IDockable>();
 

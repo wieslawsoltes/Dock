@@ -21,6 +21,9 @@ public abstract partial class FactoryBase
     public abstract IDictionary<IDockable, IDockableControl> TabDockableControls { get; }
 
     /// <inheritdoc/>
+    public abstract IDictionary<IDockable, double> DockableProportions { get; }
+
+    /// <inheritdoc/>
     public abstract IList<IDockControl> DockControls { get; }
 
     /// <inheritdoc/>

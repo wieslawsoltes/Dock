@@ -532,6 +532,7 @@ public abstract partial class FactoryBase
                     if (!isVisible)
                     {
                         AddVisibleDockable(toolDock, dockable);
+                        AdjustProportionsAfterUnpin(toolDock, dockable);
                     }
                     else
                     {
@@ -539,6 +540,7 @@ public abstract partial class FactoryBase
                         var originalOwner = (IDock)dockable.OriginalOwner!;
                         HidePreviewingDockables(rootDock);
                         AddVisibleDockable(originalOwner, dockable);
+                        AdjustProportionsAfterUnpin(originalOwner, dockable);
                     }
 
                     OnDockableAdded(dockable);
@@ -717,6 +719,39 @@ public abstract partial class FactoryBase
         }
         dock.VisibleDockables.Insert(index, dockable);
         UpdateIsEmpty(dock);
+    }
+
+    private void AdjustProportionsAfterUnpin(IDock dock, IDockable dockable)
+    {
+        if (dock.VisibleDockables is null)
+            return;
+
+        var siblings = dock.VisibleDockables
+            .Where(x => x != dockable && x is not IProportionalDockSplitter)
+            .ToList();
+
+        if (siblings.Count == 0)
+            return;
+
+        var sum = siblings.Sum(x => x.Proportion);
+        var remaining = 1.0 - dockable.Proportion;
+
+        if (sum <= 0)
+        {
+            var equal = remaining / siblings.Count;
+            foreach (var s in siblings)
+            {
+                s.Proportion = equal;
+            }
+        }
+        else
+        {
+            var factor = remaining / sum;
+            foreach (var s in siblings)
+            {
+                s.Proportion *= factor;
+            }
+        }
     }
 
     /// <summary>

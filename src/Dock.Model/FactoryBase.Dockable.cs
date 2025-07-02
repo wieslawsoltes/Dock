@@ -319,18 +319,18 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public void HidePreviewingDockables(IRootDock rootDock)
     {
-        if (rootDock.PinnedDock == null)
-            return;
-
-        if (rootDock.PinnedDock.VisibleDockables != null)
+        if (rootDock.PinnedDock?.VisibleDockables is null)
         {
-            foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
-            {
-                dockable.Owner = dockable.OriginalOwner;
-                dockable.OriginalOwner = null;
-            }
-            RemoveAllVisibleDockables(rootDock.PinnedDock);
+            return;
         }
+
+        foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+        {
+            dockable.Owner = dockable.OriginalOwner;
+            dockable.OriginalOwner = null;
+        }
+
+        RemoveAllVisibleDockables(rootDock.PinnedDock);
     }
 
     /// <inheritdoc/>

@@ -38,4 +38,21 @@ DockSettings.MinimumVerticalDragDistance = 4;
 
 Increase these values if small pointer movements should not initiate dragging.
 
+## Hide on close
+
+`FactoryBase` exposes two properties that control whether closing a tool or
+document hides it instead of removing it. Hidden items can be restored through
+the factory helpers:
+
+```csharp
+var factory = new MyFactory
+{
+    HideToolsOnClose = true,
+    HideDocumentsOnClose = true
+};
+```
+
+When enabled (the default) the `CloseDockable` command moves the dockable to the
+`IRootDock.HiddenDockables` collection instead of deleting it.
+
 For more details on dockable properties see [Dockable Property Settings](dock-dockable-properties.md).

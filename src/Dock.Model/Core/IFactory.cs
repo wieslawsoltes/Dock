@@ -37,6 +37,16 @@ public partial interface IFactory
     IList<IHostWindow> HostWindows { get; }
 
     /// <summary>
+    /// When true closing a tool hides it instead of removing it.
+    /// </summary>
+    bool HideToolsOnClose { get; set; }
+
+    /// <summary>
+    /// When true closing a document hides it instead of removing it.
+    /// </summary>
+    bool HideDocumentsOnClose { get; set; }
+
+    /// <summary>
     /// Gets or sets <see cref="IDockable.Context"/> default locator.
     /// </summary>
     Func<object?>? DefaultContextLocator { get; set; }
@@ -333,6 +343,31 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable owner source.</param>
     void CloseRightDockables(IDockable dockable);
+
+    /// <summary>
+    /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.
+    /// </summary>
+    /// <param name="dockable">The dockable to hide.</param>
+    void HideDockable(IDockable dockable);
+
+    /// <summary>
+    /// Hides the dockable with the specified id.
+    /// </summary>
+    /// <param name="id">The dockable id.</param>
+    void HideDockable(string id);
+
+    /// <summary>
+    /// Restores a hidden dockable to its original dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to restore.</param>
+    void RestoreDockable(IDockable dockable);
+
+    /// <summary>
+    /// Restores a hidden dockable to its original dock.
+    /// </summary>
+    /// <param name="id">The dockable id.</param>
+    /// <returns>The restored dockable or null.</returns>
+    IDockable? RestoreDockable(string id);
 
     /// <summary>
     /// Adds window into dock windows list.

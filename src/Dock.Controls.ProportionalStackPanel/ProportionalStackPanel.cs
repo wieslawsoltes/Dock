@@ -176,7 +176,9 @@ public class ProportionalStackPanel : Panel
 
                 if (isCollapsed)
                 {
-                    if (double.IsNaN(GetCollapsedProportion(control)))
+                    // always remember the current size before collapsing so repeated
+                    // pin/unpin cycles restore the latest proportion
+                    if (!double.IsNaN(proportion) && proportion > 0)
                     {
                         SetCollapsedProportion(control, proportion);
                     }

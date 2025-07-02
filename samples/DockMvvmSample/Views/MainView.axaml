@@ -20,6 +20,12 @@
     <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
       <MenuItem Header="_File">
         <MenuItem Header="_New Layout" Command="{Binding NewLayout}" />
+        <Separator/>
+        <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
+        <Separator/>
+        <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
+        <Separator/>
+        <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
       </MenuItem>
       <MenuItem Header="_Window" DataContext="{Binding Layout}">
         <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}" />

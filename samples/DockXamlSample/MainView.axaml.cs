@@ -1,18 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
-using Dock.Avalonia.Controls;
+using Avalonia.VisualTree;
 using Dock.Model;
-using Dock.Model.Avalonia.Controls;
-using Dock.Model.Avalonia.Json;
 using Dock.Model.Core;
 using Dock.Serializer;
 
@@ -20,25 +16,26 @@ namespace DockXamlSample;
 
 public partial class MainView : UserControl
 {
-    private readonly IDockSerializer _serializer;
-    private readonly IDockState _dockState;
+    private IDockSerializer? _serializer;
+    private IDockState? _dockState;
 
     public MainView()
     {
         InitializeComponent();
+        InitializeDockState();
+    }
 
+    private void InitializeDockState()
+    {
         _serializer = new DockSerializer(typeof(AvaloniaList<>));
+        // TODO:
         // _serializer = new AvaloniaDockSerializer();
-
         _dockState = new DockState();
 
-        if (Dock is { })
+        var layout = DockControl?.Layout;
+        if (layout != null)
         {
-            var layout = Dock.Layout;
-            if (layout is { })
-            {
-                _dockState.Save(layout);
-            }
+            _dockState.Save(layout);
         }
     }
 
@@ -47,27 +44,14 @@ public partial class MainView : UserControl
         AvaloniaXamlLoader.Load(this);
     }
 
-    private List<FilePickerFileType> GetOpenOpenLayoutFileTypes()
-    {
-        return new List<FilePickerFileType>
-        {
-            StorageService.Json,
-            StorageService.All
-        };
-    }
-
-    private List<FilePickerFileType> GetSaveOpenLayoutFileTypes()
-    {
-        return new List<FilePickerFileType>
-        {
-            StorageService.Json,
-            StorageService.All
-        };
-    }
-
     private async Task OpenLayout()
     {
-        var storageProvider = StorageService.GetStorageProvider();
+        if (_serializer is null || _dockState is null)
+        {
+            return;
+        }
+
+        var storageProvider = (this.GetVisualRoot() as TopLevel)?.StorageProvider;
         if (storageProvider is null)
         {
             return;
@@ -76,7 +60,7 @@ public partial class MainView : UserControl
         var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open layout",
-            FileTypeFilter = GetOpenOpenLayoutFileTypes(),
+            FileTypeFilter = [new FilePickerFileType("Json") { Patterns = ["*.json"] }, new FilePickerFileType("All") { Patterns = ["*.*"] }],
             AllowMultiple = false
         });
 
@@ -88,8 +72,7 @@ public partial class MainView : UserControl
             {
                 await using var stream = await file.OpenReadAsync();
                 using var reader = new StreamReader(stream);
-                var dock = this.FindControl<DockControl>("Dock");
-                if (dock is { })
+                if (DockControl is not null)
                 {
                     var layout = _serializer.Load<IDock?>(stream);
                     // TODO:
@@ -98,7 +81,8 @@ public partial class MainView : UserControl
                     //     AvaloniaDockSerializer.s_serializerContext.RootDock);
                     if (layout is { })
                     {
-                        dock.Layout = layout;
+                        DockControl.Layout = layout;
+                        DockControl.Factory?.InitLayout(layout);
                         _dockState.Restore(layout);
                     }
                 }
@@ -112,7 +96,12 @@ public partial class MainView : UserControl
 
     private async Task SaveLayout()
     {
-        var storageProvider = StorageService.GetStorageProvider();
+        if (_serializer is null || _dockState is null)
+        {
+            return;
+        }
+
+        var storageProvider = (this.GetVisualRoot() as TopLevel)?.StorageProvider;
         if (storageProvider is null)
         {
             return;
@@ -121,7 +110,7 @@ public partial class MainView : UserControl
         var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
             Title = "Save layout",
-            FileTypeChoices = GetSaveOpenLayoutFileTypes(),
+            FileTypeChoices = [new FilePickerFileType("Json") { Patterns = ["*.json"] }, new FilePickerFileType("All") { Patterns = ["*.*"] }],
             SuggestedFileName = "layout",
             DefaultExtension = "json",
             ShowOverwritePrompt = true
@@ -132,10 +121,9 @@ public partial class MainView : UserControl
             try
             {
                 await using var stream = await file.OpenWriteAsync();
-                var dock = this.FindControl<DockControl>("Dock");
-                if (dock?.Layout is { })
+                if (DockControl?.Layout is not null)
                 {
-                    _serializer.Save(stream, dock.Layout);
+                    _serializer.Save(stream, DockControl.Layout);
                     // TODO:
                     // await JsonSerializer.SerializeAsync(
                     //     stream, 
@@ -151,10 +139,9 @@ public partial class MainView : UserControl
 
     private void CloseLayout()
     {
-        var dock = this.FindControl<DockControl>("Dock");
-        if (dock is { })
+        if (DockControl is not null)
         {
-            dock.Layout = null;
+            DockControl.Layout = null;
         }
     }
 

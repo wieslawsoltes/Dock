@@ -72,7 +72,8 @@ public class ProportionalStackPanel : Panel
     /// </summary>
     public static readonly AttachedProperty<double> CollapsedProportionProperty =
         AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, double>(
-            "CollapsedProportion", double.NaN);
+            "CollapsedProportion", double.NaN, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the CollapsedProportion attached property on the specified control.
@@ -188,7 +189,6 @@ public class ProportionalStackPanel : Panel
                     if (!double.IsNaN(stored))
                     {
                         proportion = stored;
-                        SetCollapsedProportion(control, double.NaN);
                     }
                 }
 
@@ -200,6 +200,10 @@ public class ProportionalStackPanel : Panel
                 {
                     proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
                     SetProportion(control, proportion);
+                    if (!isCollapsed)
+                    {
+                        SetCollapsedProportion(control, proportion);
+                    }
                     assignedProportion += proportion;
                 }
             }

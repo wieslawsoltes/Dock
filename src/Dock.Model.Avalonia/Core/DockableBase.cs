@@ -81,6 +81,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockBase, double>(nameof(Proportion), o => o.Proportion, (o, v) => o.Proportion = v, double.NaN);
 
     /// <summary>
+    /// Defines the <see cref="CollapsedProportion"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockBase, double> CollapsedProportionProperty =
+        AvaloniaProperty.RegisterDirect<DockBase, double>(nameof(CollapsedProportion), o => o.CollapsedProportion, (o, v) => o.CollapsedProportion = v, double.NaN);
+
+    /// <summary>
     /// Defines the <see cref="CanClose"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, bool> CanCloseProperty =
@@ -144,6 +150,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _isEmpty;
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
+    private double _collapsedProportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _canFloat = true;
@@ -243,6 +250,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _proportion;
         set => SetAndRaise(ProportionProperty, ref _proportion, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CollapsedProportion")]
+    public double CollapsedProportion
+    {
+        get => _collapsedProportion;
+        set => SetAndRaise(CollapsedProportionProperty, ref _collapsedProportion, value);
     }
 
     /// <inheritdoc/>

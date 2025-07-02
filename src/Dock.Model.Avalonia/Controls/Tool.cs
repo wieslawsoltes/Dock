@@ -19,39 +19,13 @@ namespace Dock.Model.Avalonia.Controls;
 [DataContract(IsReference = true)]
 public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Control?>, IRecyclingDataTemplate
 {
-    private double _minWidth = double.NaN;
-    private double _maxWidth = double.NaN;
-    private double _minHeight = double.NaN;
-    private double _maxHeight = double.NaN;
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
     public static readonly StyledProperty<object?> ContentProperty =
         AvaloniaProperty.Register<Tool, object?>(nameof(Content));
 
-    /// <summary>
-    /// Defines the <see cref="MinWidth"/> property.
-    /// </summary>
-    public static readonly DirectProperty<Tool, double> MinWidthProperty =
-        AvaloniaProperty.RegisterDirect<Tool, double>(nameof(MinWidth), o => o.MinWidth, (o, v) => o.MinWidth = v, double.NaN);
 
-    /// <summary>
-    /// Defines the <see cref="MaxWidth"/> property.
-    /// </summary>
-    public static readonly DirectProperty<Tool, double> MaxWidthProperty =
-        AvaloniaProperty.RegisterDirect<Tool, double>(nameof(MaxWidth), o => o.MaxWidth, (o, v) => o.MaxWidth = v, double.NaN);
-
-    /// <summary>
-    /// Defines the <see cref="MinHeight"/> property.
-    /// </summary>
-    public static readonly DirectProperty<Tool, double> MinHeightProperty =
-        AvaloniaProperty.RegisterDirect<Tool, double>(nameof(MinHeight), o => o.MinHeight, (o, v) => o.MinHeight = v, double.NaN);
-
-    /// <summary>
-    /// Defines the <see cref="MaxHeight"/> property.
-    /// </summary>
-    public static readonly DirectProperty<Tool, double> MaxHeightProperty =
-        AvaloniaProperty.RegisterDirect<Tool, double>(nameof(MaxHeight), o => o.MaxHeight, (o, v) => o.MaxHeight = v, double.NaN);
 
     /// <summary>
     /// Initializes new instance of the <see cref="Tool"/> class.
@@ -129,35 +103,4 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
         return TemplateHelper.Build(Content, this);
     }
 
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double MinWidth
-    {
-        get => _minWidth;
-        set => SetAndRaise(MinWidthProperty, ref _minWidth, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double MaxWidth
-    {
-        get => _maxWidth;
-        set => SetAndRaise(MaxWidthProperty, ref _maxWidth, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double MinHeight
-    {
-        get => _minHeight;
-        set => SetAndRaise(MinHeightProperty, ref _minHeight, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public double MaxHeight
-    {
-        get => _maxHeight;
-        set => SetAndRaise(MaxHeightProperty, ref _maxHeight, value);
-    }
 }

@@ -87,12 +87,12 @@ public class ProportionalStackPanel : Panel
         control.SetValue(IsCollapsedProperty, value);
     }
 
-    private void AssignProportions()
+    private void AssignProportions(Size size, double splitterThickness)
     {
         isAssigningProportions = true;
         try
         {
-            AssignProportionsInternal(Children);
+            AssignProportionsInternal(Children, size, splitterThickness, Orientation);
         }
         finally
         {
@@ -100,53 +100,81 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private static void AssignProportionsInternal(Avalonia.Controls.Controls children)
+    private static double? GetFixedSize(Control control, Orientation orientation)
     {
-        var assignedProportion = 0.0;
-        var unassignedProportions = 0;
-
-        for (var i = 0; i < children.Count; i++)
+        if (orientation == Orientation.Horizontal)
         {
-            var control = children[i];
+            if (!double.IsNaN(control.MinWidth))
+                return control.MinWidth;
+            if (!double.IsNaN(control.MaxWidth))
+                return control.MaxWidth;
+        }
+        else
+        {
+            if (!double.IsNaN(control.MinHeight))
+                return control.MinHeight;
+            if (!double.IsNaN(control.MaxHeight))
+                return control.MaxHeight;
+        }
+
+        return null;
+    }
+
+    private static void AssignProportionsInternal(Avalonia.Controls.Controls children, Size size, double splitterThickness, Orientation orientation)
+    {
+        var dimension = orientation == Orientation.Horizontal ? size.Width : size.Height;
+        var dimensionWithoutSplitters = Math.Max(1.0, dimension - splitterThickness);
+
+        var assignedProportion = 0.0;
+        var dynamicChildren = children.OfType<Control>().Where(c =>
+        {
+            var isCollapsed = GetIsCollapsed(c);
+            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(c, out _);
+            return !isSplitter && !isCollapsed && GetFixedSize(c, orientation) == null;
+        }).ToList();
+        double dynamicSum = 0.0;
+
+        foreach (var control in children.OfType<Control>())
+        {
             var isCollapsed = GetIsCollapsed(control);
             var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
+            if (isSplitter)
+                continue;
 
-            if (!isSplitter)
+            var proportion = GetProportion(control);
+            if (isCollapsed)
             {
-                var proportion = GetProportion(control);
+                proportion = 0.0;
+            }
 
-                if (isCollapsed)
-                {
-                    proportion = 0.0;
-                }
-
+            var fixedSize = GetFixedSize(control, orientation);
+            if (fixedSize.HasValue)
+            {
+                proportion = fixedSize.Value / dimensionWithoutSplitters;
+                SetProportion(control, proportion);
+                assignedProportion += proportion;
+            }
+            else
+            {
                 if (double.IsNaN(proportion))
                 {
-                    unassignedProportions++;
+                    proportion = 1.0;
                 }
-                else
-                {
-                    assignedProportion += proportion;
-                }
+                dynamicSum += proportion;
             }
         }
 
-        if (unassignedProportions > 0)
+        if (dynamicChildren.Count > 0)
         {
-            var toAssign = assignedProportion;
-            foreach (var control in children.Where(c =>
-                     {
-                         var isCollapsed = GetIsCollapsed(c);
-                         return !isCollapsed && double.IsNaN(GetProportion(c));
-                     }))
+            var available = Math.Max(0.0, 1.0 - assignedProportion);
+            foreach (var control in dynamicChildren)
             {
-                if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
-                {
-                    var proportion = (1.0 - toAssign) / unassignedProportions;
-                    SetProportion(control, proportion);
-                    assignedProportion += (1.0 - toAssign) / unassignedProportions;
-                }
+                var p = GetProportion(control);
+                if (double.IsNaN(p)) p = 1.0;
+                var newProp = dynamicSum > 0 ? (p / dynamicSum) * available : available / dynamicChildren.Count;
+                SetProportion(control, newProp);
             }
+            assignedProportion = 1.0;
         }
 
         if (assignedProportion < 1)
@@ -156,9 +184,7 @@ public class ProportionalStackPanel : Panel
                 var isCollapsed = GetIsCollapsed(c);
                 return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
             });
-
             var toAdd = (1.0 - assignedProportion) / numChildren;
-
             foreach (var child in children.Where(c =>
                      {
                          var isCollapsed = GetIsCollapsed(c);
@@ -176,9 +202,7 @@ public class ProportionalStackPanel : Panel
                 var isCollapsed = GetIsCollapsed(c);
                 return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
             });
-
             var toRemove = (assignedProportion - 1.0) / numChildren;
-
             foreach (var child in children.Where(c =>
                      {
                          var isCollapsed = GetIsCollapsed(c);
@@ -249,7 +273,7 @@ public class ProportionalStackPanel : Panel
         var maximumHeight = 0.0;
         var splitterThickness = GetTotalSplitterThickness(Children);
 
-        AssignProportions();
+        AssignProportions(constraint, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;
@@ -372,7 +396,7 @@ public class ProportionalStackPanel : Panel
         var splitterThickness = GetTotalSplitterThickness(Children);
         var index = 0;
 
-        AssignProportions();
+        AssignProportions(arrangeSize, splitterThickness);
 
         var needsNextSplitter = false;
         double sumOfFractions = 0;

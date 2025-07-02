@@ -104,16 +104,16 @@ public class ProportionalStackPanel : Panel
     {
         if (orientation == Orientation.Horizontal)
         {
-            if (!double.IsNaN(control.MinWidth))
+            if (!double.IsNaN(control.MinWidth) && control.MinWidth > 0)
                 return control.MinWidth;
-            if (!double.IsNaN(control.MaxWidth))
+            if (!double.IsNaN(control.MaxWidth) && !double.IsPositiveInfinity(control.MaxWidth))
                 return control.MaxWidth;
         }
         else
         {
-            if (!double.IsNaN(control.MinHeight))
+            if (!double.IsNaN(control.MinHeight) && control.MinHeight > 0)
                 return control.MinHeight;
-            if (!double.IsNaN(control.MaxHeight))
+            if (!double.IsNaN(control.MaxHeight) && !double.IsPositiveInfinity(control.MaxHeight))
                 return control.MaxHeight;
         }
 

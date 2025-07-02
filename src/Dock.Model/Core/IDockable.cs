@@ -56,6 +56,11 @@ public interface IDockable : IControlRecyclingIdProvider
     double Proportion { get; set; }
 
     /// <summary>
+    /// Gets or sets last known proportion before collapse.
+    /// </summary>
+    double CollapsedProportion { get; set; }
+
+    /// <summary>
     /// Gets or sets minimum width.
     /// </summary>
     double MinWidth { get; set; }

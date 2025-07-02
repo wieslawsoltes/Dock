@@ -23,6 +23,7 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _title = string.Empty;
         _isCollapsable = true;
         _proportion = double.NaN;
+        _collapsedProportion = double.NaN;
         _canClose = true;
         _canPin = true;
         _canFloat = true;
@@ -70,6 +71,10 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial double Proportion { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial double CollapsedProportion { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

@@ -68,6 +68,30 @@ public class ProportionalStackPanel : Panel
             BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the CollapsedProportion attached property.
+    /// </summary>
+    public static readonly AttachedProperty<double> CollapsedProportionProperty =
+        AvaloniaProperty.RegisterAttached<ProportionalStackPanel, Control, double>(
+            "CollapsedProportion", double.NaN, false,
+            BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the value of the CollapsedProportion attached property on the specified control.
+    /// </summary>
+    public static double GetCollapsedProportion(AvaloniaObject control)
+    {
+        return control.GetValue(CollapsedProportionProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the CollapsedProportion attached property on the specified control.
+    /// </summary>
+    public static void SetCollapsedProportion(AvaloniaObject control, double value)
+    {
+        control.SetValue(CollapsedProportionProperty, value);
+    }
+
+    /// <summary>
     /// Gets the value of the IsCollapsed attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
@@ -152,7 +176,22 @@ public class ProportionalStackPanel : Panel
 
                 if (isCollapsed)
                 {
+                    // always remember the current size before collapsing so repeated
+                    // pin/unpin cycles restore the latest proportion
+                    if (!double.IsNaN(proportion) && proportion > 0)
+                    {
+                        SetCollapsedProportion(control, proportion);
+                    }
+
                     proportion = 0.0;
+                }
+                else
+                {
+                    var stored = GetCollapsedProportion(control);
+                    if (!double.IsNaN(stored))
+                    {
+                        proportion = stored;
+                    }
                 }
 
                 if (double.IsNaN(proportion))
@@ -163,6 +202,10 @@ public class ProportionalStackPanel : Panel
                 {
                     proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
                     SetProportion(control, proportion);
+                    if (!isCollapsed)
+                    {
+                        SetCollapsedProportion(control, proportion);
+                    }
                     assignedProportion += proportion;
                 }
             }
@@ -555,7 +598,24 @@ public class ProportionalStackPanel : Panel
         AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
         AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
 
-        ProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
+        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
+                return;
+
+            if (parent.isAssigningProportions)
+                return;
+
+            if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
+            {
+                SetCollapsedProportion(sender, value);
+            }
+
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        });
+
+        CollapsedProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
         {
             if (sender.GetVisualParent() is not ProportionalStackPanel parent)
                 return;

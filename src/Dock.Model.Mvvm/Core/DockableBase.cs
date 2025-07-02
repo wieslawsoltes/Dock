@@ -22,6 +22,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _isEmpty;
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
+    private double _collapsedProportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
     private bool _canFloat = true;
@@ -110,6 +111,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _proportion;
         set => SetProperty(ref _proportion, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public double CollapsedProportion
+    {
+        get => _collapsedProportion;
+        set => SetProperty(ref _collapsedProportion, value);
     }
 
     /// <inheritdoc/>

@@ -22,6 +22,8 @@
               <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">
                 <Setter Property="(ProportionalStackPanel.Proportion)"
                         Value="{Binding Proportion}" />
+                <Setter Property="(ProportionalStackPanel.CollapsedProportion)"
+                        Value="{Binding CollapsedProportion}" />
                 <Setter Property="(ProportionalStackPanel.IsCollapsed)">
                   <Setter.Value>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">

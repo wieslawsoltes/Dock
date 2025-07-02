@@ -50,7 +50,7 @@ In XAML you set them as attributes:
       CanFloat="True" />
 ```
 
-Global drag and drop behaviour can be toggled using the attached properties from `Dock.Settings`:
+Global drag and drop behaviour can be toggled using the attached properties from [`Dock.Settings`](dock-settings.md):
 
 ```xml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"

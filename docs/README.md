@@ -29,6 +29,7 @@ guides under *Getting started*.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
+- [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference
@@ -39,6 +40,7 @@ guides under *Getting started*.
 - [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
 - [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
+- [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
 
 ## Troubleshooting
 

@@ -19,4 +19,9 @@ public interface IDocumentDock : IDock
     /// Gets or sets command to create new document.
     /// </summary>
     ICommand? CreateDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets if the window can be dragged by clicking on the tab strip.
+    /// </summary>
+    public bool EnableWindowDrag { get; set;}
 }

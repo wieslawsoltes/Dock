@@ -3,7 +3,6 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -81,13 +80,6 @@ internal class HostWindowState : IHostWindowState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.TargetDropControl is TabStrip &&
-            operation == DockOperation.Window &&
-            Validate(point, DockOperation.Fill, dragAction, relativeTo))
-        {
-            operation = DockOperation.Fill;
-        }
-
         if (operation != DockOperation.Window)
         {
             Validate(point, operation, dragAction, relativeTo);
@@ -101,12 +93,6 @@ internal class HostWindowState : IHostWindowState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-        }
-
-        if (_state.TargetDropControl is TabStrip &&
-            Validate(point, DockOperation.Fill, dragAction, relativeTo))
-        {
-            operation = DockOperation.Fill;
         }
 
         if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))

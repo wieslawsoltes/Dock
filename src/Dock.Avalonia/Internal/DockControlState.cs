@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -80,13 +79,6 @@ internal class DockControlState : IDockControlState
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.DropControl is TabStrip &&
-            operation == DockOperation.Window &&
-            Validate(point, DockOperation.Fill, dragAction, relativeTo))
-        {
-            operation = DockOperation.Fill;
-        }
-
         Validate(point, operation, dragAction, relativeTo);
     }
 
@@ -97,12 +89,6 @@ internal class DockControlState : IDockControlState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-        }
-
-        if (_state.DropControl is TabStrip &&
-            Validate(point, DockOperation.Fill, dragAction, relativeTo))
-        {
-            operation = DockOperation.Fill;
         }
 
         if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
@@ -357,13 +343,6 @@ internal class DockControlState : IDockControlState
                             var operation = _adornerHelper.Adorner is DockTarget target
                                 ? target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
                                 : DockOperation.Fill;
-
-                            if (_state.DropControl is TabStrip &&
-                                operation == DockOperation.Window &&
-                                Validate(targetPoint, DockOperation.Fill, dragAction, targetDockControl))
-                            {
-                                operation = DockOperation.Fill;
-                            }
 
                             var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
                             preview = valid

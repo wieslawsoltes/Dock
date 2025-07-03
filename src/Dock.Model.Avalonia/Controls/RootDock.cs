@@ -93,9 +93,19 @@ public class RootDock : DockBase, IRootDock
     /// </summary>
     public static readonly DirectProperty<RootDock, IList<IDockWindow>?> WindowsProperty =
         AvaloniaProperty.RegisterDirect<RootDock, IList<IDockWindow>?>(
-            nameof(Windows), 
-            o => o.Windows, 
+            nameof(Windows),
+            o => o.Windows,
             (o, v) => o.Windows = v);
+
+    /// <summary>
+    /// Defines the <see cref="HideSingleFloatingDocumentTabs"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, bool> HideSingleFloatingDocumentTabsProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, bool>(
+            nameof(HideSingleFloatingDocumentTabs),
+            o => o.HideSingleFloatingDocumentTabs,
+            (o, v) => o.HideSingleFloatingDocumentTabs = v,
+            false);
 
     private bool _isFocusableRoot;
     private IList<IDockable>? _hiddenDockables;
@@ -106,6 +116,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private bool _hideSingleFloatingDocumentTabs;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -119,6 +130,7 @@ public class RootDock : DockBase, IRootDock
         _topPinnedDockables = new AvaloniaList<IDockable>();
         _bottomPinnedDockables = new AvaloniaList<IDockable>();
         _windows = new AvaloniaList<IDockWindow>();
+        _hideSingleFloatingDocumentTabs = false;
         ShowWindows = Command.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = Command.Create(() => _navigateAdapter.ExitWindows());
     }
@@ -203,6 +215,15 @@ public class RootDock : DockBase, IRootDock
     {
         get => _windows;
         set => SetAndRaise(WindowsProperty, ref _windows, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("HideSingleFloatingDocumentTabs")]
+    public bool HideSingleFloatingDocumentTabs
+    {
+        get => _hideSingleFloatingDocumentTabs;
+        set => SetAndRaise(HideSingleFloatingDocumentTabsProperty, ref _hideSingleFloatingDocumentTabs, value);
     }
 
     /// <inheritdoc/>

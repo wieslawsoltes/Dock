@@ -40,15 +40,16 @@ Increase these values if small pointer movements should not initiate dragging.
 
 ## Single document tabs
 
-Floating windows hide document tabs when only one document is present. This
-behavior can be disabled globally:
+Floating windows can hide the document tab strip when only a single document is
+present. The feature is controlled per layout via the root dock:
 
 ```csharp
-DockSettings.HideSingleFloatingDocumentTabs = false;
+var root = factory.CreateLayout();
+root.HideSingleFloatingDocumentTabs = true;
 ```
 
-When enabled (the default) the tab strip is collapsed to save space and the
-window title shows the document name instead.
+The property defaults to `false`. When enabled the tab strip collapses to save
+space and the window title displays the document name instead.
 
 ## Hide on close
 

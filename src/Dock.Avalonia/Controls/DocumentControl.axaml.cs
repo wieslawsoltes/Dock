@@ -7,7 +7,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Settings;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -123,12 +122,13 @@ public class DocumentControl : TemplatedControl
         }
 
         bool floating = false;
+        bool hideTabs = false;
         if (dock.Factory?.FindRoot(dock, _ => true) is IRootDock root)
         {
             floating = root.Window is not null;
+            hideTabs = root.HideSingleFloatingDocumentTabs;
         }
 
-        bool set = DockSettings.HideSingleFloatingDocumentTabs && floating;
-        PseudoClasses.Set(":floating", set);
+        PseudoClasses.Set(":floating", hideTabs && floating);
     }
 }

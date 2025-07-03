@@ -18,9 +18,5 @@ public static class DockSettings
     /// </summary>
     public static double MinimumVerticalDragDistance = 4;
 
-    /// <summary>
-    /// Hides document tabs in floating windows when there is only one document.
-    /// </summary>
-    public static bool HideSingleFloatingDocumentTabs = true;
 
 }

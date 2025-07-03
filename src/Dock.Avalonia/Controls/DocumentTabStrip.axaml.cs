@@ -7,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -16,13 +17,10 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":create", ":active")]
 public class DocumentTabStrip : TabStrip
 {
-    // Minimum distance needed to initiate a drag operation
-    private const double MinimumDragDistance = 3.0;
-        
     private Point _dragStartPoint;
     private bool _pointerPressed;
     private bool _isDragging;
-    private PointerPressedEventArgs _lastPointerPressedArgs;
+    private PointerPressedEventArgs? _lastPointerPressedArgs;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -36,7 +34,9 @@ public class DocumentTabStrip : TabStrip
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
     
-    // Add a property to control whether window dragging is enabled
+    /// <summary>
+    /// Define the <see cref="EnableWindowDrag"/> property.
+    /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty = 
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
 
@@ -58,6 +58,9 @@ public class DocumentTabStrip : TabStrip
         set => SetValue(IsActiveProperty, value);
     }
     
+    /// <summary>
+    /// Gets or sets if the window can be dragged by clicking on the tab strip.
+    /// </summary>
     public bool EnableWindowDrag
     {
         get => GetValue(EnableWindowDragProperty);
@@ -74,11 +77,26 @@ public class DocumentTabStrip : TabStrip
     {
         UpdatePseudoClassesCreate(CanCreateItem);
         UpdatePseudoClassesActive(IsActive);
-        
-        // Subscribe to pointer events for window dragging
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
         AddHandler(PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
         AddHandler(PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
         AddHandler(PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        
+        RemoveHandler(PointerPressedEvent, OnPointerPressed);
+        RemoveHandler(PointerReleasedEvent, OnPointerReleased);
+        RemoveHandler(PointerMovedEvent, OnPointerMoved);
     }
 
     /// <inheritdoc/>
@@ -118,78 +136,99 @@ public class DocumentTabStrip : TabStrip
     {
         PseudoClasses.Set(":active", isActive);
     }
-    
-    private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-        {
-            if (!EnableWindowDrag)
-                return;
 
-            _lastPointerPressedArgs = e;
-                
-            // Only handle primary button clicks
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                // Check if we're clicking on an empty area of the tab strip
-                // (not on a tab item or button)
-                var source = e.Source as Control;
-                if (source == this || (source != null && 
-                                     !(source is DocumentTabStripItem) && 
-                                     !(source is Button) &&
-                                     !IsChildOfType<DocumentTabStripItem>(source) &&
-                                     !IsChildOfType<Button>(source)))
-                {
-                    _dragStartPoint = e.GetPosition(this);
-                    _pointerPressed = true;
-                    e.Handled = true;
-                }
-            }
-        }
-        
-        private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+    private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (!EnableWindowDrag)
         {
-            if (_pointerPressed || _isDragging)
-            {
-                _pointerPressed = false;
-                _isDragging = false;
-                e.Handled = true;
-            }
+            return;
         }
-        
-        private void OnPointerMoved(object? sender, PointerEventArgs e)
+
+        _lastPointerPressedArgs = e;
+
+        // Only handle primary button clicks
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            if (!_pointerPressed || _isDragging)
-                return;
-                
-            var currentPoint = e.GetPosition(this);
-            var delta = currentPoint - _dragStartPoint;
-            
-            // Check if we've moved enough to consider it a drag
-            if (Math.Abs(delta.X) > MinimumDragDistance || Math.Abs(delta.Y) > MinimumDragDistance)
-            {
-                _isDragging = true;
-                _pointerPressed = false;
-                
-                // Find the window that contains this tab strip
-                if (this.VisualRoot is Window hostWindow)
-                {
-                    // Call the MoveDrag method to start window dragging
-                    hostWindow.BeginMoveDrag(_lastPointerPressedArgs);
-                    e.Handled = true;
-                }
-            }
+            return;
         }
-        
-        private bool IsChildOfType<T>(Control control) where T : Control
+
+        // Check if we're clicking on an empty area of the tab strip
+        // (not on a tab item or button)
+        var source = e.Source as Control;
+        if (source == this || (source != null &&
+                               !(source is DocumentTabStripItem) &&
+                               !(source is Button) &&
+                               !IsChildOfType<DocumentTabStripItem>(source) &&
+                               !IsChildOfType<Button>(source)))
         {
-            // Walk up the visual tree to find a parent of type T
-            var parent = control;
-            while (parent != null && parent != this)
-            {
-                if (parent is T)
-                    return true;
-                    
-                parent = parent.Parent as Control;
-            }
-            return false;
+            _dragStartPoint = e.GetPosition(this);
+            _pointerPressed = true;
+            e.Handled = true;
         }
+    }
+
+    private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (!_pointerPressed && !_isDragging)
+        {
+            return;
+        }
+
+        _pointerPressed = false;
+        _isDragging = false;
+        e.Handled = true;
+    }
+
+    private void OnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (!_pointerPressed || _isDragging)
+        {
+            return;
+        }
+
+        var currentPoint = e.GetPosition(this);
+        var delta = currentPoint - _dragStartPoint;
+
+        // Check if we've moved enough to consider it a drag
+        if (!(Math.Abs(delta.X) > DockSettings.MinimumHorizontalDragDistance)
+            && !(Math.Abs(delta.Y) > DockSettings.MinimumVerticalDragDistance))
+        {
+            return;
+        }
+
+        _isDragging = true;
+        _pointerPressed = false;
+
+        // Find the window that contains this tab strip
+        if (VisualRoot is not Window hostWindow)
+        {
+            return;
+        }
+
+        if (_lastPointerPressedArgs is null)
+        {
+            return;
+        }
+
+        // Call the MoveDrag method to start window dragging
+        hostWindow.BeginMoveDrag(_lastPointerPressedArgs);
+        e.Handled = true;
+    }
+
+    private bool IsChildOfType<T>(Control control) where T : Control
+    {
+        // Walk up the visual tree to find a parent of type T
+        var parent = control;
+        while (parent != null && parent != this)
+        {
+            if (parent is T)
+            {
+                return true;
+            }
+
+            parent = parent.Parent as Control;
+        }
+
+        return false;
+    }
 }

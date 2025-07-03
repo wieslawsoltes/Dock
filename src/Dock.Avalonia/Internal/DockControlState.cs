@@ -84,11 +84,15 @@ internal class DockControlState : IDockControlState
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Window;
+        var operation = DockOperation.Fill;
 
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+        else if (!Validate(point, operation, dragAction, relativeTo))
+        {
+            operation = DockOperation.Window;
         }
 
         if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))

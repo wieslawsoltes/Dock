@@ -23,5 +23,10 @@ public interface IDocumentDock : IDock
     /// <summary>
     /// Gets or sets if the window can be dragged by clicking on the tab strip.
     /// </summary>
-    public bool EnableWindowDrag { get; set;}
+    bool EnableWindowDrag { get; set;}
+
+    /// <summary>
+    /// Gets or sets document tabs layout.
+    /// </summary>
+    DocumentTabLayout TabsLayout { get; set; }
 }

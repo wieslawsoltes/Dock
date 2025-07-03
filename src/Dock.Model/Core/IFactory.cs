@@ -382,6 +382,31 @@ public partial interface IFactory
     void CloseRightDockables(IDockable dockable);
 
     /// <summary>
+    /// Sets the tabs layout for the specified document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    /// <param name="layout">The layout to set.</param>
+    void SetDocumentDockTabsLayout(IDockable dockable, DocumentTabLayout layout);
+
+    /// <summary>
+    /// Sets the tabs layout to left.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockTabsLayoutLeft(IDockable dockable);
+
+    /// <summary>
+    /// Sets the tabs layout to top.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockTabsLayoutTop(IDockable dockable);
+
+    /// <summary>
+    /// Sets the tabs layout to right.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockTabsLayoutRight(IDockable dockable);
+
+    /// <summary>
     /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.
     /// </summary>
     /// <param name="dockable">The dockable to hide.</param>

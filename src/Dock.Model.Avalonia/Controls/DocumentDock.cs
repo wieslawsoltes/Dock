@@ -7,6 +7,7 @@ using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -33,6 +34,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty =
         AvaloniaProperty.Register<DocumentDock, bool>(nameof(EnableWindowDrag));
+
+    /// <summary>
+    /// Defines the <see cref="TabsLayout"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
+        AvaloniaProperty.Register<DocumentDock, DocumentTabLayout>(nameof(TabsLayout), DocumentTabLayout.Top);
 
     private bool _canCreateDocument;
 
@@ -67,6 +74,15 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     {
         get => GetValue(DocumentTemplateProperty);
         set => SetValue(DocumentTemplateProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("TabsLayout")]
+    public DocumentTabLayout TabsLayout
+    {
+        get => GetValue(TabsLayoutProperty);
+        set => SetValue(TabsLayoutProperty, value);
     }
 
     /// <summary>

@@ -838,6 +838,24 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void SetDocumentDockTabsLayout(IDockable dockable, DocumentTabLayout layout)
+    {
+        if (dockable is IDocumentDock documentDock)
+        {
+            documentDock.TabsLayout = layout;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SetDocumentDockTabsLayoutLeft(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Left);
+
+    /// <inheritdoc/>
+    public void SetDocumentDockTabsLayoutTop(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Top);
+
+    /// <inheritdoc/>
+    public void SetDocumentDockTabsLayoutRight(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Right);
+    
+    /// <inheritdoc/>
     public virtual void NewVerticalDocumentDock(IDockable dockable)
     {
         if (dockable.Owner is not IDock dock)

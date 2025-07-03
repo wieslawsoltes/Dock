@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:dmc="using:Dock.Model.Controls"
                     x:DataType="dmc:IProportionalDock"
                     x:CompileBindings="True">
@@ -42,7 +41,7 @@
               <ItemsPanelTemplate>
                 <ProportionalStackPanel DockProperties.IsDropArea="True"
                                         Background="Transparent"
-                                        Orientation="{Binding Orientation, Converter={x:Static converters:OrientationConverter.Instance}}" />
+                                        Orientation="{Binding Orientation, Converter={x:Static OrientationConverter.Instance}}" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
           </ItemsControl>

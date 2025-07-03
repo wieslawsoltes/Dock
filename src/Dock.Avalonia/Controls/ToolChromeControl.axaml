@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:controls="using:Dock.Model.Controls"
-                    x:DataType="controls:IToolDock" 
+                    x:DataType="controls:IToolDock"
                     x:CompileBindings="True">
   <Design.PreviewWith>
   <ToolChromeControl Width="300" Height="400" />
@@ -27,7 +26,7 @@
     <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
               Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}"/>
+              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static OwnerIsToolDockConverter.Instance}}"/>
     <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
@@ -84,7 +83,7 @@
                   BorderBrush="{TemplateBinding BorderBrush}"
                   VerticalAlignment="Top"
                   ContextFlyout="{DynamicResource ToolChromeControlContextMenu}"
-                  Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}">
+                  Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
               <DockPanel LastChildFill="True" Margin="8 0">
                 <Panel DockPanel.Dock="Left">
@@ -138,7 +137,7 @@
                  Background="{TemplateBinding BorderBrush}"
                  Height="1"
                  VerticalAlignment="Top"
-                 Grid.Row="{Binding GripMode, Converter={x:Static converters:GripModeConverters.GridRowAutoHideConverter}}" />
+                 Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}" />
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -146,12 +145,12 @@
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="BorderThickness" Value="1 1 1 0" />
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleConverter}}" />
+              Value="{Binding GripMode, Converter={x:Static GripModeConverters.IsVisibleVisibleConverter}}" />
     </Style>
 
     <Style Selector="^:pointerover /template/ Border#PART_Border">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrVisibleConverter}}" />
+              Value="{Binding GripMode, Converter={x:Static GripModeConverters.IsVisibleAutoHideOrVisibleConverter}}" />
     </Style>
 
     <Style Selector="^:floating /template/ Border#PART_Border">
@@ -160,12 +159,12 @@
 
     <Style Selector="^/template/ Panel#PART_Panel">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleAutoHideOrHiddenConverter}}" />
+              Value="{Binding GripMode, Converter={x:Static GripModeConverters.IsVisibleAutoHideOrHiddenConverter}}" />
     </Style>
 
     <Style Selector="^:pointerover /template/ Panel#PART_Panel">
       <Setter Property="IsVisible"
-              Value="{Binding GripMode, Converter={x:Static converters:GripModeConverters.IsVisibleVisibleOrHiddenConverter}}" />
+              Value="{Binding GripMode, Converter={x:Static GripModeConverters.IsVisibleVisibleOrHiddenConverter}}" />
     </Style>
 
     <Style Selector="^:floating:pointerover /template/ Panel#PART_Panel">

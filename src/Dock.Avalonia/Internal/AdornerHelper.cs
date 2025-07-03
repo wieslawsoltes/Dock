@@ -15,39 +15,44 @@ internal class AdornerHelper
 
     public void AddAdorner(Visual visual)
     {
-        var layer = AdornerLayer.GetAdornerLayer(visual);
+        var root = DockHelpers.FindRootDockControl(visual) ?? visual.GetVisualRoot() as Visual ?? visual;
+        var layer = AdornerLayer.GetAdornerLayer(root);
         if (layer is null)
         {
             return;
         }
-            
+
         if (Adorner is { })
         {
             layer.Children.Remove(Adorner);
             Adorner = null;
         }
 
+        var rootBounds = root.Bounds;
+        var origin = visual.TranslatePoint(new Point(0, 0), root) ?? default;
+        var placement = new Rect(origin, visual.Bounds.Size);
+
         Adorner = new DockTarget
         {
-            [AdornerLayer.AdornedElementProperty] = visual,
+            RootBounds = rootBounds,
+            PlacementBounds = placement,
+            [AdornerLayer.AdornedElementProperty] = root,
         };
 
-        ((ISetLogicalParent) Adorner).SetParent(visual as ILogical);
+        ((ISetLogicalParent)Adorner).SetParent(root as ILogical);
 
         layer.Children.Add(Adorner);
     }
 
     public void RemoveAdorner(Visual visual)
     {
-        var layer = AdornerLayer.GetAdornerLayer(visual);
-        if (layer is { })
+        var root = DockHelpers.FindRootDockControl(visual) ?? visual.GetVisualRoot() as Visual ?? visual;
+        var layer = AdornerLayer.GetAdornerLayer(root);
+        if (layer is { } && Adorner is { })
         {
-            if (Adorner is { })
-            {
-                layer.Children.Remove(Adorner);
-                ((ISetLogicalParent) Adorner).SetParent(null);
-                Adorner = null;
-            }
+            layer.Children.Remove(Adorner);
+            ((ISetLogicalParent)Adorner).SetParent(null);
+            Adorner = null;
         }
     }
 }

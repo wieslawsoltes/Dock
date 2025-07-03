@@ -44,6 +44,14 @@
               <Image x:Name="PART_CenterSelector" Grid.Row="1" Grid.Column="1" />
             </Grid>
           </Panel>
+          <Image x:Name="PART_RootTopSelector" VerticalAlignment="Top" HorizontalAlignment="Center" />
+          <Image x:Name="PART_RootBottomSelector" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
+          <Image x:Name="PART_RootLeftSelector" VerticalAlignment="Center" HorizontalAlignment="Left" />
+          <Image x:Name="PART_RootRightSelector" VerticalAlignment="Center" HorizontalAlignment="Right" />
+          <Panel x:Name="PART_RootTopIndicator" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="40" />
+          <Panel x:Name="PART_RootBottomIndicator" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="40" />
+          <Panel x:Name="PART_RootLeftIndicator" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="40" />
+          <Panel x:Name="PART_RootRightIndicator" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="40" />
         </Grid>
       </ControlTemplate>
     </Setter>
@@ -106,6 +114,50 @@
       <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockDocumentInside.png" />
       <Setter Property="Width" Value="40" />
       <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_RootTopSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableTop.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_RootBottomSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableBottom.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_RootLeftSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableLeft.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Image#PART_RootRightSelector">
+      <Setter Property="Source" Value="avares://Dock.Avalonia/Assets/DockAnchorableRight.png" />
+      <Setter Property="Width" Value="40" />
+      <Setter Property="Height" Value="40" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_RootTopIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_RootBottomIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_RootLeftIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Panel#PART_RootRightIndicator">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
+      <Setter Property="Opacity" Value="0" />
     </Style>
 
   </ControlTheme>

@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -81,5 +82,21 @@ internal static class DockHelpers
                 }
             }
         }
+    }
+
+    public static RootDockControl? FindRootDockControl(Visual? visual)
+    {
+        var current = visual;
+        while (current is { })
+        {
+            if (current is RootDockControl rootDock)
+            {
+                return rootDock;
+            }
+
+            current = current.GetVisualParent();
+        }
+
+        return null;
     }
 }

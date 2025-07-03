@@ -36,5 +36,25 @@ public enum DockOperation
     /// <summary>
     /// Dock to window.
     /// </summary>
-    Window
+    Window,
+
+    /// <summary>
+    /// Dock to root left.
+    /// </summary>
+    RootLeft,
+
+    /// <summary>
+    /// Dock to root bottom.
+    /// </summary>
+    RootBottom,
+
+    /// <summary>
+    /// Dock to root right.
+    /// </summary>
+    RootRight,
+
+    /// <summary>
+    /// Dock to root top.
+    /// </summary>
+    RootTop
 }

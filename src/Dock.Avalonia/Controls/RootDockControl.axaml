@@ -16,7 +16,8 @@
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
           <DockPanel Background="Transparent"
-                     DockProperties.IsDropArea="False">
+                     DockProperties.IsDropArea="True"
+                     DockProperties.IsDockTarget="True">
             <ToolPinnedControl DockPanel.Dock="Left" 
                                Orientation="Vertical"
                                Items="{Binding LeftPinnedDockables}"

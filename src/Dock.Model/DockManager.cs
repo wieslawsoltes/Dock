@@ -299,14 +299,23 @@ public class DockManager : IDockManager
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
     {
-        return operation switch
+        var dock = targetDock;
+        var op = operation;
+
+        if (operation.IsRootOperation() && targetDock is IRootDock rootDock && rootDock.ActiveDockable is IDock active)
         {
-            DockOperation.Fill => MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
-            DockOperation.Left => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Right => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Top => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Bottom => SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Window => DockDockableIntoWindow(sourceDockable, targetDock, bExecute),
+            dock = active;
+            op = operation.WithoutRoot();
+        }
+
+        return op switch
+        {
+            DockOperation.Fill => MoveDockable(sourceDockable, sourceDockableOwner, dock, bExecute),
+            DockOperation.Left => SplitDockable(sourceDockable, sourceDockableOwner, dock, op, bExecute),
+            DockOperation.Right => SplitDockable(sourceDockable, sourceDockableOwner, dock, op, bExecute),
+            DockOperation.Top => SplitDockable(sourceDockable, sourceDockableOwner, dock, op, bExecute),
+            DockOperation.Bottom => SplitDockable(sourceDockable, sourceDockableOwner, dock, op, bExecute),
+            DockOperation.Window => DockDockableIntoWindow(sourceDockable, dock, bExecute),
             _ => false
         };
     }

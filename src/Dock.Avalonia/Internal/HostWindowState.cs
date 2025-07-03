@@ -133,8 +133,16 @@ internal class HostWindowState : IHostWindowState
             }
             var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
             DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
-                
-            return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+
+            var target = targetDockable;
+            if ((operation == DockOperation.RootLeft || operation == DockOperation.RootRight ||
+                 operation == DockOperation.RootTop || operation == DockOperation.RootBottom) &&
+                targetDockable.Factory is { } factory)
+            {
+                target = factory.FindRoot(targetDockable, _ => true) ?? targetDockable;
+            }
+
+            return DockManager.ValidateDockable(sourceDockable, target, dragAction, operation, bExecute: false);
         }
 
         return false;
@@ -160,7 +168,15 @@ internal class HostWindowState : IHostWindowState
             var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
             DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-            DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+            var target = targetDockable;
+            if ((operation == DockOperation.RootLeft || operation == DockOperation.RootRight ||
+                 operation == DockOperation.RootTop || operation == DockOperation.RootBottom) &&
+                targetDockable.Factory is { } factory)
+            {
+                target = factory.FindRoot(targetDockable, _ => true) ?? targetDockable;
+            }
+
+            DockManager.ValidateDockable(sourceDockable, target, dragAction, operation, bExecute: true);
         }
     }
 

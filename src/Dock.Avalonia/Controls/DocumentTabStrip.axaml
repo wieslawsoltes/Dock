@@ -65,13 +65,20 @@
             </Path>
           </Button>
           <ItemsPresenter x:Name="PART_ItemsPresenter"
-                          ItemsPanel="{TemplateBinding ItemsPanel}"
-                          DockPanel.Dock="Left" />
+                          ItemsPanel="{TemplateBinding ItemsPanel}" />
           <Border Name="PART_BorderFill" DockProperties.IsDropArea="True" />
         </DockPanel>
       </ControlTemplate>
     </Setter>
+    
+    <Style Selector="^[Orientation=Vertical]/template/ ItemsPresenter#PART_ItemsPresenter">
+      <Setter Property="(DockPanel.Dock)" Value="Top" />
+    </Style>
 
+    <Style Selector="^[Orientation=Horizontal]/template/ ItemsPresenter#PART_ItemsPresenter">
+      <Setter Property="(DockPanel.Dock)" Value="Left" />
+    </Style>
+    
     <Style Selector="^[Orientation=Vertical]/template/ Button#PART_ButtonCreate">
       <Setter Property="(DockPanel.Dock)" Value="Bottom" />
       <Setter Property="Width" Value="NaN" />
@@ -91,7 +98,7 @@
     <Style Selector="^[Orientation=Vertical]">
       <Setter Property="ItemsPanel">
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical" ClipToBounds="False" />
+          <UniformGrid Columns="1" VerticalAlignment="Top" ClipToBounds="False" />
         </ItemsPanelTemplate>
       </Setter>
     </Style>

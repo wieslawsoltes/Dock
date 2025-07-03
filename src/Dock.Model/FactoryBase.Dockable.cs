@@ -647,6 +647,7 @@ public abstract partial class FactoryBase
         if (dock is IDocumentDock sourceDoc && targetDock is IDocumentDock targetDoc)
         {
             targetDoc.CanCreateDocument = sourceDoc.CanCreateDocument;
+            targetDoc.EnableWindowDrag = targetDoc.EnableWindowDrag;
 
             if (sourceDoc is IDocumentDockContent sourceContent && targetDoc is IDocumentDockContent targetContent)
             {
@@ -824,6 +825,7 @@ public abstract partial class FactoryBase
         {
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {
@@ -851,6 +853,7 @@ public abstract partial class FactoryBase
         {
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {

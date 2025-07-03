@@ -14,6 +14,7 @@ namespace Dock.Model.Mvvm.Controls;
 public class DocumentDock : DockBase, IDocumentDock
 {
     private bool _canCreateDocument;
+    private bool _enableWindowDrag;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -26,4 +27,12 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableWindowDrag
+    {
+        get => _enableWindowDrag;
+        set => SetProperty(ref _enableWindowDrag, value);
+    }
 }

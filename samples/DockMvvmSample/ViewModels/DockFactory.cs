@@ -100,7 +100,8 @@ public class DockFactory : Factory
             ActiveDockable = document1,
             VisibleDockables = CreateList<IDockable>(document1, document2, document3),
             CanCreateDocument = true,
-            // CanDrop = false
+            // CanDrop = false,
+            EnableWindowDrag = true,
         };
 
         var mainLayout = new ProportionalDock

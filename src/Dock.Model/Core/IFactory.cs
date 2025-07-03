@@ -330,6 +330,12 @@ public partial interface IFactory
     void FloatDockable(IDockable dockable);
 
     /// <summary>
+    /// Floats owner dock with all dockables.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void FloatAllDockables(IDockable dockable);
+
+    /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>

@@ -605,6 +605,17 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void FloatAllDockables(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock)
+        {
+            return;
+        }
+
+        FloatDockable(dock);
+    }
+
+    /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
         if (dockable.CanClose && dockable.OnClose())

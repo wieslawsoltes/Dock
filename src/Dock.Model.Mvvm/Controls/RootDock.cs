@@ -25,7 +25,6 @@ public class RootDock : DockBase, IRootDock
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private IToolDock? _pinnedDock;
-    private bool _hideSingleFloatingDocumentTabs;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -34,7 +33,6 @@ public class RootDock : DockBase, IRootDock
     {
         ShowWindows = new RelayCommand(() => _navigateAdapter.ShowWindows());
         ExitWindows = new RelayCommand(() => _navigateAdapter.ExitWindows());
-        _hideSingleFloatingDocumentTabs = false;
     }
 
     /// <inheritdoc/>
@@ -107,14 +105,6 @@ public class RootDock : DockBase, IRootDock
     {
         get => _windows;
         set => SetProperty(ref _windows, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool HideSingleFloatingDocumentTabs
-    {
-        get => _hideSingleFloatingDocumentTabs;
-        set => SetProperty(ref _hideSingleFloatingDocumentTabs, value);
     }
 
     /// <inheritdoc/>

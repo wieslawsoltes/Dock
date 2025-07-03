@@ -57,11 +57,6 @@ public interface IRootDock : IDock
     IList<IDockWindow>? Windows { get; set; }
 
     /// <summary>
-    /// Hides document tabs in floating windows when there is only one document.
-    /// </summary>
-    bool HideSingleFloatingDocumentTabs { get; set; }
-
-    /// <summary>
     /// Show windows.
     /// </summary>
     ICommand ShowWindows { get; }

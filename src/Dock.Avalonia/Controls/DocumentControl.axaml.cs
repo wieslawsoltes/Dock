@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
+using System;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
@@ -19,6 +20,7 @@ namespace Dock.Avalonia.Controls;
 public class DocumentControl : TemplatedControl
 {
     private DocumentTabStrip? _tabStrip;
+    private IDisposable? _subscription;
     /// <summary>
     /// Define the <see cref="HeaderTemplate"/> property.
     /// </summary>
@@ -63,6 +65,11 @@ public class DocumentControl : TemplatedControl
         base.OnApplyTemplate(e);
 
         _tabStrip = e.NameScope.Find<DocumentTabStrip>("PART_TabStrip");
+        if (_tabStrip is not null)
+        {
+            _subscription = _tabStrip.GetObservable(DocumentTabStrip.HideSingleFloatingDocumentTabsProperty)
+                .Subscribe(_ => UpdateFloatingPseudoClass());
+        }
         UpdateFloatingPseudoClass();
     }
 
@@ -79,6 +86,8 @@ public class DocumentControl : TemplatedControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
+        _subscription?.Dispose();
+        _subscription = null;
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -122,12 +131,12 @@ public class DocumentControl : TemplatedControl
         }
 
         bool floating = false;
-        bool hideTabs = false;
-        if (dock.Factory?.FindRoot(dock, _ => true) is IRootDock root)
+        if (dock.Factory?.FindRoot(dock, _ => true) is { Window: { } })
         {
-            floating = root.Window is not null;
-            hideTabs = root.HideSingleFloatingDocumentTabs;
+            floating = true;
         }
+
+        bool hideTabs = _tabStrip?.HideSingleFloatingDocumentTabs ?? false;
 
         PseudoClasses.Set(":floating", hideTabs && floating);
     }

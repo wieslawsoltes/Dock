@@ -12,7 +12,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Document TabStrip custom control.
 /// </summary>
-[PseudoClasses(":create", ":active")]
+[PseudoClasses(":create", ":active", ":hidesingle")]
 public class DocumentTabStrip : TabStrip
 {
     /// <summary>
@@ -26,6 +26,12 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
+
+    /// <summary>
+    /// Defines the <see cref="HideSingleFloatingDocumentTabs"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> HideSingleFloatingDocumentTabsProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(HideSingleFloatingDocumentTabs), true);
 
     /// <summary>
     /// Gets or sets if tab strop dock can create new items.
@@ -45,6 +51,15 @@ public class DocumentTabStrip : TabStrip
         set => SetValue(IsActiveProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether the tab strip hides itself in floating windows when only one document is present.
+    /// </summary>
+    public bool HideSingleFloatingDocumentTabs
+    {
+        get => GetValue(HideSingleFloatingDocumentTabsProperty);
+        set => SetValue(HideSingleFloatingDocumentTabsProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStrip);
 
@@ -55,6 +70,7 @@ public class DocumentTabStrip : TabStrip
     {
         UpdatePseudoClassesCreate(CanCreateItem);
         UpdatePseudoClassesActive(IsActive);
+        UpdatePseudoClassesHideSingle(HideSingleFloatingDocumentTabs);
     }
 
     /// <inheritdoc/>
@@ -83,6 +99,11 @@ public class DocumentTabStrip : TabStrip
         {
             UpdatePseudoClassesActive(change.GetNewValue<bool>());
         }
+
+        if (change.Property == HideSingleFloatingDocumentTabsProperty)
+        {
+            UpdatePseudoClassesHideSingle(change.GetNewValue<bool>());
+        }
     }
 
     private void UpdatePseudoClassesCreate(bool canCreate)
@@ -93,5 +114,10 @@ public class DocumentTabStrip : TabStrip
     private void UpdatePseudoClassesActive(bool isActive)
     {
         PseudoClasses.Set(":active", isActive);
+    }
+
+    private void UpdatePseudoClassesHideSingle(bool hide)
+    {
+        PseudoClasses.Set(":hidesingle", hide);
     }
 }

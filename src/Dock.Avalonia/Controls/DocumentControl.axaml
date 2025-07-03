@@ -69,7 +69,7 @@
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
     </Style>
 
-    <Style Selector="^:floating /template/ DocumentTabStrip#PART_TabStrip:singleitem">
+    <Style Selector="^:floating /template/ DocumentTabStrip#PART_TabStrip:hidesingle:singleitem">
       <Setter Property="IsVisible" Value="False" />
     </Style>
 

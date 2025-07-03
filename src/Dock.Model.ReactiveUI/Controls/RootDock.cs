@@ -63,10 +63,6 @@ public partial class RootDock : DockBase, IRootDock
     public partial IList<IDockWindow>? Windows { get; set; }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial bool HideSingleFloatingDocumentTabs { get; set; }
-
-    /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ShowWindows { get; }
 

@@ -78,6 +78,7 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
+    <Separator />
     <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutString}">
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutLeftString}"
                 Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutLeft}"

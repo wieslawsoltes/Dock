@@ -42,6 +42,16 @@ public partial interface IFactory
     IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <summary>
+    /// Gets tool controls.
+    /// </summary>
+    IDictionary<IDockable, object> ToolControls { get; }
+
+    /// <summary>
+    /// Gets document controls.
+    /// </summary>
+    IDictionary<IDockable, object> DocumentControls { get; }
+
+    /// <summary>
     /// Gets dock controls.
     /// </summary>
     IList<IDockControl> DockControls { get; }

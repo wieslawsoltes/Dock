@@ -28,7 +28,13 @@ public class DocumentDock : DockBase, IDocumentDock
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
 
+    private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public DocumentTabLayout TabsLayout { get; set; } = DocumentTabLayout.Top;
+    public DocumentTabLayout TabsLayout
+    {
+        get => _tabsLayout;
+        set => SetProperty(ref _tabsLayout, value);
+    }
 }

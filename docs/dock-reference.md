@@ -38,6 +38,12 @@ The adapter starts with `NaN` coordinates until a value is set.
 These values are consulted when calculating drop targets or restoring a layout
 from a saved state.
 
+## Document dock options
+
+`IDocumentDock` exposes two key properties for controlling its tab strip. `EnableWindowDrag` allows the entire window to be dragged via the tab area. `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum.
+
+The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
+
 ## Factory API
 
 The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`) contains numerous helpers used by the samples to build and manipulate layouts. Important members include:

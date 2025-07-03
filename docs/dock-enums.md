@@ -48,6 +48,16 @@ Controls whether a proportional dock arranges its children horizontally or verti
 | `Horizontal` | Children are stacked from left to right. |
 | `Vertical` | Children are stacked from top to bottom. |
 
+## DocumentTabLayout
+
+Controls where document tabs are placed around a document dock. Setting this affects both orientation and docking position of the tab strip.
+
+| Value | Description |
+| ----- | ----------- |
+| `Top` | Tabs are shown above the document content. |
+| `Left` | Tabs are arranged vertically to the left. |
+| `Right` | Tabs are arranged vertically to the right. |
+
 ## GripMode
 
 Determines how the grip element of a splitter behaves.

@@ -13,7 +13,9 @@
     </Border>
   </Design.PreviewWith>
 
-  <ControlTheme x:Key="ButtonCreateDocument" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+  <ControlTheme x:Key="ButtonCreateDocument" 
+                TargetType="Button" 
+                BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="Margin" Value="0" />
@@ -46,8 +48,7 @@
           <Button x:Name="PART_ButtonCreate"
                   Command="{Binding CreateDocument}"
                   Theme="{DynamicResource ButtonCreateDocument}"
-                  IsVisible="{Binding CanCreateDocument}"
-                  DockPanel.Dock="Right">
+                  IsVisible="{Binding CanCreateDocument}">
             <Path x:Name="PART_PathCreate">
               <Path.Styles>
                 <Style Selector="Path">
@@ -67,16 +68,34 @@
       </ControlTemplate>
     </Setter>
 
-    <Setter Property="ItemsPanel">
-      <ItemsPanelTemplate>
-        <WrapPanel Orientation="Horizontal" ClipToBounds="False" />
-      </ItemsPanelTemplate>
-    </Setter>
+    <Style Selector="^[Orientation=Vertical]/template/ Button#PART_ButtonCreate">
+      <Setter Property="(DockPanel.Dock)" Value="Bottom" />
+      <Setter Property="Width" Value="NaN" />
+      <Setter Property="Height" Value="24" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="^[Orientation=Horizontal]/template/ Button#PART_ButtonCreate">
+      <Setter Property="(DockPanel.Dock)" Value="Right" />
+      <Setter Property="Width" Value="26" />
+      <Setter Property="Height" Value="24" />
+      <Setter Property="HorizontalAlignment" Value="Right" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
 
     <Style Selector="^[Orientation=Vertical]">
       <Setter Property="ItemsPanel">
         <ItemsPanelTemplate>
           <StackPanel Orientation="Vertical" ClipToBounds="False" />
+        </ItemsPanelTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^[Orientation=Horizontal]">
+      <Setter Property="ItemsPanel">
+        <ItemsPanelTemplate>
+          <WrapPanel Orientation="Horizontal" ClipToBounds="False" />
         </ItemsPanelTemplate>
       </Setter>
     </Style>

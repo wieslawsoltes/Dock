@@ -33,8 +33,8 @@
                             SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                             CanCreateItem="{Binding CanCreateDocument}"
                             IsActive="{TemplateBinding IsActive}"
-                            Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabLayoutConverter.Instance}}"
-                            DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabLayoutConverter.Instance}}"
+                            Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                            DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
                             DockProperties.IsDropArea="True">
             <DocumentTabStrip.Styles>
               <Style Selector="DocumentTabStripItem">

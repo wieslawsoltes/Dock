@@ -13,28 +13,35 @@
     </Border>
   </Design.PreviewWith>
 
+  <x:String x:Key="DocumentTabStripItemFloatString">_Float</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseString">_Close</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseOtherTabsString">Close other tabs</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseAllTabsString">Close all tabs</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseTabsLeftString">_Close tabs to the left</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseTabsRightString">_Close tabs to the right</x:String>
+
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
-    <MenuItem Header="_Float"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
-    <MenuItem Header="_Close"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
-    <MenuItem Header="Close other tabs"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}"
               Command="{Binding Owner.Factory.CloseOtherDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
-    <MenuItem Header="Close all tabs"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}"
               Command="{Binding Owner.Factory.CloseAllDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
-    <MenuItem Header="_Close tabs to the left"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsLeftString}"
               Command="{Binding Owner.Factory.CloseLeftDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
-    <MenuItem Header="_Close tabs to the right"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsRightString}"
               Command="{Binding Owner.Factory.CloseRightDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>

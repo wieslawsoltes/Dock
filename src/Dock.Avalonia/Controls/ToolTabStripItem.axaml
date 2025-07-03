@@ -16,17 +16,22 @@
   <x:Double x:Key="TabStripItemMinHeight">48</x:Double>
   <x:Double x:Key="TabStripItemPipeThickness">2</x:Double>
 
+  <x:String x:Key="ToolTabStripItemFloatString">_Float</x:String>
+  <x:String x:Key="ToolTabStripItemDockString">_Dock</x:String>
+  <x:String x:Key="ToolTabStripItemAutoHideString">_Auto Hide</x:String>
+  <x:String x:Key="ToolTabStripItemCloseString">_Close</x:String>
+
   <ContextMenu x:Key="ToolTabStripItemContextMenu">
-    <MenuItem Header="_Float"
+    <MenuItem Header="{DynamicResource ToolTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
-    <MenuItem Header="_Dock"
+    <MenuItem Header="{DynamicResource ToolTabStripItemDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding}"
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
               IsVisible="{Binding CanPin, FallbackValue=False}"/>
-    <MenuItem Header="_Auto Hide"
+    <MenuItem Header="{DynamicResource ToolTabStripItemAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding }"
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
@@ -37,7 +42,7 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
-    <MenuItem Header="_Close"
+    <MenuItem Header="{DynamicResource ToolTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>

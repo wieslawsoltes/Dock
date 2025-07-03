@@ -5,20 +5,25 @@
                     x:DataType="controls:IToolDock" 
                     x:CompileBindings="True">
   <Design.PreviewWith>
-    <ToolChromeControl Width="300" Height="400" />
+  <ToolChromeControl Width="300" Height="400" />
   </Design.PreviewWith>
 
+  <x:String x:Key="ToolChromeControlFloatString">_Float</x:String>
+  <x:String x:Key="ToolChromeControlDockString">_Dock</x:String>
+  <x:String x:Key="ToolChromeControlAutoHideString">_Auto Hide</x:String>
+  <x:String x:Key="ToolChromeControlCloseString">_Close</x:String>
+
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
-    <MenuItem Header="_Float"
+    <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"/>
-    <MenuItem Header="_Dock"
+    <MenuItem Header="{DynamicResource ToolChromeControlDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
               IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
-    <MenuItem Header="_Auto Hide"
+    <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNull}, FallbackValue=False}">
@@ -29,7 +34,7 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
-    <MenuItem Header="_Close"
+    <MenuItem Header="{DynamicResource ToolChromeControlCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding ActiveDockable}"
               IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"/>

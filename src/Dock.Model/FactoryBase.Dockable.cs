@@ -665,7 +665,12 @@ public abstract partial class FactoryBase
         var dockables = dock.VisibleDockables.ToList();
         foreach (var d in dockables)
         {
-            MoveDockable(dock, targetDock, d, null);
+            // move dockables one by one but do not force collapse when the
+            // owner dock declares it should stay visible
+            RemoveDockable(d, dock.IsCollapsable);
+            AddDockable(targetDock, d);
+            OnDockableMoved(d);
+            targetDock.ActiveDockable = d;
         }
 
         var window = CreateWindowFrom(targetDock);

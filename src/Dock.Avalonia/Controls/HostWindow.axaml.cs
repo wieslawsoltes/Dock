@@ -99,16 +99,8 @@ public class HostWindow : Window, IHostWindow
         {
             _hostWindowTitleBar.ApplyTemplate();
 
-            _hostWindowTitleBar.AddHandler(PointerPressedEvent,
-                TitleBarPointerPressed,
-                RoutingStrategies.Tunnel | RoutingStrategies.Bubble,
-                handledEventsToo: true);
+            _chromeGrips.Add(_hostWindowTitleBar);
         }
-    }
-
-    private void TitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        MoveDrag(e, fromTitleBar: true);
     }
 
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)
@@ -119,9 +111,9 @@ public class HostWindow : Window, IHostWindow
         return relativeScreenDiff;
     }
 
-    private void MoveDrag(PointerPressedEventArgs e, bool fromTitleBar = false)
+    private void MoveDrag(PointerPressedEventArgs e)
     {
-        if (!fromTitleBar && !ToolChromeControlsWholeWindow)
+        if (!ToolChromeControlsWholeWindow)
             return;
 
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)

@@ -18,6 +18,7 @@
   <x:Double x:Key="TabStripItemPipeThickness">2</x:Double>
 
   <x:String x:Key="ToolTabStripItemFloatString">_Float</x:String>
+  <x:String x:Key="ToolTabStripItemFloatAllString">Float all</x:String>
   <x:String x:Key="ToolTabStripItemDockString">_Dock</x:String>
   <x:String x:Key="ToolTabStripItemAutoHideString">_Auto Hide</x:String>
   <x:String x:Key="ToolTabStripItemDockAsDocumentString">Dock as Tabbed Document</x:String>
@@ -26,6 +27,10 @@
   <ContextMenu x:Key="ToolTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanFloat}"/>
+    <MenuItem Header="{DynamicResource ToolTabStripItemFloatAllString}"
+              Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
     <MenuItem Header="{DynamicResource ToolTabStripItemDockString}"

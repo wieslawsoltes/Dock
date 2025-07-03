@@ -360,6 +360,13 @@ internal class DockControlState : IDockControlState
                                 ? target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
                                 : DockOperation.Fill;
 
+                            if (_adornerHelper.Adorner is DockTarget &&
+                                operation == DockOperation.Window &&
+                                Validate(targetPoint, DockOperation.Fill, dragAction, targetDockControl))
+                            {
+                                operation = DockOperation.Fill;
+                            }
+
                             var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
                             preview = valid
                                 ? operation == DockOperation.Window ? "Float" : "Dock"

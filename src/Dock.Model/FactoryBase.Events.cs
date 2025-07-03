@@ -42,6 +42,12 @@ public abstract partial class FactoryBase
     public event EventHandler<DockableUnpinnedEventArgs>? DockableUnpinned;
 
     /// <inheritdoc />
+    public event EventHandler<DockableHiddenEventArgs>? DockableHidden;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableRestoredEventArgs>? DockableRestored;
+
+    /// <inheritdoc />
     public event EventHandler<WindowOpenedEventArgs>? WindowOpened;
 
     /// <inheritdoc />
@@ -117,6 +123,18 @@ public abstract partial class FactoryBase
     public virtual void OnDockableUnpinned(IDockable? dockable)
     {
         DockableUnpinned?.Invoke(this, new DockableUnpinnedEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableHidden(IDockable? dockable)
+    {
+        DockableHidden?.Invoke(this, new DockableHiddenEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableRestored(IDockable? dockable)
+    {
+        DockableRestored?.Invoke(this, new DockableRestoredEventArgs(dockable));
     }
 
     /// <inheritdoc />

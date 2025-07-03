@@ -61,6 +61,16 @@ public partial interface IFactory
     event EventHandler<DockableUnpinnedEventArgs>? DockableUnpinned;
 
     /// <summary>
+    /// Dockable hidden event handler.
+    /// </summary>
+    event EventHandler<DockableHiddenEventArgs>? DockableHidden;
+
+    /// <summary>
+    /// Dockable restored event handler.
+    /// </summary>
+    event EventHandler<DockableRestoredEventArgs>? DockableRestored;
+
+    /// <summary>
     /// Window opened event handler.
     /// </summary>
     event EventHandler<WindowOpenedEventArgs>? WindowOpened;
@@ -159,6 +169,18 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The unpinned dockable.</param>
     void OnDockableUnpinned(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable has been hidden.
+    /// </summary>
+    /// <param name="dockable">The hidden dockable.</param>
+    void OnDockableHidden(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable has been restored.
+    /// </summary>
+    /// <param name="dockable">The restored dockable.</param>
+    void OnDockableRestored(IDockable? dockable);
 
     /// <summary>
     /// Called when the window has been opened.

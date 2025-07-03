@@ -10,6 +10,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using Dock.Model;
 using Dock.Model.Core;
+using Dock.Model.Controls;
 using Dock.Serializer;
 
 namespace DockXamlSample;
@@ -18,6 +19,8 @@ public partial class MainView : UserControl
 {
     private IDockSerializer? _serializer;
     private IDockState? _dockState;
+    private IRootDock? _rootDock;
+    private MenuItem? _viewsMenu;
 
     public MainView()
     {
@@ -42,6 +45,16 @@ public partial class MainView : UserControl
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+        _viewsMenu = this.FindControl<MenuItem>("ViewsMenu");
+        _rootDock = DockControl?.Layout as IRootDock;
+
+        if (DockControl?.Factory is { } factory)
+        {
+            factory.DockableHidden += (_, __) => UpdateViewsMenu();
+            factory.DockableRestored += (_, __) => UpdateViewsMenu();
+        }
+
+        UpdateViewsMenu();
     }
 
     private async Task OpenLayout()
@@ -158,6 +171,39 @@ public partial class MainView : UserControl
     private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
     {
         CloseLayout();
+    }
+
+    private void ViewsMenuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { Tag: IDockable dockable } && DockControl?.Factory is { } factory)
+        {
+            factory.RestoreDockable(dockable);
+        }
+    }
+
+    private void UpdateViewsMenu()
+    {
+        if (_viewsMenu is null)
+        {
+            return;
+        }
+
+        _viewsMenu.Items.Clear();
+
+        if (_rootDock?.HiddenDockables is { Count: >0 } hidden)
+        {
+            foreach (var dockable in hidden)
+            {
+                var item = new MenuItem { Header = dockable.Title ?? dockable.Id, Tag = dockable };
+                item.Click += ViewsMenuItem_OnClick;
+                _viewsMenu.Items.Add(item);
+            }
+            _viewsMenu.IsEnabled = true;
+        }
+        else
+        {
+            _viewsMenu.IsEnabled = false;
+        }
     }
 }
 

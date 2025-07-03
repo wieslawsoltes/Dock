@@ -609,7 +609,18 @@ public abstract partial class FactoryBase
     {
         if (dockable.CanClose && dockable.OnClose())
         {
-            RemoveDockable(dockable, true);
+            var hide = (dockable is ITool && HideToolsOnClose)
+                       || (dockable is IDocument && HideDocumentsOnClose);
+
+            if (hide)
+            {
+                HideDockable(dockable);
+            }
+            else
+            {
+                RemoveDockable(dockable, true);
+            }
+
             OnDockableClosed(dockable);
         }
     }
@@ -684,6 +695,92 @@ public abstract partial class FactoryBase
         }
 
         CloseDockablesRange(dock, indexOf + 1, dock.VisibleDockables.Count - 1);
+    }
+
+    /// <inheritdoc/>
+    public virtual void HideDockable(IDockable dockable)
+    {
+        UnpinDockable(dockable);
+
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        rootDock.HiddenDockables ??= CreateList<IDockable>();
+
+        if (dockable.Owner is IDock owner && owner.VisibleDockables is not null)
+        {
+            RemoveVisibleDockable(owner, dockable);
+            OnDockableRemoved(dockable);
+            dockable.OriginalOwner = owner;
+        }
+
+        dockable.Owner = rootDock;
+        rootDock.HiddenDockables.Add(dockable);
+        OnDockableHidden(dockable);
+    }
+
+    /// <inheritdoc/>
+    public void HideDockable(string id)
+    {
+        var dockable = Find(d => d.Id == id).FirstOrDefault();
+        if (dockable is not null)
+        {
+            HideDockable(dockable);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void RestoreDockable(IDockable dockable)
+    {
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock?.HiddenDockables is null)
+        {
+            return;
+        }
+
+        if (!rootDock.HiddenDockables.Contains(dockable))
+        {
+            return;
+        }
+
+        rootDock.HiddenDockables.Remove(dockable);
+        OnDockableRestored(dockable);
+
+        if (dockable.OriginalOwner is IDock owner)
+        {
+            AddVisibleDockable(owner, dockable);
+            OnDockableAdded(dockable);
+            dockable.Owner = owner;
+            dockable.OriginalOwner = null;
+        }
+        else
+        {
+            dockable.Owner = null;
+        }
+    }
+
+    /// <inheritdoc/>
+    public IDockable? RestoreDockable(string id)
+    {
+        foreach (var rootDock in Find(d => d is IRootDock).OfType<IRootDock>())
+        {
+            if (rootDock.HiddenDockables is null)
+            {
+                continue;
+            }
+
+            var dockable = rootDock.HiddenDockables.FirstOrDefault(x => x.Id == id);
+            if (dockable is not null)
+            {
+                RestoreDockable(dockable);
+                return dockable;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

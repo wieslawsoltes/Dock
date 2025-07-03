@@ -28,6 +28,12 @@ public abstract partial class FactoryBase
     public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
     /// <inheritdoc/>
+    public virtual bool HideToolsOnClose { get; set; } = false;
+
+    /// <inheritdoc/>
+    public virtual bool HideDocumentsOnClose { get; set; } = false;
+
+    /// <inheritdoc/>
     public virtual object? GetContext(string id)
     {
         if (string.IsNullOrEmpty(id))

@@ -691,6 +691,29 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void DockAsDocument(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock sourceDock)
+        {
+            return;
+        }
+
+        var rootDock = FindRoot(sourceDock, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        var target = FindDockable(rootDock, d => d is IDocumentDock) as IDock;
+        if (target is null)
+        {
+            return;
+        }
+
+        MoveDockable(sourceDock, target, dockable, null);
+    }
+
+    /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
         if (dockable.CanClose && dockable.OnClose())

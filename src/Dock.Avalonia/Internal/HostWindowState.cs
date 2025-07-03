@@ -114,6 +114,29 @@ internal class HostWindowState : IHostWindowState
         }
     }
 
+    private IDockable? GetDragSource()
+    {
+        var layout = _hostWindow.Window?.Layout;
+        var source = layout?.ActiveDockable;
+        if (source is IDock dock)
+        {
+            var count = dock.VisibleDockables?.Count ?? 0;
+            if (count > 1)
+            {
+                return dock;
+            }
+
+            if (count == 1)
+            {
+                return dock.ActiveDockable ?? dock;
+            }
+
+            return dock;
+        }
+
+        return layout?.FocusedDockable;
+    }
+
     private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_state.TargetDropControl is null)
@@ -121,9 +144,9 @@ internal class HostWindowState : IHostWindowState
             return false;
         }
 
-        var layout = _hostWindow.Window?.Layout;
+        var sourceDockable = GetDragSource();
 
-        if (layout?.FocusedDockable is { } sourceDockable && _state.TargetDropControl.DataContext is IDockable targetDockable)
+        if (sourceDockable is { } && _state.TargetDropControl.DataContext is IDockable targetDockable)
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 
@@ -147,9 +170,9 @@ internal class HostWindowState : IHostWindowState
             return;
         }
 
-        var layout = _hostWindow.Window?.Layout;
+        var sourceDockable = GetDragSource();
 
-        if (layout?.ActiveDockable is { } sourceDockable && _state.TargetDropControl.DataContext is IDockable targetDockable)
+        if (sourceDockable is { } && _state.TargetDropControl.DataContext is IDockable targetDockable)
         {
             DockManager.Position = DockHelpers.ToDockPoint(point);
 

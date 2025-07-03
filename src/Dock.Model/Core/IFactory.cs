@@ -445,4 +445,16 @@ public partial interface IFactory
     /// <param name="width">The window width.</param>
     /// <param name="height">The window height.</param>
     void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height);
+
+    /// <summary>
+    /// Splits document into a new horizontal document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to split.</param>
+    void NewHorizontalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Splits document into a new vertical document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to split.</param>
+    void NewVerticalDocumentDock(IDockable dockable);
 }

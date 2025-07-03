@@ -19,12 +19,20 @@
   <x:String x:Key="DocumentTabStripItemCloseAllTabsString">Close all tabs</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsLeftString">_Close tabs to the left</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsRightString">_Close tabs to the right</x:String>
+  <x:String x:Key="DocumentTabStripItemNewHorizontalDockString">New Horizontal Document Dock</x:String>
+  <x:String x:Key="DocumentTabStripItemNewVerticalDockString">New Vertical Document Dock</x:String>
 
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
+              Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
+              CommandParameter="{Binding}"/>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewVerticalDockString}"
+              Command="{Binding Owner.Factory.NewVerticalDocumentDock}"
+              CommandParameter="{Binding}"/>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"

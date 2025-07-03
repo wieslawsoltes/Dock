@@ -104,7 +104,10 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
     window.Height = 600;
     return window;
 }
+
 ```
+
+If `EnableWindowDrag` on a `DocumentDock` is set to `true`, the tab strip doubles as a drag handle for the entire window. This lets users reposition floating windows by dragging the tabs themselves.
 
 ## Tracking bounds
 

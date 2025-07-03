@@ -69,9 +69,17 @@
 
     <Setter Property="ItemsPanel">
       <ItemsPanelTemplate>
-        <WrapPanel Orientation="{TemplateBinding Orientation}" ClipToBounds="False" />
+        <WrapPanel Orientation="Horizontal" ClipToBounds="False" />
       </ItemsPanelTemplate>
     </Setter>
+
+    <Style Selector="^[Orientation=Vertical]">
+      <Setter Property="ItemsPanel">
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Vertical" ClipToBounds="False" />
+        </ItemsPanelTemplate>
+      </Setter>
+    </Style>
 
     <Style Selector="^:not(:create):empty">
       <Setter Property="IsVisible" Value="False" />

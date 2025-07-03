@@ -99,14 +99,16 @@ public class HostWindow : Window, IHostWindow
         {
             _hostWindowTitleBar.ApplyTemplate();
 
-            if (_hostWindowTitleBar.BackgroundControl is { })
-            {
-                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
-                {
-                    MoveDrag(args, fromTitleBar: true);
-                };
-            }
+            _hostWindowTitleBar.AddHandler(PointerPressedEvent,
+                TitleBarPointerPressed,
+                RoutingStrategies.Tunnel | RoutingStrategies.Bubble,
+                handledEventsToo: true);
         }
+    }
+
+    private void TitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        MoveDrag(e, fromTitleBar: true);
     }
 
     private PixelPoint ClientPointToScreenRelativeToWindow(Point clientPoint)

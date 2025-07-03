@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Reactive;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -68,7 +69,7 @@ public class DocumentControl : TemplatedControl
         if (_tabStrip is not null)
         {
             _subscription = _tabStrip.GetObservable(DocumentTabStrip.HideSingleFloatingDocumentTabsProperty)
-                .Subscribe(_ => UpdateFloatingPseudoClass());
+                .Subscribe(new AnonymousObserver<bool>(_ => UpdateFloatingPseudoClass()));
         }
         UpdateFloatingPseudoClass();
     }

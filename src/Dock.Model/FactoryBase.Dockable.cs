@@ -128,6 +128,24 @@ public abstract partial class FactoryBase
                 return;
             }
         }
+        
+        // Special handling for TabStrip drops
+        if (targetDockable is null && 
+            targetDock.Factory?.FindDockable(targetDock, (d) => d == sourceDockable) == null)
+        {
+            // Remove from source
+            RemoveDockable(sourceDockable, true);
+        
+            // Add to target tab collection
+            AddDockable(targetDock, sourceDockable);
+        
+            // Make it the active tab in the target dock
+            targetDock.ActiveDockable = sourceDockable;
+        
+            // Update visuals
+            targetDock.Factory?.SetFocusedDockable(targetDock, sourceDockable);
+        }
+
 
         var isSameOwner = sourceDock == targetDock;
 

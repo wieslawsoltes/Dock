@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -86,7 +88,15 @@ internal class DockControlState : IDockControlState
     {
         var operation = DockOperation.Window;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        bool isTabStripTarget = _state.DropControl is TabStrip || 
+                                (_state.DropControl?.GetVisualAncestors().OfType<TabStrip>().Any() ?? false);
+    
+        if (isTabStripTarget)
+        {
+            // Use Fill operation for tabs dropped onto a TabStrip or TabStrip child
+            operation = DockOperation.Fill;
+        }
+        else if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
@@ -314,6 +324,28 @@ internal class DockControlState : IDockControlState
                             targetDockControl = inputActiveDockControl;
                         }
                     }
+                    
+                    bool isTabStripTarget = dropControl is TabStrip || 
+                                            (dropControl?.GetVisualAncestors().OfType<TabStrip>().Any() ?? false);
+                    
+                    if (isTabStripTarget)
+                    {
+                        // Ensure the tab can be dropped here
+                        var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
+                        if (isDropEnabled)
+                        {
+                            // Set the target point and control
+                            _state.TargetPoint = targetPoint;
+                            _state.TargetDockControl = targetDockControl;
+        
+                            // Use Fill operation for TabStrip drops
+                            if (Validate(targetPoint, DockOperation.Fill, dragAction, targetDockControl))
+                            {
+                                preview = "Dock";
+                            }
+                        }
+                    }
+ 
 
                     if (dropControl is { } && targetDockControl is { })
                     {

@@ -41,7 +41,8 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <DockPanel Background="Transparent"
+        <DockPanel Background="{TemplateBinding Background}"
+                   DockProperties.IsDropArea="True" DockProperties.IsDropEnabled="True"
                    ClipToBounds="False">
           <Button x:Name="PART_ButtonCreate"
                   Command="{Binding CreateDocument}"

@@ -26,7 +26,7 @@
     <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
               Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}"/>
+              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static OwnerIsToolDockConverter.Instance}}"/>
     <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"

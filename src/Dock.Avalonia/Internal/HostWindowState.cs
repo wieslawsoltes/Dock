@@ -88,11 +88,15 @@ internal class HostWindowState : IHostWindowState
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Window;
+        var operation = DockOperation.Fill;
 
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+        else if (!Validate(point, operation, dragAction, relativeTo))
+        {
+            operation = DockOperation.Window;
         }
 
         if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
@@ -100,10 +104,7 @@ internal class HostWindowState : IHostWindowState
             _adornerHelper.RemoveAdorner(control);
         }
 
-        if (operation != DockOperation.Window)
-        {
-            Execute(point, operation, dragAction, relativeTo);
-        }
+        Execute(point, operation, dragAction, relativeTo);
     }
 
     private void Leave()

@@ -11,6 +11,7 @@
   <x:String x:Key="ToolChromeControlFloatString">_Float</x:String>
   <x:String x:Key="ToolChromeControlDockString">_Dock</x:String>
   <x:String x:Key="ToolChromeControlAutoHideString">_Auto Hide</x:String>
+  <x:String x:Key="ToolChromeControlDockAsDocumentString">Dock as Tabbed Document</x:String>
   <x:String x:Key="ToolChromeControlCloseString">_Close</x:String>
 
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
@@ -23,6 +24,10 @@
               CommandParameter="{Binding ActiveDockable}"
               IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
               IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
+    <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
+              Command="{Binding Owner.Factory.DockAsDocument}"
+              CommandParameter="{Binding ActiveDockable}"
+              IsVisible="{Binding ActiveDockable.Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}"/>
     <MenuItem Header="{DynamicResource ToolChromeControlAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"

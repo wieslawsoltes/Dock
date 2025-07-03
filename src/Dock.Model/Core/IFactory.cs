@@ -336,6 +336,12 @@ public partial interface IFactory
     void FloatAllDockables(IDockable dockable);
 
     /// <summary>
+    /// Docks dockable as tabbed document in the nearest document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to dock.</param>
+    void DockAsDocument(IDockable dockable);
+
+    /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>

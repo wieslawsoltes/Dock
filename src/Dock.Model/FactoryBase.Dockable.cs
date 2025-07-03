@@ -784,6 +784,60 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void NewHorizontalDocumentDock(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock)
+        {
+            return;
+        }
+
+        var newDock = CreateDocumentDock();
+        newDock.Title = nameof(IDocumentDock);
+        newDock.VisibleDockables = CreateList<IDockable>();
+
+        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        {
+            targetDock.Id = sourceDock.Id;
+            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+
+            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
+            {
+                tdc.DocumentTemplate = sdc.DocumentTemplate;
+            }
+        }
+
+        MoveDockable(dock, newDock, dockable, null);
+        SplitToDock(dock, newDock, DockOperation.Right);
+    }
+
+    /// <inheritdoc/>
+    public virtual void NewVerticalDocumentDock(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock)
+        {
+            return;
+        }
+
+        var newDock = CreateDocumentDock();
+        newDock.Title = nameof(IDocumentDock);
+        newDock.VisibleDockables = CreateList<IDockable>();
+
+        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        {
+            targetDock.Id = sourceDock.Id;
+            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+
+            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
+            {
+                tdc.DocumentTemplate = sdc.DocumentTemplate;
+            }
+        }
+
+        MoveDockable(dock, newDock, dockable, null);
+        SplitToDock(dock, newDock, DockOperation.Bottom);
+    }
+
+    /// <inheritdoc/>
     public virtual void HideDockable(IDockable dockable)
     {
         UnpinDockable(dockable);

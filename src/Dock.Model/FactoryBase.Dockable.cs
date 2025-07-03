@@ -710,7 +710,9 @@ public abstract partial class FactoryBase
             return;
         }
 
-        MoveDockable(sourceDock, target, dockable, null);
+        var targetDockable = target.VisibleDockables?.LastOrDefault();
+
+        MoveDockable(sourceDock, target, dockable, targetDockable);
     }
 
     /// <inheritdoc/>

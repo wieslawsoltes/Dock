@@ -32,12 +32,7 @@
               Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
-    <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
-              Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
-              CommandParameter="{Binding}"/>
-    <MenuItem Header="{DynamicResource DocumentTabStripItemNewVerticalDockString}"
-              Command="{Binding Owner.Factory.NewVerticalDocumentDock}"
-              CommandParameter="{Binding}"/>
+    <Separator />
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
@@ -58,6 +53,27 @@
               Command="{Binding Owner.Factory.CloseRightDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
+    <Separator />
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
+              Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanDrag" />
+          <Binding Path="CanDrop" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewVerticalDockString}"
+              Command="{Binding Owner.Factory.NewVerticalDocumentDock}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanDrag" />
+          <Binding Path="CanDrop" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">

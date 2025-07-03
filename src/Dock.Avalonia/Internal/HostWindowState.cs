@@ -3,6 +3,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -78,12 +79,13 @@ internal class HostWindowState : IHostWindowState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
 
-            if (operation == DockOperation.Window &&
-                Validate(point, DockOperation.Fill, dragAction, relativeTo))
-            {
-                operation = DockOperation.Fill;
-            }
+        if (_state.TargetDropControl is TabStrip &&
+            operation == DockOperation.Window &&
+            Validate(point, DockOperation.Fill, dragAction, relativeTo))
+        {
+            operation = DockOperation.Fill;
         }
 
         if (operation != DockOperation.Window)
@@ -94,21 +96,17 @@ internal class HostWindowState : IHostWindowState
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var operation = DockOperation.Window;
 
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
-
-            if (operation == DockOperation.Window &&
-                Validate(point, DockOperation.Fill, dragAction, relativeTo))
-            {
-                operation = DockOperation.Fill;
-            }
         }
-        else if (!Validate(point, operation, dragAction, relativeTo))
+
+        if (_state.TargetDropControl is TabStrip &&
+            Validate(point, DockOperation.Fill, dragAction, relativeTo))
         {
-            operation = DockOperation.Window;
+            operation = DockOperation.Fill;
         }
 
         if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
@@ -116,7 +114,10 @@ internal class HostWindowState : IHostWindowState
             _adornerHelper.RemoveAdorner(control);
         }
 
-        Execute(point, operation, dragAction, relativeTo);
+        if (operation != DockOperation.Window)
+        {
+            Execute(point, operation, dragAction, relativeTo);
+        }
     }
 
     private void Leave()

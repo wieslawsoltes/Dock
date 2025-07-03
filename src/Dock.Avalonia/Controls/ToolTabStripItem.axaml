@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:core="using:Dock.Model.Core" 
-                    x:DataType="core:IDockable" 
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
+                    x:DataType="core:IDockable"
                     x:CompileBindings="True">
   <Design.PreviewWith>
     <Border Padding="20">
@@ -19,6 +20,7 @@
   <x:String x:Key="ToolTabStripItemFloatString">_Float</x:String>
   <x:String x:Key="ToolTabStripItemDockString">_Dock</x:String>
   <x:String x:Key="ToolTabStripItemAutoHideString">_Auto Hide</x:String>
+  <x:String x:Key="ToolTabStripItemDockAsDocumentString">Dock as Tabbed Document</x:String>
   <x:String x:Key="ToolTabStripItemCloseString">_Close</x:String>
 
   <ContextMenu x:Key="ToolTabStripItemContextMenu">
@@ -31,6 +33,10 @@
               CommandParameter="{Binding}"
               IsEnabled="{Binding OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
               IsVisible="{Binding CanPin, FallbackValue=False}"/>
+    <MenuItem Header="{DynamicResource ToolTabStripItemDockAsDocumentString}"
+              Command="{Binding Owner.Factory.DockAsDocument}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}"/>
     <MenuItem Header="{DynamicResource ToolTabStripItemAutoHideString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding }"

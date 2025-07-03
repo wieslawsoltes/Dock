@@ -647,7 +647,7 @@ public abstract partial class FactoryBase
         if (dock is IDocumentDock sourceDoc && targetDock is IDocumentDock targetDoc)
         {
             targetDoc.CanCreateDocument = sourceDoc.CanCreateDocument;
-            targetDoc.EnableWindowDrag = targetDoc.EnableWindowDrag;
+            targetDoc.EnableWindowDrag = sourceDoc.EnableWindowDrag;
 
             if (sourceDoc is IDocumentDockContent sourceContent && targetDoc is IDocumentDockContent targetContent)
             {

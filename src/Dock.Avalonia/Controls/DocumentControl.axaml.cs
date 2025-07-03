@@ -30,6 +30,12 @@ public class DocumentControl : TemplatedControl
         AvaloniaProperty.Register<DocumentControl, bool>(nameof(IsActive));
 
     /// <summary>
+    /// Defines the <see cref="TabsLayout"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
+        AvaloniaProperty.Register<DocumentControl, DocumentTabLayout>(nameof(TabsLayout), DocumentTabLayout.Top);
+
+    /// <summary>
     /// Gets or sets tab header template.
     /// </summary>
     public IDataTemplate HeaderTemplate
@@ -45,6 +51,15 @@ public class DocumentControl : TemplatedControl
     {
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tabs layout.
+    /// </summary>
+    public DocumentTabLayout TabsLayout
+    {
+        get => GetValue(TabsLayoutProperty);
+        set => SetValue(TabsLayoutProperty, value);
     }
 
     /// <summary>

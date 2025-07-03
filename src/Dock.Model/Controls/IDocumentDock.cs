@@ -19,4 +19,9 @@ public interface IDocumentDock : IDock
     /// Gets or sets command to create new document.
     /// </summary>
     ICommand? CreateDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets document tabs layout.
+    /// </summary>
+    DocumentTabLayout TabsLayout { get; set; }
 }

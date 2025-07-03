@@ -69,7 +69,7 @@
 
     <Setter Property="ItemsPanel">
       <ItemsPanelTemplate>
-        <WrapPanel ClipToBounds="False" />
+        <WrapPanel Orientation="{TemplateBinding Orientation}" ClipToBounds="False" />
       </ItemsPanelTemplate>
     </Setter>
 

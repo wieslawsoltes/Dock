@@ -19,6 +19,10 @@
   <x:String x:Key="DocumentTabStripItemCloseAllTabsString">Close all tabs</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsLeftString">_Close tabs to the left</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsRightString">_Close tabs to the right</x:String>
+  <x:String x:Key="DocumentTabStripItemTabLayoutString">Tab Layout</x:String>
+  <x:String x:Key="DocumentTabStripItemTabLayoutLeftString">_Place Tabs on the Left</x:String>
+  <x:String x:Key="DocumentTabStripItemTabLayoutTopString">_Place Tabs on the Top</x:String>
+  <x:String x:Key="DocumentTabStripItemTabLayoutRightString">_Place Tabs on the Right</x:String>
 
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
@@ -45,6 +49,17 @@
               Command="{Binding Owner.Factory.CloseRightDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanClose}"/>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutString}">
+      <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutLeftString}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutLeft}"
+                CommandParameter="{Binding Owner}" />
+      <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutTopString}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutTop}"
+                CommandParameter="{Binding Owner}" />
+      <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutRightString}"
+                Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutRight}"
+                CommandParameter="{Binding Owner}" />
+    </MenuItem>
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">

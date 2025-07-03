@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
+using Avalonia.Layout;
 
 namespace Dock.Avalonia.Controls;
 
@@ -28,6 +29,12 @@ public class DocumentTabStrip : TabStrip
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
 
     /// <summary>
+    /// Defines the <see cref="Orientation"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Orientation> OrientationProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, Orientation>(nameof(Orientation), Orientation.Horizontal);
+
+    /// <summary>
     /// Gets or sets if tab strop dock can create new items.
     /// </summary>
     public bool CanCreateItem
@@ -43,6 +50,15 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets orientation of the tab strip.
+    /// </summary>
+    public Orientation Orientation
+    {
+        get => GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 
     /// <inheritdoc/>

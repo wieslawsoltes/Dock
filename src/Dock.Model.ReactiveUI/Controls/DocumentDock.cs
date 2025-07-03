@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
+using Dock.Model.Core;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -20,4 +21,8 @@ public partial class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentTabLayout TabsLayout { get; set; } = DocumentTabLayout.Top;
 }

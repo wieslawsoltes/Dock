@@ -60,11 +60,27 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
+    
+    <Style Selector="^[TabsLayout=Top]/template/ Grid#PART_Grid">
+      <Setter Property="DockPanel.Dock" Value="Top" />
+      <Setter Property="Width" Value="NaN" />
+      <Setter Property="Height" Value="2" />
+    </Style>
+    
+    <Style Selector="^[TabsLayout=Left]/template/ Grid#PART_Grid">
+      <Setter Property="DockPanel.Dock" Value="Left" />
+      <Setter Property="Width" Value="2" />
+      <Setter Property="Height" Value="NaN" />
+    </Style>
+    
+    <Style Selector="^[TabsLayout=Right]/template/ Grid#PART_Grid">
+      <Setter Property="DockPanel.Dock" Value="Right" />
+      <Setter Property="Width" Value="2" />
+      <Setter Property="Height" Value="NaN" />
+    </Style>
 
     <Style Selector="^/template/ Grid#PART_Grid">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
-      <Setter Property="Height" Value="2" />
-      <Setter Property="DockPanel.Dock" Value="Top" />
     </Style>
 
     <Style Selector="^:active /template/ Grid#PART_Grid">

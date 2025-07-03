@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using Dock.Model.Core;
@@ -35,6 +36,13 @@ public sealed class DockSerializer : IDockSerializer
                 new KeyValuePairConverter()
             }
         };
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class using <see cref="ObservableCollection{T}"/> as the list type.
+    /// </summary>
+    public DockSerializer() : this(typeof(ObservableCollection<>))
+    {
     }
 
     /// <inheritdoc/>

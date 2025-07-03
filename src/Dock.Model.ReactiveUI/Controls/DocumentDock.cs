@@ -15,6 +15,8 @@ namespace Dock.Model.ReactiveUI.Controls;
 [DataContract(IsReference = true)]
 public partial class DocumentDock : DockBase, IDocumentDock
 {
+    private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanCreateDocument { get; set; }
@@ -23,7 +25,9 @@ public partial class DocumentDock : DockBase, IDocumentDock
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
 
-    private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool EnableWindowDrag { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

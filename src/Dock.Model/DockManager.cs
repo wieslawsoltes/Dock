@@ -38,22 +38,19 @@ public class DockManager : IDockManager
                 return false;
             }
         }
-        var targetDockable = targetDock.ActiveDockable;
+        var targetDockable = targetDock.VisibleDockables?.LastOrDefault();
         if (targetDockable is null)
         {
-            targetDockable = targetDock.VisibleDockables?.LastOrDefault();
-            if (targetDockable is null)
+            if (bExecute)
             {
-                if (bExecute)
+                if (sourceDockableOwner.Factory is { } factory)
                 {
-                    if (sourceDockableOwner.Factory is { } factory)
-                    {
-                        factory.MoveDockable(sourceDockableOwner, targetDock, sourceDockable, null);
-                    }
+                    factory.MoveDockable(sourceDockableOwner, targetDock, sourceDockable, null);
                 }
-                return true;
             }
+            return true;
         }
+
         if (bExecute)
         {
             if (sourceDockableOwner.Factory is { } factory)
@@ -114,6 +111,7 @@ public class DockManager : IDockManager
         {
             targetDocumentDock.Id = sourceDocumentDock.Id;
             targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
 
             if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
                 && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)

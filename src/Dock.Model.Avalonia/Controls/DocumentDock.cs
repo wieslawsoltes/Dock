@@ -28,6 +28,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public static readonly StyledProperty<IDocumentTemplate?> DocumentTemplateProperty =
         AvaloniaProperty.Register<DocumentDock, IDocumentTemplate?>(nameof(DocumentTemplate));
+    
+    /// <summary>
+    /// Defines the <see cref="EnableWindowDrag"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> EnableWindowDragProperty =
+        AvaloniaProperty.Register<DocumentDock, bool>(nameof(EnableWindowDrag));
 
     /// <summary>
     /// Defines the <see cref="TabsLayout"/> property.
@@ -77,6 +83,17 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     {
         get => GetValue(TabsLayoutProperty);
         set => SetValue(TabsLayoutProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets document template.
+    /// </summary>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("EnableWindowDrag")]
+    public bool EnableWindowDrag
+    {
+        get => GetValue(EnableWindowDragProperty);
+        set => SetValue(EnableWindowDragProperty, value);
     }
 
     /// <summary>

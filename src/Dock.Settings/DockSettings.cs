@@ -17,5 +17,4 @@ public static class DockSettings
     /// Minimum vertical drag distance to initiate drag operation.
     /// </summary>
     public static double MinimumVerticalDragDistance = 4;
-
 }

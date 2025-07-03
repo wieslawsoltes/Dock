@@ -36,6 +36,8 @@
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 
+    <Setter Property="EnableWindowDrag" Value="{Binding EnableWindowDrag}" />
+    
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Focusable" Value="False" />
     <Setter Property="ClipToBounds" Value="False" />
@@ -63,7 +65,9 @@
             </Path>
           </Button>
           <ItemsPresenter x:Name="PART_ItemsPresenter"
-                          ItemsPanel="{TemplateBinding ItemsPanel}" />
+                          ItemsPanel="{TemplateBinding ItemsPanel}"
+                          DockPanel.Dock="Left" />
+          <Border Name="PART_BorderFill" DockProperties.IsDropArea="True" />
         </DockPanel>
       </ControlTemplate>
     </Setter>
@@ -102,6 +106,10 @@
 
     <Style Selector="^:not(:create):empty">
       <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_BorderFill">
+      <Setter Property="Background" Value="Transparent" />
     </Style>
 
   </ControlTheme>

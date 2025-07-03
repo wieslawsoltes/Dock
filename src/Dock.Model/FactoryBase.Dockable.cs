@@ -605,6 +605,118 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void FloatAllDockables(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+        {
+            return;
+        }
+
+        var rootDock = FindRoot(dock, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        dock.GetPointerScreenPosition(out var pointerX, out var pointerY);
+        dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
+
+        if (double.IsNaN(pointerX))
+        {
+            pointerX = !double.IsNaN(ownerX) ? ownerX : 0;
+        }
+        if (double.IsNaN(pointerY))
+        {
+            pointerY = !double.IsNaN(ownerY) ? ownerY : 0;
+        }
+
+        var width = double.IsNaN(ownerWidth) ? 300 : ownerWidth;
+        var height = double.IsNaN(ownerHeight) ? 400 : ownerHeight;
+
+        IDock targetDock = dock switch
+        {
+            IDocumentDock => CreateDocumentDock(),
+            IToolDock => CreateToolDock(),
+            _ => CreateDockDock()
+        };
+
+        targetDock.Title = dock.Title;
+        targetDock.Id = dock.Id;
+        targetDock.VisibleDockables = CreateList<IDockable>();
+
+        if (dock is IDocumentDock sourceDoc && targetDock is IDocumentDock targetDoc)
+        {
+            targetDoc.CanCreateDocument = sourceDoc.CanCreateDocument;
+            targetDoc.EnableWindowDrag = sourceDoc.EnableWindowDrag;
+
+            if (sourceDoc is IDocumentDockContent sourceContent && targetDoc is IDocumentDockContent targetContent)
+            {
+                targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
+            }
+        }
+
+        if (dock is IToolDock sourceTool && targetDock is IToolDock targetTool)
+        {
+            targetTool.Alignment = sourceTool.Alignment;
+            targetTool.IsExpanded = sourceTool.IsExpanded;
+            targetTool.AutoHide = sourceTool.AutoHide;
+            targetTool.GripMode = sourceTool.GripMode;
+        }
+
+        var dockables = dock.VisibleDockables.ToList();
+        foreach (var d in dockables)
+        {
+            // move dockables one by one but do not force collapse when the
+            // owner dock declares it should stay visible
+            RemoveDockable(d, dock.IsCollapsable);
+            AddDockable(targetDock, d);
+            OnDockableMoved(d);
+            targetDock.ActiveDockable = d;
+        }
+
+        var window = CreateWindowFrom(targetDock);
+        if (window is not null)
+        {
+            AddWindow(rootDock, window);
+            window.X = pointerX;
+            window.Y = pointerY;
+            window.Width = width;
+            window.Height = height;
+            window.Present(false);
+
+            if (window.Layout is { })
+            {
+                SetFocusedDockable(window.Layout, targetDock.ActiveDockable);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void DockAsDocument(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock sourceDock)
+        {
+            return;
+        }
+
+        var rootDock = FindRoot(sourceDock, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        var target = FindDockable(rootDock, d => d is IDocumentDock) as IDock;
+        if (target is null)
+        {
+            return;
+        }
+
+        var targetDockable = target.VisibleDockables?.LastOrDefault();
+
+        MoveDockable(sourceDock, target, dockable, targetDockable);
+    }
+
+    /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
         if (dockable.CanClose && dockable.OnClose())
@@ -698,6 +810,34 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void NewHorizontalDocumentDock(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock)
+        {
+            return;
+        }
+
+        var newDock = CreateDocumentDock();
+        newDock.Title = nameof(IDocumentDock);
+        newDock.VisibleDockables = CreateList<IDockable>();
+
+        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        {
+            targetDock.Id = sourceDock.Id;
+            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+
+            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
+            {
+                tdc.DocumentTemplate = sdc.DocumentTemplate;
+            }
+        }
+
+        MoveDockable(dock, newDock, dockable, null);
+        SplitToDock(dock, newDock, DockOperation.Right);
+    }
+
+    /// <inheritdoc/>
     public virtual void SetDocumentDockTabsLayout(IDockable dockable, DocumentTabLayout layout)
     {
         if (dockable is IDocumentDock documentDock)
@@ -714,6 +854,34 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc/>
     public void SetDocumentDockTabsLayoutRight(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Right);
+    
+    /// <inheritdoc/>
+    public virtual void NewVerticalDocumentDock(IDockable dockable)
+    {
+        if (dockable.Owner is not IDock dock)
+        {
+            return;
+        }
+
+        var newDock = CreateDocumentDock();
+        newDock.Title = nameof(IDocumentDock);
+        newDock.VisibleDockables = CreateList<IDockable>();
+
+        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        {
+            targetDock.Id = sourceDock.Id;
+            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
+            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+
+            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
+            {
+                tdc.DocumentTemplate = sdc.DocumentTemplate;
+            }
+        }
+
+        MoveDockable(dock, newDock, dockable, null);
+        SplitToDock(dock, newDock, DockOperation.Bottom);
+    }
 
     /// <inheritdoc/>
     public virtual void HideDockable(IDockable dockable)

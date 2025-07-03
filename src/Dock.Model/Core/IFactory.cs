@@ -42,6 +42,16 @@ public partial interface IFactory
     IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <summary>
+    /// Gets tool controls.
+    /// </summary>
+    IDictionary<IDockable, object> ToolControls { get; }
+
+    /// <summary>
+    /// Gets document controls.
+    /// </summary>
+    IDictionary<IDockable, object> DocumentControls { get; }
+
+    /// <summary>
     /// Gets dock controls.
     /// </summary>
     IList<IDockControl> DockControls { get; }
@@ -330,6 +340,18 @@ public partial interface IFactory
     void FloatDockable(IDockable dockable);
 
     /// <summary>
+    /// Floats owner dock with all dockables.
+    /// </summary>
+    /// <param name="dockable">The dockable owner source.</param>
+    void FloatAllDockables(IDockable dockable);
+
+    /// <summary>
+    /// Docks dockable as tabbed document in the nearest document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to dock.</param>
+    void DockAsDocument(IDockable dockable);
+
+    /// <summary>
     /// Removes dockable from owner <see cref="IDock.VisibleDockables"/> collection, and call IDockable.OnClose.
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>
@@ -470,4 +492,16 @@ public partial interface IFactory
     /// <param name="width">The window width.</param>
     /// <param name="height">The window height.</param>
     void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height);
+
+    /// <summary>
+    /// Splits document into a new horizontal document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to split.</param>
+    void NewHorizontalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Splits document into a new vertical document dock.
+    /// </summary>
+    /// <param name="dockable">The dockable to split.</param>
+    void NewVerticalDocumentDock(IDockable dockable);
 }

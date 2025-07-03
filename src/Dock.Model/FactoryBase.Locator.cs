@@ -28,10 +28,10 @@ public abstract partial class FactoryBase
     public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
 
     /// <inheritdoc/>
-    public virtual bool HideToolsOnClose { get; set; } = true;
+    public virtual bool HideToolsOnClose { get; set; } = false;
 
     /// <inheritdoc/>
-    public virtual bool HideDocumentsOnClose { get; set; } = true;
+    public virtual bool HideDocumentsOnClose { get; set; } = false;
 
     /// <inheritdoc/>
     public virtual object? GetContext(string id)

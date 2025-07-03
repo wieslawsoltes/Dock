@@ -52,7 +52,8 @@ var factory = new MyFactory
 };
 ```
 
-When enabled (the default) the `CloseDockable` command moves the dockable to the
-`IRootDock.HiddenDockables` collection instead of deleting it.
+Both options are disabled by default. When enabled the `CloseDockable` command
+moves the dockable to the `IRootDock.HiddenDockables` collection instead of
+deleting it.
 
 For more details on dockable properties see [Dockable Property Settings](dock-dockable-properties.md).

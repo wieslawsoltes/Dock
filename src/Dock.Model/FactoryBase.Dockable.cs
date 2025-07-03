@@ -719,6 +719,7 @@ public abstract partial class FactoryBase
 
         dockable.Owner = rootDock;
         rootDock.HiddenDockables.Add(dockable);
+        OnDockableHidden(dockable);
     }
 
     /// <inheritdoc/>
@@ -746,6 +747,7 @@ public abstract partial class FactoryBase
         }
 
         rootDock.HiddenDockables.Remove(dockable);
+        OnDockableRestored(dockable);
 
         if (dockable.OriginalOwner is IDock owner)
         {

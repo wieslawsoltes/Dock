@@ -47,10 +47,13 @@ public partial class MainView : UserControl
         AvaloniaXamlLoader.Load(this);
         _viewsMenu = this.FindControl<MenuItem>("ViewsMenu");
         _rootDock = DockControl?.Layout as IRootDock;
-        if (_rootDock?.HiddenDockables is System.Collections.Specialized.INotifyCollectionChanged nc)
+
+        if (DockControl?.Factory is { } factory)
         {
-            nc.CollectionChanged += (_, __) => UpdateViewsMenu();
+            factory.DockableHidden += (_, __) => UpdateViewsMenu();
+            factory.DockableRestored += (_, __) => UpdateViewsMenu();
         }
+
         UpdateViewsMenu();
     }
 
@@ -195,11 +198,11 @@ public partial class MainView : UserControl
                 item.Click += ViewsMenuItem_OnClick;
                 _viewsMenu.Items.Add(item);
             }
+            _viewsMenu.IsEnabled = true;
         }
         else
         {
-            var none = new MenuItem { Header = "(None)", IsEnabled = false };
-            _viewsMenu.Items.Add(none);
+            _viewsMenu.IsEnabled = false;
         }
     }
 }

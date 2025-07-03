@@ -63,6 +63,8 @@
           </Button>
           <ItemsPresenter x:Name="PART_ItemsPresenter"
                           ItemsPanel="{TemplateBinding ItemsPanel}" />
+          <Border Name="PART_BorderFill"
+                  DockProperties.IsDropArea="True" />
         </DockPanel>
       </ControlTemplate>
     </Setter>

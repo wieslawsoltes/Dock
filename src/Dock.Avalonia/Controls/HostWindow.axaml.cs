@@ -103,7 +103,7 @@ public class HostWindow : Window, IHostWindow
             {
                 _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
                 {
-                    MoveDrag(args);
+                    MoveDrag(args, fromTitleBar: true);
                 };
             }
         }
@@ -117,9 +117,9 @@ public class HostWindow : Window, IHostWindow
         return relativeScreenDiff;
     }
 
-    private void MoveDrag(PointerPressedEventArgs e)
+    private void MoveDrag(PointerPressedEventArgs e, bool fromTitleBar = false)
     {
-        if (!ToolChromeControlsWholeWindow)
+        if (!fromTitleBar && !ToolChromeControlsWholeWindow)
             return;
 
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)

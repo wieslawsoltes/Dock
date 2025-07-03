@@ -69,6 +69,10 @@
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
     </Style>
 
+    <Style Selector="^:floating /template/ DocumentTabStrip#PART_TabStrip:singleitem">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
     <Style Selector="^/template/ Border#PART_Border">
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="BorderThickness" Value="1,1,1,1" />

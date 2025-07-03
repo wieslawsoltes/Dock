@@ -7,6 +7,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Dock.Settings;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -14,9 +16,10 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DocumentControl"/> xaml.
 /// </summary>
-[PseudoClasses(":active")]
+[PseudoClasses(":active", ":floating")]
 public class DocumentControl : TemplatedControl
 {
+    private DocumentTabStrip? _tabStrip;
     /// <summary>
     /// Define the <see cref="HeaderTemplate"/> property.
     /// </summary>
@@ -56,11 +59,27 @@ public class DocumentControl : TemplatedControl
     }
 
     /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _tabStrip = e.NameScope.Find<DocumentTabStrip>("PART_TabStrip");
+        UpdateFloatingPseudoClass();
+    }
+
+    /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+        UpdateFloatingPseudoClass();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -83,10 +102,33 @@ public class DocumentControl : TemplatedControl
         {
             UpdatePseudoClasses(change.GetNewValue<bool>());
         }
+
+        if (change.Property == DataContextProperty)
+        {
+            UpdateFloatingPseudoClass();
+        }
     }
 
     private void UpdatePseudoClasses(bool isActive)
     {
         PseudoClasses.Set(":active", isActive);
+    }
+
+    private void UpdateFloatingPseudoClass()
+    {
+        if (_tabStrip is null || DataContext is not IDock dock)
+        {
+            PseudoClasses.Set(":floating", false);
+            return;
+        }
+
+        bool floating = false;
+        if (dock.Factory?.FindRoot(dock, _ => true) is IRootDock root)
+        {
+            floating = root.Window is not null;
+        }
+
+        bool set = DockSettings.HideSingleFloatingDocumentTabs && floating;
+        PseudoClasses.Set(":floating", set);
     }
 }

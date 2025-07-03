@@ -38,6 +38,18 @@ DockSettings.MinimumVerticalDragDistance = 4;
 
 Increase these values if small pointer movements should not initiate dragging.
 
+## Single document tabs
+
+Floating windows hide document tabs when only one document is present. This
+behavior can be disabled globally:
+
+```csharp
+DockSettings.HideSingleFloatingDocumentTabs = false;
+```
+
+When enabled (the default) the tab strip is collapsed to save space and the
+window title shows the document name instead.
+
 ## Hide on close
 
 `FactoryBase` exposes two properties that control whether closing a tool or

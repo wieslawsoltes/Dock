@@ -77,6 +77,12 @@ internal class DockControlState : IDockControlState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+
+            if (operation == DockOperation.Window &&
+                Validate(point, DockOperation.Fill, dragAction, relativeTo))
+            {
+                operation = DockOperation.Fill;
+            }
         }
 
         Validate(point, operation, dragAction, relativeTo);
@@ -89,6 +95,12 @@ internal class DockControlState : IDockControlState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+
+            if (operation == DockOperation.Window &&
+                Validate(point, DockOperation.Fill, dragAction, relativeTo))
+            {
+                operation = DockOperation.Fill;
+            }
         }
         else if (!Validate(point, operation, dragAction, relativeTo))
         {

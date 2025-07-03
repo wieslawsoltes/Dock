@@ -78,6 +78,12 @@ internal class HostWindowState : IHostWindowState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+
+            if (operation == DockOperation.Window &&
+                Validate(point, DockOperation.Fill, dragAction, relativeTo))
+            {
+                operation = DockOperation.Fill;
+            }
         }
 
         if (operation != DockOperation.Window)
@@ -93,6 +99,12 @@ internal class HostWindowState : IHostWindowState
         if (_adornerHelper.Adorner is DockTarget target)
         {
             operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+
+            if (operation == DockOperation.Window &&
+                Validate(point, DockOperation.Fill, dragAction, relativeTo))
+            {
+                operation = DockOperation.Fill;
+            }
         }
         else if (!Validate(point, operation, dragAction, relativeTo))
         {

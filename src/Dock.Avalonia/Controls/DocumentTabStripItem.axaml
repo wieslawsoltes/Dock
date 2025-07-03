@@ -14,6 +14,7 @@
   </Design.PreviewWith>
 
   <x:String x:Key="DocumentTabStripItemFloatString">_Float</x:String>
+  <x:String x:Key="DocumentTabStripItemFloatAllString">Float all</x:String>
   <x:String x:Key="DocumentTabStripItemCloseString">_Close</x:String>
   <x:String x:Key="DocumentTabStripItemCloseOtherTabsString">Close other tabs</x:String>
   <x:String x:Key="DocumentTabStripItemCloseAllTabsString">Close all tabs</x:String>
@@ -25,6 +26,10 @@
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
+              CommandParameter="{Binding}"
+              IsVisible="{Binding CanFloat}"/>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemFloatAllString}"
+              Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}"
               IsVisible="{Binding CanFloat}"/>
     <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"

@@ -10,7 +10,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IDock` | Extends `IDockable` with collections of visible dockables and commands such as `GoBack`, `GoForward`, `Navigate` or `Close`. |
 | `IRootDock` | The top level container. In addition to the `IDock` members it exposes pinned dock collections and commands to manage windows. |
 | `IProportionalDock` | A dock that lays out its children horizontally or vertically using a `Proportion` value. |
-| `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. |
+| `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. `IDocumentDock` exposes a `TabsLayout` property to position the tab strip. |
 | `ITool` | Represents a tool pane. Tools can specify `MinWidth`, `MaxWidth`, `MinHeight` and `MaxHeight` to control their size. |
 | `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` to enable or disable dragging. |
 | `IDockWindow` / `IHostWindow` | Interfaces representing floating windows created when dockables are detached. |

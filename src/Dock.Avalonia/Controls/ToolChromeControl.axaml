@@ -24,7 +24,7 @@
           <Binding Path="ActiveDockable.CanFloat" FallbackValue="{x:False}" />
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
             <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
-            <Binding Path="(core:IDock).OpenedDockablesCount" />
+            <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
           </MultiBinding>
         </MultiBinding>
       </MenuItem.IsVisible>
@@ -57,7 +57,7 @@
           <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
             <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
-            <Binding Path="(core:IDock).OpenedDockablesCount" />
+            <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
           </MultiBinding>
         </MultiBinding>
       </MenuItem.IsVisible>
@@ -148,7 +148,7 @@
                         <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
                         <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
                           <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
-                          <Binding Path="(core:IDock).OpenedDockablesCount" />
+                          <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
                         </MultiBinding>
                       </MultiBinding>
                     </Button.IsVisible>

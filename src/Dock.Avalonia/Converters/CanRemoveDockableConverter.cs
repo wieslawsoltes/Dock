@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Converters;
 
@@ -20,7 +21,7 @@ internal class CanRemoveDockableConverter : IMultiValueConverter
     /// <inheritdoc />
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count == 1 && values[0] is Dock.Model.Core.IDock dock)
+        if (values.Count == 1 && values[0] is IDock dock)
         {
             return dock.CanCloseLastDockable || dock.OpenedDockablesCount > 1;
         }
@@ -29,12 +30,6 @@ internal class CanRemoveDockableConverter : IMultiValueConverter
             return canCloseLast || count > 1;
         }
 
-        return false;
-    }
-
-    /// <inheritdoc />
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
+        return true;
     }
 }

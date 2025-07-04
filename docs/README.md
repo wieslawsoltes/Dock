@@ -39,6 +39,7 @@ guides under *Getting started*.
 - [Dockable property settings](dock-dockable-properties.md) – Configure per item behaviour.
 - [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
 - [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
+- [Tracking controls](dock-tracking-controls.md) – Collections that map dockables to their visuals.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
 - [Dock properties](dock-properties.md) – Use attached properties to mark drag areas and drop targets.

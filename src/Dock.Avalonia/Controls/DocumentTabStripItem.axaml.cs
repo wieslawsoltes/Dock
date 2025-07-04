@@ -16,7 +16,7 @@ namespace Dock.Avalonia.Controls;
 /// Document TabStripItem custom control.
 /// </summary>
 [PseudoClasses(":active")]
-public class DocumentTabStripItem : TabStripItem
+public class DocumentTabStripItem : DraggableTabStripItem<DocumentTabStrip>
 {
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
@@ -35,6 +35,7 @@ public class DocumentTabStripItem : TabStripItem
 
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStripItem);
+
         
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentTabStripItem"/> class.
@@ -44,32 +45,6 @@ public class DocumentTabStripItem : TabStripItem
         UpdatePseudoClasses(IsActive);
     }
 
-    /// <inheritdoc/>
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnAttachedToVisualTree(e);
-
-        AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
-    }
-
-    /// <inheritdoc/>
-    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnDetachedFromVisualTree(e);
-
-        RemoveHandler(PointerPressedEvent, PressedHandler);
-    }
-
-    private void PressedHandler(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsMiddleButtonPressed)
-        {
-            if (DataContext is IDockable { Owner: IDock { Factory: { } factory }, CanClose: true } dockable)
-            {
-                factory.CloseDockable(dockable);
-            }
-        }
-    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

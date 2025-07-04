@@ -1,7 +1,7 @@
-namespace Dock.Avalonia.Internal;
+namespace Dock.Avalonia.Contract;
 
-using Avalonia;
-using Avalonia.Controls;
+using global::Avalonia;
+using global::Avalonia.Controls;
 using Dock.Avalonia.Controls;
 
 public interface IDragOffsetCalculator

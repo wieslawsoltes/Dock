@@ -2,14 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using global::Avalonia;
+using global::Avalonia.Controls;
+using global::Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Avalonia.Internal;
+using Dock.Avalonia.Contract;
 using Dock.Model;
 using Dock.Model.Core;
 

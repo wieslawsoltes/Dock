@@ -6,7 +6,7 @@ using Dock.Avalonia.Contract;
 
 namespace Dock.Avalonia.Internal;
 
-public class DefaultDragOffsetCalculator : IDragOffsetCalculator
+internal class DefaultDragOffsetCalculator : IDragOffsetCalculator
 {
     public PixelPoint CalculateOffset(Control dragControl, DockControl dockControl, Point pointerPosition)
     {

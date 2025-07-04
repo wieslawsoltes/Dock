@@ -31,6 +31,7 @@ guides under *Getting started*.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
+- [Context menus](dock-context-menus.md) – Localize or replace built in menus.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.

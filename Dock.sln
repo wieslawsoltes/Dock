@@ -135,6 +135,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-adapters.md = docs\dock-adapters.md
 		docs\dock-windows.md = docs\dock-windows.md
 		docs\dock-settings.md = docs\dock-settings.md
+		docs\dock-custom-model.md = docs\dock-custom-model.md
+		docs\dock-context-locator.md = docs\dock-context-locator.md
+		docs\dock-context-menus.md = docs\dock-context-menus.md
+		docs\dock-dockablelocator.md = docs\dock-dockablelocator.md
+		docs\dock-drag-offset-calculator.md = docs\dock-drag-offset-calculator.md
+		docs\dock-host-window-locator.md = docs\dock-host-window-locator.md
+		docs\dock-manager-guide.md = docs\dock-manager-guide.md
+		docs\dock-model-controls.md = docs\dock-model-controls.md
+		docs\dock-properties.md = docs\dock-properties.md
+		docs\dock-settings-controls.md = docs\dock-settings-controls.md
+		docs\dock-state.md = docs\dock-state.md
+		docs\dock-tracking-controls.md = docs\dock-tracking-controls.md
+		docs\dock-user-viewmodel.md = docs\dock-user-viewmodel.md
 	EndProjectSection
 EndProject
 Global

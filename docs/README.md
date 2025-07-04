@@ -42,6 +42,7 @@ guides under *Getting started*.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
 - [Dock properties](dock-properties.md) – Use attached properties to mark drag areas and drop targets.
+- [DockSettings in controls](dock-settings-controls.md) – Apply global drag/drop settings when writing custom controls.
 
 ## Troubleshooting
 

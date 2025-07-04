@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="using:Dock.Model.Core"
                     xmlns:controls="using:Dock.Model.Controls"
                     x:DataType="controls:IToolDock"
                     xmlns:converters="using:Dock.Avalonia.Converters"
@@ -17,14 +18,16 @@
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
     <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding ActiveDockable}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="ActiveDockable.CanFloat" FallbackValue="{x:False}" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
@@ -52,8 +55,8 @@
               IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}">
       <MenuItem.IsEnabled>
         <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+          <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+          <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
         </MultiBinding>
       </MenuItem.IsEnabled>
     </MenuItem>

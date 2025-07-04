@@ -31,83 +31,117 @@
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
-        </MultiBinding>
-      </MenuItem.IsEnabled>
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
+          </MultiBinding>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatAllString}"
               Command="{Binding Owner.Factory.FloatAllDockables}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
-    <Separator />
+    <Separator>
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </Separator>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}"
               Command="{Binding Owner.Factory.CloseOtherDockables}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}"
               Command="{Binding Owner.Factory.CloseAllDockables}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsLeftString}"
               Command="{Binding Owner.Factory.CloseLeftDockables}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
     <MenuItem Header="{DynamicResource DocumentTabStripItemCloseTabsRightString}"
               Command="{Binding Owner.Factory.CloseRightDockables}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}">
-      <MenuItem.IsEnabled>
-        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-          <Binding Path="Owner.CanCloseLastDockable" />
-          <Binding Path="Owner.OpenedDockablesCount" />
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
         </MultiBinding>
-      </MenuItem.IsEnabled>
+      </MenuItem.IsVisible>
     </MenuItem>
-    <Separator />
+    <Separator>
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </Separator>
     <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
               Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
               CommandParameter="{Binding}">
@@ -180,8 +214,16 @@
                 </Panel>
                 <Button x:Name="PART_CloseButton"
                         Command="{Binding Owner.Factory.CloseDockable}"
-                        CommandParameter="{Binding}"
-                        IsVisible="{Binding CanClose}">
+                        CommandParameter="{Binding}">
+                  <Button.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding Path="CanClose" />
+                      <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                        <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+                        <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+                      </MultiBinding>
+                    </MultiBinding>
+                  </Button.IsVisible>
                   <Button.Styles>
                     <Style Selector="Button">
                       <Setter Property="BorderThickness" Value="0" />

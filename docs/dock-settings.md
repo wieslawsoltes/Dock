@@ -56,4 +56,10 @@ Both options are disabled by default. When enabled the `CloseDockable` command
 moves the dockable to the `IRootDock.HiddenDockables` collection instead of
 deleting it.
 
+## Prevent closing the last dockable
+
+Each dock exposes a `CanCloseLastDockable` property. When set to `false`
+the `CloseDockable` command ignores requests that would remove the final
+visible item from that dock.
+
 For more details on dockable properties see [Dockable Property Settings](dock-dockable-properties.md).

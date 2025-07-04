@@ -28,11 +28,25 @@
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}"/>
+              IsVisible="{Binding CanFloat}">
+      <MenuItem.IsEnabled>
+        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+          <Binding Path="Owner.CanCloseLastDockable" />
+          <Binding Path="Owner.OpenedDockablesCount" />
+        </MultiBinding>
+      </MenuItem.IsEnabled>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatAllString}"
               Command="{Binding Owner.Factory.FloatAllDockables}"
               CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}"/>
+              IsVisible="{Binding CanFloat}">
+      <MenuItem.IsEnabled>
+        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+          <Binding Path="Owner.CanCloseLastDockable" />
+          <Binding Path="Owner.OpenedDockablesCount" />
+        </MultiBinding>
+      </MenuItem.IsEnabled>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolTabStripItemDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding}"
@@ -56,7 +70,14 @@
     <MenuItem Header="{DynamicResource ToolTabStripItemCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}"/>
+              IsVisible="{Binding CanClose}">
+      <MenuItem.IsEnabled>
+        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+          <Binding Path="Owner.CanCloseLastDockable" />
+          <Binding Path="Owner.OpenedDockablesCount" />
+        </MultiBinding>
+      </MenuItem.IsEnabled>
+    </MenuItem>
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type ToolTabStripItem}" TargetType="ToolTabStripItem">

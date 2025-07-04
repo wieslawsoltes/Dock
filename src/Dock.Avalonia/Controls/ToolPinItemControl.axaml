@@ -17,7 +17,14 @@
     <MenuItem Header="{DynamicResource ToolPinItemControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
               CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}"/>
+              IsVisible="{Binding CanFloat}">
+      <MenuItem.IsEnabled>
+        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+          <Binding Path="Owner.CanCloseLastDockable" />
+          <Binding Path="Owner.OpenedDockablesCount" />
+        </MultiBinding>
+      </MenuItem.IsEnabled>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolPinItemControlShowString}"
               Command="{Binding Owner.Factory.PreviewPinnedDockable}"
               CommandParameter="{Binding}"
@@ -29,7 +36,14 @@
     <MenuItem Header="{DynamicResource ToolPinItemControlCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
               CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}"/>
+              IsVisible="{Binding CanClose}">
+      <MenuItem.IsEnabled>
+        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+          <Binding Path="Owner.CanCloseLastDockable" />
+          <Binding Path="Owner.OpenedDockablesCount" />
+        </MultiBinding>
+      </MenuItem.IsEnabled>
+    </MenuItem>
   </ContextMenu>
 
   <ControlTheme x:Key="{x:Type ToolPinItemControl}" TargetType="ToolPinItemControl">

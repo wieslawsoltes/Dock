@@ -727,6 +727,13 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
+        if (dockable.Owner is IDock dock &&
+            !dock.CanCloseLastDockable &&
+            dock.VisibleDockables?.Count <= 1)
+        {
+            return;
+        }
+
         if (dockable.CanClose && dockable.OnClose())
         {
             var hide = (dockable is ITool && HideToolsOnClose)

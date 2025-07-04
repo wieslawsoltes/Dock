@@ -7,7 +7,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | Type | Description |
 | --- | --- |
 | `IDockable` | Base interface for items that can be shown in a dock. Provides `Id`, `Title`, `Context`, optional size limits and lifecycle methods like `OnClose`. |
-| `IDock` | Extends `IDockable` with collections of visible dockables and commands such as `GoBack`, `GoForward`, `Navigate` or `Close`. |
+| `IDock` | Extends `IDockable` with collections of visible dockables and commands such as `GoBack`, `GoForward`, `Navigate` or `Close`. The `CanCloseLastDockable` flag controls whether the final item may be closed. |
 | `IRootDock` | The top level container. In addition to the `IDock` members it exposes pinned dock collections and commands to manage windows. |
 | `IProportionalDock` | A dock that lays out its children horizontally or vertically using a `Proportion` value. |
 | `IStackDock` | Dock based on `StackPanel` with `Orientation` and `Spacing`. |

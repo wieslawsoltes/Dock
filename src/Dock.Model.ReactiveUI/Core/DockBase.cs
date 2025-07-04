@@ -94,6 +94,10 @@ public abstract partial class DockBase : DockableBase, IDock
     public partial int OpenedDockablesCount { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CanCloseLastDockable { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public bool CanGoBack => _navigateAdapter.CanGoBack;
 

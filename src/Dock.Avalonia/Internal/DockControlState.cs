@@ -268,7 +268,7 @@ internal class DockControlState : IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
-                            _dragPreviewHelper.Show(targetDockable.Title ?? string.Empty, sp);
+                            _dragPreviewHelper.Show(targetDockable, sp);
                         }
                         _state.DoDragDrop = true;
                     }

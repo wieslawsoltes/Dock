@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
                     x:CompileBindings="True">
   <ControlTheme x:Key="{x:Type DragPreviewControl}" TargetType="DragPreviewControl">
     <Setter Property="Template">
@@ -7,7 +8,8 @@
         <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
                 Padding="4" CornerRadius="4">
           <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-            <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Center" />
+            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding DataContext}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
             <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
               <Path x:Name="PART_StatusIcon" />
               <TextBlock Text="{TemplateBinding Status}" FontSize="10" VerticalAlignment="Center"/>
@@ -15,6 +17,13 @@
           </StackPanel>
         </Border>
       </ControlTemplate>
+    </Setter>
+    
+    <Setter Property="ContentTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock Text="{Binding Title}" 
+                   Padding="2"  />
+      </DataTemplate>
     </Setter>
 
     <Style Selector="^/template/ Path#PART_StatusIcon">

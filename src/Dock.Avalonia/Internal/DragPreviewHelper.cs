@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Dock.Avalonia.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal;
 
@@ -9,20 +10,20 @@ internal class DragPreviewHelper
     private DragPreviewWindow? _window;
     private DragPreviewControl? _control;
 
-    public void Show(string title, PixelPoint position)
+    public void Show(IDockable dockable, PixelPoint position)
     {
         Hide();
 
         _control = new DragPreviewControl
         {
-            Title = title,
             Status = string.Empty
         };
 
         _window = new DragPreviewWindow
         {
             Content = _control,
-            Position = position
+            Position = position,
+            DataContext = dockable
         };
 
         _window.Show();

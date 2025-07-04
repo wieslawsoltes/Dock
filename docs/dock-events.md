@@ -18,6 +18,8 @@ possible to intercept an operation before it completes.
 | `DockableRemoved` | Raised after a dockable has been removed. |
 | `DockableClosed` | Occurs when a dockable is closed via command or UI. |
 | `DockableMoved` | Indicates a dockable was rearranged within its parent. |
+| `DockableDocked` | Raised after a dock operation completes such as splitting or floating. |
+| `DockableUndocked` | Raised when a dockable is removed from a dock before being moved or floated. |
 | `DockablePinned` / `DockableUnpinned` | Signalled when a tool is pinned or unpinned. |
 | `WindowOpened` / `WindowClosed` | Fired when a floating window is created or closed. |
 

@@ -33,6 +33,12 @@ public abstract partial class FactoryBase
     public event EventHandler<DockableMovedEventArgs>? DockableMoved;
 
     /// <inheritdoc />
+    public event EventHandler<DockableDockedEventArgs>? DockableDocked;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableUndockedEventArgs>? DockableUndocked;
+
+    /// <inheritdoc />
     public event EventHandler<DockableSwappedEventArgs>? DockableSwapped;
 
     /// <inheritdoc />
@@ -105,6 +111,18 @@ public abstract partial class FactoryBase
     public virtual void OnDockableMoved(IDockable? dockable)
     {
         DockableMoved?.Invoke(this, new DockableMovedEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableDocked(IDockable? dockable, DockOperation operation)
+    {
+        DockableDocked?.Invoke(this, new DockableDockedEventArgs(dockable, operation));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableUndocked(IDockable? dockable, DockOperation operation)
+    {
+        DockableUndocked?.Invoke(this, new DockableUndockedEventArgs(dockable, operation));
     }
 
     /// <inheritdoc />

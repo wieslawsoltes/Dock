@@ -48,6 +48,18 @@ public abstract partial class FactoryBase
     public abstract IDockDock CreateDockDock();
 
     /// <inheritdoc/>
+    public abstract IStackDock CreateStackDock();
+
+    /// <inheritdoc/>
+    public abstract IGridDock CreateGridDock();
+
+    /// <inheritdoc/>
+    public abstract IWrapDock CreateWrapDock();
+
+    /// <inheritdoc/>
+    public abstract IUniformGridDock CreateUniformGridDock();
+
+    /// <inheritdoc/>
     public abstract IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <inheritdoc/>

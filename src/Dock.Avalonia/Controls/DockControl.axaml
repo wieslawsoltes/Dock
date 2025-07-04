@@ -36,6 +36,18 @@
             <DataTemplate DataType="dmc:IProportionalDock">
               <ProportionalDockControl />
             </DataTemplate>
+            <DataTemplate DataType="dmc:IStackDock">
+              <StackDockControl />
+            </DataTemplate>
+            <DataTemplate DataType="dmc:IGridDock">
+              <GridDockControl />
+            </DataTemplate>
+            <DataTemplate DataType="dmc:IWrapDock">
+              <WrapDockControl />
+            </DataTemplate>
+            <DataTemplate DataType="dmc:IUniformGridDock">
+              <UniformGridDockControl />
+            </DataTemplate>
             <DataTemplate DataType="dmc:IDockDock">
               <DockDockControl />
             </DataTemplate>

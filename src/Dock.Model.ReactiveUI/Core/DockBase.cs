@@ -67,6 +67,26 @@ public abstract partial class DockBase : DockableBase, IDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int Column { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int Row { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int ColumnSpan { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int RowSpan { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool IsSharedSizeScope { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool IsActive { get; set; }
 
     /// <inheritdoc/>

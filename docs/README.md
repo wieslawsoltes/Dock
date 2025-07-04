@@ -40,6 +40,7 @@ guides under *Getting started*.
 - [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
 - [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
+- [Model control interfaces](dock-model-controls.md) – Contracts used to define documents, tools and docks.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
 
 ## Troubleshooting

@@ -53,42 +53,6 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, IDockable?>(nameof(FocusedDockable), o => o.FocusedDockable, (o, v) => o.FocusedDockable = v);
 
     /// <summary>
-    /// Defines the <see cref="Dock"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, DockMode> DockProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, DockMode>(nameof(Dock), o => o.Dock, (o, v) => o.Dock = v);
-
-    /// <summary>
-    /// Defines the <see cref="Column"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, int> ColumnProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(Column), o => o.Column, (o, v) => o.Column = v);
-
-    /// <summary>
-    /// Defines the <see cref="Row"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, int> RowProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(Row), o => o.Row, (o, v) => o.Row = v);
-
-    /// <summary>
-    /// Defines the <see cref="ColumnSpan"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, int> ColumnSpanProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(ColumnSpan), o => o.ColumnSpan, (o, v) => o.ColumnSpan = v, 1);
-
-    /// <summary>
-    /// Defines the <see cref="RowSpan"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, int> RowSpanProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(RowSpan), o => o.RowSpan, (o, v) => o.RowSpan = v, 1);
-
-    /// <summary>
-    /// Defines the <see cref="IsSharedSizeScope"/> property.
-    /// </summary>
-    public static readonly DirectProperty<DockBase, bool> IsSharedSizeScopeProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(IsSharedSizeScope), o => o.IsSharedSizeScope, (o, v) => o.IsSharedSizeScope = v);
-
-    /// <summary>
     /// Defines the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, bool> IsActiveProperty =
@@ -123,12 +87,6 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private DockMode _dock = DockMode.Center;
-    private int _column;
-    private int _row;
-    private int _columnSpan = 1;
-    private int _rowSpan = 1;
-    private bool _isSharedSizeScope;
     private bool _isActive;
     private bool _canGoBack;
     private bool _canGoForward;
@@ -196,60 +154,6 @@ public abstract class DockBase : DockableBase, IDock
             SetAndRaise(FocusedDockableProperty, ref _focusedDockable, value);
             Factory?.OnFocusedDockableChanged(value);
         }
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("Dock")]
-    public DockMode Dock
-    {
-        get => _dock;
-        set => SetAndRaise(DockProperty, ref _dock, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("Column")]
-    public int Column
-    {
-        get => _column;
-        set => SetAndRaise(ColumnProperty, ref _column, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("Row")]
-    public int Row
-    {
-        get => _row;
-        set => SetAndRaise(RowProperty, ref _row, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("ColumnSpan")]
-    public int ColumnSpan
-    {
-        get => _columnSpan;
-        set => SetAndRaise(ColumnSpanProperty, ref _columnSpan, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("RowSpan")]
-    public int RowSpan
-    {
-        get => _rowSpan;
-        set => SetAndRaise(RowSpanProperty, ref _rowSpan, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("IsSharedSizeScope")]
-    public bool IsSharedSizeScope
-    {
-        get => _isSharedSizeScope;
-        set => SetAndRaise(IsSharedSizeScopeProperty, ref _isSharedSizeScope, value);
     }
 
     /// <inheritdoc/>

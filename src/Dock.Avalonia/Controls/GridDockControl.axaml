@@ -15,9 +15,16 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
-          <ItemsControl ItemsSource="{Binding VisibleDockables}">
+          <ItemsControl Name="PART_ItemsControl"
+                        ItemsSource="{Binding VisibleDockables}"
+                        Classes="GridDock">
             <ItemsControl.Styles>
-              <Style Selector="ItemsControl > ContentPresenter">
+              <Style Selector="ItemsControl.GridDock > ContentPresenter">
+                <Setter Property="(Grid.Column)" Value="{Binding Column}" />
+                <Setter Property="(Grid.ColumnSpan)" Value="{Binding ColumnSpan}" />
+                <Setter Property="(Grid.Row)" Value="{Binding Row}" />
+                <Setter Property="(Grid.RowSpan)" Value="{Binding RowSpan}" />
+                <Setter Property="(Grid.IsSharedSizeScope)" Value="{Binding IsSharedSizeScope}" />
                 <Setter Property="MinWidth" Value="{Binding MinWidth}" />
                 <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
                 <Setter Property="MinHeight" Value="{Binding MinHeight}" />

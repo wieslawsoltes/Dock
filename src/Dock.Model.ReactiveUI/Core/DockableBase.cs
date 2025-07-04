@@ -23,6 +23,11 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _title = string.Empty;
         _isCollapsable = true;
         _proportion = double.NaN;
+        _dock = DockMode.Center;
+        _column = 0;
+        _columnSpan = 1;
+        _row = 0;
+        _rowSpan = 1;
         _collapsedProportion = double.NaN;
         _canClose = true;
         _canPin = true;
@@ -71,6 +76,30 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial double Proportion { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial DockMode Dock { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int Column { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int Row { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int ColumnSpan { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial int RowSpan { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool IsSharedSizeScope { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

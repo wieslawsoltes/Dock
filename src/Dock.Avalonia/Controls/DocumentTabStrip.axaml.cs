@@ -40,6 +40,12 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty = 
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
+    
+    /// <summary>
+    /// Define the <see cref="CanRemoveLastDockable"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> CanRemoveLastDockableProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(CanRemoveLastDockable));
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
@@ -72,6 +78,15 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(EnableWindowDragProperty);
         set => SetValue(EnableWindowDragProperty, value);
+    }
+
+    /// <summary>
+    /// Gets of sets if the last dockable can be removed.
+    /// </summary>
+    public bool CanRemoveLastDockable
+    {
+        get => GetValue(CanRemoveLastDockableProperty);
+        set => SetValue(CanRemoveLastDockableProperty, value);
     }
 
     /// <summary>
@@ -168,19 +183,31 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
-        // Check if we're clicking on an empty area of the tab strip
-        // (not on a tab item or button)
+        bool shouldAllowDrag = false;
         var source = e.Source as Control;
-        if (source == this || (source != null &&
-                               !(source is DocumentTabStripItem) &&
-                               !(source is Button) &&
-                               !IsChildOfType<DocumentTabStripItem>(source) &&
-                               !IsChildOfType<Button>(source)))
+
+        // Special case: if we have only one item and can't remove it, always allow dragging
+        if (ItemCount == 1 && !CanRemoveLastDockable)
+        {
+            shouldAllowDrag = true;
+        }
+        // Otherwise, check if we're clicking on an empty area of the tab strip
+        else if (source == this || (source != null &&
+                                    !(source is DocumentTabStripItem) &&
+                                    !(source is Button) &&
+                                    !IsChildOfType<DocumentTabStripItem>(source) &&
+                                    !IsChildOfType<Button>(source)))
+        {
+            shouldAllowDrag = true;
+        }
+
+        if (shouldAllowDrag)
         {
             _dragStartPoint = e.GetPosition(this);
             _pointerPressed = true;
             e.Handled = true;
         }
+
     }
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)

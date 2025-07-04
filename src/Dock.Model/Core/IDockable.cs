@@ -104,6 +104,11 @@ public interface IDockable : IControlRecyclingIdProvider
     /// Gets or sets if the dockable can be dropped on.
     /// </summary>
     bool CanDrop { get; set; }
+    
+    /// <summary>
+    /// Gets or sets if the dockable is the last item.
+    /// </summary>
+    bool IsLastItem { get; set; }
 
     /// <summary>
     /// Called when the dockable is closed.

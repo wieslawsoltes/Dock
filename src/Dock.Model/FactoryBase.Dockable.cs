@@ -759,6 +759,11 @@ public abstract partial class FactoryBase
                 CloseDockable(dock.VisibleDockables[i]);
             }
         }
+
+        if (!dock.CanRemoveLastDockable && dock.VisibleDockables.Count == 1)
+        {
+            dock.VisibleDockables[0].CanClose = false;
+        }
     }
 
     /// <inheritdoc/>
@@ -1058,6 +1063,31 @@ public abstract partial class FactoryBase
         }
 
         UpdateOpenedDockablesCount(dock);
+
+
+        if (dock is { VisibleDockables: not null, CanRemoveLastDockable: false })
+        {
+            if (dock.VisibleDockables.Count == 1)
+            {
+                dock.VisibleDockables[0].CanClose = false;
+                dock.VisibleDockables[0].CanDrag = false;
+                dock.VisibleDockables[0].CanFloat = false;
+                dock.VisibleDockables[0].IsLastItem = true;
+            }
+            else
+            {
+                foreach (var dockable in dock.VisibleDockables)
+                {
+                    if (dockable.IsLastItem)
+                    {
+                        dockable.IsLastItem = false;
+                        dock.VisibleDockables[0].CanClose = true;
+                        dock.VisibleDockables[0].CanDrag = true;
+                        dock.VisibleDockables[0].CanFloat = true;
+                    }
+                }
+            }
+        }
     }
 
     private void UpdateOpenedDockablesCount(IDockable dockable)

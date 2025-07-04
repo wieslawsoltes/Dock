@@ -79,6 +79,11 @@ public interface IDock : IDockable
     /// Gets a value that indicates whether there is at least one entry in forward navigation history.
     /// </summary>
     bool CanGoForward { get; }
+    
+    /// <summary>
+    /// Gets a value that indicates whether the last tab can be removed.
+    /// </summary>
+    bool CanRemoveLastDockable { get; set; }
 
     /// <summary>
     /// Navigates to the most recent entry in back navigation history, if there is one.

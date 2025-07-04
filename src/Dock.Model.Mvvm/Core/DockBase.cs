@@ -28,6 +28,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _isSharedSizeScope;
     private int _openedDockablesCount = 0;
     private bool _isActive;
+    private bool _canRemoveLastDockable = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -39,6 +40,14 @@ public abstract class DockBase : DockableBase, IDock
         GoForward = new RelayCommand(() => _navigateAdapter.GoForward());
         Navigate = new RelayCommand<object>(root => _navigateAdapter.Navigate(root, true));
         Close = new RelayCommand(() => _navigateAdapter.Close());
+    }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool CanRemoveLastDockable
+    {
+        get => _canRemoveLastDockable;
+        set => SetProperty(ref _canRemoveLastDockable, value);
     }
 
     /// <inheritdoc/>

@@ -36,6 +36,31 @@ public interface IDock : IDockable
     DockMode Dock { get; set; }
 
     /// <summary>
+    /// Gets or sets grid column.
+    /// </summary>
+    int Column { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid row.
+    /// </summary>
+    int Row { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid column span.
+    /// </summary>
+    int ColumnSpan { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid row span.
+    /// </summary>
+    int RowSpan { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether this dock participates in shared size scope.
+    /// </summary>
+    bool IsSharedSizeScope { get; set; }
+
+    /// <summary>
     /// Gets or sets if the dockable is the currently active.
     /// </summary>
     bool IsActive { get; set; }

@@ -123,10 +123,40 @@ public partial interface IFactory
     IDockDock CreateDockDock();
 
     /// <summary>
+    /// Creates <see cref="IStackDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IStackDock"/> class.</returns>
+    IStackDock CreateStackDock();
+
+    /// <summary>
+    /// Creates <see cref="IGridDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IGridDock"/> class.</returns>
+    IGridDock CreateGridDock();
+
+    /// <summary>
+    /// Creates <see cref="IWrapDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IWrapDock"/> class.</returns>
+    IWrapDock CreateWrapDock();
+
+    /// <summary>
+    /// Creates <see cref="IUniformGridDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IUniformGridDock"/> class.</returns>
+    IUniformGridDock CreateUniformGridDock();
+
+    /// <summary>
     /// Creates <see cref="IProportionalDockSplitter"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IProportionalDockSplitter"/> class.</returns>
     IProportionalDockSplitter CreateProportionalDockSplitter();
+
+    /// <summary>
+    /// Creates <see cref="IGridDockSplitter"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IGridDockSplitter"/> class.</returns>
+    IGridDockSplitter CreateGridDockSplitter();
 
     /// <summary>
     /// Creates <see cref="IToolDock"/>.

@@ -80,7 +80,22 @@ public class Factory : FactoryBase
     public override IDockDock CreateDockDock() => new DockDock();
 
     /// <inheritdoc/>
+    public override IStackDock CreateStackDock() => new StackDock();
+
+    /// <inheritdoc/>
+    public override IGridDock CreateGridDock() => new GridDock();
+
+    /// <inheritdoc/>
+    public override IWrapDock CreateWrapDock() => new WrapDock();
+
+    /// <inheritdoc/>
+    public override IUniformGridDock CreateUniformGridDock() => new UniformGridDock();
+
+    /// <inheritdoc/>
     public override IProportionalDockSplitter CreateProportionalDockSplitter() => new ProportionalDockSplitter();
+
+    /// <inheritdoc/>
+    public override IGridDockSplitter CreateGridDockSplitter() => new GridDockSplitter();
 
     /// <inheritdoc/>
     public override IToolDock CreateToolDock() => new ToolDock();

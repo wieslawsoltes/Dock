@@ -457,6 +457,82 @@ public class DockManager : IDockManager
         return all;
     }
 
+    private bool ValidateStackDock(IStackDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null ||
+            sourceDock.VisibleDockables.Count == 0)
+            return false;
+
+        bool all = true;
+        for (int i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
+        {
+            var dockable = sourceDock.VisibleDockables[i];
+            if (dockable is not IDock dock)
+                continue;
+
+            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+        }
+
+        return all;
+    }
+
+    private bool ValidateGridDock(IGridDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null ||
+            sourceDock.VisibleDockables.Count == 0)
+            return false;
+
+        bool all = true;
+        for (int i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
+        {
+            var dockable = sourceDock.VisibleDockables[i];
+            if (dockable is not IDock dock)
+                continue;
+
+            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+        }
+
+        return all;
+    }
+
+    private bool ValidateWrapDock(IWrapDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null ||
+            sourceDock.VisibleDockables.Count == 0)
+            return false;
+
+        bool all = true;
+        for (int i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
+        {
+            var dockable = sourceDock.VisibleDockables[i];
+            if (dockable is not IDock dock)
+                continue;
+
+            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+        }
+
+        return all;
+    }
+
+    private bool ValidateUniformGridDock(IUniformGridDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (sourceDock.VisibleDockables == null ||
+            sourceDock.VisibleDockables.Count == 0)
+            return false;
+
+        bool all = true;
+        for (int i = sourceDock.VisibleDockables.Count - 1; i >= 0; --i)
+        {
+            var dockable = sourceDock.VisibleDockables[i];
+            if (dockable is not IDock dock)
+                continue;
+
+            all &= ValidateDockable(dock, targetDockable, action, operation, bExecute);
+        }
+
+        return all;
+    }
+
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
@@ -467,6 +543,10 @@ public class DockManager : IDockManager
             ITool tool => ValidateTool(tool, targetDockable, action, operation, bExecute),
             IDocument document => ValidateDocument(document, targetDockable, action, operation, bExecute),
             IProportionalDock proportionalDock => ValidateProportionalDock(proportionalDock, targetDockable, action, operation, bExecute),
+            IStackDock stackDock => ValidateStackDock(stackDock, targetDockable, action, operation, bExecute),
+            IGridDock gridDock => ValidateGridDock(gridDock, targetDockable, action, operation, bExecute),
+            IWrapDock wrapDock => ValidateWrapDock(wrapDock, targetDockable, action, operation, bExecute),
+            IUniformGridDock uniformGridDock => ValidateUniformGridDock(uniformGridDock, targetDockable, action, operation, bExecute),
             _ => false
         };
     }

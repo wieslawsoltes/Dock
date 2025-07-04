@@ -48,6 +48,15 @@ Controls whether a proportional dock arranges its children horizontally or verti
 | `Horizontal` | Children are stacked from left to right. |
 | `Vertical` | Children are stacked from top to bottom. |
 
+## GridResizeDirection
+
+Specifies whether a grid splitter moves rows or columns.
+
+| Value | Description |
+| ----- | ----------- |
+| `Columns` | Resize grid columns. |
+| `Rows` | Resize grid rows. |
+
 ## DocumentTabLayout
 
 Controls where document tabs are placed around a document dock. Setting this affects both orientation and docking position of the tab strip.

@@ -17,13 +17,30 @@ public class FindViewModel : Tool
 
     public void FindNext()
     {
+        if (string.IsNullOrEmpty(Find))
+        {
+            return;
+        }
+
         if (Context is IRootDock root && root.ActiveDockable is IDock active)
         {
-            if (active.Factory?.FindDockable(active, (d) => d.Id == "Files") is IDock files)
+            if (active.Factory?.FindDockable(active, d => d.Id == "Files") is IDock files)
             {
                 if (files.ActiveDockable is FileViewModel fileViewModel)
                 {
-                    // TODO: 
+                    var start = fileViewModel.SelectionEnd;
+                    if (start < 0 || start > fileViewModel.Text.Length)
+                    {
+                        start = 0;
+                    }
+
+                    var index = fileViewModel.Text.IndexOf(Find, start, StringComparison.CurrentCultureIgnoreCase);
+                    if (index >= 0)
+                    {
+                        fileViewModel.SelectionStart = index;
+                        fileViewModel.SelectionEnd = index + Find.Length;
+                        fileViewModel.CaretIndex = fileViewModel.SelectionEnd;
+                    }
                 }
             }
         }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,10 +8,12 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Notepad.ViewModels.Documents;
+using Notepad.ViewModels.Tools;
 
 namespace Notepad.ViewModels;
 
@@ -201,6 +205,197 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
         {
             desktopLifetime.Shutdown();
+        }
+    }
+
+    public void EditFind()
+    {
+        if (_factory?.GetDockable<ITool>("Find") is { } tool && Layout is { })
+        {
+            _factory.SetActiveDockable(tool);
+            _factory.SetFocusedDockable(Layout, tool);
+        }
+    }
+
+    public void EditReplace()
+    {
+        if (_factory?.GetDockable<ITool>("Replace") is { } tool && Layout is { })
+        {
+            _factory.SetActiveDockable(tool);
+            _factory.SetFocusedDockable(Layout, tool);
+        }
+    }
+
+    public void EditWrapLines()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            file.TextWrapping = file.TextWrapping == TextWrapping.NoWrap ? TextWrapping.Wrap : TextWrapping.NoWrap;
+        }
+    }
+
+    public void EditFindNext()
+    {
+        if (_factory?.GetDockable<FindViewModel>("Find") is { } find)
+        {
+            find.FindNext();
+        }
+    }
+
+    public void EditReplaceNext()
+    {
+        if (_factory?.GetDockable<ReplaceViewModel>("Replace") is { } replace)
+        {
+            replace.ReplaceNext();
+        }
+    }
+
+    public void EditUndo()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            file.Undo();
+        }
+    }
+
+    public async void EditCut()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            var length = file.SelectionEnd - file.SelectionStart;
+            if (length > 0)
+            {
+                var text = file.Text.Substring(file.SelectionStart, length);
+                await Application.Current?.Clipboard.SetTextAsync(text)!;
+                file.Text = file.Text.Remove(file.SelectionStart, length);
+                file.SelectionEnd = file.SelectionStart;
+                file.CaretIndex = file.SelectionStart;
+            }
+        }
+    }
+
+    public async void EditCopy()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            var length = file.SelectionEnd - file.SelectionStart;
+            if (length > 0)
+            {
+                var text = file.Text.Substring(file.SelectionStart, length);
+                await Application.Current?.Clipboard.SetTextAsync(text)!;
+            }
+        }
+    }
+
+    public async void EditPaste()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            var text = await Application.Current?.Clipboard.GetTextAsync()!;
+            if (!string.IsNullOrEmpty(text))
+            {
+                var start = file.SelectionStart;
+                var length = file.SelectionEnd - file.SelectionStart;
+                file.Text = file.Text.Remove(start, length).Insert(start, text);
+                file.SelectionStart = start + text.Length;
+                file.SelectionEnd = file.SelectionStart;
+                file.CaretIndex = file.SelectionStart;
+            }
+        }
+    }
+
+    public void EditDelete()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            var length = file.SelectionEnd - file.SelectionStart;
+            if (length > 0)
+            {
+                file.Text = file.Text.Remove(file.SelectionStart, length);
+                file.SelectionEnd = file.SelectionStart;
+                file.CaretIndex = file.SelectionStart;
+            }
+        }
+    }
+
+    public void EditSelectAll()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            file.SelectionStart = 0;
+            file.SelectionEnd = file.Text.Length;
+            file.CaretIndex = file.SelectionEnd;
+        }
+    }
+
+    public void EditTimeDate()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            var insert = DateTime.Now.ToString();
+            var start = file.SelectionStart;
+            var length = file.SelectionEnd - file.SelectionStart;
+            file.Text = file.Text.Remove(start, length).Insert(start, insert);
+            file.SelectionStart = start + insert.Length;
+            file.SelectionEnd = file.SelectionStart;
+            file.CaretIndex = file.SelectionStart;
+        }
+    }
+
+    public void FormatFont()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            file.FontFamily = file.FontFamily.Name == "Consolas" ? new FontFamily("Segoe UI") : new FontFamily("Consolas");
+        }
+    }
+
+    public async void HelpGetHelp()
+    {
+        var url = "https://github.com/wieslawsoltes/Dock";
+        try
+        {
+            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+        }
+        catch
+        {
+            var window = GetWindow();
+            if (window is { })
+            {
+                var dlg = new Window
+                {
+                    Title = "Help",
+                    Width = 300,
+                    Height = 100,
+                    Content = new TextBlock { Text = url, Margin = new Thickness(20) }
+                };
+                await dlg.ShowDialog(window);
+            }
+        }
+    }
+
+    public async void HelpAbout()
+    {
+        var window = GetWindow();
+        if (window is null)
+        {
+            return;
+        }
+        var dlg = new Window
+        {
+            Title = "About Notepad",
+            Width = 300,
+            Height = 150,
+            Content = new TextBlock { Text = "Notepad sample using Dock", Margin = new Thickness(20) }
+        };
+        await dlg.ShowDialog(window);
+    }
+
+    public void ViewStatusBar()
+    {
+        if (GetFileViewModel() is { } file)
+        {
+            file.ShowStatusBar = !file.ShowStatusBar;
         }
     }
 

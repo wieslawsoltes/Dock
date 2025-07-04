@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
@@ -57,12 +56,15 @@ internal class DockControlState : IDockControlState
     private readonly DockDragState _state = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
 
+    public IDragOffsetCalculator DragOffsetCalculator { get; set; }
+
     /// <inheritdoc/>
     public IDockManager DockManager { get; set; }
 
-    public DockControlState(IDockManager dockManager)
+    public DockControlState(IDockManager dockManager, IDragOffsetCalculator? dragOffsetCalculator = null)
     {
         DockManager = dockManager;
+        DragOffsetCalculator = dragOffsetCalculator ?? new DefaultDragOffsetCalculator();
     }
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
@@ -273,16 +275,9 @@ internal class DockControlState : IDockControlState
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
 
-                            if (_state.DragControl.TemplatedParent is TabStripItem tabStripItem)
-                            {
-                                var corner = tabStripItem.PointToScreen(new Point());
-                                _state.DragOffset = corner - sp;
-                            }
-                            else
-                            {
-                                _state.DragOffset = default;
-                            }
-                            
+                            _state.DragOffset = DragOffsetCalculator.CalculateOffset(
+                                _state.DragControl, inputActiveDockControl, point);
+
                             _dragPreviewHelper.Show(targetDockable, sp, _state.DragOffset);
                         }
                         _state.DoDragDrop = true;

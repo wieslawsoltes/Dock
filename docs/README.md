@@ -20,6 +20,7 @@ guides under *Getting started*.
 - [Active document](dock-active-document.md) – Retrieve the currently focused document.
 - [Events guide](dock-events.md) – Subscribe to dock and window events.
 - [API scenarios](dock-api-scenarios.md) – Common coding patterns.
+- [DockableLocator usage](dock-dockablelocator.md) – Register and resolve dockables.
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.

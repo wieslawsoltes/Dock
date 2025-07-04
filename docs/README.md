@@ -22,6 +22,7 @@ guides under *Getting started*.
 - [API scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
+- [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

@@ -20,12 +20,6 @@ public abstract class DockBase : DockableBase, IDock
     private IDockable? _activeDockable;
     private IDockable? _defaultDockable;
     private IDockable? _focusedDockable;
-    private DockMode _dock = DockMode.Center;
-    private int _column;
-    private int _row;
-    private int _columnSpan = 1;
-    private int _rowSpan = 1;
-    private bool _isSharedSizeScope;
     private int _openedDockablesCount = 0;
     private bool _isActive;
 
@@ -81,54 +75,6 @@ public abstract class DockBase : DockableBase, IDock
             SetProperty(ref _focusedDockable, value);
             Factory?.OnFocusedDockableChanged(value);
         }
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public DockMode Dock
-    {
-        get => _dock;
-        set => SetProperty(ref _dock, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int Column
-    {
-        get => _column;
-        set => SetProperty(ref _column, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int Row
-    {
-        get => _row;
-        set => SetProperty(ref _row, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int ColumnSpan
-    {
-        get => _columnSpan;
-        set => SetProperty(ref _columnSpan, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int RowSpan
-    {
-        get => _rowSpan;
-        set => SetProperty(ref _rowSpan, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public bool IsSharedSizeScope
-    {
-        get => _isSharedSizeScope;
-        set => SetProperty(ref _isSharedSizeScope, value);
     }
 
     /// <inheritdoc/>

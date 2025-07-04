@@ -8,16 +8,6 @@ namespace Dock.Model.Controls;
 public interface IGridDockSplitter : IDockable
 {
     /// <summary>
-    /// Gets or sets grid column.
-    /// </summary>
-    int Column { get; set; }
-
-    /// <summary>
-    /// Gets or sets grid row.
-    /// </summary>
-    int Row { get; set; }
-
-    /// <summary>
     /// Gets or sets resize direction.
     /// </summary>
     GridResizeDirection ResizeDirection { get; set; }

@@ -1088,6 +1088,8 @@ public abstract partial class FactoryBase
         }
 
         if (dockable.Owner != null)
+        {
             UpdateOpenedDockablesCount(dockable.Owner);
+        }
     }
 }

@@ -77,14 +77,50 @@ public abstract class DockableBase : ReactiveBase, IDockable
     /// <summary>
     /// Defines the <see cref="Proportion"/> property.
     /// </summary>
-    public static readonly DirectProperty<DockBase, double> ProportionProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, double>(nameof(Proportion), o => o.Proportion, (o, v) => o.Proportion = v, double.NaN);
+    public static readonly DirectProperty<DockableBase, double> ProportionProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(Proportion), o => o.Proportion, (o, v) => o.Proportion = v, double.NaN);
+
+    /// <summary>
+    /// Defines the <see cref="Dock"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, DockMode> DockProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, DockMode>(nameof(Dock), o => o.Dock, (o, v) => o.Dock = v);
+
+    /// <summary>
+    /// Defines the <see cref="Column"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, int> ColumnProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, int>(nameof(Column), o => o.Column, (o, v) => o.Column = v);
+
+    /// <summary>
+    /// Defines the <see cref="Row"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, int> RowProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, int>(nameof(Row), o => o.Row, (o, v) => o.Row = v);
+
+    /// <summary>
+    /// Defines the <see cref="ColumnSpan"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, int> ColumnSpanProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, int>(nameof(ColumnSpan), o => o.ColumnSpan, (o, v) => o.ColumnSpan = v, 1);
+
+    /// <summary>
+    /// Defines the <see cref="RowSpan"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, int> RowSpanProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, int>(nameof(RowSpan), o => o.RowSpan, (o, v) => o.RowSpan = v, 1);
+
+    /// <summary>
+    /// Defines the <see cref="IsSharedSizeScope"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> IsSharedSizeScopeProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(IsSharedSizeScope), o => o.IsSharedSizeScope, (o, v) => o.IsSharedSizeScope = v);
 
     /// <summary>
     /// Defines the <see cref="CollapsedProportion"/> property.
     /// </summary>
-    public static readonly DirectProperty<DockBase, double> CollapsedProportionProperty =
-        AvaloniaProperty.RegisterDirect<DockBase, double>(nameof(CollapsedProportion), o => o.CollapsedProportion, (o, v) => o.CollapsedProportion = v, double.NaN);
+    public static readonly DirectProperty<DockableBase, double> CollapsedProportionProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, double>(nameof(CollapsedProportion), o => o.CollapsedProportion, (o, v) => o.CollapsedProportion = v, double.NaN);
 
     /// <summary>
     /// Defines the <see cref="CanClose"/> property.
@@ -150,6 +186,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _isEmpty;
     private bool _isCollapsable = true;
     private double _proportion = double.NaN;
+    private DockMode _dock = DockMode.Center;
+    private int _column = 0;
+    private int _row = 0;
+    private int _columnSpan = 1;
+    private int _rowSpan = 1;
+    private bool _isSharedSizeScope;
     private double _collapsedProportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
@@ -250,6 +292,60 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _proportion;
         set => SetAndRaise(ProportionProperty, ref _proportion, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Dock")]
+    public DockMode Dock
+    {
+        get => _dock;
+        set => SetAndRaise(DockProperty, ref _dock, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Column")]
+    public int Column
+    {
+        get => _column;
+        set => SetAndRaise(ColumnProperty, ref _column, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Row")]
+    public int Row
+    {
+        get => _row;
+        set => SetAndRaise(RowProperty, ref _row, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("ColumnSpan")]
+    public int ColumnSpan
+    {
+        get => _columnSpan;
+        set => SetAndRaise(ColumnSpanProperty, ref _columnSpan, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("RowSpan")]
+    public int RowSpan
+    {
+        get => _rowSpan;
+        set => SetAndRaise(RowSpanProperty, ref _rowSpan, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsSharedSizeScope")]
+    public bool IsSharedSizeScope
+    {
+        get => _isSharedSizeScope;
+        set => SetAndRaise(IsSharedSizeScopeProperty, ref _isSharedSizeScope, value);
     }
 
     /// <inheritdoc/>

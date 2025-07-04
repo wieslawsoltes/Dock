@@ -55,6 +55,36 @@ public interface IDockable : IControlRecyclingIdProvider
     /// </summary>
     double Proportion { get; set; }
 
+    /// <summary> 
+    /// Gets or sets docking mode. 
+    /// </summary> 
+    DockMode Dock { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid column.
+    /// </summary>
+    int Column { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid row.
+    /// </summary>
+    int Row { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid column span.
+    /// </summary>
+    int ColumnSpan { get; set; }
+
+    /// <summary>
+    /// Gets or sets grid row span.
+    /// </summary>
+    int RowSpan { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether this dock participates in shared size scope.
+    /// </summary>
+    bool IsSharedSizeScope { get; set; }
+
     /// <summary>
     /// Gets or sets last known proportion before collapse.
     /// </summary>

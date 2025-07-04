@@ -20,9 +20,11 @@ guides under *Getting started*.
 - [Active document](dock-active-document.md) – Retrieve the currently focused document.
 - [Events guide](dock-events.md) – Subscribe to dock and window events.
 - [API scenarios](dock-api-scenarios.md) – Common coding patterns.
+- [DockableLocator usage](dock-dockablelocator.md) – Register and resolve dockables.
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Dock state guide](dock-state.md) – Why and how to use `DockState`.
+- [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
@@ -31,6 +33,7 @@ guides under *Getting started*.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
+- [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 
 ## Reference
@@ -40,8 +43,11 @@ guides under *Getting started*.
 - [Dockable property settings](dock-dockable-properties.md) – Configure per item behaviour.
 - [Markup extensions](dock-markup-extensions.md) – Load and reference XAML fragments.
 - [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
+- [Tracking controls](dock-tracking-controls.md) – Collections that map dockables to their visuals.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
+- [Dock properties](dock-properties.md) – Use attached properties to mark drag areas and drop targets.
+- [DockSettings in controls](dock-settings-controls.md) – Apply global drag/drop settings when writing custom controls.
 
 ## Troubleshooting
 

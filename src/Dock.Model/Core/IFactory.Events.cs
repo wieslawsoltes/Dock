@@ -46,6 +46,16 @@ public partial interface IFactory
     event EventHandler<DockableMovedEventArgs>? DockableMoved;
 
     /// <summary>
+    /// Dockable docked event handler.
+    /// </summary>
+    event EventHandler<DockableDockedEventArgs>? DockableDocked;
+
+    /// <summary>
+    /// Dockable undocked event handler.
+    /// </summary>
+    event EventHandler<DockableUndockedEventArgs>? DockableUndocked;
+
+    /// <summary>
     /// Dockable swapped event handler.
     /// </summary>
     event EventHandler<DockableSwappedEventArgs>? DockableSwapped;
@@ -151,6 +161,20 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The moved dockable.</param>
     void OnDockableMoved(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable has been docked.
+    /// </summary>
+    /// <param name="dockable">The docked dockable.</param>
+    /// <param name="operation">The dock operation performed.</param>
+    void OnDockableDocked(IDockable? dockable, DockOperation operation);
+
+    /// <summary>
+    /// Called when the dockable has been undocked.
+    /// </summary>
+    /// <param name="dockable">The undocked dockable.</param>
+    /// <param name="operation">The dock operation performed.</param>
+    void OnDockableUndocked(IDockable? dockable, DockOperation operation);
 
     /// <summary>
     /// Called when the dockable has been swapped.

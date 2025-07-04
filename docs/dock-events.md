@@ -18,6 +18,8 @@ possible to intercept an operation before it completes.
 | `DockableRemoved` | Raised after a dockable has been removed. |
 | `DockableClosed` | Occurs when a dockable is closed via command or UI. |
 | `DockableMoved` | Indicates a dockable was rearranged within its parent. |
+| `DockableDocked` | Raised after a dock operation completes such as splitting or floating. |
+| `DockableUndocked` | Raised when a dockable is removed from a dock before being moved or floated. |
 | `DockablePinned` / `DockableUnpinned` | Signalled when a tool is pinned or unpinned. |
 | `WindowOpened` / `WindowClosed` | Fired when a floating window is created or closed. |
 
@@ -34,6 +36,10 @@ factory.ActiveDockableChanged += (_, args) =>
     Console.WriteLine($"Active dockable: {args.Dockable?.Title}");
 factory.DockableAdded += (_, args) =>
     Console.WriteLine($"Added: {args.Dockable?.Title}");
+factory.DockableDocked += (_, args) =>
+    Console.WriteLine($"Docked: {args.Dockable?.Title} via {args.Operation}");
+factory.DockableUndocked += (_, args) =>
+    Console.WriteLine($"Undocked: {args.Dockable?.Title}");
 factory.WindowOpened += (_, args) =>
     Console.WriteLine($"Window opened: {args.Window?.Title}");
 

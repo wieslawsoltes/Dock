@@ -240,10 +240,12 @@ public abstract partial class FactoryBase : IFactory
                         var layout = CreateSplitLayout(dock, dockable, operation);
                         RemoveVisibleDockableAt(ownerDock, index);
                         OnDockableRemoved(dockable);
+                        OnDockableUndocked(dockable, operation);
                         InsertVisibleDockable(ownerDock, index, layout);
                         OnDockableAdded(dockable);
                         InitDockable(layout, ownerDock);
                         ownerDock.ActiveDockable = layout;
+                        OnDockableDocked(dockable, operation);
                     }
                 }
                 break;
@@ -373,6 +375,7 @@ public abstract partial class FactoryBase : IFactory
         }
 
         RemoveDockable(dockable, true);
+        OnDockableUndocked(dockable, DockOperation.Window);
 
         var window = CreateWindowFrom(dockable);
         if (window is not null)
@@ -383,6 +386,8 @@ public abstract partial class FactoryBase : IFactory
             window.Width = width;
             window.Height = height;
             window.Present(false);
+
+            OnDockableDocked(dockable, DockOperation.Window);
 
             if (window.Layout is { })
             {

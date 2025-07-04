@@ -108,9 +108,11 @@ public abstract partial class FactoryBase
         {
             RemoveVisibleDockableAt(dock, sourceIndex);
             OnDockableRemoved(sourceDockable);
+            OnDockableUndocked(sourceDockable, DockOperation.Fill);
             InsertVisibleDockable(dock, targetIndex, sourceDockable);
             OnDockableAdded(sourceDockable);
             OnDockableMoved(sourceDockable);
+            OnDockableDocked(sourceDockable, DockOperation.Fill);
             dock.ActiveDockable = sourceDockable;
         }
     }
@@ -185,7 +187,9 @@ public abstract partial class FactoryBase
                     OnDockableAdded(sourceDockable);
                     RemoveVisibleDockableAt(targetDock, sourceIndex);
                     OnDockableRemoved(sourceDockable);
+                    OnDockableUndocked(sourceDockable, DockOperation.Fill);
                     OnDockableMoved(sourceDockable);
+                    OnDockableDocked(sourceDockable, DockOperation.Fill);
                 }
                 else
                 {
@@ -196,16 +200,20 @@ public abstract partial class FactoryBase
                         OnDockableAdded(sourceDockable);
                         RemoveVisibleDockableAt(targetDock, removeIndex);
                         OnDockableRemoved(sourceDockable);
+                        OnDockableUndocked(sourceDockable, DockOperation.Fill);
                         OnDockableMoved(sourceDockable);
+                        OnDockableDocked(sourceDockable, DockOperation.Fill);
                     }
                 }
             }
             else
             {
                 RemoveDockable(sourceDockable, true);
+                OnDockableUndocked(sourceDockable, DockOperation.Fill);
                 InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
                 OnDockableAdded(sourceDockable);
                 OnDockableMoved(sourceDockable);
+                OnDockableDocked(sourceDockable, DockOperation.Fill);
                 InitDockable(sourceDockable, targetDock);
                 targetDock.ActiveDockable = sourceDockable;
             }

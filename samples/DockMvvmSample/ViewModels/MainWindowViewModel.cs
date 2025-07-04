@@ -110,6 +110,16 @@ public class MainWindowViewModel : ObservableObject
             Debug.WriteLine($"[DockableMoved] Title='{args.Dockable?.Title}'");
         };
 
+        factory.DockableDocked += (_, args) =>
+        {
+            Debug.WriteLine($"[DockableDocked] Title='{args.Dockable?.Title}', Operation='{args.Operation}'");
+        };
+
+        factory.DockableUndocked += (_, args) =>
+        {
+            Debug.WriteLine($"[DockableUndocked] Title='{args.Dockable?.Title}', Operation='{args.Operation}'");
+        };
+
         factory.DockableSwapped += (_, args) =>
         {
             Debug.WriteLine($"[DockableSwapped] Title='{args.Dockable?.Title}'");

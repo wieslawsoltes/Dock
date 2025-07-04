@@ -10,6 +10,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Import Project="..\..\build\Avalonia.props" />
+  <Import Project="..\..\build\Avalonia.Headless.props" />
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>

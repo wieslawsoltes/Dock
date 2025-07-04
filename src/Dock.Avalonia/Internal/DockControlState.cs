@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
-using global::Avalonia;
-using global::Avalonia.Controls;
+using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;

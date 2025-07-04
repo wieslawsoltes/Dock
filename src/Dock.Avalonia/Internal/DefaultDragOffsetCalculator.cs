@@ -1,10 +1,10 @@
-namespace Dock.Avalonia.Internal;
-
-using global::Avalonia;
-using global::Avalonia.Controls;
-using global::Avalonia.Controls.Primitives;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
+
+namespace Dock.Avalonia.Internal;
 
 public class DefaultDragOffsetCalculator : IDragOffsetCalculator
 {

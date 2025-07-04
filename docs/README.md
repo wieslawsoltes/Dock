@@ -41,6 +41,7 @@ guides under *Getting started*.
 - [Adapter classes](dock-adapters.md) – Host, navigation and tracking helpers.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
+- [DockSettings in controls](dock-settings-controls.md) – Apply global drag/drop settings when writing custom controls.
 
 ## Troubleshooting
 

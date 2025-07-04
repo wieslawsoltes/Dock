@@ -25,6 +25,8 @@ public abstract partial class DockBase : DockableBase, IDock
     {
         _navigateAdapter = new NavigateAdapter(this);
         _dock = DockMode.Center;
+        _canCloseLastDockable = true;
+        _openedDockablesCount = 0;
         GoBack = ReactiveCommand.Create(() => _navigateAdapter.GoBack());
         GoForward = ReactiveCommand.Create(() => _navigateAdapter.GoForward());
         Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));

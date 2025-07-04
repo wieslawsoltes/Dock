@@ -132,7 +132,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _isActive;
     private bool _canGoBack;
     private bool _canGoForward;
-    private int _openedDockablesCount;
+    private int _openedDockablesCount = 0;
     private bool _canCloseLastDockable = true;
 
     /// <summary>

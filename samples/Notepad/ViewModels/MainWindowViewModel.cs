@@ -266,7 +266,10 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
             if (length > 0)
             {
                 var text = file.Text.Substring(file.SelectionStart, length);
-                await Application.Current?.Clipboard.SetTextAsync(text)!;
+                if (GetWindow()?.Clipboard is { } clipboard)
+                {
+                    await clipboard.SetTextAsync(text);
+                }
                 file.Text = file.Text.Remove(file.SelectionStart, length);
                 file.SelectionEnd = file.SelectionStart;
                 file.CaretIndex = file.SelectionStart;
@@ -282,7 +285,10 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
             if (length > 0)
             {
                 var text = file.Text.Substring(file.SelectionStart, length);
-                await Application.Current?.Clipboard.SetTextAsync(text)!;
+                if (GetWindow()?.Clipboard is { } clipboard)
+                {
+                    await clipboard.SetTextAsync(text);
+                }
             }
         }
     }
@@ -291,15 +297,18 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
     {
         if (GetFileViewModel() is { } file)
         {
-            var text = await Application.Current?.Clipboard.GetTextAsync()!;
-            if (!string.IsNullOrEmpty(text))
+            if (GetWindow()?.Clipboard is { } clipboard)
             {
-                var start = file.SelectionStart;
-                var length = file.SelectionEnd - file.SelectionStart;
-                file.Text = file.Text.Remove(start, length).Insert(start, text);
-                file.SelectionStart = start + text.Length;
-                file.SelectionEnd = file.SelectionStart;
-                file.CaretIndex = file.SelectionStart;
+                var text = await clipboard.GetTextAsync();
+                if (!string.IsNullOrEmpty(text))
+                {
+                    var start = file.SelectionStart;
+                    var length = file.SelectionEnd - file.SelectionStart;
+                    file.Text = file.Text.Remove(start, length).Insert(start, text);
+                    file.SelectionStart = start + text.Length;
+                    file.SelectionEnd = file.SelectionStart;
+                    file.CaretIndex = file.SelectionStart;
+                }
             }
         }
     }

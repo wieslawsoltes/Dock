@@ -1,4 +1,5 @@
 ﻿using Dock.Model.Controls;
+using System;
 using Dock.Model.Core;
 using Dock.Model.Mvvm.Controls;
 using Notepad.ViewModels.Documents;

@@ -27,6 +27,11 @@
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
               <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" />
             </DataTemplate>
+            <DataTemplate DataType="dmc:IGridDockSplitter">
+              <GridSplitter Grid.Column="{Binding Column}"
+                            Grid.Row="{Binding Row}"
+                            ResizeDirection="{Binding ResizeDirection}" />
+            </DataTemplate>
             <DataTemplate DataType="dmc:IDocumentDock">
               <DocumentDockControl />
             </DataTemplate>

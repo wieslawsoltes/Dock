@@ -63,6 +63,9 @@ public abstract partial class FactoryBase
     public abstract IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <inheritdoc/>
+    public abstract IGridDockSplitter CreateGridDockSplitter();
+
+    /// <inheritdoc/>
     public abstract IToolDock CreateToolDock();
 
     /// <inheritdoc/>

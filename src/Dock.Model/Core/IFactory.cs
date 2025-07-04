@@ -153,6 +153,12 @@ public partial interface IFactory
     IProportionalDockSplitter CreateProportionalDockSplitter();
 
     /// <summary>
+    /// Creates <see cref="IGridDockSplitter"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IGridDockSplitter"/> class.</returns>
+    IGridDockSplitter CreateGridDockSplitter();
+
+    /// <summary>
     /// Creates <see cref="IToolDock"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IToolDock"/> class.</returns>

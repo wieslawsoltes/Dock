@@ -727,6 +727,13 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void CloseDockable(IDockable dockable)
     {
+        if (dockable.Owner is IDock dock &&
+            !dock.CanCloseLastDockable &&
+            dock.VisibleDockables?.Count <= 1)
+        {
+            return;
+        }
+
         if (dockable.CanClose && dockable.OnClose())
         {
             var hide = (dockable is ITool && HideToolsOnClose)
@@ -1011,8 +1018,8 @@ public abstract partial class FactoryBase
         if (dock.VisibleDockables != null)
         {
             dock.VisibleDockables.Remove(dockable);
-            UpdateIsEmpty(dock);
         }
+        UpdateIsEmpty(dock);
     }
 
     /// <summary>
@@ -1025,9 +1032,9 @@ public abstract partial class FactoryBase
             if (dock.VisibleDockables.Count > 0)
             {
                 dock.VisibleDockables.Clear();
-                UpdateIsEmpty(dock);
             }
         }
+        UpdateIsEmpty(dock);
     }
 
     /// <summary>
@@ -1038,8 +1045,9 @@ public abstract partial class FactoryBase
         if (dock.VisibleDockables != null)
         {
             dock.VisibleDockables.RemoveAt(index);
-            UpdateIsEmpty(dock);
         }
+
+        UpdateIsEmpty(dock);
     }
 
     private void UpdateIsEmpty(IDock dock)
@@ -1054,7 +1062,9 @@ public abstract partial class FactoryBase
         {
             dock.IsEmpty = newIsEmpty;
             if (dock.Owner is IDock parent)
+            {
                 UpdateIsEmpty(parent);
+            }
         }
 
         UpdateOpenedDockablesCount(dock);
@@ -1078,6 +1088,8 @@ public abstract partial class FactoryBase
         }
 
         if (dockable.Owner != null)
+        {
             UpdateOpenedDockablesCount(dockable.Owner);
+        }
     }
 }

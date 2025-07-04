@@ -142,6 +142,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
             },
             [typeof(IDockDock)] = new List<string>
             {
@@ -166,6 +167,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IDockDock
                 "LastChildFill",
             },
@@ -192,6 +194,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IDocumentDock
                 "CanCreateDocument",
             },
@@ -218,6 +221,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
             },
             [typeof(IProportionalDock)] = new List<string>
             {
@@ -242,6 +246,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IProportionalDock
                 "Orientation",
             },
@@ -268,6 +273,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
             },
             [typeof(IRootDock)] = new List<string>
             {
@@ -292,6 +298,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IRootDock
                 "IsFocusableRoot",
                 "HiddenDockables",
@@ -325,6 +332,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IToolDock
                 "Alignment",
                 "IsExpanded",
@@ -368,6 +376,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
             },
             [typeof(Document)] = new List<string>
             {
@@ -420,6 +429,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IDockDock
                 "LastChildFill",
             },
@@ -446,6 +456,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IDocumentDock
                 "CanCreateDocument",
             },
@@ -472,6 +483,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IProportionalDock
                 "Orientation",
             },
@@ -522,6 +534,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IRootDock
                 "IsFocusableRoot",
                 "HiddenDockables",
@@ -555,6 +568,7 @@ public class AvaloniaDockSerializer : IDockSerializer
                 "IsActive",
                 "IsEmpty",
                 "IsCollapsable",
+                "CanCloseLastDockable",
                 // IToolDock
                 "Alignment",
                 "IsExpanded",

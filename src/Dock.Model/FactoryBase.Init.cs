@@ -54,9 +54,9 @@ public abstract partial class FactoryBase
             if (dock.VisibleDockables is not null)
             {
                 InitDockables(dockable, dock.VisibleDockables);
-
-                UpdateIsEmpty(dock);
             }
+
+            UpdateIsEmpty(dock);
         }
 
         if (dockable is IRootDock rootDock)

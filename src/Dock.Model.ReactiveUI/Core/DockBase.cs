@@ -24,6 +24,9 @@ public abstract partial class DockBase : DockableBase, IDock
     protected DockBase()
     {
         _navigateAdapter = new NavigateAdapter(this);
+        _canCloseLastDockable = true;
+        _openedDockablesCount = 0;
+
         GoBack = ReactiveCommand.Create(() => _navigateAdapter.GoBack());
         GoForward = ReactiveCommand.Create(() => _navigateAdapter.GoForward());
         Navigate = ReactiveCommand.Create<object>(root => _navigateAdapter.Navigate(root, true));
@@ -67,6 +70,10 @@ public abstract partial class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial int OpenedDockablesCount { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CanCloseLastDockable { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]

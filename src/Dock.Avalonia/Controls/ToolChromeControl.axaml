@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="using:Dock.Model.Core"
                     xmlns:controls="using:Dock.Model.Controls"
                     x:DataType="controls:IToolDock"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     x:CompileBindings="True">
   <Design.PreviewWith>
   <ToolChromeControl Width="300" Height="400" />
@@ -16,8 +18,17 @@
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
     <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.CanFloat, FallbackValue=False}"/>
+              CommandParameter="{Binding ActiveDockable}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="ActiveDockable.CanFloat" FallbackValue="{x:False}" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
@@ -40,8 +51,17 @@
     </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
-              CommandParameter="{Binding ActiveDockable}"
-              IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"/>
+              CommandParameter="{Binding ActiveDockable}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
   </MenuFlyout>
 
   <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >
@@ -122,8 +142,16 @@
                   <Button x:Name="PART_CloseButton"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
                           Theme="{StaticResource ChromeButton}">
+                    <Button.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
+                        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                          <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+                          <Binding Path="(core:IDock).VisibleDockables.Count" FallbackValue="0" />
+                        </MultiBinding>
+                      </MultiBinding>
+                    </Button.IsVisible>
                     <Viewbox>
                       <Path x:Name="PART_ClosePath" />
                     </Viewbox>

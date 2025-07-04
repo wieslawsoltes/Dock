@@ -65,6 +65,12 @@ public abstract class DockBase : DockableBase, IDock
         AvaloniaProperty.RegisterDirect<DockBase, int>(nameof(OpenedDockablesCount), o => o.OpenedDockablesCount, (o, v) => o.OpenedDockablesCount = v);
 
     /// <summary>
+    /// Defines the <see cref="CanCloseLastDockable"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockBase, bool> CanCloseLastDockableProperty =
+        AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(CanCloseLastDockable), o => o.CanCloseLastDockable, (o, v) => o.CanCloseLastDockable = v, true);
+
+    /// <summary>
     /// Defines the <see cref="CanGoBack"/> property.
     /// </summary>
     public static readonly DirectProperty<DockBase, bool> CanGoBackProperty =
@@ -84,7 +90,8 @@ public abstract class DockBase : DockableBase, IDock
     private bool _isActive;
     private bool _canGoBack;
     private bool _canGoForward;
-    private int _openedDockablesCount;
+    private int _openedDockablesCount = 0;
+    private bool _canCloseLastDockable = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -165,6 +172,15 @@ public abstract class DockBase : DockableBase, IDock
     {
         get => _openedDockablesCount;
         set => SetAndRaise(OpenedDockablesCountProperty, ref _openedDockablesCount, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanCloseLastDockable")]
+    public bool CanCloseLastDockable
+    {
+        get => _canCloseLastDockable;
+        set => SetAndRaise(CanCloseLastDockableProperty, ref _canCloseLastDockable, value);
     }
 
     /// <inheritdoc/>

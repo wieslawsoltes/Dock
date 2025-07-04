@@ -41,6 +41,11 @@ public interface IDock : IDockable
     int OpenedDockablesCount { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the last remaining dockable can be closed.
+    /// </summary>
+    bool CanCloseLastDockable { get; set; }
+
+    /// <summary>
     /// Gets a value that indicates whether there is at least one entry in back navigation history.
     /// </summary>
     bool CanGoBack { get; }

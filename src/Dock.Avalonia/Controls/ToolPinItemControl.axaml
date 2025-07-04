@@ -16,8 +16,17 @@
   <ContextMenu x:Key="ToolPinItemControlContextMenu">
     <MenuItem Header="{DynamicResource ToolPinItemControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanFloat}"/>
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat"  />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolPinItemControlShowString}"
               Command="{Binding Owner.Factory.PreviewPinnedDockable}"
               CommandParameter="{Binding}"
@@ -28,8 +37,17 @@
               IsVisible="{Binding Owner, Converter={x:Static converters:OwnerIsToolDockConverter.Instance}}"/>
     <MenuItem Header="{DynamicResource ToolPinItemControlCloseString}"
               Command="{Binding Owner.Factory.CloseDockable}"
-              CommandParameter="{Binding}"
-              IsVisible="{Binding CanClose}"/>
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose"  />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
   </ContextMenu>
 
   <ControlTheme x:Key="{x:Type ToolPinItemControl}" TargetType="ToolPinItemControl">

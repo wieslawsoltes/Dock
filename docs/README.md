@@ -14,6 +14,7 @@ guides under *Getting started*.
 - [ReactiveUI guide](dock-reactiveui.md) – ReactiveUI equivalent of the MVVM guide.
 - [XAML guide](dock-xaml.md) – Declare layouts purely in XAML.
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
+- [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
 
 ## Concepts
 

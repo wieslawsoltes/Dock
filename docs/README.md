@@ -35,6 +35,7 @@ guides under *Getting started*.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
+- [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 
 ## Reference
 

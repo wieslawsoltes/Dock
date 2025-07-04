@@ -23,8 +23,8 @@
         <MultiBinding Converter="{x:Static BoolConverters.And}">
           <Binding Path="ActiveDockable.CanFloat" FallbackValue="{x:False}" />
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
-            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+            <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="(core:IDock).OpenedDockablesCount" />
           </MultiBinding>
         </MultiBinding>
       </MenuItem.IsVisible>
@@ -56,8 +56,8 @@
         <MultiBinding Converter="{x:Static BoolConverters.And}">
           <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
           <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
-            <Binding Path="((core:IDock)Owner).OpenedDockablesCount" />
+            <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="(core:IDock).OpenedDockablesCount" />
           </MultiBinding>
         </MultiBinding>
       </MenuItem.IsVisible>
@@ -142,8 +142,16 @@
                   <Button x:Name="PART_CloseButton"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          IsVisible="{Binding ActiveDockable.CanClose, FallbackValue=False}"
                           Theme="{StaticResource ChromeButton}">
+                    <Button.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
+                        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                          <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />
+                          <Binding Path="(core:IDock).OpenedDockablesCount" />
+                        </MultiBinding>
+                      </MultiBinding>
+                    </Button.IsVisible>
                     <Viewbox>
                       <Path x:Name="PART_ClosePath" />
                     </Viewbox>

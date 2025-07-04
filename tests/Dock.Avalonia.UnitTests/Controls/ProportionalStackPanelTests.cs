@@ -6,20 +6,20 @@ using Avalonia.Layout;
 using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Dock.Controls.ProportionalStackPanel;
-using Xunit;
+using Avalonia.Headless.XUnit;
 
 namespace Dock.Avalonia.UnitTests.Controls;
 
 public class ProportionalStackPanelTests
 {
-    [Fact]
+    [AvaloniaFact]
     public void ProportionalStackPanel_Ctor()
     {
         var actual = new ProportionalStackPanel();
         Assert.NotNull(actual);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Lays_Out_Children_Horizontal()
     {
         var target = new ProportionalStackPanel()
@@ -39,7 +39,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(152, 0, 148, 100), target.Children[2].Bounds);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Lays_Out_Children_Vertical()
     {
         var target = new ProportionalStackPanel()
@@ -67,7 +67,7 @@ public class ProportionalStackPanelTests
         yield return [0.3141592653589793238462643383279, 604, 188, 412];
     }
 
-    [Theory]
+    [AvaloniaTheory]
     [MemberData(nameof(GetBorderTestsData))]
     public void Should_Not_Trim_Borders_Horizontal(
         double proportion,
@@ -98,7 +98,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(expectedWidth, width);
     }
 
-    [Theory]
+    [AvaloniaTheory]
     [MemberData(nameof(GetBorderTestsData))]
     public void Should_Not_Trim_Borders_Vertical(
         double proportion,
@@ -129,7 +129,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(expectedHeight, height);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Lays_Out_Children_Default()
     {
         var target = new ProportionalStackPanel()
@@ -195,7 +195,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(669, 0, 331, 500), target.Children[4].Bounds);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Lays_Out_Children_ItemsControl()
     {
         var target1 = new ItemsControl()
@@ -253,7 +253,7 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(0, 0, 0, 0), items2?[3].Bounds);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Respects_MinWidth_When_Assigning_Proportion()
     {
         var target = new ProportionalStackPanel
@@ -282,7 +282,7 @@ public class ProportionalStackPanelTests
         Assert.True(target.Children[0].Bounds.Width >= 150);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Respects_MaxWidth_When_Assigning_Proportion()
     {
         var target = new ProportionalStackPanel
@@ -311,7 +311,7 @@ public class ProportionalStackPanelTests
         Assert.True(target.Children[0].Bounds.Width <= 100);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void Respects_MinHeight_In_Vertical_Mode()
     {
         var target = new ProportionalStackPanel

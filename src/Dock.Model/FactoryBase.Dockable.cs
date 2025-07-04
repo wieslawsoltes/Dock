@@ -1075,13 +1075,13 @@ public abstract partial class FactoryBase
         switch (dockable)
         {
             case IProportionalDock proportionalDock:
-                proportionalDock.OpenedDockablesCount = proportionalDock.VisibleDockables?.Count ?? 0;
+                proportionalDock.OpenedDockablesCount = proportionalDock.VisibleDockables?.Sum(x => (x as IDock)?.OpenedDockablesCount ?? 0) ?? 0;
                 break;
             case IRootDock rootDock:
-                rootDock.OpenedDockablesCount = rootDock.VisibleDockables?.Count ?? 0;
+                rootDock.OpenedDockablesCount = rootDock.VisibleDockables?.Sum(x => (x as IDock)?.OpenedDockablesCount ?? 0) ?? 0;
                 break;
             case IDock dock:
-                dock.OpenedDockablesCount = dock.VisibleDockables?.Count ?? 0;
+                dock.OpenedDockablesCount = 1;
                 break;
             default:
                 break;

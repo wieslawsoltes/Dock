@@ -36,6 +36,10 @@ factory.ActiveDockableChanged += (_, args) =>
     Console.WriteLine($"Active dockable: {args.Dockable?.Title}");
 factory.DockableAdded += (_, args) =>
     Console.WriteLine($"Added: {args.Dockable?.Title}");
+factory.DockableDocked += (_, args) =>
+    Console.WriteLine($"Docked: {args.Dockable?.Title} via {args.Operation}");
+factory.DockableUndocked += (_, args) =>
+    Console.WriteLine($"Undocked: {args.Dockable?.Title}");
 factory.WindowOpened += (_, args) =>
     Console.WriteLine($"Window opened: {args.Window?.Title}");
 

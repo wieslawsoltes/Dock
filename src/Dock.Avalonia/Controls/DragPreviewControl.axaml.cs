@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 
 namespace Dock.Avalonia.Controls;
 
@@ -11,24 +12,24 @@ namespace Dock.Avalonia.Controls;
 public class DragPreviewControl : TemplatedControl
 {
     /// <summary>
-    /// Defines <see cref="Title"/> property.
+    /// Define the <see cref="ContentTemplate"/> property.
     /// </summary>
-    public static readonly StyledProperty<string> TitleProperty =
-        AvaloniaProperty.Register<DragPreviewControl, string>(nameof(Title));
+    public static readonly StyledProperty<IDataTemplate> ContentTemplateProperty = 
+        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(ContentTemplate));
 
     /// <summary>
     /// Defines <see cref="Status"/> property.
     /// </summary>
     public static readonly StyledProperty<string> StatusProperty =
         AvaloniaProperty.Register<DragPreviewControl, string>(nameof(Status));
-
+    
     /// <summary>
-    /// Gets or sets the preview title.
+    /// Gets or sets tab header template.
     /// </summary>
-    public string Title
+    public IDataTemplate ContentTemplate
     {
-        get => GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
+        get => GetValue(ContentTemplateProperty);
+        set => SetValue(ContentTemplateProperty, value);
     }
 
     /// <summary>

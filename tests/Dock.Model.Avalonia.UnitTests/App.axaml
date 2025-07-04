@@ -3,5 +3,6 @@
              x:Class="Dock.Model.Avalonia.UnitTests.App">
   <Application.Styles>
     <FluentTheme />
+    <DockFluentTheme />
   </Application.Styles>
 </Application>

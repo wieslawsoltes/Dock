@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Dock.Avalonia.Internal;
+using Dock.Avalonia.Contract;
 using Dock.Model;
 using Dock.Model.Core;
 
@@ -111,13 +112,31 @@ public class DockControl : TemplatedControl, IDockControl
         set => SetValue(IsDraggingDockProperty, value);
     }
 
+    private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();
+
+    /// <summary>
+    /// Gets or sets drag offset calculator.
+    /// </summary>
+    public IDragOffsetCalculator DragOffsetCalculator
+    {
+        get => _dragOffsetCalculator;
+        set
+        {
+            _dragOffsetCalculator = value;
+            if (_dockControlState is { })
+            {
+                _dockControlState.DragOffsetCalculator = value;
+            }
+        }
+    }
+
     /// <summary>
     /// Initialize the new instance of the <see cref="DockControl"/>.
     /// </summary>
     public DockControl()
     {
         _dockManager = new DockManager();
-        _dockControlState = new DockControlState(_dockManager);
+        _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

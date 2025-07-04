@@ -10,6 +10,20 @@ internal class DragPreviewHelper
     private DragPreviewWindow? _window;
     private DragPreviewControl? _control;
 
+    private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
+    {
+        var screen = window.Screens.ScreenFromPoint(position);
+        if (screen is { })
+        {
+            var target = position + offset;
+            if (screen.WorkingArea.Contains(target))
+            {
+                return target;
+            }
+        }
+        return position;
+    }
+
     public void Show(IDockable dockable, PixelPoint position, PixelPoint offset)
     {
         Hide();
@@ -22,9 +36,10 @@ internal class DragPreviewHelper
         _window = new DragPreviewWindow
         {
             Content = _control,
-            Position = position + offset,
             DataContext = dockable
         };
+
+        _window.Position = GetPositionWithinWindow(_window, position, offset);
 
         _window.Show();
     }
@@ -37,7 +52,7 @@ internal class DragPreviewHelper
         }
 
         _control.Status = status;
-        _window.Position = position + offset;
+        _window.Position = GetPositionWithinWindow(_window, position, offset);
     }
 
     public void Hide()

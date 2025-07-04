@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -20,6 +22,8 @@ internal class DockDragState
     public bool DoDragDrop { get; set; }
     public Point TargetPoint { get; set; }
     public Visual? TargetDockControl { get; set; }
+    
+    public PixelPoint DragOffset { get; set; }
 
     public void Start(Control dragControl, Point point)
     {
@@ -268,7 +272,18 @@ internal class DockControlState : IDockControlState
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
-                            _dragPreviewHelper.Show(targetDockable, sp);
+
+                            if (_state.DragControl.TemplatedParent is TabStripItem tabStripItem)
+                            {
+                                var corner = tabStripItem.PointToScreen(new Point());
+                                _state.DragOffset = corner - sp;
+                            }
+                            else
+                            {
+                                _state.DragOffset = default;
+                            }
+                            
+                            _dragPreviewHelper.Show(targetDockable, sp, _state.DragOffset);
                         }
                         _state.DoDragDrop = true;
                     }
@@ -370,7 +385,7 @@ internal class DockControlState : IDockControlState
                         preview = "Float";
                     }
 
-                    _dragPreviewHelper.Move(screenPoint, preview);
+                    _dragPreviewHelper.Move(screenPoint, _state.DragOffset, preview);
                 }
                 break;
             }

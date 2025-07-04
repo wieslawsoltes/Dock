@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Dock.Controls.ProportionalStackPanel;
 using Avalonia.Headless.XUnit;
+using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls;
 

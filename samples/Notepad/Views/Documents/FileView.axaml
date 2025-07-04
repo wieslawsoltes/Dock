@@ -11,13 +11,16 @@
     <TextBox BorderThickness="0"
              AcceptsReturn="True"
              AcceptsTab="True"
-             FontFamily="Consolas, Inconsolata"
+             FontFamily="{Binding FontFamily}"
              FontWeight="Light"
              FontSize="14"
-             TextWrapping="NoWrap"
+             SelectionStart="{Binding SelectionStart, Mode=TwoWay}"
+             SelectionEnd="{Binding SelectionEnd, Mode=TwoWay}"
+             CaretIndex="{Binding CaretIndex, Mode=TwoWay}"
+             TextWrapping="{Binding TextWrapping}"
              Text="{Binding Text}"
              Grid.Row="0" />
-    <Grid ColumnDefinitions="*,Auto" Grid.Row="1">
+    <Grid ColumnDefinitions="*,Auto" Grid.Row="1" IsVisible="{Binding ShowStatusBar}">
       <TextBlock Text="{Binding Path}"
                  Margin="2"
                  VerticalAlignment="Center"

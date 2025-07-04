@@ -19,7 +19,12 @@ when creating your own docks and documents.
 | `IDocumentDockContent` | Dock that creates documents from a `DocumentTemplate`. |
 | `IDocumentTemplate` | Template object used when creating new documents on demand. |
 | `IProportionalDock` | Dock that arranges children vertically or horizontally using proportions. |
+| `IStackDock` | Dock based on `StackPanel` with `Orientation` and `Spacing`. |
+| `IGridDock` | Dock that uses `Grid` layout defined by `ColumnDefinitions` and `RowDefinitions`. |
+| `IWrapDock` | Dock built on `WrapPanel` exposing `Orientation`. |
+| `IUniformGridDock` | Dock with equally sized cells configured by `Rows` and `Columns`. |
 | `IProportionalDockSplitter` | Splitter element between proportional dock children. |
+| `IGridDockSplitter` | Splitter used inside a grid dock to resize rows or columns. |
 | `IRootDock` | Top level container responsible for pinned docks and windows. |
 | `ITool` | Basic interface for tool panes such as explorers or output views. |
 | `IToolContent` | Tool containing arbitrary `Content`. |

@@ -24,6 +24,7 @@ guides under *Getting started*.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
+- [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.

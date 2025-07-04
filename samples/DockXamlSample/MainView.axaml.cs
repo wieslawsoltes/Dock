@@ -45,13 +45,13 @@ public partial class MainView : UserControl
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        _viewsMenu = this.FindControl<MenuItem>("ViewsMenu");
+        _viewsMenu = ViewsMenu;
         _rootDock = DockControl?.Layout as IRootDock;
 
         if (DockControl?.Factory is { } factory)
         {
-            factory.DockableHidden += (_, __) => UpdateViewsMenu();
-            factory.DockableRestored += (_, __) => UpdateViewsMenu();
+            factory.DockableHidden += (_, _) => UpdateViewsMenu();
+            factory.DockableRestored += (_, _) => UpdateViewsMenu();
         }
 
         UpdateViewsMenu();

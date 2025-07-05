@@ -42,7 +42,7 @@ public class GlobalDockTarget : TemplatedControl
 
     internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction, Func<Point, DockOperation, DragAction, Visual, bool> validate)
     {
-        var result = DockOperation.Window;
+        var result = DockOperation.None;
 
         if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate))
         {

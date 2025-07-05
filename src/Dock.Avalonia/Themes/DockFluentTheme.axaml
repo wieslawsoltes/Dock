@@ -10,6 +10,7 @@
         <ResourceInclude Source="/Controls/ToolTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/ToolTabStrip.axaml" />
         <ResourceInclude Source="/Controls/DockTarget.axaml" />
+        <ResourceInclude Source="/Controls/GlobalDockTarget.axaml" />
         <ResourceInclude Source="/Controls/DocumentControl.axaml" />
         <ResourceInclude Source="/Controls/ToolChromeControl.axaml" />
         <ResourceInclude Source="/Controls/ToolControl.axaml" />

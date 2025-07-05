@@ -62,46 +62,32 @@ internal class DockControlState : IDockControlState
     /// <inheritdoc/>
     public IDockManager DockManager { get; set; }
 
-    public DockControlState(IDockManager dockManager, IDragOffsetCalculator? dragOffsetCalculator = null)
+    public DockControlState(IDockManager dockManager, IDragOffsetCalculator dragOffsetCalculator)
     {
         DockManager = dockManager;
-        DragOffsetCalculator = dragOffsetCalculator ?? new DefaultDragOffsetCalculator();
+        DragOffsetCalculator = dragOffsetCalculator;
     }
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
 
-        // Global dock target
-        if (_state.DropControl is { } dropControl)
-        {
-            var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            if (dockControl is not null)
-            {
-                _globalAdornerHelper.AddAdorner(dockControl);
-            }
-        }
-
-        // Local dock target
-        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            _localAdornerHelper.AddAdorner(control);
-        }
+        AddAdorners(isValid);
     }
 
     private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
         var operation = DockOperation.Fill;
 
-        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
-        {
-            // TODO: Handle global dock target operation
-            operation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
-        }
-
         if (_localAdornerHelper.Adorner is DockTarget dockTarget)
         {
             operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+
+        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
+        {
+            // TODO: Handle global dock target operation
+            var globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
         Validate(point, operation, dragAction, relativeTo);
@@ -111,36 +97,55 @@ internal class DockControlState : IDockControlState
     {
         var operation = DockOperation.Fill;
 
-        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
-        {
-            // TODO: Handle global dock target operation
-            operation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
-        }
-
         if (_localAdornerHelper.Adorner is DockTarget dockTarget)
         {
             operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.DropControl is { } dropControl)
+        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            if (dockControl is not null)
-            {
-                _globalAdornerHelper.RemoveAdorner(dockControl);
-            }
+            // TODO: Handle global dock target operation
+            var globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            _localAdornerHelper.RemoveAdorner(control);
-        }
+        RemoveAdorners();
 
         Execute(point, operation, dragAction, relativeTo);
     }
 
     private void Leave()
     {
+        RemoveAdorners();
+    }
+
+    private void AddAdorners(bool isValid)
+    {
+        // Local dock target
+        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        {
+            _localAdornerHelper.AddAdorner(control);
+        }
+
+        // Global dock target
+        // TODO: Handle isValid
+        if (_state.DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                _globalAdornerHelper.AddAdorner(dockControl);
+            }
+        }
+    }
+
+    private void RemoveAdorners()
+    {
+        // Local dock target
+        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        {
+            _localAdornerHelper.RemoveAdorner(control);
+        }
+
         // Global dock target
         if (_state.DropControl is { } dropControl)
         {
@@ -149,12 +154,6 @@ internal class DockControlState : IDockControlState
             {
                 _globalAdornerHelper.RemoveAdorner(dockControl);
             }
-        }
-
-        // Local dock target
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            _localAdornerHelper.RemoveAdorner(control);
         }
     }
 

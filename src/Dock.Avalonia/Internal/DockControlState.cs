@@ -256,12 +256,15 @@ internal class DockControlState : IDockControlState
             return false;
         }
 
-        if (relativeTo is not DockControl dockControl || dockControl.Layout is not IDock rootDock)
+        var dockControl = _globalAdornerHelper.Adorner?.AdornedElement as DockControl
+            ?? relativeTo.FindAncestorOfType<DockControl>();
+        if (dockControl?.Factory is not { } factory || dockControl.Layout is not IDock layout)
         {
             return false;
         }
 
-        if (rootDock.Factory is not { } factory || rootDock.ActiveDockable is not IDockable activeDockable)
+        var rootDock = factory.FindRoot(layout, _ => true);
+        if (rootDock?.ActiveDockable is not IDockable activeDockable)
         {
             return false;
         }
@@ -291,12 +294,15 @@ internal class DockControlState : IDockControlState
             return;
         }
 
-        if (relativeTo is not DockControl dockControl || dockControl.Layout is not IDock rootDock)
+        var dockControl = _globalAdornerHelper.Adorner?.AdornedElement as DockControl
+            ?? relativeTo.FindAncestorOfType<DockControl>();
+        if (dockControl?.Factory is not { } factory || dockControl.Layout is not IDock layout)
         {
             return;
         }
 
-        if (rootDock.Factory is not { } factory || rootDock.ActiveDockable is not IDockable activeDockable)
+        var rootDock = factory.FindRoot(layout, _ => true);
+        if (rootDock?.ActiveDockable is not IDockable activeDockable)
         {
             return;
         }

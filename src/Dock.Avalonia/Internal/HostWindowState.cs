@@ -48,7 +48,7 @@ internal class WindowDragState
 /// </summary>
 internal class HostWindowState : IHostWindowState
 {
-    private readonly AdornerHelper _adornerHelper = new AdornerHelper();
+    private readonly AdornerHelper<DockTarget> _localAdornerHelper = new ();
     private readonly HostWindow _hostWindow;
     private readonly WindowDragState _state = new();
 
@@ -67,7 +67,7 @@ internal class HostWindowState : IHostWindowState
 
         if (isValid && _state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.AddAdorner(control);
+            _localAdornerHelper.AddAdorner(control);
         }
     }
 
@@ -75,9 +75,9 @@ internal class HostWindowState : IHostWindowState
     {
         var operation = DockOperation.Fill;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (_localAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
         if (operation != DockOperation.Window)
@@ -90,14 +90,14 @@ internal class HostWindowState : IHostWindowState
     {
         var operation = DockOperation.Fill;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (_localAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
         if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.RemoveAdorner(control);
+            _localAdornerHelper.RemoveAdorner(control);
         }
 
         if (operation != DockOperation.Window)
@@ -110,7 +110,7 @@ internal class HostWindowState : IHostWindowState
     {
         if (_state.TargetDropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.RemoveAdorner(control);
+            _localAdornerHelper.RemoveAdorner(control);
         }
     }
 
@@ -248,7 +248,7 @@ internal class HostWindowState : IHostWindowState
                     }
 
                     var position = point + _state.DragStartPoint;
-                    var screenPoint = new PixelPoint((int)position.X, (int)position.Y);
+                    var screenPoint = new PixelPoint(position.X, position.Y);
                     if (dockControl.GetVisualRoot() is null)
                     {
                         continue;

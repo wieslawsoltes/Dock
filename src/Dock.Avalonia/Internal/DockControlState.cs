@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
@@ -53,7 +52,8 @@ internal class DockDragState
 /// </summary>
 internal class DockControlState : IDockControlState
 {
-    private readonly AdornerHelper _adornerHelper = new();
+    private readonly AdornerHelper<DockTarget> _localAdornerHelper = new();
+    private readonly AdornerHelper<GlobalDockTarget> _globalAdornerHelper = new();
     private readonly DockDragState _state = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
 
@@ -71,9 +71,21 @@ internal class DockControlState : IDockControlState
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+
+        // Global dock target
+        if (_state.DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                _globalAdornerHelper.AddAdorner(dockControl);
+            }
+        }
+
+        // Local dock target
         if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.AddAdorner(control);
+            _localAdornerHelper.AddAdorner(control);
         }
     }
 
@@ -81,9 +93,15 @@ internal class DockControlState : IDockControlState
     {
         var operation = DockOperation.Fill;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            // TODO: Handle global dock target operation
+            operation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+
+        if (_localAdornerHelper.Adorner is DockTarget dockTarget)
+        {
+            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
         Validate(point, operation, dragAction, relativeTo);
@@ -93,14 +111,29 @@ internal class DockControlState : IDockControlState
     {
         var operation = DockOperation.Fill;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            // TODO: Handle global dock target operation
+            operation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+
+        if (_localAdornerHelper.Adorner is DockTarget dockTarget)
+        {
+            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+        }
+
+        if (_state.DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                _globalAdornerHelper.RemoveAdorner(dockControl);
+            }
         }
 
         if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.RemoveAdorner(control);
+            _localAdornerHelper.RemoveAdorner(control);
         }
 
         Execute(point, operation, dragAction, relativeTo);
@@ -108,9 +141,20 @@ internal class DockControlState : IDockControlState
 
     private void Leave()
     {
+        // Global dock target
+        if (_state.DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                _globalAdornerHelper.RemoveAdorner(dockControl);
+            }
+        }
+
+        // Local dock target
         if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            _adornerHelper.RemoveAdorner(control);
+            _localAdornerHelper.RemoveAdorner(control);
         }
     }
 
@@ -292,7 +336,7 @@ internal class DockControlState : IDockControlState
                     Control? dropControl = null;
 
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
-                    string preview = "None";
+                    var preview = "None";
 
                     foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
@@ -351,8 +395,13 @@ internal class DockControlState : IDockControlState
                                 Enter(targetPoint, dragAction, targetDockControl);
                             }
 
-                            var operation = _adornerHelper.Adorner is DockTarget target
-                                ? target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                            // TODO: Handle global dock target operation
+                            var globalOperation = _globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
+                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                                : default;
+                            
+                            var operation = _localAdornerHelper.Adorner is DockTarget dockTarget
+                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
                                 : DockOperation.Fill;
 
                             var valid = Validate(targetPoint, operation, dragAction, targetDockControl);

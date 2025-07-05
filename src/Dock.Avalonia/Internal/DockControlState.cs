@@ -256,15 +256,14 @@ internal class DockControlState : IDockControlState
             return false;
         }
 
-        var dockControl = _globalAdornerHelper.Adorner?.AdornedElement as DockControl
-            ?? relativeTo.FindAncestorOfType<DockControl>();
+        var dockControl = relativeTo as DockControl ?? relativeTo.FindAncestorOfType<DockControl>();
         if (dockControl?.Factory is not { } factory || dockControl.Layout is not IDock layout)
         {
             return false;
         }
 
         var rootDock = factory.FindRoot(layout, _ => true);
-        if (rootDock?.ActiveDockable is not IDockable activeDockable)
+        if (rootDock?.ActiveDockable is not IDock activeDock)
         {
             return false;
         }
@@ -279,7 +278,7 @@ internal class DockControlState : IDockControlState
         var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-        return DockManager.ValidateDockable(sourceDockable, activeDockable, dragAction, operation, false);
+        return DockManager.ValidateDockable(sourceDockable, activeDock, dragAction, operation, false);
     }
 
     private void ExecuteGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
@@ -294,15 +293,14 @@ internal class DockControlState : IDockControlState
             return;
         }
 
-        var dockControl = _globalAdornerHelper.Adorner?.AdornedElement as DockControl
-            ?? relativeTo.FindAncestorOfType<DockControl>();
+        var dockControl = relativeTo as DockControl ?? relativeTo.FindAncestorOfType<DockControl>();
         if (dockControl?.Factory is not { } factory || dockControl.Layout is not IDock layout)
         {
             return;
         }
 
         var rootDock = factory.FindRoot(layout, _ => true);
-        if (rootDock?.ActiveDockable is not IDockable activeDockable)
+        if (rootDock?.ActiveDockable is not IDock activeDock)
         {
             return;
         }
@@ -317,7 +315,7 @@ internal class DockControlState : IDockControlState
         var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-        DockManager.ValidateDockable(sourceDockable, activeDockable, dragAction, operation, true);
+        DockManager.ValidateDockable(sourceDockable, activeDock, dragAction, operation, true);
     }
 
     private static bool IsMinimumDragDistance(Vector diff)

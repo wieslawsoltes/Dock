@@ -408,6 +408,7 @@ public class DockManager : IDockManager
             ITool tool => (!PreventSizeConflicts || !HasSizeConflict(sourceTool, tool)) &&
                            DockDockableIntoDockable(sourceTool, tool, action, bExecute),
             IDocument document => DockDockableIntoDockable(sourceTool, document, action, bExecute),
+            IProportionalDock proportionalDock => DockDockableIntoDock(sourceTool, proportionalDock, action, operation, bExecute),
             _ => false
         };
     }
@@ -420,6 +421,7 @@ public class DockManager : IDockManager
             IRootDock _ => DockDockableIntoWindow(sourceDocument, targetDockable, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
             IDocument document => DockDockableIntoDockable(sourceDocument, document, action, bExecute),
+            IProportionalDock proportionalDock => DockDockableIntoDock(sourceDocument, proportionalDock, action, operation, bExecute),
             _ => false
         };
     }

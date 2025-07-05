@@ -79,8 +79,7 @@ public class GlobalDockTarget : TemplatedControl
         {
             if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
             {
-                // TODO: Implement the validate function for global dock.
-                // if (validate(point, operation, dragAction, relativeTo))
+                if (validate(point, operation, dragAction, relativeTo))
                 {
                     indicator.Opacity = 0.5;
                     return true;

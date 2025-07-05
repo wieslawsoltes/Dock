@@ -24,10 +24,7 @@ internal class AdornerHelper<T> where T : Control, new()
             Adorner = null;
         }
 
-        Adorner = new T
-        {
-            [AdornerLayer.AdornedElementProperty] = visual
-        };
+        Adorner = new T();
 
         ((ISetLogicalParent) Adorner).SetParent(visual);
 

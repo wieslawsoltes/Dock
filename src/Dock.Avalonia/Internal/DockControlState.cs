@@ -84,7 +84,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (globalOperation != DockOperation.None)
         {
-            // TODO: Handle global dock target operation
+            // TODO: Validate global dock target operation
         }
         else
         {
@@ -104,7 +104,6 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            // TODO: Handle global dock target operation
             globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
@@ -152,30 +151,15 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (_context.DragControl is null || DropControl is null)
+        if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             return false;
         }
 
-        if (_context.DragControl.DataContext is IDockable sourceDockable && DropControl.DataContext is IDockable targetDockable)
-        {
-            DockManager.Position = DockHelpers.ToDockPoint(point);
-
-            if (relativeTo.GetVisualRoot() is null)
-            {
-                return false;
-            }
-
-            var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-            DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
-
-            return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
-        }
-
-        return false;
+        return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
     }
 
-    private void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
+    protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
     {
         if (sourceDockable is IDock dock)
         {
@@ -192,16 +176,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             return;
         }
 
-        DockManager.Position = DockHelpers.ToDockPoint(point);
-
-        if (relativeTo.GetVisualRoot() is null)
-        {
-            return;
-        }
-        var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-        DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
-
-        DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, true);
+        base.Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
     }
 
     /// <summary>
@@ -376,9 +351,9 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
                                 : DockOperation.Fill;
 
-                            // TODO: Handle global dock target operation
                             if (globalOperation != DockOperation.None)
                             {
+                                // TODO: Validate global dock target operation
                                 preview = "Dock";
                             }
                             else

@@ -77,7 +77,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (globalOperation != DockOperation.None)
         {
-            // TODO: Handle global dock target operation
+            // TODO: Validate global dock target operation
         }
         else
         {
@@ -100,7 +100,6 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            // TODO: Handle global dock target operation
             globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
@@ -153,42 +152,13 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (DropControl is null)
+        var layout = _hostWindow.Window?.Layout;
+        if (layout?.FocusedDockable is not { } sourceDockable)
         {
             return false;
         }
 
-        var layout = _hostWindow.Window?.Layout;
-
-        if (layout?.FocusedDockable is { } sourceDockable && DropControl.DataContext is IDockable targetDockable)
-        {
-            DockManager.Position = DockHelpers.ToDockPoint(point);
-
-            if (relativeTo.GetVisualRoot() is null)
-            {
-                return false;
-            }
-            var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-            DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
-                
-            return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
-        }
-
-        return false;
-    }
-
-    private void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
-    {
-        DockManager.Position = DockHelpers.ToDockPoint(point);
-
-        if (relativeTo.GetVisualRoot() is null)
-        {
-            return;
-        }
-        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-        DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
-
-        DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+        return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
     }
 
     /// <summary>

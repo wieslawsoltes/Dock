@@ -10,8 +10,7 @@ namespace Dock.Avalonia.Internal;
 
 internal abstract class DockManagerState : IDockManagerState
 {
-    /// <inheritdoc/>
-    public IDockManager DockManager { get; set; }
+    private readonly IDockManager _dockManager;
 
     protected Control? DropControl { get; set; }
 
@@ -25,7 +24,7 @@ internal abstract class DockManagerState : IDockManagerState
     /// <param name="dockManager">The dock manager.</param>
     protected DockManagerState(IDockManager dockManager)
     {
-        DockManager = dockManager;
+        _dockManager = dockManager;
     }
 
     protected void AddAdorners(bool isValid)
@@ -67,6 +66,42 @@ internal abstract class DockManagerState : IDockManagerState
         }
     }
 
+    protected virtual void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
+    {
+        _dockManager.Position = DockHelpers.ToDockPoint(point);
+
+        if (relativeTo.GetVisualRoot() is null)
+        {
+            return;
+        }
+
+        var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
+
+        _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+    }
+
+    protected bool ValidateDockable(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable)
+    {
+        if (DropControl?.DataContext is not IDockable targetDockable)
+        {
+            return false;
+        }
+
+        _dockManager.Position = DockHelpers.ToDockPoint(point);
+
+        if (relativeTo.GetVisualRoot() is null)
+        {
+            return false;
+        }
+
+        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        _dockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
+
+        return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+    }
+
+    
     protected static bool IsMinimumDragDistance(Vector diff)
     {
         return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance

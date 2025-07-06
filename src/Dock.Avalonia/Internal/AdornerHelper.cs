@@ -28,9 +28,9 @@ internal class AdornerHelper
             var dockTarget = new DockTarget();
             Adorner = dockTarget;
 
-            if (visual is Visual v && v.GetVisualRoot() is Window root)
+            if (visual.GetVisualRoot() is Window root)
             {
-                var position = root.PointToScreen(visual.Bounds.TopLeft);
+                var position = visual.PointToScreen(new Point());
                 _window = new DockAdornerWindow
                 {
                     Width = visual.Bounds.Width,

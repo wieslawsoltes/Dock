@@ -10,7 +10,8 @@
     <Setter Property="Background" Value="{x:Null}" />
     <Setter Property="TransparencyLevelHint" Value="Transparent" />
     <Setter Property="SizeToContent" Value="WidthAndHeight" />
-    <Setter Property="Topmost" Value="True" />
+    <!-- Preview window should appear above the adorner so leave Topmost disabled -->
+    <Setter Property="Topmost" Value="False" />
     <Setter Property="IsHitTestVisible" Value="False" />
   </ControlTheme>
 </ResourceDictionary>

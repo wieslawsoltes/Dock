@@ -119,18 +119,22 @@ internal class DockControlState : IDockControlState
 
         if (globalOperation != DockOperation.None)
         {
-            if (_state.DropControl is { } dropControl)
+            if (_state.DropControl is not { } dropControl)
             {
-                var dockControl = dropControl.FindAncestorOfType<DockControl>();
-                if (dockControl is not null)
-                {
-                    if (_state.DragControl.DataContext is IDockable sourceDockable 
-                        && dockControl.Layout is { } dockControlLayout 
-                        && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
-                    {
-                        Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, dockControlActiveDock);
-                    }
-                }
+                return;
+            }
+            
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is null)
+            {
+                return;
+            }
+
+            if (_state.DragControl.DataContext is IDockable sourceDockable 
+                && dockControl.Layout is { } dockControlLayout 
+                && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
+            {
+                Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, dockControlActiveDock);
             }
         }
         else

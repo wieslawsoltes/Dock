@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
+using Dock.Settings;
 using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
@@ -12,15 +13,42 @@ namespace Dock.Avalonia.Internal;
 internal class AdornerHelper
 {
     public Control? Adorner;
+    private DockAdornerWindow? _window;
 
     public void AddAdorner(Visual visual)
     {
+        if (DockSettings.UseFloatingDockAdorner)
+        {
+            if (_window is { })
+            {
+                _window.Close();
+                _window = null;
+            }
+
+            var dockTarget = new DockTarget();
+            Adorner = dockTarget;
+
+            if (visual is Visual v && v.GetVisualRoot() is Window root)
+            {
+                var position = root.PointToScreen(visual.Bounds.TopLeft);
+                _window = new DockAdornerWindow
+                {
+                    Width = visual.Bounds.Width,
+                    Height = visual.Bounds.Height,
+                    Content = dockTarget
+                };
+                _window.Position = new PixelPoint((int)position.X, (int)position.Y);
+                _window.Show(root);
+            }
+            return;
+        }
+
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
         {
             return;
         }
-            
+
         if (Adorner is { })
         {
             layer.Children.Remove(Adorner);
@@ -39,6 +67,18 @@ internal class AdornerHelper
 
     public void RemoveAdorner(Visual visual)
     {
+        if (DockSettings.UseFloatingDockAdorner)
+        {
+            if (_window is { })
+            {
+                _window.Close();
+                _window = null;
+            }
+
+            Adorner = null;
+            return;
+        }
+
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is { })
         {

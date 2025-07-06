@@ -17,4 +17,9 @@ public static class DockSettings
     /// Minimum vertical drag distance to initiate drag operation.
     /// </summary>
     public static double MinimumVerticalDragDistance = 4;
+
+    /// <summary>
+    /// Show dock adorners using floating transparent window.
+    /// </summary>
+    public static bool UseFloatingDockAdorner = false;
 }

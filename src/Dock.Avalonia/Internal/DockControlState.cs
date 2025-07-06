@@ -87,11 +87,17 @@ internal class DockControlState : IDockControlState
 
         if (_globalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            // TODO: Handle global dock target operation
             globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
         }
 
-        Validate(point, operation, dragAction, relativeTo);
+        if (globalOperation != DockOperation.None)
+        {
+            // TODO: Handle global dock target operation
+        }
+        else
+        {
+            Validate(point, operation, dragAction, relativeTo);
+        }
     }
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)

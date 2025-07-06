@@ -436,6 +436,8 @@ public class DockManager : IDockManager
                                   DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
             IDocumentDock documentDock => sourceDock != documentDock &&
                                           DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute),
+            IProportionalDock proportionalDock => sourceDock != proportionalDock &&
+                                                  DockDockable(sourceDock, targetDockable, proportionalDock, action, operation, bExecute),
             _ => false
         };
     }

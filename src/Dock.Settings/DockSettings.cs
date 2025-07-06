@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
+using System;
+using Avalonia;
+
 namespace Dock.Settings;
 
 /// <summary>
@@ -17,4 +20,15 @@ public static class DockSettings
     /// Minimum vertical drag distance to initiate drag operation.
     /// </summary>
     public static double MinimumVerticalDragDistance = 4;
+    
+    /// <summary>
+    /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
+    /// </summary>
+    /// <param name="diff"></param>
+    /// <returns></returns>
+    public static bool IsMinimumDragDistance(Vector diff)
+    {
+        return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
+                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
+    }
 }

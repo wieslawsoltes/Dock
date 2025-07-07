@@ -2,8 +2,9 @@
 
 Dock ships with a set of factory libraries that adapt the base model to various
 MVVM frameworks. `Dock.Model.Avalonia` provides a plain Avalonia version,
-`Dock.Model.Mvvm` adds `INotifyPropertyChanged` helpers and
-`Dock.Model.ReactiveUI` wraps the same API with ReactiveUI types.  You can create
+`Dock.Model.Mvvm` adds `INotifyPropertyChanged` helpers,
+`Dock.Model.ReactiveUI` wraps the same API with ReactiveUI types and
+`Dock.Model.Prism` provides Prism commands and bindings.  You can create
 your own implementation when these do not fit your application or you wish to
 integrate Dock with another framework.
 

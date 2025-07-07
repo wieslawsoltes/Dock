@@ -3,14 +3,55 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.VisualTree;
+using Dock.Settings;
+using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
 internal class AdornerHelper<T> where T : Control, new()
 {
     public Control? Adorner;
+    private DockAdornerWindow? _window;
 
     public void AddAdorner(Visual visual)
+    {
+        if (DockSettings.UseFloatingDockAdorner)
+        {
+            AddFloatingAdorner(visual);
+        }
+        else
+        {
+            AddRegularAdorner(visual);
+        }
+    }
+
+    private void AddFloatingAdorner(Visual visual)
+    {
+        if (_window is { })
+        {
+            _window.Close();
+            _window = null;
+        }
+
+        var dockTarget = new DockTarget();
+        Adorner = dockTarget;
+
+        if (visual.GetVisualRoot() is Window root)
+        {
+            var position = visual.PointToScreen(new Point());
+            _window = new DockAdornerWindow
+            {
+                Width = visual.Bounds.Width,
+                Height = visual.Bounds.Height,
+                Content = dockTarget
+            };
+            _window.Position = new PixelPoint(position.X, position.Y);
+            _window.Show(root);
+        }
+    }
+
+    private void AddRegularAdorner(Visual visual)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
@@ -28,13 +69,35 @@ internal class AdornerHelper<T> where T : Control, new()
         {
             [AdornerLayer.AdornedElementProperty] = visual
         };
-
         ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);
     }
 
     public void RemoveAdorner(Visual visual)
+    {
+        if (DockSettings.UseFloatingDockAdorner)
+        {
+            RemoveFloatingAdorner();
+        }
+        else
+        {
+            RemoveRegularAdorner(visual);
+        }
+    }
+
+    private void RemoveFloatingAdorner()
+    {
+        if (_window is { })
+        {
+            _window.Close();
+            _window = null;
+        }
+
+        Adorner = null;
+    }
+
+    private void RemoveRegularAdorner(Visual visual)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null || Adorner is null)

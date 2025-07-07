@@ -1,4 +1,5 @@
-using System;
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -27,17 +28,16 @@ internal abstract class DockManagerState : IDockManagerState
         _dockManager = dockManager;
     }
 
-    protected void AddAdorners(bool isValid)
+    protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
         // Local dock target
-        if (isValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             LocalAdornerHelper.AddAdorner(control);
         }
 
         // Global dock target
-        // TODO: Handle isValid
-        if (DropControl is { } dropControl)
+        if (isGlobalValid && DropControl is { } dropControl)
         {
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)

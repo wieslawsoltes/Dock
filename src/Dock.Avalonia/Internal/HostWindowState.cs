@@ -55,9 +55,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+        var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+        var isGlobalValid = ValidateGlobal(point, DockOperation.Fill, dragAction, relativeTo);
 
-        AddAdorners(isValid);
+        AddAdorners(isLocalValid, isGlobalValid);
     }
 
     private void Over(Point point, DragAction dragAction, Visual relativeTo)

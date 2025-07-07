@@ -21,7 +21,7 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
-    private DocumentTabStripDragHelper? _linuxDragHelper;
+    private WindowDragHelper? _linuxDragHelper;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -110,7 +110,21 @@ public class DocumentTabStrip : TabStrip
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && EnableWindowDrag)
         {
-            _linuxDragHelper = new DocumentTabStripDragHelper(this);
+            _linuxDragHelper = new WindowDragHelper(
+                this,
+                () => EnableWindowDrag,
+                source =>
+                {
+                    if (source == this)
+                        return true;
+
+                    return source is { } s &&
+                           s != null &&
+                           !(s is DocumentTabStripItem) &&
+                           !(s is Button) &&
+                           !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                           !WindowDragHelper.IsChildOfType<Button>(this, s);
+                });
             _linuxDragHelper.Attach();
         }
 
@@ -163,7 +177,20 @@ public class DocumentTabStrip : TabStrip
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _linuxDragHelper == null)
                 {
-                    _linuxDragHelper = new DocumentTabStripDragHelper(this);
+                    _linuxDragHelper = new WindowDragHelper(
+                        this,
+                        () => EnableWindowDrag,
+                        source =>
+                        {
+                            if (source == this)
+                                return true;
+
+                            return source is { } s &&
+                                   !(s is DocumentTabStripItem) &&
+                                   !(s is Button) &&
+                                   !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                                   !WindowDragHelper.IsChildOfType<Button>(this, s);
+                        });
                     _linuxDragHelper.Attach();
                 }
             }

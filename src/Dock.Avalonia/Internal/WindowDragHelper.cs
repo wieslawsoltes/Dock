@@ -5,15 +5,20 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Avalonia.Controls;
 using Dock.Settings;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
-internal class DocumentTabStripDragHelper
+/// <summary>
+/// Helper that enables starting window drag operations from custom controls.
+/// </summary>
+internal class WindowDragHelper
 {
-    private readonly DocumentTabStrip _owner;
+    private readonly Control _owner;
+    private readonly Func<bool> _isEnabled;
+    private readonly Func<Control?, bool> _canStartDrag;
     private Point _dragStartPoint;
     private bool _pointerPressed;
     private bool _isDragging;
@@ -21,9 +26,11 @@ internal class DocumentTabStripDragHelper
     private HostWindow? _dragHostWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
 
-    public DocumentTabStripDragHelper(DocumentTabStrip owner)
+    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
     {
         _owner = owner;
+        _isEnabled = isEnabled;
+        _canStartDrag = canStartDrag;
     }
 
     public void Attach()
@@ -42,7 +49,7 @@ internal class DocumentTabStripDragHelper
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (!_owner.EnableWindowDrag)
+        if (!_isEnabled())
         {
             return;
         }
@@ -55,11 +62,7 @@ internal class DocumentTabStripDragHelper
         }
 
         var source = e.Source as Control;
-        if (source == _owner || (source != null &&
-                                   !(source is DocumentTabStripItem) &&
-                                   !(source is Button) &&
-                                   !IsChildOfType<DocumentTabStripItem>(source) &&
-                                   !IsChildOfType<Button>(source)))
+        if (_canStartDrag(source))
         {
             _dragStartPoint = e.GetPosition(_owner);
             _pointerPressed = true;
@@ -168,10 +171,10 @@ internal class DocumentTabStripDragHelper
         e.Handled = true;
     }
 
-    private bool IsChildOfType<T>(Control control) where T : Control
+    internal static bool IsChildOfType<T>(Control owner, Control control) where T : Control
     {
         var parent = control;
-        while (parent != null && parent != _owner)
+        while (parent != null && parent != owner)
         {
             if (parent is T)
             {

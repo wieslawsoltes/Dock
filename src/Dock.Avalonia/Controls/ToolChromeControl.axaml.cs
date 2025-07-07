@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model.Core;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -18,6 +19,7 @@ namespace Dock.Avalonia.Controls;
 public class ToolChromeControl : ContentControl
 {
     private HostWindow? _attachedWindow;
+    private WindowDragHelper? _linuxDragHelper;
 
     /// <summary>
     /// Define <see cref="Title"/> property.
@@ -122,6 +124,9 @@ public class ToolChromeControl : ContentControl
             _attachedWindow.DetachGrip(this);
             _attachedWindow = null;
         }
+
+        _linuxDragHelper?.Detach();
+        _linuxDragHelper = null;
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -139,10 +144,28 @@ public class ToolChromeControl : ContentControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+        _linuxDragHelper?.Detach();
+        _linuxDragHelper = null;
         Grip = e.NameScope.Find<Control>("PART_Grip");
         CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         AttachToWindow();
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && Grip is { })
+        {
+            _linuxDragHelper = new WindowDragHelper(
+                Grip,
+                () => true,
+                source =>
+                {
+                    if (source is null)
+                        return false;
+
+                    return !(source is Button) &&
+                           !WindowDragHelper.IsChildOfType<Button>(Grip, source);
+                });
+            _linuxDragHelper.Attach();
+        }
 
         var maximizeRestoreButton = e.NameScope.Get<Button>("PART_MaximizeRestoreButton");
         maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;

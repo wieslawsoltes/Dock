@@ -156,6 +156,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-user-viewmodel.md = docs\dock-user-viewmodel.md
 		docs\dock-floating-adorners.md = docs\dock-floating-adorners.md
 		docs\dock-custom-theme.md = docs\dock-custom-theme.md
+		docs\dock-layout-panels.md = docs\dock-layout-panels.md
+		docs\dock-window-drag.md = docs\dock-window-drag.md
 	EndProjectSection
 EndProject
 Global

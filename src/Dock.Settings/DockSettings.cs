@@ -27,7 +27,7 @@ public static class DockSettings
     public static bool UseFloatingDockAdorner = false;
 
     /// <summary>
-    /// Allow docking between different <see cref="DockControl"/> instances.
+    /// Allow docking between different dock control instances.
     /// </summary>
     public static bool EnableGlobalDocking = true;
 

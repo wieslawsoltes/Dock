@@ -34,7 +34,6 @@ Any `SolidColorBrush` referenced by the theme can be replaced this way. Controls
 
 ```xaml
 <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
-<SolidColorBrush x:Key="DockToolChromeGripBrush" Color="#474747" />
 ```
 
 Include replacements for these in your accent dictionary to change the grip or button colors.

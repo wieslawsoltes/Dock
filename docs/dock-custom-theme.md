@@ -13,7 +13,6 @@ Define brushes and colors in a new `.axaml` file:
     <SolidColorBrush x:Key="DockThemeAccentBrush" Color="#675EDC" />
     <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="#EEEEEE" />
     <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
-    <SolidColorBrush x:Key="DockToolChromeGripBrush" Color="#474747" />
     <StreamGeometry x:Key="DockIconCloseGeometry" />
 </ResourceDictionary>
 ```

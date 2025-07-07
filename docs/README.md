@@ -38,6 +38,7 @@ guides under *Getting started*.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
+- [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 

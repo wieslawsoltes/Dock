@@ -5,6 +5,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+        <ResourceInclude Source="/Controls/ControlStrings.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStrip.axaml" />
         <ResourceInclude Source="/Controls/ToolTabStripItem.axaml" />

@@ -9,11 +9,6 @@
   <ToolChromeControl Width="300" Height="400" />
   </Design.PreviewWith>
 
-  <x:String x:Key="ToolChromeControlFloatString">_Float</x:String>
-  <x:String x:Key="ToolChromeControlDockString">_Dock</x:String>
-  <x:String x:Key="ToolChromeControlAutoHideString">_Auto Hide</x:String>
-  <x:String x:Key="ToolChromeControlDockAsDocumentString">Dock as Tabbed Document</x:String>
-  <x:String x:Key="ToolChromeControlCloseString">_Close</x:String>
 
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
     <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"

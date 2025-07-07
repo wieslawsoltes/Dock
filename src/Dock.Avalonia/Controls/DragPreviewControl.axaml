@@ -12,7 +12,10 @@
                               Content="{TemplateBinding DataContext}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
             <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
               <Path x:Name="PART_StatusIcon" />
-              <TextBlock Text="{TemplateBinding Status}" FontSize="{DynamicResource DockDragPreviewFontSize}" VerticalAlignment="Center"/>
+              <TextBlock x:Name="PART_StatusText"
+                         Text="{TemplateBinding Status}"
+                         FontSize="{DynamicResource DockDragPreviewFontSize}"
+                         VerticalAlignment="Center"/>
             </StackPanel>
           </StackPanel>
         </Border>
@@ -36,13 +39,22 @@
     <Style Selector="^[Status=Dock]/template/ Path#PART_StatusIcon">
       <Setter Property="Data" Value="{DynamicResource DockIconStatusDockGeometry}" />
     </Style>
+    <Style Selector="^[Status=Dock]/template/ TextBlock#PART_StatusText">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlDockString}" />
+    </Style>
 
     <Style Selector="^[Status=Float]/template/ Path#PART_StatusIcon">
       <Setter Property="Data" Value="{DynamicResource DockIconStatusFloatGeometry}" />
     </Style>
+    <Style Selector="^[Status=Float]/template/ TextBlock#PART_StatusText">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlFloatString}" />
+    </Style>
 
     <Style Selector="^[Status=None]/template/ Path#PART_StatusIcon">
       <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^[Status=None]/template/ TextBlock#PART_StatusText">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlNoneString}" />
     </Style>
   </ControlTheme>
 </ResourceDictionary>

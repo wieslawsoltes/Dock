@@ -91,7 +91,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var localOperation = DockOperation.Fill;
+        var localOperation = DockOperation.Window;
         var globalOperation = DockOperation.None;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)

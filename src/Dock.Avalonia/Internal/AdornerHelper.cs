@@ -18,30 +18,41 @@ internal class AdornerHelper<T> where T : Control, new()
     {
         if (DockSettings.UseFloatingDockAdorner)
         {
-            if (_window is { })
-            {
-                _window.Close();
-                _window = null;
-            }
+            AddFloatingAdorner(visual);
+        }
+        else
+        {
+            AddRegularAdorner(visual);
+        }
+    }
 
-            var dockTarget = new DockTarget();
-            Adorner = dockTarget;
-
-            if (visual.GetVisualRoot() is Window root)
-            {
-                var position = visual.PointToScreen(new Point());
-                _window = new DockAdornerWindow
-                {
-                    Width = visual.Bounds.Width,
-                    Height = visual.Bounds.Height,
-                    Content = dockTarget
-                };
-                _window.Position = new PixelPoint(position.X, position.Y);
-                _window.Show(root);
-            }
-            return;
+    private void AddFloatingAdorner(Visual visual)
+    {
+        if (_window is { })
+        {
+            _window.Close();
+            _window = null;
         }
 
+        var dockTarget = new DockTarget();
+        Adorner = dockTarget;
+
+        if (visual.GetVisualRoot() is Window root)
+        {
+            var position = visual.PointToScreen(new Point());
+            _window = new DockAdornerWindow
+            {
+                Width = visual.Bounds.Width,
+                Height = visual.Bounds.Height,
+                Content = dockTarget
+            };
+            _window.Position = new PixelPoint(position.X, position.Y);
+            _window.Show(root);
+        }
+    }
+
+    private void AddRegularAdorner(Visual visual)
+    {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
         {
@@ -58,7 +69,6 @@ internal class AdornerHelper<T> where T : Control, new()
         {
             [AdornerLayer.AdornedElementProperty] = visual
         };
-
         ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);
@@ -68,16 +78,27 @@ internal class AdornerHelper<T> where T : Control, new()
     {
         if (DockSettings.UseFloatingDockAdorner)
         {
-            if (_window is { })
-            {
-                _window.Close();
-                _window = null;
-            }
+            RemoveFloatingAdorner();
+        }
+        else
+        {
+            RemoveRegularAdorner(visual);
+        }
+    }
 
-            Adorner = null;
-            return;
+    private void RemoveFloatingAdorner()
+    {
+        if (_window is { })
+        {
+            _window.Close();
+            _window = null;
         }
 
+        Adorner = null;
+    }
+
+    private void RemoveRegularAdorner(Visual visual)
+    {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null || Adorner is null)
         {

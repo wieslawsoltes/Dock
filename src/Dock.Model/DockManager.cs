@@ -398,6 +398,11 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (!sourceTool.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
         return targetDockable switch
         {
             IRootDock _ => DockDockableIntoWindow(sourceTool, targetDockable, bExecute),
@@ -416,6 +421,11 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (!sourceDocument.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
         return targetDockable switch
         {
             IRootDock _ => DockDockableIntoWindow(sourceDocument, targetDockable, bExecute),
@@ -429,6 +439,11 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (!sourceDock.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
         return targetDockable switch
         {
             IRootDock _ => DockDockableIntoWindow(sourceDock, targetDockable, bExecute),

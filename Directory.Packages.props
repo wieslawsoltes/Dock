@@ -33,6 +33,6 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Nuke.Common" Version="9.0.4" />
     <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="9.0.4" />
-    <PackageVersion Include="Prism.Core" Version="9.0.0" />
+    <PackageVersion Include="Prism.Core" Version="9.0.537" />
   </ItemGroup>
 </Project>

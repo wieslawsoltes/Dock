@@ -162,13 +162,38 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
+        if (!DockSettings.EnableGlobalDocking)
+        {
+            return false;
+        }
+
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             return false;
         }
 
-        // TODO: Validate global dock target operation
-        return true;
+        if (DropControl is not { } dropControl)
+        {
+            return false;
+        }
+
+        var dockControl = dropControl.FindAncestorOfType<DockControl>();
+        if (dockControl?.Layout is not { ActiveDockable: IDock dock })
+        {
+            return false;
+        }
+
+        DockManager.Position = DockHelpers.ToDockPoint(point);
+
+        if (relativeTo.GetVisualRoot() is null)
+        {
+            return false;
+        }
+
+        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
+
+        return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);
     }
 
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)

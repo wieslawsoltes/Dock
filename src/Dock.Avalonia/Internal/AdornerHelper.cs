@@ -3,13 +3,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.LogicalTree;
-using Avalonia.VisualTree;
-using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
-internal class AdornerHelper
+internal class AdornerHelper<T> where T : Control, new()
 {
     public Control? Adorner;
 
@@ -20,19 +17,19 @@ internal class AdornerHelper
         {
             return;
         }
-            
-        if (Adorner is { })
+
+        if (Adorner is not null)
         {
             layer.Children.Remove(Adorner);
             Adorner = null;
         }
 
-        Adorner = new DockTarget
+        Adorner = new T
         {
-            [AdornerLayer.AdornedElementProperty] = visual,
+            [AdornerLayer.AdornedElementProperty] = visual
         };
 
-        ((ISetLogicalParent) Adorner).SetParent(visual as ILogical);
+        ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);
     }
@@ -40,14 +37,13 @@ internal class AdornerHelper
     public void RemoveAdorner(Visual visual)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
-        if (layer is { })
+        if (layer is null || Adorner is null)
         {
-            if (Adorner is { })
-            {
-                layer.Children.Remove(Adorner);
-                ((ISetLogicalParent) Adorner).SetParent(null);
-                Adorner = null;
-            }
+            return;
         }
+
+        layer.Children.Remove(Adorner);
+        ((ISetLogicalParent) Adorner).SetParent(null);
+        Adorner = null;
     }
 }

@@ -1,0 +1,111 @@
+using System;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
+using Dock.Model.Core;
+using Dock.Settings;
+
+namespace Dock.Avalonia.Internal;
+
+internal abstract class DockManagerState : IDockManagerState
+{
+    private readonly IDockManager _dockManager;
+
+    protected Control? DropControl { get; set; }
+
+    protected readonly AdornerHelper<DockTarget> LocalAdornerHelper = new();
+
+    protected readonly AdornerHelper<GlobalDockTarget> GlobalAdornerHelper = new();
+ 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockManagerState"/> class.
+    /// </summary>
+    /// <param name="dockManager">The dock manager.</param>
+    protected DockManagerState(IDockManager dockManager)
+    {
+        _dockManager = dockManager;
+    }
+
+    protected void AddAdorners(bool isValid)
+    {
+        // Local dock target
+        if (isValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        {
+            LocalAdornerHelper.AddAdorner(control);
+        }
+
+        // Global dock target
+        // TODO: Handle isValid
+        if (DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                GlobalAdornerHelper.AddAdorner(dockControl);
+            }
+        }
+    }
+
+    protected void RemoveAdorners()
+    {
+        // Local dock target
+        if (DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        {
+            LocalAdornerHelper.RemoveAdorner(control);
+        }
+
+        // Global dock target
+        if (DropControl is { } dropControl)
+        {
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is not null)
+            {
+                GlobalAdornerHelper.RemoveAdorner(dockControl);
+            }
+        }
+    }
+
+    protected virtual void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
+    {
+        _dockManager.Position = DockHelpers.ToDockPoint(point);
+
+        if (relativeTo.GetVisualRoot() is null)
+        {
+            return;
+        }
+
+        var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
+
+        _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
+    }
+
+    protected bool ValidateDockable(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable)
+    {
+        if (DropControl?.DataContext is not IDockable targetDockable)
+        {
+            return false;
+        }
+
+        _dockManager.Position = DockHelpers.ToDockPoint(point);
+
+        if (relativeTo.GetVisualRoot() is null)
+        {
+            return false;
+        }
+
+        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        _dockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
+
+        return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
+    }
+
+
+    protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
+    {
+        var screen = inputActiveDockControl.PointToScreen(point);
+        dockable.SetPointerScreenPosition(screen.X, screen.Y);
+        factory.FloatDockable(dockable);
+    }
+}

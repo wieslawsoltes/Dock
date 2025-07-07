@@ -38,6 +38,12 @@ DockSettings.MinimumVerticalDragDistance = 4;
 
 Increase these values if small pointer movements should not initiate dragging.
 
+## Global docking
+
+`DockSettings.EnableGlobalDocking` controls whether dockables can be dropped
+onto other `DockControl` instances. If set to `false` the global dock target is
+hidden and drags are limited to the originating control.
+
 ## Hide on close
 
 `FactoryBase` exposes two properties that control whether closing a tool or

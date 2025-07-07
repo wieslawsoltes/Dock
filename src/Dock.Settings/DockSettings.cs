@@ -27,6 +27,11 @@ public static class DockSettings
     public static bool UseFloatingDockAdorner = false;
 
     /// <summary>
+    /// Allow docking between different <see cref="DockControl"/> instances.
+    /// </summary>
+    public static bool EnableGlobalDocking = true;
+
+    /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
     /// <param name="diff">The drag delta.</param>

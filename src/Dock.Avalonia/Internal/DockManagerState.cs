@@ -13,6 +13,8 @@ internal abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
 
+    protected IDockManager DockManager => _dockManager;
+
     protected Control? DropControl { get; set; }
 
     protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
@@ -39,7 +41,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (isGlobalValid && DropControl is { } dropControl)
+        if (DockSettings.EnableGlobalDocking && isGlobalValid && DropControl is { } dropControl)
         {
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)
@@ -58,7 +60,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (DropControl is { } dropControl)
+        if (DockSettings.EnableGlobalDocking && DropControl is { } dropControl)
         {
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)

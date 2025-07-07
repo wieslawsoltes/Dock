@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Dock.Model.Controls;
@@ -11,6 +12,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="GridDockControl"/> xaml.
 /// </summary>
+[TemplatePart("PART_ItemsControl", typeof(ItemsControl))]
 public class GridDockControl : TemplatedControl
 {
     /// <inheritdoc/>

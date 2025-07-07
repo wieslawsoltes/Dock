@@ -3,6 +3,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
@@ -13,6 +14,16 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DockTarget"/> xaml.
 /// </summary>
+[TemplatePart("PART_TopIndicator", typeof(Panel))]
+[TemplatePart("PART_BottomIndicator", typeof(Panel))]
+[TemplatePart("PART_LeftIndicator", typeof(Panel))]
+[TemplatePart("PART_RightIndicator", typeof(Panel))]
+[TemplatePart("PART_CenterIndicator", typeof(Panel))]
+[TemplatePart("PART_TopSelector", typeof(Control))]
+[TemplatePart("PART_BottomSelector", typeof(Control))]
+[TemplatePart("PART_LeftSelector", typeof(Control))]
+[TemplatePart("PART_RightSelector", typeof(Control))]
+[TemplatePart("PART_CenterSelector", typeof(Control))]
 public class DockTarget : TemplatedControl
 {
     private Panel? _topIndicator;

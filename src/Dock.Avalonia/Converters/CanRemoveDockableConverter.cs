@@ -11,7 +11,7 @@ namespace Dock.Avalonia.Converters;
 /// Returns true if <c>CanCloseLastDockable</c> is true or there is more than one
 /// visible dockable.
 /// </summary>
-internal class CanRemoveDockableConverter : IMultiValueConverter
+public class CanRemoveDockableConverter : IMultiValueConverter
 {
     /// <summary>
     /// Gets the singleton instance.

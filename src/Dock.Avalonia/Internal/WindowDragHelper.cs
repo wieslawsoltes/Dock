@@ -23,7 +23,7 @@ internal class WindowDragHelper
     private bool _pointerPressed;
     private bool _isDragging;
     private PointerPressedEventArgs? _lastPointerPressedArgs;
-    private HostWindow? _dragHostWindow;
+    private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
 
     public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
@@ -80,24 +80,28 @@ internal class WindowDragHelper
         _pointerPressed = false;
         _isDragging = false;
 
-        if (_dragHostWindow is { } host)
+        if (_dragWindow is not null)
         {
-            if (_positionChangedHandler is { })
+            if (_positionChangedHandler is not null)
             {
-                host.PositionChanged -= _positionChangedHandler;
+                _dragWindow.PositionChanged -= _positionChangedHandler;
                 _positionChangedHandler = null;
             }
 
-            if (host.HostWindowState is HostWindowState state)
+            if (_dragWindow is HostWindow hostWindow)
             {
-                var point = host.PointToScreen(e.GetPosition(host)) - host.PointToScreen(new Point(0, 0));
-                state.Process(new PixelPoint((int)point.X, (int)point.Y), EventType.Released);
-            }
+                if (hostWindow.HostWindowState is HostWindowState state)
+                {
+                    var point = hostWindow.PointToScreen(e.GetPosition(hostWindow)) -
+                                hostWindow.PointToScreen(new Point(0, 0));
+                    state.Process(new PixelPoint(point.X, point.Y), EventType.Released);
+                }
 
-            host.Window?.Factory?.OnWindowMoveDragEnd(host.Window);
+                hostWindow.Window?.Factory?.OnWindowMoveDragEnd(hostWindow.Window);
+            }
         }
 
-        _dragHostWindow = null;
+        _dragWindow = null;
 
         e.Handled = true;
     }
@@ -147,26 +151,25 @@ internal class WindowDragHelper
         if (hostWindow.HostWindowState is HostWindowState state)
         {
             var start = hostWindow.PointToScreen(_lastPointerPressedArgs.GetPosition(hostWindow)) - hostWindow.PointToScreen(new Point(0, 0));
-            state.Process(new PixelPoint((int)start.X, (int)start.Y), EventType.Pressed);
+            state.Process(new PixelPoint(start.X, start.Y), EventType.Pressed);
         }
 
-        _dragHostWindow = hostWindow;
+        _dragWindow = hostWindow;
 
-        _positionChangedHandler = (_, args) =>
+        _positionChangedHandler = (_, _) =>
         {
-            if (_dragHostWindow?.Window is { } dw)
+            if (hostWindow.Window is { } dw)
             {
                 dw.Factory?.OnWindowMoveDrag(dw);
             }
 
-            if (_dragHostWindow?.HostWindowState is HostWindowState st)
+            if (hostWindow?.HostWindowState is HostWindowState st)
             {
-                st.Process(_dragHostWindow.Position, EventType.Moved);
+                st.Process(_dragWindow.Position, EventType.Moved);
             }
         };
 
         hostWindow.PositionChanged += _positionChangedHandler;
-
         hostWindow.BeginMoveDrag(_lastPointerPressedArgs);
         e.Handled = true;
     }

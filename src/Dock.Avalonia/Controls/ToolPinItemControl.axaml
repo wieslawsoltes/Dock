@@ -8,10 +8,6 @@
     <ToolPinItemControl Width="30" Height="400" />
   </Design.PreviewWith>
 
-  <x:String x:Key="ToolPinItemControlFloatString">_Float</x:String>
-  <x:String x:Key="ToolPinItemControlShowString">_Show</x:String>
-  <x:String x:Key="ToolPinItemControlDockAsDocumentString">Dock as Tabbed Document</x:String>
-  <x:String x:Key="ToolPinItemControlCloseString">_Close</x:String>
 
   <ContextMenu x:Key="ToolPinItemControlContextMenu">
     <MenuItem Header="{DynamicResource ToolPinItemControlFloatString}"

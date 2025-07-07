@@ -18,6 +18,12 @@ internal class DefaultDragOffsetCalculator : IDragOffsetCalculator
             return corner - screenPoint;
         }
 
+        if (dragControl is DocumentTabStrip documentTabStrip)
+        {
+            var corner = documentTabStrip.PointToScreen(new Point());
+            return corner - screenPoint;
+        }
+
         return default;
     }
 }

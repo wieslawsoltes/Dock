@@ -59,6 +59,12 @@
 
     <Style Selector="^:documentwindow">
       <Setter Property="ExtendClientAreaTitleBarHeightHint" Value="0" />
+
+      <Style Selector="^:documentchromecontrolswindow">
+        <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+        <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+      </Style>
+
     </Style>
 
     <Style Selector="^:toolwindow">

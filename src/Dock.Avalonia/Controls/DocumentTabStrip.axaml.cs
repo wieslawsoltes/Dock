@@ -5,11 +5,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using System.Runtime.InteropServices;
 using Avalonia.Layout;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Settings;
-using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -19,12 +18,8 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":create", ":active")]
 public class DocumentTabStrip : TabStrip
 {
-    private Point _dragStartPoint;
-    private bool _pointerPressed;
-    private bool _isDragging;
-    private PointerPressedEventArgs? _lastPointerPressedArgs;
-    private HostWindow? _dragHostWindow;
-    private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
+    private HostWindow? _attachedWindow;
+    private Control? _grip;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -99,23 +94,27 @@ public class DocumentTabStrip : TabStrip
     }
 
     /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        _grip = e.NameScope.Find<Control>("PART_BorderFill");
+        AttachGrip();
+    }
+
+    /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
 
-        AddHandler(PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
-        AddHandler(PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
-        AddHandler(PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+        AttachGrip();
     }
 
     /// <inheritdoc/>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        
-        RemoveHandler(PointerPressedEvent, OnPointerPressed);
-        RemoveHandler(PointerReleasedEvent, OnPointerReleased);
-        RemoveHandler(PointerMovedEvent, OnPointerMoved);
+
+        DetachGrip();
     }
 
     /// <inheritdoc/>
@@ -144,6 +143,18 @@ public class DocumentTabStrip : TabStrip
         {
             UpdatePseudoClassesActive(change.GetNewValue<bool>());
         }
+
+        if (change.Property == EnableWindowDragProperty)
+        {
+            if (change.GetNewValue<bool>())
+            {
+                AttachGrip();
+            }
+            else
+            {
+                DetachGrip();
+            }
+        }
     }
 
     private void UpdatePseudoClassesCreate(bool canCreate)
@@ -156,152 +167,26 @@ public class DocumentTabStrip : TabStrip
         PseudoClasses.Set(":active", isActive);
     }
 
-    private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    private void AttachGrip()
     {
-        if (!EnableWindowDrag)
-        {
+        if (!EnableWindowDrag || _grip == null)
             return;
-        }
 
-        _lastPointerPressedArgs = e;
-
-        // Only handle primary button clicks
-        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        if (VisualRoot is HostWindow window &&
+            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            return;
-        }
-
-        // Check if we're clicking on an empty area of the tab strip
-        // (not on a tab item or button)
-        var source = e.Source as Control;
-        if (source == this || (source != null &&
-                               !(source is DocumentTabStripItem) &&
-                               !(source is Button) &&
-                               !IsChildOfType<DocumentTabStripItem>(source) &&
-                               !IsChildOfType<Button>(source)))
-        {
-            _dragStartPoint = e.GetPosition(this);
-            _pointerPressed = true;
-            e.Handled = true;
+            window.AttachGrip(_grip);
+            _attachedWindow = window;
         }
     }
 
-    private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+    private void DetachGrip()
     {
-        if (!_pointerPressed && !_isDragging)
+        if (_attachedWindow is { } host && _grip is { })
         {
-            return;
+            host.DetachGrip(_grip);
         }
 
-        _pointerPressed = false;
-        _isDragging = false;
-
-        if (_dragHostWindow is { } host)
-        {
-            if (_positionChangedHandler is { })
-            {
-                host.PositionChanged -= _positionChangedHandler;
-                _positionChangedHandler = null;
-            }
-
-            if (host.HostWindowState is HostWindowState state)
-            {
-                var point = host.PointToScreen(e.GetPosition(host)) - host.PointToScreen(new Point(0, 0));
-                state.Process(new PixelPoint((int)point.X, (int)point.Y), EventType.Released);
-            }
-
-            host.Window?.Factory?.OnWindowMoveDragEnd(host.Window);
-        }
-
-        _dragHostWindow = null;
-
-        e.Handled = true;
-    }
-
-    private void OnPointerMoved(object? sender, PointerEventArgs e)
-    {
-        if (!_pointerPressed || _isDragging)
-        {
-            return;
-        }
-
-        var currentPoint = e.GetPosition(this);
-        var delta = currentPoint - _dragStartPoint;
-
-        // Check if we've moved enough to consider it a drag
-        if (!(Math.Abs(delta.X) > DockSettings.MinimumHorizontalDragDistance)
-            && !(Math.Abs(delta.Y) > DockSettings.MinimumVerticalDragDistance))
-        {
-            return;
-        }
-
-        _isDragging = true;
-        _pointerPressed = false;
-
-        if (_lastPointerPressedArgs is null)
-        {
-            return;
-        }
-        
-        // Find the window that contains this tab strip
-        if (VisualRoot is not HostWindow hostWindow)
-        {
-            if (VisualRoot is Window window)
-            {
-                window.BeginMoveDrag(_lastPointerPressedArgs);
-            }
-            return;
-        }
-
-        var dockWindow = hostWindow.Window;
-        if (dockWindow?.Factory?.OnWindowMoveDragBegin(dockWindow) != true)
-        {
-            _isDragging = false;
-            return;
-        }
-
-        if (hostWindow.HostWindowState is HostWindowState state)
-        {
-            var start = hostWindow.PointToScreen(_lastPointerPressedArgs.GetPosition(hostWindow)) - hostWindow.PointToScreen(new Point(0, 0));
-            state.Process(new PixelPoint((int)start.X, (int)start.Y), EventType.Pressed);
-        }
-
-        _dragHostWindow = hostWindow;
-
-        _positionChangedHandler = (_, args) =>
-        {
-            if (_dragHostWindow?.Window is { } dw)
-            {
-                dw.Factory?.OnWindowMoveDrag(dw);
-            }
-
-            if (_dragHostWindow?.HostWindowState is HostWindowState st)
-            {
-                st.Process(_dragHostWindow.Position, EventType.Moved);
-            }
-        };
-
-        hostWindow.PositionChanged += _positionChangedHandler;
-
-        // Call the MoveDrag method to start window dragging
-        hostWindow.BeginMoveDrag(_lastPointerPressedArgs);
-        e.Handled = true;
-    }
-
-    private bool IsChildOfType<T>(Control control) where T : Control
-    {
-        // Walk up the visual tree to find a parent of type T
-        var parent = control;
-        while (parent != null && parent != this)
-        {
-            if (parent is T)
-            {
-                return true;
-            }
-
-            parent = parent.Parent as Control;
-        }
-
-        return false;
+        _attachedWindow = null;
     }
 }

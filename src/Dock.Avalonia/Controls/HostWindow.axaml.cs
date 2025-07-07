@@ -213,6 +213,15 @@ public class HostWindow : Window, IHostWindow
     }
 
     /// <summary>
+    /// Attaches a grip control to enable window dragging.
+    /// </summary>
+    /// <param name="grip">The grip control.</param>
+    public void AttachGrip(Control grip)
+    {
+        _chromeGrips.Add(grip);
+    }
+
+    /// <summary>
     /// Detaches grip to chrome.
     /// </summary>
     /// <param name="chromeControl">The chrome control.</param>
@@ -227,6 +236,15 @@ public class HostWindow : Window, IHostWindow
         {
             chromeControl.CloseButton.Click -= ChromeCloseClick;
         }
+    }
+
+    /// <summary>
+    /// Detaches a grip control from window dragging.
+    /// </summary>
+    /// <param name="grip">The grip control.</param>
+    public void DetachGrip(Control grip)
+    {
+        _chromeGrips.Remove(grip);
     }
 
     /// <inheritdoc/>

@@ -58,6 +58,7 @@ guides under *Get started*.
 - [Tracking controls](dock-tracking-controls.md) – Collections that map dockables to their visuals.
 - [Enumerations](dock-enums.md) – Values used by Dock APIs.
 - [Model control interfaces](dock-model-controls.md) – Contracts used to define documents, tools and docks.
+- [Layout panels](dock-layout-panels.md) – Dock, stack, grid and wrap style docks.
 - [Dock settings](dock-settings.md) – Global drag/drop options and thresholds.
 - [Dock properties](dock-properties.md) – Use attached properties to mark drag areas and drop targets.
 - [DockSettings in controls](dock-settings-controls.md) – Apply global drag/drop settings when writing custom controls.

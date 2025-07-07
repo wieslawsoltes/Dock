@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using System.Runtime.InteropServices;
+using Dock.Avalonia.Internal;
 using Avalonia.Layout;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -20,6 +21,7 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
+    private DocumentTabStripDragHelper? _linuxDragHelper;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -106,6 +108,12 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnAttachedToVisualTree(e);
 
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && EnableWindowDrag)
+        {
+            _linuxDragHelper = new DocumentTabStripDragHelper(this);
+            _linuxDragHelper.Attach();
+        }
+
         AttachGrip();
     }
 
@@ -115,6 +123,9 @@ public class DocumentTabStrip : TabStrip
         base.OnDetachedFromVisualTree(e);
 
         DetachGrip();
+
+        _linuxDragHelper?.Detach();
+        _linuxDragHelper = null;
     }
 
     /// <inheritdoc/>
@@ -149,10 +160,22 @@ public class DocumentTabStrip : TabStrip
             if (change.GetNewValue<bool>())
             {
                 AttachGrip();
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _linuxDragHelper == null)
+                {
+                    _linuxDragHelper = new DocumentTabStripDragHelper(this);
+                    _linuxDragHelper.Attach();
+                }
             }
             else
             {
                 DetachGrip();
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    _linuxDragHelper?.Detach();
+                    _linuxDragHelper = null;
+                }
             }
         }
     }

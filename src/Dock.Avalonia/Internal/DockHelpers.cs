@@ -82,4 +82,14 @@ internal static class DockHelpers
             }
         }
     }
+
+    public static IProportionalDock? FindProportionalDock(IDock dock)
+    {
+        if (dock.Factory is { } factory)
+        {
+            return factory.FindDockable(dock, d => d is IProportionalDock) as IProportionalDock;
+        }
+
+        return null;
+    }
 }

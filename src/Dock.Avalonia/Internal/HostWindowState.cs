@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Model.Controls;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
@@ -127,10 +128,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             }
 
             if (layout?.ActiveDockable is { } sourceDockable
-                && dockControl.Layout is { } dockControlLayout 
+                && dockControl.Layout is { } dockControlLayout
                 && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
             {
-                Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, dockControlActiveDock);
+                var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
+                Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
             }
         }
         else

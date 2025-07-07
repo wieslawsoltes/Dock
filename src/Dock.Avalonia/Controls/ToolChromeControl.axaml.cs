@@ -192,11 +192,13 @@ public class ToolChromeControl : ContentControl
                     _windowDragHelper.Attach();
                 }
             }
+#if false
             else
             {
                 _windowDragHelper = CreateDragHelper(Grip);
                 _windowDragHelper.Attach();
             }
+#endif
         }
     }
 

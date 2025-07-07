@@ -17,6 +17,18 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 
 Calling `FloatDockable` on the factory opens a dockable in a new window. The returned `IDockWindow` stores its bounds and title and can be serialized together with the layout.
 
+## Window chrome options
+
+`HostWindow` provides two boolean properties that control how its chrome behaves:
+
+- `ToolChromeControlsWholeWindow`
+- `DocumentChromeControlsWholeWindow`
+
+When enabled these toggle the `:toolchromecontrolswindow` or
+`:documentchromecontrolswindow` pseudo class respectively. Styles can use these
+states to remove the standard system chrome and let the Dock chrome occupy the
+entire window.
+
 ## Presenting and closing
 
 `IDockWindow` exposes `Present(bool isDialog)` to show the window and `Exit()` to close it programmatically. The default implementation uses `HostAdapter` to bridge between the interface and the underlying Avalonia `Window`.

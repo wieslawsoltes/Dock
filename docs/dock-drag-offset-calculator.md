@@ -29,7 +29,7 @@ var dockControl = new DockControl
 
 This example centres the preview on the pointer regardless of what was dragged. The method can inspect the `dragControl` and `dockControl` to calculate any position.
 
-## When to customise
+## When to customize
 
 - Align the preview to a different part of the dragged control.
 - Add margins so the preview does not obscure important UI elements.

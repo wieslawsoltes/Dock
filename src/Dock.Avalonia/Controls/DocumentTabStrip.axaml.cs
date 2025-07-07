@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Settings;
 using Dock.Avalonia.Internal;
+using Avalonia.VisualTree;
 
 namespace Dock.Avalonia.Controls;
 
@@ -159,6 +160,12 @@ public class DocumentTabStrip : TabStrip
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (!EnableWindowDrag)
+        {
+            return;
+        }
+
+        var dockControl = this.FindAncestorOfType<DockControl>();
+        if (dockControl?.IsDraggingDock == true)
         {
             return;
         }

@@ -8,8 +8,6 @@ using Avalonia.Controls.Primitives;
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace Dock.Avalonia.Controls;
 
@@ -21,7 +19,7 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
-    private WindowDragHelper? _linuxDragHelper;
+    private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -100,7 +98,7 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
-        AttachGrip();
+        AttachToWindow();
     }
 
     /// <inheritdoc/>
@@ -108,27 +106,7 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnAttachedToVisualTree(e);
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && EnableWindowDrag)
-        {
-            _linuxDragHelper = new WindowDragHelper(
-                this,
-                () => EnableWindowDrag,
-                source =>
-                {
-                    if (source == this)
-                        return true;
-
-                    return source is { } s &&
-                           s != null &&
-                           !(s is DocumentTabStripItem) &&
-                           !(s is Button) &&
-                           !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                           !WindowDragHelper.IsChildOfType<Button>(this, s);
-                });
-            _linuxDragHelper.Attach();
-        }
-
-        AttachGrip();
+        AttachToWindow();
     }
 
     /// <inheritdoc/>
@@ -136,10 +114,7 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnDetachedFromVisualTree(e);
 
-        DetachGrip();
-
-        _linuxDragHelper?.Detach();
-        _linuxDragHelper = null;
+        DetachFromWindow();
     }
 
     /// <inheritdoc/>
@@ -173,36 +148,11 @@ public class DocumentTabStrip : TabStrip
         {
             if (change.GetNewValue<bool>())
             {
-                AttachGrip();
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _linuxDragHelper == null)
-                {
-                    _linuxDragHelper = new WindowDragHelper(
-                        this,
-                        () => EnableWindowDrag,
-                        source =>
-                        {
-                            if (source == this)
-                                return true;
-
-                            return source is { } s &&
-                                   !(s is DocumentTabStripItem) &&
-                                   !(s is Button) &&
-                                   !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                                   !WindowDragHelper.IsChildOfType<Button>(this, s);
-                        });
-                    _linuxDragHelper.Attach();
-                }
+                AttachToWindow();
             }
             else
             {
-                DetachGrip();
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _linuxDragHelper?.Detach();
-                    _linuxDragHelper = null;
-                }
+                DetachFromWindow();
             }
         }
     }
@@ -217,26 +167,67 @@ public class DocumentTabStrip : TabStrip
         PseudoClasses.Set(":active", isActive);
     }
 
-    private void AttachGrip()
+    private WindowDragHelper CreateDragHelper(Control grip)
+    {
+        return new WindowDragHelper(
+            grip,
+            () => EnableWindowDrag,
+            source =>
+            {
+                if (source == this)
+                    return true;
+
+                return source is { } s &&
+                       !(s is DocumentTabStripItem) &&
+                       !(s is Button) &&
+                       !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                       !WindowDragHelper.IsChildOfType<Button>(this, s);
+            });
+    }
+
+    private void AttachToWindow()
     {
         if (!EnableWindowDrag || _grip == null)
-            return;
-
-        if (VisualRoot is HostWindow window &&
-            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            window.AttachGrip(_grip, ":documentwindow");
-            _attachedWindow = window;
+            return;
+        }
+
+        if (VisualRoot is Window window)
+        {
+            if (window is HostWindow hostWindow)
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
+                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    hostWindow.AttachGrip(_grip, ":documentwindow");
+                    _attachedWindow = hostWindow;
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    _windowDragHelper = CreateDragHelper(_grip);
+                    _windowDragHelper.Attach();
+                }
+            }
+            else
+            {
+                _windowDragHelper = CreateDragHelper(_grip);
+                _windowDragHelper.Attach();
+            }
         }
     }
 
-    private void DetachGrip()
+    private void DetachFromWindow()
     {
-        if (_attachedWindow is { } host && _grip is { })
+        if (_attachedWindow is { } && _grip is { })
         {
-            host.DetachGrip(_grip, ":documentwindow");
+            _attachedWindow.DetachGrip(_grip, ":documentwindow");
+            _attachedWindow = null;
         }
 
-        _attachedWindow = null;
+        if (_windowDragHelper != null)
+        {
+            _windowDragHelper.Detach();
+            _windowDragHelper = null;
+        }
     }
 }

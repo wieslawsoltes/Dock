@@ -19,7 +19,7 @@ namespace Dock.Avalonia.Controls;
 public class ToolChromeControl : ContentControl
 {
     private HostWindow? _attachedWindow;
-    private WindowDragHelper? _linuxDragHelper;
+    private WindowDragHelper? _windowDragHelper;
 
     /// <summary>
     /// Define <see cref="Title"/> property.
@@ -119,14 +119,7 @@ public class ToolChromeControl : ContentControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        if (_attachedWindow != null)
-        {
-            _attachedWindow.DetachGrip(this);
-            _attachedWindow = null;
-        }
-
-        _linuxDragHelper?.Detach();
-        _linuxDragHelper = null;
+        DetachFromWindow();
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -144,46 +137,78 @@ public class ToolChromeControl : ContentControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        _linuxDragHelper?.Detach();
-        _linuxDragHelper = null;
+
         Grip = e.NameScope.Find<Control>("PART_Grip");
         CloseButton = e.NameScope.Find<Button>("PART_CloseButton");
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+
         AttachToWindow();
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && Grip is { })
-        {
-            _linuxDragHelper = new WindowDragHelper(
-                Grip,
-                () => true,
-                source =>
-                {
-                    if (source is null)
-                        return false;
-
-                    return !(source is Button) &&
-                           !WindowDragHelper.IsChildOfType<Button>(Grip, source);
-                });
-            _linuxDragHelper.Attach();
-        }
 
         var maximizeRestoreButton = e.NameScope.Get<Button>("PART_MaximizeRestoreButton");
         maximizeRestoreButton.Click += OnMaximizeRestoreButtonClicked;
     }
 
+    private WindowDragHelper CreateDragHelper(Control grip)
+    {
+        return new WindowDragHelper(
+            grip,
+            () => true,
+            source =>
+            {
+                if (source is null)
+                    return false;
+
+                return !(source is Button) &&
+                       !WindowDragHelper.IsChildOfType<Button>(grip, source);
+            });
+    }
+
     private void AttachToWindow()
     {
         if (Grip == null)
-            return;
-
-        //On linux we dont attach to the HostWindow because of inconsistent drag behaviour
-        if (VisualRoot is HostWindow window
-            && (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            window.AttachGrip(this);
-            _attachedWindow = window;
+            return;
+        }
 
-            SetCurrentValue(IsFloatingProperty, true);
+        // On linux we dont attach to the HostWindow because of inconsistent drag behaviour
+        if (VisualRoot is Window window)
+        {
+            if (window is HostWindow hostWindow)
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
+                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    hostWindow.AttachGrip(this);
+                    _attachedWindow = hostWindow;
+
+                    SetCurrentValue(IsFloatingProperty, true);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    _windowDragHelper = CreateDragHelper(Grip);
+                    _windowDragHelper.Attach();
+                }
+            }
+            else
+            {
+                _windowDragHelper = CreateDragHelper(Grip);
+                _windowDragHelper.Attach();
+            }
+        }
+    }
+
+    private void DetachFromWindow()
+    {
+        if (_attachedWindow != null)
+        {
+            _attachedWindow.DetachGrip(this);
+            _attachedWindow = null;
+        }
+
+        if (_windowDragHelper != null)
+        {
+            _windowDragHelper.Detach();
+            _windowDragHelper = null;
         }
     }
 

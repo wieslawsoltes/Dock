@@ -6,10 +6,6 @@ namespace Dock.Model.Core;
 /// <summary>
 /// Host window state contract.
 /// </summary>
-public interface IHostWindowState
+public interface IHostWindowState : IDockManagerState
 {
-    /// <summary>
-    /// Gets or sets dock manager.
-    /// </summary>
-    IDockManager DockManager { get; set; }
 }

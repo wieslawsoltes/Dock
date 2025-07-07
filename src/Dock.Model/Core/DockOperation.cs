@@ -9,6 +9,11 @@ namespace Dock.Model.Core;
 public enum DockOperation
 {
     /// <summary>
+    /// None dock.
+    /// </summary>
+    None,
+
+    /// <summary>
     /// Fill dock.
     /// </summary>
     Fill,

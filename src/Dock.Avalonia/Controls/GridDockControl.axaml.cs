@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Dock.Model.Controls;
-using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
 
@@ -26,7 +25,7 @@ public class GridDockControl : TemplatedControl
         }
     }
 
-    private void ItemsControlOnLoaded(object sender, RoutedEventArgs e)
+    private void ItemsControlOnLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is ItemsControl itemsControl)
         {

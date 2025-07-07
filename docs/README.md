@@ -1,13 +1,15 @@
 # Dock documentation
 
+## Overview
+
 Welcome to the Dock documentation. This page is the entry point for the
 documentation site and collects links to guides, reference topics and other
 resources. These articles explain how to use the Dock layout system from basic
 setup through advanced customization. The examples assume an Avalonia
 application created with the .NET SDK. If you are new to Dock, start with the
-guides under *Getting started*.
+guides under *Get started*.
 
-## Getting started
+## Get started
 
 - [Quick start](quick-start.md) – Set up a minimal Dock layout.
 - [MVVM guide](dock-mvvm.md) – Build layouts using MVVM view models.
@@ -15,6 +17,9 @@ guides under *Getting started*.
 - [XAML guide](dock-xaml.md) – Declare layouts purely in XAML.
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
+
+## How-to guides
+- [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 
 ## Concepts
 
@@ -29,7 +34,6 @@ guides under *Getting started*.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
-- [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
@@ -56,9 +60,7 @@ guides under *Getting started*.
 - [Dock properties](dock-properties.md) – Use attached properties to mark drag areas and drop targets.
 - [DockSettings in controls](dock-settings-controls.md) – Apply global drag/drop settings when writing custom controls.
 
-## Troubleshooting
-
-- [FAQ](dock-faq.md) – Solutions to common issues.
+## Samples and additional resources
 
 See the sample applications under the [samples](../samples/) directory for
 real‑world usage. The [project README](../README.md) also lists the available
@@ -68,3 +70,7 @@ For the complete source code visit the
 [GitHub repository](https://github.com/wieslawsoltes/Dock). NuGet packages are
 published on [NuGet.org](https://www.nuget.org/packages/Dock.Avalonia/),
 including both `Dock.Avalonia` and `Dock.Model.Mvvm`.
+
+## Troubleshooting
+
+- [FAQ](dock-faq.md) – Solutions to common issues.

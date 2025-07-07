@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
@@ -13,10 +12,9 @@ using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
-internal class DockDragState
+internal class DockDragContext
 {
     public Control? DragControl { get; set; }
-    public Control? DropControl { get; set; }
     public Point DragStartPoint { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
@@ -28,7 +26,6 @@ internal class DockDragState
     public void Start(Control dragControl, Point point)
     {
         DragControl = dragControl;
-        DropControl = null;
         DragStartPoint = point;
         PointerPressed = true;
         DoDragDrop = false;
@@ -39,7 +36,6 @@ internal class DockDragState
     public void End()
     {
         DragControl = null;
-        DropControl = null;
         DragStartPoint = default;
         PointerPressed = false;
         DoDragDrop = false;
@@ -51,142 +47,147 @@ internal class DockDragState
 /// <summary>
 /// Dock control state.
 /// </summary>
-internal class DockControlState : IDockControlState
+internal class DockControlState : DockManagerState, IDockControlState
 {
-    private readonly AdornerHelper _adornerHelper = new();
-    private readonly DockDragState _state = new();
+    private readonly DockDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();
 
     public IDragOffsetCalculator DragOffsetCalculator { get; set; }
 
-    /// <inheritdoc/>
-    public IDockManager DockManager { get; set; }
-
-    public DockControlState(IDockManager dockManager, IDragOffsetCalculator? dragOffsetCalculator = null)
+    public DockControlState(IDockManager dockManager, IDragOffsetCalculator dragOffsetCalculator)
+        : base(dockManager)
     {
-        DockManager = dockManager;
-        DragOffsetCalculator = dragOffsetCalculator ?? new DefaultDragOffsetCalculator();
+        DragOffsetCalculator = dragOffsetCalculator;
     }
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
-        if (isValid && _state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            _adornerHelper.AddAdorner(control);
-        }
+        var isValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
+
+        AddAdorners(isValid);
     }
 
     private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
+        var globalOperation = DockOperation.None;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
-        Validate(point, operation, dragAction, relativeTo);
+        if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
+        {
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
+        }
+
+        if (globalOperation != DockOperation.None)
+        {
+            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+        }
+        else
+        {
+            ValidateLocal(point, localOperation, dragAction, relativeTo);
+        }
     }
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
+        var globalOperation = DockOperation.None;
 
-        if (_adornerHelper.Adorner is DockTarget target)
+        if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = target.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            _adornerHelper.RemoveAdorner(control);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
         }
 
-        Execute(point, operation, dragAction, relativeTo);
-    }
+        RemoveAdorners();
 
-    private void Leave()
-    {
-        if (_state.DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
-        {
-            _adornerHelper.RemoveAdorner(control);
-        }
-    }
-
-    private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
-    {
-        if (_state.DragControl is null || _state.DropControl is null)
-        {
-            return false;
-        }
-
-        if (_state.DragControl.DataContext is IDockable sourceDockable && _state.DropControl.DataContext is IDockable targetDockable)
-        {
-            DockManager.Position = DockHelpers.ToDockPoint(point);
-
-            if (relativeTo.GetVisualRoot() is null)
-            {
-                return false;
-            }
-
-            var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-            DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
-
-            return DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
-        }
-
-        return false;
-    }
-
-    private void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
-    {
-        if (_state.DragControl is null || _state.DropControl is null)
+        if (_context.DragControl is null || DropControl is null)
         {
             return;
         }
 
-        if (_state.DragControl.DataContext is IDockable sourceDockable && _state.DropControl.DataContext is IDockable targetDockable)
+        if (globalOperation != DockOperation.None)
         {
-            if (sourceDockable is IDock dock)
+            if (DropControl is not { } dropControl)
             {
-                if (dock.ActiveDockable == null)
-                {
-                    return;
-                }
-
-                sourceDockable = dock.ActiveDockable;
+                return;
             }
-
-            if (sourceDockable == null)
+            
+            var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            if (dockControl is null)
             {
                 return;
             }
 
-            DockManager.Position = DockHelpers.ToDockPoint(point);
-
-            if (relativeTo.GetVisualRoot() is null)
+            if (_context.DragControl.DataContext is IDockable sourceDockable 
+                && dockControl.Layout is { } dockControlLayout 
+                && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
             {
-                return;
+                Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, dockControlActiveDock);
             }
-            var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
-            DockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
-
-            DockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, true);
+        }
+        else
+        {
+            if (_context.DragControl.DataContext is IDockable sourceDockable &&
+                DropControl.DataContext is IDockable targetDockable)
+            {
+                Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
+            }
         }
     }
 
-    private static bool IsMinimumDragDistance(Vector diff)
+    private void Leave()
     {
-        return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
-                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
+        RemoveAdorners();
     }
 
-    private static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
+    private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        var screen = inputActiveDockControl.PointToScreen(point);
-        dockable.SetPointerScreenPosition(screen.X, screen.Y);
-        factory.FloatDockable(dockable);
+        if (_context.DragControl?.DataContext is not IDockable sourceDockable)
+        {
+            return false;
+        }
+
+        return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
+    }
+
+    private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    {
+        if (_context.DragControl?.DataContext is not IDockable sourceDockable)
+        {
+            return false;
+        }
+
+        // TODO: Validate global dock target operation
+        return true;
+    }
+
+    protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
+    {
+        if (sourceDockable is IDock dock)
+        {
+            if (dock.ActiveDockable == null)
+            {
+                return;
+            }
+
+            sourceDockable = dock.ActiveDockable;
+        }
+
+        if (sourceDockable == null)
+        {
+            return;
+        }
+
+        base.Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
     }
 
     /// <summary>
@@ -223,28 +224,29 @@ internal class DockControlState : IDockControlState
                         break;
                     }
 
-                    _state.Start(dragControl, point);
+                    _context.Start(dragControl, point);
+                    DropControl = null;
                     activeDockControl.IsDraggingDock = true;
                 }
                 break;
             }
             case EventType.Released:
             {
-                if (_state.DoDragDrop)
+                if (_context.DoDragDrop)
                 {
                     var executed = false;
 
-                    if (_state.DropControl is { } dropControl && _state.TargetDockControl is { })
+                    if (DropControl is { } dropControl && _context.TargetDockControl is { })
                     {
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
-                            Drop(_state.TargetPoint, dragAction, _state.TargetDockControl);
+                            Drop(_context.TargetPoint, dragAction, _context.TargetDockControl);
                             executed = true;
                         }
                     }
 
-                    if (!executed && _state.DragControl?.DataContext is IDockable dockable &&
+                    if (!executed && _context.DragControl?.DataContext is IDockable dockable &&
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
                         Float(point, inputActiveDockControl, dockable, factory);
@@ -254,45 +256,46 @@ internal class DockControlState : IDockControlState
                 _dragPreviewHelper.Hide();
 
                 Leave();
-                _state.End();
+                _context.End();
+                DropControl = null;
                 activeDockControl.IsDraggingDock = false;
                 break;
             }
             case EventType.Moved:
             {
-                if (_state.PointerPressed == false)
+                if (_context.PointerPressed == false)
                 {
                     break;
                 }
 
-                if (_state.DoDragDrop == false)
+                if (_context.DoDragDrop == false)
                 {
-                    Vector diff = _state.DragStartPoint - point;
-                    var haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                    Vector diff = _context.DragStartPoint - point;
+                    var haveMinimumDragDistance = DockSettings.IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {
-                        if (_state.DragControl?.DataContext is IDockable targetDockable)
+                        if (_context.DragControl?.DataContext is IDockable targetDockable)
                         {
                             DockHelpers.ShowWindows(targetDockable);
                             var sp = inputActiveDockControl.PointToScreen(point);
 
-                            _state.DragOffset = DragOffsetCalculator.CalculateOffset(
-                                _state.DragControl, inputActiveDockControl, point);
+                            _context.DragOffset = DragOffsetCalculator.CalculateOffset(
+                                _context.DragControl, inputActiveDockControl, point);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _state.DragOffset);
+                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
                         }
-                        _state.DoDragDrop = true;
+                        _context.DoDragDrop = true;
                     }
                 }
 
-                if (_state.DoDragDrop)
+                if (_context.DoDragDrop)
                 {
                     Point targetPoint = default;
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
 
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
-                    string preview = "None";
+                    var preview = "None";
 
                     foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
                     {
@@ -331,43 +334,55 @@ internal class DockControlState : IDockControlState
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
                         if (isDropEnabled)
                         {
-                            if (_state.DropControl == dropControl)
+                            if (DropControl == dropControl)
                             {
-                                _state.TargetPoint = targetPoint;
-                                _state.TargetDockControl = targetDockControl;
+                                _context.TargetPoint = targetPoint;
+                                _context.TargetDockControl = targetDockControl;
                                 Over(targetPoint, dragAction, targetDockControl);
                             }
                             else
                             {
-                                if (_state.DropControl is { })
+                                if (DropControl is { })
                                 {
                                     Leave();
-                                    _state.DropControl = null;
+                                    DropControl = null;
                                 }
 
-                                _state.DropControl = dropControl;
-                                _state.TargetPoint = targetPoint;
-                                _state.TargetDockControl = targetDockControl;
+                                DropControl = dropControl;
+                                _context.TargetPoint = targetPoint;
+                                _context.TargetDockControl = targetDockControl;
                                 Enter(targetPoint, dragAction, targetDockControl);
                             }
 
-                            var operation = _adornerHelper.Adorner is DockTarget target
-                                ? target.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                            var globalOperation = GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
+                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateGlobal)
+                                : DockOperation.None;
+                            
+                            var localOperation = LocalAdornerHelper.Adorner is DockTarget dockTarget
+                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateLocal)
                                 : DockOperation.Fill;
 
-                            var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
-                            preview = valid
-                                ? operation == DockOperation.Window ? "Float" : "Dock"
-                                : "None";
+                            if (globalOperation != DockOperation.None)
+                            {
+                                var valid = ValidateGlobal(targetPoint, localOperation, dragAction, targetDockControl);
+                                preview = valid ? "Dock" : "None";
+                            }
+                            else
+                            {
+                                var valid = ValidateLocal(targetPoint, localOperation, dragAction, targetDockControl);
+                                preview = valid
+                                    ? localOperation == DockOperation.Window ? "Float" : "Dock"
+                                    : "None";
+                            }
                         }
                         else
                         {
-                            if (_state.DropControl is { })
+                            if (DropControl is { })
                             {
                                 Leave();
-                                _state.DropControl = null;
-                                _state.TargetPoint = default;
-                                _state.TargetDockControl = null;
+                                DropControl = null;
+                                _context.TargetPoint = default;
+                                _context.TargetDockControl = null;
                             }
                             preview = "Float";
                         }
@@ -375,13 +390,13 @@ internal class DockControlState : IDockControlState
                     else
                     {
                         Leave();
-                        _state.DropControl = null;
-                        _state.TargetPoint = default;
-                        _state.TargetDockControl = null;
+                        DropControl = null;
+                        _context.TargetPoint = default;
+                        _context.TargetDockControl = null;
                         preview = "Float";
                     }
 
-                    _dragPreviewHelper.Move(screenPoint, _state.DragOffset, preview);
+                    _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
                 }
                 break;
             }
@@ -397,7 +412,8 @@ internal class DockControlState : IDockControlState
             {
                 _dragPreviewHelper.Hide();
                 Leave();
-                _state.End();
+                _context.End();
+                DropControl = null;
                 activeDockControl.IsDraggingDock = false;
                 break;
             }

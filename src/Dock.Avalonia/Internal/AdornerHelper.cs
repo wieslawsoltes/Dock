@@ -3,14 +3,13 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 using Dock.Settings;
 using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
-internal class AdornerHelper
+internal class AdornerHelper<T> where T : Control, new()
 {
     public Control? Adorner;
     private DockAdornerWindow? _window;
@@ -37,7 +36,7 @@ internal class AdornerHelper
                     Height = visual.Bounds.Height,
                     Content = dockTarget
                 };
-                _window.Position = new PixelPoint((int)position.X, (int)position.Y);
+                _window.Position = new PixelPoint(position.X, position.Y);
                 _window.Show(root);
             }
             return;
@@ -49,18 +48,18 @@ internal class AdornerHelper
             return;
         }
 
-        if (Adorner is { })
+        if (Adorner is not null)
         {
             layer.Children.Remove(Adorner);
             Adorner = null;
         }
 
-        Adorner = new DockTarget
+        Adorner = new T
         {
-            [AdornerLayer.AdornedElementProperty] = visual,
+            [AdornerLayer.AdornedElementProperty] = visual
         };
 
-        ((ISetLogicalParent) Adorner).SetParent(visual as ILogical);
+        ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);
     }
@@ -80,14 +79,13 @@ internal class AdornerHelper
         }
 
         var layer = AdornerLayer.GetAdornerLayer(visual);
-        if (layer is { })
+        if (layer is null || Adorner is null)
         {
-            if (Adorner is { })
-            {
-                layer.Children.Remove(Adorner);
-                ((ISetLogicalParent) Adorner).SetParent(null);
-                Adorner = null;
-            }
+            return;
         }
+
+        layer.Children.Remove(Adorner);
+        ((ISetLogicalParent) Adorner).SetParent(null);
+        Adorner = null;
     }
 }

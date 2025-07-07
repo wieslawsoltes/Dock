@@ -62,3 +62,47 @@ Create additional styles for `ToolControl`, `ToolChromeControl` or any other Doc
 The ASCII representation above shows a dark themed layout with custom colors applied.
 
 For a deeper look at Dock internals see the [Deep Dive](dock-deep-dive.md) guide.
+
+## Creating a custom theme
+
+While overriding individual resources works for small tweaks, you can also define an entirely custom theme. Dock themes are ordinary `Styles` files that merge resource dictionaries. Create a new `.axaml` file and merge the Dock control styles along with your own accent resources.
+
+```xaml
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MyApp.MyDockTheme">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+                <ResourceInclude Source="avares://MyApp/Styles/MyDockAccent.axaml" />
+                <ResourceInclude Source="/Controls/DockControl.axaml" />
+                <!-- include other Dock controls as needed -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+</Styles>
+```
+
+`MyDockAccent.axaml` defines brushes used by the templates:
+
+```xaml
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="#202020" />
+    <SolidColorBrush x:Key="DockThemeAccentBrush" Color="#675EDC" />
+</ResourceDictionary>
+```
+
+Reference your theme instead of `DockFluentTheme` in `App.axaml`:
+
+```xaml
+<Application.Styles>
+    <FluentTheme Mode="Dark" />
+    <local:MyDockTheme />
+</Application.Styles>
+```
+
+See [Dock properties](dock-properties.md) for details on setting attached properties when creating custom templates.
+
+For a complete walkthrough see [Custom themes](dock-custom-theme.md).

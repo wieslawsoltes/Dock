@@ -35,6 +35,7 @@ guides under *Get started*.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
+- [Custom themes](dock-custom-theme.md) – Build and apply your own theme.
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.

@@ -81,6 +81,27 @@ The ASCII representation above shows a dark themed layout with custom colors app
 
 For a deeper look at Dock internals see the [Deep Dive](dock-deep-dive.md) guide.
 
+## Template parts and pseudo classes
+
+Dock controls mark important elements in their templates with `PART_` names. When
+copying these templates keep the parts intact so features such as window dragging
+continue to work. For example `ToolChromeControl` defines `PART_Grip`,
+`PART_CloseButton` and `PART_MaximizeRestoreButton`, while `HostWindow` exposes
+`PART_TitleBar`.
+
+Controls also toggle pseudo classes to reflect their current state. These can be
+targeted in selectors to customize the appearance:
+
+- `DocumentControl` and `DocumentTabStripItem` use `:active`.
+- `DocumentTabStrip` and `ToolTabStrip` apply `:create` when new items can be
+  added.
+- `ToolChromeControl` sets `:active`, `:pinned`, `:floating` and `:maximized`.
+- `HostWindow` toggles `:toolwindow`, `:dragging` and `:toolchromecontrolswindow`.
+- `ProportionalStackPanelSplitter` uses `:horizontal` or `:vertical` depending on
+  orientation.
+
+Refer to the source code for the complete list of parts and classes.
+
 ## Creating a custom theme
 
 While overriding individual resources works for small tweaks, you can also define an entirely custom theme. Dock themes are ordinary `Styles` files that merge resource dictionaries. Create a new `.axaml` file and merge the Dock control styles along with your own accent resources.

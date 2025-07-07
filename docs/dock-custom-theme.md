@@ -52,4 +52,4 @@ Reference the theme from `App.axaml`:
 </Application.Styles>
 ```
 
-Your Dock layout now uses the brushes defined in `MyDockAccent.axaml`. You can further customise control templates by copying them from the Dock source and adjusting the XAML. When editing templates remember to set the [DockProperties](dock-properties.md) so that drag and drop continues to work.
+Your Dock layout now uses the brushes defined in `MyDockAccent.axaml`. You can further customize control templates by copying them from the Dock source and adjusting the XAML. When editing templates remember to set the [DockProperties](dock-properties.md) so that drag and drop continues to work.

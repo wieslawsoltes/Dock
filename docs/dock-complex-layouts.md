@@ -54,7 +54,7 @@ The default factory can open any dockable in a separate window. This allows you 
    ```csharp
    await using var write = File.OpenWrite("layout.json");
    _serializer.Save(write, dockControl.Layout);
-   
+
    await using var read = File.OpenRead("layout.json");
    var layout = _serializer.Load<IDock?>(read);
    if (layout is { })

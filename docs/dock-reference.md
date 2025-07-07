@@ -49,6 +49,12 @@ from a saved state.
 
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 
+## Host window options
+
+`HostWindow` exposes `IsToolWindow`, `ToolChromeControlsWholeWindow` and
+`DocumentChromeControlsWholeWindow`. These properties toggle pseudo classes on
+the window so styles can react to different chrome configurations.
+
 ## Factory API
 
 The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`) contains numerous helpers used by the samples to build and manipulate layouts. Important members include:

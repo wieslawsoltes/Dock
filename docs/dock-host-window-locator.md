@@ -53,6 +53,6 @@ The fallback ensures floating windows still open even if a key is missing.
    invokes it automatically when presenting windows.
 
 Using locators in this way keeps window creation centralized in the factory and
-makes it easy to customise the hosting behaviour.
+makes it easy to customize the hosting behaviour.
 
 For further details on floating windows see the [Floating windows guide](dock-windows.md).

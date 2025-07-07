@@ -46,7 +46,7 @@ Several icons are also exposed as `StreamGeometry` resources so you can swap the
 <StreamGeometry x:Key="DockIconAddDocumentGeometry" />
 ```
 
-Update these geometries to customise the plus, close or other tool icons used throughout Dock.
+Update these geometries to customize the plus, close or other tool icons used throughout Dock.
 
 ## Custom control styles
 
@@ -96,7 +96,8 @@ targeted in selectors to customize the appearance:
 - `DocumentTabStrip` and `ToolTabStrip` apply `:create` when new items can be
   added.
 - `ToolChromeControl` sets `:active`, `:pinned`, `:floating` and `:maximized`.
-- `HostWindow` toggles `:toolwindow`, `:dragging` and `:toolchromecontrolswindow`.
+- `HostWindow` toggles `:toolwindow`, `:dragging`, `:toolchromecontrolswindow` and
+  `:documentchromecontrolswindow`.
 - `ProportionalStackPanelSplitter` uses `:horizontal` or `:vertical` depending on
   orientation.
 

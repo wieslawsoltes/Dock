@@ -53,8 +53,8 @@ public abstract class DockBase : DockableBase, IDock
         {
             SetProperty(ref _activeDockable, value);
             Factory?.InitActiveDockable(value, this);
-            OnPropertyChanged(nameof(CanGoBack));
-            OnPropertyChanged(nameof(CanGoForward));
+            RaisePropertyChanged(nameof(CanGoBack));
+            RaisePropertyChanged(nameof(CanGoForward));
         }
     }
 

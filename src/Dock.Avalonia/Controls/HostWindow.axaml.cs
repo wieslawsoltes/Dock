@@ -216,8 +216,10 @@ public class HostWindow : Window, IHostWindow
     /// Attaches a grip control to enable window dragging.
     /// </summary>
     /// <param name="grip">The grip control.</param>
-    public void AttachGrip(Control grip)
+    /// <param name="pseudoClass">The grip pseudo class.</param>
+    public void AttachGrip(Control grip, string pseudoClass)
     {
+        PseudoClasses.Set(pseudoClass, true);
         _chromeGrips.Add(grip);
     }
 
@@ -242,8 +244,10 @@ public class HostWindow : Window, IHostWindow
     /// Detaches a grip control from window dragging.
     /// </summary>
     /// <param name="grip">The grip control.</param>
-    public void DetachGrip(Control grip)
+    /// <param name="pseudoClass">The grip pseudo class.</param>
+    public void DetachGrip(Control grip, string pseudoClass)
     {
+        PseudoClasses.Set(pseudoClass, false);
         _chromeGrips.Remove(grip);
     }
 

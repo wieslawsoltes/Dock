@@ -225,7 +225,7 @@ public class DocumentTabStrip : TabStrip
         if (VisualRoot is HostWindow window &&
             (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            window.AttachGrip(_grip);
+            window.AttachGrip(_grip, ":documentwindow");
             _attachedWindow = window;
         }
     }
@@ -234,7 +234,7 @@ public class DocumentTabStrip : TabStrip
     {
         if (_attachedWindow is { } host && _grip is { })
         {
-            host.DetachGrip(_grip);
+            host.DetachGrip(_grip, ":documentwindow");
         }
 
         _attachedWindow = null;

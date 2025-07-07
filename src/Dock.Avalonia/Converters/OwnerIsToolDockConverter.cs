@@ -5,7 +5,9 @@ using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Converters;
 
-/// <inheritdoc />
+/// <summary>
+/// Converter that checks if the owner of a dockable is a <see cref="IToolDock"/>.
+/// </summary>
 public class OwnerIsToolDockConverter : IValueConverter
 {
     /// <summary>

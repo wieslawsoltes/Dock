@@ -5,15 +5,21 @@ using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Converters;
 
-internal class OwnerIsToolDockConverter : IValueConverter
+/// <inheritdoc />
+public class OwnerIsToolDockConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the singleton instance.
+    /// </summary>
     public static readonly OwnerIsToolDockConverter Instance = new OwnerIsToolDockConverter();
 
+    /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value is IToolDock;
     }
 
+    /// <inheritdoc />
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();

@@ -238,14 +238,18 @@ public class DocumentTabStrip : TabStrip
         _isDragging = true;
         _pointerPressed = false;
 
-        // Find the window that contains this tab strip
-        if (VisualRoot is not HostWindow hostWindow)
+        if (_lastPointerPressedArgs is null)
         {
             return;
         }
-
-        if (_lastPointerPressedArgs is null)
+        
+        // Find the window that contains this tab strip
+        if (VisualRoot is not HostWindow hostWindow)
         {
+            if (VisualRoot is Window window)
+            {
+                window.BeginMoveDrag(_lastPointerPressedArgs);
+            }
             return;
         }
 

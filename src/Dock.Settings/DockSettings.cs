@@ -24,9 +24,20 @@ public static class DockSettings
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
-    /// <param name="diff"></param>
-    /// <returns></returns>
+    /// <param name="diff">The drag delta.</param>
+    /// <returns>True if drag delta is above minimum drag distance threshold.</returns>
     public static bool IsMinimumDragDistance(Vector diff)
+    {
+        return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
+                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
+    }
+
+    /// <summary>
+    /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
+    /// </summary>
+    /// <param name="diff">The drag delta.</param>
+    /// <returns>True if drag delta is above minimum drag distance threshold.</returns>
+    public static bool IsMinimumDragDistance(PixelPoint diff)
     {
         return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
                 || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);

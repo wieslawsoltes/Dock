@@ -222,7 +222,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 if (_context.DoDragDrop == false)
                 {
                     var diff = _context.DragStartPoint - point;
-                    var haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                    var haveMinimumDragDistance = DockSettings.IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {
                        _context.DoDragDrop = true;

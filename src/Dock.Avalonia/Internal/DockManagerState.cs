@@ -101,18 +101,6 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
-    
-    protected static bool IsMinimumDragDistance(Vector diff)
-    {
-        return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
-                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
-    }
-
-    protected static bool IsMinimumDragDistance(PixelPoint diff)
-    {
-        return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
-                || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
-    }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
     {

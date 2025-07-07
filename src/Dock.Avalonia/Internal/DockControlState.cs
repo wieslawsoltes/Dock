@@ -260,7 +260,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 if (_context.DoDragDrop == false)
                 {
                     Vector diff = _context.DragStartPoint - point;
-                    var haveMinimumDragDistance = IsMinimumDragDistance(diff);
+                    var haveMinimumDragDistance = DockSettings.IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {
                         if (_context.DragControl?.DataContext is IDockable targetDockable)

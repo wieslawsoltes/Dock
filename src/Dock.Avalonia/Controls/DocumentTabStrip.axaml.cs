@@ -171,15 +171,9 @@ public class DocumentTabStrip : TabStrip
         }
 
         var source = e.Source as Control;
-        if (source != null)
+        if (source != null && IsWithinDropArea(source))
         {
-            if (GetTemplateChild("PART_BorderFill") is Control borderFill)
-            {
-                if (source == borderFill || IsDescendantOf(source, borderFill))
-                {
-                    return;
-                }
-            }
+            return;
         }
 
         _lastPointerPressedArgs = e;
@@ -319,12 +313,12 @@ public class DocumentTabStrip : TabStrip
         return false;
     }
 
-    private static bool IsDescendantOf(Control control, Control parent)
+    private static bool IsWithinDropArea(Control control)
     {
         var current = control;
         while (current != null)
         {
-            if (current == parent)
+            if (DockProperties.GetIsDropArea(current))
             {
                 return true;
             }

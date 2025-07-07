@@ -11,12 +11,18 @@ namespace Dock.Avalonia.Internal;
 
 internal class AdornerHelper<T> where T : Control, new()
 {
+    private readonly bool _useFloatingDockAdorner;
     public Control? Adorner;
     private DockAdornerWindow? _window;
 
+    public AdornerHelper(bool useFloatingDockAdorner)
+    {
+        _useFloatingDockAdorner = useFloatingDockAdorner;
+    }
+
     public void AddAdorner(Visual visual)
     {
-        if (DockSettings.UseFloatingDockAdorner)
+        if (_useFloatingDockAdorner)
         {
             AddFloatingAdorner(visual);
         }
@@ -28,27 +34,29 @@ internal class AdornerHelper<T> where T : Control, new()
 
     private void AddFloatingAdorner(Visual visual)
     {
-        if (_window is { })
+        if (_window is not null)
         {
             _window.Close();
             _window = null;
         }
 
-        var dockTarget = new DockTarget();
-        Adorner = dockTarget;
+        Adorner = new T();
 
-        if (visual.GetVisualRoot() is Window root)
+        if (visual.GetVisualRoot() is not Window root)
         {
-            var position = visual.PointToScreen(new Point());
-            _window = new DockAdornerWindow
-            {
-                Width = visual.Bounds.Width,
-                Height = visual.Bounds.Height,
-                Content = dockTarget
-            };
-            _window.Position = new PixelPoint(position.X, position.Y);
-            _window.Show(root);
+            return;
         }
+
+        var position = visual.PointToScreen(new Point());
+        _window = new DockAdornerWindow
+        {
+            Width = visual.Bounds.Width,
+            Height = visual.Bounds.Height,
+            Content = Adorner,
+            Position = new PixelPoint(position.X, position.Y)
+        };
+            
+        _window.Show(root);
     }
 
     private void AddRegularAdorner(Visual visual)
@@ -76,7 +84,7 @@ internal class AdornerHelper<T> where T : Control, new()
 
     public void RemoveAdorner(Visual visual)
     {
-        if (DockSettings.UseFloatingDockAdorner)
+        if (_useFloatingDockAdorner)
         {
             RemoveFloatingAdorner();
         }
@@ -88,7 +96,7 @@ internal class AdornerHelper<T> where T : Control, new()
 
     private void RemoveFloatingAdorner()
     {
-        if (_window is { })
+        if (_window is not null)
         {
             _window.Close();
             _window = null;

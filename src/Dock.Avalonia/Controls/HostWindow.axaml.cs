@@ -22,7 +22,8 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
-[PseudoClasses(":toolwindow", ":dragging")]
+[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow")]
+[TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
     private readonly DockManager _dockManager;

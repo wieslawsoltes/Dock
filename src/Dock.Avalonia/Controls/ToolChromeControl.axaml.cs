@@ -15,6 +15,9 @@ namespace Dock.Avalonia.Controls;
 /// Dock tool chrome content control.
 /// </summary>
 [PseudoClasses(":floating", ":active", ":pinned", ":maximized")]
+[TemplatePart("PART_Grip", typeof(Control))]
+[TemplatePart("PART_CloseButton", typeof(Button))]
+[TemplatePart("PART_MaximizeRestoreButton", typeof(Button))]
 public class ToolChromeControl : ContentControl
 {
     private HostWindow? _attachedWindow;

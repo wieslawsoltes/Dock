@@ -3,6 +3,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
@@ -12,6 +13,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="HostWindowTitleBar"/> xaml.
 /// </summary>
+[TemplatePart("PART_Background", typeof(Control))]
 public class HostWindowTitleBar : TitleBar
 {
     internal Control? BackgroundControl { get; private set; }

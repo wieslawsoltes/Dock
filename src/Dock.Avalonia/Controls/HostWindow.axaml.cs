@@ -22,7 +22,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
-[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow")]
+[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
@@ -44,6 +44,12 @@ public class HostWindow : Window, IHostWindow
     public static readonly StyledProperty<bool> ToolChromeControlsWholeWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(ToolChromeControlsWholeWindow));
 
+    /// <summary>
+    /// Define <see cref="DocumentChromeControlsWholeWindowProperty"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> DocumentChromeControlsWholeWindowProperty =
+        AvaloniaProperty.Register<HostWindow, bool>(nameof(DocumentChromeControlsWholeWindow));
+    
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindow);
 
@@ -63,6 +69,15 @@ public class HostWindow : Window, IHostWindow
     {
         get => GetValue(ToolChromeControlsWholeWindowProperty);
         set => SetValue(ToolChromeControlsWholeWindowProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets if the document chrome controls the whole window.
+    /// </summary>
+    public bool DocumentChromeControlsWholeWindow
+    {
+        get => GetValue(DocumentChromeControlsWholeWindowProperty);
+        set => SetValue(DocumentChromeControlsWholeWindowProperty, value);
     }
 
     /// <inheritdoc/>
@@ -87,7 +102,7 @@ public class HostWindow : Window, IHostWindow
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
-        UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow);
+        UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }
 
     /// <inheritdoc/>
@@ -259,18 +274,23 @@ public class HostWindow : Window, IHostWindow
 
         if (change.Property == IsToolWindowProperty)
         {
-            UpdatePseudoClasses(change.GetNewValue<bool>(), ToolChromeControlsWholeWindow);
+            UpdatePseudoClasses(change.GetNewValue<bool>(), ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
         }
         else if (change.Property == ToolChromeControlsWholeWindowProperty)
         {
-            UpdatePseudoClasses(IsToolWindow, change.GetNewValue<bool>());
+            UpdatePseudoClasses(IsToolWindow, change.GetNewValue<bool>(), DocumentChromeControlsWholeWindow);
+        }
+        else if (change.Property == DocumentChromeControlsWholeWindowProperty)
+        {
+            UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, change.GetNewValue<bool>());
         }
     }
 
-    private void UpdatePseudoClasses(bool isToolWindow, bool toolChromeControlsWholeWindow)
+    private void UpdatePseudoClasses(bool isToolWindow, bool toolChromeControlsWholeWindow, bool documentChromeControlsWholeWindow)
     {
         PseudoClasses.Set(":toolwindow", isToolWindow);
         PseudoClasses.Set(":toolchromecontrolswindow", toolChromeControlsWholeWindow);
+        PseudoClasses.Set(":documentchromecontrolswindow", documentChromeControlsWholeWindow);
     }
 
     private int CountVisibleToolsAndDocuments(IDockable? dockable)

@@ -14,8 +14,11 @@ Define brushes and colors in a new `.axaml` file:
     <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="#EEEEEE" />
     <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
     <SolidColorBrush x:Key="DockToolChromeGripBrush" Color="#474747" />
+    <StreamGeometry x:Key="DockIconCloseGeometry" />
 </ResourceDictionary>
 ```
+
+`StreamGeometry` resources like `DockIconCloseGeometry` let you replace the built in vector icons.
 
 ## 2. Merge Dock control styles
 

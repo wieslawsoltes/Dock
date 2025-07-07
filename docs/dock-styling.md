@@ -39,6 +39,16 @@ Any `SolidColorBrush` referenced by the theme can be replaced this way. Controls
 
 Include replacements for these in your accent dictionary to change the grip or button colors.
 
+Several icons are also exposed as `StreamGeometry` resources so you can swap them with your own glyphs:
+
+```xaml
+<StreamGeometry x:Key="DockIconCloseGeometry" />
+<StreamGeometry x:Key="DockToolIconCloseGeometry" />
+<StreamGeometry x:Key="DockIconAddDocumentGeometry" />
+```
+
+Update these geometries to customise the plus, close or other tool icons used throughout Dock.
+
 ## Custom control styles
 
 Specific Dock controls can also be styled by selector. The sample applications set custom headers like this:

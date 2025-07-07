@@ -256,28 +256,27 @@
     </Style>
 
     <Style Selector="^/template/ Path#PART_ClosePath">
-      <Setter Property="Data"
-              Value="M1169 1024l879 -879l-145 -145l-879 879l-879 -879l-145 145l879 879l-879 879l145 145l879 -879l879 879l145 -145z" />
+      <Setter Property="Data" Value="{DynamicResource DockToolIconCloseGeometry}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_MaximizeRestorePath">
-      <Setter Property="Data" Value="M0,0L0,9 9,9 9,0 0,0 0,3 8,3 8,8 1,8 1,3 0,3z" />
+      <Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_PinPath">
-      <Setter Property="Data" Value="m0 1345.575 218.834 0 0-1121.5042 0-177.2397 0-46.8138 673.827 0 416.57 0 32.417 0 0 1345.5577 230.153 0 0 224.0546-672.133 0 0 894.3935-225.764 0 0-894.3935-673.904 0 0-224.0546zm444.598-1121.4996 0 1121.4996 448.063 0 0-1121.4996-448.063 0z" />
+      <Setter Property="Data" Value="{DynamicResource DockIconPinGeometry}" />
     </Style>
 
     <Style Selector="^/template/ Path#PART_MenuPath">
-      <Setter Property="Data" Value="M 352.041,32.0005L 320,0.000162761L 384,0.000162761L 352.041,32.0005 Z " />
+      <Setter Property="Data" Value="{DynamicResource DockIconMenuGeometry}" />
     </Style>
 
     <Style Selector="^:pinned /template/ Path#PART_PinPath">
-      <Setter Property="Data" Value="m1119 0 0 218.834 1121.5042 0 177.2397 0 46.8138 0 0 673.827 0 416.57 0 32.417-1345.5577 0 0 230.153-224.0546 0 0-672.133-894.3935 0 0-225.764 894.3935 0 0-673.904zm1121.4996 444.598-1121.4996 0 0 448.063 1121.4996 0 0-448.063z" />
+      <Setter Property="Data" Value="{DynamicResource DockIconPinnedGeometry}" />
     </Style>
 
     <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">
-      <Setter Property="Data" Value="M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z" />
+      <Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" />
     </Style>
 
     <Style Selector="^:active /template/ Path">

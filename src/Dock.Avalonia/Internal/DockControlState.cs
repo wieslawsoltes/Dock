@@ -62,49 +62,49 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+        var isValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
 
         AddAdorners(isValid);
     }
 
     private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
         }
 
         if (globalOperation != DockOperation.None)
         {
-            // TODO: Validate global dock target operation
+            ValidateGlobal(point, localOperation, dragAction, relativeTo);
         }
         else
         {
-            Validate(point, operation, dragAction, relativeTo);
+            ValidateLocal(point, localOperation, dragAction, relativeTo);
         }
     }
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
         }
 
         RemoveAdorners();
@@ -139,7 +139,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable &&
                 DropControl.DataContext is IDockable targetDockable)
             {
-                Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
+                Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
             }
         }
     }
@@ -149,7 +149,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         RemoveAdorners();
     }
 
-    private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
@@ -157,6 +157,17 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
 
         return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
+    }
+
+    private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    {
+        if (_context.DragControl?.DataContext is not IDockable sourceDockable)
+        {
+            return false;
+        }
+
+        // TODO: Validate global dock target operation
+        return true;
     }
 
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
@@ -344,23 +355,23 @@ internal class DockControlState : DockManagerState, IDockControlState
                             }
 
                             var globalOperation = GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
-                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateGlobal)
                                 : DockOperation.None;
                             
-                            var operation = LocalAdornerHelper.Adorner is DockTarget dockTarget
-                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, Validate)
+                            var localOperation = LocalAdornerHelper.Adorner is DockTarget dockTarget
+                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateLocal)
                                 : DockOperation.Fill;
 
                             if (globalOperation != DockOperation.None)
                             {
-                                // TODO: Validate global dock target operation
-                                preview = "Dock";
+                                var valid = ValidateGlobal(targetPoint, localOperation, dragAction, targetDockControl);
+                                preview = valid ? "Dock" : "None";
                             }
                             else
                             {
-                                var valid = Validate(targetPoint, operation, dragAction, targetDockControl);
+                                var valid = ValidateLocal(targetPoint, localOperation, dragAction, targetDockControl);
                                 preview = valid
-                                    ? operation == DockOperation.Window ? "Float" : "Dock"
+                                    ? localOperation == DockOperation.Window ? "Float" : "Dock"
                                     : "None";
                             }
                         }

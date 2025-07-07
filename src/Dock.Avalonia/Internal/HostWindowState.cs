@@ -55,52 +55,52 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var isValid = Validate(point, DockOperation.Fill, dragAction, relativeTo);
+        var isValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);
 
         AddAdorners(isValid);
     }
 
     private void Over(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
         }
 
         if (globalOperation != DockOperation.None)
         {
-            // TODO: Validate global dock target operation
+            ValidateGlobal(point, localOperation, dragAction, relativeTo);
         }
         else
         {
-            if (operation != DockOperation.Window)
+            if (localOperation != DockOperation.Window)
             {
-                Validate(point, operation, dragAction, relativeTo);
+                ValidateLocal(point, localOperation, dragAction, relativeTo);
             } 
         }
     }
 
     private void Drop(Point point, DragAction dragAction, Visual relativeTo)
     {
-        var operation = DockOperation.Fill;
+        var localOperation = DockOperation.Fill;
         var globalOperation = DockOperation.None;
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            operation = dockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, Validate);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
         }
 
         RemoveAdorners();
@@ -137,9 +137,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             if (layout?.ActiveDockable is { } sourceDockable
                 && DropControl.DataContext is IDockable targetDockable)
             {
-                if (operation != DockOperation.Window)
+                if (localOperation != DockOperation.Window)
                 {
-                    Execute(point, operation, dragAction, relativeTo, sourceDockable, targetDockable);
+                    Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
                 }
             }
         }
@@ -150,7 +150,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         RemoveAdorners();
     }
 
-    private bool Validate(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
@@ -159,6 +159,18 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         }
 
         return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
+    }
+
+    private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    {
+        var layout = _hostWindow.Window?.Layout;
+        if (layout?.FocusedDockable is not { } sourceDockable)
+        {
+            return false;
+        }
+
+        // TODO: Validate global dock target operation
+        return true;
     }
 
     /// <summary>

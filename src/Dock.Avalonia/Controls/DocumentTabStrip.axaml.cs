@@ -9,6 +9,7 @@ using Avalonia.Layout;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Settings;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -22,6 +23,8 @@ public class DocumentTabStrip : TabStrip
     private bool _pointerPressed;
     private bool _isDragging;
     private PointerPressedEventArgs? _lastPointerPressedArgs;
+    private HostWindow? _dragHostWindow;
+    private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -192,6 +195,26 @@ public class DocumentTabStrip : TabStrip
 
         _pointerPressed = false;
         _isDragging = false;
+
+        if (_dragHostWindow is { } host)
+        {
+            if (_positionChangedHandler is { })
+            {
+                host.PositionChanged -= _positionChangedHandler;
+                _positionChangedHandler = null;
+            }
+
+            if (host.HostWindowState is HostWindowState state)
+            {
+                var point = host.PointToScreen(e.GetPosition(host)) - host.PointToScreen(new Point(0, 0));
+                state.Process(new PixelPoint((int)point.X, (int)point.Y), EventType.Released);
+            }
+
+            host.Window?.Factory?.OnWindowMoveDragEnd(host.Window);
+        }
+
+        _dragHostWindow = null;
+
         e.Handled = true;
     }
 
@@ -216,7 +239,7 @@ public class DocumentTabStrip : TabStrip
         _pointerPressed = false;
 
         // Find the window that contains this tab strip
-        if (VisualRoot is not Window hostWindow)
+        if (VisualRoot is not HostWindow hostWindow)
         {
             return;
         }
@@ -225,6 +248,36 @@ public class DocumentTabStrip : TabStrip
         {
             return;
         }
+
+        var dockWindow = hostWindow.Window;
+        if (dockWindow?.Factory?.OnWindowMoveDragBegin(dockWindow) != true)
+        {
+            _isDragging = false;
+            return;
+        }
+
+        if (hostWindow.HostWindowState is HostWindowState state)
+        {
+            var start = hostWindow.PointToScreen(_lastPointerPressedArgs.GetPosition(hostWindow)) - hostWindow.PointToScreen(new Point(0, 0));
+            state.Process(new PixelPoint((int)start.X, (int)start.Y), EventType.Pressed);
+        }
+
+        _dragHostWindow = hostWindow;
+
+        _positionChangedHandler = (_, args) =>
+        {
+            if (_dragHostWindow?.Window is { } dw)
+            {
+                dw.Factory?.OnWindowMoveDrag(dw);
+            }
+
+            if (_dragHostWindow?.HostWindowState is HostWindowState st)
+            {
+                st.Process(_dragHostWindow.Position, EventType.Moved);
+            }
+        };
+
+        hostWindow.PositionChanged += _positionChangedHandler;
 
         // Call the MoveDrag method to start window dragging
         hostWindow.BeginMoveDrag(_lastPointerPressedArgs);

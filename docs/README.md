@@ -41,6 +41,7 @@ guides under *Get started*.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
+- [Enable window drag](dock-window-drag.md) – Drag the host window via the document tab strip.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.

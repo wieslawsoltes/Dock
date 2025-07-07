@@ -30,6 +30,15 @@ You can override brushes and other resources to match your application colors:
 
 Any `SolidColorBrush` referenced by the theme can be replaced this way. Controls automatically pick up the new values.
 
+`ToolChromeControl` defines two extra brushes for its icons and drag grip:
+
+```xaml
+<SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
+<SolidColorBrush x:Key="DockToolChromeGripBrush" Color="#474747" />
+```
+
+Include replacements for these in your accent dictionary to change the grip or button colors.
+
 ## Custom control styles
 
 Specific Dock controls can also be styled by selector. The sample applications set custom headers like this:

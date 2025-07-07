@@ -15,5 +15,9 @@
     <SolidColorBrush x:Key="DockThemeControlBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}" />
     <sys:Double x:Key="DockFontSizeNormal">12</sys:Double>
 
+    <!-- Brushes used by ToolChromeControl icons and grip -->
+    <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
+    <SolidColorBrush x:Key="DockToolChromeGripBrush" Color="#474747" />
+
 </ResourceDictionary>
 

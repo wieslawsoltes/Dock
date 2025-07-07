@@ -170,6 +170,18 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
+        var source = e.Source as Control;
+        if (source != null)
+        {
+            if (GetTemplateChild("PART_BorderFill") is Control borderFill)
+            {
+                if (source == borderFill || IsDescendantOf(source, borderFill))
+                {
+                    return;
+                }
+            }
+        }
+
         _lastPointerPressedArgs = e;
 
         // Only handle primary button clicks
@@ -180,7 +192,6 @@ public class DocumentTabStrip : TabStrip
 
         // Check if we're clicking on an empty area of the tab strip
         // (not on a tab item or button)
-        var source = e.Source as Control;
         if (source == this || (source != null &&
                                !(source is DocumentTabStripItem) &&
                                !(source is Button) &&
@@ -303,6 +314,21 @@ public class DocumentTabStrip : TabStrip
             }
 
             parent = parent.Parent as Control;
+        }
+
+        return false;
+    }
+
+    private static bool IsDescendantOf(Control control, Control parent)
+    {
+        var current = control;
+        while (current != null)
+        {
+            if (current == parent)
+            {
+                return true;
+            }
+            current = current.Parent as Control;
         }
 
         return false;

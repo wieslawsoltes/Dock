@@ -53,7 +53,7 @@ Dock now exposes an `IMenuDockable` interface implemented by all dockable view m
 Use the `DockMenuItemTemplate` resource to render these items inside your custom menus:
 
 ```xaml
-<MenuFlyout Items="{Binding MenuItems}"
+<MenuFlyout ItemsSource="{Binding MenuItems}"
            ItemTemplate="{StaticResource DockMenuItemTemplate}" />
 ```
 

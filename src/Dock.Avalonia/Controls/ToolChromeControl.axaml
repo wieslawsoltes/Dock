@@ -57,7 +57,8 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
-    <ItemsControl Items="{Binding ActiveDockable.MenuItems}"
+    <ItemsControl x:CompileBindings="False"
+                  ItemsSource="{Binding ActiveDockable.MenuItems}"
                   ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </MenuFlyout>
 

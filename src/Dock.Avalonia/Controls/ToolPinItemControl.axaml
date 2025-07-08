@@ -44,7 +44,8 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
-    <ItemsControl Items="{Binding MenuItems}"
+    <ItemsControl x:DataType="core:IMenuDockable"
+                  ItemsSource="{Binding MenuItems}"
                   ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </ContextMenu>
 

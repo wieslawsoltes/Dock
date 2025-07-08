@@ -8,7 +8,7 @@
               CommandParameter="{Binding CommandParameter}"
               IsVisible="{Binding IsVisible}"
               IsEnabled="{Binding IsEnabled}"
-              Items="{Binding Items}"
+              ItemsSource="{Binding Items}"
               ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </DataTemplate>
 </ResourceDictionary>

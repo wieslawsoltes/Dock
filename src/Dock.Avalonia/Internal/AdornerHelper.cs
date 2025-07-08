@@ -47,14 +47,25 @@ internal class AdornerHelper<T> where T : Control, new()
             return;
         }
 
+
         var position = visual.PointToScreen(new Point());
+        var width = visual.Bounds.Width;
+        var height = visual.Bounds.Height;
+
         _window = new DockAdornerWindow
         {
-            Width = visual.Bounds.Width,
-            Height = visual.Bounds.Height,
+            Width = width,
+            Height = height,
             Content = Adorner,
-            Position = new PixelPoint(position.X, position.Y)
+            Position = new PixelPoint(position.X, position.Y),
+            SizeToContent = SizeToContent.Manual
         };
+
+        if (Adorner is Control control)
+        {
+            control.Width = width;
+            control.Height = height;
+        }
             
         _window.Show(root);
     }

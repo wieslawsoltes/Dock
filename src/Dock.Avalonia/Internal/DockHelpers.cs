@@ -18,6 +18,14 @@ namespace Dock.Avalonia.Internal;
 /// </summary>
 internal static class DockHelpers
 {
+    public static Point GetScreenPoint(Visual visual, Point point)
+    {
+        // var scaling = (visual.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
+        var scaling = (visual.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(visual)?.Scaling ?? 1.0;
+        var screenPoint = visual.PointToScreen(point).ToPoint(scaling);
+        return screenPoint;
+    }
+
     private static bool IsHitTestVisible(Visual visual)
     {
         var element = visual as IInputElement;

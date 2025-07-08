@@ -201,9 +201,7 @@ public class DockableControl : Panel, IDockableControl
             return;
         }
 
-        // var scaling = (this.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
-        var scaling = (this.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(this)?.Scaling ?? 1.0;
-        var screenPoint = this.PointToScreen(position).ToPoint(scaling);
+        var screenPoint = DockHelpers.GetScreenPoint(this, position);
         var screenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         dockable.SetPointerPosition(position.X, position.Y);

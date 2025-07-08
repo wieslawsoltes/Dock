@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -32,6 +33,7 @@ public class PinnedDockControl : TemplatedControl
 
     private Grid? _pinnedDockGrid;
     private ContentControl? _pinnedDock;
+    private PinnedDockWindow? _window;
 
     static PinnedDockControl()
     {
@@ -88,6 +90,88 @@ public class PinnedDockControl : TemplatedControl
         _pinnedDockGrid = e.NameScope.Get<Grid>("PART_PinnedDockGrid");
         _pinnedDock = e.NameScope.Get<ContentControl>("PART_PinnedDock");
         UpdateGrid();
+
+        if (DockSettings.UsePinnedDockWindow)
+        {
+            LayoutUpdated += OnLayoutUpdated;
+            this.AttachedToVisualTree += OnAttached;
+            this.DetachedFromVisualTree += OnDetached;
+        }
+    }
+
+    private void OnAttached(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        UpdateWindow();
+    }
+
+    private void OnDetached(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        CloseWindow();
+        LayoutUpdated -= OnLayoutUpdated;
+        this.AttachedToVisualTree -= OnAttached;
+        this.DetachedFromVisualTree -= OnDetached;
+    }
+
+    private void OnLayoutUpdated(object? sender, EventArgs e)
+    {
+        UpdateWindow();
+    }
+
+    private void UpdateWindow()
+    {
+        if (!DockSettings.UsePinnedDockWindow || _pinnedDockGrid is null || _pinnedDock is null)
+        {
+            return;
+        }
+
+        if (DataContext is not IRootDock root || root.PinnedDock is null)
+        {
+            CloseWindow();
+            return;
+        }
+
+        if (!root.PinnedDock.IsEmpty)
+        {
+            if (_window is null)
+            {
+                _window = new PinnedDockWindow
+                {
+                    Content = _pinnedDock.Content
+                };
+                if (GetVisualRoot() is Window owner)
+                {
+                    _window.Show(owner);
+                }
+            }
+
+            var point = this.PointToScreen(new Point());
+            _window.Position = new PixelPoint(point.X, point.Y);
+            _window.Width = Bounds.Width;
+            _window.Height = Bounds.Height;
+
+            if (_pinnedDockGrid.IsVisible)
+            {
+                _pinnedDockGrid.IsVisible = false;
+            }
+        }
+        else
+        {
+            CloseWindow();
+        }
+    }
+
+    private void CloseWindow()
+    {
+        if (_window is not null)
+        {
+            _window.Close();
+            _window = null;
+        }
+
+        if (_pinnedDockGrid is { IsVisible: false })
+        {
+            _pinnedDockGrid.IsVisible = true;
+        }
     }
 }
 

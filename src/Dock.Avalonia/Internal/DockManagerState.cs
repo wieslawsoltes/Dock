@@ -79,7 +79,7 @@ internal abstract class DockManagerState : IDockManagerState
             return;
         }
 
-        var relativePoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        var relativePoint = DockHelpers.GetScreenPoint(relativeTo, point);
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
 
         _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
@@ -99,7 +99,7 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
-        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);

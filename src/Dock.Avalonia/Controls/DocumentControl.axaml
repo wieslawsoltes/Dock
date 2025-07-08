@@ -17,6 +17,7 @@
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 
+                   VerticalAlignment="Center"
                    Padding="2"  />
       </DataTemplate>
     </Setter>

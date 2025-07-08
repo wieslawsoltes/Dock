@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -195,7 +196,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             return false;
         }
 
-        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);

@@ -1,0 +1,50 @@
+<Window x:Class="WebViewSample.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:WebViewSample"
+        mc:Ignorable="d" 
+        d:DesignWidth="800" d:DesignHeight="600"
+        x:CompileBindings="True"
+        x:Name="MainWindowView"
+        UseLayoutRounding="True" RenderOptions.BitmapInterpolationMode="HighQuality"
+        WindowState="Normal" WindowStartupLocation="CenterScreen"
+        Background="{x:Null}"
+        TransparencyLevelHint="AcrylicBlur"
+        Foreground="{DynamicResource DockThemeForegroundBrush}"
+        BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+        Title="Dock WebView Demo" Width="800" Height="600"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome">
+  <Window.Resources>
+    <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                 TintColor="{DynamicResource SystemAltHighColor}"
+                                 TintOpacity="1"
+                                 FallbackColor="{DynamicResource AcrylicFallbackColor}"
+                                 MaterialOpacity="0.55"
+                                 x:Key="AcrylicMaterial"/>
+  </Window.Resources>
+  <Panel>
+    <ExperimentalAcrylicBorder IsHitTestVisible="False" Material="{StaticResource AcrylicMaterial}" />
+    <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
+      <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
+        <local:MainView>
+          <local:MainView.Styles>
+            <Style Selector="GridSplitter">
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate>
+                    <Border Background="Transparent">
+                      <ExperimentalAcrylicBorder Material="{StaticResource AcrylicMaterial}" />
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style>
+          </local:MainView.Styles>
+        </local:MainView>
+      </Panel>
+    </Panel>
+  </Panel>
+</Window>

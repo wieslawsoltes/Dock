@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Headless;
 
-[assembly: AvaloniaTestApplication(typeof(Dock.Avalonia.UnitTests.TestAppBuilder))]
+[assembly: AvaloniaTestApplication(typeof(Dock.Avalonia.HeadlessTests.TestAppBuilder))]
 
-namespace Dock.Avalonia.UnitTests;
+namespace Dock.Avalonia.HeadlessTests;
 
 public class TestAppBuilder
 {

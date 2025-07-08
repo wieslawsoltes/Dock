@@ -122,8 +122,7 @@ internal class WindowDragHelper
             return;
         }
 
-        _isDragging = true;
-        _pointerPressed = false;
+  
 
         if (_lastPointerPressedArgs is null)
         {
@@ -140,6 +139,9 @@ internal class WindowDragHelper
             }
             return;
         }
+        
+        _isDragging = true;
+        _pointerPressed = false;
 
         var dockWindow = hostWindow.Window;
         if (dockWindow?.Factory?.OnWindowMoveDragBegin(dockWindow) != true)

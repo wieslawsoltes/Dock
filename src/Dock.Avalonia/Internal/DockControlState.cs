@@ -192,7 +192,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             return false;
         }
 
-        var screenPoint = relativeTo.PointToScreen(point).ToPoint(1.0);
+        var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);

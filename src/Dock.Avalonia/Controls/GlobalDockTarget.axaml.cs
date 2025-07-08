@@ -91,8 +91,11 @@ public class GlobalDockTarget : TemplatedControl
         if (visible is { } && !visible(point, operation, dragAction, relativeTo))
         {
             indicator.Opacity = 0;
+            selector.Opacity = 0;
             return false;
         }
+
+        selector.Opacity = 1;
 
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
         if (selectorPoint is { })

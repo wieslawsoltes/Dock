@@ -14,36 +14,35 @@ public static class AppBuilderExtensions
     /// Configures <see cref="DockSettings"/> values using the Avalonia app builder fluent pattern.
     /// </summary>
     /// <param name="builder">The app builder.</param>
-    /// <param name="minimumHorizontalDragDistance">Optional horizontal drag threshold.</param>
-    /// <param name="minimumVerticalDragDistance">Optional vertical drag threshold.</param>
-    /// <param name="useFloatingDockAdorner">Optional floating adorner flag.</param>
-    /// <param name="enableGlobalDocking">Optional global docking flag.</param>
+    /// <param name="options">The settings to apply.</param>
     /// <returns>The app builder instance.</returns>
     public static AppBuilder WithDockSettings(
         this AppBuilder builder,
-        double? minimumHorizontalDragDistance = null,
-        double? minimumVerticalDragDistance = null,
-        bool? useFloatingDockAdorner = null,
-        bool? enableGlobalDocking = null)
+        DockSettingsOptions? options)
     {
-        if (minimumHorizontalDragDistance != null)
+        if (options == null)
         {
-            DockSettings.MinimumHorizontalDragDistance = minimumHorizontalDragDistance.Value;
+            return builder;
         }
 
-        if (minimumVerticalDragDistance != null)
+        if (options.MinimumHorizontalDragDistance != null)
         {
-            DockSettings.MinimumVerticalDragDistance = minimumVerticalDragDistance.Value;
+            DockSettings.MinimumHorizontalDragDistance = options.MinimumHorizontalDragDistance.Value;
         }
 
-        if (useFloatingDockAdorner != null)
+        if (options.MinimumVerticalDragDistance != null)
         {
-            DockSettings.UseFloatingDockAdorner = useFloatingDockAdorner.Value;
+            DockSettings.MinimumVerticalDragDistance = options.MinimumVerticalDragDistance.Value;
         }
 
-        if (enableGlobalDocking != null)
+        if (options.UseFloatingDockAdorner != null)
         {
-            DockSettings.EnableGlobalDocking = enableGlobalDocking.Value;
+            DockSettings.UseFloatingDockAdorner = options.UseFloatingDockAdorner.Value;
+        }
+
+        if (options.EnableGlobalDocking != null)
+        {
+            DockSettings.EnableGlobalDocking = options.EnableGlobalDocking.Value;
         }
 
         return builder;

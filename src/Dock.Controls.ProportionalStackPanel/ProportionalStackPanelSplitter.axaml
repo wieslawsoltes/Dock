@@ -3,28 +3,28 @@
                     xmlns:controls="using:Dock.Controls.ProportionalStackPanel">
   <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu">
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}"
-              Command="{Binding ResetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}" />
+              Command="{Binding ResetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}" />
     <Separator />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.1" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.25" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter33String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.3333" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.5" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter66String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.6667" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.75" />
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}"
-              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              Command="{Binding SetProportion, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
               CommandParameter="0.9" />
   </ContextMenu>
 

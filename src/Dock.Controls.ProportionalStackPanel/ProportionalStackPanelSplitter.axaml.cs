@@ -8,8 +8,6 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -80,14 +78,6 @@ public class ProportionalStackPanelSplitter : Thumb
     private Point _startPoint;
     private bool _isMoving;
 
-    public ICommand ResetProportionCommand { get; }
-    public ICommand SetProportionCommand { get; }
-
-    public ProportionalStackPanelSplitter()
-    {
-        ResetProportionCommand = new RelayCommand(ResetProportion);
-        SetProportionCommand = new RelayCommand<double>(SetProportion);
-    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -339,7 +329,7 @@ public class ProportionalStackPanelSplitter : Thumb
         return GetSiblingInDirection(panel, -1);
     }
 
-    private void ResetProportion()
+    public void ResetProportion()
     {
         if (GetPanel() is { } panel)
         {
@@ -353,7 +343,7 @@ public class ProportionalStackPanelSplitter : Thumb
         }
     }
 
-    private void SetProportion(double proportion)
+    public void SetProportion(double proportion)
     {
         if (GetPanel() is { } panel)
         {

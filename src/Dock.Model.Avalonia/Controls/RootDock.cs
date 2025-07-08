@@ -76,8 +76,40 @@ public class RootDock : DockBase, IRootDock
     /// </summary>
     public static readonly DirectProperty<RootDock, IList<IDockable>?> BottomPinnedDockablesProperty =
         AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(
-            nameof(BottomPinnedDockables), o => o.BottomPinnedDockables, 
+            nameof(BottomPinnedDockables), o => o.BottomPinnedDockables,
             (o, v) => o.BottomPinnedDockables = v);
+
+    /// <summary>
+    /// Defines the <see cref="LeftPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, Alignment> LeftPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, Alignment>(
+            nameof(LeftPinnedDockablesAlignment), o => o.LeftPinnedDockablesAlignment,
+            (o, v) => o.LeftPinnedDockablesAlignment = v, Alignment.Top);
+
+    /// <summary>
+    /// Defines the <see cref="RightPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, Alignment> RightPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, Alignment>(
+            nameof(RightPinnedDockablesAlignment), o => o.RightPinnedDockablesAlignment,
+            (o, v) => o.RightPinnedDockablesAlignment = v, Alignment.Top);
+
+    /// <summary>
+    /// Defines the <see cref="TopPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, Alignment> TopPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, Alignment>(
+            nameof(TopPinnedDockablesAlignment), o => o.TopPinnedDockablesAlignment,
+            (o, v) => o.TopPinnedDockablesAlignment = v, Alignment.Left);
+
+    /// <summary>
+    /// Defines the <see cref="BottomPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, Alignment> BottomPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, Alignment>(
+            nameof(BottomPinnedDockablesAlignment), o => o.BottomPinnedDockablesAlignment,
+            (o, v) => o.BottomPinnedDockablesAlignment = v, Alignment.Left);
 
     /// <summary>
     /// Defines the <see cref="Window"/> property.
@@ -103,6 +135,10 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _rightPinnedDockables;
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
+    private Alignment _leftPinnedDockablesAlignment = Alignment.Top;
+    private Alignment _rightPinnedDockablesAlignment = Alignment.Top;
+    private Alignment _topPinnedDockablesAlignment = Alignment.Left;
+    private Alignment _bottomPinnedDockablesAlignment = Alignment.Left;
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
@@ -184,6 +220,42 @@ public class RootDock : DockBase, IRootDock
     {
         get => _bottomPinnedDockables;
         set => SetAndRaise(BottomPinnedDockablesProperty, ref _bottomPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("LeftPinnedDockablesAlignment")]
+    public Alignment LeftPinnedDockablesAlignment
+    {
+        get => _leftPinnedDockablesAlignment;
+        set => SetAndRaise(LeftPinnedDockablesAlignmentProperty, ref _leftPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("RightPinnedDockablesAlignment")]
+    public Alignment RightPinnedDockablesAlignment
+    {
+        get => _rightPinnedDockablesAlignment;
+        set => SetAndRaise(RightPinnedDockablesAlignmentProperty, ref _rightPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("TopPinnedDockablesAlignment")]
+    public Alignment TopPinnedDockablesAlignment
+    {
+        get => _topPinnedDockablesAlignment;
+        set => SetAndRaise(TopPinnedDockablesAlignmentProperty, ref _topPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("BottomPinnedDockablesAlignment")]
+    public Alignment BottomPinnedDockablesAlignment
+    {
+        get => _bottomPinnedDockablesAlignment;
+        set => SetAndRaise(BottomPinnedDockablesAlignmentProperty, ref _bottomPinnedDockablesAlignment, value);
     }
 
     /// <inheritdoc/>

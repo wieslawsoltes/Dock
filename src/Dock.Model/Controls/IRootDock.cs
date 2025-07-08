@@ -42,6 +42,26 @@ public interface IRootDock : IDock
     IList<IDockable>? BottomPinnedDockables { get; set; }
 
     /// <summary>
+    /// Gets or sets left pinned dockables alignment.
+    /// </summary>
+    Alignment LeftPinnedDockablesAlignment { get; set; }
+
+    /// <summary>
+    /// Gets or sets right pinned dockables alignment.
+    /// </summary>
+    Alignment RightPinnedDockablesAlignment { get; set; }
+
+    /// <summary>
+    /// Gets or sets top pinned dockables alignment.
+    /// </summary>
+    Alignment TopPinnedDockablesAlignment { get; set; }
+
+    /// <summary>
+    /// Gets or sets bottom pinned dockables alignment.
+    /// </summary>
+    Alignment BottomPinnedDockablesAlignment { get; set; }
+
+    /// <summary>
     /// Gets or sets pinned tool dock.
     /// </summary>
     IToolDock? PinnedDock { get; set; }

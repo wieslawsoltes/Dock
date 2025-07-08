@@ -82,6 +82,10 @@ public class DockControlsTests
         Assert.NotNull(dock.RightPinnedDockables);
         Assert.NotNull(dock.TopPinnedDockables);
         Assert.NotNull(dock.BottomPinnedDockables);
+        Assert.Equal(Alignment.Top, dock.LeftPinnedDockablesAlignment);
+        Assert.Equal(Alignment.Top, dock.RightPinnedDockablesAlignment);
+        Assert.Equal(Alignment.Left, dock.TopPinnedDockablesAlignment);
+        Assert.Equal(Alignment.Left, dock.BottomPinnedDockablesAlignment);
         Assert.NotNull(dock.Windows);
     }
 

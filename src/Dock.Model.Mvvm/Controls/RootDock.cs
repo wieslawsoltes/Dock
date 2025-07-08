@@ -22,6 +22,10 @@ public class RootDock : DockBase, IRootDock
     private IList<IDockable>? _rightPinnedDockables;
     private IList<IDockable>? _topPinnedDockables;
     private IList<IDockable>? _bottomPinnedDockables;
+    private Alignment _leftPinnedDockablesAlignment = Alignment.Top;
+    private Alignment _rightPinnedDockablesAlignment = Alignment.Top;
+    private Alignment _topPinnedDockablesAlignment = Alignment.Left;
+    private Alignment _bottomPinnedDockablesAlignment = Alignment.Left;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private IToolDock? _pinnedDock;
@@ -81,6 +85,38 @@ public class RootDock : DockBase, IRootDock
     {
         get => _bottomPinnedDockables;
         set => SetProperty(ref _bottomPinnedDockables, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment LeftPinnedDockablesAlignment
+    {
+        get => _leftPinnedDockablesAlignment;
+        set => SetProperty(ref _leftPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment RightPinnedDockablesAlignment
+    {
+        get => _rightPinnedDockablesAlignment;
+        set => SetProperty(ref _rightPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment TopPinnedDockablesAlignment
+    {
+        get => _topPinnedDockablesAlignment;
+        set => SetProperty(ref _topPinnedDockablesAlignment, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment BottomPinnedDockablesAlignment
+    {
+        get => _bottomPinnedDockablesAlignment;
+        set => SetProperty(ref _bottomPinnedDockablesAlignment, value);
     }
 
     /// <inheritdoc/>

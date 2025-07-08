@@ -22,6 +22,10 @@ public partial class RootDock : DockBase, IRootDock
     public RootDock()
     {
         _isFocusableRoot = true;
+        LeftPinnedDockablesAlignment = Alignment.Top;
+        RightPinnedDockablesAlignment = Alignment.Top;
+        TopPinnedDockablesAlignment = Alignment.Left;
+        BottomPinnedDockablesAlignment = Alignment.Left;
         ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
     }
@@ -49,6 +53,22 @@ public partial class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial IList<IDockable>? BottomPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial Alignment LeftPinnedDockablesAlignment { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial Alignment RightPinnedDockablesAlignment { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial Alignment TopPinnedDockablesAlignment { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial Alignment BottomPinnedDockablesAlignment { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

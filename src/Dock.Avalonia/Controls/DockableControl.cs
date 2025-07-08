@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Reactive;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
 using Dock.Model.Core;
 
@@ -199,9 +200,13 @@ public class DockableControl : Panel, IDockableControl
         {
             return;
         }
-        var screenPoint = DockHelpers.ToDockPoint(this.PointToScreen(position).ToPoint(1.0));
+
+        // var scaling = (this.GetVisualRoot() as TopLevel)?.RenderScaling ?? 1.0;
+        var scaling = (this.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(this)?.Scaling ?? 1.0;
+        var screenPoint = this.PointToScreen(position).ToPoint(scaling);
+        var screenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         dockable.SetPointerPosition(position.X, position.Y);
-        dockable.SetPointerScreenPosition(screenPoint.X, screenPoint.Y);
+        dockable.SetPointerScreenPosition(screenPosition.X, screenPosition.Y);
     }
 }

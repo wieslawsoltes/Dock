@@ -45,9 +45,7 @@
   <x:String x:Key="ProportionalStackPanelSplitterResetString">Reset</x:String>
   <x:String x:Key="ProportionalStackPanelSplitter10String">10%</x:String>
   <x:String x:Key="ProportionalStackPanelSplitter25String">25%</x:String>
-  <x:String x:Key="ProportionalStackPanelSplitter33String">33%</x:String>
   <x:String x:Key="ProportionalStackPanelSplitter50String">50%</x:String>
-  <x:String x:Key="ProportionalStackPanelSplitter66String">66%</x:String>
   <x:String x:Key="ProportionalStackPanelSplitter75String">75%</x:String>
   <x:String x:Key="ProportionalStackPanelSplitter90String">90%</x:String>
 

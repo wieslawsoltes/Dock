@@ -14,6 +14,7 @@ internal class Program
         WebView.Settings.OsrEnabled = false;
 
         DockSettings.UseFloatingDockAdorner = true;
+        DockSettings.EnableGlobalDocking = true;
 
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

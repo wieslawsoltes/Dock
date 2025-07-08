@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
-using Dock.Settings;
 using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
@@ -48,13 +47,24 @@ internal class AdornerHelper<T> where T : Control, new()
         }
 
         var position = visual.PointToScreen(new Point());
+        var width = visual.Bounds.Width;
+        var height = visual.Bounds.Height;
+
         _window = new DockAdornerWindow
         {
-            Width = visual.Bounds.Width,
-            Height = visual.Bounds.Height,
+            Width = width,
+            Height = height,
             Content = Adorner,
-            Position = new PixelPoint(position.X, position.Y)
+            Position = new PixelPoint(position.X, position.Y),
+            SizeToContent = SizeToContent.Manual,
+            IsHitTestVisible = true
         };
+
+        if (Adorner is { } control)
+        {
+            control.Width = width;
+            control.Height = height;
+        }
             
         _window.Show(root);
     }

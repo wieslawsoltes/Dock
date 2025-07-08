@@ -32,6 +32,11 @@ Every control template that participates in docking should set the appropriate `
         DockProperties.IsDropArea="True"
         DockProperties.IsDockTarget="True"
         DockProperties.DockAdornerHost="{Binding #PART_Border}" />
+
+<!-- Tool dock tab strip -->
+<ToolTabStrip DockProperties.IsDropArea="True"
+              DockProperties.IsDockTarget="True"
+              DockProperties.DockAdornerHost="{Binding #PART_Border}" />
 ```
 
 Without the attached properties above the drag logic would not detect the border as a valid drop area and documents could not be rearranged.

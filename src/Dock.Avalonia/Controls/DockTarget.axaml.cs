@@ -119,7 +119,11 @@ public class DockTarget : TemplatedControl
 
         if (selectorPoint is { })
         {
-            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
+            var sp = new Point(
+                Math.Clamp(selectorPoint.Value.X, 0, selector.Bounds.Width - 1),
+                Math.Clamp(selectorPoint.Value.Y, 0, selector.Bounds.Height - 1));
+
+            if (selector.InputHitTest(sp) is { } inputElement && Equals(inputElement, selector))
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {

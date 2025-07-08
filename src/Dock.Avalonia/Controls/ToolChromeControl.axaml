@@ -57,6 +57,8 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
+    <ItemsControl Items="{Binding ActiveDockable.MenuItems}"
+                  ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </MenuFlyout>
 
   <ControlTheme x:Key="ChromeButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" >

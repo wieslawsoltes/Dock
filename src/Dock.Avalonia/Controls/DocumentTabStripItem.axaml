@@ -157,10 +157,12 @@
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutTopString}"
                 Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutTop}"
                 CommandParameter="{Binding Owner}" />
-      <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutRightString}"
+    <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutRightString}"
                 Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutRight}"
                 CommandParameter="{Binding Owner}" />
     </MenuItem>
+    <ItemsControl Items="{Binding MenuItems}"
+                  ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">

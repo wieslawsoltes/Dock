@@ -15,6 +15,7 @@
         <ResourceInclude Source="/Controls/DocumentControl.axaml" />
         <ResourceInclude Source="/Controls/ToolChromeControl.axaml" />
         <ResourceInclude Source="/Controls/ToolControl.axaml" />
+        <ResourceInclude Source="/Controls/DockMenuItemTemplates.axaml" />
         <ResourceInclude Source="/Controls/ToolPinItemControl.axaml" />
         <ResourceInclude Source="/Controls/ToolPinnedControl.axaml" />
         <ResourceInclude Source="/Controls/DockDockControl.axaml" />

@@ -78,6 +78,8 @@
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
+    <ItemsControl Items="{Binding MenuItems}"
+                  ItemTemplate="{StaticResource DockMenuItemTemplate}" />
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type ToolTabStripItem}" TargetType="ToolTabStripItem">

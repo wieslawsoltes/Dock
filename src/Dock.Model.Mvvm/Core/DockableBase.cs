@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
 
@@ -10,7 +12,7 @@ namespace Dock.Model.Mvvm.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IMenuDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
@@ -38,6 +40,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
+    private ObservableCollection<IMenuItem> _menuItems = new();
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -246,6 +249,10 @@ public abstract class DockableBase : ReactiveBase, IDockable
         get => _canDrop;
         set => SetProperty(ref _canDrop, value);
     }
+
+    /// <inheritdoc cref="IMenuDockable.MenuItems"/>
+    [IgnoreDataMember]
+    public IList<IMenuItem> MenuItems => _menuItems;
 
     /// <inheritdoc/>
     public string? GetControlRecyclingId() => _id;

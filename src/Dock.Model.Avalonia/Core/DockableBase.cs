@@ -7,6 +7,8 @@ using Avalonia.Controls;
 using Dock.Model.Adapters;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Dock.Model.Avalonia.Core;
 
@@ -24,7 +26,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 [JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IMenuDockable
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.
@@ -202,6 +204,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
+    private ObservableCollection<IMenuItem> _menuItems = new();
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -437,6 +440,10 @@ public abstract class DockableBase : ReactiveBase, IDockable
         get => _canDrop;
         set => SetAndRaise(CanDropProperty, ref _canDrop, value);
     }
+
+    /// <inheritdoc cref="IMenuDockable.MenuItems"/>
+    [IgnoreDataMember]
+    public IList<IMenuItem> MenuItems => _menuItems;
 
     /// <inheritdoc/>
     public string? GetControlRecyclingId() => _id;

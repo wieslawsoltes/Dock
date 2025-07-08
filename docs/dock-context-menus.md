@@ -46,9 +46,16 @@ Because the controls refer to their menus using `DynamicResource`, you can suppl
 
 This approach allows you to customize the menu structure or attach your own commands without modifying Dock's source.
 
-## Extensibility analysis
+## Runtime extensibility
 
-The current design relies on static resources. Replacing or localizing items is straightforward by overriding resource keys, but adding items dynamically requires providing a completely new menu. There are no hooks to inject menu items at runtime.
+Dock now exposes an `IMenuDockable` interface implemented by all dockable view models. It provides a `MenuItems` collection where applications can register additional context menu entries from code.
 
-If extensibility is important for your application, consider wrapping the default menus in your own `ContextMenu` definitions so you can append items in XAML. Alternatively you could fork the resource dictionaries and modify them to expose extension points via data templates or bindings.
+Use the `DockMenuItemTemplate` resource to render these items inside your custom menus:
+
+```xaml
+<MenuFlyout Items="{Binding MenuItems}"
+           ItemTemplate="{StaticResource DockMenuItemTemplate}" />
+```
+
+Because the built-in menus are referenced via `DynamicResource`, you can still replace them entirely in application resources. The `MenuItems` collection lets you append or remove items dynamically without modifying Dock's XAML files.
 

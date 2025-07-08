@@ -55,31 +55,33 @@ public class DockTarget : TemplatedControl
         _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
     }
 
-    internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction, Func<Point, DockOperation, DragAction, Visual, bool> validate)
+    internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction,
+        Func<Point, DockOperation, DragAction, Visual, bool> validate,
+        Func<Point, DockOperation, DragAction, Visual, bool>? visible = null)
     {
         var result = DockOperation.Window;
 
-        if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate))
+        if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate, visible))
         {
             result = DockOperation.Left;
         }
 
-        if (InvalidateIndicator(_rightSelector, _rightIndicator, point, relativeTo, DockOperation.Right, dragAction, validate))
+        if (InvalidateIndicator(_rightSelector, _rightIndicator, point, relativeTo, DockOperation.Right, dragAction, validate, visible))
         {
             result = DockOperation.Right;
         }
 
-        if (InvalidateIndicator(_topSelector, _topIndicator, point, relativeTo, DockOperation.Top, dragAction, validate))
+        if (InvalidateIndicator(_topSelector, _topIndicator, point, relativeTo, DockOperation.Top, dragAction, validate, visible))
         {
             result = DockOperation.Top;
         }
 
-        if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, relativeTo, DockOperation.Bottom, dragAction, validate))
+        if (InvalidateIndicator(_bottomSelector, _bottomIndicator, point, relativeTo, DockOperation.Bottom, dragAction, validate, visible))
         {
             result = DockOperation.Bottom;
         }
 
-        if (InvalidateIndicator(_centerSelector, _centerIndicator, point, relativeTo, DockOperation.Fill, dragAction, validate))
+        if (InvalidateIndicator(_centerSelector, _centerIndicator, point, relativeTo, DockOperation.Fill, dragAction, validate, visible))
         {
             result = DockOperation.Fill;
         }
@@ -87,10 +89,19 @@ public class DockTarget : TemplatedControl
         return result;
     }
 
-    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo, DockOperation operation, DragAction dragAction, Func<Point, DockOperation, DragAction, Visual, bool> validate)
+    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo,
+        DockOperation operation, DragAction dragAction,
+        Func<Point, DockOperation, DragAction, Visual, bool> validate,
+        Func<Point, DockOperation, DragAction, Visual, bool>? visible)
     {
         if (selector is null || indicator is null)
         {
+            return false;
+        }
+
+        if (visible is { } && !visible(point, operation, dragAction, relativeTo))
+        {
+            indicator.Opacity = 0;
             return false;
         }
 

@@ -59,4 +59,11 @@ Assign the subclass to the control as shown earlier. All other methods will cont
 
 The manager is a small but critical part of Dock. By tailoring it you can adapt the docking behaviour to suit almost any workflow.
 
+## Dock target visibility
+
+`DockManager` exposes `IsDockTargetVisible` which determines whether a drop
+indicator is shown. The default implementation hides the center indicator when
+the dragged dockable equals the potential target. Override this method to apply
+your own rules.
+
 For an overview of other concepts see the [documentation index](README.md).

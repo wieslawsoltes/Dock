@@ -70,12 +70,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
         if (globalOperation != DockOperation.None)
@@ -98,12 +98,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
         RemoveAdorners();
@@ -200,6 +200,22 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);
+    }
+
+    private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    {
+        var layout = _hostWindow.Window?.Layout;
+        if (layout?.FocusedDockable is not IDockable sourceDockable)
+        {
+            return true;
+        }
+
+        if (DropControl?.DataContext is not IDockable targetDockable)
+        {
+            return true;
+        }
+
+        return DockManager.IsDockTargetVisible(sourceDockable, targetDockable, operation);
     }
 
     /// <summary>

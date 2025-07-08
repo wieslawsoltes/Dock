@@ -8,6 +8,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -326,5 +327,40 @@ public class ProportionalStackPanelSplitter : Thumb
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
         return GetSiblingInDirection(panel, -1);
+    }
+
+    private void ResetProportion(object? sender, RoutedEventArgs e)
+    {
+        if (GetPanel() is { } panel)
+        {
+            var target = GetTargetElement(panel);
+            var neighbour = FindNextChild(panel);
+            if (target is null || neighbour is null)
+                return;
+
+            ProportionalStackPanel.SetProportion(target, double.NaN);
+            ProportionalStackPanel.SetProportion(neighbour, double.NaN);
+        }
+    }
+
+    private void SetProportion(object? sender, RoutedEventArgs e)
+    {
+        if (sender is MenuItem { Tag: var tag } && double.TryParse(tag?.ToString(), out var proportion))
+        {
+            if (GetPanel() is { } panel)
+            {
+                var target = GetTargetElement(panel);
+                var neighbour = FindNextChild(panel);
+                if (target is null || neighbour is null)
+                    return;
+
+                var neighbourProp = ProportionalStackPanel.GetProportion(neighbour);
+                var current = ProportionalStackPanel.GetProportion(target);
+                var delta = proportion - current;
+
+                ProportionalStackPanel.SetProportion(target, proportion);
+                ProportionalStackPanel.SetProportion(neighbour, neighbourProp - delta);
+            }
+        }
     }
 }

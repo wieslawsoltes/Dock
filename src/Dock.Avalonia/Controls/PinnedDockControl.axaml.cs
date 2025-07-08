@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Model.Controls;
@@ -150,6 +151,8 @@ public class PinnedDockControl : TemplatedControl
                     _ownerWindow = owner;
                     _ownerWindow.PositionChanged += OwnerWindow_PositionChanged;
                     _ownerWindow.Resized += OwnerWindow_Resized;
+                    _ownerWindow.AddHandler(PointerPressedEvent, OwnerWindow_PointerPressed, RoutingStrategies.Tunnel);
+                    _ownerWindow.Deactivated += OwnerWindow_Deactivated;
                     _window.Show(owner);
                 }
             }
@@ -183,6 +186,8 @@ public class PinnedDockControl : TemplatedControl
         {
             _ownerWindow.PositionChanged -= OwnerWindow_PositionChanged;
             _ownerWindow.Resized -= OwnerWindow_Resized;
+            _ownerWindow.RemoveHandler(PointerPressedEvent, OwnerWindow_PointerPressed);
+            _ownerWindow.Deactivated -= OwnerWindow_Deactivated;
             _ownerWindow = null;
         }
 
@@ -201,6 +206,30 @@ public class PinnedDockControl : TemplatedControl
     private void OwnerWindow_Resized(object? sender, EventArgs e)
     {
         UpdateWindow();
+    }
+
+    private bool IsPointerInsidePinnedDock(PointerEventArgs e)
+    {
+        if (_pinnedDockGrid is null)
+            return false;
+
+        var point = e.GetPosition(_pinnedDockGrid);
+        return point.X >= 0 && point.Y >= 0 &&
+               point.X <= _pinnedDockGrid.Bounds.Width &&
+               point.Y <= _pinnedDockGrid.Bounds.Height;
+    }
+
+    private void OwnerWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (!IsPointerInsidePinnedDock(e))
+        {
+            CloseWindow();
+        }
+    }
+
+    private void OwnerWindow_Deactivated(object? sender, EventArgs e)
+    {
+        CloseWindow();
     }
 }
 

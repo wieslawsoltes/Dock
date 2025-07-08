@@ -37,12 +37,8 @@ internal abstract class DockManagerState : IDockManagerState
         // Local dock target
         if (isLocalValid && DropControl is { } control)
         {
-            var target = control.GetValue(DockProperties.IsDockTargetProperty)
-                ? control
-                : control.FindAncestorOfType<Control>(
-                    c => c.GetValue(DockProperties.IsDockTargetProperty));
-
-            if (target is { })
+            var target = FindDockTarget(control);
+            if (target is not null)
             {
                 LocalAdornerHelper.AddAdorner(target);
             }
@@ -64,12 +60,8 @@ internal abstract class DockManagerState : IDockManagerState
         // Local dock target
         if (DropControl is { } control)
         {
-            var target = control.GetValue(DockProperties.IsDockTargetProperty)
-                ? control
-                : control.FindAncestorOfType<Control>(
-                    c => c.GetValue(DockProperties.IsDockTargetProperty));
-
-            if (target is { })
+            var target = FindDockTarget(control);
+            if (target is not null)
             {
                 LocalAdornerHelper.RemoveAdorner(target);
             }
@@ -127,5 +119,21 @@ internal abstract class DockManagerState : IDockManagerState
         var screen = inputActiveDockControl.PointToScreen(point);
         dockable.SetPointerScreenPosition(screen.X, screen.Y);
         factory.FloatDockable(dockable);
+    }
+
+    private static Control? FindDockTarget(Control control)
+    {
+        var current = control;
+        while (current is { })
+        {
+            if (current.GetValue(DockProperties.IsDockTargetProperty))
+            {
+                return current;
+            }
+
+            current = current.GetVisualParent() as Control;
+        }
+
+        return null;
     }
 }

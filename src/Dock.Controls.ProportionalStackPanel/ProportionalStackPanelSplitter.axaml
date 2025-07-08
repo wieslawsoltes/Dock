@@ -1,22 +1,38 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Controls.ProportionalStackPanel">
   <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu">
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}" Click="ResetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}"
+              Command="{Binding ResetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}" />
     <Separator />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}" Tag="0.1" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}" Tag="0.25" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter33String}" Tag="0.3333" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}" Tag="0.5" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter66String}" Tag="0.6667" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}" Tag="0.75" Click="SetProportion" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}" Tag="0.9" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.1" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.25" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter33String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.3333" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.5" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter66String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.6667" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.75" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}"
+              Command="{Binding SetProportionCommand, RelativeSource={RelativeSource AncestorType=controls:ProportionalStackPanelSplitter}}"
+              CommandParameter="0.9" />
   </ContextMenu>
 
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
 
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="ContextMenu" Value="{DynamicResource ProportionalStackPanelSplitterContextMenu}" />
-    
+
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}"

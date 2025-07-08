@@ -8,7 +8,8 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
-using Avalonia.Interactivity;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -78,6 +79,15 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private Point _startPoint;
     private bool _isMoving;
+
+    public ICommand ResetProportionCommand { get; }
+    public ICommand SetProportionCommand { get; }
+
+    public ProportionalStackPanelSplitter()
+    {
+        ResetProportionCommand = new RelayCommand(ResetProportion);
+        SetProportionCommand = new RelayCommand<double>(SetProportion);
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -329,7 +339,7 @@ public class ProportionalStackPanelSplitter : Thumb
         return GetSiblingInDirection(panel, -1);
     }
 
-    private void ResetProportion(object? sender, RoutedEventArgs e)
+    private void ResetProportion()
     {
         if (GetPanel() is { } panel)
         {
@@ -343,24 +353,21 @@ public class ProportionalStackPanelSplitter : Thumb
         }
     }
 
-    private void SetProportion(object? sender, RoutedEventArgs e)
+    private void SetProportion(double proportion)
     {
-        if (sender is MenuItem { Tag: var tag } && double.TryParse(tag?.ToString(), out var proportion))
+        if (GetPanel() is { } panel)
         {
-            if (GetPanel() is { } panel)
-            {
-                var target = GetTargetElement(panel);
-                var neighbour = FindNextChild(panel);
-                if (target is null || neighbour is null)
-                    return;
+            var target = GetTargetElement(panel);
+            var neighbour = FindNextChild(panel);
+            if (target is null || neighbour is null)
+                return;
 
-                var neighbourProp = ProportionalStackPanel.GetProportion(neighbour);
-                var current = ProportionalStackPanel.GetProportion(target);
-                var delta = proportion - current;
+            var neighbourProp = ProportionalStackPanel.GetProportion(neighbour);
+            var current = ProportionalStackPanel.GetProportion(target);
+            var delta = proportion - current;
 
-                ProportionalStackPanel.SetProportion(target, proportion);
-                ProportionalStackPanel.SetProportion(neighbour, neighbourProp - delta);
-            }
+            ProportionalStackPanel.SetProportion(target, proportion);
+            ProportionalStackPanel.SetProportion(neighbour, neighbourProp - delta);
         }
     }
 }

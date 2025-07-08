@@ -1,9 +1,21 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu">
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}" Click="ResetProportion" />
+    <Separator />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}" Tag="0.1" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}" Tag="0.25" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter33String}" Tag="0.3333" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}" Tag="0.5" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter66String}" Tag="0.6667" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}" Tag="0.75" Click="SetProportion" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}" Tag="0.9" Click="SetProportion" />
+  </ContextMenu>
 
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
 
     <Setter Property="Background" Value="Transparent" />
+    <Setter Property="ContextMenu" Value="{DynamicResource ProportionalStackPanelSplitterContextMenu}" />
     
     <Setter Property="Template">
       <ControlTemplate>

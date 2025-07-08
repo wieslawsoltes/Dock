@@ -76,12 +76,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
         if (globalOperation != DockOperation.None)
@@ -101,12 +101,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal);
+            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
         {
-            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal);
+            globalOperation = globalDockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateGlobal, IsDockTargetVisible);
         }
 
         RemoveAdorners();
@@ -196,6 +196,21 @@ internal class DockControlState : DockManagerState, IDockControlState
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);
+    }
+
+    private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
+    {
+        if (_context.DragControl?.DataContext is not IDockable sourceDockable)
+        {
+            return true;
+        }
+
+        if (DropControl?.DataContext is not IDockable targetDockable)
+        {
+            return true;
+        }
+
+        return DockManager.IsDockTargetVisible(sourceDockable, targetDockable, operation);
     }
 
     protected override void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
@@ -383,11 +398,11 @@ internal class DockControlState : DockManagerState, IDockControlState
                             }
 
                             var globalOperation = GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
-                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateGlobal)
+                                ? globalDockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateGlobal, IsDockTargetVisible)
                                 : DockOperation.None;
-                            
+
                             var localOperation = LocalAdornerHelper.Adorner is DockTarget dockTarget
-                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateLocal)
+                                ? dockTarget.GetDockOperation(targetPoint, targetDockControl, dragAction, ValidateLocal, IsDockTargetVisible)
                                 : DockOperation.Fill;
 
                             if (globalOperation != DockOperation.None)

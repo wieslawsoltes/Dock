@@ -67,4 +67,13 @@ public interface IDockManager
     /// <param name="bExecute">The flag indicating whether to execute.</param>
     /// <returns>True if docking operation can be executed otherwise false.</returns>
     bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute);
+
+    /// <summary>
+    /// Determines if a dock target indicator should be visible.
+    /// </summary>
+    /// <param name="sourceDockable">The source dockable being dragged.</param>
+    /// <param name="targetDockable">The dockable under the pointer.</param>
+    /// <param name="operation">The dock operation represented by the indicator.</param>
+    /// <returns>True to show the indicator, false to hide it.</returns>
+    bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation);
 }

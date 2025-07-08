@@ -569,4 +569,23 @@ public class DockManager : IDockManager
             _ => false
         };
     }
+
+    /// <inheritdoc/>
+    public virtual bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
+    {
+        if (operation == DockOperation.Fill)
+        {
+            if (ReferenceEquals(sourceDockable, targetDockable))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(sourceDockable.Owner, targetDockable))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

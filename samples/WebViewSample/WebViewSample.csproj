@@ -42,7 +42,11 @@
     <PackageReference Include="WebViewControl-Avalonia-ARM64" />
   </ItemGroup>
    -->
-  
+
+  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X86">
+    <PackageReference Include="WebViewControl-Avalonia" />
+  </ItemGroup>
+
   <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X64">
     <PackageReference Include="WebViewControl-Avalonia" />
   </ItemGroup>

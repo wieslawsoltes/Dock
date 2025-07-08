@@ -176,7 +176,8 @@ public class PinnedDockControl : TemplatedControl
 
         if (_pinnedDockGrid is { IsVisible: false })
         {
-            _pinnedDockGrid.IsVisible = true;
+            // Restore XAML binding controlling visibility
+            _pinnedDockGrid.ClearValue(Visual.IsVisibleProperty);
         }
     }
 }

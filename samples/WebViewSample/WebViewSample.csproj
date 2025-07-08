@@ -43,15 +43,15 @@
   </ItemGroup>
    -->
 
-  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == x86_64">
+  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == 'x86_64'">
     <PackageReference Include="WebViewControl-Avalonia" />
   </ItemGroup>
 
-  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == X64">
+  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == 'X64'">
     <PackageReference Include="WebViewControl-Avalonia" />
   </ItemGroup>
 
-  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == Arm64">
+  <ItemGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) == 'Arm64'">
     <PackageReference Include="WebViewControl-Avalonia-ARM64" />
   </ItemGroup>
 

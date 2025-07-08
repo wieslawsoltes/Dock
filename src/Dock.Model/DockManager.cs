@@ -573,9 +573,17 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public virtual bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
     {
-        if (operation == DockOperation.Fill && ReferenceEquals(sourceDockable, targetDockable))
+        if (operation == DockOperation.Fill)
         {
-            return false;
+            if (ReferenceEquals(sourceDockable, targetDockable))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(sourceDockable.Owner, targetDockable))
+            {
+                return false;
+            }
         }
 
         return true;

@@ -42,6 +42,32 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the DockAdornerHost attached property.
+    /// </summary>
+    public static readonly AttachedProperty<Control?> DockAdornerHostProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Gets the control where the dock adorner should be displayed.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The adorner host control.</returns>
+    public static Control? GetDockAdornerHost(AvaloniaObject control)
+    {
+        return control.GetValue(DockAdornerHostProperty);
+    }
+
+    /// <summary>
+    /// Sets the control where the dock adorner should be displayed.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The host control.</param>
+    public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
+    {
+        control.SetValue(DockAdornerHostProperty, value);
+    }
+
+    /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>

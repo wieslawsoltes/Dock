@@ -15,6 +15,7 @@ The available properties are:
 | `IsDropArea` | `bool` | Identifies an element that can accept dropped dockables. |
 | `IsDragEnabled` | `bool` | Enables or disables dragging of dockables contained within the control. |
 | `IsDropEnabled` | `bool` | Enables or disables dropping of dockables onto the control. |
+| `DockAdornerHost` | `Control` | Specifies which control should display the dock adorner when this element is targeted. |
 
 ## Using the properties in control themes
 
@@ -28,7 +29,9 @@ Every control template that participates in docking should set the appropriate `
 
 <!-- Parts of the template that accept drops -->
 <Border x:Name="PART_BorderFill"
-        DockProperties.IsDropArea="True" />
+        DockProperties.IsDropArea="True"
+        DockProperties.IsDockTarget="True"
+        DockProperties.DockAdornerHost="{Binding #PART_Border}" />
 ```
 
 Without the attached properties above the drag logic would not detect the border as a valid drop area and documents could not be rearranged.

@@ -37,7 +37,8 @@ internal abstract class DockManagerState : IDockManagerState
         // Local dock target
         if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            LocalAdornerHelper.AddAdorner(control);
+            var host = DockProperties.GetDockAdornerHost(control) ?? control;
+            LocalAdornerHelper.AddAdorner(host);
         }
 
         // Global dock target
@@ -46,7 +47,8 @@ internal abstract class DockManagerState : IDockManagerState
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)
             {
-                GlobalAdornerHelper.AddAdorner(dockControl);
+                var host = DockProperties.GetDockAdornerHost(dockControl) ?? dockControl;
+                GlobalAdornerHelper.AddAdorner(host);
             }
         }
     }
@@ -56,7 +58,8 @@ internal abstract class DockManagerState : IDockManagerState
         // Local dock target
         if (DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
-            LocalAdornerHelper.RemoveAdorner(control);
+            var host = DockProperties.GetDockAdornerHost(control) ?? control;
+            LocalAdornerHelper.RemoveAdorner(host);
         }
 
         // Global dock target
@@ -65,7 +68,8 @@ internal abstract class DockManagerState : IDockManagerState
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)
             {
-                GlobalAdornerHelper.RemoveAdorner(dockControl);
+                var host = DockProperties.GetDockAdornerHost(dockControl) ?? dockControl;
+                GlobalAdornerHelper.RemoveAdorner(host);
             }
         }
     }

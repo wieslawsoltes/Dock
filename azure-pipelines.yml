@@ -34,7 +34,7 @@ jobs:
   - template: Test-Bash.yml@templates
     parameters:
       name: 'Test_macOS'
-      vmImage: 'macOS-14'
+      vmImage: 'macOS-15'
       BuildConfiguration: ${{ variables.BuildConfiguration }}
       Workloads: ${{ variables.Workloads }}
 

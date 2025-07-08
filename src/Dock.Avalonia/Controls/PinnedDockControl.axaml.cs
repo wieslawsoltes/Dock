@@ -5,7 +5,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.VisualTree;
 using Dock.Model.Core;
+using Dock.Model.Controls;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
@@ -136,9 +138,13 @@ public class PinnedDockControl : TemplatedControl
             {
                 _window = new PinnedDockWindow
                 {
-                    Content = _pinnedDock.Content
+                    Content = new ToolDockControl
+                    {
+                        DataContext = root.PinnedDock
+                    }
                 };
-                if (GetVisualRoot() is Window owner)
+
+                if (this.GetVisualRoot() is Window owner)
                 {
                     _window.Show(owner);
                 }

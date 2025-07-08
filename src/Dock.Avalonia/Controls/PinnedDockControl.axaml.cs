@@ -150,10 +150,10 @@ public class PinnedDockControl : TemplatedControl
                 }
             }
 
-            var point = this.PointToScreen(new Point());
+            var point = _pinnedDock.PointToScreen(new Point());
             _window.Position = new PixelPoint(point.X, point.Y);
-            _window.Width = Bounds.Width;
-            _window.Height = Bounds.Height;
+            _window.Width = _pinnedDock.Bounds.Width;
+            _window.Height = _pinnedDock.Bounds.Height;
 
             if (_pinnedDockGrid.IsVisible)
             {

@@ -9,7 +9,8 @@
     <Setter Property="ShowActivated" Value="False" />
     <Setter Property="Background" Value="{x:Null}" />
     <Setter Property="TransparencyLevelHint" Value="Transparent" />
-    <Setter Property="SizeToContent" Value="WidthAndHeight" />
+    <!-- Size will be updated from the original dockable -->
+    <Setter Property="SizeToContent" Value="Manual" />
     <Setter Property="Topmost" Value="False" />
     <Setter Property="IsHitTestVisible" Value="True" />
   </ControlTheme>

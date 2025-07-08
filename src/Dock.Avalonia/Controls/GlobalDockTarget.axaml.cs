@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Avalonia.Contract;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -101,18 +102,15 @@ public class GlobalDockTarget : TemplatedControl
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
         if (selectorPoint is null)
         {
-            var screenPoint = relativeTo.PointToScreen(point);
-            var localPoint = this.PointToClient(screenPoint);
-            selectorPoint = this.TranslatePoint(localPoint, selector);
+            var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
+            var scaling = (selector.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(selector)?.Scaling ?? 1.0;
+            var selectorOrigin = selector.PointToScreen(default).ToPoint(scaling);
+            selectorPoint = new Point(screenPoint.X - selectorOrigin.X, screenPoint.Y - selectorOrigin.Y);
         }
 
         if (selectorPoint is { })
         {
-            var sp = new Point(
-                Math.Clamp(selectorPoint.Value.X, 0, selector.Bounds.Width - 1),
-                Math.Clamp(selectorPoint.Value.Y, 0, selector.Bounds.Height - 1));
-
-            if (selector.InputHitTest(sp) is { } inputElement && Equals(inputElement, selector))
+            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {

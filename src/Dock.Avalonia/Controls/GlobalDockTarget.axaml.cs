@@ -98,6 +98,13 @@ public class GlobalDockTarget : TemplatedControl
         selector.Opacity = 1;
 
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
+        if (selectorPoint is null)
+        {
+            var screenPoint = relativeTo.PointToScreen(point);
+            var localPoint = this.PointToClient(screenPoint);
+            selectorPoint = this.TranslatePoint(localPoint, selector);
+        }
+
         if (selectorPoint is { })
         {
             if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))

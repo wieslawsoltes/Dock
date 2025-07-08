@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
-using Dock.Settings;
 using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
@@ -47,7 +46,6 @@ internal class AdornerHelper<T> where T : Control, new()
             return;
         }
 
-
         var position = visual.PointToScreen(new Point());
         var width = visual.Bounds.Width;
         var height = visual.Bounds.Height;
@@ -62,7 +60,7 @@ internal class AdornerHelper<T> where T : Control, new()
             IsHitTestVisible = true
         };
 
-        if (Adorner is Control control)
+        if (Adorner is { } control)
         {
             control.Width = width;
             control.Height = height;

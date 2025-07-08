@@ -52,6 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
 		build\Avalonia.Headless.props = build\Avalonia.Headless.props
 		build\Prism.props = build\Prism.props
+		build\AOT.props = build\AOT.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"

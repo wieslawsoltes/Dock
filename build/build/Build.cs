@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nuke.Common;
@@ -45,6 +46,21 @@ class Build : NukeBuild
     {
         Configuration = Configuration ?? "Release";
         VersionSuffix = VersionSuffix ?? "";
+        InitializeBuild();
+    }
+
+    private void InitializeBuild()
+    {
+        if (OperatingSystem.IsMacOS())
+        {
+            var projectToRemove = Solution.Projects.Where(x => x.Name == "WebViewSample");
+            foreach (var project in projectToRemove)
+            {
+                Console.WriteLine($"Removed project: {project.Name}");
+                Solution.RemoveProject(project);
+            }
+            Solution.Save();
+        }
     }
 
     private void DeleteDirectories(IReadOnlyCollection<AbsolutePath> directories)

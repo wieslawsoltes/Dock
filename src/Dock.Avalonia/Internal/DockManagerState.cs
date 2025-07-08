@@ -1,5 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -35,9 +37,21 @@ internal abstract class DockManagerState : IDockManagerState
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
         // Local dock target
-        if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (isLocalValid && DropControl is { } control)
         {
-            LocalAdornerHelper.AddAdorner(control);
+            if (DockProperties.GetIsDockTarget(control))
+            {
+                LocalAdornerHelper.AddAdorner(control);
+            }
+            else
+            {
+                var dockControl = control.GetVisualAncestors().OfType<DockControl>().FirstOrDefault();
+
+                if (dockControl is { })
+                {
+                    LocalAdornerHelper.AddAdorner(dockControl);
+                }
+            }
         }
 
         // Global dock target
@@ -54,9 +68,21 @@ internal abstract class DockManagerState : IDockManagerState
     protected void RemoveAdorners()
     {
         // Local dock target
-        if (DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
+        if (DropControl is { } control)
         {
-            LocalAdornerHelper.RemoveAdorner(control);
+            if (DockProperties.GetIsDockTarget(control))
+            {
+                LocalAdornerHelper.RemoveAdorner(control);
+            }
+            else
+            {
+                var dockControl = control.GetVisualAncestors().OfType<DockControl>().FirstOrDefault();
+
+                if (dockControl is { })
+                {
+                    LocalAdornerHelper.RemoveAdorner(dockControl);
+                }
+            }
         }
 
         // Global dock target

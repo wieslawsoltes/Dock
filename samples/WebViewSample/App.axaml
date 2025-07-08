@@ -1,0 +1,22 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="WebViewSample.App"
+             Name="Dock WebView Demo"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
+  </Application.Resources>
+
+  <Application.Styles>
+
+    <FluentTheme />
+    <DockFluentTheme />
+
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
+
+  </Application.Styles>
+
+</Application>

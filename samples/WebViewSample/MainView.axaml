@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:webview="using:WebViewControl"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WebViewSample.MainView"
+             x:CompileBindings="True" x:DataType="DockControl">
+  <!-- xmlns:webview="using:WebViewControl" -->
+  <!-- xmlns:webview="clr-namespace:WebViewControl;assembly=WebViewControl.Avalonia" -->
+  <Grid RowDefinitions="Auto,*">
+    <DockControl x:Name="DockControl" Grid.Row="1" InitializeLayout="True" InitializeFactory="True">
+      <DockControl.Factory>
+        <Factory HideToolsOnClose="True" HideDocumentsOnClose="True" />
+      </DockControl.Factory>
+      <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
+        <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+          <DocumentDock x:Name="DocumentsPane" IsCollapsable="False" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1">
+            <DocumentDock.DocumentTemplate>
+              <DocumentTemplate>
+                <webview:WebView Focusable="True" Address="https://www.google.com/" />
+              </DocumentTemplate>
+            </DocumentDock.DocumentTemplate>
+            <Document x:Name="Document1" Id="Document1" Title="google.com" Context="" x:DataType="Document">
+              <webview:WebView Focusable="True" Address="https://www.google.com/" />
+            </Document>
+            <Document x:Name="Document2" Id="Document2" Title="github.com" Context="" x:DataType="Document">
+              <webview:WebView Focusable="True" Address="https://www.github.com/" />
+            </Document>
+          </DocumentDock>
+        </ProportionalDock>
+      </RootDock>
+    </DockControl>
+  </Grid>
+</UserControl>

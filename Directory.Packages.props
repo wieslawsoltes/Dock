@@ -20,6 +20,8 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="ReactiveMarbles.PropertyChanged" Version="2.0.27" />
     <PackageVersion Include="System.Text.Json" Version="9.0.4" />
+    <PackageVersion Include="WebViewControl-Avalonia" Version="3.120.10" />
+    <PackageVersion Include="WebViewControl-Avalonia-ARM64" Version="3.120.10" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.abstractions" Version="2.0.3" />
     <PackageVersion Include="xunit.assert" Version="2.9.3" />

@@ -127,10 +127,12 @@ public class DockManager : IDockManager
         {
             case ITool _:
             {
-                if (ReferenceEquals(sourceDockableOwner, targetDock) &&
-                    targetDock.VisibleDockables?.Contains(sourceDockable) == true)
+                if (ReferenceEquals(sourceDockableOwner, targetDock))
                 {
-                    return false;
+                    if (targetDock.VisibleDockables?.Count == 1)
+                    {
+                        return false;
+                    }
                 }
 
                 if (bExecute)
@@ -142,10 +144,12 @@ public class DockManager : IDockManager
             }
             case IDocument _:
             {
-                if (ReferenceEquals(sourceDockableOwner, targetDock) &&
-                    targetDock.VisibleDockables?.Contains(sourceDockable) == true)
+                if (ReferenceEquals(sourceDockableOwner, targetDock))
                 {
-                    return false;
+                    if (targetDock.VisibleDockables?.Count == 1)
+                    {
+                        return false;
+                    }
                 }
 
                 if (bExecute)

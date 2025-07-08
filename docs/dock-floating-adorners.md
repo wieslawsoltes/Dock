@@ -9,6 +9,8 @@ DockSettings.UseFloatingDockAdorner = true;
 
 ```csharp
 // Via the app builder
+using Dock.Settings;
+
 AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .WithDockSettings(useFloatingDockAdorner: true);

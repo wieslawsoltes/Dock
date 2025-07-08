@@ -49,6 +49,8 @@ hidden and drags are limited to the originating control.
 You can configure the settings when building your Avalonia application:
 
 ```csharp
+using Dock.Settings;
+
 AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .WithDockSettings(useFloatingDockAdorner: true,

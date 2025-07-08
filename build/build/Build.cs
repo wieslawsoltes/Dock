@@ -53,8 +53,9 @@ class Build : NukeBuild
     {
         if (OperatingSystem.IsMacOS())
         {
-            var projectToRemove = Solution.Projects.Where(x => x.Name == "WebViewSample");
-            foreach (var project in projectToRemove)
+            var projectsToRemove = Solution.AllProjects.Where(x => x.Name == "WebViewSample");
+
+            foreach (var project in projectsToRemove)
             {
                 Console.WriteLine($"Removed project: {project.Name}");
                 Solution.RemoveProject(project);

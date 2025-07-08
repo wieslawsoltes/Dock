@@ -33,10 +33,7 @@ public class DockManager : IDockManager
     {
         if (sourceDockableOwner == targetDock)
         {
-            if (targetDock.VisibleDockables?.Count == 1)
-            {
-                return false;
-            }
+            return false;
         }
         var targetDockable = targetDock.VisibleDockables?.LastOrDefault();
         if (targetDockable is null)

@@ -36,6 +36,7 @@ public class PinnedDockControl : TemplatedControl
     private Grid? _pinnedDockGrid;
     private ContentControl? _pinnedDock;
     private PinnedDockWindow? _window;
+    private Window? _ownerWindow;
 
     static PinnedDockControl()
     {
@@ -146,6 +147,9 @@ public class PinnedDockControl : TemplatedControl
 
                 if (this.GetVisualRoot() is Window owner)
                 {
+                    _ownerWindow = owner;
+                    _ownerWindow.PositionChanged += OwnerWindow_PositionChanged;
+                    _ownerWindow.Resized += OwnerWindow_Resized;
                     _window.Show(owner);
                 }
             }
@@ -174,11 +178,28 @@ public class PinnedDockControl : TemplatedControl
             _window = null;
         }
 
+        if (_ownerWindow is not null)
+        {
+            _ownerWindow.PositionChanged -= OwnerWindow_PositionChanged;
+            _ownerWindow.Resized -= OwnerWindow_Resized;
+            _ownerWindow = null;
+        }
+
         if (_pinnedDockGrid is { IsVisible: false })
         {
             // Restore XAML binding controlling visibility
             _pinnedDockGrid.ClearValue(Visual.IsVisibleProperty);
         }
+    }
+
+    private void OwnerWindow_PositionChanged(object? sender, PixelPointEventArgs e)
+    {
+        CloseWindow();
+    }
+
+    private void OwnerWindow_Resized(object? sender, EventArgs e)
+    {
+        UpdateWindow();
     }
 }
 

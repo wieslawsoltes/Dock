@@ -7,6 +7,7 @@ using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
 using Dock.Model.Controls;
+using Dock.Avalonia.Contract;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;

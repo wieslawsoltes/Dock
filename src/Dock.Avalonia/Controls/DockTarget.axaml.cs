@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
+using Dock.Avalonia.Contract;
 
 namespace Dock.Avalonia.Controls;
 
@@ -56,8 +57,8 @@ public class DockTarget : TemplatedControl
     }
 
     internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction,
-        Func<Point, DockOperation, DragAction, Visual, bool> validate,
-        Func<Point, DockOperation, DragAction, Visual, bool>? visible = null)
+        DockOperationHandler validate,
+        DockOperationHandler? visible = null)
     {
         var result = DockOperation.Window;
 
@@ -91,8 +92,8 @@ public class DockTarget : TemplatedControl
 
     private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo,
         DockOperation operation, DragAction dragAction,
-        Func<Point, DockOperation, DragAction, Visual, bool> validate,
-        Func<Point, DockOperation, DragAction, Visual, bool>? visible)
+        DockOperationHandler validate,
+        DockOperationHandler? visible)
     {
         if (selector is null || indicator is null)
         {

@@ -44,6 +44,17 @@ Increase these values if small pointer movements should not initiate dragging.
 onto other `DockControl` instances. If set to `false` the global dock target is
 hidden and drags are limited to the originating control.
 
+## App builder integration
+
+You can configure the settings when building your Avalonia application:
+
+```csharp
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .WithDockSettings(useFloatingDockAdorner: true,
+                      minimumHorizontalDragDistance: 6);
+```
+
 ## Hide on close
 
 `FactoryBase` exposes two properties that control whether closing a tool or

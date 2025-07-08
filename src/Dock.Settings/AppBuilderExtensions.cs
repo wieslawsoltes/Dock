@@ -1,0 +1,51 @@
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using Avalonia;
+
+namespace Dock.Settings;
+
+/// <summary>
+/// Extension methods for <see cref="AppBuilder"/>.
+/// </summary>
+public static class AppBuilderExtensions
+{
+    /// <summary>
+    /// Configures <see cref="DockSettings"/> values using the Avalonia app builder fluent pattern.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="minimumHorizontalDragDistance">Optional horizontal drag threshold.</param>
+    /// <param name="minimumVerticalDragDistance">Optional vertical drag threshold.</param>
+    /// <param name="useFloatingDockAdorner">Optional floating adorner flag.</param>
+    /// <param name="enableGlobalDocking">Optional global docking flag.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder WithDockSettings(
+        this AppBuilder builder,
+        double? minimumHorizontalDragDistance = null,
+        double? minimumVerticalDragDistance = null,
+        bool? useFloatingDockAdorner = null,
+        bool? enableGlobalDocking = null)
+    {
+        if (minimumHorizontalDragDistance != null)
+        {
+            DockSettings.MinimumHorizontalDragDistance = minimumHorizontalDragDistance.Value;
+        }
+
+        if (minimumVerticalDragDistance != null)
+        {
+            DockSettings.MinimumVerticalDragDistance = minimumVerticalDragDistance.Value;
+        }
+
+        if (useFloatingDockAdorner != null)
+        {
+            DockSettings.UseFloatingDockAdorner = useFloatingDockAdorner.Value;
+        }
+
+        if (enableGlobalDocking != null)
+        {
+            DockSettings.EnableGlobalDocking = enableGlobalDocking.Value;
+        }
+
+        return builder;
+    }
+}

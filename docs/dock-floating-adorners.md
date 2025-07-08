@@ -13,7 +13,7 @@ using Dock.Settings;
 
 AppBuilder.Configure<App>()
     .UsePlatformDetect()
-    .WithDockSettings(useFloatingDockAdorner: true);
+    .UseFloatingDockAdorner();
 ```
 
 When enabled `AdornerHelper` creates a lightweight `DockAdornerWindow` positioned above the drag source. The window ignores pointer events so the drag operation continues uninterrupted. The drag preview window still appears above the adorner because only the preview is marked as `Topmost`.

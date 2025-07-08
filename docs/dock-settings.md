@@ -53,8 +53,9 @@ using Dock.Settings;
 
 AppBuilder.Configure<App>()
     .UsePlatformDetect()
-    .WithDockSettings(useFloatingDockAdorner: true,
-                      minimumHorizontalDragDistance: 6);
+    .UseFloatingDockAdorner()
+    .EnableGlobalDocking(false)
+    .WithDockSettings(minimumHorizontalDragDistance: 6);
 ```
 
 ## Hide on close

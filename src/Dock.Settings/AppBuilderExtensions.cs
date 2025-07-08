@@ -48,4 +48,32 @@ public static class AppBuilderExtensions
 
         return builder;
     }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UseFloatingDockAdorner"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to use floating dock adorners.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseFloatingDockAdorner(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.UseFloatingDockAdorner = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.EnableGlobalDocking"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to allow docking between controls.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder EnableGlobalDocking(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.EnableGlobalDocking = enable;
+        return builder;
+    }
 }

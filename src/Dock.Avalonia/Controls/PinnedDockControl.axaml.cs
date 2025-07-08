@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Dock.Model.Core;
+using Dock.Model.Controls;
 
 namespace Dock.Avalonia.Controls;
 
@@ -38,6 +39,22 @@ public class PinnedDockControl : TemplatedControl
         PinnedDockAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
     }
 
+    private Alignment GetPinnedAlignment()
+    {
+        if (DataContext is IRootDock root)
+        {
+            return PinnedDockAlignment switch
+            {
+                Alignment.Left => root.LeftPinnedDockablesAlignment,
+                Alignment.Right => root.RightPinnedDockablesAlignment,
+                Alignment.Top => root.TopPinnedDockablesAlignment,
+                Alignment.Bottom => root.BottomPinnedDockablesAlignment,
+                _ => Alignment.Unset
+            };
+        }
+        return Alignment.Unset;
+    }
+
     private void UpdateGrid()
     {
         if (_pinnedDockGrid == null || _pinnedDock == null)
@@ -54,6 +71,9 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 0);
+                _pinnedDockGrid.VerticalAlignment = GetPinnedAlignment() == Alignment.Bottom ?
+                    VerticalAlignment.Bottom : VerticalAlignment.Top;
+                _pinnedDockGrid.HorizontalAlignment = HorizontalAlignment.Left;
                 break;
             case Alignment.Bottom:
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
@@ -61,6 +81,9 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 2);
+                _pinnedDockGrid.HorizontalAlignment = GetPinnedAlignment() == Alignment.Right ?
+                    HorizontalAlignment.Right : HorizontalAlignment.Left;
+                _pinnedDockGrid.VerticalAlignment = VerticalAlignment.Bottom;
                 break;
             case Alignment.Right:
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
@@ -68,6 +91,9 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 2);
                 Grid.SetRow(_pinnedDock, 0);
+                _pinnedDockGrid.VerticalAlignment = GetPinnedAlignment() == Alignment.Bottom ?
+                    VerticalAlignment.Bottom : VerticalAlignment.Top;
+                _pinnedDockGrid.HorizontalAlignment = HorizontalAlignment.Right;
                 break;
             case Alignment.Top:
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = 50 });
@@ -75,6 +101,9 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 1);
                 Grid.SetRow(_pinnedDock, 0);
+                _pinnedDockGrid.HorizontalAlignment = GetPinnedAlignment() == Alignment.Right ?
+                    HorizontalAlignment.Right : HorizontalAlignment.Left;
+                _pinnedDockGrid.VerticalAlignment = VerticalAlignment.Top;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -87,6 +116,13 @@ public class PinnedDockControl : TemplatedControl
         base.OnApplyTemplate(e);
         _pinnedDockGrid = e.NameScope.Get<Grid>("PART_PinnedDockGrid");
         _pinnedDock = e.NameScope.Get<ContentControl>("PART_PinnedDock");
+        UpdateGrid();
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDataContextChanged(EventArgs e)
+    {
+        base.OnDataContextChanged(e);
         UpdateGrid();
     }
 }

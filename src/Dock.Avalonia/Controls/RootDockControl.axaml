@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     x:DataType="dmc:IRootDock"
                     x:CompileBindings="True">
   <Design.PreviewWith>
@@ -17,21 +18,25 @@
         <DockableControl TrackingMode="Visible">
           <DockPanel Background="Transparent"
                      DockProperties.IsDropArea="False">
-            <ToolPinnedControl DockPanel.Dock="Left" 
+            <ToolPinnedControl DockPanel.Dock="Left"
                                Orientation="Vertical"
                                Items="{Binding LeftPinnedDockables}"
+                               VerticalAlignment="{Binding LeftPinnedDockablesAlignment, Converter={x:Static converters:AlignmentToVerticalAlignmentConverter.Instance}}"
                                IsVisible="{Binding !!LeftPinnedDockables.Count, FallbackValue={x:False}}" />
-            <ToolPinnedControl DockPanel.Dock="Right" 
+            <ToolPinnedControl DockPanel.Dock="Right"
                                Orientation="Vertical"
                                Items="{Binding RightPinnedDockables}"
+                               VerticalAlignment="{Binding RightPinnedDockablesAlignment, Converter={x:Static converters:AlignmentToVerticalAlignmentConverter.Instance}}"
                                IsVisible="{Binding !!RightPinnedDockables.Count, FallbackValue={x:False}}" />
-            <ToolPinnedControl DockPanel.Dock="Top" 
+            <ToolPinnedControl DockPanel.Dock="Top"
                                Orientation="Horizontal"
                                Items="{Binding TopPinnedDockables}"
+                               HorizontalAlignment="{Binding TopPinnedDockablesAlignment, Converter={x:Static converters:AlignmentToHorizontalAlignmentConverter.Instance}}"
                                IsVisible="{Binding !!TopPinnedDockables.Count, FallbackValue={x:False}}" />
-            <ToolPinnedControl DockPanel.Dock="Bottom" 
+            <ToolPinnedControl DockPanel.Dock="Bottom"
                                Orientation="Horizontal"
                                Items="{Binding BottomPinnedDockables}"
+                               HorizontalAlignment="{Binding BottomPinnedDockablesAlignment, Converter={x:Static converters:AlignmentToHorizontalAlignmentConverter.Instance}}"
                                IsVisible="{Binding !!BottomPinnedDockables.Count, FallbackValue={x:False}}" />
             <Panel>
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />

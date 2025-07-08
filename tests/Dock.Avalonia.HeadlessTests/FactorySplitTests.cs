@@ -44,7 +44,8 @@ public class FactorySplitTests
 
         var layout = factory.CreateSplitLayout(container, doc, DockOperation.Left);
 
-        Assert.Equal(Orientation.Horizontal, layout.Orientation);
+        Assert.IsType<ProportionalDock>(layout);
+        Assert.Equal(Orientation.Horizontal, (layout as ProportionalDock)!.Orientation);
         Assert.Equal(3, layout.VisibleDockables!.Count);
         Assert.Same(container, layout.VisibleDockables[2]);
         Assert.True(double.IsNaN(container.Proportion));

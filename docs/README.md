@@ -44,6 +44,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
+- [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 

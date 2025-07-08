@@ -27,6 +27,11 @@ public static class DockSettings
     public static bool UseFloatingDockAdorner = false;
 
     /// <summary>
+    /// Show auto-hidden dockables inside a floating window.
+    /// </summary>
+    public static bool UsePinnedDockWindow = false;
+
+    /// <summary>
     /// Allow docking between different dock control instances.
     /// </summary>
     public static bool EnableGlobalDocking = true;

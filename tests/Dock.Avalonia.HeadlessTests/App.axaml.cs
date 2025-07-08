@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Markup.Xaml;
 
-namespace Dock.Avalonia.UnitTests;
+namespace Dock.Avalonia.HeadlessTests;
 
 public partial class App : Application
 {

@@ -94,3 +94,6 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    ```
 
 The window will show a single document hosted by `DockControl` without using XAML or MVVM helpers.
+
+You can find a complete project in the repository under
+[`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

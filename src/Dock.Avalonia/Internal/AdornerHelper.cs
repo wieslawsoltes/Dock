@@ -58,7 +58,8 @@ internal class AdornerHelper<T> where T : Control, new()
             Height = height,
             Content = Adorner,
             Position = new PixelPoint(position.X, position.Y),
-            SizeToContent = SizeToContent.Manual
+            SizeToContent = SizeToContent.Manual,
+            IsHitTestVisible = true
         };
 
         if (Adorner is Control control)

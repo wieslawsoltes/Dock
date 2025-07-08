@@ -35,7 +35,8 @@
               </Style>
             </ContentControl.Styles>
           </ContentControl>
-          <GridSplitter Grid.Column="1" Grid.Row="1" 
+          <GridSplitter Name="PART_PinnedDockSplitter"
+                        Grid.Column="1" Grid.Row="1"
                         Background="{Binding $parent[Window].Background, TargetNullValue={x:Static Brushes.Transparent}}" />
         </Grid>
       </ControlTemplate>

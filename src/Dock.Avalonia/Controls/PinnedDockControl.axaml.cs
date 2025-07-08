@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Model.Controls;
@@ -18,6 +19,7 @@ namespace Dock.Avalonia.Controls;
 /// </summary>
 [TemplatePart("PART_PinnedDock", typeof(ContentControl)/*, IsRequired = true*/)]
 [TemplatePart("PART_PinnedDockGrid", typeof(Grid)/*, IsRequired = true*/)]
+[TemplatePart("PART_PinnedDockSplitter", typeof(GridSplitter))]
 public class PinnedDockControl : TemplatedControl
 {
     /// <summary>
@@ -36,6 +38,7 @@ public class PinnedDockControl : TemplatedControl
 
     private Grid? _pinnedDockGrid;
     private ContentControl? _pinnedDock;
+    private GridSplitter? _pinnedDockSplitter;
     private PinnedDockWindow? _window;
     private Window? _ownerWindow;
 
@@ -93,6 +96,7 @@ public class PinnedDockControl : TemplatedControl
         base.OnApplyTemplate(e);
         _pinnedDockGrid = e.NameScope.Get<Grid>("PART_PinnedDockGrid");
         _pinnedDock = e.NameScope.Get<ContentControl>("PART_PinnedDock");
+        _pinnedDockSplitter = e.NameScope.Find<GridSplitter>("PART_PinnedDockSplitter");
         UpdateGrid();
 
         if (DockSettings.UsePinnedDockWindow)
@@ -167,6 +171,11 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDock.Opacity = 0;
                 _pinnedDock.IsHitTestVisible = false;
             }
+
+            if (_pinnedDockSplitter is { IsVisible: true })
+            {
+                _pinnedDockSplitter.IsVisible = false;
+            }
         }
         else
         {
@@ -196,6 +205,8 @@ public class PinnedDockControl : TemplatedControl
             _pinnedDock.ClearValue(OpacityProperty);
             _pinnedDock.ClearValue(IsHitTestVisibleProperty);
         }
+
+        _pinnedDockSplitter?.ClearValue(IsVisibleProperty);
     }
 
     private void OwnerWindow_PositionChanged(object? sender, PixelPointEventArgs e)

@@ -31,10 +31,12 @@ public class DockManager : IDockManager
 
     private bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
     {
-        if (ReferenceEquals(sourceDockableOwner, targetDock) &&
-            targetDock.VisibleDockables?.Contains(sourceDockable) == true)
+        if (ReferenceEquals(sourceDockableOwner, targetDock))
         {
-            return false;
+            if (targetDock.VisibleDockables?.Count == 1)
+            {
+                return false;
+            }
         }
         var targetDockable = targetDock.VisibleDockables?.LastOrDefault();
         if (targetDockable is null)

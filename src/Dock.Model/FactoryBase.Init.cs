@@ -66,25 +66,14 @@ public abstract partial class FactoryBase
                 InitDockables(dockable, rootDock.HiddenDockables);
             }
 
-            if (rootDock.LeftPinnedDockables is not null)
-            {
-                InitDockables(dockable, rootDock.LeftPinnedDockables);
-            }
-
-            if (rootDock.RightPinnedDockables is not null)
-            {
-                InitDockables(dockable, rootDock.RightPinnedDockables);
-            }
-
-            if (rootDock.TopPinnedDockables is not null)
-            {
-                InitDockables(dockable, rootDock.TopPinnedDockables);
-            }
-
-            if (rootDock.BottomPinnedDockables is not null)
-            {
-                InitDockables(dockable, rootDock.BottomPinnedDockables);
-            }
+            InitPinned(dockable, rootDock.LeftTopPinnedDockables);
+            InitPinned(dockable, rootDock.LeftBottomPinnedDockables);
+            InitPinned(dockable, rootDock.RightTopPinnedDockables);
+            InitPinned(dockable, rootDock.RightBottomPinnedDockables);
+            InitPinned(dockable, rootDock.TopLeftPinnedDockables);
+            InitPinned(dockable, rootDock.TopRightPinnedDockables);
+            InitPinned(dockable, rootDock.BottomLeftPinnedDockables);
+            InitPinned(dockable, rootDock.BottomRightPinnedDockables);
 
             if (rootDock.Windows is not null)
             {
@@ -103,6 +92,19 @@ public abstract partial class FactoryBase
         foreach (var child in dockables)
         {
             InitDockable(child, dockable);
+        }
+    }
+
+    private void InitPinned(IDockable owner, IList<IDockable>? dockables)
+    {
+        if (dockables is null)
+        {
+            return;
+        }
+
+        foreach (var child in dockables)
+        {
+            InitDockable(child, owner);
         }
     }
 

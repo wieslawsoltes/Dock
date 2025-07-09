@@ -79,10 +79,14 @@ public class Factory : FactoryBase
     /// <inheritdoc/>
     public override IRootDock CreateRootDock() => new RootDock
     {
-        LeftPinnedDockables = CreateList<IDockable>(), 
-        RightPinnedDockables = CreateList<IDockable>(),
-        TopPinnedDockables = CreateList<IDockable>(),
-        BottomPinnedDockables = CreateList<IDockable>()
+        LeftTopPinnedDockables = CreateList<IDockable>(),
+        LeftBottomPinnedDockables = CreateList<IDockable>(),
+        RightTopPinnedDockables = CreateList<IDockable>(),
+        RightBottomPinnedDockables = CreateList<IDockable>(),
+        TopLeftPinnedDockables = CreateList<IDockable>(),
+        TopRightPinnedDockables = CreateList<IDockable>(),
+        BottomLeftPinnedDockables = CreateList<IDockable>(),
+        BottomRightPinnedDockables = CreateList<IDockable>()
     };
 
     /// <inheritdoc/>

@@ -35,25 +35,14 @@ public class DockState : IDockState
                 SaveDockables(rootDock.HiddenDockables);
             }
 
-            if (rootDock.LeftPinnedDockables is { })
-            {
-                SaveDockables(rootDock.LeftPinnedDockables);
-            }
-
-            if (rootDock.RightPinnedDockables is { })
-            {
-                SaveDockables(rootDock.RightPinnedDockables);
-            }
-
-            if (rootDock.TopPinnedDockables is { })
-            {
-                SaveDockables(rootDock.TopPinnedDockables);
-            }
-
-            if (rootDock.BottomPinnedDockables is { })
-            {
-                SaveDockables(rootDock.BottomPinnedDockables);
-            }
+            SavePinned(rootDock.LeftTopPinnedDockables);
+            SavePinned(rootDock.LeftBottomPinnedDockables);
+            SavePinned(rootDock.RightTopPinnedDockables);
+            SavePinned(rootDock.RightBottomPinnedDockables);
+            SavePinned(rootDock.TopLeftPinnedDockables);
+            SavePinned(rootDock.TopRightPinnedDockables);
+            SavePinned(rootDock.BottomLeftPinnedDockables);
+            SavePinned(rootDock.BottomRightPinnedDockables);
 
             if (rootDock.Windows is { })
             {
@@ -77,25 +66,14 @@ public class DockState : IDockState
                 RestoreDockables(rootDock.HiddenDockables);
             }
 
-            if (rootDock.LeftPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.LeftPinnedDockables);
-            }
-
-            if (rootDock.RightPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.RightPinnedDockables);
-            }
-
-            if (rootDock.TopPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.TopPinnedDockables);
-            }
-
-            if (rootDock.BottomPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.BottomPinnedDockables);
-            }
+            RestorePinned(rootDock.LeftTopPinnedDockables);
+            RestorePinned(rootDock.LeftBottomPinnedDockables);
+            RestorePinned(rootDock.RightTopPinnedDockables);
+            RestorePinned(rootDock.RightBottomPinnedDockables);
+            RestorePinned(rootDock.TopLeftPinnedDockables);
+            RestorePinned(rootDock.TopRightPinnedDockables);
+            RestorePinned(rootDock.BottomLeftPinnedDockables);
+            RestorePinned(rootDock.BottomRightPinnedDockables);
 
             if (rootDock.Windows is { })
             {
@@ -144,6 +122,14 @@ public class DockState : IDockState
         }
     }
 
+    private void SavePinned(IList<IDockable>? dockables)
+    {
+        if (dockables is { })
+        {
+            SaveDockables(dockables);
+        }
+    }
+
     private void RestoreDockables(IList<IDockable> dockables)
     {
         foreach (var dockable in dockables)
@@ -154,6 +140,14 @@ public class DockState : IDockState
             {
                 Restore(childDock);
             }
+        }
+    }
+
+    private void RestorePinned(IList<IDockable>? dockables)
+    {
+        if (dockables is { })
+        {
+            RestoreDockables(dockables);
         }
     }
 

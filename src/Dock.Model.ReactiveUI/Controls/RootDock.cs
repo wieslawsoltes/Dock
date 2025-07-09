@@ -39,20 +39,6 @@ public partial class RootDock : DockBase, IRootDock
     public partial IList<IDockable>? HiddenDockables { get; set; }
 
     /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial IList<IDockable>? LeftPinnedDockables { get; set; }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial IList<IDockable>? RightPinnedDockables { get; set; }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial IList<IDockable>? TopPinnedDockables { get; set; }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public partial IList<IDockable>? BottomPinnedDockables { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

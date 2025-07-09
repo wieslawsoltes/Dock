@@ -39,45 +39,11 @@ public class RootDock : DockBase, IRootDock
             o => o.HiddenDockables, 
             (o, v) => o.HiddenDockables = v);
 
-    /// <summary>
-    /// Defines the <see cref="LeftPinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<RootDock, IList<IDockable>?> LeftPinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(
-            nameof(LeftPinnedDockables), o => o.LeftPinnedDockables, 
-            (o, v) => o.LeftPinnedDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="PinnedDock"/> property.
-    /// </summary>
     public static readonly DirectProperty<RootDock, IToolDock?> PinnedDockProperty =
         AvaloniaProperty.RegisterDirect<RootDock, IToolDock?>(
             nameof(PinnedDock), o => o.PinnedDock,
             (o, v) => o.PinnedDock = v);
 
-    /// <summary>
-    /// Defines the <see cref="RightPinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<RootDock, IList<IDockable>?> RightPinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(
-            nameof(RightPinnedDockables), o => o.RightPinnedDockables, 
-            (o, v) => o.RightPinnedDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="TopPinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<RootDock, IList<IDockable>?> TopPinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(
-            nameof(TopPinnedDockables), o => o.TopPinnedDockables, 
-            (o, v) => o.TopPinnedDockables = v);
-
-    /// <summary>
-    /// Defines the <see cref="BottomPinnedDockables"/> property.
-    /// </summary>
-    public static readonly DirectProperty<RootDock, IList<IDockable>?> BottomPinnedDockablesProperty =
-        AvaloniaProperty.RegisterDirect<RootDock, IList<IDockable>?>(
-            nameof(BottomPinnedDockables), o => o.BottomPinnedDockables,
-            (o, v) => o.BottomPinnedDockables = v);
 
     /// <summary>
     /// Defines the <see cref="LeftTopPinnedDockables"/> property.
@@ -195,10 +161,6 @@ public class RootDock : DockBase, IRootDock
 
     private bool _isFocusableRoot;
     private IList<IDockable>? _hiddenDockables;
-    private IList<IDockable>? _leftPinnedDockables;
-    private IList<IDockable>? _rightPinnedDockables;
-    private IList<IDockable>? _topPinnedDockables;
-    private IList<IDockable>? _bottomPinnedDockables;
     private IList<IDockable>? _leftTopPinnedDockables;
     private IList<IDockable>? _leftBottomPinnedDockables;
     private IList<IDockable>? _rightTopPinnedDockables;
@@ -222,10 +184,6 @@ public class RootDock : DockBase, IRootDock
     {
         _isFocusableRoot = true;
         _hiddenDockables = new AvaloniaList<IDockable>();
-        _leftPinnedDockables = new AvaloniaList<IDockable>();
-        _rightPinnedDockables = new AvaloniaList<IDockable>();
-        _topPinnedDockables = new AvaloniaList<IDockable>();
-        _bottomPinnedDockables = new AvaloniaList<IDockable>();
         _leftTopPinnedDockables = new AvaloniaList<IDockable>();
         _leftBottomPinnedDockables = new AvaloniaList<IDockable>();
         _rightTopPinnedDockables = new AvaloniaList<IDockable>();
@@ -259,47 +217,11 @@ public class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("LeftPinnedDockables")]
-    public IList<IDockable>? LeftPinnedDockables
-    {
-        get => _leftPinnedDockables;
-        set => SetAndRaise(LeftPinnedDockablesProperty, ref _leftPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [JsonPropertyName("PinnedDock")]
     public IToolDock? PinnedDock
     {
         get => _pinnedDock;
         set => SetAndRaise(PinnedDockProperty, ref _pinnedDock, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("RightPinnedDockables")]
-    public IList<IDockable>? RightPinnedDockables
-    {
-        get => _rightPinnedDockables;
-        set => SetAndRaise(RightPinnedDockablesProperty, ref _rightPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("TopPinnedDockables")]
-    public IList<IDockable>? TopPinnedDockables
-    {
-        get => _topPinnedDockables;
-        set => SetAndRaise(TopPinnedDockablesProperty, ref _topPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    [JsonPropertyName("BottomPinnedDockables")]
-    public IList<IDockable>? BottomPinnedDockables
-    {
-        get => _bottomPinnedDockables;
-        set => SetAndRaise(BottomPinnedDockablesProperty, ref _bottomPinnedDockables, value);
     }
 
     /// <inheritdoc/>

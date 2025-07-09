@@ -18,10 +18,6 @@ public class RootDock : DockBase, IRootDock
 {
     private bool _isFocusableRoot = true;
     private IList<IDockable>? _hiddenDockables;
-    private IList<IDockable>? _leftPinnedDockables;
-    private IList<IDockable>? _rightPinnedDockables;
-    private IList<IDockable>? _topPinnedDockables;
-    private IList<IDockable>? _bottomPinnedDockables;
     private IList<IDockable>? _leftTopPinnedDockables;
     private IList<IDockable>? _leftBottomPinnedDockables;
     private IList<IDockable>? _rightTopPinnedDockables;
@@ -63,37 +59,6 @@ public class RootDock : DockBase, IRootDock
         set => SetProperty(ref _hiddenDockables, value);
     }
 
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? LeftPinnedDockables
-    {
-        get => _leftPinnedDockables;
-        set => SetProperty(ref _leftPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? RightPinnedDockables
-    {
-        get => _rightPinnedDockables;
-        set => SetProperty(ref _rightPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? TopPinnedDockables
-    {
-        get => _topPinnedDockables;
-        set => SetProperty(ref _topPinnedDockables, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public IList<IDockable>? BottomPinnedDockables
-    {
-        get => _bottomPinnedDockables;
-        set => SetProperty(ref _bottomPinnedDockables, value);
-    }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

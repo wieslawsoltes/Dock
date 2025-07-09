@@ -12,19 +12,34 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
-    private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
+    private static bool IsDockPinned(IRootDock rootDock, IDock dock)
     {
-        if (pinnedDockables is not null && pinnedDockables.Count != 0)
+        IEnumerable<IList<IDockable>?> lists = new[]
         {
-            foreach (var pinnedDockable in pinnedDockables)
+            rootDock.LeftTopPinnedDockables,
+            rootDock.LeftBottomPinnedDockables,
+            rootDock.RightTopPinnedDockables,
+            rootDock.RightBottomPinnedDockables,
+            rootDock.TopLeftPinnedDockables,
+            rootDock.TopRightPinnedDockables,
+            rootDock.BottomLeftPinnedDockables,
+            rootDock.BottomRightPinnedDockables
+        };
+
+        foreach (var list in lists)
+        {
+            if (list is not null)
             {
-                if (pinnedDockable.Owner == dock)
+                foreach (var pinned in list)
                 {
-                    return true;
+                    if (pinned.Owner == dock)
+                    {
+                        return true;
+                    }
                 }
             }
-            return true;
         }
+
         return false;
     }
 
@@ -39,31 +54,9 @@ public abstract partial class FactoryBase : IFactory
         var rootDock = FindRoot(dock, _ => true);
         if (rootDock is { })
         {
-            if (dock is IToolDock toolDock)
+            if (dock is IToolDock && IsDockPinned(rootDock, dock))
             {
-                if (toolDock.Alignment == Alignment.Left 
-                    && IsDockPinned(rootDock.LeftPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Right 
-                    && IsDockPinned(rootDock.RightPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Top 
-                    && IsDockPinned(rootDock.TopPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Bottom 
-                    && IsDockPinned(rootDock.BottomPinnedDockables, dock))
-                {
-                    return;
-                }
+                return;
             }
         }
 

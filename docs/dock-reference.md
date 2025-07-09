@@ -63,7 +63,7 @@ The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Doc
 - `CreateLayout()` which returns an `IRootDock` ready to display.
 - `InitLayout`, `InitDockable` and `InitDockWindow` for wiring up newly created objects.
 - Runtime operations like `AddDockable`, `InsertDockable`, `MoveDockable`, `SwapDockable`, `PinDockable`, `FloatDockable` and the various `Close*` methods.
-- Helpers on `DocumentDock` like `AddDocument` to insert and activate documents programmatically.
+- Helpers on `DocumentDock` like `AddDocument` and on `ToolDock` like `AddTool` to insert and activate dockables programmatically.
 - Events (found in `IFactory.Events`) that signal changes to the layout such as `DockableAdded`, `DockableRemoved`, `WindowOpened` and many more.
 
 A minimal example of creating a layout manually:

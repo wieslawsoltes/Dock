@@ -89,6 +89,7 @@ _factory?.SetActiveDockable(fileViewModel);
 _factory?.SetFocusedDockable(Layout, fileViewModel);
 ```
 These helper calls can be replaced by `files.AddDocument(fileViewModel)` for brevity.
+`ToolDock` offers a matching `AddTool` helper for dynamically created tools.
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 

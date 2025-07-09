@@ -42,7 +42,6 @@ public class PinnedDockControl : TemplatedControl
     private GridSplitter? _pinnedDockSplitter;
     private PinnedDockWindow? _window;
     private Window? _ownerWindow;
-    private DispatcherTimer? _moveTimer;
 
     static PinnedDockControl()
     {
@@ -154,10 +153,6 @@ public class PinnedDockControl : TemplatedControl
             return;
         }
 
-        if (_moveTimer is not null)
-        {
-            return;
-        }
 
         if (DataContext is not IRootDock root || root.PinnedDock is null)
         {
@@ -235,15 +230,7 @@ public class PinnedDockControl : TemplatedControl
     private void OwnerWindow_PositionChanged(object? sender, PixelPointEventArgs e)
     {
         CloseWindow();
-        _moveTimer?.Stop();
-        _moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
-        _moveTimer.Tick += (_, _) =>
-        {
-            _moveTimer?.Stop();
-            _moveTimer = null;
-            UpdateWindow();
-        };
-        _moveTimer.Start();
+        UpdateWindow();
     }
 
     private void OwnerWindow_Resized(object? sender, EventArgs e)

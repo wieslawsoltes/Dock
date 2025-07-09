@@ -1,3 +1,5 @@
+using Dock.Model.Controls;
+
 namespace Dock.Model.Core;
 
 /// <summary>

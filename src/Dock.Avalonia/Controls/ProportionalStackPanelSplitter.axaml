@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu">
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}"
+              Command="{Binding ResetProportion}" />
+    <Separator />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}"
+              Command="{Binding SetProportion}" CommandParameter="0.1" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}"
+              Command="{Binding SetProportion}" CommandParameter="0.25" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}"
+              Command="{Binding SetProportion}" CommandParameter="0.5" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}"
+              Command="{Binding SetProportion}" CommandParameter="0.75" />
+    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}"
+              Command="{Binding SetProportion}" CommandParameter="0.9" />
+  </ContextMenu>
+
+  <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
+
+    <Setter Property="Background" Value="Transparent" />
+
+    <Setter Property="ContextMenu" Value="{DynamicResource ProportionalStackPanelSplitterContextMenu}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" />
+      </ControlTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>

@@ -40,6 +40,11 @@ public static class AppBuilderExtensions
             DockSettings.UseFloatingDockAdorner = options.UseFloatingDockAdorner.Value;
         }
 
+        if (options.UsePinnedDockWindow != null)
+        {
+            DockSettings.UsePinnedDockWindow = options.UsePinnedDockWindow.Value;
+        }
+
         if (options.EnableGlobalDocking != null)
         {
             DockSettings.EnableGlobalDocking = options.EnableGlobalDocking.Value;
@@ -59,6 +64,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseFloatingDockAdorner = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UsePinnedDockWindow"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to use floating pinned dock window.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UsePinnedDockWindow(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.UsePinnedDockWindow = enable;
         return builder;
     }
 

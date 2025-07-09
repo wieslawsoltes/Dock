@@ -9,8 +9,22 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using System.Windows.Input;
 
 namespace DockCodeOnlySample;
+
+internal sealed class LambdaCommand : ICommand
+{
+    private readonly Action _execute;
+
+    public LambdaCommand(Action execute) => _execute = execute;
+
+    public bool CanExecute(object? parameter) => true;
+
+    public void Execute(object? parameter) => _execute();
+
+    public event EventHandler? CanExecuteChanged { add { } remove { } }
+}
 
 internal class Program
 {
@@ -41,7 +55,25 @@ public class App : Application
             // Create a layout using the plain Avalonia factory
             var factory  = new Factory();
 
+            var documentDock = new DocumentDock
+            {
+                Id = "Documents",
+                CanCreateDocument = true
+            };
+            documentDock.CreateDocument = new LambdaCommand(() =>
+            {
+                var index = documentDock.VisibleDockables?.Count ?? 0;
+                var doc = new Document
+                {
+                    Id = $"Doc{index + 1}",
+                    Title = $"Document {index + 1}"
+                };
+                documentDock.AddDocument(doc);
+            });
+
             var document = new Document { Id = "Doc1", Title = "Document" };
+            documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
+            documentDock.ActiveDockable = document;
             var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
             var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
 
@@ -58,12 +90,7 @@ public class App : Application
                         ActiveDockable = leftTool
                     },
                     new ProportionalDockSplitter(),
-                    new DocumentDock
-                    {
-                        Id = "Documents",
-                        VisibleDockables = factory.CreateList<IDockable>(document),
-                        ActiveDockable = document
-                    },
+                    documentDock,
                     new ProportionalDockSplitter(),
                     new ToolDock
                     {

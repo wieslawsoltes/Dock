@@ -40,54 +40,33 @@ public class App : Application
 
             var factory = new Factory();
 
-            var documentDock = new DocumentDock
-            {
-                Id = "Documents",
-                IsCollapsable = false,
-                CanCreateDocument = true
-            };
+            var documentDock = (DocumentDock)factory.CreateDocumentDock("Documents",
+                factory.CreateDocument("Doc1", "Document 1"));
+            documentDock.IsCollapsable = false;
+            documentDock.CanCreateDocument = true;
 
             documentDock.DocumentFactory = () =>
             {
                 var index = documentDock.VisibleDockables?.Count ?? 0;
-                return new Document { Id = $"Doc{index + 1}", Title = $"Document {index + 1}" };
+                return factory.CreateDocument($"Doc{index + 1}", $"Document {index + 1}");
             };
 
-            var document = new Document { Id = "Doc1", Title = "Document 1" };
-            documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
-            documentDock.ActiveDockable = document;
+            var leftToolDock = factory.CreateToolDock("LeftPane", Alignment.Left,
+                factory.CreateTool("Tool1", "Tool 1"));
+            leftToolDock.Proportion = 0.25;
 
-            var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
-            var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
+            var bottomToolDock = factory.CreateToolDock("BottomPane", Alignment.Bottom,
+                factory.CreateTool("Tool2", "Output"));
+            bottomToolDock.Proportion = 0.25;
 
-            var mainLayout = new ProportionalDock
-            {
-                Orientation = Orientation.Horizontal,
-                VisibleDockables = factory.CreateList<IDockable>(
-                    new ToolDock
-                    {
-                        Id = "LeftPane",
-                        Alignment = Alignment.Left,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(leftTool),
-                        ActiveDockable = leftTool
-                    },
-                    new ProportionalDockSplitter(),
-                    documentDock,
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Id = "BottomPane",
-                        Alignment = Alignment.Bottom,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(bottomTool),
-                        ActiveDockable = bottomTool
-                    })
-            };
+            var mainLayout = factory.CreateProportionalDock(Orientation.Horizontal,
+                leftToolDock,
+                factory.CreateProportionalDockSplitter(),
+                documentDock,
+                factory.CreateProportionalDockSplitter(),
+                bottomToolDock);
 
-            var root = factory.CreateRootDock();
-            root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
-            root.DefaultDockable = mainLayout;
+            var root = factory.CreateRootDock(mainLayout);
 
             factory.InitLayout(root);
             dockControl.Factory = factory;

@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm.Controls;
@@ -108,4 +109,50 @@ public class Factory : FactoryBase
 
     /// <inheritdoc/>
     public override IRootDock CreateLayout() => CreateRootDock();
+
+    /// <inheritdoc/>
+    public override IDocument CreateDocument(string id, string title) => new Document { Id = id, Title = title };
+
+    /// <inheritdoc/>
+    public override ITool CreateTool(string id, string title) => new Tool { Id = id, Title = title };
+
+    /// <inheritdoc/>
+    public override IDocumentDock CreateDocumentDock(string id, params IDockable[] documents)
+    {
+        var dock = (DocumentDock)CreateDocumentDock();
+        dock.Id = id;
+        dock.VisibleDockables = CreateList<IDockable>(documents);
+        dock.ActiveDockable = documents.FirstOrDefault();
+        return dock;
+    }
+
+    /// <inheritdoc/>
+    public override IToolDock CreateToolDock(string id, Alignment alignment, params IDockable[] tools)
+    {
+        var dock = (ToolDock)CreateToolDock();
+        dock.Id = id;
+        dock.Alignment = alignment;
+        dock.VisibleDockables = CreateList<IDockable>(tools);
+        dock.ActiveDockable = tools.FirstOrDefault();
+        return dock;
+    }
+
+    /// <inheritdoc/>
+    public override IProportionalDock CreateProportionalDock(Orientation orientation, params IDockable[] dockables)
+    {
+        var dock = (ProportionalDock)CreateProportionalDock();
+        dock.Orientation = orientation;
+        dock.VisibleDockables = CreateList<IDockable>(dockables);
+        dock.ActiveDockable = dockables.FirstOrDefault(d => d is not IProportionalDockSplitter);
+        return dock;
+    }
+
+    /// <inheritdoc/>
+    public override IRootDock CreateRootDock(params IDockable[] dockables)
+    {
+        var root = (RootDock)CreateRootDock();
+        root.VisibleDockables = CreateList<IDockable>(dockables);
+        root.DefaultDockable = dockables.FirstOrDefault();
+        return root;
+    }
 }

@@ -13,4 +13,15 @@ public interface IProportionalDockSplitter : IDockable
     /// Gets or sets whether the splitter allows resizing.
     /// </summary>
     bool CanResize { get; set; }
+
+    /// <summary>
+    /// Resets proportions of neighbouring dockables.
+    /// </summary>
+    void ResetProportion();
+
+    /// <summary>
+    /// Sets proportion of the dockable preceding the splitter.
+    /// </summary>
+    /// <param name="proportion">Desired proportion value.</param>
+    void SetProportion(double proportion);
 }

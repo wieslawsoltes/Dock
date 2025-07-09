@@ -193,11 +193,6 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnAttachedToVisualTree(e);
 
-        if (ContextMenu is null)
-        {
-            ContextMenu = CreateContextMenu();
-        }
-
         var panel = GetPanel();
         if (panel is null)
         {
@@ -340,93 +335,6 @@ public class ProportionalStackPanelSplitter : Thumb
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
         return GetSiblingInDirection(panel, -1);
-    }
-
-    private static string GetMenuString(string key)
-    {
-        if (Application.Current?.TryFindResource(key, out var value) == true)
-        {
-            return value?.ToString() ?? key;
-        }
-
-        return key;
-    }
-
-    private ContextMenu CreateContextMenu()
-    {
-        var menu = new ContextMenu();
-
-        static MenuItem Item(string header, Action click)
-        {
-            var item = new MenuItem { Header = header };
-            item.Click += (_, _) => click();
-            return item;
-        }
-
-        menu.Items = new object[]
-        {
-            Item(GetMenuString("ProportionalStackPanelSplitterResetString"), ResetProportion),
-            new Separator(),
-            Item(GetMenuString("ProportionalStackPanelSplitter10String"), () => SetProportion(0.1)),
-            Item(GetMenuString("ProportionalStackPanelSplitter25String"), () => SetProportion(0.25)),
-            Item(GetMenuString("ProportionalStackPanelSplitter50String"), () => SetProportion(0.5)),
-            Item(GetMenuString("ProportionalStackPanelSplitter75String"), () => SetProportion(0.75)),
-            Item(GetMenuString("ProportionalStackPanelSplitter90String"), () => SetProportion(0.9))
-        };
-
-        return menu;
-    }
-
-
-    /// <summary>
-    /// Resets the proportions of elements adjacent to the splitter.
-    /// </summary>
-    public void ResetProportion()
-    {
-        var panel = GetPanel();
-        if (panel is null)
-        {
-            return;
-        }
-
-        var prev = GetTargetElement(panel);
-        var next = FindNextChild(panel);
-
-        if (prev is not null)
-        {
-            ProportionalStackPanel.SetProportion(prev, double.NaN);
-        }
-
-        if (next is not null)
-        {
-            ProportionalStackPanel.SetProportion(next, double.NaN);
-        }
-    }
-
-    /// <summary>
-    /// Sets the proportion of the element before the splitter.
-    /// </summary>
-    /// <param name="proportion">The new proportion value.</param>
-    public void SetProportion(double proportion)
-    {
-        var panel = GetPanel();
-        if (panel is null)
-        {
-            return;
-        }
-
-        var target = GetTargetElement(panel);
-        var neighbour = FindNextChild(panel);
-        if (target is null || neighbour is null)
-        {
-            return;
-        }
-
-        var delta = proportion - ProportionalStackPanel.GetProportion(target);
-        var neighbourProportion = ProportionalStackPanel.GetProportion(neighbour);
-
-        ProportionalStackPanel.SetProportion(target, proportion);
-        ProportionalStackPanel.SetProportion(neighbour, neighbourProportion - delta);
     }
 
 

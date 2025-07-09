@@ -63,6 +63,11 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 0);
+                if (_pinnedDockSplitter != null)
+                {
+                    Grid.SetRow(_pinnedDockSplitter, 0);
+                    Grid.SetColumn(_pinnedDockSplitter, 1);
+                }
                 break;
             case Alignment.Bottom:
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
@@ -70,6 +75,11 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 2);
+                if (_pinnedDockSplitter != null)
+                {
+                    Grid.SetRow(_pinnedDockSplitter, 1);
+                    Grid.SetColumn(_pinnedDockSplitter, 0);
+                }
                 break;
             case Alignment.Right:
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
@@ -77,6 +87,11 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 2);
                 Grid.SetRow(_pinnedDock, 0);
+                if (_pinnedDockSplitter != null)
+                {
+                    Grid.SetRow(_pinnedDockSplitter, 0);
+                    Grid.SetColumn(_pinnedDockSplitter, 1);
+                }
                 break;
             case Alignment.Top:
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = 50 });
@@ -84,6 +99,11 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 1);
                 Grid.SetRow(_pinnedDock, 0);
+                if (_pinnedDockSplitter != null)
+                {
+                    Grid.SetRow(_pinnedDockSplitter, 1);
+                    Grid.SetColumn(_pinnedDockSplitter, 0);
+                }
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

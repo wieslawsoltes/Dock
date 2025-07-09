@@ -35,10 +35,4 @@ public interface IDocumentDock : IDock
     /// </summary>
     /// <param name="document">The document to add.</param>
     void AddDocument(IDockable document);
-
-    /// <summary>
-    /// Adds the specified tool to this dock and activates it.
-    /// </summary>
-    /// <param name="tool">The tool to add.</param>
-    void AddTool(IDockable tool);
 }

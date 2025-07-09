@@ -28,10 +28,4 @@ public interface IToolDock : IDock
     /// Gets or sets if the tool Dock grip mode.
     /// </summary>
     GripMode GripMode { get; set; }
-
-    /// <summary>
-    /// Adds the specified tool to this dock and activates it.
-    /// </summary>
-    /// <param name="tool">The tool to add.</param>
-    void AddTool(IDockable tool);
 }

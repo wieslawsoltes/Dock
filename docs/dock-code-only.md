@@ -126,7 +126,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    ```
 
 The window will show a document dock flanked by left and bottom tool panes without using XAML or MVVM helpers.
-`DocumentDock` exposes `AddDocument` and `AddTool` methods for adding and activating dockables in code.
+`DocumentDock` exposes an `AddDocument` method for adding and activating documents in code.
 
 You can find a complete project in the repository under
 [`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

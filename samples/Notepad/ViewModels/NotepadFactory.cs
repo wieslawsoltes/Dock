@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
 using Dock.Model.Mvvm.Controls;
-using Notepad.ViewModels.Docks;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -15,11 +14,10 @@ namespace Notepad.ViewModels;
 public class NotepadFactory : Factory
 {
     private IRootDock? _rootDock;
-    private IDocumentDock? _documentDock;
+    private DocumentDock? _documentDock;
     private ITool? _findTool;
     private ITool? _replaceTool;
 
-    public override IDocumentDock CreateDocumentDock() => new FilesDocumentDock();
 
     public override IRootDock CreateLayout()
     {
@@ -43,7 +41,7 @@ public class NotepadFactory : Factory
             Title = "Replace"
         };
 
-        var documentDock = new FilesDocumentDock()
+        var documentDock = new DocumentDock
         {
             Id = "Files",
             Title = "Files",
@@ -54,7 +52,8 @@ public class NotepadFactory : Factory
             (
                 untitledFileViewModel
             ),
-            CanCreateDocument = true
+            CanCreateDocument = true,
+            DocumentFactory = CreateNewDocument
         };
 
         var tools = new ProportionalDock
@@ -141,5 +140,16 @@ public class NotepadFactory : Factory
         };
 
         base.InitLayout(layout);
+    }
+
+    private IDockable CreateNewDocument()
+    {
+        return new FileViewModel
+        {
+            Path = string.Empty,
+            Title = "Untitled",
+            Text = string.Empty,
+            Encoding = Encoding.Default.WebName
+        };
     }
 }

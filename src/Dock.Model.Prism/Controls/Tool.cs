@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Runtime.Serialization;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Model.Prism.Core;
 
 namespace Dock.Model.Prism.Controls;
@@ -12,4 +13,13 @@ namespace Dock.Model.Prism.Controls;
 [DataContract(IsReference = true)]
 public class Tool : DockableBase, ITool, IDocument
 {
+    private Alignment _pinnedAlignment = Alignment.Top;
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment PinnedAlignment
+    {
+        get => _pinnedAlignment;
+        set => SetProperty(ref _pinnedAlignment, value);
+    }
 }

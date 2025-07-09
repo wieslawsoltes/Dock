@@ -9,6 +9,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
+using Dock.Model.Core;
 using Dock.Model.Controls;
 
 namespace Dock.Model.Avalonia.Controls;
@@ -101,6 +102,23 @@ public class Tool : DockableBase, ITool, IDocument, IToolContent, ITemplate<Cont
     public Control? Build(object? data, Control? existing)
     {
         return TemplateHelper.Build(Content, this);
+    }
+
+    /// <summary>
+    /// Defines the <see cref="PinnedAlignment"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Tool, Alignment> PinnedAlignmentProperty =
+        AvaloniaProperty.RegisterDirect<Tool, Alignment>(
+            nameof(PinnedAlignment), o => o.PinnedAlignment, (o, v) => o.PinnedAlignment = v, Alignment.Top);
+
+    private Alignment _pinnedAlignment = Alignment.Top;
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public Alignment PinnedAlignment
+    {
+        get => _pinnedAlignment;
+        set => SetAndRaise(PinnedAlignmentProperty, ref _pinnedAlignment, value);
     }
 
 }

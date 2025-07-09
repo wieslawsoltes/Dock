@@ -9,4 +9,8 @@ namespace Dock.Model.Controls;
 /// </summary>
 public interface ITool : IDockable
 {
+    /// <summary>
+    /// Gets or sets pinned alignment used when tool is pinned.
+    /// </summary>
+    Alignment PinnedAlignment { get; set; }
 }

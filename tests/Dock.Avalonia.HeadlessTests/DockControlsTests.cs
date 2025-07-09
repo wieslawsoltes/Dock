@@ -100,6 +100,13 @@ public class DockControlsTests
     }
 
     [AvaloniaFact]
+    public void Tool_Default_PinnedAlignment_Top()
+    {
+        var tool = new Tool();
+        Assert.Equal(Alignment.Top, tool.PinnedAlignment);
+    }
+
+    [AvaloniaFact]
     public void DocumentDock_CreateDocumentFromTemplate_Creates_Document()
     {
         var factory = new Factory();

@@ -39,7 +39,8 @@
           <Border Name="PART_BorderFill"
                  DockProperties.IsDropArea="True"
                  DockProperties.IsDockTarget="True"
-                 DockProperties.ShowDockIndicatorOnly="True" />
+                 DockProperties.ShowDockIndicatorOnly="True"
+                 DockProperties.DockAdornerHost="{TemplateBinding DockAdornerHost}" />
         </DockPanel>
       </ControlTemplate>
     </Setter>

@@ -6,6 +6,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
 using Dock.Model.Mvvm.Controls;
+using CommunityToolkit.Mvvm.Input;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -14,7 +15,7 @@ namespace Notepad.ViewModels;
 public class NotepadFactory : Factory
 {
     private IRootDock? _rootDock;
-    private IDocumentDock? _documentDock;
+    private DocumentDock? _documentDock;
     private ITool? _findTool;
     private ITool? _replaceTool;
 

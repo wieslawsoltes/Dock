@@ -72,11 +72,11 @@
       </ControlTemplate>
     </Setter>
     
-    <Style Selector="^[Orientation=Vertical]/template/ ItemsPresenter#PART_ItemsPresenter">
+    <Style Selector="^[Orientation=Vertical]/template/ ScrollViewer#PART_ScrollViewer">
       <Setter Property="(DockPanel.Dock)" Value="Top" />
     </Style>
 
-    <Style Selector="^[Orientation=Horizontal]/template/ ItemsPresenter#PART_ItemsPresenter">
+    <Style Selector="^[Orientation=Horizontal]/template/ ScrollViewer#PART_ScrollViewer">
       <Setter Property="(DockPanel.Dock)" Value="Left" />
     </Style>
     

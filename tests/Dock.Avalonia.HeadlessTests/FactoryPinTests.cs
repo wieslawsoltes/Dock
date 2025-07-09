@@ -15,7 +15,7 @@ public class FactoryPinTests
         var root = new RootDock
         {
             VisibleDockables = factory.CreateList<IDockable>(),
-            LeftPinnedDockables = factory.CreateList<IDockable>()
+            LeftTopPinnedDockables = factory.CreateList<IDockable>()
         };
         root.Factory = factory;
 
@@ -26,7 +26,7 @@ public class FactoryPinTests
 
         factory.PinDockable(tool);
 
-        Assert.Single(root.LeftPinnedDockables!);
+        Assert.Single(root.LeftTopPinnedDockables!);
         Assert.DoesNotContain(tool, toolDock.VisibleDockables!);
         Assert.True(factory.IsDockablePinned(tool, root));
     }
@@ -38,7 +38,7 @@ public class FactoryPinTests
         var root = new RootDock
         {
             VisibleDockables = factory.CreateList<IDockable>(),
-            LeftPinnedDockables = factory.CreateList<IDockable>()
+            LeftTopPinnedDockables = factory.CreateList<IDockable>()
         };
         root.Factory = factory;
 
@@ -50,7 +50,7 @@ public class FactoryPinTests
         factory.PinDockable(tool);
         factory.UnpinDockable(tool);
 
-        Assert.Empty(root.LeftPinnedDockables!);
+        Assert.Empty(root.LeftTopPinnedDockables!);
         Assert.Contains(tool, toolDock.VisibleDockables!);
         Assert.False(factory.IsDockablePinned(tool, root));
     }

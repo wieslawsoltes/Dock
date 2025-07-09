@@ -289,36 +289,28 @@ public abstract partial class FactoryBase
             }
         }
 
-        if (rootDock.LeftPinnedDockables is not null)
+        if (rootDock.LeftTopPinnedDockables?.Contains(dockable) == true ||
+            rootDock.LeftBottomPinnedDockables?.Contains(dockable) == true)
         {
-            if (rootDock.LeftPinnedDockables.Contains(dockable))
-            {
-                return true;
-            }
+            return true;
         }
 
-        if (rootDock.RightPinnedDockables is not null)
+        if (rootDock.RightTopPinnedDockables?.Contains(dockable) == true ||
+            rootDock.RightBottomPinnedDockables?.Contains(dockable) == true)
         {
-            if (rootDock.RightPinnedDockables.Contains(dockable))
-            {
-                return true;
-            }
+            return true;
         }
 
-        if (rootDock.TopPinnedDockables is not null)
+        if (rootDock.TopLeftPinnedDockables?.Contains(dockable) == true ||
+            rootDock.TopRightPinnedDockables?.Contains(dockable) == true)
         {
-            if (rootDock.TopPinnedDockables.Contains(dockable))
-            {
-                return true;
-            }
+            return true;
         }
 
-        if (rootDock.BottomPinnedDockables is not null)
+        if (rootDock.BottomLeftPinnedDockables?.Contains(dockable) == true ||
+            rootDock.BottomRightPinnedDockables?.Contains(dockable) == true)
         {
-            if (rootDock.BottomPinnedDockables.Contains(dockable))
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -394,6 +386,7 @@ public abstract partial class FactoryBase
                 var originalToolDock = dockable.OriginalOwner as IToolDock;
 
                 var alignment = originalToolDock?.Alignment ?? toolDock.Alignment;
+                var pinnedAlignment = (dockable as ITool)?.PinnedAlignment ?? Alignment.Unset;
 
                 if (isVisible && !isPinned)
                 {
@@ -404,22 +397,26 @@ public abstract partial class FactoryBase
                         case Alignment.Unset:
                         case Alignment.Left:
                         {
-                            rootDock.LeftPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.LeftTopPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.LeftBottomPinnedDockables ??= CreateList<IDockable>();
                             break;
                         }
                         case Alignment.Right:
                         {
-                            rootDock.RightPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.RightTopPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.RightBottomPinnedDockables ??= CreateList<IDockable>();
                             break;
                         }
                         case Alignment.Top:
                         {
-                            rootDock.TopPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.TopLeftPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.TopRightPinnedDockables ??= CreateList<IDockable>();
                             break;
                         }
                         case Alignment.Bottom:
                         {
-                            rootDock.BottomPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.BottomLeftPinnedDockables ??= CreateList<IDockable>();
+                            rootDock.BottomRightPinnedDockables ??= CreateList<IDockable>();
                             break;
                         }
                     }
@@ -435,42 +432,54 @@ public abstract partial class FactoryBase
                         case Alignment.Unset:
                         case Alignment.Left:
                         {
-                            if (rootDock.LeftPinnedDockables is not null)
+                            if (pinnedAlignment == Alignment.Bottom)
                             {
-                                rootDock.LeftPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
+                                rootDock.LeftBottomPinnedDockables?.Add(dockable);
                             }
-
+                            else
+                            {
+                                rootDock.LeftTopPinnedDockables?.Add(dockable);
+                            }
+                            OnDockablePinned(dockable);
                             break;
                         }
                         case Alignment.Right:
                         {
-                            if (rootDock.RightPinnedDockables is not null)
+                            if (pinnedAlignment == Alignment.Bottom)
                             {
-                                rootDock.RightPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
+                                rootDock.RightBottomPinnedDockables?.Add(dockable);
                             }
-
+                            else
+                            {
+                                rootDock.RightTopPinnedDockables?.Add(dockable);
+                            }
+                            OnDockablePinned(dockable);
                             break;
                         }
                         case Alignment.Top:
                         {
-                            if (rootDock.TopPinnedDockables is not null)
+                            if (pinnedAlignment == Alignment.Right)
                             {
-                                rootDock.TopPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
+                                rootDock.TopRightPinnedDockables?.Add(dockable);
                             }
-
+                            else
+                            {
+                                rootDock.TopLeftPinnedDockables?.Add(dockable);
+                            }
+                            OnDockablePinned(dockable);
                             break;
                         }
                         case Alignment.Bottom:
                         {
-                            if (rootDock.BottomPinnedDockables is not null)
+                            if (pinnedAlignment == Alignment.Right)
                             {
-                                rootDock.BottomPinnedDockables.Add(dockable);
-                                OnDockablePinned(dockable);
+                                rootDock.BottomRightPinnedDockables?.Add(dockable);
                             }
-
+                            else
+                            {
+                                rootDock.BottomLeftPinnedDockables?.Add(dockable);
+                            }
+                            OnDockablePinned(dockable);
                             break;
                         }
                     }
@@ -490,42 +499,38 @@ public abstract partial class FactoryBase
                         case Alignment.Unset:
                         case Alignment.Left:
                         {
-                            if (rootDock.LeftPinnedDockables is not null)
+                            if (rootDock.LeftTopPinnedDockables?.Remove(dockable) == true ||
+                                rootDock.LeftBottomPinnedDockables?.Remove(dockable) == true)
                             {
-                                rootDock.LeftPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
-
                             break;
                         }
                         case Alignment.Right:
                         {
-                            if (rootDock.RightPinnedDockables is not null)
+                            if (rootDock.RightTopPinnedDockables?.Remove(dockable) == true ||
+                                rootDock.RightBottomPinnedDockables?.Remove(dockable) == true)
                             {
-                                rootDock.RightPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
-
                             break;
                         }
                         case Alignment.Top:
                         {
-                            if (rootDock.TopPinnedDockables is not null)
+                            if (rootDock.TopLeftPinnedDockables?.Remove(dockable) == true ||
+                                rootDock.TopRightPinnedDockables?.Remove(dockable) == true)
                             {
-                                rootDock.TopPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
-
                             break;
                         }
                         case Alignment.Bottom:
                         {
-                            if (rootDock.BottomPinnedDockables is not null)
+                            if (rootDock.BottomLeftPinnedDockables?.Remove(dockable) == true ||
+                                rootDock.BottomRightPinnedDockables?.Remove(dockable) == true)
                             {
-                                rootDock.BottomPinnedDockables.Remove(dockable);
                                 OnDockableUnpinned(dockable);
                             }
-
                             break;
                         }
                     }

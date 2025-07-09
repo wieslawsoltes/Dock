@@ -118,10 +118,14 @@ The feature set matches the MVVM version. Methods like `AddDockable`, `MoveDocka
 OpenDocument = ReactiveCommand.Create(() =>
 {
     var doc = new DocumentViewModel { Id = Guid.NewGuid().ToString(), Title = "New" };
-    _factory.AddDockable(documentDock, doc);
-    _factory.SetActiveDockable(doc);
+    documentDock.AddDocument(doc);
 });
 ```
+
+Similarly you can set the `DocumentFactory` property so that the dock
+creates new documents when its `CreateDocument` command executes. The
+delegate should return an `IDockable` which is then passed to
+`AddDocument` and activated.
 
 ## Events
 

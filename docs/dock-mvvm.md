@@ -126,9 +126,13 @@ public override IRootDock CreateLayout()
 ```csharp
 // Example: add a new document at runtime
 var newDoc = new DocumentViewModel { Id = "Doc2", Title = "Another" };
-_factory.AddDockable(documentDock, newDoc);
-_factory.SetActiveDockable(newDoc);
+documentDock.AddDocument(newDoc);
 ```
+
+To drive a "New" command you can assign a delegate to the
+`DocumentFactory` property. The built-in `CreateDocument` command will
+invoke this factory, pass the result to `AddDocument` and activate the
+new document.
 
 ## Events
 

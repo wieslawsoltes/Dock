@@ -49,6 +49,10 @@ from a saved state.
 
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 
+To create new documents programmatically, set the `DocumentFactory`
+delegate. The `CreateDocument` command invokes this factory and then
+adds the returned document via `AddDocument`.
+
 ## Host window options
 
 `HostWindow` exposes `IsToolWindow`, `ToolChromeControlsWholeWindow` and

@@ -91,7 +91,7 @@ _factory?.SetFocusedDockable(Layout, fileViewModel);
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 
-Tools can be added programmatically using the `AddTool` helper on `ToolDock`, which also activates the tool.
+Tools can be added programmatically using the `AddTool` helper on `ToolDock` or `DocumentDock`, which also activates the tool.
 
 ## Floating windows
 

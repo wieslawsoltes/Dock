@@ -21,7 +21,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
 
 3. **Initialize Dock purely in code**
 
-   The program below builds a single document layout and assigns it to `DockControl`:
+   The program below builds a simple layout with one document and two tool docks and assigns it to `DockControl`:
 
    ```csharp
    using Avalonia;
@@ -55,10 +55,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    {
        public override void OnFrameworkInitializationCompleted()
        {
-           Styles.Add(new FluentTheme(new Uri("avares://Avalonia.Themes.Fluent/FluentTheme.xaml"))
-           {
-               Mode = FluentThemeMode.Dark
-           });
+           Styles.Add(new FluentTheme());
            Styles.Add(new DockFluentTheme());
            RequestedThemeVariant = ThemeVariant.Dark;
            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -68,16 +65,42 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
                // Create a layout using the plain Avalonia factory
                var factory  = new Factory();
                var document = new Document { Id = "Doc1", Title = "Document" };
+               var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
+               var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
+
+               var mainLayout = new ProportionalDock
+               {
+                   Orientation = Orientation.Horizontal,
+                   VisibleDockables = factory.CreateList<IDockable>(
+                       new ToolDock
+                       {
+                           Id = "LeftPane",
+                           Alignment = Alignment.Left,
+                           Proportion = 0.25,
+                           VisibleDockables = factory.CreateList<IDockable>(leftTool),
+                           ActiveDockable = leftTool
+                       },
+                       new ProportionalDockSplitter(),
+                       new DocumentDock
+                       {
+                           Id = "Documents",
+                           VisibleDockables = factory.CreateList<IDockable>(document),
+                           ActiveDockable = document
+                       },
+                       new ProportionalDockSplitter(),
+                       new ToolDock
+                       {
+                           Id = "BottomPane",
+                           Alignment = Alignment.Bottom,
+                           Proportion = 0.25,
+                           VisibleDockables = factory.CreateList<IDockable>(bottomTool),
+                           ActiveDockable = bottomTool
+                       })
+               };
 
                var root = factory.CreateRootDock();
-               root.VisibleDockables = factory.CreateList<IDockable>(
-                   new DocumentDock
-                   {
-                       VisibleDockables = factory.CreateList<IDockable>(document),
-                       ActiveDockable = document
-                   });
-
-               root.DefaultDockable = root.VisibleDockables[0];
+               root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
+               root.DefaultDockable = mainLayout;
 
                factory.InitLayout(root);
                dockControl.Factory = factory;
@@ -102,7 +125,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    dotnet run
    ```
 
-The window will show a single document hosted by `DockControl` without using XAML or MVVM helpers.
+The window will show a document dock flanked by left and bottom tool panes without using XAML or MVVM helpers.
 
 You can find a complete project in the repository under
 [`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

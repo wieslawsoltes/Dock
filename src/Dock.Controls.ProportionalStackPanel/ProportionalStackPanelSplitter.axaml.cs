@@ -9,8 +9,6 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
-using System.Windows.Input;
-using Dock.Controls.ProportionalStackPanel.Internal;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -82,22 +80,10 @@ public class ProportionalStackPanelSplitter : Thumb
     private bool _isMoving;
 
     /// <summary>
-    /// Command that resets the proportions of adjacent elements.
-    /// </summary>
-    public ICommand ResetProportionCommand { get; }
-
-    /// <summary>
-    /// Command that sets the proportion of the element before the splitter.
-    /// </summary>
-    public ICommand SetProportionCommand { get; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="ProportionalStackPanelSplitter"/> class.
     /// </summary>
     public ProportionalStackPanelSplitter()
     {
-        ResetProportionCommand = Internal.Command.Create(ResetProportion);
-        SetProportionCommand = Internal.Command.Create<double>(SetProportion);
     }
 
 
@@ -209,11 +195,7 @@ public class ProportionalStackPanelSplitter : Thumb
 
         if (ContextMenu is null)
         {
-            if (Application.Current?.TryFindResource("ProportionalStackPanelSplitterContextMenu", out var resource) == true &&
-                resource is ContextMenu menu)
-            {
-                ContextMenu = menu;
-            }
+            ContextMenu = CreateContextMenu();
         }
 
         var panel = GetPanel();
@@ -358,6 +340,41 @@ public class ProportionalStackPanelSplitter : Thumb
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
         return GetSiblingInDirection(panel, -1);
+    }
+
+    private static string GetMenuString(string key)
+    {
+        if (Application.Current?.TryFindResource(key, out var value) == true)
+        {
+            return value?.ToString() ?? key;
+        }
+
+        return key;
+    }
+
+    private ContextMenu CreateContextMenu()
+    {
+        var menu = new ContextMenu();
+
+        static MenuItem Item(string header, Action click)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += (_, _) => click();
+            return item;
+        }
+
+        menu.Items = new object[]
+        {
+            Item(GetMenuString("ProportionalStackPanelSplitterResetString"), ResetProportion),
+            new Separator(),
+            Item(GetMenuString("ProportionalStackPanelSplitter10String"), () => SetProportion(0.1)),
+            Item(GetMenuString("ProportionalStackPanelSplitter25String"), () => SetProportion(0.25)),
+            Item(GetMenuString("ProportionalStackPanelSplitter50String"), () => SetProportion(0.5)),
+            Item(GetMenuString("ProportionalStackPanelSplitter75String"), () => SetProportion(0.75)),
+            Item(GetMenuString("ProportionalStackPanelSplitter90String"), () => SetProportion(0.9))
+        };
+
+        return menu;
     }
 
 

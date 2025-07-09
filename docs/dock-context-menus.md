@@ -10,7 +10,7 @@ Dock defines several built in context menus and flyouts that are attached to its
 | `ToolPinItemControl.axaml` | `ToolPinItemControlContextMenu` | Menu for pinned tool tabs. |
 | `DocumentTabStripItem.axaml` | `DocumentTabStripItemContextMenu` | Menu for document tab items. |
 | `ToolTabStripItem.axaml` | `ToolTabStripItemContextMenu` | Menu for tool tab items. |
-| `ProportionalStackPanelSplitter.axaml` | `ProportionalStackPanelSplitterContextMenu` | Menu for adjusting neighbouring proportions. |
+| `ProportionalStackPanelSplitter.axaml.cs` | (created in code) | Menu for adjusting neighbouring proportions. |
 
 Each dictionary also declares `x:String` resources used for menu item headers. For example `ToolTabStripItem.axaml` exposes keys such as `ToolTabStripItemFloatString`, `ToolTabStripItemDockString` and others.
 

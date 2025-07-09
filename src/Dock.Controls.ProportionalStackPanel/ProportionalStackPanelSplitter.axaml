@@ -4,29 +4,6 @@
                     xmlns:psp="using:Dock.Controls.ProportionalStackPanel"
                     x:CompileBindings="True">
 
-  <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu"
-               DataContext="{Binding $parent[TemplatedParent]}"
-               x:DataType="psp:ProportionalStackPanelSplitter">
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}"
-              Command="{Binding ResetProportionCommand}" />
-    <Separator />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter10String}"
-              Command="{Binding SetProportionCommand}"
-              CommandParameter="0.1" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter25String}"
-              Command="{Binding SetProportionCommand}"
-              CommandParameter="0.25" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter50String}"
-              Command="{Binding SetProportionCommand}"
-              CommandParameter="0.5" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter75String}"
-              Command="{Binding SetProportionCommand}"
-              CommandParameter="0.75" />
-    <MenuItem Header="{DynamicResource ProportionalStackPanelSplitter90String}"
-              Command="{Binding SetProportionCommand}"
-              CommandParameter="0.9" />
-  </ContextMenu>
-
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
 
     <Setter Property="Background" Value="Transparent" />

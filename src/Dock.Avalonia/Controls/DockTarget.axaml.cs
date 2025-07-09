@@ -116,10 +116,9 @@ public class DockTarget : TemplatedControl
             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
             var scaling = (selector.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(selector)?.Scaling ?? 1.0;
             var selectorOrigin = selector.PointToScreen(default).ToPoint(scaling);
-            var translated = new Point(screenPoint.X - selectorOrigin.X, screenPoint.Y - selectorOrigin.Y);
             selectorPoint = new Point(
-                Math.Clamp(translated.X, 0, selector.Bounds.Width),
-                Math.Clamp(translated.Y, 0, selector.Bounds.Height));
+                screenPoint.X - selectorOrigin.X,
+                screenPoint.Y - selectorOrigin.Y);
         }
 
         if (selectorPoint is { })

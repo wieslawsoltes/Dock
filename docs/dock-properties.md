@@ -43,7 +43,7 @@ Every control template that participates in docking should set the appropriate `
 
 Without the attached properties above the drag logic would not detect the border as a valid drop area and documents could not be rearranged. The content border must also be marked so docking works when the tab strip is hidden or empty.
 
-When a drop area defines `DockAdornerHost` the dock adorner is attached to that host control and docking defaults to *Fill* when the pointer is over the drop area but outside the host. This allows empty tab strips to accept docked content just like the main content region.
+When a drop area defines `DockAdornerHost` the dock adorner is attached to that host control. If the pointer hovers over the drop area but outside the host, the docking operation defaults to *Fill* and the adorner's center indicator is shown. This allows empty tab strips to accept docked content just like the main content region.
 
 ## Setting DockProperties in code
 

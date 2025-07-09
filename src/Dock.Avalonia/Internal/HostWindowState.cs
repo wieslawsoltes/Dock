@@ -75,8 +75,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
             if (localOperation == DockOperation.Window && DropControl is { })
             {
-                if (DockProperties.GetDockAdornerHost(DropControl) is not null)
+                if (DockProperties.GetDockAdornerHost(DropControl) is Control host)
                 {
+                    var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
+                    _ = dockTarget.GetDockOperation(center, host, dragAction, ValidateLocal, IsDockTargetVisible);
                     localOperation = DockOperation.Fill;
                 }
             }
@@ -111,8 +113,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
             if (localOperation == DockOperation.Window && DropControl is { })
             {
-                if (DockProperties.GetDockAdornerHost(DropControl) is not null)
+                if (DockProperties.GetDockAdornerHost(DropControl) is Control host)
                 {
+                    var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
+                    _ = dockTarget.GetDockOperation(center, host, dragAction, ValidateLocal, IsDockTargetVisible);
                     localOperation = DockOperation.Fill;
                 }
             }

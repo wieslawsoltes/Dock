@@ -12,6 +12,7 @@ using Dock.Model;
 using Dock.Model.Core;
 using Dock.Model.Controls;
 using Dock.Serializer;
+using MenuItem = Avalonia.Controls.MenuItem;
 
 namespace DockXamlSample;
 

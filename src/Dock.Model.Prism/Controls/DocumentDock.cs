@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
+using Prism.Commands;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Prism.Core;
@@ -17,6 +19,14 @@ public class DocumentDock : DockBase, IDocumentDock
     private bool _canCreateDocument;
     private bool _enableWindowDrag;
 
+    /// <summary>
+    /// Initializes new instance of the <see cref="DocumentDock"/> class.
+    /// </summary>
+    public DocumentDock()
+    {
+        CreateDocument = new DelegateCommand(CreateNewDocument);
+    }
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public bool CanCreateDocument
@@ -28,6 +38,12 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets factory method used to create new documents.
+    /// </summary>
+    [IgnoreDataMember]
+    public Func<IDockable>? DocumentFactory { get; set; }
 
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
 
@@ -45,6 +61,15 @@ public class DocumentDock : DockBase, IDocumentDock
     {
         get => _tabsLayout;
         set => SetProperty(ref _tabsLayout, value);
+    }
+
+    private void CreateNewDocument()
+    {
+        if (DocumentFactory is { } factory)
+        {
+            var document = factory();
+            AddDocument(document);
+        }
     }
 
     /// <summary>

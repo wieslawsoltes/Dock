@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Windows.Input;
@@ -48,8 +49,15 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public DocumentDock()
     {
-        CreateDocument = new Command(() => CreateDocumentFromTemplate());
+        CreateDocument = new Command(CreateNewDocument);
     }
+
+    /// <summary>
+    /// Gets or sets factory method used to create new documents.
+    /// </summary>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public Func<IDockable>? DocumentFactory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -117,6 +125,19 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         Factory?.SetFocusedDockable(this, document);
 
         return document;
+    }
+
+    private void CreateNewDocument()
+    {
+        if (DocumentFactory is { } factory)
+        {
+            var document = factory();
+            AddDocument(document);
+        }
+        else
+        {
+            CreateDocumentFromTemplate();
+        }
     }
 
     /// <summary>

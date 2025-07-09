@@ -6,7 +6,6 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
 using Dock.Model.Mvvm.Controls;
-using CommunityToolkit.Mvvm.Input;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -55,7 +54,7 @@ public class NotepadFactory : Factory
             ),
             CanCreateDocument = true
         };
-        documentDock.CreateDocument = new RelayCommand(CreateNewDocument);
+        documentDock.DocumentFactory = CreateNewDocument;
 
         var tools = new ProportionalDock
         {
@@ -143,21 +142,14 @@ public class NotepadFactory : Factory
         base.InitLayout(layout);
     }
 
-    private void CreateNewDocument()
+    private IDockable CreateNewDocument()
     {
-        if (_documentDock is null || !_documentDock.CanCreateDocument)
-        {
-            return;
-        }
-
-        var document = new FileViewModel()
+        return new FileViewModel
         {
             Path = string.Empty,
             Title = "Untitled",
             Text = string.Empty,
             Encoding = Encoding.Default.WebName
         };
-
-        _documentDock.AddDocument(document);
     }
 }

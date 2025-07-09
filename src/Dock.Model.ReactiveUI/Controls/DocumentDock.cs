@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
@@ -17,6 +18,14 @@ public partial class DocumentDock : DockBase, IDocumentDock
 {
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
 
+    /// <summary>
+    /// Initializes new instance of the <see cref="DocumentDock"/> class.
+    /// </summary>
+    public DocumentDock()
+    {
+        CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+    }
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanCreateDocument { get; set; }
@@ -24,6 +33,12 @@ public partial class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets factory method used to create new documents.
+    /// </summary>
+    [IgnoreDataMember]
+    public Func<IDockable>? DocumentFactory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -35,6 +50,15 @@ public partial class DocumentDock : DockBase, IDocumentDock
     {
         get => _tabsLayout;
         set => this.RaiseAndSetIfChanged(ref _tabsLayout, value);
+    }
+
+    private void CreateNewDocument()
+    {
+        if (DocumentFactory is { } factory)
+        {
+            var document = factory();
+            AddDocument(document);
+        }
     }
 
     /// <summary>

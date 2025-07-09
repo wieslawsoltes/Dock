@@ -9,22 +9,8 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
-using System.Windows.Input;
 
 namespace DockCodeOnlySample;
-
-internal sealed class LambdaCommand : ICommand
-{
-    private readonly Action _execute;
-
-    public LambdaCommand(Action execute) => _execute = execute;
-
-    public bool CanExecute(object? parameter) => true;
-
-    public void Execute(object? parameter) => _execute();
-
-    public event EventHandler? CanExecuteChanged { add { } remove { } }
-}
 
 internal class Program
 {
@@ -58,18 +44,17 @@ public class App : Application
             var documentDock = new DocumentDock
             {
                 Id = "Documents",
-                CanCreateDocument = true
-            };
-            documentDock.CreateDocument = new LambdaCommand(() =>
-            {
-                var index = documentDock.VisibleDockables?.Count ?? 0;
-                var doc = new Document
+                CanCreateDocument = true,
+                DocumentFactory = () =>
                 {
-                    Id = $"Doc{index + 1}",
-                    Title = $"Document {index + 1}"
-                };
-                documentDock.AddDocument(doc);
-            });
+                    var index = documentDock.VisibleDockables?.Count ?? 0;
+                    return new Document
+                    {
+                        Id = $"Doc{index + 1}",
+                        Title = $"Document {index + 1}"
+                    };
+                }
+            };
 
             var document = new Document { Id = "Doc1", Title = "Document" };
             documentDock.VisibleDockables = factory.CreateList<IDockable>(document);

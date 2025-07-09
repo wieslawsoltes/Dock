@@ -22,7 +22,12 @@ public class RootDockControl : TemplatedControl
         mainContent.AddHandler(PointerPressedEvent, (_, _) =>
         {
             if (DataContext is IRootDock rootDock)
-                rootDock.Factory?.HidePreviewingDockables(rootDock);
+            {
+                if (rootDock.PinnedDock?.AutoHide ?? true)
+                {
+                    rootDock.Factory?.HidePreviewingDockables(rootDock);
+                }
+            }
         }, RoutingStrategies.Tunnel);
     }
 }

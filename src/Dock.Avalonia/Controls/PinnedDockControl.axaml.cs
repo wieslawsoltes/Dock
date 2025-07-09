@@ -21,7 +21,32 @@ public class PinnedDockControl : TemplatedControl
     /// <summary>
     /// Define the <see cref="PinnedDockAlignment"/> property.
     /// </summary>
-    public static readonly StyledProperty<Alignment> PinnedDockAlignmentProperty = AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(PinnedDockAlignment));
+    public static readonly StyledProperty<Alignment> PinnedDockAlignmentProperty =
+        AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(PinnedDockAlignment));
+
+    /// <summary>
+    /// Defines the <see cref="LeftPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Alignment> LeftPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(LeftPinnedDockablesAlignment), Alignment.Top);
+
+    /// <summary>
+    /// Defines the <see cref="RightPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Alignment> RightPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(RightPinnedDockablesAlignment), Alignment.Top);
+
+    /// <summary>
+    /// Defines the <see cref="TopPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Alignment> TopPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(TopPinnedDockablesAlignment), Alignment.Left);
+
+    /// <summary>
+    /// Defines the <see cref="BottomPinnedDockablesAlignment"/> property.
+    /// </summary>
+    public static readonly StyledProperty<Alignment> BottomPinnedDockablesAlignmentProperty =
+        AvaloniaProperty.Register<PinnedDockControl, Alignment>(nameof(BottomPinnedDockablesAlignment), Alignment.Left);
 
     /// <summary>
     /// Gets or sets pinned dock alignment
@@ -32,29 +57,54 @@ public class PinnedDockControl : TemplatedControl
         set => SetValue(PinnedDockAlignmentProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets left pinned dockables alignment.
+    /// </summary>
+    public Alignment LeftPinnedDockablesAlignment
+    {
+        get => GetValue(LeftPinnedDockablesAlignmentProperty);
+        set => SetValue(LeftPinnedDockablesAlignmentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets right pinned dockables alignment.
+    /// </summary>
+    public Alignment RightPinnedDockablesAlignment
+    {
+        get => GetValue(RightPinnedDockablesAlignmentProperty);
+        set => SetValue(RightPinnedDockablesAlignmentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets top pinned dockables alignment.
+    /// </summary>
+    public Alignment TopPinnedDockablesAlignment
+    {
+        get => GetValue(TopPinnedDockablesAlignmentProperty);
+        set => SetValue(TopPinnedDockablesAlignmentProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets bottom pinned dockables alignment.
+    /// </summary>
+    public Alignment BottomPinnedDockablesAlignment
+    {
+        get => GetValue(BottomPinnedDockablesAlignmentProperty);
+        set => SetValue(BottomPinnedDockablesAlignmentProperty, value);
+    }
+
     private Grid? _pinnedDockGrid;
     private ContentControl? _pinnedDock;
 
     static PinnedDockControl()
     {
         PinnedDockAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        LeftPinnedDockablesAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        RightPinnedDockablesAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        TopPinnedDockablesAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
+        BottomPinnedDockablesAlignmentProperty.Changed.AddClassHandler<PinnedDockControl>((control, e) => control.UpdateGrid());
     }
 
-    private Alignment GetPinnedAlignment()
-    {
-        if (DataContext is IRootDock root)
-        {
-            return PinnedDockAlignment switch
-            {
-                Alignment.Left => root.LeftPinnedDockablesAlignment,
-                Alignment.Right => root.RightPinnedDockablesAlignment,
-                Alignment.Top => root.TopPinnedDockablesAlignment,
-                Alignment.Bottom => root.BottomPinnedDockablesAlignment,
-                _ => Alignment.Unset
-            };
-        }
-        return Alignment.Unset;
-    }
 
     private void UpdateGrid()
     {
@@ -63,6 +113,7 @@ public class PinnedDockControl : TemplatedControl
 
         _pinnedDockGrid.RowDefinitions.Clear();
         _pinnedDockGrid.ColumnDefinitions.Clear();
+
         switch (PinnedDockAlignment)
         {
             case Alignment.Unset:
@@ -72,7 +123,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 0);
-                _pinnedDockGrid.VerticalAlignment = GetPinnedAlignment() == Alignment.Bottom ?
+                _pinnedDockGrid.VerticalAlignment = LeftPinnedDockablesAlignment == Alignment.Bottom ?
                     VerticalAlignment.Bottom : VerticalAlignment.Top;
                 _pinnedDockGrid.HorizontalAlignment = HorizontalAlignment.Left;
                 break;
@@ -82,7 +133,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 0);
                 Grid.SetRow(_pinnedDock, 2);
-                _pinnedDockGrid.HorizontalAlignment = GetPinnedAlignment() == Alignment.Right ?
+                _pinnedDockGrid.HorizontalAlignment = BottomPinnedDockablesAlignment == Alignment.Right ?
                     HorizontalAlignment.Right : HorizontalAlignment.Left;
                 _pinnedDockGrid.VerticalAlignment = VerticalAlignment.Bottom;
                 break;
@@ -92,7 +143,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) { MinWidth = 50 });
                 Grid.SetColumn(_pinnedDock, 2);
                 Grid.SetRow(_pinnedDock, 0);
-                _pinnedDockGrid.VerticalAlignment = GetPinnedAlignment() == Alignment.Bottom ?
+                _pinnedDockGrid.VerticalAlignment = RightPinnedDockablesAlignment == Alignment.Bottom ?
                     VerticalAlignment.Bottom : VerticalAlignment.Top;
                 _pinnedDockGrid.HorizontalAlignment = HorizontalAlignment.Right;
                 break;
@@ -102,7 +153,7 @@ public class PinnedDockControl : TemplatedControl
                 _pinnedDockGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star) { MinHeight = 50 });
                 Grid.SetColumn(_pinnedDock, 1);
                 Grid.SetRow(_pinnedDock, 0);
-                _pinnedDockGrid.HorizontalAlignment = GetPinnedAlignment() == Alignment.Right ?
+                _pinnedDockGrid.HorizontalAlignment = TopPinnedDockablesAlignment == Alignment.Right ?
                     HorizontalAlignment.Right : HorizontalAlignment.Left;
                 _pinnedDockGrid.VerticalAlignment = VerticalAlignment.Top;
                 break;

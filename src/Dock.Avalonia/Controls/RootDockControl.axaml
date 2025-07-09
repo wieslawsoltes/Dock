@@ -40,7 +40,11 @@
                                IsVisible="{Binding !!BottomPinnedDockables.Count, FallbackValue={x:False}}" />
             <Panel>
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />
-              <PinnedDockControl />
+              <PinnedDockControl
+                  LeftPinnedDockablesAlignment="{Binding LeftPinnedDockablesAlignment}"
+                  RightPinnedDockablesAlignment="{Binding RightPinnedDockablesAlignment}"
+                  TopPinnedDockablesAlignment="{Binding TopPinnedDockablesAlignment}"
+                  BottomPinnedDockablesAlignment="{Binding BottomPinnedDockablesAlignment}" />
             </Panel>
           </DockPanel>
         </DockableControl>

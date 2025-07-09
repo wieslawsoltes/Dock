@@ -72,6 +72,14 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
             localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
+
+            if (localOperation == DockOperation.Window && DropControl is { })
+            {
+                if (DockProperties.GetDockAdornerHost(DropControl) is not null)
+                {
+                    localOperation = DockOperation.Fill;
+                }
+            }
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)
@@ -100,6 +108,14 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
             localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
+
+            if (localOperation == DockOperation.Window && DropControl is { })
+            {
+                if (DockProperties.GetDockAdornerHost(DropControl) is not null)
+                {
+                    localOperation = DockOperation.Fill;
+                }
+            }
         }
 
         if (GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget)

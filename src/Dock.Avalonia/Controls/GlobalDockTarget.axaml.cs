@@ -34,6 +34,21 @@ public class GlobalDockTarget : TemplatedControl
     private Control? _leftSelector;
     private Control? _rightSelector;
 
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowIndicatorsOnlyProperty =
+        AvaloniaProperty.Register<GlobalDockTarget, bool>(nameof(ShowIndicatorsOnly));
+
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public bool ShowIndicatorsOnly
+    {
+        get => GetValue(ShowIndicatorsOnlyProperty);
+        set => SetValue(ShowIndicatorsOnlyProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {

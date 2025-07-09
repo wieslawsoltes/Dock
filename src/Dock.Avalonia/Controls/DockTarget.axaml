@@ -108,6 +108,32 @@
       <Setter Property="Height" Value="40" />
     </Style>
 
+    <!-- Hide side indicators when only the center operation is required -->
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Panel#PART_TopIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Panel#PART_BottomIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Panel#PART_LeftIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Panel#PART_RightIndicator">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Image#PART_TopSelector">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Image#PART_BottomSelector">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Image#PART_LeftSelector">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="DockTarget[ShowIndicatorsOnly=True] /template/ Image#PART_RightSelector">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

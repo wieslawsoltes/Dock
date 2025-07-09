@@ -36,7 +36,8 @@
                             IsActive="{TemplateBinding IsActive}"
                             Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
                             DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
-                            DockProperties.IsDropArea="True">
+                            DockProperties.IsDropArea="True"
+                            DockAdornerHost="{Binding #PART_DockPanel}">
             <DocumentTabStrip.Styles>
               <Style Selector="DocumentTabStripItem">
                 <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />

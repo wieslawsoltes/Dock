@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Model.Mvvm.Core;
 
 namespace Dock.Model.Mvvm.Controls;

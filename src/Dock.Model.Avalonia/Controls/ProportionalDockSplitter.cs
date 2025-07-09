@@ -6,6 +6,7 @@ using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
 using Dock.Model.Adapters;
+using Dock.Model.Core;
 using System.Text.Json.Serialization;
 
 namespace Dock.Model.Avalonia.Controls;

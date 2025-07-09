@@ -27,7 +27,10 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    using Avalonia;
    using Avalonia.Controls;
    using Avalonia.Controls.ApplicationLifetimes;
+   using Avalonia.Styling;
+   using Avalonia.Themes.Fluent;
    using Dock.Avalonia.Controls;
+   using Dock.Avalonia.Themes;
    using Dock.Model.Avalonia;
    using Dock.Model.Avalonia.Controls;
    using Dock.Model.Core;
@@ -52,6 +55,12 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    {
        public override void OnFrameworkInitializationCompleted()
        {
+           Styles.Add(new FluentTheme(new Uri("avares://Avalonia.Themes.Fluent/FluentTheme.xaml"))
+           {
+               Mode = FluentThemeMode.Dark
+           });
+           Styles.Add(new DockFluentTheme());
+           RequestedThemeVariant = ThemeVariant.Dark;
            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
            {
                var dockControl = new DockControl();

@@ -7,6 +7,15 @@
 DockSettings.UseFloatingDockAdorner = true;
 ```
 
+```csharp
+// Via the app builder
+using Dock.Settings;
+
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .UseFloatingDockAdorner();
+```
+
 When enabled `AdornerHelper` creates a lightweight `DockAdornerWindow` positioned above the drag source. The window ignores pointer events so the drag operation continues uninterrupted. The drag preview window still appears above the adorner because only the preview is marked as `Topmost`.
 
 Use this option if dock targets fail to appear when dragging over native controls or popups. The default value is `false` which uses an `AdornerLayer` inside the same window.

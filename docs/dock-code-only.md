@@ -62,32 +62,49 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
            {
                var dockControl = new DockControl();
 
-              // Build a layout using the factory convenience methods
-              var factory  = new Factory();
+               // Create a layout using the plain Avalonia factory
+               var factory  = new Factory();
+               var document = new Document { Id = "Doc1", Title = "Document" };
+               var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
+               var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
 
-              var documentDock = factory.CreateDocumentDock("Documents",
-                  factory.CreateDocument("Doc1", "Document"));
+               var mainLayout = new ProportionalDock
+               {
+                   Orientation = Orientation.Horizontal,
+                   VisibleDockables = factory.CreateList<IDockable>(
+                       new ToolDock
+                       {
+                           Id = "LeftPane",
+                           Alignment = Alignment.Left,
+                           Proportion = 0.25,
+                           VisibleDockables = factory.CreateList<IDockable>(leftTool),
+                           ActiveDockable = leftTool
+                       },
+                       new ProportionalDockSplitter(),
+                       new DocumentDock
+                       {
+                           Id = "Documents",
+                           VisibleDockables = factory.CreateList<IDockable>(document),
+                           ActiveDockable = document
+                       },
+                       new ProportionalDockSplitter(),
+                       new ToolDock
+                       {
+                           Id = "BottomPane",
+                           Alignment = Alignment.Bottom,
+                           Proportion = 0.25,
+                           VisibleDockables = factory.CreateList<IDockable>(bottomTool),
+                           ActiveDockable = bottomTool
+                       })
+               };
 
-              var leftToolDock = factory.CreateToolDock("LeftPane", Alignment.Left,
-                  factory.CreateTool("Tool1", "Tool 1"));
-              leftToolDock.Proportion = 0.25;
+               var root = factory.CreateRootDock();
+               root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
+               root.DefaultDockable = mainLayout;
 
-              var bottomToolDock = factory.CreateToolDock("BottomPane", Alignment.Bottom,
-                  factory.CreateTool("Tool2", "Output"));
-              bottomToolDock.Proportion = 0.25;
-
-              var mainLayout = factory.CreateProportionalDock(Orientation.Horizontal,
-                  leftToolDock,
-                  factory.CreateProportionalDockSplitter(),
-                  documentDock,
-                  factory.CreateProportionalDockSplitter(),
-                  bottomToolDock);
-
-              var root = factory.CreateRootDock(mainLayout);
-              
-              factory.InitLayout(root);
-              dockControl.Factory = factory;
-              dockControl.Layout  = root;
+               factory.InitLayout(root);
+               dockControl.Factory = factory;
+               dockControl.Layout  = root;
 
                desktop.MainWindow = new Window
                {
@@ -109,6 +126,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    ```
 
 The window will show a document dock flanked by left and bottom tool panes without using XAML or MVVM helpers.
+The `ToolDock` class offers an `AddTool` method for adding tools programmatically.
 
 You can find a complete project in the repository under
 [`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

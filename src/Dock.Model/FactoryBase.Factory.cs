@@ -72,24 +72,6 @@ public abstract partial class FactoryBase
     public abstract IDocumentDock CreateDocumentDock();
 
     /// <inheritdoc/>
-    public abstract IDocument CreateDocument(string id, string title);
-
-    /// <inheritdoc/>
-    public abstract ITool CreateTool(string id, string title);
-
-    /// <inheritdoc/>
-    public abstract IDocumentDock CreateDocumentDock(string id, params IDockable[] documents);
-
-    /// <inheritdoc/>
-    public abstract IToolDock CreateToolDock(string id, Alignment alignment, params IDockable[] tools);
-
-    /// <inheritdoc/>
-    public abstract IProportionalDock CreateProportionalDock(Orientation orientation, params IDockable[] dockables);
-
-    /// <inheritdoc/>
-    public abstract IRootDock CreateRootDock(params IDockable[] dockables);
-
-    /// <inheritdoc/>
     public abstract IDockWindow CreateDockWindow();
 
     /// <inheritdoc/>

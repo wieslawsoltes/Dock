@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System.Globalization;
 using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
@@ -32,5 +34,5 @@ public partial class ProportionalDockSplitter : DockableBase, IProportionalDockS
     public void ResetProportion() => _adapter.ResetProportion(this);
 
     /// <inheritdoc/>
-    public void SetProportion(double proportion) => _adapter.SetProportion(this, proportion);
+    public void SetProportion(object proportion) => _adapter.SetProportion(this, double.Parse((string)proportion, CultureInfo.InvariantCulture));
 }

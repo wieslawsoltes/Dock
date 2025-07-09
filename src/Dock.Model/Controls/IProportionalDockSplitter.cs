@@ -23,5 +23,5 @@ public interface IProportionalDockSplitter : IDockable
     /// Sets proportion of the dockable preceding the splitter.
     /// </summary>
     /// <param name="proportion">Desired proportion value.</param>
-    void SetProportion(double proportion);
+    void SetProportion(object proportion);
 }

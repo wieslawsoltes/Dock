@@ -44,9 +44,7 @@ public class ProportionalDockSplitterAdapter : IProportionalDockSplitterAdapter
             var next = GetSibling(children, index, 1);
             if (prev is not null && next is not null)
             {
-                var delta = proportion - prev.Proportion;
                 prev.Proportion = proportion;
-                next.Proportion -= delta;
             }
         }
     }

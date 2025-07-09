@@ -41,7 +41,9 @@
               </Style>
             </ToolTabStrip.Styles>
           </ToolTabStrip>
-          <Border x:Name="PART_Border">
+          <Border x:Name="PART_Border"
+                 DockProperties.IsDropArea="True"
+                 DockProperties.IsDockTarget="True">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"

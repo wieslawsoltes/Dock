@@ -48,7 +48,9 @@
           </DocumentTabStrip>
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}" />
-          <Border x:Name="PART_Border">
+          <Border x:Name="PART_Border"
+                 DockProperties.IsDropArea="True"
+                 DockProperties.IsDockTarget="True">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"

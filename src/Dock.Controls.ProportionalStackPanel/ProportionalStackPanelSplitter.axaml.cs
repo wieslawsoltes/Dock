@@ -9,6 +9,8 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using System.Windows.Input;
+using Dock.Controls.ProportionalStackPanel.Internal;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -78,6 +80,25 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private Point _startPoint;
     private bool _isMoving;
+
+    /// <summary>
+    /// Command that resets the proportions of adjacent elements.
+    /// </summary>
+    public ICommand ResetProportionCommand { get; }
+
+    /// <summary>
+    /// Command that sets the proportion of the element before the splitter.
+    /// </summary>
+    public ICommand SetProportionCommand { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProportionalStackPanelSplitter"/> class.
+    /// </summary>
+    public ProportionalStackPanelSplitter()
+    {
+        ResetProportionCommand = Internal.Command.Create(ResetProportion);
+        SetProportionCommand = Internal.Command.Create<double>(SetProportion);
+    }
 
 
     /// <inheritdoc/>
@@ -185,11 +206,6 @@ public class ProportionalStackPanelSplitter : Thumb
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
-
-        if (ContextMenu is null)
-        {
-            ContextMenu = BuildContextMenu();
-        }
 
         var panel = GetPanel();
         if (panel is null)
@@ -335,30 +351,6 @@ public class ProportionalStackPanelSplitter : Thumb
         return GetSiblingInDirection(panel, -1);
     }
 
-    private ContextMenu BuildContextMenu()
-    {
-        var menu = new ContextMenu();
-
-        static MenuItem CreateItem(string header, Action action)
-        {
-            var item = new MenuItem { Header = header };
-            item.Click += (_, __) => action();
-            return item;
-        }
-
-        menu.Items = new object[]
-        {
-            CreateItem("Reset", ResetProportion),
-            new Separator(),
-            CreateItem("10%", () => SetProportion(0.1)),
-            CreateItem("25%", () => SetProportion(0.25)),
-            CreateItem("50%", () => SetProportion(0.5)),
-            CreateItem("75%", () => SetProportion(0.75)),
-            CreateItem("90%", () => SetProportion(0.9))
-        };
-
-        return menu;
-    }
 
     /// <summary>
     /// Resets the proportions of elements adjacent to the splitter.

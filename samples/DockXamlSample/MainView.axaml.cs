@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
+using MenuControlItem = Avalonia.Controls.MenuItem;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
@@ -12,7 +13,7 @@ using Dock.Model;
 using Dock.Model.Core;
 using Dock.Model.Controls;
 using Dock.Serializer;
-using MenuItem = Avalonia.Controls.MenuItem;
+using System.Collections.ObjectModel;
 
 namespace DockXamlSample;
 
@@ -21,7 +22,10 @@ public partial class MainView : UserControl
     private IDockSerializer? _serializer;
     private IDockState? _dockState;
     private IRootDock? _rootDock;
-    private MenuItem? _viewsMenu;
+    private MenuControlItem? _viewsMenu;
+    private readonly ObservableCollection<IMenuItem> _viewMenuItems = new();
+
+    public ObservableCollection<IMenuItem> ViewMenuItems => _viewMenuItems;
 
     public MainView()
     {
@@ -174,36 +178,37 @@ public partial class MainView : UserControl
         CloseLayout();
     }
 
-    private void ViewsMenuItem_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (sender is MenuItem { Tag: IDockable dockable } && DockControl?.Factory is { } factory)
-        {
-            factory.RestoreDockable(dockable);
-        }
-    }
-
     private void UpdateViewsMenu()
     {
-        if (_viewsMenu is null)
-        {
-            return;
-        }
-
-        _viewsMenu.Items.Clear();
+        _viewMenuItems.Clear();
 
         if (_rootDock?.HiddenDockables is { Count: >0 } hidden)
         {
             foreach (var dockable in hidden)
             {
-                var item = new MenuItem { Header = dockable.Title ?? dockable.Id, Tag = dockable };
-                item.Click += ViewsMenuItem_OnClick;
-                _viewsMenu.Items.Add(item);
+                _viewMenuItems.Add(new Dock.Model.Core.MenuItem
+                {
+                    Header = dockable.Title ?? dockable.Id,
+                    Command = new SimpleCommand(_ =>
+                    {
+                        if (DockControl?.Factory is { } factory)
+                        {
+                            factory.RestoreDockable(dockable);
+                        }
+                    })
+                });
             }
-            _viewsMenu.IsEnabled = true;
+            if (_viewsMenu is { })
+            {
+                _viewsMenu.IsEnabled = true;
+            }
         }
         else
         {
-            _viewsMenu.IsEnabled = false;
+            if (_viewsMenu is { })
+            {
+                _viewsMenu.IsEnabled = false;
+            }
         }
     }
 }

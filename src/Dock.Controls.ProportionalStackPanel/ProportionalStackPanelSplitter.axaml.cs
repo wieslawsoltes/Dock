@@ -329,35 +329,5 @@ public class ProportionalStackPanelSplitter : Thumb
         return GetSiblingInDirection(panel, -1);
     }
 
-    public void ResetProportion()
-    {
-        if (GetPanel() is { } panel)
-        {
-            var target = GetTargetElement(panel);
-            var neighbour = FindNextChild(panel);
-            if (target is null || neighbour is null)
-                return;
 
-            ProportionalStackPanel.SetProportion(target, double.NaN);
-            ProportionalStackPanel.SetProportion(neighbour, double.NaN);
-        }
-    }
-
-    public void SetProportion(double proportion)
-    {
-        if (GetPanel() is { } panel)
-        {
-            var target = GetTargetElement(panel);
-            var neighbour = FindNextChild(panel);
-            if (target is null || neighbour is null)
-                return;
-
-            var neighbourProp = ProportionalStackPanel.GetProportion(neighbour);
-            var current = ProportionalStackPanel.GetProportion(target);
-            var delta = proportion - current;
-
-            ProportionalStackPanel.SetProportion(target, proportion);
-            ProportionalStackPanel.SetProportion(neighbour, neighbourProp - delta);
-        }
-    }
 }

@@ -86,4 +86,15 @@ public class ToolDock : DockBase, IToolDock
         get => _gripMode;
         set => SetAndRaise(GripModeProperty, ref _gripMode, value);
     }
+
+    /// <summary>
+    /// Adds the specified tool to this dock and makes it active and focused.
+    /// </summary>
+    /// <param name="tool">The tool to add.</param>
+    public virtual void AddTool(IDockable tool)
+    {
+        Factory?.AddDockable(this, tool);
+        Factory?.SetActiveDockable(tool);
+        Factory?.SetFocusedDockable(this, tool);
+    }
 }

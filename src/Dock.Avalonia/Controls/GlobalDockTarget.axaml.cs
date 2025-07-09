@@ -105,9 +105,15 @@ public class GlobalDockTarget : TemplatedControl
             var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
             var scaling = (selector.GetVisualRoot() as TopLevel)?.Screens?.ScreenFromVisual(selector)?.Scaling ?? 1.0;
             var selectorOrigin = selector.PointToScreen(default).ToPoint(scaling);
-            selectorPoint = new Point(
+            var translated = new Point(
                 screenPoint.X - selectorOrigin.X,
                 screenPoint.Y - selectorOrigin.Y);
+
+            var width = selector.Bounds.Width;
+            var height = selector.Bounds.Height;
+            var clampedX = Math.Min(Math.Max(translated.X, 0), width);
+            var clampedY = Math.Min(Math.Max(translated.Y, 0), height);
+            selectorPoint = new Point(clampedX, clampedY);
         }
 
         if (selectorPoint is { })

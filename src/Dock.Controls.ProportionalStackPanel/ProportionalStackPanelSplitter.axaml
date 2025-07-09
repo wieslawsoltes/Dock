@@ -1,6 +1,5 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:psp="using:Dock.Controls.ProportionalStackPanel">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <ContextMenu x:Key="ProportionalStackPanelSplitterContextMenu">
     <MenuItem Header="{DynamicResource ProportionalStackPanelSplitterResetString}"
@@ -21,7 +20,6 @@
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
 
     <Setter Property="Background" Value="Transparent" />
-
 
     <Setter Property="ContextMenu" Value="{DynamicResource ProportionalStackPanelSplitterContextMenu}" />
 

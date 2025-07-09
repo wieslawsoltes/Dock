@@ -30,7 +30,7 @@ Create another `.axaml` file that merges the Dock controls together with your ac
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.axaml" />
+                <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
                 <ResourceInclude Source="avares://MyApp/Styles/MyDockAccent.axaml" />
                 <ResourceInclude Source="/Controls/DockControl.axaml" />
                 <ResourceInclude Source="/Controls/ToolControl.axaml" />

@@ -42,6 +42,46 @@ public interface IRootDock : IDock
     IList<IDockable>? BottomPinnedDockables { get; set; }
 
     /// <summary>
+    /// Gets or sets left top pinned dockables.
+    /// </summary>
+    IList<IDockable>? LeftTopPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets left bottom pinned dockables.
+    /// </summary>
+    IList<IDockable>? LeftBottomPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets right top pinned dockables.
+    /// </summary>
+    IList<IDockable>? RightTopPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets right bottom pinned dockables.
+    /// </summary>
+    IList<IDockable>? RightBottomPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets top left pinned dockables.
+    /// </summary>
+    IList<IDockable>? TopLeftPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets top right pinned dockables.
+    /// </summary>
+    IList<IDockable>? TopRightPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets bottom left pinned dockables.
+    /// </summary>
+    IList<IDockable>? BottomLeftPinnedDockables { get; set; }
+
+    /// <summary>
+    /// Gets or sets bottom right pinned dockables.
+    /// </summary>
+    IList<IDockable>? BottomRightPinnedDockables { get; set; }
+
+    /// <summary>
     /// Gets or sets left pinned dockables alignment.
     /// </summary>
     Alignment LeftPinnedDockablesAlignment { get; set; }

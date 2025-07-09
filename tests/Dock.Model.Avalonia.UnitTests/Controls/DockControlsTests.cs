@@ -78,10 +78,14 @@ public class DockControlsTests
     {
         var dock = new RootDock();
         Assert.NotNull(dock.HiddenDockables);
-        Assert.NotNull(dock.LeftPinnedDockables);
-        Assert.NotNull(dock.RightPinnedDockables);
-        Assert.NotNull(dock.TopPinnedDockables);
-        Assert.NotNull(dock.BottomPinnedDockables);
+        Assert.NotNull(dock.LeftTopPinnedDockables);
+        Assert.NotNull(dock.LeftBottomPinnedDockables);
+        Assert.NotNull(dock.RightTopPinnedDockables);
+        Assert.NotNull(dock.RightBottomPinnedDockables);
+        Assert.NotNull(dock.TopLeftPinnedDockables);
+        Assert.NotNull(dock.TopRightPinnedDockables);
+        Assert.NotNull(dock.BottomLeftPinnedDockables);
+        Assert.NotNull(dock.BottomRightPinnedDockables);
         Assert.Equal(Alignment.Top, dock.LeftPinnedDockablesAlignment);
         Assert.Equal(Alignment.Top, dock.RightPinnedDockablesAlignment);
         Assert.Equal(Alignment.Left, dock.TopPinnedDockablesAlignment);

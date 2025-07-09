@@ -21,42 +21,42 @@
             <DockPanel DockPanel.Dock="Left">
               <ToolPinnedControl DockPanel.Dock="Top"
                                  Orientation="Vertical"
-                                 Items="{Binding LeftPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Top}"
-                                 IsVisible="{Binding LeftPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Top}" />
+                                 Items="{Binding LeftTopPinnedDockables}"
+                                 IsVisible="{Binding LeftTopPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
               <ToolPinnedControl DockPanel.Dock="Bottom"
                                  Orientation="Vertical"
-                                 Items="{Binding LeftPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Bottom}"
-                                 IsVisible="{Binding LeftPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Bottom}" />
+                                 Items="{Binding LeftBottomPinnedDockables}"
+                                 IsVisible="{Binding LeftBottomPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
             </DockPanel>
             <DockPanel DockPanel.Dock="Right">
               <ToolPinnedControl DockPanel.Dock="Top"
                                  Orientation="Vertical"
-                                 Items="{Binding RightPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Top}"
-                                 IsVisible="{Binding RightPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Top}" />
+                                 Items="{Binding RightTopPinnedDockables}"
+                                 IsVisible="{Binding RightTopPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
               <ToolPinnedControl DockPanel.Dock="Bottom"
                                  Orientation="Vertical"
-                                 Items="{Binding RightPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Bottom}"
-                                 IsVisible="{Binding RightPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Bottom}" />
+                                 Items="{Binding RightBottomPinnedDockables}"
+                                 IsVisible="{Binding RightBottomPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
             </DockPanel>
             <DockPanel DockPanel.Dock="Top">
               <ToolPinnedControl DockPanel.Dock="Left"
                                  Orientation="Horizontal"
-                                 Items="{Binding TopPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Left}"
-                                 IsVisible="{Binding TopPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Left}" />
+                                 Items="{Binding TopLeftPinnedDockables}"
+                                 IsVisible="{Binding TopLeftPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
               <ToolPinnedControl DockPanel.Dock="Right"
                                  Orientation="Horizontal"
-                                 Items="{Binding TopPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Right}"
-                                 IsVisible="{Binding TopPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Right}" />
+                                 Items="{Binding TopRightPinnedDockables}"
+                                 IsVisible="{Binding TopRightPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
             </DockPanel>
             <DockPanel DockPanel.Dock="Bottom">
               <ToolPinnedControl DockPanel.Dock="Left"
                                  Orientation="Horizontal"
-                                 Items="{Binding BottomPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Left}"
-                                 IsVisible="{Binding BottomPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Left}" />
+                                 Items="{Binding BottomLeftPinnedDockables}"
+                                 IsVisible="{Binding BottomLeftPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
               <ToolPinnedControl DockPanel.Dock="Right"
                                  Orientation="Horizontal"
-                                 Items="{Binding BottomPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentFilterConverter.Instance}, ConverterParameter=Right}"
-                                 IsVisible="{Binding BottomPinnedDockables, Converter={x:Static converters:PinnedDockablesAlignmentAnyConverter.Instance}, ConverterParameter=Right}" />
+                                 Items="{Binding BottomRightPinnedDockables}"
+                                 IsVisible="{Binding BottomRightPinnedDockables, Converter={x:Static converters:DockablesAnyConverter.Instance}}" />
             </DockPanel>
             <Panel>
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />

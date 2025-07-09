@@ -3,29 +3,25 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Avalonia.Data.Converters;
-using Dock.Model.Core;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Converters;
 
 /// <summary>
-/// Determines if any dockables match <see cref="ITool.PinnedAlignment"/>.
+/// Determines if collection of dockables contains any items.
 /// </summary>
-public class PinnedDockablesAlignmentAnyConverter : IValueConverter
+public class DockablesAnyConverter : IValueConverter
 {
     /// <summary>
     /// Gets converter instance.
     /// </summary>
-    public static readonly PinnedDockablesAlignmentAnyConverter Instance = new();
+    public static readonly DockablesAnyConverter Instance = new();
 
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is IEnumerable<IDockable> dockables && parameter is string p && Enum.TryParse<Alignment>(p, out var alignment))
-        {
-            return dockables.OfType<ITool>().Any(t => t.PinnedAlignment == alignment);
-        }
-        return false;
+        return value is IEnumerable<IDockable> dockables && dockables.Any();
     }
 
     /// <inheritdoc/>

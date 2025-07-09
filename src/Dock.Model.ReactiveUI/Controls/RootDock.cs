@@ -56,6 +56,38 @@ public partial class RootDock : DockBase, IRootDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? LeftTopPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? LeftBottomPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? RightTopPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? RightBottomPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? TopLeftPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? TopRightPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? BottomLeftPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial IList<IDockable>? BottomRightPinnedDockables { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial Alignment LeftPinnedDockablesAlignment { get; set; }
 
     /// <inheritdoc/>

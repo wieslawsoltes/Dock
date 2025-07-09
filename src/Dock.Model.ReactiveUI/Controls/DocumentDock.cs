@@ -3,8 +3,8 @@
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
-using Dock.Model.ReactiveUI.Core;
 using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
@@ -35,5 +35,16 @@ public partial class DocumentDock : DockBase, IDocumentDock
     {
         get => _tabsLayout;
         set => this.RaiseAndSetIfChanged(ref _tabsLayout, value);
+    }
+
+    /// <summary>
+    /// Adds the specified document to this dock and makes it active and focused.
+    /// </summary>
+    /// <param name="document">The document to add.</param>
+    public virtual void AddDocument(IDockable document)
+    {
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
     }
 }

@@ -28,7 +28,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public static readonly StyledProperty<IDocumentTemplate?> DocumentTemplateProperty =
         AvaloniaProperty.Register<DocumentDock, IDocumentTemplate?>(nameof(DocumentTemplate));
-    
+
     /// <summary>
     /// Defines the <see cref="EnableWindowDrag"/> property.
     /// </summary>
@@ -117,5 +117,16 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         Factory?.SetFocusedDockable(this, document);
 
         return document;
+    }
+
+    /// <summary>
+    /// Adds the specified document to this dock and makes it active and focused.
+    /// </summary>
+    /// <param name="document">The document to add.</param>
+    public virtual void AddDocument(IDockable document)
+    {
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
     }
 }

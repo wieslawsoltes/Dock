@@ -3,8 +3,8 @@
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
-using Dock.Model.Prism.Core;
 using Dock.Model.Core;
+using Dock.Model.Prism.Core;
 
 namespace Dock.Model.Prism.Controls;
 
@@ -45,5 +45,16 @@ public class DocumentDock : DockBase, IDocumentDock
     {
         get => _tabsLayout;
         set => SetProperty(ref _tabsLayout, value);
+    }
+
+    /// <summary>
+    /// Adds the specified document to this dock and makes it active and focused.
+    /// </summary>
+    /// <param name="document">The document to add.</param>
+    public virtual void AddDocument(IDockable document)
+    {
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
     }
 }

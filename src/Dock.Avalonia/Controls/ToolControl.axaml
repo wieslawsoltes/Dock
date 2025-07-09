@@ -37,7 +37,6 @@
                         DockProperties.DockAdornerHost="{Binding #PART_Border}">
             <ToolTabStrip.Styles>
               <Style Selector="ToolTabStripItem">
-                <Setter Property="IsActive" Value="{Binding $parent[ToolTabStrip].IsActive}" />
                 <Setter Property="(DockProperties.DockAdornerHost)" Value="{Binding #PART_Border}" />
               </Style>
             </ToolTabStrip.Styles>

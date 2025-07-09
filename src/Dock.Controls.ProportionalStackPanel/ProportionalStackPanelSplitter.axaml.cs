@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
@@ -185,6 +186,11 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnAttachedToVisualTree(e);
 
+        if (ContextMenu is null)
+        {
+            ContextMenu = BuildContextMenu();
+        }
+
         var panel = GetPanel();
         if (panel is null)
         {
@@ -327,6 +333,31 @@ public class ProportionalStackPanelSplitter : Thumb
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
         return GetSiblingInDirection(panel, -1);
+    }
+
+    private ContextMenu BuildContextMenu()
+    {
+        var menu = new ContextMenu();
+
+        static MenuItem CreateItem(string header, Action action)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += (_, __) => action();
+            return item;
+        }
+
+        menu.Items = new object[]
+        {
+            CreateItem("Reset", ResetProportion),
+            new Separator(),
+            CreateItem("10%", () => SetProportion(0.1)),
+            CreateItem("25%", () => SetProportion(0.25)),
+            CreateItem("50%", () => SetProportion(0.5)),
+            CreateItem("75%", () => SetProportion(0.75)),
+            CreateItem("90%", () => SetProportion(0.9))
+        };
+
+        return menu;
     }
 
     /// <summary>

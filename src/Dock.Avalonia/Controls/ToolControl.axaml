@@ -33,7 +33,6 @@
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True"
-                        DockProperties.IsDockTarget="True"
                         DockProperties.DockAdornerHost="{Binding #PART_Border}">
             <ToolTabStrip.Styles>
               <Style Selector="ToolTabStripItem">
@@ -42,8 +41,7 @@
             </ToolTabStrip.Styles>
           </ToolTabStrip>
           <Border x:Name="PART_Border"
-                 DockProperties.IsDropArea="True"
-                 DockProperties.IsDockTarget="True">
+                 DockProperties.IsDropArea="True">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"

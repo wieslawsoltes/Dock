@@ -37,7 +37,6 @@
                             Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
                             DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
                             DockProperties.IsDropArea="True"
-                            DockProperties.IsDockTarget="True"
                             DockProperties.DockAdornerHost="{Binding #PART_Border}">
             <DocumentTabStrip.Styles>
               <Style Selector="DocumentTabStripItem">
@@ -49,8 +48,7 @@
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}" />
           <Border x:Name="PART_Border"
-                 DockProperties.IsDropArea="True"
-                 DockProperties.IsDockTarget="True">
+                 DockProperties.IsDropArea="True">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">
               <ContentControl x:Name="PART_ContentPresenter"

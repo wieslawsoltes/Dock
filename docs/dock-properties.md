@@ -30,17 +30,14 @@ Every control template that participates in docking should set the appropriate `
 <!-- Parts of the template that accept drops -->
 <Border x:Name="PART_BorderFill"
         DockProperties.IsDropArea="True"
-        DockProperties.IsDockTarget="True"
         DockProperties.DockAdornerHost="{Binding #PART_Border}" />
 
 <!-- Content host where documents appear -->
 <Border x:Name="PART_Border"
-        DockProperties.IsDropArea="True"
-        DockProperties.IsDockTarget="True" />
+        DockProperties.IsDropArea="True" />
 
 <!-- Tool dock tab strip -->
 <ToolTabStrip DockProperties.IsDropArea="True"
-              DockProperties.IsDockTarget="True"
               DockProperties.DockAdornerHost="{Binding #PART_Border}" />
 ```
 

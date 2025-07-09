@@ -67,7 +67,6 @@
                           ItemsPanel="{TemplateBinding ItemsPanel}" />
           <Border Name="PART_BorderFill"
                  DockProperties.IsDropArea="True"
-                 DockProperties.IsDockTarget="True"
                  DockProperties.DockAdornerHost="{TemplateBinding DockProperties.DockAdornerHost}" />
         </DockPanel>
       </ControlTemplate>

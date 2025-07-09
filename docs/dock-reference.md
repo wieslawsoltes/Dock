@@ -100,5 +100,6 @@ commands can call `SaveAsync` and `LoadAsync` to persist user changes.
 - `samples/DockMvvmSample` – full MVVM example.
 - `samples/DockReactiveUISample` – ReactiveUI variant.
 - `samples/DockXamlSample` – XAML-only layout with serialization.
+- `samples/DockCodeOnlySample` – layout defined fully in C#.
 
 For an overview of all guides see the [documentation index](README.md).

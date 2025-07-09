@@ -41,7 +41,7 @@ public class NotepadFactory : Factory
             Title = "Replace"
         };
 
-        var documentDock = new DocumentDock()
+        var documentDock = new DocumentDock
         {
             Id = "Files",
             Title = "Files",
@@ -52,9 +52,9 @@ public class NotepadFactory : Factory
             (
                 untitledFileViewModel
             ),
-            CanCreateDocument = true
+            CanCreateDocument = true,
+            DocumentFactory = CreateNewDocument
         };
-        documentDock.DocumentFactory = CreateNewDocument;
 
         var tools = new ProportionalDock
         {

@@ -114,7 +114,7 @@ While overriding individual resources works for small tweaks, you can also defin
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.axaml" />
                 <ResourceInclude Source="avares://MyApp/Styles/MyDockAccent.axaml" />
                 <ResourceInclude Source="/Controls/DockControl.axaml" />
                 <!-- include other Dock controls as needed -->

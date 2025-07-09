@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Windows.Input;
@@ -29,7 +28,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public static readonly StyledProperty<IDocumentTemplate?> DocumentTemplateProperty =
         AvaloniaProperty.Register<DocumentDock, IDocumentTemplate?>(nameof(DocumentTemplate));
-
+    
     /// <summary>
     /// Defines the <see cref="EnableWindowDrag"/> property.
     /// </summary>
@@ -49,15 +48,8 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// </summary>
     public DocumentDock()
     {
-        CreateDocument = new Command(CreateNewDocument);
+        CreateDocument = new Command(() => CreateDocumentFromTemplate());
     }
-
-    /// <summary>
-    /// Gets or sets factory method used to create new documents.
-    /// </summary>
-    [IgnoreDataMember]
-    [JsonIgnore]
-    public Func<IDockable>? DocumentFactory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -127,21 +119,8 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         return document;
     }
 
-    private void CreateNewDocument()
-    {
-        if (DocumentFactory is { } factory)
-        {
-            var document = factory();
-            AddDocument(document);
-        }
-        else
-        {
-            CreateDocumentFromTemplate();
-        }
-    }
-
     /// <summary>
-    /// Adds the specified document to this dock and makes it active and focused.
+    /// Adds the specified document to this dock and activates it.
     /// </summary>
     /// <param name="document">The document to add.</param>
     public virtual void AddDocument(IDockable document)
@@ -152,7 +131,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     }
 
     /// <summary>
-    /// Adds the specified tool to this dock and makes it active and focused.
+    /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     public virtual void AddTool(IDockable tool)

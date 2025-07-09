@@ -31,6 +31,12 @@ public interface IDocumentDock : IDock
     DocumentTabLayout TabsLayout { get; set; }
 
     /// <summary>
+    /// Adds the specified document to this dock and activates it.
+    /// </summary>
+    /// <param name="document">The document to add.</param>
+    void AddDocument(IDockable document);
+
+    /// <summary>
     /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>

@@ -12,7 +12,6 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Model.Mvvm.Controls;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -77,8 +76,13 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     private void AddFileViewModel(FileViewModel fileViewModel)
     {
-        var files = _factory?.GetDockable<IDocumentDock>("Files") as DocumentDock;
-        files?.AddDocument(fileViewModel);
+        var files = _factory?.GetDockable<IDocumentDock>("Files");
+        if (Layout is { } && files is { })
+        {
+            _factory?.AddDockable(files, fileViewModel);
+            _factory?.SetActiveDockable(fileViewModel);
+            _factory?.SetFocusedDockable(Layout, fileViewModel);
+        }
     }
 
     private FileViewModel? GetFileViewModel()
@@ -408,7 +412,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
     {
         if (!e.Data.Contains(DataFormats.Files))
         {
-            e.DragEffects = DragDropEffects.None;
+            e.DragEffects = DragDropEffects.None; 
             e.Handled = true;
         }
     }
@@ -418,7 +422,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
         if (e.Data.Contains(DataFormats.Files))
         {
             var result = e.Data.GetFileNames();
-            if (result is { })
+            if (result is {})
             {
                 foreach (var path in result)
                 {

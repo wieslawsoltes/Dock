@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
-using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
+using Dock.Model.Core;
 using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Controls;
@@ -18,14 +17,6 @@ public partial class DocumentDock : DockBase, IDocumentDock
 {
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
 
-    /// <summary>
-    /// Initializes new instance of the <see cref="DocumentDock"/> class.
-    /// </summary>
-    public DocumentDock()
-    {
-        CreateDocument = ReactiveCommand.Create(CreateNewDocument);
-    }
-
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanCreateDocument { get; set; }
@@ -33,12 +24,6 @@ public partial class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
-
-    /// <summary>
-    /// Gets or sets factory method used to create new documents.
-    /// </summary>
-    [IgnoreDataMember]
-    public Func<IDockable>? DocumentFactory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -52,17 +37,8 @@ public partial class DocumentDock : DockBase, IDocumentDock
         set => this.RaiseAndSetIfChanged(ref _tabsLayout, value);
     }
 
-    private void CreateNewDocument()
-    {
-        if (DocumentFactory is { } factory)
-        {
-            var document = factory();
-            AddDocument(document);
-        }
-    }
-
     /// <summary>
-    /// Adds the specified document to this dock and makes it active and focused.
+    /// Adds the specified document to this dock and activates it.
     /// </summary>
     /// <param name="document">The document to add.</param>
     public virtual void AddDocument(IDockable document)
@@ -73,7 +49,7 @@ public partial class DocumentDock : DockBase, IDocumentDock
     }
 
     /// <summary>
-    /// Adds the specified tool to this dock and makes it active and focused.
+    /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     public virtual void AddTool(IDockable tool)

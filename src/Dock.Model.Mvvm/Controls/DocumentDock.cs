@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using Dock.Model.Controls;
-using Dock.Model.Core;
 using Dock.Model.Mvvm.Core;
+using Dock.Model.Core;
 
 namespace Dock.Model.Mvvm.Controls;
 
@@ -19,14 +17,6 @@ public class DocumentDock : DockBase, IDocumentDock
     private bool _canCreateDocument;
     private bool _enableWindowDrag;
 
-    /// <summary>
-    /// Initializes new instance of the <see cref="DocumentDock"/> class.
-    /// </summary>
-    public DocumentDock()
-    {
-        CreateDocument = new RelayCommand(CreateNewDocument);
-    }
-
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public bool CanCreateDocument
@@ -38,12 +28,6 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
-
-    /// <summary>
-    /// Gets or sets factory method used to create new documents.
-    /// </summary>
-    [IgnoreDataMember]
-    public Func<IDockable>? DocumentFactory { get; set; }
 
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
 
@@ -63,17 +47,8 @@ public class DocumentDock : DockBase, IDocumentDock
         set => SetProperty(ref _tabsLayout, value);
     }
 
-    private void CreateNewDocument()
-    {
-        if (DocumentFactory is { } factory)
-        {
-            var document = factory();
-            AddDocument(document);
-        }
-    }
-
     /// <summary>
-    /// Adds the specified document to this dock and makes it active and focused.
+    /// Adds the specified document to this dock and activates it.
     /// </summary>
     /// <param name="document">The document to add.</param>
     public virtual void AddDocument(IDockable document)
@@ -84,7 +59,7 @@ public class DocumentDock : DockBase, IDocumentDock
     }
 
     /// <summary>
-    /// Adds the specified tool to this dock and makes it active and focused.
+    /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     public virtual void AddTool(IDockable tool)

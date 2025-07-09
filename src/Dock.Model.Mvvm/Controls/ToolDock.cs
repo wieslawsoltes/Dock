@@ -51,7 +51,7 @@ public class ToolDock : DockBase, IToolDock
     }
 
     /// <summary>
-    /// Adds the specified tool to this dock and makes it active and focused.
+    /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     public virtual void AddTool(IDockable tool)

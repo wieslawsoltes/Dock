@@ -207,6 +207,15 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnAttachedToVisualTree(e);
 
+        if (ContextMenu is null)
+        {
+            if (Application.Current?.TryFindResource("ProportionalStackPanelSplitterContextMenu", out var resource) == true &&
+                resource is ContextMenu menu)
+            {
+                ContextMenu = menu;
+            }
+        }
+
         var panel = GetPanel();
         if (panel is null)
         {

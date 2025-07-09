@@ -31,7 +31,6 @@
 
     <Setter Property="Background" Value="Transparent" />
 
-    <Setter Property="ContextMenu" Value="{DynamicResource ProportionalStackPanelSplitterContextMenu}" />
 
     <Setter Property="Template">
       <ControlTemplate>

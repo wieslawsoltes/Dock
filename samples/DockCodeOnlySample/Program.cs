@@ -38,27 +38,25 @@ public class App : Application
         {
             var dockControl = new DockControl();
 
-            // Create a layout using the plain Avalonia factory
-            var factory  = new Factory();
+            var factory = new Factory();
 
             var documentDock = new DocumentDock
             {
                 Id = "Documents",
-                CanCreateDocument = true,
-                DocumentFactory = () =>
-                {
-                    var index = documentDock.VisibleDockables?.Count ?? 0;
-                    return new Document
-                    {
-                        Id = $"Doc{index + 1}",
-                        Title = $"Document {index + 1}"
-                    };
-                }
+                IsCollapsable = false,
+                CanCreateDocument = true
             };
 
-            var document = new Document { Id = "Doc1", Title = "Document" };
+            documentDock.DocumentFactory = () =>
+            {
+                var index = documentDock.VisibleDockables?.Count ?? 0;
+                return new Document { Id = $"Doc{index + 1}", Title = $"Document {index + 1}" };
+            };
+
+            var document = new Document { Id = "Doc1", Title = "Document 1" };
             documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
             documentDock.ActiveDockable = document;
+
             var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
             var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
 

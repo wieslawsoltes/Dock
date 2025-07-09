@@ -84,10 +84,13 @@ if (layout is { })
 The Notepad sample shows how to create documents at runtime. New `FileViewModel` instances are added to an `IDocumentDock` using factory methods:
 
 ```csharp
-_factory?.AddDockable(files, fileViewModel);
-_factory?.SetActiveDockable(fileViewModel);
-_factory?.SetFocusedDockable(Layout, fileViewModel);
+files.AddDocument(fileViewModel);
 ```
+
+`DocumentDock` includes a `DocumentFactory` delegate that works with the
+`CreateDocument` command. Assigning this factory lets the dock create a
+new document on demand which is then passed to `AddDocument` and
+activated automatically.
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 

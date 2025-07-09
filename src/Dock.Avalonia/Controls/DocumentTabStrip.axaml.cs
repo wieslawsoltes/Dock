@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Avalonia.Input;
 using System.Runtime.InteropServices;
@@ -188,7 +189,7 @@ public class DocumentTabStrip : TabStrip
 
     private void OnScrollViewerPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.Source is IControl control && control.FindAncestorOfType<ScrollBar>() != null)
+        if (e.Source is Visual visual && visual.FindAncestorOfType<ScrollBar>() != null)
         {
             e.Handled = true;
         }

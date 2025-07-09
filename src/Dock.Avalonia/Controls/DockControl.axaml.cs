@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using Avalonia.Metadata;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Contract;
@@ -273,6 +274,11 @@ public class DockControl : TemplatedControl, IDockControl
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
+        if (e.Source is Visual visual && visual.FindAncestorOfType<ScrollBar>() != null)
+        {
+            return;
+        }
+
         if (Layout?.Factory?.DockControls is { })
         {
             var position = e.GetPosition(this);

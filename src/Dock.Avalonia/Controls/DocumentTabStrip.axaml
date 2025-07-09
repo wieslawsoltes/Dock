@@ -63,18 +63,20 @@
               </Path.Styles>
             </Path>
           </Button>
-          <ItemsPresenter x:Name="PART_ItemsPresenter"
-                          ItemsPanel="{TemplateBinding ItemsPanel}" />
+          <ScrollViewer x:Name="PART_ScrollViewer">
+            <ItemsPresenter x:Name="PART_ItemsPresenter"
+                            ItemsPanel="{TemplateBinding ItemsPanel}" />
+          </ScrollViewer>
           <Border Name="PART_BorderFill" DockProperties.IsDropArea="True" />
         </DockPanel>
       </ControlTemplate>
     </Setter>
     
-    <Style Selector="^[Orientation=Vertical]/template/ ItemsPresenter#PART_ItemsPresenter">
+    <Style Selector="^[Orientation=Vertical]/template/ ScrollViewer#PART_ScrollViewer">
       <Setter Property="(DockPanel.Dock)" Value="Top" />
     </Style>
 
-    <Style Selector="^[Orientation=Horizontal]/template/ ItemsPresenter#PART_ItemsPresenter">
+    <Style Selector="^[Orientation=Horizontal]/template/ ScrollViewer#PART_ScrollViewer">
       <Setter Property="(DockPanel.Dock)" Value="Left" />
     </Style>
     
@@ -102,12 +104,27 @@
       </Setter>
     </Style>
 
+    <Style Selector="^/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+      <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
+    <Style Selector="^[Orientation=Vertical]/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+      <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
     <Style Selector="^[Orientation=Horizontal]">
       <Setter Property="ItemsPanel">
         <ItemsPanelTemplate>
           <WrapPanel Orientation="Horizontal" ClipToBounds="False" />
         </ItemsPanelTemplate>
       </Setter>
+    </Style>
+
+    <Style Selector="^[Orientation=Horizontal]/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+      <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
     </Style>
 
     <Style Selector="^:not(:create):empty">

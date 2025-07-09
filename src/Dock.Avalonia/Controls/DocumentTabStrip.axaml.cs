@@ -5,6 +5,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.VisualTree;
+
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
@@ -113,7 +115,6 @@ public class DocumentTabStrip : TabStrip
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-
         DetachFromWindow();
     }
 

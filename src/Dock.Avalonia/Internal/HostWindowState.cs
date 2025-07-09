@@ -50,10 +50,15 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     private readonly HostWindow _hostWindow;
     private readonly WindowDragContext _context = new();
 
-    public HostWindowState(IDockManager dockManager, HostWindow hostWindow) 
+    public HostWindowState(IDockManager dockManager, HostWindow hostWindow)
         : base(dockManager)
     {
         _hostWindow = hostWindow;
+    }
+
+    private static Point Translate(Point point, Visual from, Visual to)
+    {
+        return from.TranslatePoint(point, to) ?? to.PointToClient(from.PointToScreen(point));
     }
 
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
@@ -71,16 +76,24 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
+            var host = DropControl is { } ? DockProperties.GetDockAdornerHost(DropControl) : null;
+            var target = host ?? relativeTo;
+            var hostPoint = point;
 
-            if (localOperation == DockOperation.Window && DropControl is { })
+            if (host is { })
             {
-                if (DockProperties.GetDockAdornerHost(DropControl) is Control host)
-                {
-                    var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
-                    _ = dockTarget.GetDockOperation(center, host, dragAction, ValidateLocal, IsDockTargetVisible);
-                    localOperation = DockOperation.Fill;
-                }
+                hostPoint = Translate(point, relativeTo, host);
+            }
+
+            localOperation = dockTarget.GetDockOperation(hostPoint, target, dragAction,
+                (p, o, d, v) => ValidateLocal(p, o, d, target), IsDockTargetVisible);
+
+            if (localOperation == DockOperation.Window && host is { })
+            {
+                var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
+                _ = dockTarget.GetDockOperation(center, host, dragAction,
+                    (p, o, d, v) => ValidateLocal(p, o, d, host), IsDockTargetVisible);
+                localOperation = DockOperation.Fill;
             }
         }
 
@@ -109,16 +122,24 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (LocalAdornerHelper.Adorner is DockTarget dockTarget)
         {
-            localOperation = dockTarget.GetDockOperation(point, relativeTo, dragAction, ValidateLocal, IsDockTargetVisible);
+            var host = DropControl is { } ? DockProperties.GetDockAdornerHost(DropControl) : null;
+            var target = host ?? relativeTo;
+            var hostPoint = point;
 
-            if (localOperation == DockOperation.Window && DropControl is { })
+            if (host is { })
             {
-                if (DockProperties.GetDockAdornerHost(DropControl) is Control host)
-                {
-                    var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
-                    _ = dockTarget.GetDockOperation(center, host, dragAction, ValidateLocal, IsDockTargetVisible);
-                    localOperation = DockOperation.Fill;
-                }
+                hostPoint = Translate(point, relativeTo, host);
+            }
+
+            localOperation = dockTarget.GetDockOperation(hostPoint, target, dragAction,
+                (p, o, d, v) => ValidateLocal(p, o, d, target), IsDockTargetVisible);
+
+            if (localOperation == DockOperation.Window && host is { })
+            {
+                var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
+                _ = dockTarget.GetDockOperation(center, host, dragAction,
+                    (p, o, d, v) => ValidateLocal(p, o, d, host), IsDockTargetVisible);
+                localOperation = DockOperation.Fill;
             }
         }
 

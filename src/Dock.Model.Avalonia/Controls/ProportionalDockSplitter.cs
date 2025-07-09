@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Runtime.Serialization;
-using System.Windows.Input;
 using Avalonia;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
@@ -25,24 +24,12 @@ public class ProportionalDockSplitter : DockBase, IProportionalDockSplitter
 
     private readonly IProportionalDockSplitterAdapter _adapter;
     private bool _canResize = true;
-
-    /// <summary>
-    /// Gets command that resets neighbour proportions.
-    /// </summary>
-    public ICommand ResetProportionCommand { get; }
-
-    /// <summary>
-    /// Gets command that sets the preceding proportion.
-    /// </summary>
-    public ICommand SetProportionCommand { get; }
     /// <summary>
     /// Initializes new instance of the <see cref="ProportionalDockSplitter"/> class.
     /// </summary>
     public ProportionalDockSplitter()
     {
         _adapter = new ProportionalDockSplitterAdapter();
-        ResetProportionCommand = Command.Create(() => _adapter.ResetProportion(this));
-        SetProportionCommand = Command.Create<double>(p => _adapter.SetProportion(this, p));
     }
 
     /// <inheritdoc/>

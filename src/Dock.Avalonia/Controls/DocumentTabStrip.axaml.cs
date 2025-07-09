@@ -5,9 +5,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using Avalonia.Input;
+
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
@@ -22,7 +21,6 @@ public class DocumentTabStrip : TabStrip
 {
     private HostWindow? _attachedWindow;
     private Control? _grip;
-    private ScrollViewer? _scrollViewer;
     private WindowDragHelper? _windowDragHelper;
     
     /// <summary>
@@ -102,16 +100,6 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
         _grip = e.NameScope.Find<Control>("PART_BorderFill");
-
-        if (_scrollViewer is { })
-        {
-            _scrollViewer.RemoveHandler(PointerPressedEvent, OnScrollViewerPointerPressed);
-        }
-        _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
-        if (_scrollViewer is { })
-        {
-            _scrollViewer.AddHandler(PointerPressedEvent, OnScrollViewerPointerPressed, RoutingStrategies.Tunnel);
-        }
         AttachToWindow();
     }
 
@@ -127,13 +115,6 @@ public class DocumentTabStrip : TabStrip
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-
-        if (_scrollViewer is { })
-        {
-            _scrollViewer.RemoveHandler(PointerPressedEvent, OnScrollViewerPointerPressed);
-            _scrollViewer = null;
-        }
-
         DetachFromWindow();
     }
 
@@ -185,14 +166,6 @@ public class DocumentTabStrip : TabStrip
     private void UpdatePseudoClassesActive(bool isActive)
     {
         PseudoClasses.Set(":active", isActive);
-    }
-
-    private void OnScrollViewerPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.Source is Visual visual && visual.FindAncestorOfType<ScrollBar>() != null)
-        {
-            e.Handled = true;
-        }
     }
 
     private WindowDragHelper CreateDragHelper(Control grip)

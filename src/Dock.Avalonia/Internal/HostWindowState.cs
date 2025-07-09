@@ -86,13 +86,13 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             }
 
             localOperation = dockTarget.GetDockOperation(hostPoint, target, dragAction,
-                (p, o, d, v) => ValidateLocal(p, o, d, target), IsDockTargetVisible);
+                (p, o, d, v) => ValidateLocal(point, o, d, relativeTo), IsDockTargetVisible);
 
             if (localOperation == DockOperation.Window && host is { })
             {
                 var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
                 _ = dockTarget.GetDockOperation(center, host, dragAction,
-                    (p, o, d, v) => ValidateLocal(p, o, d, host), IsDockTargetVisible);
+                    (p, o, d, v) => ValidateLocal(point, o, d, relativeTo), IsDockTargetVisible);
                 localOperation = DockOperation.Fill;
             }
         }
@@ -132,13 +132,13 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             }
 
             localOperation = dockTarget.GetDockOperation(hostPoint, target, dragAction,
-                (p, o, d, v) => ValidateLocal(p, o, d, target), IsDockTargetVisible);
+                (p, o, d, v) => ValidateLocal(point, o, d, relativeTo), IsDockTargetVisible);
 
             if (localOperation == DockOperation.Window && host is { })
             {
                 var center = new Point(host.Bounds.Width / 2, host.Bounds.Height / 2);
                 _ = dockTarget.GetDockOperation(center, host, dragAction,
-                    (p, o, d, v) => ValidateLocal(p, o, d, host), IsDockTargetVisible);
+                    (p, o, d, v) => ValidateLocal(point, o, d, relativeTo), IsDockTargetVisible);
                 localOperation = DockOperation.Fill;
             }
         }

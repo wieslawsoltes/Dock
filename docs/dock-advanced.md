@@ -86,6 +86,8 @@ The Notepad sample shows how to create documents at runtime. New `FileViewModel`
 ```csharp
 files.AddDocument(fileViewModel);
 ```
+These helper calls can be replaced by `files.AddDocument(fileViewModel)` for brevity.
+`ToolDock` offers a matching `AddTool` helper for dynamically created tools.
 
 `DocumentDock` includes a `DocumentFactory` delegate that works with the
 `CreateDocument` command. Assigning this factory lets the dock create a

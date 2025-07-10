@@ -93,12 +93,30 @@ public class DockTarget : TemplatedControl
                 _ => null
             };
 
-            // hide unused indicators
-            if (_leftIndicator is { } && indicator != _leftIndicator) _leftIndicator.Opacity = 0;
-            if (_rightIndicator is { } && indicator != _rightIndicator) _rightIndicator.Opacity = 0;
-            if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
-            if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
-            if (_centerIndicator is { } && indicator != _centerIndicator) _centerIndicator.Opacity = 0;
+            if (_leftIndicator is not null && indicator != _leftIndicator)
+            {
+                _leftIndicator.Opacity = 0;
+            }
+
+            if (_rightIndicator is not null && indicator != _rightIndicator)
+            {
+                _rightIndicator.Opacity = 0;
+            }
+
+            if (_topIndicator is not null && indicator != _topIndicator)
+            {
+                _topIndicator.Opacity = 0;
+            }
+
+            if (_bottomIndicator is not null && indicator != _bottomIndicator)
+            {
+                _bottomIndicator.Opacity = 0;
+            }
+
+            if (_centerIndicator is not null && indicator != _centerIndicator)
+            {
+                _centerIndicator.Opacity = 0;
+            }
 
             return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate, visible)
                 ? operation
@@ -161,7 +179,7 @@ public class DockTarget : TemplatedControl
 
         var isDockTargetSelector = IsDockTargetSelector(selector);
  
-        if (visible is { } && !visible(point, operation, dragAction, relativeTo))
+        if (visible is not null && !visible(point, operation, dragAction, relativeTo))
         {
             indicator.Opacity = 0;
 
@@ -186,7 +204,7 @@ public class DockTarget : TemplatedControl
             selectorPoint = this.TranslatePoint(localPoint, selector);
         }
 
-        if (selectorPoint is { })
+        if (selectorPoint is not null)
         {
             if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
             {

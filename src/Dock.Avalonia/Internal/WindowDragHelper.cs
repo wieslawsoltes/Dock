@@ -92,6 +92,7 @@ internal class WindowDragHelper
             {
                 if (hostWindow.HostWindowState is HostWindowState state)
                 {
+                    state.IsDragFromTabStrip = false;
                     var point = hostWindow.PointToScreen(e.GetPosition(hostWindow)) -
                                 hostWindow.PointToScreen(new Point(0, 0));
                     state.Process(new PixelPoint(point.X, point.Y), EventType.Released);
@@ -152,6 +153,7 @@ internal class WindowDragHelper
 
         if (hostWindow.HostWindowState is HostWindowState state)
         {
+            state.IsDragFromTabStrip = _owner is DocumentTabStrip;
             var start = hostWindow.PointToScreen(_lastPointerPressedArgs.GetPosition(hostWindow)) - hostWindow.PointToScreen(new Point(0, 0));
             state.Process(new PixelPoint(start.X, start.Y), EventType.Pressed);
         }

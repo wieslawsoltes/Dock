@@ -49,6 +49,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 {
     private readonly HostWindow _hostWindow;
     private readonly WindowDragContext _context = new();
+    internal bool IsDragFromTabStrip { get; set; }
 
     public HostWindowState(IDockManager dockManager, HostWindow hostWindow) 
         : base(dockManager)
@@ -308,6 +309,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
                     var dockControlPoint = dockControl.PointToClient(screenPoint);
                     var dropControl = DockHelpers.GetControl(dockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
+                    if (IsDragFromTabStrip && dropControl is { } && dropControl.FindAncestorOfType<DocumentTabStrip>() is null)
+                    {
+                        dropControl = null;
+                    }
+
                     if (dropControl is { })
                     {
                         var isDropEnabled = dropControl.GetValue(DockProperties.IsDropEnabledProperty);
@@ -346,6 +352,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
                 }
 
+                if (DropControl is { } && _context.TargetDockControl is null)
+                {
+                    Leave();
+                    DropControl = null;
+                }
+
                 break;
             }
             case EventType.Enter:
@@ -354,6 +366,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             }
             case EventType.Leave:
             {
+                Leave();
+                _context.TargetDockControl = null;
+                _context.TargetPoint = default;
+                DropControl = null;
                 break;
             }
             case EventType.CaptureLost:

@@ -449,6 +449,11 @@ internal class DockControlState : DockManagerState, IDockControlState
             }
             case EventType.Leave:
             {
+                _dragPreviewHelper.Hide();
+                Leave();
+                _context.TargetPoint = default;
+                _context.TargetDockControl = null;
+                DropControl = null;
                 break;
             }
             case EventType.CaptureLost:

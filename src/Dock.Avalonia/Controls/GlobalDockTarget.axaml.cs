@@ -66,13 +66,14 @@ public class GlobalDockTarget : TemplatedControl
         _rightSelector = e.NameScope.Find<Control>("PART_RightSelector");
     }
 
-    internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction,
+    internal DockOperation GetDockOperation(Point point, Control dropControl, Visual relativeTo,
+        DragAction dragAction,
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
         if (ShowIndicatorsOnly)
         {
-            var operation = DockProperties.GetIndicatorDockOperation(this);
+            var operation = DockProperties.GetIndicatorDockOperation(dropControl);
             var indicator = operation switch
             {
                 DockOperation.Left => _leftIndicator,
@@ -87,7 +88,7 @@ public class GlobalDockTarget : TemplatedControl
             if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
             if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
 
-            return InvalidateIndicator(relativeTo as Control ?? this, indicator, point, relativeTo, operation, dragAction, validate, visible)
+            return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate, visible)
                 ? operation
                 : DockOperation.None;
         }

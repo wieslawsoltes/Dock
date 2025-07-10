@@ -99,6 +99,22 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (targetDock.VisibleDockables is not null)
+        {
+            if (!targetDock.VisibleDockables.Contains(targetDockable))
+            {
+                return false;
+            }
+        }
+
+        if (sourceDockableOwner.VisibleDockables is not null)
+        {
+            if (!sourceDockableOwner.VisibleDockables.Contains(sourceDockable))
+            {
+                return false;
+            }
+        }
+
         if (bExecute)
         {
             if (sourceDockableOwner.Factory is { } factory)

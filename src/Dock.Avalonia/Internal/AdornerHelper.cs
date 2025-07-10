@@ -20,19 +20,19 @@ internal class AdornerHelper<T> where T : Control, new()
         _useFloatingDockAdorner = useFloatingDockAdorner;
     }
 
-    public void AddAdorner(Visual visual, bool indicatorsOnly)
+    public void AddAdorner(Visual visual, bool selectorsOnly)
     {
         if (_useFloatingDockAdorner)
         {
-            AddFloatingAdorner(visual, indicatorsOnly);
+            AddFloatingAdorner(visual, selectorsOnly);
         }
         else
         {
-            AddRegularAdorner(visual, indicatorsOnly);
+            AddRegularAdorner(visual, selectorsOnly);
         }
     }
 
-    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly)
+    private void AddFloatingAdorner(Visual visual, bool selectorsOnly)
     {
         if (_window is not null)
         {
@@ -46,11 +46,11 @@ internal class AdornerHelper<T> where T : Control, new()
         {
             if (adorner is DockTarget dockTarget)
             {
-                dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                dockTarget.ShowSelectorsOnly = selectorsOnly;
             }
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
-                globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                globalDockTarget.ShowSelectorsOnly = selectorsOnly;
             }
         }
 
@@ -82,7 +82,7 @@ internal class AdornerHelper<T> where T : Control, new()
         _window.Show(root);
     }
 
-    private void AddRegularAdorner(Visual visual, bool indicatorsOnly)
+    private void AddRegularAdorner(Visual visual, bool selectorsOnly)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
@@ -105,11 +105,11 @@ internal class AdornerHelper<T> where T : Control, new()
         {
             if (adorner is DockTarget dockTarget)
             {
-                dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                dockTarget.ShowSelectorsOnly = selectorsOnly;
             }
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
-                globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                globalDockTarget.ShowSelectorsOnly = selectorsOnly;
             }
         }
         ((ISetLogicalParent) Adorner).SetParent(visual);

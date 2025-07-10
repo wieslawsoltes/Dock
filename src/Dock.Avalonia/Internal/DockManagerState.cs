@@ -38,8 +38,8 @@ internal abstract class DockManagerState : IDockManagerState
         if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
             var host = DockProperties.GetDockAdornerHost(control) ?? control;
-            var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(control);
-            LocalAdornerHelper.AddAdorner(host, indicatorsOnly);
+            var selectorsOnly = DockProperties.GetShowDockSelectorOnly(control);
+            LocalAdornerHelper.AddAdorner(host, selectorsOnly);
         }
 
         // Global dock target
@@ -48,8 +48,8 @@ internal abstract class DockManagerState : IDockManagerState
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             if (dockControl is not null)
             {
-                var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
-                GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly);
+                var selectorsOnly = DockProperties.GetShowDockSelectorOnly(dropControl);
+                GlobalAdornerHelper.AddAdorner(dockControl, selectorsOnly);
             }
         }
     }

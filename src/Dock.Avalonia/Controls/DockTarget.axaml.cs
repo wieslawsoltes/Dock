@@ -39,18 +39,18 @@ public class DockTarget : TemplatedControl
     private Control? _centerSelector;
 
     /// <summary>
-    /// Gets or sets whether only drop indicators should be shown.
+    /// Gets or sets whether only drop selectors should be shown.
     /// </summary>
-    public static readonly StyledProperty<bool> ShowIndicatorsOnlyProperty =
-        AvaloniaProperty.Register<DockTarget, bool>(nameof(ShowIndicatorsOnly));
+    public static readonly StyledProperty<bool> ShowSelectorsOnlyProperty =
+        AvaloniaProperty.Register<DockTarget, bool>(nameof(ShowSelectorsOnly));
 
     /// <summary>
-    /// Gets or sets whether only drop indicators should be shown.
+    /// Gets or sets whether only drop selectors should be shown.
     /// </summary>
-    public bool ShowIndicatorsOnly
+    public bool ShowSelectorsOnly
     {
-        get => GetValue(ShowIndicatorsOnlyProperty);
-        set => SetValue(ShowIndicatorsOnlyProperty, value);
+        get => GetValue(ShowSelectorsOnlyProperty);
+        set => SetValue(ShowSelectorsOnlyProperty, value);
     }
 
     /// <inheritdoc/>
@@ -138,13 +138,27 @@ public class DockTarget : TemplatedControl
             {
                 if (validate(point, operation, dragAction, relativeTo))
                 {
-                    indicator.Opacity = 0.5;
+                    if (ShowSelectorsOnly)
+                    {
+                        selector.Opacity = 0.5;
+                    }
+                    else
+                    {
+                        indicator.Opacity = 0.5;
+                    }
                     return true;
                 }
             }
         }
 
-        indicator.Opacity = 0;
+        if (!ShowSelectorsOnly)
+        {
+            indicator.Opacity = 0;
+        }
+        else
+        {
+            selector.Opacity = 1;
+        }
         return false;
     }
 }

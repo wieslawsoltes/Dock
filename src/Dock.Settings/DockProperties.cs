@@ -42,12 +42,12 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
-    /// Defines the ShowDockIndicatorOnly attached property.
+    /// Defines the ShowDockSelectorOnly attached property.
     /// When set to true the dock adorner displays only
-    /// drop indicators and hides the dock target visuals.
+    /// drop selectors and hides the drop indicators.
     /// </summary>
-    public static readonly AttachedProperty<bool> ShowDockIndicatorOnlyProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("ShowDockIndicatorOnly", false, false, BindingMode.TwoWay);
+    public static readonly AttachedProperty<bool> ShowDockSelectorOnlyProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("ShowDockSelectorOnly", false, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the DockAdornerHost attached property.
@@ -158,23 +158,23 @@ public class DockProperties : AvaloniaObject
     }
 
     /// <summary>
-    /// Gets the value of the ShowDockIndicatorOnly attached property on the specified control.
+    /// Gets the value of the ShowDockSelectorOnly attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
-    /// <returns>The ShowDockIndicatorOnly attached property.</returns>
-    public static bool GetShowDockIndicatorOnly(AvaloniaObject control)
+    /// <returns>The ShowDockSelectorOnly attached property.</returns>
+    public static bool GetShowDockSelectorOnly(AvaloniaObject control)
     {
-        return control.GetValue(ShowDockIndicatorOnlyProperty);
+        return control.GetValue(ShowDockSelectorOnlyProperty);
     }
 
     /// <summary>
-    /// Sets the value of the ShowDockIndicatorOnly attached property on the specified control.
+    /// Sets the value of the ShowDockSelectorOnly attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
-    /// <param name="value">The value of the ShowDockIndicatorOnly property.</param>
-    public static void SetShowDockIndicatorOnly(AvaloniaObject control, bool value)
+    /// <param name="value">The value of the ShowDockSelectorOnly property.</param>
+    public static void SetShowDockSelectorOnly(AvaloniaObject control, bool value)
     {
-        control.SetValue(ShowDockIndicatorOnlyProperty, value);
+        control.SetValue(ShowDockSelectorOnlyProperty, value);
     }
 
     /// <summary>

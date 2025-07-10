@@ -96,7 +96,7 @@ public class DockTarget : TemplatedControl
             if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
             if (_centerIndicator is { } && indicator != _centerIndicator) _centerIndicator.Opacity = 0;
 
-            return InvalidateIndicator(this, indicator, point, relativeTo, operation, dragAction, validate, visible)
+            return InvalidateIndicator(relativeTo as Control ?? this, indicator, point, relativeTo, operation, dragAction, validate, visible)
                 ? operation
                 : DockOperation.Window;
         }

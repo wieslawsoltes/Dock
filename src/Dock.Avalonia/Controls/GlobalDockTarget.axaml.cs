@@ -87,7 +87,7 @@ public class GlobalDockTarget : TemplatedControl
             if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
             if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
 
-            return InvalidateIndicator(this, indicator, point, relativeTo, operation, dragAction, validate, visible)
+            return InvalidateIndicator(relativeTo as Control ?? this, indicator, point, relativeTo, operation, dragAction, validate, visible)
                 ? operation
                 : DockOperation.None;
         }

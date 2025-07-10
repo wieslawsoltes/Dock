@@ -35,6 +35,11 @@ public static class DockSettings
     /// Allow docking between different dock control instances.
     /// </summary>
     public static bool EnableGlobalDocking = true;
+    
+    /// <summary>
+    /// Floating windows have a parent child relationship with the main window. This prevents them from going behind the main window.
+    /// </summary>
+    public static bool FloatingWindowsAreChildWindows = true;
 
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.

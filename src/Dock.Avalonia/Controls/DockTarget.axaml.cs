@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Avalonia.Contract;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -38,6 +39,21 @@ public class DockTarget : TemplatedControl
     private Control? _rightSelector;
     private Control? _centerSelector;
 
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowIndicatorsOnlyProperty =
+        AvaloniaProperty.Register<DockTarget, bool>(nameof(ShowIndicatorsOnly));
+
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public bool ShowIndicatorsOnly
+    {
+        get => GetValue(ShowIndicatorsOnlyProperty);
+        set => SetValue(ShowIndicatorsOnlyProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -56,10 +72,39 @@ public class DockTarget : TemplatedControl
         _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
     }
 
-    internal DockOperation GetDockOperation(Point point, Visual relativeTo, DragAction dragAction,
+    internal DockOperation GetDockOperation(
+        Point point, 
+        Control dropControl, 
+        Visual relativeTo,
+        DragAction dragAction,
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        if (ShowIndicatorsOnly)
+        {
+            var operation = DockProperties.GetIndicatorDockOperation(dropControl);
+            var indicator = operation switch
+            {
+                DockOperation.Left => _leftIndicator,
+                DockOperation.Right => _rightIndicator,
+                DockOperation.Top => _topIndicator,
+                DockOperation.Bottom => _bottomIndicator,
+                DockOperation.Fill => _centerIndicator,
+                _ => null
+            };
+
+            // hide unused indicators
+            if (_leftIndicator is { } && indicator != _leftIndicator) _leftIndicator.Opacity = 0;
+            if (_rightIndicator is { } && indicator != _rightIndicator) _rightIndicator.Opacity = 0;
+            if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
+            if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
+            if (_centerIndicator is { } && indicator != _centerIndicator) _centerIndicator.Opacity = 0;
+
+            return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate, visible)
+                ? operation
+                : DockOperation.Window;
+        }
+
         var result = DockOperation.Window;
 
         if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate, visible))
@@ -90,8 +135,22 @@ public class DockTarget : TemplatedControl
         return result;
     }
 
-    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo,
-        DockOperation operation, DragAction dragAction,
+    private bool IsDockTargetSelector(Control selector)
+    {
+        return selector == _topSelector ||
+               selector == _bottomSelector ||
+               selector == _leftSelector ||
+               selector == _rightSelector ||
+               selector == _centerSelector;
+    }
+
+    private bool InvalidateIndicator(
+        Control? selector, 
+        Panel? indicator, 
+        Point point, 
+        Visual relativeTo,
+        DockOperation operation, 
+        DragAction dragAction,
         DockOperationHandler validate,
         DockOperationHandler? visible)
     {
@@ -100,14 +159,24 @@ public class DockTarget : TemplatedControl
             return false;
         }
 
+        var isDockTargetSelector = IsDockTargetSelector(selector);
+ 
         if (visible is { } && !visible(point, operation, dragAction, relativeTo))
         {
             indicator.Opacity = 0;
-            selector.Opacity = 0;
+
+            if (isDockTargetSelector)
+            {
+                selector.Opacity = 0;
+            }
+
             return false;
         }
 
-        selector.Opacity = 1;
+        if (isDockTargetSelector)
+        {
+            selector.Opacity = 1;
+        }
 
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
         if (selectorPoint is null)

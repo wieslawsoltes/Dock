@@ -42,6 +42,31 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the ShowDockIndicatorOnly attached property.
+    /// When set to true the dock adorner displays only
+    /// drop indicators and hides the dock target visuals.
+    /// </summary>
+    public static readonly AttachedProperty<bool> ShowDockIndicatorOnlyProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("ShowDockIndicatorOnly", false, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Defines the IndicatorDockOperation attached property.
+    /// When <see cref="ShowDockIndicatorOnlyProperty"/> is true this value
+    /// specifies which dock operation the entire control represents.
+    /// </summary>
+    public static readonly AttachedProperty<Dock.Model.Core.DockOperation> IndicatorDockOperationProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Dock.Model.Core.DockOperation>(
+            "IndicatorDockOperation", Dock.Model.Core.DockOperation.Fill, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Defines the DockAdornerHost attached property.
+    /// When set it specifies the element that will host
+    /// the dock target adorner instead of the adorned control itself.
+    /// </summary>
+    public static readonly AttachedProperty<Control?> DockAdornerHostProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, false, BindingMode.TwoWay);
+
+    /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
@@ -139,5 +164,65 @@ public class DockProperties : AvaloniaObject
     public static void SetIsDropEnabled(AvaloniaObject control, bool value)
     {
         control.SetValue(IsDropEnabledProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the ShowDockIndicatorOnly attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The ShowDockIndicatorOnly attached property.</returns>
+    public static bool GetShowDockIndicatorOnly(AvaloniaObject control)
+    {
+        return control.GetValue(ShowDockIndicatorOnlyProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the ShowDockIndicatorOnly attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the ShowDockIndicatorOnly property.</param>
+    public static void SetShowDockIndicatorOnly(AvaloniaObject control, bool value)
+    {
+        control.SetValue(ShowDockIndicatorOnlyProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the IndicatorDockOperation attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The IndicatorDockOperation attached property.</returns>
+    public static Dock.Model.Core.DockOperation GetIndicatorDockOperation(AvaloniaObject control)
+    {
+        return control.GetValue(IndicatorDockOperationProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the IndicatorDockOperation attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The dock operation value.</param>
+    public static void SetIndicatorDockOperation(AvaloniaObject control, Dock.Model.Core.DockOperation value)
+    {
+        control.SetValue(IndicatorDockOperationProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the DockAdornerHost attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The DockAdornerHost attached property.</returns>
+    public static Control? GetDockAdornerHost(AvaloniaObject control)
+    {
+        return control.GetValue(DockAdornerHostProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the DockAdornerHost attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The host control.</param>
+    public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
+    {
+        control.SetValue(DockAdornerHostProperty, value);
     }
 }

@@ -108,6 +108,13 @@
       <Setter Property="Height" Value="40" />
     </Style>
 
+    <Style Selector="^/template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+    <Style Selector="^[ShowIndicatorsOnly=True] /template/ Panel#PART_SelectorPanel">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
   </ControlTheme>
 
 </ResourceDictionary>

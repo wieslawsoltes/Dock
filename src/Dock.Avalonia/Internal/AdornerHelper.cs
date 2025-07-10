@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -19,19 +20,19 @@ internal class AdornerHelper<T> where T : Control, new()
         _useFloatingDockAdorner = useFloatingDockAdorner;
     }
 
-    public void AddAdorner(Visual visual)
+    public void AddAdorner(Visual visual, bool indicatorsOnly)
     {
         if (_useFloatingDockAdorner)
         {
-            AddFloatingAdorner(visual);
+            AddFloatingAdorner(visual, indicatorsOnly);
         }
         else
         {
-            AddRegularAdorner(visual);
+            AddRegularAdorner(visual, indicatorsOnly);
         }
     }
 
-    private void AddFloatingAdorner(Visual visual)
+    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly)
     {
         if (_window is not null)
         {
@@ -40,6 +41,18 @@ internal class AdornerHelper<T> where T : Control, new()
         }
 
         Adorner = new T();
+
+        if (Adorner is Control adorner)
+        {
+            if (adorner is DockTarget dockTarget)
+            {
+                dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+            }
+            else if (adorner is GlobalDockTarget globalDockTarget)
+            {
+                globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+            }
+        }
 
         if (visual.GetVisualRoot() is not Window root)
         {
@@ -69,7 +82,7 @@ internal class AdornerHelper<T> where T : Control, new()
         _window.Show(root);
     }
 
-    private void AddRegularAdorner(Visual visual)
+    private void AddRegularAdorner(Visual visual, bool indicatorsOnly)
     {
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
@@ -87,6 +100,18 @@ internal class AdornerHelper<T> where T : Control, new()
         {
             [AdornerLayer.AdornedElementProperty] = visual
         };
+
+        if (Adorner is Control adorner)
+        {
+            if (adorner is DockTarget dockTarget)
+            {
+                dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+            }
+            else if (adorner is GlobalDockTarget globalDockTarget)
+            {
+                globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+            }
+        }
         ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);

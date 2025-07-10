@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
@@ -95,5 +97,129 @@ public class DockTargetTests
         target.AddSelectorPublic("none", scope);
 
         Assert.Empty(target.SelectorOps);
+    }
+
+    [AvaloniaFact]
+    public void DockTarget_Pointer_Returns_Correct_Operations()
+    {
+        var target = new TestDockTarget { Width = 200, Height = 200 };
+        var drop = new Panel();
+        var window = new HostWindow { Content = target };
+
+        var dict = (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://Dock.Avalonia/Controls/DockTarget.axaml"));
+        var theme = (ControlTheme)dict[typeof(DockTarget)];
+        target.Template = theme.Template;
+
+        window.ApplyTemplate();
+        target.ApplyTemplate();
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.Equal(5, target.SelectorOps.Count);
+
+        foreach (var (operation, selector) in target.SelectorOps)
+        {
+            var center = selector.TranslatePoint(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2), target);
+            Assert.NotNull(center);
+            var result = target.GetDockOperation(center!.Value, drop, target, DragAction.Move, (_,_,_,_) => true);
+            Assert.Equal(operation, result);
+        }
+    }
+
+    [AvaloniaFact]
+    public void GlobalDockTarget_Pointer_Returns_Correct_Operations()
+    {
+        var target = new TestGlobalDockTarget { Width = 200, Height = 200 };
+        var drop = new Panel();
+        var window = new HostWindow { Content = target };
+
+        var dict = (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://Dock.Avalonia/Controls/GlobalDockTarget.axaml"));
+        var theme = (ControlTheme)dict[typeof(GlobalDockTarget)];
+        target.Template = theme.Template;
+
+        window.ApplyTemplate();
+        target.ApplyTemplate();
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.Equal(4, target.SelectorOps.Count);
+
+        foreach (var (operation, selector) in target.SelectorOps)
+        {
+            var center = selector.TranslatePoint(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2), target);
+            Assert.NotNull(center);
+            var result = target.GetDockOperation(center!.Value, drop, target, DragAction.Move, (_,_,_,_) => true);
+            Assert.Equal(operation, result);
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockTarget_Pointer_Interactive_Sequence()
+    {
+        var target = new TestDockTarget { Width = 200, Height = 200 };
+        var drop = new Panel();
+        var window = new HostWindow { Content = target };
+
+        var dict = (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://Dock.Avalonia/Controls/DockTarget.axaml"));
+        var theme = (ControlTheme)dict[typeof(DockTarget)];
+        target.Template = theme.Template;
+
+        window.ApplyTemplate();
+        target.ApplyTemplate();
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        var operations = new List<DockOperation>();
+
+        operations.Add(target.GetDockOperation(new Point(0, 0), drop, target, DragAction.Move, (_,_,_,_) => true));
+
+        var order = new[] { DockOperation.Top, DockOperation.Bottom, DockOperation.Left, DockOperation.Right, DockOperation.Fill };
+        foreach (var op in order)
+        {
+            var selector = target.SelectorOps[op];
+            var center = selector.TranslatePoint(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2), target);
+            Assert.NotNull(center);
+            operations.Add(target.GetDockOperation(center!.Value, drop, target, DragAction.Move, (_,_,_,_) => true));
+        }
+
+        var expected = new List<DockOperation> { DockOperation.Window };
+        expected.AddRange(order);
+
+        Assert.Equal(expected, operations);
+    }
+
+    [AvaloniaFact]
+    public void GlobalDockTarget_Pointer_Interactive_Sequence()
+    {
+        var target = new TestGlobalDockTarget { Width = 200, Height = 200 };
+        var drop = new Panel();
+        var window = new HostWindow { Content = target };
+
+        var dict = (ResourceDictionary)AvaloniaXamlLoader.Load(new Uri("avares://Dock.Avalonia/Controls/GlobalDockTarget.axaml"));
+        var theme = (ControlTheme)dict[typeof(GlobalDockTarget)];
+        target.Template = theme.Template;
+
+        window.ApplyTemplate();
+        target.ApplyTemplate();
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        var operations = new List<DockOperation>();
+
+        operations.Add(target.GetDockOperation(new Point(0, 0), drop, target, DragAction.Move, (_,_,_,_) => true));
+
+        var order = new[] { DockOperation.Top, DockOperation.Bottom, DockOperation.Left, DockOperation.Right };
+        foreach (var op in order)
+        {
+            var selector = target.SelectorOps[op];
+            var center = selector.TranslatePoint(new Point(selector.Bounds.Width / 2, selector.Bounds.Height / 2), target);
+            Assert.NotNull(center);
+            operations.Add(target.GetDockOperation(center!.Value, drop, target, DragAction.Move, (_,_,_,_) => true));
+        }
+
+        var expected = new List<DockOperation> { DockOperation.None };
+        expected.AddRange(order);
+
+        Assert.Equal(expected, operations);
     }
 }

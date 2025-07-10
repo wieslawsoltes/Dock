@@ -10,7 +10,7 @@ The available properties are:
 
 | Property | Type | Purpose |
 | -------- | ---- | ------- |
-| `IsDockTarget` | `bool` | Marks a control as a surface that can show a dock adorner and accept drops. |
+| `IsDockTarget` | `bool` | Marks a control as a surface that can show a `DockTargetBase` adorner and accept drops. |
 | `IsDragArea` | `bool` | Identifies an element that can initiate a drag when pressed. |
 | `IsDropArea` | `bool` | Identifies an element that can accept dropped dockables. |
 | `IsDragEnabled` | `bool` | Enables or disables dragging of dockables contained within the control. |

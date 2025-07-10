@@ -87,8 +87,8 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// Adds an indicator to the dock target based on the provided name and name scope.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="nameScope"></param>
+    /// <param name="name">Template part name of the indicator.</param>
+    /// <param name="nameScope">Scope to look up the template part.</param>
     protected void AddIndicator(string name, INameScope nameScope)
     {
         var indicator = nameScope.Find<Control>(name);
@@ -105,8 +105,8 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// Adds a selector to the dock target based on the provided name and name scope.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="nameScope"></param>
+    /// <param name="name">Template part name of the selector.</param>
+    /// <param name="nameScope">Scope to look up the template part.</param>
     protected void AddSelector(string name, INameScope nameScope)
     {
         var selector = nameScope.Find<Control>(name);
@@ -128,13 +128,13 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// Gets the dock operation based on the provided point, drop control, relative visual, drag action,
     /// </summary>
-    /// <param name="point"></param>
-    /// <param name="dropControl"></param>
-    /// <param name="relativeTo"></param>
-    /// <param name="dragAction"></param>
-    /// <param name="validate"></param>
-    /// <param name="visible"></param>
-    /// <returns></returns>
+    /// <param name="point">The current pointer position.</param>
+    /// <param name="dropControl">Control that initiated the drop.</param>
+    /// <param name="relativeTo">Visual relative to which the position is calculated.</param>
+    /// <param name="dragAction">Current drag action type.</param>
+    /// <param name="validate">Callback validating the operation.</param>
+    /// <param name="visible">Callback checking indicator visibility.</param>
+    /// <returns>The resulting dock operation.</returns>
     public DockOperation GetDockOperation(
         Point point,
         Control dropControl,
@@ -183,8 +183,8 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// Checks if the provided control is a dock target selector.
     /// </summary>
-    /// <param name="selector"></param>
-    /// <returns></returns>
+    /// <param name="selector">Control to check.</param>
+    /// <returns>True if the control is a selector.</returns>
     protected bool IsDockTargetSelector(Control selector)
     {
         foreach (var kvp in SelectorsOperations)
@@ -201,15 +201,15 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// Invalidates the indicator based on the provided parameters.
     /// </summary>
-    /// <param name="selector"></param>
-    /// <param name="indicator"></param>
-    /// <param name="point"></param>
-    /// <param name="relativeTo"></param>
-    /// <param name="operation"></param>
-    /// <param name="dragAction"></param>
-    /// <param name="validate"></param>
-    /// <param name="visible"></param>
-    /// <returns></returns>
+    /// <param name="selector">Selector used to hit test the pointer.</param>
+    /// <param name="indicator">Visual indicator to update.</param>
+    /// <param name="point">Pointer position relative to <paramref name="relativeTo"/>.</param>
+    /// <param name="relativeTo">Visual used for coordinate translation.</param>
+    /// <param name="operation">Dock operation represented by the selector.</param>
+    /// <param name="dragAction">Current drag action type.</param>
+    /// <param name="validate">Callback validating the operation.</param>
+    /// <param name="visible">Optional callback determining indicator visibility.</param>
+    /// <returns>True if the indicator should be shown as active.</returns>
     protected bool InvalidateIndicator(
         Control? selector,
         Control? indicator,

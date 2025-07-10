@@ -10,7 +10,7 @@ They are used by the default control templates but you can set them manually:
 
 | Property | Type | Description |
 | -------- | ---- | ----------- |
-| `IsDockTarget` | `bool` | Marks a control as a docking surface. |
+| `IsDockTarget` | `bool` | Marks a control as a docking surface that can display a `DockTargetBase` adorner. |
 | `IsDragArea` | `bool` | Identifies a region that allows starting a drag. |
 | `IsDropArea` | `bool` | Identifies a region that can accept dropped dockables. |
 | `IsDragEnabled` | `bool` | Globally enables or disables dragging for child dockables. |

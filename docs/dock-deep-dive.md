@@ -54,7 +54,7 @@ private void PressedHandler(object? sender, PointerPressedEventArgs e)
 
 ## DockControlState
 
-`DockControlState` keeps track of the current drag operation. It validates potential drop targets using `DockManager` and displays `DockTarget` adorners when appropriate. Once the user releases the pointer the state calls `DockManager.ValidateDockable` with execution enabled.
+`DockControlState` keeps track of the current drag operation. It validates potential drop targets using `DockManager` and displays dock target controls derived from `DockTargetBase` (for example `DockTarget` and `GlobalDockTarget`) when appropriate. Once the user releases the pointer the state calls `DockManager.ValidateDockable` with execution enabled.
 
 ## DockManager
 

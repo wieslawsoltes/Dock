@@ -340,4 +340,42 @@ public class ProportionalStackPanelTests
 
         Assert.True(target.Children[0].Bounds.Height >= 200);
     }
+
+    [AvaloniaFact]
+    public void Collapsed_Child_Occupies_No_Space()
+    {
+        var first = new Border { [ProportionalStackPanel.ProportionProperty] = 0.5 };
+        var splitter = new ProportionalStackPanelSplitter();
+        var second = new Border { [ProportionalStackPanel.ProportionProperty] = 0.5 };
+        var target = new ProportionalStackPanel
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = { first, splitter, second }
+        };
+
+        ProportionalStackPanel.SetIsCollapsed(first, true);
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.Equal(0, first.Bounds.Width);
+        Assert.Equal(296, second.Bounds.Width);
+        Assert.Equal(0, ProportionalStackPanel.GetProportion(first));
+        Assert.Equal(0.5, ProportionalStackPanel.GetCollapsedProportion(first));
+
+        ProportionalStackPanel.SetIsCollapsed(first, false);
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        Assert.Equal(148, first.Bounds.Width);
+        Assert.Equal(148, second.Bounds.Width);
+    }
+
+    [AvaloniaFact]
+    public void MeasureOverride_Throws_On_Infinite_Size()
+    {
+        var target = new ProportionalStackPanel { Orientation = Orientation.Horizontal };
+        Assert.Throws<Exception>(() => target.Measure(Size.Infinity));
+    }
 }

@@ -72,7 +72,10 @@ public class DockTarget : TemplatedControl
         _centerSelector = e.NameScope.Find<Control>("PART_CenterSelector");
     }
 
-    internal DockOperation GetDockOperation(Point point, Control dropControl, Visual relativeTo,
+    internal DockOperation GetDockOperation(
+        Point point, 
+        Control dropControl, 
+        Visual relativeTo,
         DragAction dragAction,
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
@@ -132,8 +135,22 @@ public class DockTarget : TemplatedControl
         return result;
     }
 
-    private bool InvalidateIndicator(Control? selector, Panel? indicator, Point point, Visual relativeTo,
-        DockOperation operation, DragAction dragAction,
+    private bool IsDockTargetSelector(Control selector)
+    {
+        return selector == _topSelector ||
+               selector == _bottomSelector ||
+               selector == _leftSelector ||
+               selector == _rightSelector ||
+               selector == _centerSelector;
+    }
+
+    private bool InvalidateIndicator(
+        Control? selector, 
+        Panel? indicator, 
+        Point point, 
+        Visual relativeTo,
+        DockOperation operation, 
+        DragAction dragAction,
         DockOperationHandler validate,
         DockOperationHandler? visible)
     {
@@ -142,14 +159,24 @@ public class DockTarget : TemplatedControl
             return false;
         }
 
+        var isDockTargetSelector = IsDockTargetSelector(selector);
+ 
         if (visible is { } && !visible(point, operation, dragAction, relativeTo))
         {
             indicator.Opacity = 0;
-            selector.Opacity = 0;
+
+            if (isDockTargetSelector)
+            {
+                selector.Opacity = 0;
+            }
+
             return false;
         }
 
-        selector.Opacity = 1;
+        if (isDockTargetSelector)
+        {
+            selector.Opacity = 1;
+        }
 
         var selectorPoint = relativeTo.TranslatePoint(point, selector);
         if (selectorPoint is null)

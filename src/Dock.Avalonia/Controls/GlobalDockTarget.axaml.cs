@@ -86,10 +86,25 @@ public class GlobalDockTarget : TemplatedControl
                 _ => null
             };
 
-            if (_leftIndicator is { } && indicator != _leftIndicator) _leftIndicator.Opacity = 0;
-            if (_rightIndicator is { } && indicator != _rightIndicator) _rightIndicator.Opacity = 0;
-            if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
-            if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
+            if (_leftIndicator is not null && indicator != _leftIndicator)
+            {
+                _leftIndicator.Opacity = 0;
+            }
+
+            if (_rightIndicator is not null && indicator != _rightIndicator)
+            {
+                _rightIndicator.Opacity = 0;
+            }
+
+            if (_topIndicator is not null && indicator != _topIndicator)
+            {
+                _topIndicator.Opacity = 0;
+            }
+
+            if (_bottomIndicator is not null && indicator != _bottomIndicator)
+            {
+                _bottomIndicator.Opacity = 0;
+            }
 
             return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate, visible)
                 ? operation
@@ -146,7 +161,7 @@ public class GlobalDockTarget : TemplatedControl
 
         var isDockTargetSelector = IsDockTargetSelector(selector);
 
-        if (visible is { } && !visible(point, operation, dragAction, relativeTo))
+        if (visible is not null && !visible(point, operation, dragAction, relativeTo))
         {
             indicator.Opacity = 0;
 
@@ -171,7 +186,7 @@ public class GlobalDockTarget : TemplatedControl
             selectorPoint = this.TranslatePoint(localPoint, selector);
         }
 
-        if (selectorPoint is { })
+        if (selectorPoint is not null)
         {
             if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
             {

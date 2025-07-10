@@ -25,9 +25,9 @@ You can apply the same check in your custom `PointerMoved` handlers before calli
 
 ## Marking drag and drop areas
 
-`DockProperties` exposes attached properties to opt‑in to docking features:
+-`DockProperties` exposes attached properties to opt‑in to docking features:
 
-- `IsDockTarget` designates the surface that accepts docked items.
+- `IsDockTarget` designates the surface that accepts docked items and shows a `DockTargetBase` adorner.
 - `IsDragArea` marks a region where the user can start dragging.
 - `IsDropArea` marks a region that can receive drops.
 - `IsDragEnabled` and `IsDropEnabled` allow you to enable or disable interactions globally for any subtree.

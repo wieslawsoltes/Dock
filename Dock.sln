@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.SystemTextJson", "src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj", "{08D9AF8A-1004-482A-9431-E7F3D73187CF}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm", "src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj", "{55F9EF68-6A62-4D70-8A20-D82D36D3598B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Mvvm.UnitTests", "tests\Dock.Model.Mvvm.UnitTests\Dock.Model.Mvvm.UnitTests.csproj", "{3606F724-6EF1-4929-9183-A1F8271D522A}"

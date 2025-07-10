@@ -14,6 +14,8 @@ The default factory can open any dockable in a separate window. This allows you 
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
    dotnet add package Dock.Serializer
+   # or use the System.Text.Json variant
+   # dotnet add package Dock.Serializer.TextJson
    ```
 
 2. **Define a custom factory**

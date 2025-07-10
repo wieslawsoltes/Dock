@@ -2,7 +2,7 @@
 
 This guide expands on the FAQ and shows how layouts can be serialized and restored using `DockSerializer`.
 
-`DockSerializer` lives in the `Dock.Serializer` package and works together with `DockState` to track focus changes. The code snippets below use asynchronous file APIs but any `Stream` works.
+`DockSerializer` lives in the `Dock.Serializer` package and works together with `DockState` to track focus changes. A variant based on `System.Text.Json` is available as the `Dock.Serializer.TextJson` package. The code snippets below use asynchronous file APIs but any `Stream` works.
 
 ## Saving a layout
 

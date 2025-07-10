@@ -22,6 +22,8 @@ These steps outline how to set up a small Dock application that defines its layo
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Avalonia
    dotnet add package Dock.Serializer
+   # alternatively use Dock.Serializer.TextJson
+   # dotnet add package Dock.Serializer.TextJson
    ```
 
 3. **Declare the layout in XAML**
@@ -64,6 +66,8 @@ Add the core Dock packages to your project:
 Install-Package Dock.Avalonia
 Install-Package Dock.Model.Avalonia
 Install-Package Dock.Serializer
+# Or install the System.Text.Json version
+# Install-Package Dock.Serializer.TextJson
 ```
 
 These packages provide the `DockControl` and layout serialization helpers.

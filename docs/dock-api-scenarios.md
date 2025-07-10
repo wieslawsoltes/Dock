@@ -61,6 +61,7 @@ Use the MVVM, ReactiveUI or XAML samples as references for complete implementati
 ### Saving and restoring a layout
 
 Layouts can be persisted using `DockSerializer` from the `Dock.Serializer` package.
+A compatible implementation that targets `System.Text.Json` ships as `Dock.Serializer.TextJson`.
 This allows users to keep their preferred window arrangement between sessions.
 
 ```csharp

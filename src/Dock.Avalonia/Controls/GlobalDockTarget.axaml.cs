@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Avalonia.Contract;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -69,6 +70,28 @@ public class GlobalDockTarget : TemplatedControl
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
+        if (ShowIndicatorsOnly)
+        {
+            var operation = DockProperties.GetIndicatorDockOperation(this);
+            var indicator = operation switch
+            {
+                DockOperation.Left => _leftIndicator,
+                DockOperation.Right => _rightIndicator,
+                DockOperation.Top => _topIndicator,
+                DockOperation.Bottom => _bottomIndicator,
+                _ => null
+            };
+
+            if (_leftIndicator is { } && indicator != _leftIndicator) _leftIndicator.Opacity = 0;
+            if (_rightIndicator is { } && indicator != _rightIndicator) _rightIndicator.Opacity = 0;
+            if (_topIndicator is { } && indicator != _topIndicator) _topIndicator.Opacity = 0;
+            if (_bottomIndicator is { } && indicator != _bottomIndicator) _bottomIndicator.Opacity = 0;
+
+            return InvalidateIndicator(this, indicator, point, relativeTo, operation, dragAction, validate, visible)
+                ? operation
+                : DockOperation.None;
+        }
+
         var result = DockOperation.None;
 
         if (InvalidateIndicator(_leftSelector, _leftIndicator, point, relativeTo, DockOperation.Left, dragAction, validate, visible))

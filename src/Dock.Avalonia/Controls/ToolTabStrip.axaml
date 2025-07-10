@@ -36,10 +36,11 @@
             <ItemsPresenter Name="PART_ItemsPresenter"
                             ItemsPanel="{TemplateBinding ItemsPanel}"/>
           </Border>
-          <Border Name="PART_BorderFill"
+         <Border Name="PART_BorderFill"
                  DockProperties.IsDropArea="True"
                  DockProperties.IsDockTarget="True"
                  DockProperties.ShowDockIndicatorOnly="True"
+                 DockProperties.IndicatorDockOperation="Fill"
                  DockProperties.DockAdornerHost="{TemplateBinding DockAdornerHost}" />
         </DockPanel>
       </ControlTemplate>

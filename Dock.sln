@@ -106,6 +106,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Prism", "src\Doc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Prism.UnitTests", "tests\Dock.Model.Prism.UnitTests\Dock.Model.Prism.UnitTests.csproj", "{E882EAE4-97D4-47EB-AC9B-56DB746DE40C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.MarkupExtension.UnitTests", "tests\Dock.MarkupExtension.UnitTests\Dock.MarkupExtension.UnitTests.csproj", "{C44C8D3B-2F49-4B3D-AE63-D6D1088684DC}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.ProportionalStackPanel", "src\Dock.Controls.ProportionalStackPanel\Dock.Controls.ProportionalStackPanel.csproj", "{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling", "src\Dock.Controls.Recycling\Dock.Controls.Recycling.csproj", "{9FF95B40-ECA7-440B-9342-688C53F1AE8E}"
@@ -253,6 +255,10 @@ Global
 																{E882EAE4-97D4-47EB-AC9B-56DB746DE40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 																{E882EAE4-97D4-47EB-AC9B-56DB746DE40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 																{E882EAE4-97D4-47EB-AC9B-56DB746DE40C}.Release|Any CPU.Build.0 = Release|Any CPU
+                {C44C8D3B-2F49-4B3D-AE63-D6D1088684DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+                {C44C8D3B-2F49-4B3D-AE63-D6D1088684DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                {C44C8D3B-2F49-4B3D-AE63-D6D1088684DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                {C44C8D3B-2F49-4B3D-AE63-D6D1088684DC}.Release|Any CPU.Build.0 = Release|Any CPU
 																{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCA814C4-8369-4AD6-A2DA-59F54D01CE26}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -305,6 +311,7 @@ Global
 																{E6A49621-154E-4A00-A54A-39C3BA55799A} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 																{80DF9E99-C794-42EE-AD0B-549D5020B754} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 																{E882EAE4-97D4-47EB-AC9B-56DB746DE40C} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+                {C44C8D3B-2F49-4B3D-AE63-D6D1088684DC} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 																{CCA814C4-8369-4AD6-A2DA-59F54D01CE26} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{9FF95B40-ECA7-440B-9342-688C53F1AE8E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{B6762749-9061-49AE-A994-777DB6018A45} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}

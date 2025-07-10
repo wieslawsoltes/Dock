@@ -1,0 +1,270 @@
+using System.Collections.Generic;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Dock.Avalonia.Contract;
+using Dock.Model.Core;
+using Dock.Settings;
+
+namespace Dock.Avalonia.Controls;
+
+/// <summary>
+/// Base class for dock targets that provide drop indicators and selectors for docking operations.
+/// </summary>
+[TemplatePart("PART_TopIndicator", typeof(Panel))]
+[TemplatePart("PART_BottomIndicator", typeof(Panel))]
+[TemplatePart("PART_LeftIndicator", typeof(Panel))]
+[TemplatePart("PART_RightIndicator", typeof(Panel))]
+[TemplatePart("PART_CenterIndicator", typeof(Panel))]
+[TemplatePart("PART_TopSelector", typeof(Control))]
+[TemplatePart("PART_BottomSelector", typeof(Control))]
+[TemplatePart("PART_LeftSelector", typeof(Control))]
+[TemplatePart("PART_RightSelector", typeof(Control))]
+[TemplatePart("PART_CenterSelector", typeof(Control))]
+public abstract class DockTargetBase : TemplatedControl
+{
+    private static readonly string[] s_indicators =
+    [
+        "PART_TopIndicator",
+        "PART_BottomIndicator",
+        "PART_LeftIndicator",
+        "PART_RightIndicator",
+        "PART_CenterIndicator"
+    ];
+
+    private static readonly string[] s_selectors =
+    [
+        "PART_TopSelector",
+        "PART_BottomSelector",
+        "PART_LeftSelector",
+        "PART_RightSelector",
+        "PART_CenterSelector"
+    ];
+
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowIndicatorsOnlyProperty =
+        AvaloniaProperty.Register<DockTargetBase, bool>(nameof(ShowIndicatorsOnly));
+
+    /// <summary>
+    /// Gets or sets whether only drop indicators should be shown.
+    /// </summary>
+    public bool ShowIndicatorsOnly
+    {
+        get => GetValue(ShowIndicatorsOnlyProperty);
+        set => SetValue(ShowIndicatorsOnlyProperty, value);
+    }
+
+    /// <summary>
+    /// A dictionary that maps dock operations to their corresponding indicator controls.
+    /// </summary>
+    protected Dictionary<DockOperation, Control> IndicatorOperations { get; set; } = new ();
+
+    /// <summary>
+    /// A dictionary that maps dock operations to their corresponding selector controls.
+    /// </summary>
+    protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new ();
+
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        foreach (var indicator in s_indicators)
+        {
+            AddIndicator(indicator, e.NameScope);
+        }
+
+        foreach (var selector in s_selectors)
+        {
+            AddSelector(selector, e.NameScope);
+        }
+    }
+
+    /// <summary>
+    /// Adds an indicator to the dock target based on the provided name and name scope.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nameScope"></param>
+    protected void AddIndicator(string name, INameScope nameScope)
+    {
+        var indicator = nameScope.Find<Control>(name);
+        if (indicator == null)
+        {
+            return;
+        }
+
+        var operation = DockProperties.GetIndicatorDockOperation(indicator);
+
+        IndicatorOperations.Add(operation, indicator);
+    }
+
+    /// <summary>
+    /// Adds a selector to the dock target based on the provided name and name scope.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nameScope"></param>
+    protected void AddSelector(string name, INameScope nameScope)
+    {
+        var selector = nameScope.Find<Control>(name);
+        if (selector == null)
+        {
+            return;
+        }
+
+        var operation = DockProperties.GetIndicatorDockOperation(selector);
+
+        SelectorsOperations.Add(operation, selector);
+    }
+
+    /// <summary>
+    /// Gets the default dock operation for this dock target.
+    /// </summary>
+    protected virtual DockOperation DefaultDockOperation => DockOperation.Window;
+
+    /// <summary>
+    /// Gets the dock operation based on the provided point, drop control, relative visual, drag action,
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="dropControl"></param>
+    /// <param name="relativeTo"></param>
+    /// <param name="dragAction"></param>
+    /// <param name="validate"></param>
+    /// <param name="visible"></param>
+    /// <returns></returns>
+    public DockOperation GetDockOperation(
+        Point point,
+        Control dropControl,
+        Visual relativeTo,
+        DragAction dragAction,
+        DockOperationHandler validate,
+        DockOperationHandler? visible = null)
+    {
+        if (ShowIndicatorsOnly)
+        {
+            var operation = DockProperties.GetIndicatorDockOperation(dropControl);
+
+            IndicatorOperations.TryGetValue(operation, out var indicator);
+
+            foreach (var kvp in IndicatorOperations)
+            {
+                if (indicator != kvp.Value)
+                {
+                    kvp.Value.Opacity = 0;
+                }
+            }
+
+            return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate,
+                visible)
+                ? operation
+                : DefaultDockOperation;
+        }
+
+        var result = DefaultDockOperation;
+
+        foreach (var kvp in IndicatorOperations)
+        {
+            var operation = kvp.Key;
+            SelectorsOperations.TryGetValue(operation, out var selector);
+            
+            if (InvalidateIndicator(selector, kvp.Value, point, relativeTo,operation, dragAction,
+                    validate, visible))
+            {
+                result = operation;
+            }
+        }
+ 
+        return result;
+    }
+
+    /// <summary>
+    /// Checks if the provided control is a dock target selector.
+    /// </summary>
+    /// <param name="selector"></param>
+    /// <returns></returns>
+    protected bool IsDockTargetSelector(Control selector)
+    {
+        foreach (var kvp in SelectorsOperations)
+        {
+            if (kvp.Value == selector)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// Invalidates the indicator based on the provided parameters.
+    /// </summary>
+    /// <param name="selector"></param>
+    /// <param name="indicator"></param>
+    /// <param name="point"></param>
+    /// <param name="relativeTo"></param>
+    /// <param name="operation"></param>
+    /// <param name="dragAction"></param>
+    /// <param name="validate"></param>
+    /// <param name="visible"></param>
+    /// <returns></returns>
+    protected bool InvalidateIndicator(
+        Control? selector,
+        Control? indicator,
+        Point point,
+        Visual relativeTo,
+        DockOperation operation,
+        DragAction dragAction,
+        DockOperationHandler validate,
+        DockOperationHandler? visible)
+    {
+        if (selector is null || indicator is null)
+        {
+            return false;
+        }
+
+        var isDockTargetSelector = IsDockTargetSelector(selector);
+
+        if (visible is not null && !visible(point, operation, dragAction, relativeTo))
+        {
+            indicator.Opacity = 0;
+
+            if (isDockTargetSelector)
+            {
+                selector.Opacity = 0;
+            }
+
+            return false;
+        }
+
+        if (isDockTargetSelector)
+        {
+            selector.Opacity = 1;
+        }
+
+        var selectorPoint = relativeTo.TranslatePoint(point, selector);
+        if (selectorPoint is null)
+        {
+            var screenPoint = relativeTo.PointToScreen(point);
+            var localPoint = this.PointToClient(screenPoint);
+            selectorPoint = this.TranslatePoint(localPoint, selector);
+        }
+
+        if (selectorPoint is not null)
+        {
+            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
+            {
+                if (validate(point, operation, dragAction, relativeTo))
+                {
+                    indicator.Opacity = 0.5;
+                    return true;
+                }
+            }
+        }
+
+        indicator.Opacity = 0;
+        return false;
+    }
+}

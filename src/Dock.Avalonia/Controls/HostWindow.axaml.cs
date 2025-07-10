@@ -16,6 +16,7 @@ using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -390,7 +391,7 @@ public class HostWindow : Window, IHostWindow
                 }
 
                 var ownerDockControl = Window?.Layout?.Factory?.DockControls.FirstOrDefault();
-                if (ownerDockControl is Control control && control.GetVisualRoot() is Window parentWindow)
+                if (ownerDockControl is Control control && control.GetVisualRoot() is Window parentWindow && DockSettings.UseOwnerForFloatingWindows)
                 {
                     Title = parentWindow.Title;
                     Icon = parentWindow.Icon;

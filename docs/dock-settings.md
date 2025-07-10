@@ -44,6 +44,10 @@ Increase these values if small pointer movements should not initiate dragging.
 onto other `DockControl` instances. If set to `false` the global dock target is
 hidden and drags are limited to the originating control.
 
+## Floating window owner
+
+`DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:
@@ -54,6 +58,7 @@ using Dock.Settings;
 AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
+    .UseOwnerForFloatingWindows()
     .EnableGlobalDocking(false)
     .WithDockSettings(new DockSettingsOptions
     {

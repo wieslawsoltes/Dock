@@ -50,6 +50,11 @@ public static class AppBuilderExtensions
             DockSettings.EnableGlobalDocking = options.EnableGlobalDocking.Value;
         }
 
+        if (options.UseOwnerForFloatingWindows != null)
+        {
+            DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
+        }
+
         return builder;
     }
 
@@ -92,6 +97,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.EnableGlobalDocking = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UseOwnerForFloatingWindows"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether floating windows should be owned by the main window.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseOwnerForFloatingWindows(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.UseOwnerForFloatingWindows = enable;
         return builder;
     }
 }

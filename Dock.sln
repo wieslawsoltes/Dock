@@ -185,6 +185,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.MarkupExtension.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUIDiSample", "samples\DockReactiveUIDiSample\DockReactiveUIDiSample.csproj", "{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUIRoutingSample", "samples\DockReactiveUIRoutingSample\DockReactiveUIRoutingSample.csproj", "{BCCE3945-B57E-4C59-B2BD-701F25CA36C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +333,10 @@ Global
 		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Release|Any CPU.Build.0 = Release|Any CPU
+                {BCCE3945-B57E-4C59-B2BD-701F25CA36C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+                {BCCE3945-B57E-4C59-B2BD-701F25CA36C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                {BCCE3945-B57E-4C59-B2BD-701F25CA36C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                {BCCE3945-B57E-4C59-B2BD-701F25CA36C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 								GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -368,6 +374,7 @@ Global
 																{2A2C622B-3001-4DEB-833E-BEF8A94A3343} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 																{0550FADE-AE71-427E-BE5F-8EF57A734AC3} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 																{0A7D7571-2957-4891-A4F1-3EE5E513CE90} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+                {BCCE3945-B57E-4C59-B2BD-701F25CA36C6} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 																{A832AF6B-0B26-44B0-838A-7DFF930481D5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{12A0D873-2FF5-4AA0-9F66-56161DDE2D4E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{8C7A0AF2-1B5A-4BDF-BE0A-705263DD9DDC} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}

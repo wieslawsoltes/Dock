@@ -1,0 +1,10 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:rxui="clr-namespace:ReactiveUI;assembly=Avalonia.ReactiveUI"
+        xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels"
+        x:Class="DockReactiveUIRoutingSample.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="800" Height="600"
+        Title="Dock ReactiveUI Routing Sample">
+    <rxui:ViewModelViewHost Router="{Binding Router}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+</Window>

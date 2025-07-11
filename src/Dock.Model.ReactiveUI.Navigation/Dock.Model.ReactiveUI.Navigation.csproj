@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Dock.Model.ReactiveUI.Navigation</PackageId>
+  </PropertyGroup>
+  <Import Project="..\..\build\SourceLink.props" />
+  <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\ReactiveUI.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
+  </ItemGroup>
+</Project>

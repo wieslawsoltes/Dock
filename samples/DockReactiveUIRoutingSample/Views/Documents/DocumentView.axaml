@@ -1,0 +1,15 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Documents.DocumentView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels"
+             x:DataType="vm:DocumentViewModel">
+    <StackPanel Margin="10" Spacing="5">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" />
+        <StackPanel Orientation="Horizontal" Spacing="5">
+            <Button Content="Open Other Doc" Command="{Binding GoDocument}"/>
+            <Button Content="Open Tool" Command="{Binding GoTool}"/>
+        </StackPanel>
+        <rxui:RoutedViewHost Router="{Binding Router}" />
+    </StackPanel>
+</UserControl>

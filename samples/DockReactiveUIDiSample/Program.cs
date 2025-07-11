@@ -1,8 +1,9 @@
 using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using Dock.Model;
 using Dock.Model.Core;
-using Dock.Settings;
+using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +30,8 @@ internal class Program
         services.AddSingleton<DockFactory>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<IFactory, DockFactory>();
-        services.AddSingleton<IDockSerializer, Dock.Serializer.DockSerializer>();
-        services.AddSingleton<IDockState, Dock.Model.DockState>();
+        services.AddSingleton<IDockSerializer, DockSerializer>();
+        services.AddSingleton<IDockState, DockState>();
     }
 
     public static AppBuilder BuildAvaloniaApp()

@@ -15,15 +15,19 @@ namespace Dock.Avalonia.Internal;
 internal class WindowDragContext
 {
     public PixelPoint DragStartPoint { get; set; }
+    public PixelPoint WindowStartPosition { get; set; }
+    public PixelPoint WindowOffset { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
     public Point TargetPoint { get; set; }
     public DragAction DragAction { get; set; }
 
-    public void Start(PixelPoint point)
+    public void Start(PixelPoint point, PixelPoint windowPosition, PixelPoint windowOffset)
     {
         DragStartPoint = point;
+        WindowStartPosition = windowPosition;
+        WindowOffset = windowOffset;
         PointerPressed = true;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -34,6 +38,8 @@ internal class WindowDragContext
     public void End()
     {
         DragStartPoint = default;
+        WindowStartPosition = default;
+        WindowOffset = default;
         PointerPressed = false;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -241,7 +247,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     break;
                 }
 
-                _context.Start(point);
+                var screenWindowPoint = _hostWindow.PointToScreen(new Point(0, 0));
+                var windowOffset = new PixelPoint(screenWindowPoint.X - _hostWindow.Position.X,
+                    screenWindowPoint.Y - _hostWindow.Position.Y);
+                _context.Start(point, _hostWindow.Position, windowOffset);
                 DropControl = null;
                 break;
             }
@@ -279,7 +288,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
                 if (_context.DoDragDrop == false)
                 {
-                    var diff = _context.DragStartPoint - point;
+                    var diff = point - _context.WindowStartPosition;
                     var haveMinimumDragDistance = DockSettings.IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {
@@ -287,11 +296,21 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
                 }
 
-                if (!_context.DoDragDrop || _hostWindow.Window?.Layout?.Factory is not { } factory)
+                if (!_context.DoDragDrop)
                 {
                     break;
                 }
 
+                if (_hostWindow.Window?.Layout?.Factory is not { } factory)
+                {
+                    Leave();
+                    DropControl = null;
+                    _context.TargetDockControl = null;
+                    _context.TargetPoint = default;
+                    break;
+                }
+
+                var found = false;
                 foreach (var dockControl in factory.DockControls.GetZOrderedDockControls())
                 {
                     if (dockControl.Layout == _hostWindow.Window?.Layout)
@@ -299,8 +318,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                         continue;
                     }
 
-                    var position = point + _context.DragStartPoint;
-                    var screenPoint = new PixelPoint(position.X, position.Y);
+                    var screenPoint = new PixelPoint(
+                        point.X + _context.WindowOffset.X + _context.DragStartPoint.X,
+                        point.Y + _context.WindowOffset.Y + _context.DragStartPoint.Y);
                     if (dockControl.GetVisualRoot() is null)
                     {
                         continue;
@@ -327,6 +347,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                                 DropControl = dropControl;
                                 _context.DragAction = DragAction.Move;
                                 Over(_context.TargetPoint, _context.DragAction, dropControl, _context.TargetDockControl);
+                                found = true;
                                 break;
                             }
 
@@ -341,9 +362,18 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                             DropControl = dropControl;
                             _context.DragAction = DragAction.Move;
                             Enter(_context.TargetPoint, _context.DragAction, _context.TargetDockControl);
+                            found = true;
                             break;
                         }
                     }
+                }
+
+                if (!found && DropControl is { })
+                {
+                    Leave();
+                    DropControl = null;
+                    _context.TargetDockControl = null;
+                    _context.TargetPoint = default;
                 }
 
                 break;

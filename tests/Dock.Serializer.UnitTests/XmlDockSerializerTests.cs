@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Dock.Serializer.Xml;
 using Xunit;
@@ -15,6 +16,17 @@ public class XmlDockSerializerTests
         public string? Name { get; set; }
         [System.Runtime.Serialization.DataMember]
         public IList<int>? Numbers { get; set; }
+    }
+
+    private sealed class NonClosingMemoryStream : MemoryStream
+    {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Flush();
+            }
+        }
     }
 
     [Fact]
@@ -43,5 +55,24 @@ public class XmlDockSerializerTests
 
         Assert.NotNull(result);
         Assert.IsType<List<int>>(result!.Numbers);
+    }
+
+    [Fact]
+    public void SaveLoad_Roundtrip_Works()
+    {
+        var serializer = new DockXmlSerializer();
+        var sample = new Sample { Name = "Test", Numbers = new List<int> { 3, 4, 5 } };
+        using var stream = new NonClosingMemoryStream();
+
+        serializer.Save(stream, sample);
+        Assert.True(stream.Length > 0);
+
+        stream.Position = 0;
+        var loaded = serializer.Load<Sample>(stream);
+
+        Assert.NotNull(loaded);
+        Assert.Equal(sample.Name, loaded!.Name);
+        Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
+        Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
     }
 }

@@ -10,7 +10,12 @@ namespace DockReactiveUIDiSample;
 
 public partial class App : Application
 {
-    public static IServiceProvider? ServiceProvider { get; set; }
+    public IServiceProvider? ServiceProvider { get; set; }
+
+    public App(IServiceProvider? serviceProvider)
+    {
+        ServiceProvider = serviceProvider;
+    }
 
     public override void Initialize()
     {

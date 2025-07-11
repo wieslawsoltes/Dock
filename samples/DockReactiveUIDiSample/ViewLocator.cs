@@ -1,8 +1,8 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
-using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
 namespace DockReactiveUIDiSample;
@@ -21,7 +21,7 @@ public class ViewLocator : IDataTemplate
             return null;
 
         var viewType = Type.GetType(viewName);
-        if (viewType != null && App.ServiceProvider?.GetService(viewType) is Control control)
+        if (viewType != null && (Application.Current as App)?.ServiceProvider?.GetService(viewType) is Control control)
         {
             control.DataContext = data;
             return control;

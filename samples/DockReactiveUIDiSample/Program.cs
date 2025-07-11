@@ -6,6 +6,10 @@ using Dock.Model.Core;
 using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;
+using DockReactiveUIDiSample.ViewModels.Documents;
+using DockReactiveUIDiSample.ViewModels.Tools;
+using DockReactiveUIDiSample.Views.Documents;
+using DockReactiveUIDiSample.Views.Tools;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample;
@@ -15,13 +19,16 @@ internal class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        using var provider = Initialize();
+        BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
+    }
+
+    private static ServiceProvider Initialize()
+    {
         var services = new ServiceCollection();
         ConfigureServices(services);
         var provider = services.BuildServiceProvider();
-        App.ServiceProvider = provider;
-        // Resolve application using dependency injection
-        var _ = provider.GetRequiredService<App>();
-        BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
+        return provider;
     }
 
     private static void ConfigureServices(IServiceCollection services)
@@ -30,9 +37,8 @@ internal class Program
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
         services.AddTransient<ToolViewModel>();
-        services.AddTransient<Views.Documents.DocumentView>();
-        services.AddTransient<Views.Tools.ToolView>();
-        services.AddTransient<Views.DockableOptionsView>();
+        services.AddTransient<DocumentView>();
+        services.AddTransient<ToolView>();
         services.AddSingleton<DockFactory>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<IFactory, DockFactory>();
@@ -41,7 +47,14 @@ internal class Program
    }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
-        => AppBuilder.Configure(() => provider.GetRequiredService<App>())
+        => AppBuilder.Configure(provider.GetRequiredService<App>)
+            .UsePlatformDetect()
+            .WithInterFont()
+            .UseReactiveUI()
+            .LogToTrace();
+
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure(() => Initialize().GetRequiredService<App>())
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()

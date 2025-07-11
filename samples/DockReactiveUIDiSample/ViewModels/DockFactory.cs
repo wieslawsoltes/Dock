@@ -5,6 +5,8 @@ using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using DockReactiveUIDiSample.Models;
 using System.Collections.Generic;
+using DockReactiveUIDiSample.ViewModels.Documents;
+using DockReactiveUIDiSample.ViewModels.Tools;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample.ViewModels;

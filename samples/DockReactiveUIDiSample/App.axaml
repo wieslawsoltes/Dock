@@ -3,14 +3,15 @@
              xmlns:local="using:DockReactiveUIDiSample"
              xmlns:documents="using:DockReactiveUIDiSample.Views.Documents"
              xmlns:tools="using:DockReactiveUIDiSample.Views.Tools"
-             xmlns:vm="using:DockReactiveUIDiSample.ViewModels"
+             xmlns:tools1="clr-namespace:DockReactiveUIDiSample.ViewModels.Tools"
+             xmlns:documents1="clr-namespace:DockReactiveUIDiSample.ViewModels.Documents"
              x:Class="DockReactiveUIDiSample.App">
   <Application.DataTemplates>
     <local:ViewLocator />
-    <DataTemplate DataType="vm:DocumentViewModel">
+    <DataTemplate DataType="documents1:DocumentViewModel">
       <documents:DocumentView/>
     </DataTemplate>
-    <DataTemplate DataType="vm:ToolViewModel">
+    <DataTemplate DataType="tools1:ToolViewModel">
       <tools:ToolView/>
     </DataTemplate>
   </Application.DataTemplates>

@@ -14,6 +14,7 @@ internal class AdornerHelper<T> where T : Control, new()
     private readonly bool _useFloatingDockAdorner;
     public Control? Adorner;
     private DockAdornerWindow? _window;
+    private AdornerLayer? _layer;
 
     public AdornerHelper(bool useFloatingDockAdorner)
     {
@@ -90,11 +91,8 @@ internal class AdornerHelper<T> where T : Control, new()
             return;
         }
 
-        if (Adorner is not null)
-        {
-            layer.Children.Remove(Adorner);
-            Adorner = null;
-        }
+        // Remove any previously created adorner from its original layer
+        RemoveRegularAdornerInternal();
 
         Adorner = new T
         {
@@ -115,6 +113,7 @@ internal class AdornerHelper<T> where T : Control, new()
         ((ISetLogicalParent) Adorner).SetParent(visual);
 
         layer.Children.Add(Adorner);
+        _layer = layer;
     }
 
     public void RemoveAdorner(Visual visual)
@@ -142,14 +141,18 @@ internal class AdornerHelper<T> where T : Control, new()
 
     private void RemoveRegularAdorner(Visual visual)
     {
-        var layer = AdornerLayer.GetAdornerLayer(visual);
-        if (layer is null || Adorner is null)
+        RemoveRegularAdornerInternal();
+    }
+
+    private void RemoveRegularAdornerInternal()
+    {
+        if (_layer is not null && Adorner is not null)
         {
-            return;
+            _layer.Children.Remove(Adorner);
+            ((ISetLogicalParent)Adorner).SetParent(null);
         }
 
-        layer.Children.Remove(Adorner);
-        ((ISetLogicalParent) Adorner).SetParent(null);
         Adorner = null;
+        _layer = null;
     }
 }

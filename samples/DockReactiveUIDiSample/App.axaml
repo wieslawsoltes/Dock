@@ -1,7 +1,20 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:DockReactiveUIDiSample"
+             xmlns:documentsViews="using:DockReactiveUIDiSample.Views.Documents"
+             xmlns:toolsViews="using:DockReactiveUIDiSample.Views.Tools"
+             xmlns:toolsViewModels="clr-namespace:DockReactiveUIDiSample.ViewModels.Tools"
+             xmlns:documentsViewModels="clr-namespace:DockReactiveUIDiSample.ViewModels.Documents"
              x:Class="DockReactiveUIDiSample.App">
+  <Application.DataTemplates>
+    <local:ViewLocator />
+    <DataTemplate DataType="documentsViewModels:DocumentViewModel">
+      <documentsViews:DocumentView/>
+    </DataTemplate>
+    <DataTemplate DataType="toolsViewModels:ToolViewModel">
+      <toolsViews:ToolView/>
+    </DataTemplate>
+  </Application.DataTemplates>
   <Application.Styles>
     <FluentTheme />
     <DockFluentTheme />

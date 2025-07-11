@@ -2,7 +2,7 @@
 
 This guide expands on the FAQ and shows how layouts can be serialized and restored using `DockSerializer`.
 
-`DockSerializer` lives in the `Dock.Serializer` package and works together with `DockState` to track focus changes. The code snippets below use asynchronous file APIs but any `Stream` works. For binary persistence there is also `ProtobufDockSerializer` provided by the `Dock.Serializer.Protobuf` package.
+`DockSerializer` lives in the `Dock.Serializer.Newtonsoft` package and works together with `DockState` to track focus changes. The code snippets below use asynchronous file APIs but any `Stream` works. For binary persistence there is also `ProtobufDockSerializer` provided by the `Dock.Serializer.Protobuf` package.
 
 ## Saving a layout
 

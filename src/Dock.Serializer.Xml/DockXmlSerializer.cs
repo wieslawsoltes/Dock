@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -13,13 +14,16 @@ namespace Dock.Serializer.Xml;
 public sealed class DockXmlSerializer : IDockSerializer
 {
     private readonly DataContractSerializerSettings _settings;
+    private readonly Type _listType;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DockXmlSerializer"/> class with optional known types.
+    /// Initializes a new instance of the <see cref="DockXmlSerializer"/> class with optional known types and a list type.
     /// </summary>
+    /// <param name="listType">The generic list type to instantiate.</param>
     /// <param name="knownTypes">Additional types used during serialization.</param>
-    public DockXmlSerializer(params Type[] knownTypes)
+    public DockXmlSerializer(Type listType, params Type[] knownTypes)
     {
+        _listType = listType;
         _settings = new DataContractSerializerSettings
         {
             PreserveObjectReferences = true,
@@ -30,7 +34,7 @@ public sealed class DockXmlSerializer : IDockSerializer
     /// <summary>
     /// Initializes a new instance of the <see cref="DockXmlSerializer"/> class.
     /// </summary>
-    public DockXmlSerializer() : this(Array.Empty<Type>())
+    public DockXmlSerializer() : this(typeof(ObservableCollection<>), Array.Empty<Type>())
     {
     }
 
@@ -57,7 +61,9 @@ public sealed class DockXmlSerializer : IDockSerializer
         var serializer = CreateSerializer(typeof(T));
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(text));
         using var reader = XmlReader.Create(stream);
-        return (T?)serializer.ReadObject(reader);
+        var result = (T?)serializer.ReadObject(reader);
+        ListTypeConverter.Convert(result, _listType);
+        return result;
     }
 
     /// <inheritdoc/>

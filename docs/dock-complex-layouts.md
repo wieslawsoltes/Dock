@@ -13,7 +13,7 @@ The default factory can open any dockable in a separate window. This allows you 
    cd MultiDockApp
   dotnet add package Dock.Avalonia
   dotnet add package Dock.Model.Mvvm
-  dotnet add package Dock.Serializer
+  dotnet add package Dock.Serializer.Newtonsoft
   # or use the Protobuf variant
   dotnet add package Dock.Serializer.Protobuf
   ```

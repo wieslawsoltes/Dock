@@ -85,7 +85,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia.UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer", "src\Dock.Serializer\Dock.Serializer.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Newtonsoft", "src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj", "{89C43375-BDB6-42DF-90B9-8819DF675C35}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Xml", "src\Dock.Serializer.Xml\Dock.Serializer.Xml.csproj", "{C2AE71A6-625C-4177-82A1-7624FCF8F8BB}"
 EndProject

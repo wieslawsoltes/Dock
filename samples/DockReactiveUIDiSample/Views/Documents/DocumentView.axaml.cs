@@ -1,17 +1,13 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace DockReactiveUIDiSample.Views;
+namespace DockReactiveUIDiSample.Views.Documents;
 
-public partial class MainWindow : Window
+public partial class DocumentView : UserControl
 {
-    public MainWindow()
+    public DocumentView()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void InitializeComponent()

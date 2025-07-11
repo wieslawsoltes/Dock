@@ -1,3 +1,4 @@
+using System;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using ReactiveUI;
@@ -24,7 +25,7 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         if (Layout is { })
         {
             _factory.InitLayout(Layout);
-            Router.Navigate.Execute((IRoutableViewModel)Layout).Subscribe(_ => { });
+            Router.Navigate.Execute((IRoutableViewModel)Layout).Subscribe(new Action<object>(_ => { }));
         }
     }
 }

@@ -37,6 +37,7 @@
     <PackageVersion Include="Nuke.Common" Version="9.0.4" />
     <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="9.0.4" />
     <PackageVersion Include="protobuf-net" Version="3.2.52" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageVersion Include="Prism.Core" Version="9.0.537" />
   </ItemGroup>
 </Project>

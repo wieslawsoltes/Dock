@@ -1,17 +1,13 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace DockReactiveUIDiSample.Views;
 
-public partial class MainWindow : Window
+public partial class DockableOptionsView : UserControl
 {
-    public MainWindow()
+    public DockableOptionsView()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void InitializeComponent()

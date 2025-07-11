@@ -3,6 +3,8 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using DockReactiveUIDiSample.Models;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample.ViewModels;
@@ -21,10 +23,12 @@ public class DockFactory : Factory
         var document = _provider.GetRequiredService<DocumentViewModel>();
         document.Id = "Document1";
         document.Title = "Document";
+        document.Context = _provider.GetRequiredService<DemoData>();
 
         var tool = _provider.GetRequiredService<ToolViewModel>();
         tool.Id = "Tool1";
         tool.Title = "Tool";
+        tool.Context = _provider.GetRequiredService<DemoData>();
 
         var proportionalDock = CreateProportionalDock();
         proportionalDock.Orientation = Orientation.Horizontal;
@@ -47,5 +51,30 @@ public class DockFactory : Factory
         root.DefaultDockable = proportionalDock;
 
         return root;
+    }
+
+    public override void InitLayout(IDockable layout)
+    {
+        DockableLocator = new Dictionary<string, Func<IDockable?>>
+        {
+            ["Document1"] = () =>
+            {
+                var vm = _provider.GetRequiredService<DocumentViewModel>();
+                vm.Id = "Document1";
+                vm.Title = "Document";
+                vm.Context = _provider.GetRequiredService<DemoData>();
+                return vm;
+            },
+            ["Tool1"] = () =>
+            {
+                var vm = _provider.GetRequiredService<ToolViewModel>();
+                vm.Id = "Tool1";
+                vm.Title = "Tool";
+                vm.Context = _provider.GetRequiredService<DemoData>();
+                return vm;
+            }
+        };
+
+        base.InitLayout(layout);
     }
 }

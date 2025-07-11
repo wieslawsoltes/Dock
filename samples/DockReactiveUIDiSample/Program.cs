@@ -19,23 +19,29 @@ internal class Program
         ConfigureServices(services);
         var provider = services.BuildServiceProvider();
         App.ServiceProvider = provider;
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        // Resolve application using dependency injection
+        var _ = provider.GetRequiredService<App>();
+        BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
     }
 
     private static void ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<App>();
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
         services.AddTransient<ToolViewModel>();
+        services.AddTransient<Views.Documents.DocumentView>();
+        services.AddTransient<Views.Tools.ToolView>();
+        services.AddTransient<Views.DockableOptionsView>();
         services.AddSingleton<DockFactory>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<IFactory, DockFactory>();
         services.AddSingleton<IDockSerializer, DockSerializer>();
         services.AddSingleton<IDockState, DockState>();
-    }
+   }
 
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
+    public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
+        => AppBuilder.Configure(() => provider.GetRequiredService<App>())
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()

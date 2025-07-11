@@ -24,7 +24,6 @@
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
   </ItemGroup>
 
 </Project>

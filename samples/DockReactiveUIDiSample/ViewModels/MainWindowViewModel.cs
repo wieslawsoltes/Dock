@@ -34,7 +34,7 @@ public class MainWindowViewModel : ReactiveObject
         if (File.Exists(path))
         {
             using var stream = File.OpenRead(path);
-            var layout = _serializer.Load<IDock?>(stream);
+            var layout = _serializer.Load<IRootDock?>(stream);
             if (layout is { })
             {
                 _factory.InitLayout(layout);

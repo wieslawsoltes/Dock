@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Model.Prism.Controls;
 using Dock.Model.Prism.Core;
 using Xunit;

@@ -116,8 +116,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUISample", "samples\DockReactiveUISample\DockReactiveUISample.csproj", "{2A2C622B-3001-4DEB-833E-BEF8A94A3343}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.UnitTests", "tests\Dock.Controls.Recycling.UnitTests\Dock.Controls.Recycling.UnitTests.csproj", "{A832AF6B-0B26-44B0-838A-7DFF930481D5}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{B6494977-A4A3-4492-8344-2D093694D49E}"
-	ProjectSection(SolutionItems) = preProject
+        ProjectSection(SolutionItems) = preProject
 		docs\quick-start.md = docs\quick-start.md
 		docs\dock-reference.md = docs\dock-reference.md
 		docs\dock-xaml.md = docs\dock-xaml.md
@@ -274,11 +276,15 @@ Global
 		{2A2C622B-3001-4DEB-833E-BEF8A94A3343}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A2C622B-3001-4DEB-833E-BEF8A94A3343}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
+                {0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                {0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                {0550FADE-AE71-427E-BE5F-8EF57A734AC3}.Release|Any CPU.Build.0 = Release|Any CPU
+                {A832AF6B-0B26-44B0-838A-7DFF930481D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+                {A832AF6B-0B26-44B0-838A-7DFF930481D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+                {A832AF6B-0B26-44B0-838A-7DFF930481D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+                {A832AF6B-0B26-44B0-838A-7DFF930481D5}.Release|Any CPU.Build.0 = Release|Any CPU
+        EndGlobalSection
+        GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
@@ -312,6 +318,7 @@ Global
                 {2A2C622B-3001-4DEB-833E-BEF8A94A3343} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
                 {0550FADE-AE71-427E-BE5F-8EF57A734AC3} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
                 {0A7D7571-2957-4891-A4F1-3EE5E513CE90} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+                {A832AF6B-0B26-44B0-838A-7DFF930481D5} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
         EndGlobalSection
         GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

@@ -26,18 +26,26 @@ public class DockFactory : Factory
         tool.Id = "Tool1";
         tool.Title = "Tool";
 
-        var root = CreateRootDock();
-        root.VisibleDockables = CreateList<IDockable>(
+        var proportionalDock = CreateProportionalDock();
+        proportionalDock.Orientation = Orientation.Horizontal;
+        proportionalDock.VisibleDockables = CreateList<IDockable>(
             new DocumentDock
             {
                 VisibleDockables = CreateList<IDockable>(document),
                 ActiveDockable = document
             },
+            CreateProportionalDockSplitter(),
             new ToolDock
             {
                 VisibleDockables = CreateList<IDockable>(tool),
                 ActiveDockable = tool
             });
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList<IDockable>(proportionalDock);
+        root.ActiveDockable = proportionalDock;
+        root.DefaultDockable = proportionalDock;
+
         return root;
     }
 }

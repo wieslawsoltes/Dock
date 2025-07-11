@@ -1,3 +1,5 @@
+using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using Dock.Model.Core;
@@ -13,12 +15,16 @@ public sealed class DockYamlSerializer : IDockSerializer
 {
     private readonly ISerializer _serializer;
     private readonly IDeserializer _deserializer;
+    private readonly Type _listType;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DockYamlSerializer"/> class.
+    /// Initializes a new instance of the <see cref="DockYamlSerializer"/> class
+    /// with the specified list type.
     /// </summary>
-    public DockYamlSerializer()
+    /// <param name="listType">The generic list type to instantiate.</param>
+    public DockYamlSerializer(Type listType)
     {
+        _listType = listType;
         _serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
@@ -27,6 +33,13 @@ public sealed class DockYamlSerializer : IDockSerializer
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .IgnoreUnmatchedProperties()
             .Build();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockYamlSerializer"/> class.
+    /// </summary>
+    public DockYamlSerializer() : this(typeof(ObservableCollection<>))
+    {
     }
 
     /// <inheritdoc/>
@@ -38,7 +51,9 @@ public sealed class DockYamlSerializer : IDockSerializer
     /// <inheritdoc/>
     public T? Deserialize<T>(string text)
     {
-        return _deserializer.Deserialize<T>(text);
+        var result = _deserializer.Deserialize<T>(text);
+        ListTypeConverter.Convert(result, _listType);
+        return result;
     }
 
     /// <inheritdoc/>

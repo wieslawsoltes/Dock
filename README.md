@@ -50,6 +50,7 @@ You can find the packages here [NuGet](https://www.nuget.org/packages/Dock.Avalo
 ```powershell
 Install-Package Dock.Avalonia
 Install-Package Dock.Model.Mvvm
+Install-Package Dock.Serializer.Newtonsoft
 ```
 
 or by using nightly build feed:
@@ -62,6 +63,7 @@ and install the package like this:
 ```powershell
 Install-Package Dock.Avalonia -Pre
 Install-Package Dock.Model.Mvvm -Pre
+Install-Package Dock.Serializer.Newtonsoft -Pre
 ```
 
 ## Resources

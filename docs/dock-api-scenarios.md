@@ -61,6 +61,8 @@ Use the MVVM, ReactiveUI or XAML samples as references for complete implementati
 ### Saving and restoring a layout
 
 Layouts can be persisted using `DockSerializer` from the `Dock.Serializer` package.
+Binary serialization is available via `ProtobufDockSerializer` in
+the `Dock.Serializer.Protobuf` package.
 This allows users to keep their preferred window arrangement between sessions.
 
 ```csharp

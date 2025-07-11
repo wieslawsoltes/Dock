@@ -11,10 +11,12 @@ The default factory can open any dockable in a separate window. This allows you 
    ```bash
    dotnet new avalonia.app -o MultiDockApp
    cd MultiDockApp
-   dotnet add package Dock.Avalonia
-   dotnet add package Dock.Model.Mvvm
-   dotnet add package Dock.Serializer
-   ```
+  dotnet add package Dock.Avalonia
+  dotnet add package Dock.Model.Mvvm
+  dotnet add package Dock.Serializer
+  # or use the Protobuf variant
+  dotnet add package Dock.Serializer.Protobuf
+  ```
 
 2. **Define a custom factory**
 

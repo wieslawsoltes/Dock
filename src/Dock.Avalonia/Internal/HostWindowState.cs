@@ -290,8 +290,17 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
                 }
 
-                if (!_context.DoDragDrop || _hostWindow.Window?.Layout?.Factory is not { } factory)
+                if (!_context.DoDragDrop)
                 {
+                    break;
+                }
+
+                if (_hostWindow.Window?.Layout?.Factory is not { } factory)
+                {
+                    Leave();
+                    DropControl = null;
+                    _context.TargetDockControl = null;
+                    _context.TargetPoint = default;
                     break;
                 }
 

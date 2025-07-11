@@ -53,6 +53,7 @@ public class HostWindowStateTests
         var window = new HostWindow();
         var factory = new Factory();
         var layout = factory.CreateRootDock();
+        layout.Factory = factory;
         var dockWindow = new DockWindow { Factory = factory, Layout = layout };
         window.Window = dockWindow;
         var state = CreateState(manager, window);

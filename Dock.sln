@@ -120,8 +120,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUISample", "samples\DockReactiveUISample\DockReactiveUISample.csproj", "{2A2C622B-3001-4DEB-833E-BEF8A94A3343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUIDiSample", "samples\DockReactiveUIDiSample\DockReactiveUIDiSample.csproj", "{46781A49-2A88-435D-BB6E-39D28D52D0DA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.UnitTests", "tests\Dock.Controls.Recycling.UnitTests\Dock.Controls.Recycling.UnitTests.csproj", "{A832AF6B-0B26-44B0-838A-7DFF930481D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{B6494977-A4A3-4492-8344-2D093694D49E}"
@@ -184,6 +182,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Model.UnitTests", "tests\Dock.Controls.Recycling.Model.UnitTests\Dock.Controls.Recycling.Model.UnitTests.csproj", "{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.MarkupExtension.UnitTests", "tests\Dock.MarkupExtension.UnitTests\Dock.MarkupExtension.UnitTests.csproj", "{77DDDBB0-4EA2-493E-BFEE-17E40A733EA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactiveUIDiSample", "samples\DockReactiveUIDiSample\DockReactiveUIDiSample.csproj", "{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -327,6 +327,10 @@ Global
 		{77DDDBB0-4EA2-493E-BFEE-17E40A733EA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77DDDBB0-4EA2-493E-BFEE-17E40A733EA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77DDDBB0-4EA2-493E-BFEE-17E40A733EA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 								GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -370,6 +374,7 @@ Global
 		{DB965148-E246-41AA-A904-44E96A8A53F5} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{77DDDBB0-4EA2-493E-BFEE-17E40A733EA7} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{3267D62B-EFE2-40C1-ACD5-8BF43CAF8AF6} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 								GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

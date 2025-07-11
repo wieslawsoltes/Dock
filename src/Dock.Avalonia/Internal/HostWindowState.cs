@@ -15,15 +15,17 @@ namespace Dock.Avalonia.Internal;
 internal class WindowDragContext
 {
     public PixelPoint DragStartPoint { get; set; }
+    public PixelPoint WindowStartPosition { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
     public Point TargetPoint { get; set; }
     public DragAction DragAction { get; set; }
 
-    public void Start(PixelPoint point)
+    public void Start(PixelPoint point, PixelPoint windowPosition)
     {
         DragStartPoint = point;
+        WindowStartPosition = windowPosition;
         PointerPressed = true;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -34,6 +36,7 @@ internal class WindowDragContext
     public void End()
     {
         DragStartPoint = default;
+        WindowStartPosition = default;
         PointerPressed = false;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -241,7 +244,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     break;
                 }
 
-                _context.Start(point);
+                _context.Start(point, _hostWindow.Position);
                 DropControl = null;
                 break;
             }
@@ -279,7 +282,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
                 if (_context.DoDragDrop == false)
                 {
-                    var diff = _context.DragStartPoint - point;
+                    var diff = point - _context.WindowStartPosition;
                     var haveMinimumDragDistance = DockSettings.IsMinimumDragDistance(diff);
                     if (haveMinimumDragDistance)
                     {
@@ -300,8 +303,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                         continue;
                     }
 
-                    var position = point + _context.DragStartPoint;
-                    var screenPoint = new PixelPoint(position.X, position.Y);
+                    var screenPoint = new PixelPoint(
+                        point.X + _context.DragStartPoint.X,
+                        point.Y + _context.DragStartPoint.Y);
                     if (dockControl.GetVisualRoot() is null)
                     {
                         continue;

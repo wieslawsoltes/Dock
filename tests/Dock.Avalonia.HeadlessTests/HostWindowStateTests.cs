@@ -78,4 +78,42 @@ public class HostWindowStateTests
         Assert.Null(context.GetType().GetProperty("TargetDockControl")!.GetValue(context));
         Assert.Equal(default(Point), (Point)context.GetType().GetProperty("TargetPoint")!.GetValue(context)!);
     }
+
+    [AvaloniaFact]
+    public void Process_Moved_BelowThreshold_DoesNotStartDrag()
+    {
+        var manager = new DockManager();
+        var window = new HostWindow { Position = new PixelPoint(100, 100) };
+        var state = CreateState(manager, window);
+
+        state.Process(new PixelPoint(5, 5), EventType.Pressed);
+
+        window.Position = new PixelPoint(102, 102);
+        state.Process(window.Position, EventType.Moved);
+
+        var contextField = typeof(HostWindowState)
+            .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        var context = contextField.GetValue(state)!;
+
+        Assert.False((bool)context.GetType().GetProperty("DoDragDrop")!.GetValue(context)!);
+    }
+
+    [AvaloniaFact]
+    public void Process_Moved_AboveThreshold_StartsDrag()
+    {
+        var manager = new DockManager();
+        var window = new HostWindow { Position = new PixelPoint(100, 100) };
+        var state = CreateState(manager, window);
+
+        state.Process(new PixelPoint(5, 5), EventType.Pressed);
+
+        window.Position = new PixelPoint(110, 110);
+        state.Process(window.Position, EventType.Moved);
+
+        var contextField = typeof(HostWindowState)
+            .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
+        var context = contextField.GetValue(state)!;
+
+        Assert.True((bool)context.GetType().GetProperty("DoDragDrop")!.GetValue(context)!);
+    }
 }

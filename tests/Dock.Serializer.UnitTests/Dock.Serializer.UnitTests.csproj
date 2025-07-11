@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,10 @@
 using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using Dock.Model.Core;
 using Dock.Settings;
+using DockReactiveUIDiSample.Models;
+using DockReactiveUIDiSample.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample;
@@ -25,6 +28,7 @@ internal class Program
         services.AddTransient<ToolViewModel>();
         services.AddSingleton<DockFactory>();
         services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<IFactory, DockFactory>();
         services.AddSingleton<IDockSerializer, Dock.Serializer.DockSerializer>();
         services.AddSingleton<IDockState, Dock.Model.DockState>();
     }

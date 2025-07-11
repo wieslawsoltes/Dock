@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Yaml", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.SystemTextJson", "src\Dock.Serializer.SystemTextJson\Dock.Serializer.SystemTextJson.csproj", "{DB965148-E246-41AA-A904-44E96A8A53F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Model.UnitTests", "tests\Dock.Controls.Recycling.Model.UnitTests\Dock.Controls.Recycling.Model.UnitTests.csproj", "{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +315,10 @@ Global
 		{DB965148-E246-41AA-A904-44E96A8A53F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB965148-E246-41AA-A904-44E96A8A53F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB965148-E246-41AA-A904-44E96A8A53F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 								GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,6 +360,7 @@ Global
 		{12A0D873-2FF5-4AA0-9F66-56161DDE2D4E} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{8C7A0AF2-1B5A-4BDF-BE0A-705263DD9DDC} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{DB965148-E246-41AA-A904-44E96A8A53F5} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{927DBE0C-567E-40F1-BD2F-D9D42EBDAFA9} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 								GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

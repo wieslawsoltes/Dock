@@ -1,13 +1,15 @@
 <UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
              xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels"
              x:DataType="vm:ToolViewModel">
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Id}" />
-            <TextBlock Text="{Binding Title}" />
-            <TextBlock Text="{Binding Context}" />
+    <StackPanel Margin="10" Spacing="5">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" />
+        <StackPanel Orientation="Horizontal" Spacing="5">
+            <Button Content="Go Doc" Command="{Binding GoDocument}"/>
+            <Button Content="Next Tool" Command="{Binding GoTool}"/>
         </StackPanel>
-    </Grid>
+        <rxui:RoutedViewHost Router="{Binding Router}" />
+    </StackPanel>
 </UserControl>

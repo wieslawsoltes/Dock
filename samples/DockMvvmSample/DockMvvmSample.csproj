@@ -32,7 +32,7 @@
     <ProjectReference Include="..\..\src\Dock.Model.Mvvm\Dock.Model.Mvvm.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
-    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
   </ItemGroup>
 
 </Project>

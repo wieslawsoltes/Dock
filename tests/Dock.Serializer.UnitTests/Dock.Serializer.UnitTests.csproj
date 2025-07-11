@@ -12,7 +12,7 @@
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Serializer\Dock.Serializer.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
   </ItemGroup>
 
   <ItemGroup>

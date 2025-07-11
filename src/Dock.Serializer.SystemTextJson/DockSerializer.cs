@@ -23,12 +23,15 @@ public sealed class DockSerializer : IDockSerializer
     /// <param name="listType">The type of list to use in the serialization process.</param>
     public DockSerializer(Type listType)
     {
-        _ = listType;
         _options = new JsonSerializerOptions
         {
             WriteIndented = true,
             ReferenceHandler = ReferenceHandler.Preserve,
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            Converters =
+            {
+                new JsonConverterFactoryList(listType)
+            }
         };
     }
 

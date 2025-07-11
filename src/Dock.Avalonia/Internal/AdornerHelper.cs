@@ -85,29 +85,32 @@ internal class AdornerHelper<T> where T : Control, new()
 
     private void AddRegularAdorner(Visual visual, bool indicatorsOnly)
     {
+        if (_window is not null)
+        {
+            RemoveRegularAdorner();
+        }
+
         var layer = AdornerLayer.GetAdornerLayer(visual);
         if (layer is null)
         {
             return;
         }
 
-        // Remove any previously created adorner from its original layer
-        RemoveRegularAdornerInternal();
-
         Adorner = new T
         {
             [AdornerLayer.AdornedElementProperty] = visual
         };
 
-        if (Adorner is Control adorner)
+        if (Adorner is { } adorner)
         {
-            if (adorner is DockTarget dockTarget)
+            switch (adorner)
             {
-                dockTarget.ShowIndicatorsOnly = indicatorsOnly;
-            }
-            else if (adorner is GlobalDockTarget globalDockTarget)
-            {
-                globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                case DockTarget dockTarget:
+                    dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    break;
+                case GlobalDockTarget globalDockTarget:
+                    globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    break;
             }
         }
         ((ISetLogicalParent) Adorner).SetParent(visual);
@@ -124,7 +127,7 @@ internal class AdornerHelper<T> where T : Control, new()
         }
         else
         {
-            RemoveRegularAdorner(visual);
+            RemoveRegularAdorner();
         }
     }
 
@@ -139,12 +142,7 @@ internal class AdornerHelper<T> where T : Control, new()
         Adorner = null;
     }
 
-    private void RemoveRegularAdorner(Visual visual)
-    {
-        RemoveRegularAdornerInternal();
-    }
-
-    private void RemoveRegularAdornerInternal()
+    private void RemoveRegularAdorner()
     {
         if (_layer is not null && Adorner is not null)
         {

@@ -292,6 +292,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     break;
                 }
 
+                var found = false;
                 foreach (var dockControl in factory.DockControls.GetZOrderedDockControls())
                 {
                     if (dockControl.Layout == _hostWindow.Window?.Layout)
@@ -327,6 +328,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                                 DropControl = dropControl;
                                 _context.DragAction = DragAction.Move;
                                 Over(_context.TargetPoint, _context.DragAction, dropControl, _context.TargetDockControl);
+                                found = true;
                                 break;
                             }
 
@@ -341,9 +343,18 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                             DropControl = dropControl;
                             _context.DragAction = DragAction.Move;
                             Enter(_context.TargetPoint, _context.DragAction, _context.TargetDockControl);
+                            found = true;
                             break;
                         }
                     }
+                }
+
+                if (!found && DropControl is { })
+                {
+                    Leave();
+                    DropControl = null;
+                    _context.TargetDockControl = null;
+                    _context.TargetPoint = default;
                 }
 
                 break;

@@ -16,16 +16,18 @@ internal class WindowDragContext
 {
     public PixelPoint DragStartPoint { get; set; }
     public PixelPoint WindowStartPosition { get; set; }
+    public PixelPoint WindowOffset { get; set; }
     public bool PointerPressed { get; set; }
     public bool DoDragDrop { get; set; }
     public DockControl? TargetDockControl { get; set; }
     public Point TargetPoint { get; set; }
     public DragAction DragAction { get; set; }
 
-    public void Start(PixelPoint point, PixelPoint windowPosition)
+    public void Start(PixelPoint point, PixelPoint windowPosition, PixelPoint windowOffset)
     {
         DragStartPoint = point;
         WindowStartPosition = windowPosition;
+        WindowOffset = windowOffset;
         PointerPressed = true;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -37,6 +39,7 @@ internal class WindowDragContext
     {
         DragStartPoint = default;
         WindowStartPosition = default;
+        WindowOffset = default;
         PointerPressed = false;
         DoDragDrop = false;
         TargetDockControl = null;
@@ -244,7 +247,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     break;
                 }
 
-                _context.Start(point, _hostWindow.Position);
+                var screenWindowPoint = _hostWindow.PointToScreen(new Point(0, 0));
+                var windowOffset = new PixelPoint(screenWindowPoint.X - _hostWindow.Position.X,
+                    screenWindowPoint.Y - _hostWindow.Position.Y);
+                _context.Start(point, _hostWindow.Position, windowOffset);
                 DropControl = null;
                 break;
             }
@@ -313,8 +319,8 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                     }
 
                     var screenPoint = new PixelPoint(
-                        point.X + _context.DragStartPoint.X,
-                        point.Y + _context.DragStartPoint.Y);
+                        point.X + _context.WindowOffset.X + _context.DragStartPoint.X,
+                        point.Y + _context.WindowOffset.Y + _context.DragStartPoint.Y);
                     if (dockControl.GetVisualRoot() is null)
                     {
                         continue;

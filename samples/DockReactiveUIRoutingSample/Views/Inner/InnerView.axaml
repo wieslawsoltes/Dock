@@ -1,7 +1,7 @@
 <UserControl x:Class="DockReactiveUIRoutingSample.Views.Inner.InnerView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Inner"
              x:DataType="vm:InnerViewModel">
     <TextBlock Text="{Binding Text}"/>
 </UserControl>

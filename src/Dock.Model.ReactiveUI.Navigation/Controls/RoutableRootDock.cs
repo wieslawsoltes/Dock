@@ -9,7 +9,7 @@ namespace Dock.Model.ReactiveUI.Navigation.Controls;
 /// Root dock that supports <see cref="IRoutableViewModel"/> for ReactiveUI navigation.
 /// </summary>
 [DataContract(IsReference = true)]
-public class RoutableRootDock : RootDock, IRoutableViewModel
+public class RoutableRootDock : RootDock, IRoutableViewModel, IScreen
 {
     /// <summary>
     /// Initializes new instance of the <see cref="RoutableRootDock"/> class.
@@ -21,6 +21,12 @@ public class RoutableRootDock : RootDock, IRoutableViewModel
         HostScreen = host;
         UrlPathSegment = url ?? GetType().Name;
     }
+
+    /// <summary>
+    /// Gets router used for nested navigation.
+    /// </summary>
+    [IgnoreDataMember]
+    public RoutingState Router { get; } = new RoutingState();
 
     /// <inheritdoc/>
     [IgnoreDataMember]

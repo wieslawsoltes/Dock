@@ -1,6 +1,6 @@
 using ReactiveUI;
 
-namespace DockReactiveUIRoutingSample.ViewModels;
+namespace DockReactiveUIRoutingSample.ViewModels.Inner;
 
 public class InnerViewModel : ReactiveObject, IRoutableViewModel
 {

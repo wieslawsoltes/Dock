@@ -4,6 +4,8 @@ using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using Dock.Model.ReactiveUI.Navigation.Controls;
+using DockReactiveUIRoutingSample.ViewModels.Documents;
+using DockReactiveUIRoutingSample.ViewModels.Tools;
 using ReactiveUI;
 
 namespace DockReactiveUIRoutingSample.ViewModels;

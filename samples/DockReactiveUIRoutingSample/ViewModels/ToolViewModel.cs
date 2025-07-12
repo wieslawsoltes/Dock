@@ -1,10 +1,11 @@
 using System;
 using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
+using DockReactiveUIRoutingSample.ViewModels.Inner;
 using ReactiveUI;
 using System.Reactive;
 
-namespace DockReactiveUIRoutingSample.ViewModels;
+namespace DockReactiveUIRoutingSample.ViewModels.Tools;
 
 public class ToolViewModel : RoutableTool
 {

@@ -249,6 +249,10 @@
       <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
 
+    <Style Selector="^:flash /template/ Path#PART_ClosePath">
+      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
     <Style Selector="^:not(:active):selected">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />

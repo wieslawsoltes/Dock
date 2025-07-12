@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -62,6 +63,12 @@ public class DockControl : TemplatedControl, IDockControl
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
 
+    /// <summary>
+    /// Defines the <see cref="DockGroup"/> property.
+    /// </summary>
+    public static readonly StyledProperty<string?> DockGroupProperty =
+        AvaloniaProperty.Register<DockControl, string?>(nameof(DockGroup));
+
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
 
@@ -113,6 +120,15 @@ public class DockControl : TemplatedControl, IDockControl
         set => SetValue(IsDraggingDockProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets the docking group used to link dock sites.
+    /// </summary>
+    public string? DockGroup
+    {
+        get => GetValue(DockGroupProperty);
+        set => SetValue(DockGroupProperty, value);
+    }
+
     private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();
 
     /// <summary>
@@ -129,6 +145,24 @@ public class DockControl : TemplatedControl, IDockControl
                 _dockControlState.DragOffsetCalculator = value;
             }
         }
+    }
+
+    private IList<IDockControl> GetDockControlsForGroup()
+    {
+        if (Layout?.Factory?.DockControls is { } dockControls)
+        {
+            var group = DockGroup;
+            if (group is null)
+            {
+                return new List<IDockControl> { this };
+            }
+
+            return dockControls
+                .Where(dc => (dc as DockControl)?.DockGroup == group)
+                .ToList();
+        }
+
+        return new List<IDockControl> { this };
     }
 
     /// <summary>
@@ -184,6 +218,11 @@ public class DockControl : TemplatedControl, IDockControl
 
         layout.Factory.DockControls.Add(this);
 
+        if (DockGroup is null)
+        {
+            DockGroup = layout.Id ?? Guid.NewGuid().ToString();
+        }
+
         if (InitializeFactory)
         {
             layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
@@ -216,6 +255,8 @@ public class DockControl : TemplatedControl, IDockControl
         }
 
         layout.Factory.DockControls.Remove(this);
+
+        DockGroup = null;
 
         if (InitializeLayout)
         {
@@ -284,7 +325,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = new Vector();
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.Pressed, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.Pressed, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -295,7 +336,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = new Vector();
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.Released, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.Released, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -306,7 +347,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = new Vector();
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.Moved, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.Moved, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -317,7 +358,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = new Vector();
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.Enter, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.Enter, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -328,7 +369,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = new Vector();
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.Leave, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.Leave, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -339,7 +380,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = new Point();
             var delta = new Vector();
             var action = DragAction.None;
-            _dockControlState.Process(position, delta, EventType.CaptureLost, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.CaptureLost, action, this, GetDockControlsForGroup());
         }
     }
 
@@ -350,7 +391,7 @@ public class DockControl : TemplatedControl, IDockControl
             var position = e.GetPosition(this);
             var delta = e.Delta;
             var action = ToDragAction(e);
-            _dockControlState.Process(position, delta, EventType.WheelChanged, action, this, Layout.Factory.DockControls);
+            _dockControlState.Process(position, delta, EventType.WheelChanged, action, this, GetDockControlsForGroup());
         }
     }
 }

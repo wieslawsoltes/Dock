@@ -25,6 +25,12 @@
     <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />
     <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
     <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.25" />
+      </Transitions>
+    </Setter>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -118,6 +124,10 @@
       <Setter Property="Background" Value="{x:Null}" />
       <Setter Property="TransparencyLevelHint" Value="Transparent"/>
       <Setter Property="Opacity" Value="0.5" />
+    </Style>
+
+    <Style Selector="^:faded">
+      <Setter Property="Opacity" Value="0" />
     </Style>
 
     <Style Selector="^TitleBar /template/ Border#PART_Background">

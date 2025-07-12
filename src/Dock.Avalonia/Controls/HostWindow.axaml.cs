@@ -10,6 +10,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
@@ -23,7 +24,7 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="HostWindow"/> xaml.
 /// </summary>
-[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow")]
+[PseudoClasses(":toolwindow", ":dragging", ":toolchromecontrolswindow", ":documentchromecontrolswindow", ":faded")]
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
@@ -32,6 +33,8 @@ public class HostWindow : Window, IHostWindow
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
+    private readonly DispatcherTimer _fadeTimer;
+    private readonly DispatcherTimer _closeTimer;
 
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
@@ -50,6 +53,24 @@ public class HostWindow : Window, IHostWindow
     /// </summary>
     public static readonly StyledProperty<bool> DocumentChromeControlsWholeWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(DocumentChromeControlsWholeWindow));
+
+    /// <summary>
+    /// Define <see cref="FadeOnInactive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> FadeOnInactiveProperty =
+        AvaloniaProperty.Register<HostWindow, bool>(nameof(FadeOnInactive));
+
+    /// <summary>
+    /// Define <see cref="CloseOnFadeOut"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> CloseOnFadeOutProperty =
+        AvaloniaProperty.Register<HostWindow, bool>(nameof(CloseOnFadeOut));
+
+    /// <summary>
+    /// Define <see cref="IsFaded"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsFadedProperty =
+        AvaloniaProperty.Register<HostWindow, bool>(nameof(IsFaded));
     
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindow);
@@ -81,6 +102,33 @@ public class HostWindow : Window, IHostWindow
         set => SetValue(DocumentChromeControlsWholeWindowProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether the window fades out when inactive.
+    /// </summary>
+    public bool FadeOnInactive
+    {
+        get => GetValue(FadeOnInactiveProperty);
+        set => SetValue(FadeOnInactiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the window closes after fading out.
+    /// </summary>
+    public bool CloseOnFadeOut
+    {
+        get => GetValue(CloseOnFadeOutProperty);
+        set => SetValue(CloseOnFadeOutProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the window is currently faded.
+    /// </summary>
+    public bool IsFaded
+    {
+        get => GetValue(IsFadedProperty);
+        set => SetValue(IsFadedProperty, value);
+    }
+
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
 
@@ -100,6 +148,33 @@ public class HostWindow : Window, IHostWindow
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
+
+        _fadeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _fadeTimer.Tick += (_, _) =>
+        {
+            _fadeTimer.Stop();
+            if (FadeOnInactive)
+            {
+                IsFaded = true;
+                if (CloseOnFadeOut)
+                {
+                    _closeTimer.Start();
+                }
+            }
+        };
+
+        _closeTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+        _closeTimer.Tick += (_, _) =>
+        {
+            _closeTimer.Stop();
+            if (CloseOnFadeOut)
+            {
+                Exit();
+            }
+        };
+
+        PointerEntered += ResetFade;
+        PointerMoved += ResetFade;
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
@@ -209,6 +284,17 @@ public class HostWindow : Window, IHostWindow
         }
     }
 
+    private void ResetFade(object? sender, PointerEventArgs e)
+    {
+        if (FadeOnInactive)
+        {
+            IsFaded = false;
+            _closeTimer.Stop();
+            _fadeTimer.Stop();
+            _fadeTimer.Start();
+        }
+    }
+
     /// <summary>
     /// Attaches grip to chrome.
     /// </summary>
@@ -285,6 +371,23 @@ public class HostWindow : Window, IHostWindow
         {
             UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, change.GetNewValue<bool>());
         }
+        else if (change.Property == IsFadedProperty)
+        {
+            PseudoClasses.Set(":faded", change.GetNewValue<bool>());
+        }
+        else if (change.Property == FadeOnInactiveProperty)
+        {
+            if (change.GetNewValue<bool>())
+            {
+                _fadeTimer.Start();
+            }
+            else
+            {
+                _fadeTimer.Stop();
+                _closeTimer.Stop();
+                IsFaded = false;
+            }
+        }
     }
 
     private void UpdatePseudoClasses(bool isToolWindow, bool toolChromeControlsWholeWindow, bool documentChromeControlsWholeWindow)
@@ -318,6 +421,11 @@ public class HostWindow : Window, IHostWindow
         base.OnOpened(e);
 
         Window?.Factory?.HostWindows.Add(this);
+
+        if (FadeOnInactive)
+        {
+            _fadeTimer.Start();
+        }
     }
 
     /// <inheritdoc/>
@@ -326,6 +434,9 @@ public class HostWindow : Window, IHostWindow
         base.OnClosed(e);
 
         Window?.Factory?.HostWindows.Remove(this);
+
+        _fadeTimer.Stop();
+        _closeTimer.Stop();
 
         if (Window is { })
         {

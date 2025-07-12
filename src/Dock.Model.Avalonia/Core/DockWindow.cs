@@ -60,6 +60,18 @@ public class DockWindow : ReactiveBase, IDockWindow
         AvaloniaProperty.RegisterDirect<DockWindow, string>(nameof(Title), o => o.Title, (o, v) => o.Title = v);
 
     /// <summary>
+    /// Defines the <see cref="FadeOnInactive"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, bool> FadeOnInactiveProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, bool>(nameof(FadeOnInactive), o => o.FadeOnInactive, (o, v) => o.FadeOnInactive = v);
+
+    /// <summary>
+    /// Defines the <see cref="CloseOnFadeOut"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockWindow, bool> CloseOnFadeOutProperty =
+        AvaloniaProperty.RegisterDirect<DockWindow, bool>(nameof(CloseOnFadeOut), o => o.CloseOnFadeOut, (o, v) => o.CloseOnFadeOut = v);
+
+    /// <summary>
     /// Defines the <see cref="Owner"/> property.
     /// </summary>
     public static readonly DirectProperty<DockWindow, IDockable?> OwnerProperty =
@@ -91,6 +103,8 @@ public class DockWindow : ReactiveBase, IDockWindow
     private double _height;
     private bool _topmost;
     private string _title;
+    private bool _fadeOnInactive;
+    private bool _closeOnFadeOut;
     private IDockable? _owner;
     private IFactory? _factory;
     private IRootDock? _layout;
@@ -167,6 +181,24 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         get => _title;
         set => SetAndRaise(TitleProperty, ref _title, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("FadeOnInactive")]
+    public bool FadeOnInactive
+    {
+        get => _fadeOnInactive;
+        set => SetAndRaise(FadeOnInactiveProperty, ref _fadeOnInactive, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CloseOnFadeOut")]
+    public bool CloseOnFadeOut
+    {
+        get => _closeOnFadeOut;
+        set => SetAndRaise(CloseOnFadeOutProperty, ref _closeOnFadeOut, value);
     }
 
     /// <inheritdoc/>

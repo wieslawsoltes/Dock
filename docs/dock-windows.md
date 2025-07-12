@@ -41,3 +41,36 @@ factory.WindowClosed += (_, e) =>
 ```
 
 For more advanced scenarios see [Adapter Classes](dock-adapters.md) and the [Advanced Guide](dock-advanced.md).
+
+## Fading windows on inactivity
+
+Host windows inherit from Avalonia `Window`, which allows you to subclass them
+and add custom behaviour. One approach is to fade the window after a period of
+no pointer activity. The example below starts a timer whenever the pointer moves
+and sets `Opacity` to `0` once the delay elapses:
+
+```csharp
+public class FadingHostWindow : HostWindow
+{
+    private readonly DispatcherTimer _timer;
+
+    public FadingHostWindow()
+    {
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
+        _timer.Tick += (_, _) => Opacity = 0;
+
+        PointerMoved += ResetFade;
+        PointerEntered += ResetFade;
+    }
+
+    private void ResetFade(object? sender, PointerEventArgs e)
+    {
+        Opacity = 1;
+        _timer.Stop();
+        _timer.Start();
+    }
+}
+```
+
+Register `FadingHostWindow` through `HostWindowLocator` or
+`DefaultHostWindowLocator` to host floating docks with this fade-out behaviour.

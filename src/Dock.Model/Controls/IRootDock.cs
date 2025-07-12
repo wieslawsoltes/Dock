@@ -65,4 +65,9 @@ public interface IRootDock : IDock
     /// Exit windows.
     /// </summary>
     ICommand ExitWindows { get; }
+
+    /// <summary>
+    /// Gets or sets the document switcher type.
+    /// </summary>
+    DocumentSwitcherType DocumentSwitcherType { get; set; }
 }

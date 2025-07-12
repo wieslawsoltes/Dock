@@ -29,6 +29,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Dock state guide](dock-state.md) – Why and how to use `DockState`.
+- [Dependency injection](dock-dependency-injection.md) – Register Dock services with `IServiceCollection`.
 - [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.

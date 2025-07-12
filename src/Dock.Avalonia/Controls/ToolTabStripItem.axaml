@@ -95,6 +95,12 @@
     <Setter Property="BorderThickness" Value="0 1 0 0" />
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 1 4 0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.25" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.25" />
+      </Transitions>
+    </Setter>
 
     <Setter Property="Template">
       <ControlTemplate>

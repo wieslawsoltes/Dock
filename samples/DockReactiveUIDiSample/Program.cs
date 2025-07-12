@@ -34,6 +34,7 @@ internal class Program
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<App>();
+        services.AddSingleton<ViewLocator>();
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
         services.AddTransient<ToolViewModel>();

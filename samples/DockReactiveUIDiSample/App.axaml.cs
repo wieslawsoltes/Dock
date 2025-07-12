@@ -10,16 +10,19 @@ namespace DockReactiveUIDiSample;
 
 public partial class App : Application
 {
-    public IServiceProvider? ServiceProvider { get; set; }
+    public IServiceProvider? ServiceProvider { get; }
+    private readonly ViewLocator _viewLocator;
 
-    public App(IServiceProvider? serviceProvider)
+    public App(IServiceProvider? serviceProvider, ViewLocator viewLocator)
     {
         ServiceProvider = serviceProvider;
+        _viewLocator = viewLocator;
     }
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        DataTemplates.Insert(0, _viewLocator);
     }
 
     public override void OnFrameworkInitializationCompleted()

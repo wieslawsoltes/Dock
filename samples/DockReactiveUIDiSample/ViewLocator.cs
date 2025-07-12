@@ -1,14 +1,21 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Model.Core;
 using ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample;
 
 public class ViewLocator : IDataTemplate
 {
+    private readonly IServiceProvider _provider;
+
+    public ViewLocator(IServiceProvider provider)
+    {
+        _provider = provider;
+    }
+
     public Control? Build(object? data)
     {
         if (data is null)
@@ -21,7 +28,7 @@ public class ViewLocator : IDataTemplate
             return null;
 
         var viewType = Type.GetType(viewName);
-        if (viewType != null && (Application.Current as App)?.ServiceProvider?.GetService(viewType) is Control control)
+        if (viewType != null && _provider.GetService(viewType) is Control control)
         {
             control.DataContext = data;
             return control;

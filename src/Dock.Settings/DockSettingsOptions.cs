@@ -1,6 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
+using Dock.Model.Core;
+
 namespace Dock.Settings;
 
 /// <summary>
@@ -37,5 +39,10 @@ public class DockSettingsOptions
     /// Optional floating window owner flag.
     /// </summary>
     public bool? UseOwnerForFloatingWindows { get; set; }
+
+    /// <summary>
+    /// Optional document switcher type.
+    /// </summary>
+    public DocumentSwitcherType? DocumentSwitcherType { get; set; }
 }
 

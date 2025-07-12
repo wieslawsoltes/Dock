@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using Avalonia;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -53,6 +54,11 @@ public static class AppBuilderExtensions
         if (options.UseOwnerForFloatingWindows != null)
         {
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
+        }
+
+        if (options.DocumentSwitcherType != null)
+        {
+            DockSettings.DocumentSwitcherType = options.DocumentSwitcherType.Value;
         }
 
         return builder;
@@ -111,6 +117,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseOwnerForFloatingWindows = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.DocumentSwitcherType"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="type">The switcher type.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseDocumentSwitcherType(
+        this AppBuilder builder,
+        DocumentSwitcherType type)
+    {
+        DockSettings.DocumentSwitcherType = type;
         return builder;
     }
 }

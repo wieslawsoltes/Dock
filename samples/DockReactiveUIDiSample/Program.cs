@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.ReactiveUI;
 using Dock.Model;
 using Dock.Model.Core;
+using Dock.Model.Extensions.DependencyInjection;
 using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;
@@ -40,11 +41,9 @@ internal class Program
         services.AddTransient<ToolViewModel>();
         services.AddTransient<DocumentView>();
         services.AddTransient<ToolView>();
-        services.AddSingleton<DockFactory>();
         services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<IFactory, DockFactory>();
-        services.AddSingleton<IDockSerializer, DockSerializer>();
-        services.AddSingleton<IDockState, DockState>();
+
+        services.AddDock<DockFactory, DockSerializer>();
    }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)

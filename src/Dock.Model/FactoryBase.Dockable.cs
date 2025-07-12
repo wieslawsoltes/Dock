@@ -325,6 +325,26 @@ public abstract partial class FactoryBase
     }
 
     /// <inheritdoc/>
+    public virtual void FlashDockable(IDockable dockable)
+    {
+        if (TabRootControls.TryGetValue(dockable, out var root))
+        {
+            var property = root.GetType().GetProperty("IsFlashing");
+            property?.SetValue(root, true);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void StopFlashingDockable(IDockable dockable)
+    {
+        if (TabRootControls.TryGetValue(dockable, out var root))
+        {
+            var property = root.GetType().GetProperty("IsFlashing");
+            property?.SetValue(root, false);
+        }
+    }
+
+    /// <inheritdoc/>
     public void HidePreviewingDockables(IRootDock rootDock)
     {
         if (rootDock.PinnedDock?.VisibleDockables is null)

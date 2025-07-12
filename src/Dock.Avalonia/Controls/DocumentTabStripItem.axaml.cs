@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.Threading;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -15,14 +16,22 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Document TabStripItem custom control.
 /// </summary>
-[PseudoClasses(":active")]
+[PseudoClasses(":active", ":flash")]
 public class DocumentTabStripItem : TabStripItem
 {
+    private readonly DispatcherTimer _flashTimer;
+    private bool _flashState;
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStripItem, bool>(nameof(IsActive));
+
+    /// <summary>
+    /// Define the <see cref="IsFlashing"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsFlashingProperty =
+        AvaloniaProperty.Register<DocumentTabStripItem, bool>(nameof(IsFlashing));
 
     /// <summary>
     /// Gets or sets if this is the currently active dockable.
@@ -33,6 +42,15 @@ public class DocumentTabStripItem : TabStripItem
         set => SetValue(IsActiveProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets if this tab item should flash.
+    /// </summary>
+    public bool IsFlashing
+    {
+        get => GetValue(IsFlashingProperty);
+        set => SetValue(IsFlashingProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStripItem);
         
@@ -41,6 +59,13 @@ public class DocumentTabStripItem : TabStripItem
     /// </summary>
     public DocumentTabStripItem()
     {
+        _flashTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+        _flashTimer.Tick += (_, _) =>
+        {
+            _flashState = !_flashState;
+            PseudoClasses.Set(":flash", _flashState);
+        };
+
         UpdatePseudoClasses(IsActive);
     }
 
@@ -79,6 +104,23 @@ public class DocumentTabStripItem : TabStripItem
         if (change.Property == IsActiveProperty)
         {
             UpdatePseudoClasses(change.GetNewValue<bool>());
+            if (IsActive)
+            {
+                IsFlashing = false;
+            }
+        }
+        else if (change.Property == IsFlashingProperty)
+        {
+            if (IsFlashing)
+            {
+                _flashTimer.Start();
+            }
+            else
+            {
+                _flashTimer.Stop();
+                PseudoClasses.Set(":flash", false);
+                _flashState = false;
+            }
         }
     }
 

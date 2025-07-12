@@ -70,6 +70,18 @@ public class ControlCtorTests
     }
 
     [AvaloniaFact]
+    public void DocumentTabStripItem_Flash_Property()
+    {
+        var control = new DocumentTabStripItem
+        {
+            IsFlashing = true
+        };
+        Assert.True(control.IsFlashing);
+        control.IsFlashing = false;
+        Assert.False(control.IsFlashing);
+    }
+
+    [AvaloniaFact]
     public void DragPreviewControl_Ctor()
     {
         var control = new DragPreviewControl();
@@ -193,6 +205,18 @@ public class ControlCtorTests
     {
         var control = new ToolTabStripItem();
         Assert.NotNull(control);
+    }
+
+    [AvaloniaFact]
+    public void ToolTabStripItem_Flash_Property()
+    {
+        var control = new ToolTabStripItem
+        {
+            IsFlashing = true
+        };
+        Assert.True(control.IsFlashing);
+        control.IsFlashing = false;
+        Assert.False(control.IsFlashing);
     }
 
     [AvaloniaFact]

@@ -41,4 +41,16 @@ public interface IDocumentDock : IDock
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     void AddTool(IDockable tool);
+
+    /// <summary>
+    /// Starts flashing the specified dockable's tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to flash.</param>
+    void FlashDockable(IDockable dockable);
+
+    /// <summary>
+    /// Stops flashing the specified dockable's tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to stop flashing.</param>
+    void StopFlashingDockable(IDockable dockable);
 }

@@ -5,6 +5,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using System;
+using Avalonia.Styling;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -44,7 +45,7 @@ public class DocumentContentControl : TemplatedControl
                 }
             }
         };
-        _ = animation.RunAsync(this, null);
+        _ = animation.RunAsync(this);
     }
 
     /// <inheritdoc/>

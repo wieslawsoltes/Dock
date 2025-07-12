@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
+using Avalonia.Styling;
 
 namespace Dock.Avalonia.Controls;
 
@@ -40,7 +41,7 @@ public class PinnedDockWindow : Window
                 }
             }
         };
-        await animation.RunAsync(this, null);
+        await animation.RunAsync(this);
     }
 
     /// <summary>
@@ -66,7 +67,7 @@ public class PinnedDockWindow : Window
                 }
             }
         };
-        await animation.RunAsync(this, null);
+        await animation.RunAsync(this);
         Close();
     }
 }

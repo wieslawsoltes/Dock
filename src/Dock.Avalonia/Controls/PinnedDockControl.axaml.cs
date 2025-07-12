@@ -180,6 +180,7 @@ public class PinnedDockControl : TemplatedControl
                     _ownerWindow.AddHandler(PointerPressedEvent, OwnerWindow_PointerPressed, RoutingStrategies.Tunnel);
                     _ownerWindow.Deactivated += OwnerWindow_Deactivated;
                     _window.Show(owner);
+                    _ = _window.FadeInAsync();
                 }
             }
 
@@ -206,7 +207,7 @@ public class PinnedDockControl : TemplatedControl
     {
         if (_window is not null)
         {
-            _window.Close();
+            _ = _window.FadeOutAndCloseAsync();
             _window = null;
         }
 

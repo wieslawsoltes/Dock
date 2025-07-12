@@ -2,6 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
+using System;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -20,6 +23,28 @@ public class ToolContentControl : TemplatedControl
         {
             factory.ToolControls[dockable] = this;
         }
+
+        // Fade the tool content in when it attaches to the visual tree
+        Opacity = 0;
+        var animation = new Animation
+        {
+            Duration = TimeSpan.FromMilliseconds(200),
+            Easing = new CubicEaseOut(),
+            Children =
+            {
+                new KeyFrame
+                {
+                    Cue = new Cue(0d),
+                    Setters = { new Setter(OpacityProperty, 0d) }
+                },
+                new KeyFrame
+                {
+                    Cue = new Cue(1d),
+                    Setters = { new Setter(OpacityProperty, 1d) }
+                }
+            }
+        };
+        _ = animation.RunAsync(this, null);
     }
 
     /// <inheritdoc/>

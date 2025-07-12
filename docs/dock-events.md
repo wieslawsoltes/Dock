@@ -16,6 +16,7 @@ possible to intercept an operation before it completes.
 | `FocusedDockableChanged` | Triggered when focus moves to another dockable. |
 | `DockableAdded` | Raised after a dockable is inserted into a dock. |
 | `DockableRemoved` | Raised after a dockable has been removed. |
+| `DockableClosing` | Fired before a dockable is closed so it can be cancelled. |
 | `DockableClosed` | Occurs when a dockable is closed via command or UI. |
 | `DockableMoved` | Indicates a dockable was rearranged within its parent. |
 | `DockableDocked` | Raised after a dock operation completes such as splitting or floating. |

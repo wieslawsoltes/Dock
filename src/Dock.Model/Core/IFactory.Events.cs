@@ -36,6 +36,11 @@ public partial interface IFactory
     event EventHandler<DockableRemovedEventArgs>? DockableRemoved;
 
     /// <summary>
+    /// Dockable closing event handler.
+    /// </summary>
+    event EventHandler<DockableClosingEventArgs>? DockableClosing;
+
+    /// <summary>
     /// Dockable closed event handler.
     /// </summary>
     event EventHandler<DockableClosedEventArgs>? DockableClosed;
@@ -149,6 +154,13 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The removed dockable.</param>
     void OnDockableRemoved(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable is closing.
+    /// </summary>
+    /// <param name="dockable">The closing dockable.</param>
+    /// <returns>False if closing canceled, otherwise true.</returns>
+    bool OnDockableClosing(IDockable? dockable);
 
     /// <summary>
     /// Called when the dockable has been closed.

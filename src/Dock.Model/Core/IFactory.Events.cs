@@ -16,6 +16,11 @@ public partial interface IFactory
     event EventHandler<ActiveDockableChangedEventArgs>? ActiveDockableChanged;
 
     /// <summary>
+    /// Active dockable changing event handler.
+    /// </summary>
+    event EventHandler<ActiveDockableChangingEventArgs>? ActiveDockableChanging;
+
+    /// <summary>
     /// Focused dockable changed event handler.
     /// </summary>
     event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
@@ -39,6 +44,11 @@ public partial interface IFactory
     /// Dockable closed event handler.
     /// </summary>
     event EventHandler<DockableClosedEventArgs>? DockableClosed;
+
+    /// <summary>
+    /// Dockable closing event handler.
+    /// </summary>
+    event EventHandler<DockableClosingEventArgs>? DockableClosing;
 
     /// <summary>
     /// Dockable moved event handler.
@@ -127,6 +137,13 @@ public partial interface IFactory
     void OnActiveDockableChanged(IDockable? dockable);
 
     /// <summary>
+    /// Called when the active dockable is about to change.
+    /// </summary>
+    /// <param name="dockable">The dockable that will become active.</param>
+    /// <returns>False if changing canceled, otherwise true.</returns>
+    bool OnActiveDockableChanging(IDockable? dockable);
+
+    /// <summary>
     /// Called when the focused dockable changed.
     /// </summary>
     /// <param name="dockable">The focused dockable.</param>
@@ -155,6 +172,13 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The closed dockable.</param>
     void OnDockableClosed(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the dockable is closing.
+    /// </summary>
+    /// <param name="dockable">The closing dockable.</param>
+    /// <returns>False if closing canceled, otherwise true.</returns>
+    bool OnDockableClosing(IDockable? dockable);
 
     /// <summary>
     /// Called when the dockable has been moved.

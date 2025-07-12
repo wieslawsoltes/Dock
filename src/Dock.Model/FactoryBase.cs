@@ -129,7 +129,7 @@ public abstract partial class FactoryBase : IFactory
             {
                 AddVisibleDockable(split, dockable);
                 OnDockableAdded(dockable);
-                split.ActiveDockable = dockable;
+                SetActiveDockable(dockable);
             }
         }
 
@@ -169,7 +169,7 @@ public abstract partial class FactoryBase : IFactory
                 {
                     AddVisibleDockable(layout, split);
                     OnDockableAdded(split);
-                    layout.ActiveDockable = split;
+                    SetActiveDockable(split);
                 }
 
                 break;
@@ -181,7 +181,7 @@ public abstract partial class FactoryBase : IFactory
                 {
                     AddVisibleDockable(layout, dock);
                     OnDockableAdded(dock);
-                    layout.ActiveDockable = dock;
+                    SetActiveDockable(dock);
                 }
 
                 break;
@@ -200,7 +200,7 @@ public abstract partial class FactoryBase : IFactory
                 {
                     AddVisibleDockable(layout, dock);
                     OnDockableAdded(dock);
-                    layout.ActiveDockable = dock;
+                    SetActiveDockable(dock);
                 }
 
                 break;
@@ -212,7 +212,7 @@ public abstract partial class FactoryBase : IFactory
                 {
                     AddVisibleDockable(layout, split);
                     OnDockableAdded(split);
-                    layout.ActiveDockable = split;
+                    SetActiveDockable(split);
                 }
 
                 break;
@@ -244,7 +244,7 @@ public abstract partial class FactoryBase : IFactory
                         InsertVisibleDockable(ownerDock, index, layout);
                         OnDockableAdded(dockable);
                         InitDockable(layout, ownerDock);
-                        ownerDock.ActiveDockable = layout;
+                        SetActiveDockable(layout);
                         OnDockableDocked(dockable, operation);
                     }
                 }
@@ -273,7 +273,7 @@ public abstract partial class FactoryBase : IFactory
                     {
                         AddVisibleDockable(dock, dockable);
                         OnDockableAdded(dockable);
-                        dock.ActiveDockable = dockable;
+                        SetActiveDockable(dockable);
                     }
                 }
                 break;
@@ -305,7 +305,7 @@ public abstract partial class FactoryBase : IFactory
                     {
                         AddVisibleDockable(dock, dockable);
                         OnDockableAdded(dockable);
-                        dock.ActiveDockable = dockable;
+                        SetActiveDockable(dockable);
                     }
                 }
                 break;

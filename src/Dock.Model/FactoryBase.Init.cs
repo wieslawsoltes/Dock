@@ -21,7 +21,7 @@ public abstract partial class FactoryBase
         {
             if (dock.DefaultDockable is not null)
             {
-                dock.ActiveDockable = dock.DefaultDockable;
+                SetActiveDockable(dock.DefaultDockable);
             }
         }
 
@@ -147,7 +147,10 @@ public abstract partial class FactoryBase
     {
         if (dockable.Owner is IDock dock)
         {
-            dock.ActiveDockable = dockable;
+            if (OnActiveDockableChanging(dockable))
+            {
+                dock.ActiveDockable = dockable;
+            }
         }
     }
 

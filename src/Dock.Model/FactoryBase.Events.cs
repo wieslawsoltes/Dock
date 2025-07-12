@@ -15,6 +15,9 @@ public abstract partial class FactoryBase
     public event EventHandler<ActiveDockableChangedEventArgs>? ActiveDockableChanged;
 
     /// <inheritdoc />
+    public event EventHandler<ActiveDockableChangingEventArgs>? ActiveDockableChanging;
+
+    /// <inheritdoc />
     public event EventHandler<FocusedDockableChangedEventArgs>? FocusedDockableChanged;
 
     /// <inheritdoc />
@@ -28,6 +31,9 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc />
     public event EventHandler<DockableClosedEventArgs>? DockableClosed;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableClosingEventArgs>? DockableClosing;
 
     /// <inheritdoc />
     public event EventHandler<DockableMovedEventArgs>? DockableMoved;
@@ -78,6 +84,14 @@ public abstract partial class FactoryBase
     public event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
 
     /// <inheritdoc />
+    public virtual bool OnActiveDockableChanging(IDockable? dockable)
+    {
+        var eventArgs = new ActiveDockableChangingEventArgs(dockable);
+        ActiveDockableChanging?.Invoke(this, eventArgs);
+        return !eventArgs.Cancel;
+    }
+
+    /// <inheritdoc />
     public virtual void OnActiveDockableChanged(IDockable? dockable)
     {
         ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
@@ -99,6 +113,21 @@ public abstract partial class FactoryBase
     public virtual void OnDockableRemoved(IDockable? dockable)
     {
         DockableRemoved?.Invoke(this, new DockableRemovedEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual bool OnDockableClosing(IDockable? dockable)
+    {
+        var canClose = dockable?.OnClose() ?? true;
+
+        var eventArgs = new DockableClosingEventArgs(dockable)
+        {
+            Cancel = !canClose
+        };
+
+        DockableClosing?.Invoke(this, eventArgs);
+
+        return !eventArgs.Cancel;
     }
 
     /// <inheritdoc />

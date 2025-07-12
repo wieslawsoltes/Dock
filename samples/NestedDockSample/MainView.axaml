@@ -7,9 +7,12 @@
              x:Class="NestedDockSample.MainView"
              x:CompileBindings="True"
              x:DataType="DockControl">
+  <UserControl.Resources>
+    <Factory x:Key="SharedFactory" />
+  </UserControl.Resources>
   <DockControl x:Name="DockControl" InitializeLayout="True" InitializeFactory="True">
     <DockControl.Factory>
-      <Factory />
+      <StaticResource ResourceKey="SharedFactory" />
     </DockControl.Factory>
     <RootDock IsCollapsable="False">
       <ProportionalDock Orientation="Horizontal">
@@ -17,7 +20,7 @@
           <Document x:Name="Doc1" Title="Document 1">
             <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
-                <Factory />
+                <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
               <RootDock IsCollapsable="False">
                 <DocumentDock x:Name="InnerDocs" ActiveDockable="InnerDoc1">
@@ -34,7 +37,7 @@
           <Document x:Name="Doc2" Title="Document 2">
             <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
-                <Factory />
+                <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
               <RootDock IsCollapsable="False">
                 <DocumentDock x:Name="InnerDocs2" ActiveDockable="InnerDocA">
@@ -51,7 +54,7 @@
           <Tool x:Name="Tool1" Title="Tool 1">
             <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
-                <Factory />
+                <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
               <RootDock IsCollapsable="False">
                 <DocumentDock x:Name="ToolDocs" ActiveDockable="ToolDoc1">

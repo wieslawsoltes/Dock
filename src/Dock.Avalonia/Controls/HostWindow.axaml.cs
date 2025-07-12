@@ -29,6 +29,7 @@ public class HostWindow : Window, IHostWindow
 {
     private readonly DockManager _dockManager;
     private readonly HostWindowState _hostWindowState;
+    private readonly DocumentSwitcherHelper _documentSwitcherHelper = new();
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
@@ -100,6 +101,8 @@ public class HostWindow : Window, IHostWindow
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
+        KeyDown += HostWindow_KeyDown;
+        KeyUp += HostWindow_KeyUp;
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
@@ -206,6 +209,27 @@ public class HostWindow : Window, IHostWindow
         if (Window is { } && IsTracked)
         {
             Window.Save();
+        }
+    }
+
+    private void HostWindow_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.Tab)
+        {
+            if (Window?.Layout is IRootDock root)
+            {
+                _documentSwitcherHelper.Show(root);
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void HostWindow_KeyUp(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Tab)
+        {
+            _documentSwitcherHelper.Hide();
+            e.Handled = true;
         }
     }
 

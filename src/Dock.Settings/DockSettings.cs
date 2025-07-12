@@ -3,6 +3,7 @@
 
 using System;
 using Avalonia;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -40,6 +41,11 @@ public static class DockSettings
     /// Floating windows use the main window as their owner so they stay in front.
     /// </summary>
     public static bool UseOwnerForFloatingWindows = true;
+
+    /// <summary>
+    /// Type of the Ctrl+Tab document switcher.
+    /// </summary>
+    public static DocumentSwitcherType DocumentSwitcherType = DocumentSwitcherType.Simple;
 
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.

@@ -34,6 +34,9 @@
         <ResourceInclude Source="/Controls/HostWindow.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewControl.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
+        <ResourceInclude Source="/Controls/DocumentSwitcherControl.axaml" />
+        <ResourceInclude Source="/Controls/DocumentSwitcherVisualControl.axaml" />
+        <ResourceInclude Source="/Controls/DocumentSwitcherWindow.axaml" />
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />
         <ResourceInclude Source="/Controls/DockAdornerWindow.axaml" />
         <ResourceInclude Source="/Themes/Accents/Simple.axaml" />

@@ -13,6 +13,7 @@ using Avalonia.Metadata;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Contract;
 using Dock.Model;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -24,6 +25,7 @@ public class DockControl : TemplatedControl, IDockControl
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
+    private readonly DocumentSwitcherHelper _documentSwitcherHelper = new();
     private bool _isInitialized;
 
     /// <summary>
@@ -145,6 +147,8 @@ public class DockControl : TemplatedControl, IDockControl
         AddHandler(PointerExitedEvent, ExitedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerCaptureLostEvent, CaptureLostHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        AddHandler(KeyDownEvent, DockControl_KeyDown, RoutingStrategies.Tunnel);
+        AddHandler(KeyUpEvent, DockControl_KeyUp, RoutingStrategies.Tunnel);
     }
 
     /// <inheritdoc />
@@ -351,6 +355,27 @@ public class DockControl : TemplatedControl, IDockControl
             var delta = e.Delta;
             var action = ToDragAction(e);
             _dockControlState.Process(position, delta, EventType.WheelChanged, action, this, Layout.Factory.DockControls);
+        }
+    }
+
+    private void DockControl_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.Tab)
+        {
+            if (Layout is IRootDock root)
+            {
+                _documentSwitcherHelper.Show(root);
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void DockControl_KeyUp(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Tab)
+        {
+            _documentSwitcherHelper.Hide();
+            e.Handled = true;
         }
     }
 }

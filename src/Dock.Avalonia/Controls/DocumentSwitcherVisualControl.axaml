@@ -1,19 +1,26 @@
-<UserControl x:Class="Dock.Avalonia.Controls.DocumentSwitcherVisualControl"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
-             xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
-             x:CompileBindings="True"
-             x:DataType="controls:IRootDock">
-  <Border Background="#333" Padding="8">
-    <ListBox ItemsSource="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}">
-      <ListBox.ItemTemplate>
-        <DataTemplate DataType="core:IDockable">
-          <Border Padding="2" Margin="2">
-            <TextBlock Text="{Binding Title}" Foreground="White"/>
-          </Border>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
-  </Border>
-</UserControl>
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:DataType="controls:IRootDock"
+                    x:CompileBindings="True">
+
+  <ControlTheme x:Key="{x:Type DocumentSwitcherVisualControl}" TargetType="DocumentSwitcherVisualControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="#333" Padding="8">
+          <ListBox ItemsSource="{Binding VisibleDockables}" SelectedItem="{Binding ActiveDockable}">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="core:IDockable">
+                <Border Padding="2" Margin="2">
+                  <TextBlock Text="{Binding Title}" Foreground="White" />
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

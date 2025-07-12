@@ -13,6 +13,8 @@
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding Layout.CanDrag, FallbackValue={x:True}}" x:DataType="DockControl"  />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding Layout.CanDrop, FallbackValue={x:True}}" x:DataType="DockControl"  />
 
+    <Setter Property="Focusable" Value="True" />
+    
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"

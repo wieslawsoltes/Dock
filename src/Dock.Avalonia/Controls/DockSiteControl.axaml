@@ -7,7 +7,7 @@
         <ItemsControl ItemsSource="{TemplateBinding DockControls}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <ProportionalStackPanel Orientation="{TemplateBinding Orientation}" />
+              <ProportionalStackPanel Orientation="{Binding $parent[DockSiteControl].Orientation}" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>

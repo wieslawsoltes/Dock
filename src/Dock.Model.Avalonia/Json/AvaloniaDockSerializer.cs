@@ -628,8 +628,6 @@ public class AvaloniaDockSerializer : IDockSerializer
             }
         }
 
-        // TODO: Handle deserializing AvaloniaList<T>
-
         _options = new JsonSerializerOptions
         {
             WriteIndented = true,
@@ -645,8 +643,7 @@ public class AvaloniaDockSerializer : IDockSerializer
             },
             Converters =
             {
-                // TODO:
-                // new JsonConverterFactoryAvaloniaList()
+                new JsonConverterFactoryAvaloniaList()
             }
         };
     }

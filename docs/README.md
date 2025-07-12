@@ -36,6 +36,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Custom themes](dock-custom-theme.md) – Build and apply your own theme.
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.
+- [Localization](dock-localization.md) – Customize Dock text strings.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.

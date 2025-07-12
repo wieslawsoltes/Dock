@@ -4,6 +4,7 @@
                     xmlns:controls="using:Dock.Model.Controls"
                     x:DataType="controls:IToolDock"
                     xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:menus="using:Dock.Avalonia.Menus"
                     x:CompileBindings="True">
   <Design.PreviewWith>
   <ToolChromeControl Width="300" Height="400" />
@@ -97,7 +98,7 @@
           <Border x:Name="PART_Border"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   VerticalAlignment="Top"
-                  ContextFlyout="{DynamicResource ToolChromeControlContextMenu}"
+                  ContextFlyout="{menus:Menu ToolChromeControlContextMenu}"
                   Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
               <DockPanel LastChildFill="True" Margin="8 0">
@@ -108,7 +109,7 @@
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
                           Theme="{StaticResource ChromeButton}"
-                          Flyout="{StaticResource ToolChromeControlContextMenu}">
+                          Flyout="{menus:Menu ToolChromeControlContextMenu}">
                     <Viewbox Margin="2">
                       <Path x:Name="PART_MenuPath" />
                     </Viewbox>

@@ -48,7 +48,13 @@ This approach allows you to customize the menu structure or attach your own comm
 
 ## Extensibility analysis
 
-The current design relies on static resources. Replacing or localizing items is straightforward by overriding resource keys, but adding items dynamically requires providing a completely new menu. There are no hooks to inject menu items at runtime.
+Prior to version 0.9 Dock relied on static resources. Replacing or localizing items was straightforward by overriding resource keys, but adding entries at runtime meant providing a completely new menu. Version 0.9 introduces a `ContextMenuManager` service which loads the built-in menus and allows registering providers or customizers at runtime:
 
-If extensibility is important for your application, consider wrapping the default menus in your own `ContextMenu` definitions so you can append items in XAML. Alternatively you could fork the resource dictionaries and modify them to expose extension points via data templates or bindings.
+```csharp
+ContextMenuManager.RegisterCustomizer(
+    "ToolPinItemControlContextMenu",
+    menu => menu.Items.Add(new MenuItem { Header = "My Command", Command = ... }));
+```
+
+Controls now use the `MenuExtension` markup extension to resolve their menus via `ContextMenuManager`, making it possible to inject additional items without modifying the XAML resources.
 

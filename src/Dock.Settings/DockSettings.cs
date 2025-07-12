@@ -42,6 +42,16 @@ public static class DockSettings
     public static bool UseOwnerForFloatingWindows = true;
 
     /// <summary>
+    /// Snap floating windows to nearby windows when dragging.
+    /// </summary>
+    public static bool EnableWindowMagnetism = false;
+
+    /// <summary>
+    /// Distance in pixels within which windows snap together.
+    /// </summary>
+    public static double WindowMagnetDistance = 16;
+
+    /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
     /// <param name="diff">The drag delta.</param>

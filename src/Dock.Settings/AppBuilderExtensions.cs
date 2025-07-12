@@ -55,6 +55,16 @@ public static class AppBuilderExtensions
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
         }
 
+        if (options.EnableWindowMagnetism != null)
+        {
+            DockSettings.EnableWindowMagnetism = options.EnableWindowMagnetism.Value;
+        }
+
+        if (options.WindowMagnetDistance != null)
+        {
+            DockSettings.WindowMagnetDistance = options.WindowMagnetDistance.Value;
+        }
+
         return builder;
     }
 
@@ -111,6 +121,28 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseOwnerForFloatingWindows = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.EnableWindowMagnetism"/> to the given value.
+    /// </summary>
+    public static AppBuilder EnableWindowMagnetism(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.EnableWindowMagnetism = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.WindowMagnetDistance"/> to the given value.
+    /// </summary>
+    public static AppBuilder SetWindowMagnetDistance(
+        this AppBuilder builder,
+        double distance)
+    {
+        DockSettings.WindowMagnetDistance = distance;
         return builder;
     }
 }

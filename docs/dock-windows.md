@@ -40,4 +40,16 @@ factory.WindowClosed += (_, e) =>
     Console.WriteLine($"Closed {e.Window?.Title}");
 ```
 
+## Window magnetism
+
+Floating windows can optionally snap to the edges of other floating windows while being dragged.
+This behaviour is controlled by two settings on `DockSettings`:
+
+- `EnableWindowMagnetism` enables or disables the feature.
+- `WindowMagnetDistance` specifies how close windows must be before they snap together.
+
+When magnetism is enabled, `HostWindow` compares its position against other tracked windows during a drag
+and adjusts the position if it falls within the snap distance. This makes it easy to align multiple floating
+windows.
+
 For more advanced scenarios see [Adapter Classes](dock-adapters.md) and the [Advanced Guide](dock-advanced.md).

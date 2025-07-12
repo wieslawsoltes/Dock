@@ -127,6 +127,11 @@
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
     </Style>
 
+    <Style Selector="^:flash">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
     <Style Selector="^:selected">
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentBrushMed}" />

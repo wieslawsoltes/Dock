@@ -93,6 +93,7 @@ Controls also toggle pseudo classes to reflect their current state. These can be
 targeted in selectors to customize the appearance:
 
 - `DocumentControl` and `DocumentTabStripItem` use `:active`.
+- `DocumentTabStripItem` and `ToolTabStripItem` can toggle `:flash` for attention.
 - `DocumentTabStrip` and `ToolTabStrip` apply `:create` when new items can be
   added.
 - `ToolChromeControl` sets `:active`, `:pinned`, `:floating` and `:maximized`.

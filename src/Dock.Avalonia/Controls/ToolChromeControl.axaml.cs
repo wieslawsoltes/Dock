@@ -55,6 +55,24 @@ public class ToolChromeControl : ContentControl
         AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsMaximized));
 
     /// <summary>
+    /// Defines the <see cref="ShowMenuButton"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowMenuButtonProperty =
+        AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(ShowMenuButton), global::Dock.Settings.DockSettings.ShowToolOptionsButton);
+
+    /// <summary>
+    /// Defines the <see cref="ShowPinButton"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowPinButtonProperty =
+        AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(ShowPinButton), global::Dock.Settings.DockSettings.ShowToolPinButton);
+
+    /// <summary>
+    /// Defines the <see cref="ShowCloseButton"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowCloseButtonProperty =
+        AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(ShowCloseButton), global::Dock.Settings.DockSettings.ShowToolCloseButton);
+
+    /// <summary>
     /// Gets or sets is pinned
     /// </summary>
     public bool IsPinned
@@ -79,6 +97,33 @@ public class ToolChromeControl : ContentControl
     {
         get => GetValue(IsMaximizedProperty);
         set => SetValue(IsMaximizedProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the menu button is visible.
+    /// </summary>
+    public bool ShowMenuButton
+    {
+        get => GetValue(ShowMenuButtonProperty);
+        set => SetValue(ShowMenuButtonProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the pin button is visible.
+    /// </summary>
+    public bool ShowPinButton
+    {
+        get => GetValue(ShowPinButtonProperty);
+        set => SetValue(ShowPinButtonProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether the close button is visible.
+    /// </summary>
+    public bool ShowCloseButton
+    {
+        get => GetValue(ShowCloseButtonProperty);
+        set => SetValue(ShowCloseButtonProperty, value);
     }
 
     /// <summary>

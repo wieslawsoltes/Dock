@@ -107,6 +107,7 @@
                 </Panel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
+                          IsVisible="{TemplateBinding ShowMenuButton}"
                           Theme="{StaticResource ChromeButton}"
                           Flyout="{StaticResource ToolChromeControlContextMenu}">
                     <Viewbox Margin="2">
@@ -119,6 +120,7 @@
                           Theme="{StaticResource ChromeButton}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <TemplateBinding Property="ShowPinButton" />
                         <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
                         <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
                       </MultiBinding>
@@ -140,6 +142,7 @@
                           Theme="{StaticResource ChromeButton}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <TemplateBinding Property="ShowCloseButton" />
                         <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />
                         <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
                           <Binding Path="(core:IDock).CanCloseLastDockable" FallbackValue="{x:True}" />

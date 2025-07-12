@@ -204,6 +204,7 @@
                         CommandParameter="{Binding}">
                   <Button.IsVisible>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <TemplateBinding Property="ShowCloseButton" />
                       <Binding Path="CanClose" />
                       <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
                         <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />

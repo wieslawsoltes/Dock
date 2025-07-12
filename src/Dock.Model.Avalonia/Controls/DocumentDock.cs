@@ -34,7 +34,7 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     /// Defines the <see cref="EnableWindowDrag"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> EnableWindowDragProperty =
-        AvaloniaProperty.Register<DocumentDock, bool>(nameof(EnableWindowDrag));
+        AvaloniaProperty.Register<DocumentDock, bool>(nameof(EnableWindowDrag), global::Dock.Settings.DockSettings.EnableWindowDrag);
 
     /// <summary>
     /// Defines the <see cref="TabsLayout"/> property.

@@ -42,6 +42,31 @@ public static class DockSettings
     public static bool UseOwnerForFloatingWindows = true;
 
     /// <summary>
+    /// Allow dragging the window by its document tab strip.
+    /// </summary>
+    public static bool EnableWindowDrag = true;
+
+    /// <summary>
+    /// Show the options button on tool windows.
+    /// </summary>
+    public static bool ShowToolOptionsButton = true;
+
+    /// <summary>
+    /// Show the pin button on tool windows.
+    /// </summary>
+    public static bool ShowToolPinButton = true;
+
+    /// <summary>
+    /// Show the close button on tool windows.
+    /// </summary>
+    public static bool ShowToolCloseButton = true;
+
+    /// <summary>
+    /// Show the close button on document tabs.
+    /// </summary>
+    public static bool ShowDocumentCloseButton = true;
+
+    /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
     /// <param name="diff">The drag delta.</param>

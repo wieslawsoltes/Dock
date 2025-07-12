@@ -44,8 +44,8 @@ public class DocumentTabStrip : TabStrip
     /// <summary>
     /// Define the <see cref="EnableWindowDrag"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> EnableWindowDragProperty = 
-        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
+    public static readonly StyledProperty<bool> EnableWindowDragProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag), global::Dock.Settings.DockSettings.EnableWindowDrag);
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.

@@ -19,6 +19,20 @@ namespace Dock.Avalonia.Controls;
 public class DocumentTabStripItem : TabStripItem
 {
     /// <summary>
+    /// Defines the <see cref="ShowCloseButton"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowCloseButtonProperty =
+        AvaloniaProperty.Register<DocumentTabStripItem, bool>(nameof(ShowCloseButton), global::Dock.Settings.DockSettings.ShowDocumentCloseButton);
+
+    /// <summary>
+    /// Gets or sets whether the close button is visible.
+    /// </summary>
+    public bool ShowCloseButton
+    {
+        get => GetValue(ShowCloseButtonProperty);
+        set => SetValue(ShowCloseButtonProperty, value);
+    }
+    /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =

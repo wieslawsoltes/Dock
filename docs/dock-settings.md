@@ -48,6 +48,17 @@ hidden and drags are limited to the originating control.
 
 `DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
 
+## Window drag and chrome
+
+`DockSettings.EnableWindowDrag` toggles whether the document tab strip can be used to drag the host window. The following flags control which buttons appear in the tool chrome and on document tabs:
+
+- `DockSettings.ShowToolOptionsButton`
+- `DockSettings.ShowToolPinButton`
+- `DockSettings.ShowToolCloseButton`
+- `DockSettings.ShowDocumentCloseButton`
+
+All are enabled by default.
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:

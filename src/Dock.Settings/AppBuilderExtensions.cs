@@ -55,6 +55,31 @@ public static class AppBuilderExtensions
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
         }
 
+        if (options.EnableWindowDrag != null)
+        {
+            DockSettings.EnableWindowDrag = options.EnableWindowDrag.Value;
+        }
+
+        if (options.ShowToolOptionsButton != null)
+        {
+            DockSettings.ShowToolOptionsButton = options.ShowToolOptionsButton.Value;
+        }
+
+        if (options.ShowToolPinButton != null)
+        {
+            DockSettings.ShowToolPinButton = options.ShowToolPinButton.Value;
+        }
+
+        if (options.ShowToolCloseButton != null)
+        {
+            DockSettings.ShowToolCloseButton = options.ShowToolCloseButton.Value;
+        }
+
+        if (options.ShowDocumentCloseButton != null)
+        {
+            DockSettings.ShowDocumentCloseButton = options.ShowDocumentCloseButton.Value;
+        }
+
         return builder;
     }
 
@@ -111,6 +136,61 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseOwnerForFloatingWindows = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.EnableWindowDrag"/> to the given value.
+    /// </summary>
+    public static AppBuilder EnableWindowDrag(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.EnableWindowDrag = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.ShowToolOptionsButton"/> to the given value.
+    /// </summary>
+    public static AppBuilder ShowToolOptionsButton(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.ShowToolOptionsButton = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.ShowToolPinButton"/> to the given value.
+    /// </summary>
+    public static AppBuilder ShowToolPinButton(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.ShowToolPinButton = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.ShowToolCloseButton"/> to the given value.
+    /// </summary>
+    public static AppBuilder ShowToolCloseButton(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.ShowToolCloseButton = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.ShowDocumentCloseButton"/> to the given value.
+    /// </summary>
+    public static AppBuilder ShowDocumentCloseButton(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.ShowDocumentCloseButton = enable;
         return builder;
     }
 }

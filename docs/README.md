@@ -38,6 +38,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.
 - [Proportional StackPanel](dock-proportional-stackpanel.md) – Layout panel with adjustable proportions.
+- [Dock sites](dock-sites.md) – Link multiple DockControls and drag between them.
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Enable window drag](dock-window-drag.md) – Drag the host window via the document tab strip.

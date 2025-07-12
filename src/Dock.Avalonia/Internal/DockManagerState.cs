@@ -17,6 +17,8 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected Control? DropControl { get; set; }
 
+    protected DockControl? ActiveDockControl { get; set; }
+
     protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
 
     protected AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
@@ -46,7 +48,7 @@ internal abstract class DockManagerState : IDockManagerState
         if (DockSettings.EnableGlobalDocking && isGlobalValid && DropControl is { } dropControl)
         {
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            if (dockControl is not null)
+            if (dockControl is not null && AreGroupsLinked(ActiveDockControl, dockControl))
             {
                 var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
                 GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly);
@@ -67,7 +69,7 @@ internal abstract class DockManagerState : IDockManagerState
         if (DockSettings.EnableGlobalDocking && DropControl is { } dropControl)
         {
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
-            if (dockControl is not null)
+            if (dockControl is not null && AreGroupsLinked(ActiveDockControl, dockControl))
             {
                 GlobalAdornerHelper.RemoveAdorner(dockControl);
             }
@@ -109,6 +111,13 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
+    protected static bool AreGroupsLinked(DockControl? source, DockControl? target)
+    {
+        if (source is null || target is null)
+            return false;
+
+        return !string.IsNullOrEmpty(source.DockGroup) && source.DockGroup == target.DockGroup;
+    }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
     {

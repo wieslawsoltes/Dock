@@ -185,6 +185,11 @@ internal class DockControlState : DockManagerState, IDockControlState
             return false;
         }
 
+        if (!AreGroupsLinked(ActiveDockControl, dockControl))
+        {
+            return false;
+        }
+
         DockManager.Position = DockHelpers.ToDockPoint(point);
 
         if (relativeTo.GetVisualRoot() is null)
@@ -249,6 +254,8 @@ internal class DockControlState : DockManagerState, IDockControlState
             return;
         }
 
+        ActiveDockControl = inputActiveDockControl;
+
         switch (eventType)
         {
             case EventType.Pressed:
@@ -300,6 +307,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                 Leave();
                 _context.End();
+                ActiveDockControl = null;
                 DropControl = null;
                 activeDockControl.IsDraggingDock = false;
                 break;
@@ -456,6 +464,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 _dragPreviewHelper.Hide();
                 Leave();
                 _context.End();
+                ActiveDockControl = null;
                 DropControl = null;
                 activeDockControl.IsDraggingDock = false;
                 break;

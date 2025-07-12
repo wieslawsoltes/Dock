@@ -62,6 +62,12 @@ public class DockControl : TemplatedControl, IDockControl
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
 
+    /// <summary>
+    /// Defines the <see cref="DockGroup"/> property.
+    /// </summary>
+    public static readonly StyledProperty<string?> DockGroupProperty =
+        AvaloniaProperty.Register<DockControl, string?>(nameof(DockGroup));
+
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
 
@@ -111,6 +117,15 @@ public class DockControl : TemplatedControl, IDockControl
     {
         get => GetValue(IsDraggingDockProperty);
         set => SetValue(IsDraggingDockProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a group identifier used to link this dock control to others.
+    /// </summary>
+    public string? DockGroup
+    {
+        get => GetValue(DockGroupProperty);
+        set => SetValue(DockGroupProperty, value);
     }
 
     private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();

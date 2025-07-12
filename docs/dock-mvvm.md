@@ -121,6 +121,7 @@ public override IRootDock CreateLayout()
 - `MoveDockable` and `SwapDockable` for rearranging items.
 - `PinDockable`/`UnpinDockable` to keep tools in the pinned area.
 - `FloatDockable` to open a dockable in a separate window.
+- Helpers like `AddAndActivate` or `CloseActiveDockable` for common tasks.
 - Commands such as `CloseDockable`, `CloseOtherDockables` or `CloseAllDockables`.
 
 ```csharp

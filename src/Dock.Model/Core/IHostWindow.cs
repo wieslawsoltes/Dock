@@ -28,6 +28,16 @@ public interface IHostWindow
     IDockWindow? Window { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the host window fades out when inactive.
+    /// </summary>
+    bool FadeOnInactive { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the host window closes after fading out.
+    /// </summary>
+    bool CloseOnFadeOut { get; set; }
+
+    /// <summary>
     /// Presents host.
     /// </summary>
     /// <param name="isDialog">The value that indicates whether window is dialog.</param>

@@ -53,3 +53,23 @@ and adjusts the position if it falls within the snap distance. This makes it eas
 windows.
 
 For more advanced scenarios see [Adapter Classes](dock-adapters.md) and the [Advanced Guide](dock-advanced.md).
+
+## Fading windows on inactivity
+
+`HostWindow` exposes `FadeOnInactive` and `CloseOnFadeOut` to automatically fade
+floating windows when the pointer is idle. When enabled the window opacity is
+animated using a style transition and restored on pointer movement. You can also
+close the window once the fade completes.
+
+```csharp
+public override IHostWindow CreateWindowFrom(IDockWindow source)
+{
+    var window = base.CreateWindowFrom(source);
+    window.FadeOnInactive = true;
+    window.CloseOnFadeOut = false; // set to true to auto-close
+    return window;
+}
+```
+
+The same properties exist on `IDockWindow` so the behaviour can be serialized
+with the layout.

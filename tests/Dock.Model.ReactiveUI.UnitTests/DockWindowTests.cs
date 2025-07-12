@@ -14,6 +14,10 @@ public class DockWindowTests
         public bool IsTracked { get; set; }
         public IDockWindow? Window { get; set; }
 
+        public bool FadeOnInactive { get; set; }
+
+        public bool CloseOnFadeOut { get; set; }
+
         public bool Presented { get; private set; }
         public bool PresentedAsDialog { get; private set; }
         public bool Exited { get; private set; }

@@ -45,6 +45,16 @@ public interface IDockWindow
     string Title { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the window fades out when inactive.
+    /// </summary>
+    bool FadeOnInactive { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the window closes after fading out.
+    /// </summary>
+    bool CloseOnFadeOut { get; set; }
+
+    /// <summary>
     /// Gets or sets window owner dockable.
     /// </summary>
     IDockable? Owner { get; set; }

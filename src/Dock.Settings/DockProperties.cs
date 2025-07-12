@@ -3,6 +3,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.Media;
 
 namespace Dock.Settings;
 
@@ -65,6 +66,13 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     public static readonly AttachedProperty<Control?> DockAdornerHostProperty =
         AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, false, BindingMode.TwoWay);
+
+    /// <summary>
+    /// Defines the TabBrush attached property used to tint dock tabs.
+    /// </summary>
+    public static readonly StyledProperty<IBrush?> TabBrushProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, IBrush?>(
+            "TabBrush", null, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
@@ -224,5 +232,25 @@ public class DockProperties : AvaloniaObject
     public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
     {
         control.SetValue(DockAdornerHostProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the TabBrush attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The TabBrush attached property.</returns>
+    public static IBrush? GetTabBrush(AvaloniaObject control)
+    {
+        return control.GetValue(TabBrushProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the TabBrush attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The brush value.</param>
+    public static void SetTabBrush(AvaloniaObject control, IBrush? value)
+    {
+        control.SetValue(TabBrushProperty, value);
     }
 }

@@ -12,6 +12,7 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    private readonly Dictionary<IDockable, (IDockable? ActiveDockable, bool IsExpanded, bool AutoHide)> _pinStates = new();
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -475,9 +476,7 @@ public abstract partial class FactoryBase
                         }
                     }
 
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    _pinStates[dockable] = (toolDock.ActiveDockable, toolDock.IsExpanded, toolDock.AutoHide);
                 }
                 else if (isPinned)
                 {
@@ -544,9 +543,13 @@ public abstract partial class FactoryBase
 
                     OnDockableAdded(dockable);
 
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    if (_pinStates.TryGetValue(dockable, out var state))
+                    {
+                        toolDock.ActiveDockable = state.ActiveDockable;
+                        toolDock.IsExpanded = state.IsExpanded;
+                        toolDock.AutoHide = state.AutoHide;
+                        _pinStates.Remove(dockable);
+                    }
                 }
                 else
                 {

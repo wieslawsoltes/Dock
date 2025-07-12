@@ -153,7 +153,7 @@ public class HostWindow : Window, IHostWindow
         _fadeTimer.Tick += (_, _) =>
         {
             _fadeTimer.Stop();
-            if (FadeOnInactive)
+            if (FadeOnInactive && !IsActive)
             {
                 IsFaded = true;
                 if (CloseOnFadeOut)
@@ -175,6 +175,22 @@ public class HostWindow : Window, IHostWindow
 
         PointerEntered += ResetFade;
         PointerMoved += ResetFade;
+
+        Activated += (_, _) =>
+        {
+            _fadeTimer.Stop();
+            _closeTimer.Stop();
+            IsFaded = false;
+        };
+
+        Deactivated += (_, _) =>
+        {
+            if (FadeOnInactive)
+            {
+                _fadeTimer.Stop();
+                _fadeTimer.Start();
+            }
+        };
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
@@ -291,7 +307,10 @@ public class HostWindow : Window, IHostWindow
             IsFaded = false;
             _closeTimer.Stop();
             _fadeTimer.Stop();
-            _fadeTimer.Start();
+            if (!IsActive)
+            {
+                _fadeTimer.Start();
+            }
         }
     }
 
@@ -379,7 +398,11 @@ public class HostWindow : Window, IHostWindow
         {
             if (change.GetNewValue<bool>())
             {
-                _fadeTimer.Start();
+                if (!IsActive)
+                {
+                    _fadeTimer.Stop();
+                    _fadeTimer.Start();
+                }
             }
             else
             {
@@ -422,8 +445,9 @@ public class HostWindow : Window, IHostWindow
 
         Window?.Factory?.HostWindows.Add(this);
 
-        if (FadeOnInactive)
+        if (FadeOnInactive && !IsActive)
         {
+            _fadeTimer.Stop();
             _fadeTimer.Start();
         }
     }

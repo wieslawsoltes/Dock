@@ -212,9 +212,14 @@ public class HostWindow : Window, IHostWindow
         }
     }
 
+    private static bool Matches(KeyEventArgs e, KeyGesture gesture)
+    {
+        return e.Key == gesture.Key && e.KeyModifiers == gesture.KeyModifiers;
+    }
+
     private void HostWindow_KeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.Key == Key.Tab)
+        if (Matches(e, DockSettings.DocumentSwitcherGesture))
         {
             if (Window?.Layout is IRootDock root)
             {
@@ -226,7 +231,7 @@ public class HostWindow : Window, IHostWindow
 
     private void HostWindow_KeyUp(object? sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Tab)
+        if (e.Key == DockSettings.DocumentSwitcherGesture.Key)
         {
             _documentSwitcherHelper.Hide();
             e.Handled = true;

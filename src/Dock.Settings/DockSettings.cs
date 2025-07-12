@@ -2,7 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using System;
+using System.Runtime.InteropServices;
 using Avalonia;
+using Avalonia.Input;
 using Dock.Model.Core;
 
 namespace Dock.Settings;
@@ -46,6 +48,14 @@ public static class DockSettings
     /// Type of the Ctrl+Tab document switcher.
     /// </summary>
     public static DocumentSwitcherType DocumentSwitcherType = DocumentSwitcherType.Simple;
+
+    /// <summary>
+    /// Key gesture that triggers the document switcher.
+    /// </summary>
+    public static KeyGesture DocumentSwitcherGesture =
+        RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            ? new KeyGesture(Key.Tab, KeyModifiers.Control)
+            : new KeyGesture(Key.Tab, KeyModifiers.Control);
 
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.

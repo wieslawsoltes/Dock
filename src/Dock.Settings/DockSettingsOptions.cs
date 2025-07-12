@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using Dock.Model.Core;
+using Avalonia.Input;
 
 namespace Dock.Settings;
 
@@ -44,5 +45,10 @@ public class DockSettingsOptions
     /// Optional document switcher type.
     /// </summary>
     public DocumentSwitcherType? DocumentSwitcherType { get; set; }
+
+    /// <summary>
+    /// Optional document switcher key gesture.
+    /// </summary>
+    public KeyGesture? DocumentSwitcherGesture { get; set; }
 }
 

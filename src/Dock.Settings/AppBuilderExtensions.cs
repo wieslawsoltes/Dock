@@ -3,6 +3,7 @@
 
 using Avalonia;
 using Dock.Model.Core;
+using Avalonia.Input;
 
 namespace Dock.Settings;
 
@@ -59,6 +60,11 @@ public static class AppBuilderExtensions
         if (options.DocumentSwitcherType != null)
         {
             DockSettings.DocumentSwitcherType = options.DocumentSwitcherType.Value;
+        }
+
+        if (options.DocumentSwitcherGesture != null)
+        {
+            DockSettings.DocumentSwitcherGesture = options.DocumentSwitcherGesture;
         }
 
         return builder;
@@ -131,6 +137,20 @@ public static class AppBuilderExtensions
         DocumentSwitcherType type)
     {
         DockSettings.DocumentSwitcherType = type;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.DocumentSwitcherGesture"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="gesture">The key gesture.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseDocumentSwitcherGesture(
+        this AppBuilder builder,
+        KeyGesture gesture)
+    {
+        DockSettings.DocumentSwitcherGesture = gesture;
         return builder;
     }
 }

@@ -24,6 +24,12 @@ public class ToolTabStripItem : TabStripItem
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+
+        if (!Dock.Settings.DockSettings.EnableAnimations)
+        {
+            Transitions = null;
+            RenderTransform = null;
+        }
     }
 
     /// <inheritdoc/>

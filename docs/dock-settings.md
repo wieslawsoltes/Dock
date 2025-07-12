@@ -53,6 +53,11 @@ hidden and drags are limited to the originating control.
 `DockSettings.EnableWindowMagnetism` toggles snapping of floating windows. The snap distance
 is controlled by `DockSettings.WindowMagnetDistance`.
 
+## Animations
+
+`DockSettings.EnableAnimations` toggles the opacity and position transitions defined in the
+default control themes. Set it to `false` if you prefer instant updates with no animations.
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:
@@ -67,6 +72,7 @@ AppBuilder.Configure<App>()
     .EnableGlobalDocking(false)
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
+    .EnableAnimations(false)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6

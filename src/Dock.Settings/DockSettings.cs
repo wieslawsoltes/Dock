@@ -52,6 +52,11 @@ public static class DockSettings
     public static double WindowMagnetDistance = 16;
 
     /// <summary>
+    /// Enable or disable UI animations.
+    /// </summary>
+    public static bool EnableAnimations = true;
+
+    /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
     /// <param name="diff">The drag delta.</param>

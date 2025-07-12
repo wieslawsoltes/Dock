@@ -95,6 +95,12 @@
     <Setter Property="BorderThickness" Value="0 1 0 0" />
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 1 4 0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:.2" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:.2" />
+      </Transitions>
+    </Setter>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -125,6 +131,7 @@
 
     <Style Selector="^:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
+      <Setter Property="RenderTransform" Value="translateY(-2px)" />
     </Style>
 
     <Style Selector="^:selected">
@@ -134,12 +141,14 @@
       <Setter Property="BorderThickness" Value="1 0 1 1" />
       <Setter Property="Margin" Value="0 0 0 0" />
       <Setter Property="Padding" Value="4 2 4 0" />
+      <Setter Property="RenderTransform" Value="translateY(-2px)" />
     </Style>
 
     <Style Selector="^:selected:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
-    </Style> 
+      <Setter Property="RenderTransform" Value="translateY(-2px)" />
+    </Style>
     
   </ControlTheme>
 

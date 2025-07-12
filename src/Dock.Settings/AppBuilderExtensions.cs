@@ -65,6 +65,11 @@ public static class AppBuilderExtensions
             DockSettings.WindowMagnetDistance = options.WindowMagnetDistance.Value;
         }
 
+        if (options.EnableAnimations != null)
+        {
+            DockSettings.EnableAnimations = options.EnableAnimations.Value;
+        }
+
         return builder;
     }
 
@@ -143,6 +148,17 @@ public static class AppBuilderExtensions
         double distance)
     {
         DockSettings.WindowMagnetDistance = distance;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.EnableAnimations"/> to the given value.
+    /// </summary>
+    public static AppBuilder EnableAnimations(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.EnableAnimations = enable;
         return builder;
     }
 }

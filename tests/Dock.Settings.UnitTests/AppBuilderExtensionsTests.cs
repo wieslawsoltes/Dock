@@ -22,7 +22,8 @@ public class AppBuilderExtensionsTests
             UseFloatingDockAdorner = true,
             UsePinnedDockWindow = true,
             EnableGlobalDocking = false,
-            UseOwnerForFloatingWindows = false
+            UseOwnerForFloatingWindows = false,
+            EnableAnimations = false
         };
 
         var result = builder.WithDockSettings(options);
@@ -34,6 +35,7 @@ public class AppBuilderExtensionsTests
         Assert.True(DockSettings.UsePinnedDockWindow);
         Assert.False(DockSettings.EnableGlobalDocking);
         Assert.False(DockSettings.UseOwnerForFloatingWindows);
+        Assert.False(DockSettings.EnableAnimations);
     }
 
     [Fact]
@@ -64,11 +66,13 @@ public class AppBuilderExtensionsTests
         builder.UseFloatingDockAdorner(true)
                .UsePinnedDockWindow(true)
                .EnableGlobalDocking(false)
-               .UseOwnerForFloatingWindows(false);
+               .UseOwnerForFloatingWindows(false)
+               .EnableAnimations(false);
 
         Assert.True(DockSettings.UseFloatingDockAdorner);
         Assert.True(DockSettings.UsePinnedDockWindow);
         Assert.False(DockSettings.EnableGlobalDocking);
         Assert.False(DockSettings.UseOwnerForFloatingWindows);
+        Assert.False(DockSettings.EnableAnimations);
     }
 }

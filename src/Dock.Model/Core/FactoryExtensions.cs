@@ -32,4 +32,17 @@ internal static class FactoryExtensions
     {
         return factory.GetActiveRoot()?.FocusedDockable as IDocument;
     }
+
+    /// <summary>
+    /// Closes the dockable that is currently focused across all docks and windows.
+    /// </summary>
+    /// <param name="factory">The dock factory.</param>
+    public static void CloseFocusedDockable(this IFactory factory)
+    {
+        var dockable = factory.GetActiveRoot()?.FocusedDockable;
+        if (dockable is { })
+        {
+            factory.CloseDockable(dockable);
+        }
+    }
 }

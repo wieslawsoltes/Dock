@@ -37,5 +37,15 @@ public class DockSettingsOptions
     /// Optional floating window owner flag.
     /// </summary>
     public bool? UseOwnerForFloatingWindows { get; set; }
+
+    /// <summary>
+    /// Optional window magnetism flag.
+    /// </summary>
+    public bool? EnableWindowMagnetism { get; set; }
+
+    /// <summary>
+    /// Optional window magnet snap distance.
+    /// </summary>
+    public double? WindowMagnetDistance { get; set; }
 }
 

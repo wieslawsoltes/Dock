@@ -48,6 +48,11 @@ hidden and drags are limited to the originating control.
 
 `DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
 
+## Window magnetism
+
+`DockSettings.EnableWindowMagnetism` toggles snapping of floating windows. The snap distance
+is controlled by `DockSettings.WindowMagnetDistance`.
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:
@@ -60,6 +65,8 @@ AppBuilder.Configure<App>()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
     .EnableGlobalDocking(false)
+    .EnableWindowMagnetism()
+    .SetWindowMagnetDistance(16)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6

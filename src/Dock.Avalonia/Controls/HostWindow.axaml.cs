@@ -197,6 +197,45 @@ public class HostWindow : Window, IHostWindow
             {
                 Window.Factory?.OnWindowMoveDrag(Window);
                 _hostWindowState.Process(Position, EventType.Moved);
+
+                if (DockSettings.EnableWindowMagnetism && Window?.Factory is { HostWindows: var windows })
+                {
+                    var snap = DockSettings.WindowMagnetDistance;
+                    var x = Position.X;
+                    var y = Position.Y;
+                    var rect = new Rect(Position.X, Position.Y, Width, Height);
+
+                    foreach (var host in windows.OfType<HostWindow>())
+                    {
+                        if (host == this || !host.IsVisible)
+                            continue;
+
+                        var other = new Rect(host.Position.X, host.Position.Y, host.Width, host.Height);
+                        var verticalOverlap = rect.Top < other.Bottom && rect.Bottom > other.Top;
+                        var horizontalOverlap = rect.Left < other.Right && rect.Right > other.Left;
+
+                        if (verticalOverlap)
+                        {
+                            if (Math.Abs(rect.Left - other.Right) <= snap)
+                                x = (int)other.Right;
+                            else if (Math.Abs(rect.Right - other.Left) <= snap)
+                                x = (int)(other.Left - rect.Width);
+                        }
+
+                        if (horizontalOverlap)
+                        {
+                            if (Math.Abs(rect.Top - other.Bottom) <= snap)
+                                y = (int)other.Bottom;
+                            else if (Math.Abs(rect.Bottom - other.Top) <= snap)
+                                y = (int)(other.Top - rect.Height);
+                        }
+                    }
+
+                    if (x != Position.X || y != Position.Y)
+                    {
+                        Position = new PixelPoint(x, y);
+                    }
+                }
             }
         }
     }

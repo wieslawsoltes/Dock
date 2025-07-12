@@ -63,6 +63,10 @@ public partial class RootDock : DockBase, IRootDock
     public partial IList<IDockWindow>? Windows { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial DocumentSwitcherType DocumentSwitcherType { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ShowWindows { get; }
 

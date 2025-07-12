@@ -93,9 +93,19 @@ public class RootDock : DockBase, IRootDock
     /// </summary>
     public static readonly DirectProperty<RootDock, IList<IDockWindow>?> WindowsProperty =
         AvaloniaProperty.RegisterDirect<RootDock, IList<IDockWindow>?>(
-            nameof(Windows), 
-            o => o.Windows, 
+            nameof(Windows),
+            o => o.Windows,
             (o, v) => o.Windows = v);
+
+    /// <summary>
+    /// Defines the <see cref="DocumentSwitcherType"/> property.
+    /// </summary>
+    public static readonly DirectProperty<RootDock, DocumentSwitcherType> DocumentSwitcherTypeProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, DocumentSwitcherType>(
+            nameof(DocumentSwitcherType),
+            o => o.DocumentSwitcherType,
+            (o, v) => o.DocumentSwitcherType = v,
+            DocumentSwitcherType.Simple);
 
     private bool _isFocusableRoot;
     private IList<IDockable>? _hiddenDockables;
@@ -106,6 +116,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private DocumentSwitcherType _documentSwitcherType = DocumentSwitcherType.Simple;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -203,6 +214,15 @@ public class RootDock : DockBase, IRootDock
     {
         get => _windows;
         set => SetAndRaise(WindowsProperty, ref _windows, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("DocumentSwitcherType")]
+    public DocumentSwitcherType DocumentSwitcherType
+    {
+        get => _documentSwitcherType;
+        set => SetAndRaise(DocumentSwitcherTypeProperty, ref _documentSwitcherType, value);
     }
 
     /// <inheritdoc/>

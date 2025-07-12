@@ -101,8 +101,8 @@ public class HostWindow : Window, IHostWindow
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
-        KeyDown += HostWindow_KeyDown;
-        KeyUp += HostWindow_KeyUp;
+        AddHandler(KeyDownEvent, HostWindow_KeyDown, RoutingStrategies.Tunnel);
+        AddHandler(KeyUpEvent, HostWindow_KeyUp, RoutingStrategies.Tunnel);
 
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);

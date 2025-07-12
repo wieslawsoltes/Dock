@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Internal;
 
@@ -15,14 +16,21 @@ internal class DocumentSwitcherHelper
             return;
         }
 
-        var control = new DocumentSwitcherControl
+        Control content = root.DocumentSwitcherType switch
         {
-            DataContext = root
+            DocumentSwitcherType.VisualStudio => new DocumentSwitcherVisualControl
+            {
+                DataContext = root
+            },
+            _ => new DocumentSwitcherControl
+            {
+                DataContext = root
+            }
         };
 
         _window = new DocumentSwitcherWindow
         {
-            Content = control
+            Content = content
         };
 
         _window.Show();

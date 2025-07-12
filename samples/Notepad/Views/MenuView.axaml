@@ -8,6 +8,12 @@
              d:DesignWidth="600" d:DesignHeight="20"
              x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
   <Menu>
+    <Menu.Styles>
+      <Style Selector="MenuItem">
+        <Setter Property="AutomationProperties.Name"
+                Value="{Binding Header, RelativeSource={RelativeSource Self}}"/>
+      </Style>
+    </Menu.Styles>
     <MenuItem Header="_File">
       <MenuItem Header="_New" Command="{Binding FileNew}" />
       <MenuItem Header="_Open..." Command="{Binding FileOpen}" />

@@ -5,6 +5,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Dock.Avalonia.Controls.Automation;
+using Avalonia.Automation.Peers;
 using Avalonia.Input;
 using Dock.Avalonia.Contract;
 using Dock.Model.Core;
@@ -58,6 +60,12 @@ public abstract class DockTargetBase : TemplatedControl
     {
         get => GetValue(ShowIndicatorsOnlyProperty);
         set => SetValue(ShowIndicatorsOnlyProperty, value);
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer? OnCreateAutomationPeer()
+    {
+        return new Automation.DockTargetAutomationPeer(this);
     }
 
     /// <summary>

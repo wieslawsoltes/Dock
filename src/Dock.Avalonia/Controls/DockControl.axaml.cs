@@ -6,10 +6,12 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
+using Avalonia.Automation.Peers;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Avalonia.Metadata;
+using Dock.Avalonia.Controls.Automation;
 using Dock.Avalonia.Internal;
 using Dock.Avalonia.Contract;
 using Dock.Model;
@@ -250,6 +252,12 @@ public class DockControl : TemplatedControl, IDockControl
         {
             DeInitialize(Layout);
         }
+    }
+
+    /// <inheritdoc/>
+    protected override AutomationPeer? OnCreateAutomationPeer()
+    {
+        return new Automation.DockControlAutomationPeer(this);
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)

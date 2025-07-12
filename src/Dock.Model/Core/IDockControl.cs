@@ -43,4 +43,10 @@ public interface IDockControl
     /// Gets or sets the factory.
     /// </summary>
     IFactory? Factory { get; set; }
+
+    /// <summary>
+    /// Gets or sets group identifier used to link dock controls.
+    /// Dock controls sharing the same group allow cross docking.
+    /// </summary>
+    string? DockGroup { get; set; }
 }

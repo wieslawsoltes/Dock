@@ -1,15 +1,13 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:psp="clr-namespace:Dock.Controls.ProportionalStackPanel"
-                    xmlns:controls="using:Dock.Avalonia.Controls"
                     x:CompileBindings="True">
   <ControlTheme x:Key="{x:Type DockSiteControl}" TargetType="DockSiteControl">
     <Setter Property="Template">
       <ControlTemplate>
-        <ItemsControl Items="{TemplateBinding DockControls}">
+        <ItemsControl ItemsSource="{TemplateBinding DockControls}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <psp:ProportionalStackPanel Orientation="{TemplateBinding Orientation}" />
+              <ProportionalStackPanel Orientation="{TemplateBinding Orientation}" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>

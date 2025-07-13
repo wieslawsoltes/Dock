@@ -159,7 +159,8 @@ public class DockControl : TemplatedControl, IDockControl
                 DeInitialize(change.GetOldValue<IDock>());
             }
 
-            Initialize(change.GetNewValue<IDock>()); 
+            Initialize(change.GetNewValue<IDock>());
+            DataContext = change.GetNewValue<IDock>();
         }
     }
 
@@ -183,6 +184,8 @@ public class DockControl : TemplatedControl, IDockControl
         }
 
         layout.Factory.DockControls.Add(this);
+
+        DataContext = layout;
 
         if (InitializeFactory)
         {
@@ -225,6 +228,8 @@ public class DockControl : TemplatedControl, IDockControl
             }
         }
 
+        DataContext = null;
+
         _isInitialized = false;
     }
 
@@ -239,6 +244,7 @@ public class DockControl : TemplatedControl, IDockControl
         }
 
         Initialize(Layout);
+        DataContext = Layout;
     }
 
     /// <inheritdoc/>

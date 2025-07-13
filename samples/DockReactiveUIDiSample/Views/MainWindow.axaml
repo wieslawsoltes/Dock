@@ -7,8 +7,11 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Load layout" Click="FileLoadLayout_OnClick" />
-                <MenuItem Header="_Save layout" Click="FileSaveLayout_OnClick" />
+                <MenuItem Header="_Load Layout" Click="FileLoadLayout_OnClick" />
+                <Separator />
+                <MenuItem Header="_Save Layout" Click="FileSaveLayout_OnClick" />
+                <Separator />
+                <MenuItem Header="_Close Layout" Click="FileCloseLayout_OnClick" />
             </MenuItem>
         </Menu>
         <DockControl Layout="{Binding Layout}" />

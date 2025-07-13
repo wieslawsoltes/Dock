@@ -35,4 +35,12 @@ public partial class MainWindow : Window
             await vm.SaveLayoutAsync();
         }
     }
+
+    private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is ViewModels.MainWindowViewModel vm)
+        {
+            vm.CloseLayout();
+        }
+    }
 }

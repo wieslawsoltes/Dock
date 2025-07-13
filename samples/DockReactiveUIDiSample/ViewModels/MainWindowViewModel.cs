@@ -28,7 +28,7 @@ public class MainWindowViewModel : ReactiveObject
         LoadLayout();
     }
 
-    private void LoadLayout()
+    public void LoadLayout()
     {
         const string path = "layout.json";
         if (File.Exists(path))

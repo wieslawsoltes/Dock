@@ -22,7 +22,9 @@
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
-              <RootDock IsCollapsable="False">
+              <RootDock x:Name="InnerRoot1" IsCollapsable="False"
+                        ActiveDockable="{Binding #InnerDocs}"
+                        DefaultDockable="{Binding #InnerDocs}">
                 <DocumentDock x:Name="InnerDocs" ActiveDockable="InnerDoc1">
                   <Document x:Name="InnerDoc1" Title="Inner Document 1">
                     <TextBlock Text="Inner Document 1 Content" />
@@ -39,7 +41,9 @@
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
-              <RootDock IsCollapsable="False">
+              <RootDock x:Name="InnerRoot2" IsCollapsable="False"
+                        ActiveDockable="{Binding #InnerDocs2}"
+                        DefaultDockable="{Binding #InnerDocs2}">
                 <DocumentDock x:Name="InnerDocs2" ActiveDockable="InnerDocA">
                   <Document x:Name="InnerDocA" Title="Inner Doc A">
                     <TextBlock Text="Inner Doc A Content" />
@@ -56,7 +60,9 @@
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
-              <RootDock IsCollapsable="False">
+              <RootDock x:Name="ToolRoot" IsCollapsable="False"
+                        ActiveDockable="{Binding #ToolDocs}"
+                        DefaultDockable="{Binding #ToolDocs}">
                 <DocumentDock x:Name="ToolDocs" ActiveDockable="ToolDoc1">
                   <Document x:Name="ToolDoc1" Title="Tool Document">
                     <TextBlock Text="Nested tool document content" />

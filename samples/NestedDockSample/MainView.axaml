@@ -10,8 +10,7 @@
   <UserControl.Resources>
     <Factory x:Key="SharedFactory" />
   </UserControl.Resources>
-  <DockControl x:Name="DockControl" InitializeLayout="True" InitializeFactory="True"
-               DataContext="{Binding Layout, RelativeSource={RelativeSource Self}}">
+  <DockControl x:Name="DockControl" InitializeLayout="True" InitializeFactory="True">
     <DockControl.Factory>
       <StaticResource ResourceKey="SharedFactory" />
     </DockControl.Factory>
@@ -19,8 +18,7 @@
       <ProportionalDock x:Name="MainLayout" Orientation="Horizontal">
         <DocumentDock x:Name="Documents" IsCollapsable="False" ActiveDockable="Doc1">
           <Document x:Name="Doc1" Title="Document 1">
-            <DockControl InitializeLayout="True" InitializeFactory="True"
-                         DataContext="{Binding Layout, RelativeSource={RelativeSource Self}}">
+            <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
@@ -39,8 +37,7 @@
             </DockControl>
           </Document>
           <Document x:Name="Doc2" Title="Document 2">
-            <DockControl InitializeLayout="True" InitializeFactory="True"
-                         DataContext="{Binding Layout, RelativeSource={RelativeSource Self}}">
+            <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>
@@ -59,8 +56,7 @@
         <ProportionalDockSplitter />
         <ToolDock x:Name="Tools" Alignment="Right" ActiveDockable="Tool1">
           <Tool x:Name="Tool1" Title="Tool 1">
-            <DockControl InitializeLayout="True" InitializeFactory="True"
-                         DataContext="{Binding Layout, RelativeSource={RelativeSource Self}}">
+            <DockControl InitializeLayout="True" InitializeFactory="True">
               <DockControl.Factory>
                 <StaticResource ResourceKey="SharedFactory" />
               </DockControl.Factory>

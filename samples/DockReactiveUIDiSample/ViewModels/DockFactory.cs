@@ -77,6 +77,14 @@ public class DockFactory : Factory
             }
         };
 
+        ContextLocator = new Dictionary<string, Func<object?>>
+        {
+            ["Document1"] = () => _provider.GetRequiredService<DemoData>(),
+            ["Tool1"] = () => _provider.GetRequiredService<DemoData>()
+        };
+
+        DefaultContextLocator = () => _provider.GetService(typeof(DemoData));
+
         base.InitLayout(layout);
     }
 }

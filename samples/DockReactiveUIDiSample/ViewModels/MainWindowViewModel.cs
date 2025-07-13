@@ -28,10 +28,10 @@ public class MainWindowViewModel : ReactiveObject
         LoadLayout();
     }
 
-    private void LoadLayout()
+    public void LoadLayout()
     {
         const string path = "layout.json";
-        if (false && File.Exists(path))
+        if (File.Exists(path))
         {
             using var stream = File.OpenRead(path);
             var layout = _serializer.Load<IRootDock?>(stream);

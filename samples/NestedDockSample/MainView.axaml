@@ -14,8 +14,8 @@
     <DockControl.Factory>
       <StaticResource ResourceKey="SharedFactory" />
     </DockControl.Factory>
-    <RootDock IsCollapsable="False">
-      <ProportionalDock Orientation="Horizontal">
+    <RootDock x:Name="Root" IsCollapsable="False" ActiveDockable="{Binding #MainLayout}" DefaultDockable="{Binding #MainLayout}">
+      <ProportionalDock x:Name="MainLayout" Orientation="Horizontal">
         <DocumentDock x:Name="Documents" IsCollapsable="False" ActiveDockable="Doc1">
           <Document x:Name="Doc1" Title="Document 1">
             <DockControl InitializeLayout="True" InitializeFactory="True">

@@ -42,7 +42,7 @@ public class App : Application
             var factory = new Factory();
             factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
             {
-                [nameof(IDockWindow)] = () => new PopupHostWindow()
+                [nameof(IDockWindow)] = () => new OverlayHostWindow()
             };
 
             var documentDock = new DocumentDock

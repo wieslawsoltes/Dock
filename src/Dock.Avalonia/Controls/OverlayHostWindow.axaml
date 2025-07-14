@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ControlTheme x:Key="{x:Type OverlayHostWindow}" TargetType="OverlayHostWindow">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{DynamicResource DockThemeBackgroundBrush}" Padding="2">
+          <DockPanel>
+            <Border Background="{DynamicResource DockThemeControlBackgroundBrush}" Height="24" DockPanel.Dock="Top">
+              <TextBlock Text="{Binding Window.Title}" VerticalAlignment="Center" Margin="4,0"/>
+            </Border>
+            <ContentPresenter Content="{TemplateBinding Content}" />
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

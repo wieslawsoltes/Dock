@@ -7,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Avalonia.Internal;
 
@@ -186,9 +187,9 @@ public class ToolChromeControl : ContentControl
                 return;
             }
         }
-        else if (VisualRoot is PopupRoot { Parent: PopupHostWindow popupHostWindow })
+        else if (this.FindAncestorOfType<OverlayHostWindow>() is { } overlayWindow)
         {
-            _attachedWindow = popupHostWindow;
+            _attachedWindow = overlayWindow;
             SetCurrentValue(IsFloatingProperty, true);
         }
 

@@ -35,7 +35,7 @@
         <ResourceInclude Source="/Controls/DragPreviewControl.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />
-        <ResourceInclude Source="/Controls/PopupHostWindow.axaml" />
+        <ResourceInclude Source="/Controls/OverlayHostWindow.axaml" />
         <ResourceInclude Source="/Controls/DockAdornerWindow.axaml" />
         <ResourceInclude Source="/Themes/Accents/Simple.axaml" />
       </ResourceDictionary.MergedDictionaries>

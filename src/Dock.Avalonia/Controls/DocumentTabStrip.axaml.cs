@@ -218,9 +218,9 @@ public class DocumentTabStrip : TabStrip
                 return;
             }
         }
-        else if (VisualRoot is PopupRoot { Parent: PopupHostWindow popupHostWindow })
+        else if (this.FindAncestorOfType<OverlayHostWindow>() is { } overlayWindow)
         {
-            _attachedWindow = popupHostWindow;
+            _attachedWindow = overlayWindow;
         }
 
         _windowDragHelper = CreateDragHelper(_grip);

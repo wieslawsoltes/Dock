@@ -105,9 +105,9 @@ internal class WindowDragHelper
 
                 hostWindow.Window?.Factory?.OnWindowMoveDragEnd(hostWindow.Window);
             }
-            else if (_dragHostWindow is PopupHostWindow popup)
+            else if (_dragHostWindow is OverlayHostWindow overlay)
             {
-                popup.Window?.Factory?.OnWindowMoveDragEnd(popup.Window);
+                overlay.Window?.Factory?.OnWindowMoveDragEnd(overlay.Window);
             }
         }
 
@@ -123,12 +123,12 @@ internal class WindowDragHelper
             return;
         }
 
-        if (_dragHostWindow is PopupHostWindow popupDragging)
+        if (_dragHostWindow is OverlayHostWindow overlayDragging)
         {
             var screenPoint = _owner.PointToScreen(e.GetPosition(_owner));
             var deltaScreen = screenPoint - _dragStartScreenPoint;
-            popupDragging.SetPosition(_popupStartPosition.X + deltaScreen.X, _popupStartPosition.Y + deltaScreen.Y);
-            popupDragging.Window?.Factory?.OnWindowMoveDrag(popupDragging.Window!);
+            overlayDragging.SetPosition(_popupStartPosition.X + deltaScreen.X, _popupStartPosition.Y + deltaScreen.Y);
+            overlayDragging.Window?.Factory?.OnWindowMoveDrag(overlayDragging.Window!);
             return;
         }
 
@@ -190,19 +190,20 @@ internal class WindowDragHelper
                 e.Handled = true;
                 return;
             }
-            case PopupRoot { Parent: PopupHostWindow popupHostWindow }:
+            case var _ when _owner.FindAncestorOfType<OverlayHostWindow>() is { } overlayHostWindow:
             {
                 _isDragging = true;
 
-                var dockWindow = popupHostWindow.Window;
+                var dockWindow = overlayHostWindow.Window;
                 if (dockWindow?.Factory?.OnWindowMoveDragBegin(dockWindow) != true)
                 {
                     _isDragging = false;
                     return;
                 }
 
-                _dragHostWindow = popupHostWindow;
-                _popupStartPosition = new PixelPoint((int)popupHostWindow.HorizontalOffset, (int)popupHostWindow.VerticalOffset);
+                _dragHostWindow = overlayHostWindow;
+                overlayHostWindow.GetPosition(out var px, out var py);
+                _popupStartPosition = new PixelPoint((int)px, (int)py);
                 _dragStartScreenPoint = _owner.PointToScreen(e.GetPosition(_owner));
 
                 return;

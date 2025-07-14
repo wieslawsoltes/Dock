@@ -10,8 +10,8 @@
 
   <ControlTheme x:Key="{x:Type DockControl}" TargetType="DockControl">
 
-    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding Layout.CanDrag, FallbackValue={x:True}}" x:DataType="DockControl"  />
-    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding Layout.CanDrop, FallbackValue={x:True}}" x:DataType="DockControl"  />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding $self.Layout.CanDrag, FallbackValue={x:True}}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding $self.Layout.CanDrop, FallbackValue={x:True}}"  />
 
     <Setter Property="Template">
       <ControlTemplate>

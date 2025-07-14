@@ -1,4 +1,5 @@
 using System.IO;
+using System.Reactive;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -20,11 +21,20 @@ public class MainWindowViewModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _layout, value);
     }
 
+    public ReactiveCommand<Unit, Unit> LoadLayoutCommand { get; }
+    public ReactiveCommand<Unit, Unit> SaveLayoutCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseLayoutCommand { get; }
+
     public MainWindowViewModel(IFactory factory, IDockSerializer serializer, IDockState state)
     {
         _factory = factory;
         _serializer = serializer;
         _state = state;
+
+        LoadLayoutCommand = ReactiveCommand.Create(LoadLayout);
+        SaveLayoutCommand = ReactiveCommand.CreateFromTask(SaveLayoutAsync);
+        CloseLayoutCommand = ReactiveCommand.Create(CloseLayout);
+
         LoadLayout();
     }
 

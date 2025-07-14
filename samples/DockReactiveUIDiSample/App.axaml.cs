@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
 using DockReactiveUIDiSample.ViewModels;
-using DockReactiveUIDiSample.Views;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 

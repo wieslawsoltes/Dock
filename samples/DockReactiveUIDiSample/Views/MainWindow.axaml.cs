@@ -1,10 +1,8 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
 using DockReactiveUIDiSample.ViewModels;
 using Avalonia.ReactiveUI;
-using ReactiveUI;
 
 namespace DockReactiveUIDiSample.Views;
 
@@ -18,7 +16,6 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         this.AttachDevTools();
 #endif
     }
-
 
     private void InitializeComponent()
     {

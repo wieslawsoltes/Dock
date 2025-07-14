@@ -1,8 +1,6 @@
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using DockReactiveUIDiSample.ViewModels.Tools;
 using Avalonia.ReactiveUI;
-using ReactiveUI;
 
 namespace DockReactiveUIDiSample.Views.Tools;
 
@@ -12,7 +10,6 @@ public partial class ToolView : ReactiveUserControl<ToolViewModel>
     {
         InitializeComponent();
     }
-
 
     private void InitializeComponent()
     {

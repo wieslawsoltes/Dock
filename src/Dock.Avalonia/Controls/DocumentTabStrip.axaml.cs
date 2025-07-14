@@ -19,7 +19,7 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":create", ":active")]
 public class DocumentTabStrip : TabStrip
 {
-    private HostWindow? _attachedWindow;
+    private Dock.Model.Core.IHostWindow? _attachedWindow;
     private Control? _grip;
     private WindowDragHelper? _windowDragHelper;
 
@@ -208,37 +208,33 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
-        if (VisualRoot is Window window)
+        if (VisualRoot is HostWindow hostWindow)
         {
-            if (window is HostWindow hostWindow)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
+                RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    hostWindow.AttachGrip(_grip, ":documentwindow");
-                    _attachedWindow = hostWindow;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _windowDragHelper = CreateDragHelper(_grip);
-                    _windowDragHelper.Attach();
-                }
+                hostWindow.AttachGrip(_grip, ":documentwindow");
+                _attachedWindow = hostWindow;
+                return;
             }
-            else
-            {
-                _windowDragHelper = CreateDragHelper(_grip);
-                _windowDragHelper.Attach();
-            }
+        }
+
+        _windowDragHelper = CreateDragHelper(_grip);
+        _windowDragHelper.Attach();
+        if (VisualRoot is Dock.Model.Core.IHostWindow host)
+        {
+            _attachedWindow = host;
         }
     }
 
     private void DetachFromWindow()
     {
-        if (_attachedWindow is { } && _grip is { })
+        if (_attachedWindow is HostWindow hostWindow && _grip is { })
         {
-            _attachedWindow.DetachGrip(_grip, ":documentwindow");
-            _attachedWindow = null;
+            hostWindow.DetachGrip(_grip, ":documentwindow");
         }
+
+        _attachedWindow = null;
 
         if (_windowDragHelper != null)
         {

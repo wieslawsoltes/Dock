@@ -3,11 +3,12 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
 using DockReactiveUIDiSample.ViewModels;
+using Avalonia.ReactiveUI;
 using ReactiveUI;
 
 namespace DockReactiveUIDiSample.Views;
 
-public partial class MainWindow : Window, IViewFor<MainWindowViewModel>
+public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
 
     public MainWindow()
@@ -18,22 +19,6 @@ public partial class MainWindow : Window, IViewFor<MainWindowViewModel>
 #endif
     }
 
-    private MainWindowViewModel? _viewModel;
-    public MainWindowViewModel? ViewModel
-    {
-        get => _viewModel;
-        set
-        {
-            _viewModel = value;
-            DataContext = value;
-        }
-    }
-
-    object? IViewFor.ViewModel
-    {
-        get => ViewModel;
-        set => ViewModel = (MainWindowViewModel?)value;
-    }
 
     private void InitializeComponent()
     {

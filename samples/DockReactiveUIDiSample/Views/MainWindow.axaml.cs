@@ -1,12 +1,14 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Interactivity;
+using DockReactiveUIDiSample.ViewModels;
+using Avalonia.ReactiveUI;
 
 namespace DockReactiveUIDiSample.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
+
     public MainWindow()
     {
         InitializeComponent();
@@ -22,25 +24,20 @@ public partial class MainWindow : Window
 
     private void FileLoadLayout_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is ViewModels.MainWindowViewModel vm)
-        {
-            vm.LoadLayout();
-        }
+        ViewModel?.LoadLayout();
     }
 
     private async void FileSaveLayout_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is ViewModels.MainWindowViewModel vm)
+        if (ViewModel is { })
         {
-            await vm.SaveLayoutAsync();
+            await ViewModel.SaveLayoutAsync();
         }
     }
 
     private void FileCloseLayout_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is ViewModels.MainWindowViewModel vm)
-        {
-            vm.CloseLayout();
-        }
+        ViewModel?.CloseLayout();
     }
 }
+

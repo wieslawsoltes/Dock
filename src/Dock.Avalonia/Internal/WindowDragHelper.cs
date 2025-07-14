@@ -22,6 +22,7 @@ internal class WindowDragHelper
     private readonly Func<bool> _isEnabled;
     private readonly Func<Control?, bool> _canStartDrag;
     private Point _dragStartPoint;
+    private PixelPoint _dragStartScreenPoint;
     private bool _pointerPressed;
     private bool _isDragging;
     private PointerPressedEventArgs? _lastPointerPressedArgs;
@@ -68,6 +69,7 @@ internal class WindowDragHelper
         if (_canStartDrag(source))
         {
             _dragStartPoint = e.GetPosition(_owner);
+            _dragStartScreenPoint = _owner.PointToScreen(_dragStartPoint);
             _pointerPressed = true;
             e.Handled = true;
         }
@@ -123,9 +125,9 @@ internal class WindowDragHelper
 
         if (_dragHostWindow is PopupHostWindow popupDragging)
         {
-            var point = e.GetPosition(_owner);
-            var offset = point - _dragStartPoint;
-            popupDragging.SetPosition(_popupStartPosition.X + offset.X, _popupStartPosition.Y + offset.Y);
+            var screenPoint = _owner.PointToScreen(e.GetPosition(_owner));
+            var deltaScreen = screenPoint - _dragStartScreenPoint;
+            popupDragging.SetPosition(_popupStartPosition.X + deltaScreen.X, _popupStartPosition.Y + deltaScreen.Y);
             popupDragging.Window?.Factory?.OnWindowMoveDrag(popupDragging.Window!);
             return;
         }
@@ -201,6 +203,7 @@ internal class WindowDragHelper
 
                 _dragHostWindow = popupHostWindow;
                 _popupStartPosition = new PixelPoint((int)popupHostWindow.HorizontalOffset, (int)popupHostWindow.VerticalOffset);
+                _dragStartScreenPoint = _owner.PointToScreen(e.GetPosition(_owner));
 
                 return;
             }

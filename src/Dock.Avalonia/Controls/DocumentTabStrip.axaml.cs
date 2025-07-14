@@ -218,6 +218,10 @@ public class DocumentTabStrip : TabStrip
                 return;
             }
         }
+        else if (VisualRoot is PopupRoot { Parent: PopupHostWindow popupHostWindow })
+        {
+            _attachedWindow = popupHostWindow;
+        }
 
         _windowDragHelper = CreateDragHelper(_grip);
         _windowDragHelper.Attach();

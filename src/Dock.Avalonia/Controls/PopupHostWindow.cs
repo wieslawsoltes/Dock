@@ -6,6 +6,8 @@ using Dock.Model.Core;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
 using System.Linq;
+using System;
+using Avalonia.Controls.Metadata;
 
 namespace Dock.Avalonia.Controls;
 
@@ -13,6 +15,9 @@ public class PopupHostWindow : Popup, IHostWindow
 {
     private readonly DockManager _dockManager;
     private readonly PopupHostWindowState _state;
+
+    /// <inheritdoc/>
+    protected override Type StyleKeyOverride => typeof(PopupHostWindow);
 
     public PopupHostWindow()
     {
@@ -22,6 +27,22 @@ public class PopupHostWindow : Popup, IHostWindow
         // Default popup placement near pointer. Offsets are used to control
         // the final position when the popup is shown.
         PlacementMode = PlacementMode.Pointer;
+
+        Opened += (_, _) =>
+        {
+            if (Window is { })
+            {
+                Window.Factory?.HostWindows.Add(this);
+            }
+        };
+
+        Closed += (_, _) =>
+        {
+            if (Window is { })
+            {
+                Window.Factory?.HostWindows.Remove(this);
+            }
+        };
     }
 
     public IDockManager DockManager => _dockManager;
@@ -31,6 +52,7 @@ public class PopupHostWindow : Popup, IHostWindow
     public bool IsTracked { get; set; }
 
     public IDockWindow? Window { get; set; }
+
 
     public void Present(bool isDialog)
     {
@@ -119,6 +141,7 @@ public class PopupHostWindow : Popup, IHostWindow
 
     public void SetLayout(IDock layout)
     {
+        DataContext = layout;
         Child = new DockControl { Layout = layout };
     }
 }

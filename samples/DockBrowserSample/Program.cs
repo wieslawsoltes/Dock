@@ -37,7 +37,9 @@ public class App : Application
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime single)
         {
+            var overlay = new OverlayHostCanvas();
             var dockControl = new DockControl();
+            overlay.Children.Add(dockControl);
 
             var factory = new Factory();
             factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
@@ -98,7 +100,7 @@ public class App : Application
             dockControl.Factory = factory;
             dockControl.Layout  = root;
 
-            single.MainView = dockControl;
+            single.MainView = overlay;
         }
 
         base.OnFrameworkInitializationCompleted();

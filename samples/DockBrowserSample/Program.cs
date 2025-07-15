@@ -38,6 +38,7 @@ public class App : Application
         if (ApplicationLifetime is ISingleViewApplicationLifetime single)
         {
             var overlay = new OverlayHostCanvas();
+            OverlayHost.Current = overlay;
             var dockControl = new DockControl();
             overlay.Children.Add(dockControl);
 

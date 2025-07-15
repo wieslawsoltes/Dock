@@ -35,10 +35,7 @@ public class OverlayHostWindow : ContentControl, IHostWindow
     {
         if (!IsVisible)
         {
-            if (OverlayHostCanvas.Instance is { } canvas && !canvas.Children.Contains(this))
-            {
-                canvas.Children.Add(this);
-            }
+            OverlayHost.Current?.Add(this);
             Window?.Factory?.HostWindows.Add(this);
             Window?.Factory?.OnWindowOpened(Window);
             IsVisible = true;
@@ -56,10 +53,7 @@ public class OverlayHostWindow : ContentControl, IHostWindow
             IsVisible = false;
             Window?.Factory?.HostWindows.Remove(this);
             Window?.Factory?.OnWindowClosed(Window);
-            if (OverlayHostCanvas.Instance is { } canvas)
-            {
-                canvas.Children.Remove(this);
-            }
+            OverlayHost.Current?.Remove(this);
         }
     }
 

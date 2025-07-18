@@ -15,3 +15,11 @@ var current = factory.GetCurrentDocument();
 
 The helper `GetCurrentDocument` extension returns the focused document
 for the active root dock or `null` if no document is selected.
+
+```csharp
+// Close whichever dockable currently has focus
+factory.CloseFocusedDockable();
+```
+
+The `CloseFocusedDockable` helper can be used to close the active document or tool
+without manually looking it up.

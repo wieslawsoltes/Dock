@@ -32,7 +32,7 @@ public class DocumentTabStripItem : TabStripItem
     private int _startIndex;
     private DocumentTabStrip? _tabStrip;
     private TranslateTransform? _dragTransform;
-    private const double FloatThreshold = 40;
+    private const double FloatThreshold = 30;
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
@@ -215,9 +215,17 @@ public class DocumentTabStripItem : TabStripItem
         {
             if (_tabStrip.ContainerFromIndex(i) is Control item)
             {
-                var bounds = item.Bounds;
-                if (pos.X < bounds.X + bounds.Width / 2)
-                    return i;
+                var b = item.Bounds;
+                if (_tabStrip.Orientation == global::Avalonia.Layout.Orientation.Horizontal)
+                {
+                    if (pos.X < b.X + b.Width / 2)
+                        return i;
+                }
+                else
+                {
+                    if (pos.Y < b.Y + b.Height / 2)
+                        return i;
+                }
             }
         }
 

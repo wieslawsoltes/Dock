@@ -193,11 +193,20 @@ public class DocumentTabStrip : TabStrip
                 if (source == this)
                     return true;
 
-                return source is { } s &&
-                       !(s is DocumentTabStripItem) &&
-                       !(s is Button) &&
-                       !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                       !WindowDragHelper.IsChildOfType<Button>(this, s);
+                var allow = source is { } s &&
+                            !(s is DocumentTabStripItem) &&
+                            !(s is Button) &&
+                            !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                            !WindowDragHelper.IsChildOfType<Button>(this, s);
+
+                if (!allow &&
+                    Items is { } items && items.Count == 1 &&
+                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false })
+                {
+                    allow = true;
+                }
+
+                return allow;
             });
     }
 

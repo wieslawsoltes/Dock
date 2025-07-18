@@ -27,6 +27,7 @@ public class DocumentTabStripItem : TabStripItem
 {
     private bool _pointerCaptured;
     private bool _isDragging;
+    private bool _blockDnd;
     private Point _dragStartPoint;
     private int _startIndex;
     private DocumentTabStrip? _tabStrip;
@@ -95,6 +96,9 @@ public class DocumentTabStripItem : TabStripItem
             _tabStrip = this.FindAncestorOfType<DocumentTabStrip>();
             if (_tabStrip is { } ts && ts.ChromeTabDrag)
             {
+                DockProperties.SetIsDragEnabled(ts, false);
+                DockProperties.SetIsDropEnabled(ts, false);
+                _blockDnd = true;
                 e.Pointer.Capture(this);
                 _pointerCaptured = true;
                 _dragStartPoint = e.GetPosition(ts);
@@ -156,6 +160,12 @@ public class DocumentTabStripItem : TabStripItem
         {
             _pointerCaptured = false;
             _isDragging = false;
+            if (_blockDnd && _tabStrip is { } ts)
+            {
+                ts.ClearValue(DockProperties.IsDragEnabledProperty);
+                ts.ClearValue(DockProperties.IsDropEnabledProperty);
+                _blockDnd = false;
+            }
             _tabStrip = null;
             if (_dragTransform is { })
             {
@@ -179,6 +189,12 @@ public class DocumentTabStripItem : TabStripItem
         }
         _pointerCaptured = false;
         _isDragging = false;
+        if (_blockDnd && _tabStrip is { } ts)
+        {
+            ts.ClearValue(DockProperties.IsDragEnabledProperty);
+            ts.ClearValue(DockProperties.IsDropEnabledProperty);
+            _blockDnd = false;
+        }
         _tabStrip = null;
         if (_dragTransform is { })
         {

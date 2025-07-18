@@ -96,11 +96,10 @@ new ToolDock
 
 **Can I cancel switching the active dockable or closing a dock?**
 
-Dock currently raises `ActiveDockableChanged` only *after* the active dockable
-has been updated, so the change cannot be cancelled. Likewise there is no
-pre-close event for dockables. The only cancellable closing hook is
-`WindowClosing`, which is fired when a host window is about to close. Set the
-`Cancel` property on the event arguments to keep the window open:
+Use the `ActiveDockableChanging` event to intercept focus changes and
+`DockableClosing` to intercept closing a dockable. Set the `Cancel` property on
+the event arguments to abort the operation. The `WindowClosing` event is still
+fired when a host window is about to close:
 
 ```csharp
 factory.WindowClosing += (_, args) =>
@@ -112,7 +111,7 @@ factory.WindowClosing += (_, args) =>
 };
 ```
 
-Cancelling individual dockables is not supported.
+Both operations are cancellable.
 
 **How do I disable undocking or drag-and-drop?**
 

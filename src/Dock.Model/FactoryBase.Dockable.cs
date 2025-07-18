@@ -57,7 +57,15 @@ public abstract partial class FactoryBase
         if (dock.VisibleDockables.Count > 0)
         {
             var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-            dock.ActiveDockable = nextActiveDockable is not IProportionalDockSplitter ? nextActiveDockable : null;
+            var candidate = nextActiveDockable is not IProportionalDockSplitter ? nextActiveDockable : null;
+            if (candidate is not null)
+            {
+                SetActiveDockable(candidate);
+            }
+            else
+            {
+                dock.ActiveDockable = null;
+            }
         }
         else
         {
@@ -113,7 +121,7 @@ public abstract partial class FactoryBase
             OnDockableAdded(sourceDockable);
             OnDockableMoved(sourceDockable);
             OnDockableDocked(sourceDockable, DockOperation.Fill);
-            dock.ActiveDockable = sourceDockable;
+            SetActiveDockable(sourceDockable);
         }
     }
 
@@ -215,7 +223,7 @@ public abstract partial class FactoryBase
                 OnDockableMoved(sourceDockable);
                 OnDockableDocked(sourceDockable, DockOperation.Fill);
                 InitDockable(sourceDockable, targetDock);
-                targetDock.ActiveDockable = sourceDockable;
+                SetActiveDockable(sourceDockable);
             }
         }
     }
@@ -243,7 +251,7 @@ public abstract partial class FactoryBase
             OnDockableAdded(originalTargetDockable);
             OnDockableSwapped(originalSourceDockable);
             OnDockableSwapped(originalTargetDockable);
-            dock.ActiveDockable = originalTargetDockable;
+            SetActiveDockable(originalTargetDockable);
         }
     }
 
@@ -271,8 +279,8 @@ public abstract partial class FactoryBase
             OnDockableSwapped(originalTargetDockable);
             OnDockableSwapped(originalSourceDockable);
 
-            sourceDock.ActiveDockable = originalTargetDockable;
-            targetDock.ActiveDockable = originalSourceDockable;
+            SetActiveDockable(originalTargetDockable);
+            SetActiveDockable(originalSourceDockable);
         }
     }
 
@@ -679,7 +687,7 @@ public abstract partial class FactoryBase
             RemoveDockable(d, dock.IsCollapsable);
             AddDockable(targetDock, d);
             OnDockableMoved(d);
-            targetDock.ActiveDockable = d;
+            SetActiveDockable(d);
         }
 
         var window = CreateWindowFrom(targetDock);
@@ -734,7 +742,7 @@ public abstract partial class FactoryBase
             return;
         }
 
-        if (dockable.CanClose && dockable.OnClose())
+        if (dockable.CanClose && OnDockableClosing(dockable))
         {
             var hide = (dockable is ITool && HideToolsOnClose)
                        || (dockable is IDocument && HideDocumentsOnClose);

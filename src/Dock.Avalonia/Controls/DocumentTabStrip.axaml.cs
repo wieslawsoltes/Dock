@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.VisualTree;
-
-using System.Runtime.InteropServices;
-using Dock.Avalonia.Internal;
 using Avalonia.Layout;
+using Avalonia.VisualTree;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -28,7 +27,7 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<Control?> DockAdornerHostProperty =
         AvaloniaProperty.Register<DocumentTabStrip, Control?>(nameof(DockAdornerHost));
-    
+
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
     /// </summary>
@@ -40,12 +39,18 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
-    
+
     /// <summary>
     /// Define the <see cref="EnableWindowDrag"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> EnableWindowDragProperty = 
+    public static readonly StyledProperty<bool> EnableWindowDragProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
+
+    /// <summary>
+    /// Enables chrome-like tab dragging and reordering.
+    /// </summary>
+    public static readonly StyledProperty<bool> ChromeTabDragProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(ChromeTabDrag), true);
 
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
@@ -70,7 +75,7 @@ public class DocumentTabStrip : TabStrip
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
     }
-    
+
     /// <summary>
     /// Gets or sets if the window can be dragged by clicking on the tab strip.
     /// </summary>
@@ -78,6 +83,15 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(EnableWindowDragProperty);
         set => SetValue(EnableWindowDragProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets chrome-like tab dragging mode.
+    /// </summary>
+    public bool ChromeTabDrag
+    {
+        get => GetValue(ChromeTabDragProperty);
+        set => SetValue(ChromeTabDragProperty, value);
     }
 
     /// <summary>

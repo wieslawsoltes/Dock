@@ -292,6 +292,7 @@ public abstract partial class FactoryBase : IFactory
                             targetDocumentDock.Id = sourceDocumentDock.Id;
                             targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
                             targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
+                            targetDocumentDock.CanCloseLastDockable = sourceDocumentDock.CanCloseLastDockable;
 
                             if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
                                 && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)

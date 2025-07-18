@@ -364,6 +364,18 @@ public partial interface IFactory
     bool IsDockablePinned(IDockable dockable, IRootDock? rootDock = null);
 
     /// <summary>
+    /// Starts flashing the specified dockable tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to flash.</param>
+    void FlashDockable(IDockable dockable);
+
+    /// <summary>
+    /// Stops flashing the specified dockable tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to stop flashing.</param>
+    void StopFlashingDockable(IDockable dockable);
+
+    /// <summary>
     /// Floats dockable.
     /// </summary>
     /// <param name="dockable">The dockable to float.</param>

@@ -178,6 +178,12 @@
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Margin" Value="0" />
     <Setter Property="Padding" Value="4 0 4 0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.25" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.25" />
+      </Transitions>
+    </Setter>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -231,6 +237,11 @@
                         <Setter Property="Stretch" Value="Uniform" />
                         <Setter Property="UseLayoutRounding" Value="False" />
                         <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
+                        <Setter Property="Transitions">
+                          <Transitions>
+                            <BrushTransition Property="Fill" Duration="0:0:0.25" />
+                          </Transitions>
+                        </Setter>
                       </Style>
                     </Path.Styles>
                   </Path>
@@ -249,6 +260,10 @@
       <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
 
+    <Style Selector="^:flash /template/ Path#PART_ClosePath">
+      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
     <Style Selector="^:not(:active):selected">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
@@ -261,6 +276,11 @@
 
     <Style Selector="^:pointerover">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushMed}" />
+      <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:flash">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
       <Setter Property="Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
     </Style>
 

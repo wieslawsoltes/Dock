@@ -60,4 +60,22 @@ public class ToolDock : DockBase, IToolDock
         Factory?.SetActiveDockable(tool);
         Factory?.SetFocusedDockable(this, tool);
     }
+
+    /// <summary>
+    /// Starts flashing the specified dockable tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to flash.</param>
+    public void FlashDockable(IDockable dockable)
+    {
+        Factory?.FlashDockable(dockable);
+    }
+
+    /// <summary>
+    /// Stops flashing the specified dockable tab.
+    /// </summary>
+    /// <param name="dockable">The dockable to stop flashing.</param>
+    public void StopFlashingDockable(IDockable dockable)
+    {
+        Factory?.StopFlashingDockable(dockable);
+    }
 }

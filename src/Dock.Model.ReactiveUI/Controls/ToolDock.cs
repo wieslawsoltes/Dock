@@ -21,6 +21,7 @@ public partial class ToolDock : DockBase, IToolDock
         _alignment = Alignment.Unset;
         _autoHide = true;
         _gripMode = GripMode.Visible;
+        EnableWindowDrag = true;
     }
     
     /// <inheritdoc/>

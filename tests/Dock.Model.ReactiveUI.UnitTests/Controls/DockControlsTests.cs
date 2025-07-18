@@ -75,6 +75,7 @@ public class DockControlsTests
         Assert.False(dock.IsExpanded);
         Assert.True(dock.AutoHide);
         Assert.Equal(GripMode.Visible, dock.GripMode);
+        Assert.True(dock.EnableWindowDrag);
     }
 
     [Fact]
@@ -84,6 +85,7 @@ public class DockControlsTests
         Assert.False(dock.CanCreateDocument);
         Assert.Null(dock.DocumentFactory);
         Assert.NotNull(dock.CreateDocument);
+        Assert.False(dock.EnableWindowDrag);
         Assert.Equal(DocumentTabLayout.Top, dock.TabsLayout);
     }
 }

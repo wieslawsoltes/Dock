@@ -7,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Avalonia.Internal;
 
@@ -21,7 +22,7 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_MaximizeRestoreButton", typeof(Button))]
 public class ToolChromeControl : ContentControl
 {
-    private HostWindow? _attachedWindow;
+    private Dock.Model.Core.IHostWindow? _attachedWindow;
     private WindowDragHelper? _windowDragHelper;
 
     /// <summary>
@@ -174,41 +175,40 @@ public class ToolChromeControl : ContentControl
         }
 
         // On linux we dont attach to the HostWindow because of inconsistent drag behaviour
-        if (VisualRoot is Window window)
+        if (VisualRoot is HostWindow hostWindow)
         {
-            if (window is HostWindow hostWindow)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
+                RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    hostWindow.AttachGrip(this);
-                    _attachedWindow = hostWindow;
+                hostWindow.AttachGrip(this);
+                _attachedWindow = hostWindow;
 
-                    SetCurrentValue(IsFloatingProperty, true);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _windowDragHelper = CreateDragHelper(Grip);
-                    _windowDragHelper.Attach();
-                }
+                SetCurrentValue(IsFloatingProperty, true);
+                return;
             }
-#if false
-            else
-            {
-                _windowDragHelper = CreateDragHelper(Grip);
-                _windowDragHelper.Attach();
-            }
-#endif
+        }
+        else if (this.FindAncestorOfType<OverlayHostWindow>() is { } overlayWindow)
+        {
+            _attachedWindow = overlayWindow;
+            SetCurrentValue(IsFloatingProperty, true);
+        }
+
+        _windowDragHelper = CreateDragHelper(Grip);
+        _windowDragHelper.Attach();
+        if (VisualRoot is Dock.Model.Core.IHostWindow host)
+        {
+            _attachedWindow = host;
         }
     }
 
     private void DetachFromWindow()
     {
-        if (_attachedWindow != null)
+        if (_attachedWindow is HostWindow hostWindow)
         {
-            _attachedWindow.DetachGrip(this);
-            _attachedWindow = null;
+            hostWindow.DetachGrip(this);
         }
+
+        _attachedWindow = null;
 
         if (_windowDragHelper != null)
         {

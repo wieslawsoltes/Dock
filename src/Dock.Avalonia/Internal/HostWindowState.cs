@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -196,6 +197,11 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             return false;
         }
 
+        if (!AreGroupsLinked(ActiveDockControl, dockControl))
+        {
+            return false;
+        }
+
         DockManager.Position = DockHelpers.ToDockPoint(point);
 
         if (relativeTo.GetVisualRoot() is null)
@@ -232,6 +238,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     /// <param name="eventType">The pointer event type.</param>
     public void Process(PixelPoint point, EventType eventType)
     {
+        ActiveDockControl = _hostWindow.Window?.Layout?.Factory?.DockControls.FirstOrDefault() as DockControl;
         switch (eventType)
         {
             case EventType.Pressed:
@@ -276,6 +283,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
                 Leave();
                 _context.End();
+                ActiveDockControl = null;
                 DropControl = null;
                 break;
             }
@@ -389,6 +397,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
             case EventType.CaptureLost:
             {
                 _context.End();
+                ActiveDockControl = null;
                 DropControl = null;
                 break;
             }

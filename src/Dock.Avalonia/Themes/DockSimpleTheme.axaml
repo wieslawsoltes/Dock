@@ -29,6 +29,7 @@
         <ResourceInclude Source="/Controls/RootDockControl.axaml" />
         <ResourceInclude Source="/Controls/ToolContentControl.axaml" />
         <ResourceInclude Source="/Controls/ToolDockControl.axaml" />
+        <ResourceInclude Source="/Controls/DockSiteControl.axaml" />
         <ResourceInclude Source="/Controls/DockControl.axaml" />
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />

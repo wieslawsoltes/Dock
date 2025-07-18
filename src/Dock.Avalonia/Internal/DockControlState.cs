@@ -323,7 +323,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             var sp = inputActiveDockControl.PointToScreen(point);
 
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
-                                _context.DragControl, inputActiveDockControl, point);
+                                _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
                             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
                         }

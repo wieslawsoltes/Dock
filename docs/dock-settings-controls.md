@@ -6,6 +6,8 @@
 
 All Dock controls start a drag operation only after the pointer moves a short distance. The thresholds are exposed as `DockSettings.MinimumHorizontalDragDistance` and `DockSettings.MinimumVerticalDragDistance`. By relying on these values you ensure every control reacts the same way and users do not accidentally begin dragging.
 
+When dragging tabs you may want to float them only after moving further away from the strip. `DockSettings.MinimumTabFloatDistance` defines how far the pointer must travel before the tab detaches.
+
 When you build your own controls or replace the default templates you should respect these distances instead of hard coding your own numbers.
 
 ## Checking drag thresholds

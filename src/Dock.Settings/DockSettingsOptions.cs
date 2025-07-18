@@ -47,5 +47,10 @@ public class DockSettingsOptions
     /// Optional window magnet snap distance.
     /// </summary>
     public double? WindowMagnetDistance { get; set; }
+
+    /// <summary>
+    /// Optional tab float threshold.
+    /// </summary>
+    public double? MinimumTabFloatDistance { get; set; }
 }
 

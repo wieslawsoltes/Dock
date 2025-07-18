@@ -39,10 +39,17 @@ public class ToolDock : DockBase, IToolDock
     public static readonly DirectProperty<ToolDock, GripMode> GripModeProperty =
         AvaloniaProperty.RegisterDirect<ToolDock, GripMode>(nameof(GripMode), o => o.GripMode, (o, v) => o.GripMode = v);
 
+    /// <summary>
+    /// Defines the <see cref="EnableWindowDrag"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> EnableWindowDragProperty =
+        AvaloniaProperty.Register<ToolDock, bool>(nameof(EnableWindowDrag), true);
+
     private Alignment _alignment = Alignment.Unset;
     private bool _isExpanded;
     private bool _autoHide = true;
     private GripMode _gripMode = GripMode.Visible;
+
 
     /// <summary>
     /// Initializes new instance of the <see cref="ToolDock"/> class.
@@ -85,6 +92,15 @@ public class ToolDock : DockBase, IToolDock
     {
         get => _gripMode;
         set => SetAndRaise(GripModeProperty, ref _gripMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("EnableWindowDrag")]
+    public bool EnableWindowDrag
+    {
+        get => GetValue(EnableWindowDragProperty);
+        set => SetValue(EnableWindowDragProperty, value);
     }
 
     /// <summary>

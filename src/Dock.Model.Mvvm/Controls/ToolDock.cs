@@ -17,6 +17,7 @@ public class ToolDock : DockBase, IToolDock
     private bool _isExpanded;
     private bool _autoHide = true;
     private GripMode _gripMode = GripMode.Visible;
+    private bool _enableWindowDrag = true;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -48,6 +49,14 @@ public class ToolDock : DockBase, IToolDock
     {
         get => _gripMode;
         set => SetProperty(ref _gripMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableWindowDrag
+    {
+        get => _enableWindowDrag;
+        set => SetProperty(ref _enableWindowDrag, value);
     }
 
     /// <summary>

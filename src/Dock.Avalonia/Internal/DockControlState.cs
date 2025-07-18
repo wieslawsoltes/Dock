@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
@@ -34,11 +36,11 @@ internal class DockDragContext
         TargetDockControl = null;
     }
 
-    public void End()
-    {
-        DragControl = null;
-        DragStartPoint = default;
-        PointerPressed = false;
+        public void End()
+        {
+            DragControl = null;
+            DragStartPoint = default;
+            PointerPressed = false;
         DoDragDrop = false;
         TargetPoint = default;
         TargetDockControl = null;
@@ -242,8 +244,8 @@ internal class DockControlState : DockManagerState, IDockControlState
     /// <param name="dragAction">The input drag action.</param>
     /// <param name="activeDockControl">The active dock control.</param>
     /// <param name="dockControls">The dock controls.</param>
-    public void Process(Point point, Vector delta, EventType eventType, DragAction dragAction, DockControl activeDockControl, IList<IDockControl> dockControls)
-    {
+        public void Process(Point point, Vector delta, EventType eventType, DragAction dragAction, DockControl activeDockControl, IList<IDockControl> dockControls)
+        {
         if (activeDockControl is not { } inputActiveDockControl)
         {
             return;
@@ -292,7 +294,11 @@ internal class DockControlState : DockManagerState, IDockControlState
                     if (!executed && _context.DragControl?.DataContext is IDockable dockable &&
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
-                        Float(point, inputActiveDockControl, dockable, factory);
+                        var diff = point - _context.DragStartPoint;
+                        if (DockSettings.IsMinimumTabFloatDistance(diff))
+                        {
+                            Float(point, inputActiveDockControl, dockable, factory);
+                        }
                     }
                 }
 
@@ -333,6 +339,15 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                 if (_context.DoDragDrop)
                 {
+                    if (TryReorderTab(point, inputActiveDockControl))
+                    {
+                        _dragPreviewHelper.Hide();
+                        DropControl = null;
+                        _context.TargetPoint = default;
+                        _context.TargetDockControl = null;
+                        break;
+                    }
+
                     Point targetPoint = default;
                     Visual? targetDockControl = null;
                     Control? dropControl = null;
@@ -460,10 +475,83 @@ internal class DockControlState : DockManagerState, IDockControlState
                 activeDockControl.IsDraggingDock = false;
                 break;
             }
-            case EventType.WheelChanged:
+                case EventType.WheelChanged:
+                {
+                    break;
+                }
+        }
+    }
+
+    private bool TryReorderTab(Point point, DockControl activeDockControl)
+    {
+        if (_context.DragControl?.DataContext is not IDockable dockable)
+        {
+            return false;
+        }
+
+        if (dockable.Owner is not IDock dock || dock.VisibleDockables is null)
+        {
+            return false;
+        }
+
+        if (_context.DragControl.FindAncestorOfType<TabStrip>() is not { } strip)
+        {
+            return false;
+        }
+
+        var diff = point - _context.DragStartPoint;
+        if (DockSettings.IsMinimumTabFloatDistance(diff))
+        {
+            return false;
+        }
+
+        var local = strip.TranslatePoint(point, activeDockControl) ?? default;
+        if (!strip.Bounds.Contains(local))
+        {
+            return false;
+        }
+
+        var horizontal = true;
+        if (strip is DocumentTabStrip documentTabStrip)
+        {
+            horizontal = documentTabStrip.Orientation == global::Avalonia.Layout.Orientation.Horizontal;
+        }
+
+        var index = dock.VisibleDockables.IndexOf(dockable);
+        var newIndex = index;
+
+        for (var i = 0; i < dock.VisibleDockables.Count; i++)
+        {
+            if (strip.ItemContainerGenerator.ContainerFromIndex(i) is not Control container)
             {
+                continue;
+            }
+
+            var start = horizontal ? container.Bounds.X : container.Bounds.Y;
+            var length = horizontal ? container.Bounds.Width : container.Bounds.Height;
+            var pos = horizontal ? local.X : local.Y;
+
+            if (pos < start + length * 0.5)
+            {
+                newIndex = i;
                 break;
             }
+
+            newIndex = i + 1;
         }
+
+        if (newIndex >= dock.VisibleDockables.Count)
+        {
+            newIndex = dock.VisibleDockables.Count - 1;
+        }
+
+        if (newIndex == index)
+        {
+            return true;
+        }
+
+        var target = dock.VisibleDockables[newIndex];
+        dock.Factory?.MoveDockable(dock, dockable, target);
+        return true;
     }
 }

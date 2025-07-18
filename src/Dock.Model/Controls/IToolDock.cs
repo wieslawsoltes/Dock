@@ -30,6 +30,11 @@ public interface IToolDock : IDock
     GripMode GripMode { get; set; }
 
     /// <summary>
+    /// Gets or sets if the window can be dragged by clicking on the tab strip.
+    /// </summary>
+    bool EnableWindowDrag { get; set; }
+
+    /// <summary>
     /// Adds the specified tool to this dock and activates it.
     /// </summary>
     /// <param name="tool">The tool to add.</param>

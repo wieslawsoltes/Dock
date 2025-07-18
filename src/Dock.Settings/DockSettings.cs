@@ -52,6 +52,11 @@ public static class DockSettings
     public static double WindowMagnetDistance = 16;
 
     /// <summary>
+    /// Minimum distance before a dragged tab is floated.
+    /// </summary>
+    public static double MinimumTabFloatDistance = 16;
+
+    /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
     /// <param name="diff">The drag delta.</param>
@@ -71,5 +76,15 @@ public static class DockSettings
     {
         return (Math.Abs(diff.X) > DockSettings.MinimumHorizontalDragDistance
                 || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
+    }
+
+    /// <summary>
+    /// Checks if the drag distance is greater than the minimum threshold
+    /// to float a tab.
+    /// </summary>
+    public static bool IsMinimumTabFloatDistance(Vector diff)
+    {
+        return Math.Abs(diff.X) > DockSettings.MinimumTabFloatDistance
+               || Math.Abs(diff.Y) > DockSettings.MinimumTabFloatDistance;
     }
 }

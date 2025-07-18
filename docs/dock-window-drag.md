@@ -1,6 +1,6 @@
 # EnableWindowDrag
 
-`EnableWindowDrag` is an option on `IDocumentDock` and its implementations. When set to `true`, the empty area of the document tab strip works as a drag handle for the host window.
+`EnableWindowDrag` is an option on both `IDocumentDock` and `IToolDock`. When set to `true`, the empty area of the tab strip works as a drag handle for the host window. Tool docks enable this by default while document docks keep it disabled.
 
 Enabling the property lets users reposition a floating or main window by dragging the tab bar instead of the standard title bar. This is useful when the window chrome is hidden or when you want the tabs to act as the natural drag area for the window.
 
@@ -16,10 +16,25 @@ var documents = new DocumentDock
 };
 ```
 
+Tool docks use the same property:
+
+```csharp
+var tools = new ToolDock
+{
+    // EnableWindowDrag is true by default
+};
+```
+
 The same property is available on the Avalonia control `DocumentDock` and can also be set in XAML:
 
 ```xaml
 <avaloniaDock:DocumentDock EnableWindowDrag="True" />
+```
+
+Tool docks bind the same property:
+
+```xaml
+<avaloniaDock:ToolDock />
 ```
 
 With the property enabled, `DocumentTabStrip` listens for pointer events on its background and calls `BeginMoveDrag` on the surrounding `HostWindow`. The user can grab the tab area and drag the entire window.

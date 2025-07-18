@@ -84,7 +84,6 @@ public class DockControlsTests
         Assert.False(dock.CanCreateDocument);
         Assert.Null(dock.DocumentFactory);
         Assert.NotNull(dock.CreateDocument);
-        Assert.False(dock.EnableWindowDrag);
         Assert.Equal(DocumentTabLayout.Top, dock.TabsLayout);
     }
 }

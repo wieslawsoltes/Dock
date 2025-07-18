@@ -39,6 +39,10 @@ public partial class ToolDock : DockBase, IToolDock
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial GripMode GripMode { get; set; }
 
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool EnableWindowDrag { get; set; }
+
     /// <summary>
     /// Adds the specified tool to this dock and makes it active and focused.
     /// </summary>

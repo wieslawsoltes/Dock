@@ -65,6 +65,11 @@ public static class AppBuilderExtensions
             DockSettings.WindowMagnetDistance = options.WindowMagnetDistance.Value;
         }
 
+        if (options.MinimumTabFloatDistance != null)
+        {
+            DockSettings.MinimumTabFloatDistance = options.MinimumTabFloatDistance.Value;
+        }
+
         return builder;
     }
 
@@ -143,6 +148,17 @@ public static class AppBuilderExtensions
         double distance)
     {
         DockSettings.WindowMagnetDistance = distance;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.MinimumTabFloatDistance"/> to the given value.
+    /// </summary>
+    public static AppBuilder SetMinimumTabFloatDistance(
+        this AppBuilder builder,
+        double distance)
+    {
+        DockSettings.MinimumTabFloatDistance = distance;
         return builder;
     }
 }

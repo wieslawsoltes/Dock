@@ -38,6 +38,8 @@ DockSettings.MinimumVerticalDragDistance = 4;
 
 Increase these values if small pointer movements should not initiate dragging.
 
+Tabs detach only after moving beyond `DockSettings.MinimumTabFloatDistance` which is 16 pixels by default.
+
 ## Global docking
 
 `DockSettings.EnableGlobalDocking` controls whether dockables can be dropped
@@ -67,6 +69,7 @@ AppBuilder.Configure<App>()
     .EnableGlobalDocking(false)
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
+    .SetMinimumTabFloatDistance(32)
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6

@@ -159,7 +159,7 @@ public class DockControl : TemplatedControl, IDockControl
                 DeInitialize(change.GetOldValue<IDock>());
             }
 
-            Initialize(change.GetNewValue<IDock>()); 
+            Initialize(change.GetNewValue<IDock>());
         }
     }
 

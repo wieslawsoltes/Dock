@@ -95,7 +95,8 @@ public class DocumentTabStripItem : TabStripItem
             _tabStrip = this.FindAncestorOfType<DocumentTabStrip>();
             if (_tabStrip is { } ts && ts.ChromeTabDrag)
             {
-                _pointerCaptured = e.Pointer.Capture(this);
+                e.Pointer.Capture(this);
+                _pointerCaptured = true;
                 _dragStartPoint = e.GetPosition(ts);
                 _startIndex = ts.IndexFromContainer(this);
                 _dragTransform = new TranslateTransform();
@@ -116,7 +117,7 @@ public class DocumentTabStripItem : TabStripItem
 
         if (_dragTransform is { } transform)
         {
-            if (_tabStrip.Orientation == Avalonia.Layout.Orientation.Horizontal)
+            if (_tabStrip.Orientation == global::Avalonia.Layout.Orientation.Horizontal)
                 transform.X = delta.X;
             else
                 transform.Y = delta.Y;

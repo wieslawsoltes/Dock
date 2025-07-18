@@ -102,6 +102,7 @@ public class DockFactory : Factory
             CanCreateDocument = true,
             // CanDrop = false,
             EnableWindowDrag = true,
+            // CanCloseLastDockable = false,
         };
 
         var mainLayout = new ProportionalDock

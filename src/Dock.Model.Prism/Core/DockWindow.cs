@@ -21,6 +21,8 @@ public class DockWindow : ReactiveBase, IDockWindow
     private double _height;
     private bool _topmost;
     private string _title;
+    private bool _fadeOnInactive;
+    private bool _closeOnFadeOut;
     private IDockable? _owner;
     private IFactory? _factory;
     private IRootDock? _layout;
@@ -90,6 +92,22 @@ public class DockWindow : ReactiveBase, IDockWindow
     {
         get => _title;
         set => SetProperty(ref _title, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool FadeOnInactive
+    {
+        get => _fadeOnInactive;
+        set => SetProperty(ref _fadeOnInactive, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool CloseOnFadeOut
+    {
+        get => _closeOnFadeOut;
+        set => SetProperty(ref _closeOnFadeOut, value);
     }
 
     /// <inheritdoc/>

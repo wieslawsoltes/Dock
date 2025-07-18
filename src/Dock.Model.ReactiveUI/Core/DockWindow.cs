@@ -54,6 +54,14 @@ public partial class DockWindow : ReactiveBase, IDockWindow
     public partial string Title { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool FadeOnInactive { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool CloseOnFadeOut { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public partial IDockable? Owner { get; set; }
 

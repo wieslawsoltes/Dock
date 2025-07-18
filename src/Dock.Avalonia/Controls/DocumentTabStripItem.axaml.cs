@@ -11,7 +11,9 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Internal;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -93,9 +95,9 @@ public class DocumentTabStripItem : TabStripItem
             _tabStrip = this.FindAncestorOfType<DocumentTabStrip>();
             if (_tabStrip is { } ts && ts.ChromeTabDrag)
             {
-                _pointerCaptured = this.CapturePointer(e.Pointer);
+                _pointerCaptured = e.Pointer.Capture(this);
                 _dragStartPoint = e.GetPosition(ts);
-                _startIndex = ts.ItemContainerGenerator.IndexFromContainer(this);
+                _startIndex = ts.IndexFromContainer(this);
                 _dragTransform = new TranslateTransform();
                 RenderTransform = _dragTransform;
                 _isDragging = false;
@@ -114,7 +116,7 @@ public class DocumentTabStripItem : TabStripItem
 
         if (_dragTransform is { } transform)
         {
-            if (_tabStrip.Orientation == Orientation.Horizontal)
+            if (_tabStrip.Orientation == Avalonia.Layout.Orientation.Horizontal)
                 transform.X = delta.X;
             else
                 transform.Y = delta.Y;

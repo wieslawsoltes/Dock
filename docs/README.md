@@ -32,6 +32,8 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Dependency injection](dock-dependency-injection.md) – Register Dock services with `IServiceCollection`.
 - [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
+- [Custom factories](dock-architecture.md#custom-ifactory-subclasses) – Minimal implementation of a custom factory.
+- [Alternative managers](dock-architecture.md#alternative-managers-and-control-state) – Replace `DockManager` or `DockControlState`.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.

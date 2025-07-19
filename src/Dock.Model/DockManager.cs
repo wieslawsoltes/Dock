@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Strategies;
 
 namespace Dock.Model;
 
@@ -12,6 +14,24 @@ namespace Dock.Model;
 public class DockManager : IDockManager
 {
     private readonly DockService _dockService = new ();
+    private readonly Dictionary<DockOperation, IDockOperationStrategy> _strategies;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockManager"/> class.
+    /// </summary>
+    public DockManager()
+    {
+        _strategies = new Dictionary<DockOperation, IDockOperationStrategy>
+        {
+            { DockOperation.None, new NoneDockOperationStrategy() },
+            { DockOperation.Fill, new FillDockOperationStrategy(_dockService) },
+            { DockOperation.Left, new LeftDockOperationStrategy(_dockService) },
+            { DockOperation.Right, new RightDockOperationStrategy(_dockService) },
+            { DockOperation.Top, new TopDockOperationStrategy(_dockService) },
+            { DockOperation.Bottom, new BottomDockOperationStrategy(_dockService) },
+            { DockOperation.Window, new WindowDockOperationStrategy(_dockService, () => ScreenPosition) }
+        };
+    }
 
     /// <inheritdoc/>
     public DockPoint Position { get; set; }
@@ -39,16 +59,9 @@ public class DockManager : IDockManager
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
     {
-        return operation switch
-        {
-            DockOperation.Fill => _dockService.MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
-            DockOperation.Left => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Right => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Top => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Bottom => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Window => _dockService.DockDockableIntoWindow(sourceDockable, targetDock, ScreenPosition, bExecute),
-            _ => false
-        };
+        return _strategies.TryGetValue(operation, out var strategy)
+            ? strategy.Execute(sourceDockable, sourceDockableOwner, targetDock, bExecute)
+            : false;
     }
 
     private bool DockDockableIntoDock(IDockable sourceDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)

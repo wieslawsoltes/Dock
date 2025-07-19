@@ -1,6 +1,6 @@
-﻿using Dock.Model.Mvvm.Controls;
+﻿using System.Collections.Generic;
 using Avalonia.Media;
-using System.Collections.Generic;
+using Dock.Model.Mvvm.Controls;
 
 namespace Notepad.ViewModels.Documents;
 
@@ -32,6 +32,7 @@ public class FileViewModel : Document
             {
                 _undoStack.Push(_text);
                 SetProperty(ref _text, value);
+                IsModified = true;
             }
         }
     }

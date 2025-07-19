@@ -38,6 +38,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
+    private bool _isModified;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -45,6 +46,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     protected DockableBase()
     {
         _trackingAdapter = new TrackingAdapter();
+        _isModified = false;
     }
 
     /// <inheritdoc/>
@@ -245,6 +247,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canDrop;
         set => SetProperty(ref _canDrop, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool IsModified
+    {
+        get => _isModified;
+        set => SetProperty(ref _isModified, value);
     }
 
     /// <inheritdoc/>

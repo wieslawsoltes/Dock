@@ -136,6 +136,11 @@ public interface IDockable : IControlRecyclingIdProvider
     bool CanDrop { get; set; }
 
     /// <summary>
+    /// Gets or sets whether the dockable has unsaved changes.
+    /// </summary>
+    bool IsModified { get; set; }
+
+    /// <summary>
     /// Called when the dockable is closed.
     /// </summary>
     /// <returns>true to accept the close, and false to cancel the close.</returns>

@@ -153,6 +153,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrop), o => o.CanDrop, (o, v) => o.CanDrop = v);
 
     /// <summary>
+    /// Defines the <see cref="IsModified"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> IsModifiedProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(IsModified), o => o.IsModified, (o, v) => o.IsModified = v);
+
+    /// <summary>
     /// Defines the <see cref="MinWidth"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, double> MinWidthProperty =
@@ -202,6 +208,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
+    private bool _isModified;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -209,6 +216,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     protected DockableBase()
     {
         _trackingAdapter = new TrackingAdapter();
+        _isModified = false;
     }
 
     /// <inheritdoc/>
@@ -436,6 +444,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canDrop;
         set => SetAndRaise(CanDropProperty, ref _canDrop, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("IsModified")]
+    public bool IsModified
+    {
+        get => _isModified;
+        set => SetAndRaise(IsModifiedProperty, ref _isModified, value);
     }
 
     /// <inheritdoc/>

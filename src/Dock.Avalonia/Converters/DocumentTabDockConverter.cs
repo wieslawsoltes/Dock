@@ -28,6 +28,7 @@ public class DocumentTabDockConverter : IValueConverter
             DocumentTabLayout.Left => AC.Dock.Left,
             DocumentTabLayout.Right => AC.Dock.Right,
             DocumentTabLayout.Top => AC.Dock.Top,
+            DocumentTabLayout.TitleBar => AC.Dock.Top,
             _ => AvaloniaProperty.UnsetValue
         };
     }

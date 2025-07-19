@@ -26,6 +26,7 @@ public class DocumentTabOrientationConverter : IValueConverter
             DocumentTabLayout.Left => global::Avalonia.Layout.Orientation.Vertical,
             DocumentTabLayout.Right => global::Avalonia.Layout.Orientation.Vertical,
             DocumentTabLayout.Top => global::Avalonia.Layout.Orientation.Horizontal,
+            DocumentTabLayout.TitleBar => global::Avalonia.Layout.Orientation.Horizontal,
             _ => AvaloniaProperty.UnsetValue
         };
     }

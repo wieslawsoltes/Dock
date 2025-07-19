@@ -54,11 +54,13 @@ public class ConvertersTests
         var resultLeft = DocumentTabOrientationConverter.Instance.Convert(DocumentTabLayout.Left, typeof(LayoutOrientation), null, CultureInfo.InvariantCulture);
         var resultRight = DocumentTabOrientationConverter.Instance.Convert(DocumentTabLayout.Right, typeof(LayoutOrientation), null, CultureInfo.InvariantCulture);
         var resultTop = DocumentTabOrientationConverter.Instance.Convert(DocumentTabLayout.Top, typeof(LayoutOrientation), null, CultureInfo.InvariantCulture);
+        var resultTitle = DocumentTabOrientationConverter.Instance.Convert(DocumentTabLayout.TitleBar, typeof(LayoutOrientation), null, CultureInfo.InvariantCulture);
         var resultInvalid = DocumentTabOrientationConverter.Instance.Convert((DocumentTabLayout)123, typeof(LayoutOrientation), null, CultureInfo.InvariantCulture);
 
         Assert.Equal(LayoutOrientation.Vertical, resultLeft);
         Assert.Equal(LayoutOrientation.Vertical, resultRight);
         Assert.Equal(LayoutOrientation.Horizontal, resultTop);
+        Assert.Equal(LayoutOrientation.Horizontal, resultTitle);
         Assert.Equal(AvaloniaProperty.UnsetValue, resultInvalid);
     }
 
@@ -68,11 +70,13 @@ public class ConvertersTests
         var resultLeft = DocumentTabDockConverter.Instance.Convert(DocumentTabLayout.Left, typeof(AC.Dock), null, CultureInfo.InvariantCulture);
         var resultRight = DocumentTabDockConverter.Instance.Convert(DocumentTabLayout.Right, typeof(AC.Dock), null, CultureInfo.InvariantCulture);
         var resultTop = DocumentTabDockConverter.Instance.Convert(DocumentTabLayout.Top, typeof(AC.Dock), null, CultureInfo.InvariantCulture);
+        var resultTitle = DocumentTabDockConverter.Instance.Convert(DocumentTabLayout.TitleBar, typeof(AC.Dock), null, CultureInfo.InvariantCulture);
         var resultInvalid = DocumentTabDockConverter.Instance.Convert((DocumentTabLayout)123, typeof(AC.Dock), null, CultureInfo.InvariantCulture);
 
         Assert.Equal(AC.Dock.Left, resultLeft);
         Assert.Equal(AC.Dock.Right, resultRight);
         Assert.Equal(AC.Dock.Top, resultTop);
+        Assert.Equal(AC.Dock.Top, resultTitle);
         Assert.Equal(AvaloniaProperty.UnsetValue, resultInvalid);
     }
 

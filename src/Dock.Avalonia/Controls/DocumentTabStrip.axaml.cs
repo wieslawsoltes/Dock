@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.VisualTree;
-
-using System.Runtime.InteropServices;
-using Dock.Avalonia.Internal;
+using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.VisualTree;
+using Dock.Avalonia.Internal;
 
 namespace Dock.Avalonia.Controls;
 
@@ -28,7 +28,7 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<Control?> DockAdornerHostProperty =
         AvaloniaProperty.Register<DocumentTabStrip, Control?>(nameof(DockAdornerHost));
-    
+
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
     /// </summary>
@@ -40,11 +40,11 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(IsActive));
-    
+
     /// <summary>
     /// Define the <see cref="EnableWindowDrag"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> EnableWindowDragProperty = 
+    public static readonly StyledProperty<bool> EnableWindowDragProperty =
         AvaloniaProperty.Register<DocumentTabStrip, bool>(nameof(EnableWindowDrag));
 
     /// <summary>
@@ -70,7 +70,7 @@ public class DocumentTabStrip : TabStrip
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
     }
-    
+
     /// <summary>
     /// Gets or sets if the window can be dragged by clicking on the tab strip.
     /// </summary>
@@ -207,7 +207,69 @@ public class DocumentTabStrip : TabStrip
                 }
 
                 return allow;
-            });
+            },
+            FloatActiveDocument);
+    }
+
+    private static PixelPoint ApplyMagnetism(HostWindow window, PixelPoint position)
+    {
+        if (!Dock.Settings.DockSettings.EnableWindowMagnetism || window.Window?.Factory is not { HostWindows: var windows })
+        {
+            return position;
+        }
+
+        var snap = Dock.Settings.DockSettings.WindowMagnetDistance;
+        var x = position.X;
+        var y = position.Y;
+        var rect = new Rect(position.X, position.Y, window.Width, window.Height);
+
+        foreach (var host in windows.OfType<HostWindow>())
+        {
+            if (host == window || !host.IsVisible)
+                continue;
+
+            var other = new Rect(host.Position.X, host.Position.Y, host.Width, host.Height);
+            var verticalOverlap = rect.Top < other.Bottom && rect.Bottom > other.Top;
+            var horizontalOverlap = rect.Left < other.Right && rect.Right > other.Left;
+
+            if (verticalOverlap)
+            {
+                if (Math.Abs(rect.Left - other.Right) <= snap)
+                    x = (int)other.Right;
+                else if (Math.Abs(rect.Right - other.Left) <= snap)
+                    x = (int)(other.Left - rect.Width);
+            }
+
+            if (horizontalOverlap)
+            {
+                if (Math.Abs(rect.Top - other.Bottom) <= snap)
+                    y = (int)other.Bottom;
+                else if (Math.Abs(rect.Bottom - other.Top) <= snap)
+                    y = (int)(other.Top - rect.Height);
+            }
+        }
+
+        return new PixelPoint(x, y);
+    }
+
+    private void FloatActiveDocument(PointerPressedEventArgs args)
+    {
+        if (DataContext is Dock.Model.Core.IDock { ActiveDockable: { } dockable, Factory: { } factory } dock)
+        {
+            var before = factory.HostWindows.Count;
+            var screen = this.PointToScreen(args.GetPosition(this));
+            dockable.SetPointerScreenPosition(screen.X, screen.Y);
+            factory.FloatDockable(dockable);
+
+            if (factory.HostWindows.Count > before && factory.HostWindows[^1] is HostWindow host)
+            {
+                var snapped = ApplyMagnetism(host, host.Position);
+                if (snapped != host.Position)
+                {
+                    host.Position = snapped;
+                }
+            }
+        }
     }
 
     private void AttachToWindow()

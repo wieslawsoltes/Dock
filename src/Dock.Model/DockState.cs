@@ -35,24 +35,14 @@ public class DockState : IDockState
                 SaveDockables(rootDock.HiddenDockables);
             }
 
-            if (rootDock.LeftPinnedDockables is { })
+            var alignments = new[] { Alignment.Left, Alignment.Right, Alignment.Top, Alignment.Bottom };
+            foreach (var alignment in alignments)
             {
-                SaveDockables(rootDock.LeftPinnedDockables);
-            }
-
-            if (rootDock.RightPinnedDockables is { })
-            {
-                SaveDockables(rootDock.RightPinnedDockables);
-            }
-
-            if (rootDock.TopPinnedDockables is { })
-            {
-                SaveDockables(rootDock.TopPinnedDockables);
-            }
-
-            if (rootDock.BottomPinnedDockables is { })
-            {
-                SaveDockables(rootDock.BottomPinnedDockables);
+                var list = AlignmentHelper.GetAlignmentList(rootDock, alignment);
+                if (list is { Count: > 0 })
+                {
+                    SaveDockables(list);
+                }
             }
 
             if (rootDock.Windows is { })
@@ -77,24 +67,14 @@ public class DockState : IDockState
                 RestoreDockables(rootDock.HiddenDockables);
             }
 
-            if (rootDock.LeftPinnedDockables is { })
+            var alignments = new[] { Alignment.Left, Alignment.Right, Alignment.Top, Alignment.Bottom };
+            foreach (var alignment in alignments)
             {
-                RestoreDockables(rootDock.LeftPinnedDockables);
-            }
-
-            if (rootDock.RightPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.RightPinnedDockables);
-            }
-
-            if (rootDock.TopPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.TopPinnedDockables);
-            }
-
-            if (rootDock.BottomPinnedDockables is { })
-            {
-                RestoreDockables(rootDock.BottomPinnedDockables);
+                var list = AlignmentHelper.GetAlignmentList(rootDock, alignment);
+                if (list is { Count: > 0 })
+                {
+                    RestoreDockables(list);
+                }
             }
 
             if (rootDock.Windows is { })

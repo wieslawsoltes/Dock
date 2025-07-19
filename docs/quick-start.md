@@ -87,3 +87,19 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```
 
 The window should show a single document hosted by `DockControl`. See the other guides for more advanced layouts.
+
+## Layout templates
+
+Dock includes helper methods that create common layouts for you. The `LayoutTemplates` class provides:
+
+- `CreateSingleDocumentLayout(IFactory factory)` – a single document dock.
+- `CreateSingleDocumentWithOutputLayout(IFactory factory)` – adds a bottom output pane.
+- `CreateTwoPaneLayout(IFactory factory)` – two horizontal document docks.
+- `CreateMultiWindowLayout(IFactory factory)` – two separate windows.
+
+You can use these helpers instead of manually composing the docks:
+
+```csharp
+var layout = LayoutTemplates.CreateSingleDocumentLayout(factory);
+factory.InitLayout(layout);
+```

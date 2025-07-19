@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model;
 
 namespace DockMvvmSample.ViewModels;
 
@@ -70,12 +71,14 @@ public class MainWindowViewModel : ObservableObject
             }
         }
 
-        var layout = _factory?.CreateLayout();
-        if (layout is not null)
+        if (_factory is null)
         {
-            _factory?.InitLayout(layout);
-            Layout = layout;
+            return;
         }
+
+        var layout = LayoutTemplates.CreateSingleDocumentLayout(_factory);
+        _factory.InitLayout(layout);
+        Layout = layout;
     }
 
     private void DebugFactoryEvents(IFactory factory)

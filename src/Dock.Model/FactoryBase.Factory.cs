@@ -36,7 +36,7 @@ public abstract partial class FactoryBase
     public abstract IList<IHostWindow> HostWindows { get; }
 
     /// <inheritdoc/>
-    public abstract IList<T> CreateList<T>(params T[] items);
+    public abstract IList<T> CreateList<T>(params T[] items) where T : IDockable;
 
     /// <inheritdoc/>
     public abstract IRootDock CreateRootDock();

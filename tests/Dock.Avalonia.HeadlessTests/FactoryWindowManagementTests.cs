@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -13,7 +14,7 @@ public class FactoryWindowManagementTests
     public void AddWindow_Adds_To_Root_Windows()
     {
         var factory = new Factory();
-        var root = new RootDock { Windows = factory.CreateList<IDockWindow>() };
+        var root = new RootDock { Windows = new List<IDockWindow>() };
         root.Factory = factory;
 
         var window = new DockWindow();
@@ -28,7 +29,7 @@ public class FactoryWindowManagementTests
     public void InsertWindow_Inserts_Window_At_Index()
     {
         var factory = new Factory();
-        var root = new RootDock { Windows = factory.CreateList<IDockWindow>() };
+        var root = new RootDock { Windows = new List<IDockWindow>() };
         root.Factory = factory;
 
         var w1 = new DockWindow();
@@ -45,7 +46,7 @@ public class FactoryWindowManagementTests
     public void RemoveWindow_Removes_From_Root()
     {
         var factory = new Factory();
-        var root = new RootDock { Windows = factory.CreateList<IDockWindow>() };
+        var root = new RootDock { Windows = new List<IDockWindow>() };
         root.Factory = factory;
 
         var window = new DockWindow();

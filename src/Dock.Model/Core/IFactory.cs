@@ -99,10 +99,10 @@ public partial interface IFactory
     /// <summary>
     /// Creates list of type <see cref="IList{T}"/>.
     /// </summary>
-    /// <typeparam name="T">The list item type.</typeparam>
+    /// <typeparam name="T">The dockable type.</typeparam>
     /// <param name="items">The initial list items.</param>
     /// <returns>The new instance of <see cref="IList{T}"/>.</returns>
-    IList<T> CreateList<T>(params T[] items);
+    IList<T> CreateList<T>(params T[] items) where T : IDockable;
 
     /// <summary>
     /// Creates <see cref="IRootDock"/>.
@@ -202,7 +202,7 @@ public partial interface IFactory
     /// <param name="id">The dockable id.</param>
     /// <typeparam name="T">The dockable return type.</typeparam>
     /// <returns>The located dockable.</returns>
-    T? GetDockable<T>(string id) where T: class, IDockable;
+    T? GetDockable<T>(string id) where T : class, IDockable;
 
     /// <summary>
     /// Initialize layout.
@@ -386,7 +386,7 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>
     void CloseDockable(IDockable dockable);
-        
+
     /// <summary>
     /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
     /// </summary>

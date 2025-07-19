@@ -44,6 +44,13 @@ DefaultHostWindowLocator = () => new HostWindow();
 
 The fallback ensures floating windows still open even if a key is missing.
 
+## Host window factory
+
+`FactoryBase` automatically falls back to `HostWindowFactory.CreateDefaultHostWindow()`
+when no locators are registered. Platform implementations can also expose
+`CreateOwnedHostWindow(Window owner)` to return a host bound to an existing
+window. `Dock.Avalonia` provides defaults for these helpers.
+
 ## Recommended setup
 
 1. Populate `HostWindowLocator` inside `InitLayout` or during application

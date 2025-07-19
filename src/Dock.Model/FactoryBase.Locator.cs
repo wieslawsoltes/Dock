@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Windows;
 
 namespace Dock.Model;
 
@@ -62,7 +63,12 @@ public abstract partial class FactoryBase
             return locator?.Invoke();
         }
 
-        return DefaultHostWindowLocator?.Invoke();
+        if (DefaultHostWindowLocator is { } defaultLocator)
+        {
+            return defaultLocator();
+        }
+
+        return HostWindowFactory.CreateDefaultHostWindow();
     }
 
     /// <inheritdoc/>

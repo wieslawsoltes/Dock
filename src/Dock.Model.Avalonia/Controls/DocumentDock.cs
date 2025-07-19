@@ -50,6 +50,8 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     public DocumentDock()
     {
         CreateDocument = new Command(CreateNewDocument);
+        NextDocument = new Command(ActivateNextDocument);
+        PreviousDocument = new Command(ActivatePreviousDocument);
     }
 
     /// <summary>
@@ -160,5 +162,37 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         Factory?.AddDockable(this, tool);
         Factory?.SetActiveDockable(tool);
         Factory?.SetFocusedDockable(this, tool);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? NextDocument { get; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? PreviousDocument { get; }
+
+    private void ActivateNextDocument()
+    {
+        ActivateDocumentByOffset(1);
+    }
+
+    private void ActivatePreviousDocument()
+    {
+        ActivateDocumentByOffset(-1);
+    }
+
+    private void ActivateDocumentByOffset(int offset)
+    {
+        if (VisibleDockables is { Count: > 0 } dockables)
+        {
+            var index = ActiveDockable is { } active ? dockables.IndexOf(active) : 0;
+            var nextIndex = (index + offset + dockables.Count) % dockables.Count;
+            var next = dockables[nextIndex];
+            Factory?.SetActiveDockable(next);
+            Factory?.SetFocusedDockable(this, next);
+        }
     }
 }

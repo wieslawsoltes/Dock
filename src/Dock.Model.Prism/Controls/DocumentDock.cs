@@ -3,10 +3,10 @@
 using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
-using Prism.Commands;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Prism.Core;
+using Prism.Commands;
 
 namespace Dock.Model.Prism.Controls;
 
@@ -25,6 +25,8 @@ public class DocumentDock : DockBase, IDocumentDock
     public DocumentDock()
     {
         CreateDocument = new DelegateCommand(CreateNewDocument);
+        NextDocument = new DelegateCommand(ActivateNextDocument);
+        PreviousDocument = new DelegateCommand(ActivatePreviousDocument);
     }
 
     /// <inheritdoc/>
@@ -92,5 +94,35 @@ public class DocumentDock : DockBase, IDocumentDock
         Factory?.AddDockable(this, tool);
         Factory?.SetActiveDockable(tool);
         Factory?.SetFocusedDockable(this, tool);
+    }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? NextDocument { get; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? PreviousDocument { get; }
+
+    private void ActivateNextDocument()
+    {
+        ActivateDocumentByOffset(1);
+    }
+
+    private void ActivatePreviousDocument()
+    {
+        ActivateDocumentByOffset(-1);
+    }
+
+    private void ActivateDocumentByOffset(int offset)
+    {
+        if (VisibleDockables is { Count: > 0 } dockables)
+        {
+            var index = ActiveDockable is { } active ? dockables.IndexOf(active) : 0;
+            var nextIndex = (index + offset + dockables.Count) % dockables.Count;
+            var next = dockables[nextIndex];
+            Factory?.SetActiveDockable(next);
+            Factory?.SetFocusedDockable(this, next);
+        }
     }
 }

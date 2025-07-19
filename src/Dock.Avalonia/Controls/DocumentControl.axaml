@@ -16,9 +16,14 @@
 
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
-        <TextBlock Text="{Binding Title}" 
-                   VerticalAlignment="Center"
-                   Padding="2"  />
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    Spacing="2">
+          <ContentPresenter Content="{Binding Icon}" />
+          <TextBlock Text="{Binding Title}"
+                     VerticalAlignment="Center"
+                     Padding="2" />
+        </StackPanel>
       </DataTemplate>
     </Setter>
 

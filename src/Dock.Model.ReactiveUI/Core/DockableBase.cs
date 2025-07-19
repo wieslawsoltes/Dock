@@ -50,6 +50,10 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     public partial string Title { get; set; }
 
     /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial object? Icon { get; set; }
+
+    /// <inheritdoc/>
     [IgnoreDataMember]
     public partial object? Context { get; set; }
 

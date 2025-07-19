@@ -130,5 +130,25 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
 The window will show a document dock flanked by left and bottom tool panes without using XAML or MVVM helpers.
 `DocumentDock` exposes an `AddDocument` method for adding and activating documents in code, while `ToolDock` provides `AddTool` for tool panes.
 
+### Using `LayoutBuilder`
+
+The `LayoutBuilder` class can generate layouts through a fluent API:
+
+```csharp
+var builder = new LayoutBuilder(factory)
+    .AddRootDock()
+    .BeginProportionalDock(Orientation.Horizontal)
+        .AddToolDock("LeftPane", Alignment.Left, leftTool)
+        .AddSplitter()
+        .AddDocumentDock("Documents", documentDock)
+        .AddSplitter()
+        .AddToolDock("BottomPane", Alignment.Bottom, bottomTool)
+    .EndDock();
+
+var root = builder.Build();
+```
+
+`LayoutBuilder` relies on `FactoryBase` methods and works with any factory implementation.
+
 You can find a complete project in the repository under
 [`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

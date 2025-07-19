@@ -60,36 +60,18 @@ public class App : Application
             var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
             var bottomTool = new Tool { Id = "Tool2", Title = "Output" };
 
-            var mainLayout = new ProportionalDock
-            {
-                Orientation = Orientation.Horizontal,
-                VisibleDockables = factory.CreateList<IDockable>(
-                    new ToolDock
-                    {
-                        Id = "LeftPane",
-                        Alignment = Alignment.Left,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(leftTool),
-                        ActiveDockable = leftTool
-                    },
-                    new ProportionalDockSplitter(),
-                    documentDock,
-                    new ProportionalDockSplitter(),
-                    new ToolDock
-                    {
-                        Id = "BottomPane",
-                        Alignment = Alignment.Bottom,
-                        Proportion = 0.25,
-                        VisibleDockables = factory.CreateList<IDockable>(bottomTool),
-                        ActiveDockable = bottomTool
-                    })
-            };
+            var builder = new LayoutBuilder(factory)
+                .AddRootDock()
+                .BeginProportionalDock(Orientation.Horizontal)
+                    .AddToolDock("LeftPane", Alignment.Left, leftTool)
+                    .AddSplitter()
+                    .AddDocumentDock("Documents", documentDock)
+                    .AddSplitter()
+                    .AddToolDock("BottomPane", Alignment.Bottom, bottomTool)
+                .EndDock();
 
-            var root = factory.CreateRootDock();
-            root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
-            root.DefaultDockable = mainLayout;
+            var root = builder.Build();
 
-            factory.InitLayout(root);
             dockControl.Factory = factory;
             dockControl.Layout  = root;
 

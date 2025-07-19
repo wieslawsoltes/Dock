@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="DockChromeSample.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:views="using:DockChromeSample.Views"
+             xmlns:vm="using:DockChromeSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="700" d:DesignHeight="350"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <Grid RowDefinitions="Auto,*" Background="Transparent" DragDrop.AllowDrop="True">
+    <views:MenuView Grid.Row="0" />
+    <DockControl Layout="{Binding Layout}" Margin="4" Grid.Row="1" />
+  </Grid>
+</UserControl>

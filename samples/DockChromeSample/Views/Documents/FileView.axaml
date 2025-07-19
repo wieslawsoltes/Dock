@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="DockChromeSample.Views.Documents.FileView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockChromeSample.ViewModels.Documents"
+             mc:Ignorable="d"
+             d:DesignWidth="300" d:DesignHeight="400"
+             x:CompileBindings="True" x:DataType="vm:FileViewModel">
+  <Grid RowDefinitions="*,Auto">
+    <TextBox BorderThickness="0"
+             AcceptsReturn="True"
+             AcceptsTab="True"
+             FontFamily="{Binding FontFamily}"
+             FontWeight="Light"
+             FontSize="14"
+             SelectionStart="{Binding SelectionStart, Mode=TwoWay}"
+             SelectionEnd="{Binding SelectionEnd, Mode=TwoWay}"
+             CaretIndex="{Binding CaretIndex, Mode=TwoWay}"
+             TextWrapping="{Binding TextWrapping}"
+             Text="{Binding Text}"
+             Grid.Row="0" />
+    <Grid ColumnDefinitions="*,Auto" Grid.Row="1" IsVisible="{Binding ShowStatusBar}">
+      <TextBlock Text="{Binding Path}"
+                 Margin="2"
+                 VerticalAlignment="Center"
+                 TextWrapping="Wrap"
+                 Grid.Column="0" />
+      <TextBlock Text="{Binding Encoding}"
+                 Margin="2"
+                 VerticalAlignment="Center"
+                 TextWrapping="Wrap"
+                 Grid.Column="1" />
+    </Grid>
+  </Grid>
+</UserControl>

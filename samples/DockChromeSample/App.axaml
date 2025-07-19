@@ -1,0 +1,42 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockChromeSample"
+             x:Class="DockChromeSample.App"
+             Name="DockChromeSample"
+             RequestedThemeVariant="Light">
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ControlRecycling x:Key="ControlRecyclingKey" />
+  </Application.Resources>
+
+  <Application.Styles>
+
+    <FluentTheme />
+
+    <!--<StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />-->
+    <DockFluentTheme />
+
+    <Style Selector="DockControl">
+      <Setter Property="(ControlRecyclingDataTemplate.ControlRecycling)" Value="{StaticResource ControlRecyclingKey}" />
+    </Style>
+
+    <Style Selector="DocumentControl">
+      <Setter Property="HeaderTemplate">
+        <DataTemplate DataType="core:IDockable">
+          <StackPanel Orientation="Horizontal">
+            <PathIcon Data="{Binding Icon}" Width="16" Height="16" Margin="0" />
+            <TextBlock Text="{Binding Title}"
+                       VerticalAlignment="Center"
+                       Padding="4,0,0,0" />
+          </StackPanel>
+        </DataTemplate>
+      </Setter>
+    </Style>
+
+  </Application.Styles>
+
+</Application>

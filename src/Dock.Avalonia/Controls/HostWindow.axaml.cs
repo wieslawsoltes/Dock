@@ -36,7 +36,7 @@ public class HostWindow : Window, IHostWindow
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> IsToolWindowProperty = 
+    public static readonly StyledProperty<bool> IsToolWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(IsToolWindow));
 
     /// <summary>
@@ -50,7 +50,13 @@ public class HostWindow : Window, IHostWindow
     /// </summary>
     public static readonly StyledProperty<bool> DocumentChromeControlsWholeWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(DocumentChromeControlsWholeWindow));
-    
+
+    /// <summary>
+    /// Define <see cref="ShowTabsInTitleBar"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowTabsInTitleBarProperty =
+        AvaloniaProperty.Register<HostWindow, bool>(nameof(ShowTabsInTitleBar));
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindow);
 
@@ -79,6 +85,15 @@ public class HostWindow : Window, IHostWindow
     {
         get => GetValue(DocumentChromeControlsWholeWindowProperty);
         set => SetValue(DocumentChromeControlsWholeWindowProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets if document tabs are shown in the title bar.
+    /// </summary>
+    public bool ShowTabsInTitleBar
+    {
+        get => GetValue(ShowTabsInTitleBarProperty);
+        set => SetValue(ShowTabsInTitleBarProperty, value);
     }
 
     /// <inheritdoc/>
@@ -337,11 +352,14 @@ public class HostWindow : Window, IHostWindow
     {
         switch (dockable)
         {
-            case ITool: return 1;
-            case IDocument: return 1;
+            case ITool:
+                return 1;
+            case IDocument:
+                return 1;
             case IDock dock:
                 return dock.VisibleDockables?.Sum(CountVisibleToolsAndDocuments) ?? 0;
-            default: return 0;
+            default:
+                return 0;
         }
     }
 

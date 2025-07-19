@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ControlRecyclingSample.MainWindow"
+        Title="Control Recycling Sample"
+        Width="800" Height="600">
+  <DockControl x:Name="Dock" InitializeLayout="True" InitializeFactory="True">
+    <RootDock>
+      <DocumentDock>
+        <Document Id="Doc1" Title="Welcome">
+          <TextBox Text="Edit me" />
+        </Document>
+      </DocumentDock>
+      <ToolDock>
+        <Tool Id="Tool1" Title="Settings">
+          <Slider Minimum="0" Maximum="100" Value="40" />
+        </Tool>
+      </ToolDock>
+    </RootDock>
+  </DockControl>
+</Window>

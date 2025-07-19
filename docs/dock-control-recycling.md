@@ -81,6 +81,6 @@ Control recycling also applies when the layout is declared purely in XAML. Docka
 </DockControl>
 ```
 
-With recycling enabled the `Document` and `Tool` above keep their content each time they are reopened or toggled. Even without bindings the `TextBox` and `Slider` values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML‑only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples.
+With recycling enabled the `Document` and `Tool` above keep their content each time they are reopened or toggled. Even without bindings the `TextBox` and `Slider` values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML‑only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples. The [ControlRecyclingSample](../samples/ControlRecyclingSample) project shows the basic setup in action.
 
 For an overview of all guides see the [documentation index](README.md).

@@ -34,6 +34,44 @@ public abstract partial class FactoryBase
         }
     }
 
+    /// <summary>
+    /// Initializes layout using provided <see cref="FactoryOptions"/>.
+    /// </summary>
+    /// <param name="layout">The layout to initialize.</param>
+    /// <param name="options">The options to apply.</param>
+    public virtual void InitLayout(IDockable layout, FactoryOptions? options)
+    {
+        if (options != null)
+        {
+            if (options.ContextLocator != null)
+            {
+                ContextLocator = options.ContextLocator;
+            }
+
+            if (options.DockableLocator != null)
+            {
+                DockableLocator = options.DockableLocator;
+            }
+
+            if (options.HostWindowLocator != null)
+            {
+                HostWindowLocator = options.HostWindowLocator;
+            }
+
+            if (options.HideToolsOnClose != null)
+            {
+                HideToolsOnClose = options.HideToolsOnClose.Value;
+            }
+
+            if (options.HideDocumentsOnClose != null)
+            {
+                HideDocumentsOnClose = options.HideDocumentsOnClose.Value;
+            }
+        }
+
+        InitLayout(layout);
+    }
+
     /// <inheritdoc/>
     public virtual void InitDockable(IDockable dockable, IDockable? owner)
     {

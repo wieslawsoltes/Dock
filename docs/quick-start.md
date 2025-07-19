@@ -55,6 +55,14 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            return root;
        }
    }
+  ```
+
+   Alternatively you can build the same layout using `DockLayoutBuilder`:
+
+   ```csharp
+   var layout = new DockLayoutBuilder(new DockFactory())
+       .WithDocument(new Document { Id = "Doc1", Title = "Document" })
+       .Build();
    ```
 
    Initialize this layout in `MainWindow.axaml.cs`:

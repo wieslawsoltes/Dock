@@ -113,6 +113,17 @@ public override IRootDock CreateLayout()
 }
 ```
 
+### Using DockLayoutBuilder
+
+`DockLayoutBuilder` wraps the factory methods in a fluent API. The same layout can be created as:
+
+```csharp
+var layout = new DockLayoutBuilder(new DockFactory())
+    .WithDocument(new DocumentViewModel { Id = "Document1", Title = "Document1" })
+    .WithTool(new Tool1ViewModel { Id = "Tool1", Title = "Tool1" }, Alignment.Left)
+    .Build();
+```
+
 ## Docking operations
 
 `FactoryBase` exposes many methods to manipulate the layout at runtime. Some of the most useful ones are:

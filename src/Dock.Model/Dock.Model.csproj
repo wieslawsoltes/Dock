@@ -14,6 +14,7 @@
   <Import Project="..\..\build\SignAssembly.props" />
   <Import Project="..\..\build\SourceLink.props" />
   <Import Project="..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\build\Microsoft.Extensions.Logging.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj" />

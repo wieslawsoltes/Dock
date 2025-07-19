@@ -46,6 +46,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
 - [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.
+- [Pinned window sample](pinned-window-sample.md) – Demonstrates the overlay in action.
 - [Floating window owner](dock-window-owner.md) – Keep floating windows in front of the main window.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.

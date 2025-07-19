@@ -8,3 +8,6 @@ DockSettings.UsePinnedDockWindow = true;
 ```
 
 When enabled the `PinnedDockControl` places the preview content inside a lightweight `PinnedDockWindow`. The window follows the host layout and closes automatically when the tool is hidden.
+
+See [PinnedWindowSample](pinned-window-sample.md) for a project that enables this setting and shows the resulting behaviour.
+

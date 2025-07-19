@@ -21,7 +21,7 @@ public class FactoryWindowTests
         Assert.IsType<DockWindow>(window);
         var root = Assert.IsAssignableFrom<IRootDock>(window!.Layout);
         Assert.Single(root.VisibleDockables!);
-        var docDock = Assert.IsType<DocumentDock>(root.VisibleDockables[0]);
+        var docDock = Assert.IsType<DocumentDock>(root.VisibleDockables![0]);
         Assert.Contains(document, docDock.VisibleDockables!);
     }
 
@@ -35,6 +35,6 @@ public class FactoryWindowTests
         Assert.NotNull(window);
         var root = Assert.IsAssignableFrom<IRootDock>(window!.Layout);
         Assert.Single(root.VisibleDockables!);
-        Assert.Same(toolDock, root.VisibleDockables[0]);
+        Assert.Same(toolDock, root.VisibleDockables![0]);
     }
 }

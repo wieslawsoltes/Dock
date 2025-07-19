@@ -28,7 +28,7 @@ public class DockWindowTests
         public void GetPosition(out double x, out double y) { x=GetX; y=GetY; }
         public void SetSize(double width, double height) { SetSizeValue=(width,height); }
         public void GetSize(out double width, out double height) { width=GetW; height=GetH; }
-        public void SetTitle(string title) { Title = title; }
+        public void SetTitle(string? title) { Title = title; }
         public void SetLayout(IDock layout) { Layout = layout; }
     }
 

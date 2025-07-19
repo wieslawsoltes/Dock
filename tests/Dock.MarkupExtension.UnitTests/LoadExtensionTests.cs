@@ -51,5 +51,5 @@ public class LoadExtensionTests
 
 internal class UriContext : IUriContext
 {
-    public Uri? BaseUri { get; set; }
+    public Uri BaseUri { get; set; } = null!;
 }

@@ -268,4 +268,22 @@ public interface IDockable : IControlRecyclingIdProvider
     /// <param name="x">The pointer x axis position.</param>
     /// <param name="y">The pointer y axis position.</param>
     void OnPointerScreenPositionChanged(double x, double y);
+
+    /// <summary>
+    /// Gets or sets tab index for MVVM based tab reordering.
+    /// </summary>
+    int TabIndex { get; set; }
+
+    /// <summary>
+    /// Called when tab index is about to change during drag reordering.
+    /// </summary>
+    /// <param name="newIndex">The target index.</param>
+    void OnTabIndexChanging(int newIndex);
+
+    /// <summary>
+    /// Called after tab index changed due to drag reordering.
+    /// </summary>
+    /// <param name="oldIndex">The previous index.</param>
+    /// <param name="newIndex">The new index.</param>
+    void OnTabIndexChanged(int oldIndex, int newIndex);
 }

@@ -31,6 +31,12 @@ public interface IDocumentDock : IDock
     DocumentTabLayout TabsLayout { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether tab dragged outside of the strip
+    /// should be removed.
+    /// </summary>
+    bool RemoveTabOnDragOut { get; set; }
+
+    /// <summary>
     /// Adds the specified document to this dock and activates it.
     /// </summary>
     /// <param name="document">The document to add.</param>

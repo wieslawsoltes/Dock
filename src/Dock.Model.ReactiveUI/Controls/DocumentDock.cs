@@ -52,6 +52,10 @@ public partial class DocumentDock : DockBase, IDocumentDock
         set => this.RaiseAndSetIfChanged(ref _tabsLayout, value);
     }
 
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool RemoveTabOnDragOut { get; set; }
+
     private void CreateNewDocument()
     {
         if (DocumentFactory is { } factory)

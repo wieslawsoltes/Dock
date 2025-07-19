@@ -5,21 +5,20 @@
 ## Why use DockManager?
 
 - The manager centralises all drag-and-drop logic, keeping `DockControl` free from layout code.
-- It exposes the `PreventSizeConflicts` property which blocks two fixed-size tools from being docked together.
+- The manager is configured via `DockManagerOptions` which includes the `PreventSizeConflicts` flag to block docking tools with incompatible fixed sizes.
 - The manager calls back into the factory so your view models are updated consistently.
 
 ## Basic usage
 
-`DockControl` automatically creates a `DockManager` when constructed. To use your own instance set the `DockManager` property before displaying the control:
+`DockControl` automatically creates a `DockManager` with default options. To customise the behaviour pass an options object to the control constructor:
 
 ```csharp
-var dockManager = new DockManager
+var options = new DockManagerOptions
 {
-    PreventSizeConflicts = true
+    PreventSizeConflicts = false
 };
-var dockControl = new DockControl
+var dockControl = new DockControl(options)
 {
-    DockManager = dockManager,
     Layout = factory.CreateLayout()
 };
 ```

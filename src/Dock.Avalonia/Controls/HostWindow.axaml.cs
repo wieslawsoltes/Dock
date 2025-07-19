@@ -29,6 +29,7 @@ public class HostWindow : Window, IHostWindow
 {
     private readonly DockManager _dockManager;
     private readonly HostWindowState _hostWindowState;
+    private readonly DockManagerOptions _options;
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
     private bool _mouseDown, _draggingWindow;
@@ -94,14 +95,24 @@ public class HostWindow : Window, IHostWindow
     public IDockWindow? Window { get; set; }
 
     /// <summary>
-    /// Initializes new instance of the <see cref="HostWindow"/> class.
+    /// Initializes a new instance of the <see cref="HostWindow"/> class.
     /// </summary>
     public HostWindow()
+        : this(new DockManagerOptions())
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HostWindow"/> class with options.
+    /// </summary>
+    /// <param name="options">The dock manager options.</param>
+    public HostWindow(DockManagerOptions options)
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
 
-        _dockManager = new DockManager();
+        _options = options;
+        _dockManager = new DockManager(options);
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }

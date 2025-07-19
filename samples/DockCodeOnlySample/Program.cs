@@ -9,6 +9,7 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Dock.Model;
 
 namespace DockCodeOnlySample;
 
@@ -36,7 +37,10 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var dockControl = new DockControl();
+            var dockControl = new DockControl(new DockManagerOptions
+            {
+                PreventSizeConflicts = false
+            });
 
             var factory = new Factory();
 

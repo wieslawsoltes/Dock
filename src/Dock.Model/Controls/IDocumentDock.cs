@@ -41,4 +41,14 @@ public interface IDocumentDock : IDock
     /// </summary>
     /// <param name="tool">The tool to add.</param>
     void AddTool(IDockable tool);
+
+    /// <summary>
+    /// Activates the next document in <see cref="IDock.VisibleDockables"/>.
+    /// </summary>
+    ICommand? NextDocument { get; }
+
+    /// <summary>
+    /// Activates the previous document in <see cref="IDock.VisibleDockables"/>.
+    /// </summary>
+    ICommand? PreviousDocument { get; }
 }

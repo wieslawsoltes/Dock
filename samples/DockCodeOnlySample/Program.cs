@@ -4,8 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
-using Dock.Avalonia.Themes;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
@@ -54,7 +54,8 @@ public class App : Application
             };
 
             var document = new Document { Id = "Doc1", Title = "Document 1" };
-            documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
+            var document2 = new Document { Id = "Doc2", Title = "Document 2" };
+            documentDock.VisibleDockables = factory.CreateList<IDockable>(document, document2);
             documentDock.ActiveDockable = document;
 
             var leftTool = new Tool { Id = "Tool1", Title = "Tool 1" };
@@ -91,7 +92,7 @@ public class App : Application
 
             factory.InitLayout(root);
             dockControl.Factory = factory;
-            dockControl.Layout  = root;
+            dockControl.Layout = root;
 
             desktop.MainWindow = new Window
             {

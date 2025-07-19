@@ -24,6 +24,7 @@ public partial class RootDock : DockBase, IRootDock
         _isFocusableRoot = true;
         ShowWindows = ReactiveCommand.Create(() => _navigateAdapter.ShowWindows());
         ExitWindows = ReactiveCommand.Create(() => _navigateAdapter.ExitWindows());
+        ResetLayout = ReactiveCommand.Create(() => Factory?.ResetLayout(this));
     }
 
     /// <inheritdoc/>
@@ -69,4 +70,8 @@ public partial class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ExitWindows { get; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand ResetLayout { get; }
 }

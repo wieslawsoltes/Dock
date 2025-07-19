@@ -202,13 +202,19 @@ public partial interface IFactory
     /// <param name="id">The dockable id.</param>
     /// <typeparam name="T">The dockable return type.</typeparam>
     /// <returns>The located dockable.</returns>
-    T? GetDockable<T>(string id) where T: class, IDockable;
+    T? GetDockable<T>(string id) where T : class, IDockable;
 
     /// <summary>
     /// Initialize layout.
     /// </summary>
     /// <param name="layout">The layout to initialize.</param>
     void InitLayout(IDockable layout);
+
+    /// <summary>
+    /// Reset layout to its initial state.
+    /// </summary>
+    /// <param name="root">The root dock.</param>
+    void ResetLayout(IRootDock root);
 
     /// <summary>
     /// Initialize dockable.
@@ -386,7 +392,7 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to remove.</param>
     void CloseDockable(IDockable dockable);
-        
+
     /// <summary>
     /// Calls <see cref="IFactory.CloseDockable"/> on all <see cref="IDock.VisibleDockables"/> of the dockable owner, excluding the dockable itself.
     /// </summary>

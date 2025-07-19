@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Plugins;
 
 namespace Dock.Model;
 
@@ -198,4 +200,14 @@ public abstract partial class FactoryBase
             }
         }
     }
+
+    /// <summary>
+    /// Loads <see cref="IDockModule"/> implementations from assemblies.
+    /// </summary>
+    /// <param name="assemblies">Assemblies to scan.</param>
+    public virtual void LoadModules(IEnumerable<Assembly> assemblies)
+    {
+        ModuleLoader.RegisterModules(assemblies, this);
+    }
 }
+

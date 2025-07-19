@@ -20,6 +20,7 @@
           <Panel x:Name="PART_MouseTracker" Height="1" VerticalAlignment="Top" />
           <Panel x:Name="PART_Container">
             <Border x:Name="PART_Background" Background="{TemplateBinding Background}" />
+            <ContentPresenter x:Name="PART_TabStripHost" />
             <CaptionButtons x:Name="PART_CaptionButtons" VerticalAlignment="Top" HorizontalAlignment="Right" Foreground="{TemplateBinding Foreground}" />
           </Panel>
         </Panel>

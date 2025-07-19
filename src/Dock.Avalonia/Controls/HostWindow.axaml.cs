@@ -513,4 +513,16 @@ public class HostWindow : Window, IHostWindow
     {
         DataContext = layout;
     }
+
+    /// <summary>
+    /// Sets the tab strip displayed in the window title bar.
+    /// </summary>
+    /// <param name="tabStrip">The tab strip control.</param>
+    public void SetTitleBarTabStrip(Control? tabStrip)
+    {
+        if (_hostWindowTitleBar is { })
+        {
+            _hostWindowTitleBar.TabStrip = tabStrip;
+        }
+    }
 }

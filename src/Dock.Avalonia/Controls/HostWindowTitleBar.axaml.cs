@@ -14,9 +14,28 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="HostWindowTitleBar"/> xaml.
 /// </summary>
 [TemplatePart("PART_Background", typeof(Control))]
+[TemplatePart("PART_TabStripHost", typeof(ContentPresenter))]
 public class HostWindowTitleBar : TitleBar
 {
     internal Control? BackgroundControl { get; private set; }
+    internal ContentPresenter? TabStripHost { get; private set; }
+    private Control? _tabStrip;
+
+    /// <summary>
+    /// Gets or sets the tab strip displayed in the title bar.
+    /// </summary>
+    public Control? TabStrip
+    {
+        get => _tabStrip;
+        set
+        {
+            _tabStrip = value;
+            if (TabStripHost is { })
+            {
+                TabStripHost.Content = value;
+            }
+        }
+    }
 
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindowTitleBar);
@@ -27,5 +46,10 @@ public class HostWindowTitleBar : TitleBar
         base.OnApplyTemplate(e);
 
         BackgroundControl = e.NameScope.Find<Control>("PART_Background");
+        TabStripHost = e.NameScope.Find<ContentPresenter>("PART_TabStripHost");
+        if (TabStripHost is { })
+        {
+            TabStripHost.Content = TabStrip;
+        }
     }
 }

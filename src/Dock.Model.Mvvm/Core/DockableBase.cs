@@ -47,6 +47,11 @@ public abstract class DockableBase : ReactiveBase, IDockable
         _trackingAdapter = new TrackingAdapter();
     }
 
+    /// <summary>
+    /// Gets tracking adapter instance.
+    /// </summary>
+    public ITrackingAdapter TrackingAdapter => _trackingAdapter;
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public string Id
@@ -262,92 +267,4 @@ public abstract class DockableBase : ReactiveBase, IDockable
     }
 
     /// <inheritdoc/>
-    public void GetVisibleBounds(out double x, out double y, out double width, out double height)
-    {
-        _trackingAdapter.GetVisibleBounds(out x, out y, out width, out height);
-    }
-
-    /// <inheritdoc/>
-    public void SetVisibleBounds(double x, double y, double width, double height)
-    {
-        _trackingAdapter.SetVisibleBounds(x, y, width, height);
-        OnVisibleBoundsChanged(x, y, width, height);
-    }
-
-    /// <inheritdoc/>
-    public virtual void OnVisibleBoundsChanged(double x, double y, double width, double height)
-    {
-    }
-
-    /// <inheritdoc/>
-    public void GetPinnedBounds(out double x, out double y, out double width, out double height)
-    {
-        _trackingAdapter.GetPinnedBounds(out x, out y, out width, out height);
-    }
-
-    /// <inheritdoc/>
-    public void SetPinnedBounds(double x, double y, double width, double height)
-    {
-        _trackingAdapter.SetPinnedBounds(x, y, width, height);
-        OnPinnedBoundsChanged(x, y, width, height);
-    }
-
-    /// <inheritdoc/>
-    public virtual void OnPinnedBoundsChanged(double x, double y, double width, double height)
-    {
-    }
-
-    /// <inheritdoc/>
-    public void GetTabBounds(out double x, out double y, out double width, out double height)
-    {
-        _trackingAdapter.GetTabBounds(out x, out y, out width, out height);
-    }
-
-    /// <inheritdoc/>
-    public void SetTabBounds(double x, double y, double width, double height)
-    {
-        _trackingAdapter.SetTabBounds(x, y, width, height);
-        OnTabBoundsChanged(x, y, width, height);
-    }
-
-    /// <inheritdoc/>
-    public virtual void OnTabBoundsChanged(double x, double y, double width, double height)
-    {
-    }
-
-    /// <inheritdoc/>
-    public void GetPointerPosition(out double x, out double y)
-    {
-        _trackingAdapter.GetPointerPosition(out x, out y);
-    }
-
-    /// <inheritdoc/>
-    public void SetPointerPosition(double x, double y)
-    {
-        _trackingAdapter.SetPointerPosition(x, y);
-        OnPointerPositionChanged(x, y);
-    }
-
-    /// <inheritdoc/>
-    public virtual void OnPointerPositionChanged(double x, double y)
-    {
-    }
-
-    /// <inheritdoc/>
-    public void GetPointerScreenPosition(out double x, out double y)
-    {
-        _trackingAdapter.GetPointerScreenPosition(out x, out y);
-    }
-
-    /// <inheritdoc/>
-    public void SetPointerScreenPosition(double x, double y)
-    {
-        _trackingAdapter.SetPointerScreenPosition(x, y);
-        OnPointerScreenPositionChanged(x, y);
-    }
-
-    /// <inheritdoc/>
-    public virtual void OnPointerScreenPositionChanged(double x, double y)
-    {
-    }
 }

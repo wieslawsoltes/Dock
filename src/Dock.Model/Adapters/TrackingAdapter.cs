@@ -7,7 +7,7 @@ namespace Dock.Model.Adapters;
 /// <summary>
 /// Tracking adapter for the <see cref="IDockable"/>.
 /// </summary>
-public class TrackingAdapter
+public class TrackingAdapter : ITrackingAdapter
 {
     private double _xVisible;
     private double _yVisible;

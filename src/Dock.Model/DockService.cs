@@ -209,8 +209,8 @@ internal class DockService
         {
             if (bExecute)
             {
-                sourceDockableOwner.GetVisibleBounds(out _, out _, out var ownerWidth, out var ownerHeight);
-                sourceDockable.GetVisibleBounds(out _, out _, out var width, out var height);
+                sourceDockableOwner.TrackingAdapter.GetVisibleBounds(out _, out _, out var ownerWidth, out var ownerHeight);
+                sourceDockable.TrackingAdapter.GetVisibleBounds(out _, out _, out var width, out var height);
                 var x = screenPosition.X;
                 var y = screenPosition.Y;
                 if (double.IsNaN(width))

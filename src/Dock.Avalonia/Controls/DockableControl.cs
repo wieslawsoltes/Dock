@@ -176,13 +176,13 @@ public class DockableControl : Panel, IDockableControl
         switch (TrackingMode)
         {
             case TrackingMode.Visible:
-                dockable.SetVisibleBounds(x, y, width, height);
+                dockable.TrackingAdapter.SetVisibleBounds(x, y, width, height);
                 break;
             case TrackingMode.Pinned:
-                dockable.SetPinnedBounds(x, y, width, height);
+                dockable.TrackingAdapter.SetPinnedBounds(x, y, width, height);
                 break;
             case TrackingMode.Tab:
-                dockable.SetTabBounds(x, y, width, height);
+                dockable.TrackingAdapter.SetTabBounds(x, y, width, height);
                 break;
         }
     }
@@ -204,7 +204,7 @@ public class DockableControl : Panel, IDockableControl
         var screenPoint = DockHelpers.GetScreenPoint(this, position);
         var screenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-        dockable.SetPointerPosition(position.X, position.Y);
-        dockable.SetPointerScreenPosition(screenPosition.X, screenPosition.Y);
+        dockable.TrackingAdapter.SetPointerPosition(position.X, position.Y);
+        dockable.TrackingAdapter.SetPointerScreenPosition(screenPosition.X, screenPosition.Y);
     }
 }

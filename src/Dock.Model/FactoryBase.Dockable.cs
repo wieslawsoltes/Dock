@@ -577,8 +577,8 @@ public abstract partial class FactoryBase
 
         UnpinDockable(dockable);
 
-        dock.GetPointerScreenPosition(out var dockPointerScreenX, out var dockPointerScreenY);
-        dockable.GetPointerScreenPosition(out var dockablePointerScreenX, out var dockablePointerScreenY);
+        dock.TrackingAdapter.GetPointerScreenPosition(out var dockPointerScreenX, out var dockPointerScreenY);
+        dockable.TrackingAdapter.GetPointerScreenPosition(out var dockablePointerScreenX, out var dockablePointerScreenY);
 
         if (double.IsNaN(dockablePointerScreenX))
         {
@@ -589,8 +589,8 @@ public abstract partial class FactoryBase
             dockablePointerScreenY = dockPointerScreenY;
         }
 
-        dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
-        dockable.GetVisibleBounds(out var dockableX, out var dockableY, out var dockableWidth, out var dockableHeight);
+        dock.TrackingAdapter.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
+        dockable.TrackingAdapter.GetVisibleBounds(out var dockableX, out var dockableY, out var dockableWidth, out var dockableHeight);
 
         if (double.IsNaN(dockablePointerScreenX))
         {
@@ -626,8 +626,8 @@ public abstract partial class FactoryBase
             return;
         }
 
-        dock.GetPointerScreenPosition(out var pointerX, out var pointerY);
-        dock.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
+        dock.TrackingAdapter.GetPointerScreenPosition(out var pointerX, out var pointerY);
+        dock.TrackingAdapter.GetVisibleBounds(out var ownerX, out var ownerY, out var ownerWidth, out var ownerHeight);
 
         if (double.IsNaN(pointerX))
         {

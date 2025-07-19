@@ -1,5 +1,6 @@
 using Avalonia.Headless.XUnit;
 using Dock.Model;
+using Dock.Model.Avalonia;
 using Dock.Model.Core;
 using Dock.Model.Avalonia.Controls;
 using Xunit;
@@ -53,5 +54,23 @@ public class DockManagerTests
 
         var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Fill, false);
         Assert.True(result);
+    }
+
+    [AvaloniaFact]
+    public void DockDockable_Fill_Moves_To_TargetDock()
+    {
+        var manager = new DockManager();
+        var factory = new Factory();
+        var sourceDock = new ToolDock { VisibleDockables = factory.CreateList<IDockable>(), Factory = factory };
+        var targetDock = new ToolDock { VisibleDockables = factory.CreateList<IDockable>(), Factory = factory };
+        var tool = new Tool();
+        factory.AddDockable(sourceDock, tool);
+
+        var result = manager.ValidateTool(tool, targetDock, DragAction.Move, DockOperation.Fill, true);
+
+        Assert.True(result);
+        Assert.DoesNotContain(tool, sourceDock.VisibleDockables!);
+        Assert.Contains(tool, targetDock.VisibleDockables!);
+        Assert.Same(targetDock, tool.Owner);
     }
 }

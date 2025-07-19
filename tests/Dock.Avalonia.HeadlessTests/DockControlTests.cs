@@ -15,7 +15,9 @@ public class DockControlTests
         var layout = factory.CreateLayout();
         layout.Factory = factory;
 
-        var control = new DockControl { Factory = factory, Layout = layout };
+        var manager = new DockManager();
+        var state = new DockControlState(manager, new DefaultDragOffsetCalculator());
+        var control = new DockControl(manager, state) { Factory = factory, Layout = layout };
 
         Assert.Contains(control, factory.DockControls);
     }
@@ -27,7 +29,9 @@ public class DockControlTests
         var layout1 = factory.CreateLayout();
         layout1.Factory = factory;
 
-        var control = new DockControl { Factory = factory, Layout = layout1 };
+        var manager = new DockManager();
+        var state = new DockControlState(manager, new DefaultDragOffsetCalculator());
+        var control = new DockControl(manager, state) { Factory = factory, Layout = layout1 };
         Assert.Single(factory.DockControls);
 
         var layout2 = factory.CreateLayout();
@@ -46,7 +50,9 @@ public class DockControlTests
         var layout = factory.CreateLayout();
         layout.Factory = factory;
 
-        var control = new DockControl { Factory = factory, Layout = layout };
+        var manager = new DockManager();
+        var state = new DockControlState(manager, new DefaultDragOffsetCalculator());
+        var control = new DockControl(manager, state) { Factory = factory, Layout = layout };
         Assert.Contains(control, factory.DockControls);
 
         control.Layout = null;

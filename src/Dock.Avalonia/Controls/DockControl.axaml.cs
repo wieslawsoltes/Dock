@@ -22,8 +22,8 @@ namespace Dock.Avalonia.Controls;
 /// </summary>
 public class DockControl : TemplatedControl, IDockControl
 {
-    private readonly DockManager _dockManager;
-    private readonly DockControlState _dockControlState;
+    private IDockManager _dockManager;
+    private DockControlState _dockControlState;
     private bool _isInitialized;
 
     /// <summary>
@@ -63,10 +63,30 @@ public class DockControl : TemplatedControl, IDockControl
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
 
     /// <inheritdoc/>
-    public IDockManager DockManager => _dockManager;
+    public IDockManager DockManager
+    {
+        get => _dockManager;
+        set
+        {
+            _dockManager = value ?? throw new ArgumentNullException(nameof(value));
+            _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
+        }
+    }
 
     /// <inheritdoc/>
-    public IDockControlState DockControlState => _dockControlState;
+    public IDockControlState DockControlState
+    {
+        get => _dockControlState;
+        set
+        {
+            if (value is not DockControlState state)
+            {
+                throw new ArgumentException("DockControlState must be of type DockControlState", nameof(value));
+            }
+            _dockControlState = state;
+            _dockControlState.DragOffsetCalculator = _dragOffsetCalculator;
+        }
+    }
 
     /// <inheritdoc/>
     [Content]
@@ -132,12 +152,28 @@ public class DockControl : TemplatedControl, IDockControl
     }
 
     /// <summary>
-    /// Initialize the new instance of the <see cref="DockControl"/>.
+    /// Initializes a new instance of the <see cref="DockControl"/> class.
     /// </summary>
     public DockControl()
+        : this(null, null)
     {
-        _dockManager = new DockManager();
-        _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockControl"/> class with custom state.
+    /// </summary>
+    /// <param name="dockManager">The dock manager.</param>
+    /// <param name="dockControlState">The dock control state.</param>
+    public DockControl(IDockManager? dockManager, DockControlState? dockControlState = null)
+    {
+        _dockManager = dockManager ?? new DockManager();
+        _dockControlState = dockControlState ?? new DockControlState(_dockManager, _dragOffsetCalculator);
+
+        RegisterPointerHandlers();
+    }
+
+    private void RegisterPointerHandlers()
+    {
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

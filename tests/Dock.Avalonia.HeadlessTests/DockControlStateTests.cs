@@ -23,7 +23,7 @@ public class DockControlStateTests
     {
         var manager = new DockManager();
         var state = CreateState(manager);
-        var dock = new DockControl();
+        var dock = new DockControl(manager, state);
         var docks = new List<IDockControl> { dock };
 
         state.Process(new Point(0,0), new Vector(), EventType.Pressed, DragAction.Move, dock, docks);
@@ -38,7 +38,7 @@ public class DockControlStateTests
     {
         var manager = new DockManager();
         var state = CreateState(manager);
-        var dock = new DockControl();
+        var dock = new DockControl(manager, state);
         var docks = new List<IDockControl> { dock };
 
         state.Process(new Point(0,0), new Vector(), EventType.Pressed, DragAction.Move, dock, docks);

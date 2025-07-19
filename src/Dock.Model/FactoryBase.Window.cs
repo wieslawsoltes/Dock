@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using System.Linq;
 
 namespace Dock.Model;
 
@@ -39,6 +40,33 @@ public abstract partial class FactoryBase
             window.Exit();
             rootDock.Windows?.Remove(window);
             OnWindowRemoved(window);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void CloseWindow(IDockWindow window)
+    {
+        if (window.Layout is IDock layout)
+        {
+            void CloseDock(IDock dock)
+            {
+                if (dock.VisibleDockables is null)
+                {
+                    return;
+                }
+
+                foreach (var item in dock.VisibleDockables.ToList())
+                {
+                    if (item is IDock subDock)
+                    {
+                        CloseDock(subDock);
+                    }
+
+                    CloseDockable(item);
+                }
+            }
+
+            CloseDock(layout);
         }
     }
 }

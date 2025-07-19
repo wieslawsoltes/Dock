@@ -9,8 +9,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using Dock.Model;
-using Dock.Model.Core;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Serializer;
 
 namespace DockXamlSample;
@@ -87,7 +87,7 @@ public partial class MainView : UserControl
                 using var reader = new StreamReader(stream);
                 if (DockControl is not null)
                 {
-                    var layout = _serializer.Load<IDock?>(stream);
+                    var layout = await _serializer.LoadAsync<IDock?>(stream);
                     // TODO:
                     // var layout = await JsonSerializer.DeserializeAsync(
                     //     stream, 
@@ -136,7 +136,7 @@ public partial class MainView : UserControl
                 await using var stream = await file.OpenWriteAsync();
                 if (DockControl?.Layout is not null)
                 {
-                    _serializer.Save(stream, DockControl.Layout);
+                    await _serializer.SaveAsync(stream, DockControl.Layout);
                     // TODO:
                     // await JsonSerializer.SerializeAsync(
                     //     stream, 
@@ -190,7 +190,7 @@ public partial class MainView : UserControl
 
         _viewsMenu.Items.Clear();
 
-        if (_rootDock?.HiddenDockables is { Count: >0 } hidden)
+        if (_rootDock?.HiddenDockables is { Count: > 0 } hidden)
         {
             foreach (var dockable in hidden)
             {

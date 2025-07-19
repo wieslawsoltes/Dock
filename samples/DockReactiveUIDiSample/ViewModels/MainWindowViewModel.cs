@@ -68,7 +68,7 @@ public class MainWindowViewModel : ReactiveObject
         _state.Save(Layout);
         const string path = "layout.json";
         await using var stream = File.Create(path);
-        _serializer.Save(stream, Layout);
+        await _serializer.SaveAsync(stream, Layout);
     }
 
     public void CloseLayout()

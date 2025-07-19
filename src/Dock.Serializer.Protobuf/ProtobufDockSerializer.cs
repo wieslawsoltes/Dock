@@ -61,4 +61,18 @@ public sealed class ProtobufDockSerializer : IDockSerializer
     {
         global::ProtoBuf.Serializer.Serialize(stream, value!);
     }
+
+    /// <inheritdoc/>
+    public Task<T?> LoadAsync<T>(Stream stream)
+    {
+        var result = Load<T>(stream);
+        return Task.FromResult(result);
+    }
+
+    /// <inheritdoc/>
+    public Task SaveAsync<T>(Stream stream, T value)
+    {
+        Save(stream, value);
+        return Task.CompletedTask;
+    }
 }

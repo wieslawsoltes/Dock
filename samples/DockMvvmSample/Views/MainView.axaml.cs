@@ -20,7 +20,7 @@ public partial class MainView : UserControl
 {
     private IDockSerializer? _serializer;
     private IDockState? _dockState;
-    
+
     public MainView()
     {
         InitializeComponent();
@@ -90,7 +90,7 @@ public partial class MainView : UserControl
             {
                 await using var stream = await file.OpenReadAsync();
                 using var reader = new StreamReader(stream);
-                var layout = _serializer.Load<IRootDock?>(stream);
+                var layout = await _serializer.LoadAsync<IRootDock?>(stream);
                 if (layout is not null)
                 {
                     _dockState.Restore(layout);
@@ -136,10 +136,10 @@ public partial class MainView : UserControl
             try
             {
                 await using var stream = await file.OpenWriteAsync();
-                
+
                 if (DataContext is MainWindowViewModel mainWindowViewModel)
                 {
-                    _serializer.Save(stream, mainWindowViewModel.Layout);
+                    await _serializer.SaveAsync(stream, mainWindowViewModel.Layout);
                 }
             }
             catch (Exception e)

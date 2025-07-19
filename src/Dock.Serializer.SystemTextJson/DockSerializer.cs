@@ -4,9 +4,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
-using Dock.Model.Core;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Dock.Model.Core;
 
 namespace Dock.Serializer.SystemTextJson;
 
@@ -72,5 +72,25 @@ public sealed class DockSerializer : IDockSerializer
         }
         using var streamWriter = new StreamWriter(stream, Encoding.UTF8);
         streamWriter.Write(text);
+    }
+
+    /// <inheritdoc/>
+    public async Task<T?> LoadAsync<T>(Stream stream)
+    {
+        using var streamReader = new StreamReader(stream, Encoding.UTF8);
+        var text = await streamReader.ReadToEndAsync().ConfigureAwait(false);
+        return Deserialize<T>(text);
+    }
+
+    /// <inheritdoc/>
+    public async Task SaveAsync<T>(Stream stream, T value)
+    {
+        var text = Serialize(value);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return;
+        }
+        using var streamWriter = new StreamWriter(stream, Encoding.UTF8);
+        await streamWriter.WriteAsync(text).ConfigureAwait(false);
     }
 }

@@ -21,6 +21,11 @@ public interface IDockable : IControlRecyclingIdProvider
     string Title { get; set; }
 
     /// <summary>
+    /// Gets or sets dockable icon.
+    /// </summary>
+    object? Icon { get; set; }
+
+    /// <summary>
     /// Gets or sets dockable context.
     /// </summary>
     object? Context { get; set; }

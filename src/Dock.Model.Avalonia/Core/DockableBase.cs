@@ -39,6 +39,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, string>(nameof(Title), o => o.Title, (o, v) => o.Title = v);
 
     /// <summary>
+    /// Defines the <see cref="Icon"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, object?> IconProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, object?>(nameof(Icon), o => o.Icon, (o, v) => o.Icon = v);
+
+    /// <summary>
     /// Defines the <see cref="Context"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, object?> ContextProperty =
@@ -179,6 +185,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
     private string _title = string.Empty;
+    private object? _icon;
     private object? _context;
     private IDockable? _owner;
     private IDockable? _originalOwner;
@@ -227,6 +234,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _title;
         set => SetAndRaise(TitleProperty, ref _title, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Icon")]
+    public object? Icon
+    {
+        get => _icon;
+        set => SetAndRaise(IconProperty, ref _icon, value);
     }
 
     /// <inheritdoc/>

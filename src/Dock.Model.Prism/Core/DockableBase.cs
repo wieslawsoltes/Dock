@@ -15,6 +15,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
     private string _title = string.Empty;
+    private object? _icon;
     private object? _context;
     private IDockable? _owner;
     private IDockable? _originalOwner;
@@ -61,6 +62,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _title;
         set => SetProperty(ref _title, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public object? Icon
+    {
+        get => _icon;
+        set => SetProperty(ref _icon, value);
     }
 
     /// <inheritdoc/>

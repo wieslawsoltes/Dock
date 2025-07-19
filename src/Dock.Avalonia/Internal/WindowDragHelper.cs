@@ -5,9 +5,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Settings;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -19,6 +19,7 @@ internal class WindowDragHelper
     private readonly Control _owner;
     private readonly Func<bool> _isEnabled;
     private readonly Func<Control?, bool> _canStartDrag;
+    private readonly Action<PointerPressedEventArgs>? _dragOutside;
     private Point _dragStartPoint;
     private bool _pointerPressed;
     private bool _isDragging;
@@ -26,11 +27,12 @@ internal class WindowDragHelper
     private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
 
-    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
+    public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag, Action<PointerPressedEventArgs>? dragOutside = null)
     {
         _owner = owner;
         _isEnabled = isEnabled;
         _canStartDrag = canStartDrag;
+        _dragOutside = dragOutside;
     }
 
     public void Attach()
@@ -113,6 +115,17 @@ internal class WindowDragHelper
             return;
         }
 
+        if (_owner.GetVisualRoot() is HostWindow host && _lastPointerPressedArgs is { })
+        {
+            var pos = e.GetPosition(host);
+            if (pos.X < 0 || pos.Y < 0 || pos.X > host.Bounds.Width || pos.Y > host.Bounds.Height)
+            {
+                _pointerPressed = false;
+                _dragOutside?.Invoke(_lastPointerPressedArgs);
+                return;
+            }
+        }
+
         var currentPoint = e.GetPosition(_owner);
         var delta = currentPoint - _dragStartPoint;
 
@@ -122,7 +135,7 @@ internal class WindowDragHelper
             return;
         }
 
-  
+
 
         if (_lastPointerPressedArgs is null)
         {
@@ -139,7 +152,7 @@ internal class WindowDragHelper
             }
             return;
         }
-        
+
         _isDragging = true;
         _pointerPressed = false;
 

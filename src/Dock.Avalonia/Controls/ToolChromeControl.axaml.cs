@@ -7,8 +7,8 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Model.Core;
 using Dock.Avalonia.Internal;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
 
@@ -127,7 +127,7 @@ public class ToolChromeControl : ContentControl
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is IDock {Factory: { } factory} dock && dock.ActiveDockable is { })
+        if (DataContext is IDock { Factory: { } factory } dock && dock.ActiveDockable is { })
         {
             if (factory.FindRoot(dock.ActiveDockable, _ => true) is { } root)
             {
@@ -163,7 +163,8 @@ public class ToolChromeControl : ContentControl
 
                 return !(source is Button) &&
                        !WindowDragHelper.IsChildOfType<Button>(grip, source);
-            });
+            },
+            null);
     }
 
     private void AttachToWindow()

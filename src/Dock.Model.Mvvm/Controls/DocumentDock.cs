@@ -18,6 +18,7 @@ public class DocumentDock : DockBase, IDocumentDock
 {
     private bool _canCreateDocument;
     private bool _enableWindowDrag;
+    private bool _removeTabOnDragOut;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentDock"/> class.
@@ -61,6 +62,14 @@ public class DocumentDock : DockBase, IDocumentDock
     {
         get => _tabsLayout;
         set => SetProperty(ref _tabsLayout, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool RemoveTabOnDragOut
+    {
+        get => _removeTabOnDragOut;
+        set => SetProperty(ref _removeTabOnDragOut, value);
     }
 
     private void CreateNewDocument()

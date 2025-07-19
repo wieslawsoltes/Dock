@@ -117,6 +117,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(IsSharedSizeScope), o => o.IsSharedSizeScope, (o, v) => o.IsSharedSizeScope = v);
 
     /// <summary>
+    /// Defines the <see cref="TabIndex"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, int> TabIndexProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, int>(nameof(TabIndex), o => o.TabIndex, (o, v) => o.TabIndex = v);
+
+    /// <summary>
     /// Defines the <see cref="CollapsedProportion"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, double> CollapsedProportionProperty =
@@ -539,6 +545,25 @@ public abstract class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     public virtual void OnPointerScreenPositionChanged(double x, double y)
+    {
+    }
+
+    private int _tabIndex;
+
+    /// <inheritdoc/>
+    public int TabIndex
+    {
+        get => _tabIndex;
+        set => SetAndRaise(TabIndexProperty, ref _tabIndex, value);
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanging(int newIndex)
+    {
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanged(int oldIndex, int newIndex)
     {
     }
 }

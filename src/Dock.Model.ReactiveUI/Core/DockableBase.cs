@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
+using ReactiveUI;
 
 namespace Dock.Model.ReactiveUI.Core;
 
@@ -242,6 +243,25 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     public virtual void OnPointerScreenPositionChanged(double x, double y)
+    {
+    }
+
+    private int _tabIndex;
+
+    /// <inheritdoc/>
+    public int TabIndex
+    {
+        get => _tabIndex;
+        set => this.RaiseAndSetIfChanged(ref _tabIndex, value);
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanging(int newIndex)
+    {
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanged(int oldIndex, int newIndex)
     {
     }
 }

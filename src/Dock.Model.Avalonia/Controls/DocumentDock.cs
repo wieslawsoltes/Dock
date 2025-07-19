@@ -42,6 +42,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
         AvaloniaProperty.Register<DocumentDock, DocumentTabLayout>(nameof(TabsLayout), DocumentTabLayout.Top);
 
+    /// <summary>
+    /// Defines the <see cref="RemoveTabOnDragOut"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> RemoveTabOnDragOutProperty =
+        AvaloniaProperty.Register<DocumentDock, bool>(nameof(RemoveTabOnDragOut));
+
     private bool _canCreateDocument;
 
     /// <summary>
@@ -91,6 +97,15 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     {
         get => GetValue(TabsLayoutProperty);
         set => SetValue(TabsLayoutProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("RemoveTabOnDragOut")]
+    public bool RemoveTabOnDragOut
+    {
+        get => GetValue(RemoveTabOnDragOutProperty);
+        set => SetValue(RemoveTabOnDragOutProperty, value);
     }
 
     /// <summary>

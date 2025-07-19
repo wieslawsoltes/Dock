@@ -5,11 +5,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.VisualTree;
+using Avalonia.Interactivity;
 
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace Dock.Avalonia.Controls;
 
@@ -22,6 +25,10 @@ public class DocumentTabStrip : TabStrip
     private HostWindow? _attachedWindow;
     private Control? _grip;
     private WindowDragHelper? _windowDragHelper;
+    private bool _isDragging;
+    private DocumentTabStripItem? _dragItem;
+    private Point _dragStart;
+    private int _dragIndex;
 
     /// <summary>
     /// Defines the <see cref="DockAdornerHost"/> property.
@@ -108,6 +115,9 @@ public class DocumentTabStrip : TabStrip
     {
         UpdatePseudoClassesCreate(CanCreateItem);
         UpdatePseudoClassesActive(IsActive);
+        AddHandler(PointerPressedEvent, PointerPressedHandler, RoutingStrategies.Tunnel);
+        AddHandler(PointerReleasedEvent, PointerReleasedHandler, RoutingStrategies.Tunnel);
+        AddHandler(PointerMovedEvent, PointerMovedHandler, RoutingStrategies.Tunnel);
     }
 
     /// <inheritdoc/>
@@ -131,6 +141,9 @@ public class DocumentTabStrip : TabStrip
     {
         base.OnDetachedFromVisualTree(e);
         DetachFromWindow();
+        RemoveHandler(PointerPressedEvent, PointerPressedHandler);
+        RemoveHandler(PointerReleasedEvent, PointerReleasedHandler);
+        RemoveHandler(PointerMovedEvent, PointerMovedHandler);
     }
 
     /// <inheritdoc/>
@@ -242,6 +255,87 @@ public class DocumentTabStrip : TabStrip
         {
             _windowDragHelper.Detach();
             _windowDragHelper = null;
+        }
+    }
+
+    private void PointerPressedHandler(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.Source is DocumentTabStripItem item && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            _dragItem = item;
+            _dragStart = e.GetPosition(this);
+            _dragIndex = ItemContainerGenerator.IndexFromContainer(item);
+            _isDragging = true;
+            e.Pointer.Capture(this);
+        }
+    }
+
+    private void PointerReleasedHandler(object? sender, PointerReleasedEventArgs e)
+    {
+        if (_isDragging)
+        {
+            if (_dragItem is { } item && DataContext is Dock.Model.Controls.IDocumentDock dock && item.DataContext is Dock.Model.Core.IDockable dockable)
+            {
+                var pos = e.GetPosition(this);
+                var rect = Bounds.Inflate(20);
+                if (dock.RemoveTabOnDragOut && !rect.Contains(pos))
+                {
+                    dock.Factory?.RemoveDockable(dockable, true);
+                }
+            }
+
+            _dragItem?.ClearValue(RenderTransformProperty);
+            e.Pointer.Capture(null);
+            _isDragging = false;
+            _dragItem = null;
+        }
+    }
+
+    private void PointerMovedHandler(object? sender, PointerEventArgs e)
+    {
+        if (!_isDragging || _dragItem is null)
+            return;
+
+        var pos = e.GetPosition(this);
+        var delta = pos - _dragStart;
+        if (Orientation == Orientation.Horizontal)
+        {
+            _dragItem.RenderTransform = new TranslateTransform(delta.X, 0);
+        }
+        else
+        {
+            _dragItem.RenderTransform = new TranslateTransform(0, delta.Y);
+        }
+
+        if (DataContext is not Dock.Model.Controls.IDocumentDock dock || dock.VisibleDockables is null)
+            return;
+
+        if (_dragItem.DataContext is not Dock.Model.Core.IDockable dragDockable)
+            return;
+
+        dragDockable.SetPointerPosition(pos.X, pos.Y);
+
+        for (var i = 0; i < dock.VisibleDockables.Count; i++)
+        {
+            if (i == _dragIndex)
+                continue;
+
+            if (ItemContainerGenerator.ContainerFromIndex(i) is DocumentTabStripItem other)
+            {
+                var bounds = other.Bounds;
+                var center = Orientation == Orientation.Horizontal ? bounds.Center.X : bounds.Center.Y;
+                var pointer = Orientation == Orientation.Horizontal ? pos.X : pos.Y;
+
+                if ((_dragIndex < i && pointer > center) || (_dragIndex > i && pointer < center))
+                {
+                    dragDockable.OnTabIndexChanging(i);
+                    dock.Factory?.MoveDockable(dock, dragDockable, other.DataContext as Dock.Model.Core.IDockable);
+                    dragDockable.TabIndex = i;
+                    dragDockable.OnTabIndexChanged(_dragIndex, i);
+                    _dragIndex = i;
+                    break;
+                }
+            }
         }
     }
 }

@@ -350,4 +350,23 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public virtual void OnPointerScreenPositionChanged(double x, double y)
     {
     }
+
+    private int _tabIndex;
+
+    /// <inheritdoc/>
+    public int TabIndex
+    {
+        get => _tabIndex;
+        set => SetProperty(ref _tabIndex, value);
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanging(int newIndex)
+    {
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnTabIndexChanged(int oldIndex, int newIndex)
+    {
+    }
 }

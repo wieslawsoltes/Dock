@@ -1,5 +1,7 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
@@ -8,10 +10,768 @@ using Dock.Model.Core;
 namespace Dock.Model;
 
 /// <summary>
-/// Factory base class.
+/// Factory base class - dockable and window logic.
 /// </summary>
-public abstract partial class FactoryBase
+public abstract partial class FactoryBase : IFactory
 {
+    private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
+    {
+        if (pinnedDockables is not null && pinnedDockables.Count != 0)
+        {
+            foreach (var pinnedDockable in pinnedDockables)
+            {
+                if (pinnedDockable.Owner == dock)
+                {
+                    return true;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public virtual void CollapseDock(IDock dock)
+    {
+        if (!dock.IsCollapsable || dock.VisibleDockables is null || dock.VisibleDockables.Count != 0)
+        {
+            return;
+        }
+
+        var rootDock = FindRoot(dock, _ => true);
+        if (rootDock is { })
+        {
+            if (dock is IToolDock toolDock)
+            {
+                if (toolDock.Alignment == Alignment.Left 
+                    && IsDockPinned(rootDock.LeftPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Right 
+                    && IsDockPinned(rootDock.RightPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Top 
+                    && IsDockPinned(rootDock.TopPinnedDockables, dock))
+                {
+                    return;
+                }
+
+                if (toolDock.Alignment == Alignment.Bottom 
+                    && IsDockPinned(rootDock.BottomPinnedDockables, dock))
+                {
+                    return;
+                }
+            }
+        }
+
+        if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
+        {
+            var toRemove = new List<IDockable>();
+            var dockIndex = ownerDock.VisibleDockables.IndexOf(dock);
+
+            if (dockIndex >= 0)
+            {
+                var indexSplitterPrevious = dockIndex - 1;
+                if (dockIndex > 0 && indexSplitterPrevious >= 0)
+                {
+                    var previousVisible = ownerDock.VisibleDockables[indexSplitterPrevious];
+                    if (previousVisible is IProportionalDockSplitter splitterPrevious)
+                    {
+                        toRemove.Add(splitterPrevious);
+                    }
+                }
+
+                var indexSplitterNext = dockIndex + 1;
+                if (dockIndex < ownerDock.VisibleDockables.Count - 1 && indexSplitterNext >= 0)
+                {
+                    var nextVisible = ownerDock.VisibleDockables[indexSplitterNext];
+                    if (nextVisible is IProportionalDockSplitter splitterNext)
+                    {
+                        toRemove.Add(splitterNext);
+                    }
+                }
+
+                foreach (var removeVisible in toRemove)
+                {
+                    RemoveDockable(removeVisible, true);
+                }
+            }
+        }
+
+        if (dock is IRootDock rootDockDock && rootDockDock.Window is { })
+        {
+            RemoveWindow(rootDockDock.Window);
+        }
+        else
+        {
+            RemoveDockable(dock, true);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual IDock CreateSplitLayout(IDock dock, IDockable dockable, DockOperation operation)
+    {
+        IDock? split;
+
+        if (dockable is IDock dockableDock)
+        {
+            split = dockableDock;
+        }
+        else
+        {
+            split = CreateProportionalDock();
+            split.Title = nameof(IProportionalDock);
+            split.VisibleDockables = CreateList<IDockable>();
+            if (split.VisibleDockables is not null)
+            {
+                AddVisibleDockable(split, dockable);
+                OnDockableAdded(dockable);
+                split.ActiveDockable = dockable;
+            }
+        }
+
+        var containerProportion = dock.Proportion;
+        dock.Proportion = double.NaN;
+
+        var layout = CreateProportionalDock();
+        layout.Title = nameof(IProportionalDock);
+        layout.VisibleDockables = CreateList<IDockable>();
+        layout.Proportion = containerProportion;
+
+        var splitter = CreateProportionalDockSplitter();
+        splitter.Title = nameof(IProportionalDockSplitter);
+
+        switch (operation)
+        {
+            case DockOperation.Left:
+            case DockOperation.Right:
+            {
+                layout.Orientation = Orientation.Horizontal;
+                break;
+            }
+            case DockOperation.Top:
+            case DockOperation.Bottom:
+            {
+                layout.Orientation = Orientation.Vertical;
+                break;
+            }
+        }
+
+        switch (operation)
+        {
+            case DockOperation.Left:
+            case DockOperation.Top:
+            {
+                if (layout.VisibleDockables is not null)
+                {
+                    AddVisibleDockable(layout, split);
+                    OnDockableAdded(split);
+                    layout.ActiveDockable = split;
+                }
+
+                break;
+            }
+            case DockOperation.Right:
+            case DockOperation.Bottom:
+            {
+                if (layout.VisibleDockables is not null)
+                {
+                    AddVisibleDockable(layout, dock);
+                    OnDockableAdded(dock);
+                    layout.ActiveDockable = dock;
+                }
+
+                break;
+            }
+        }
+
+        AddVisibleDockable(layout, splitter);
+        OnDockableAdded(splitter);
+
+        switch (operation)
+        {
+            case DockOperation.Left:
+            case DockOperation.Top:
+            {
+                if (layout.VisibleDockables is not null)
+                {
+                    AddVisibleDockable(layout, dock);
+                    OnDockableAdded(dock);
+                    layout.ActiveDockable = dock;
+                }
+
+                break;
+            }
+            case DockOperation.Right:
+            case DockOperation.Bottom:
+            {
+                if (layout.VisibleDockables is not null)
+                {
+                    AddVisibleDockable(layout, split);
+                    OnDockableAdded(split);
+                    layout.ActiveDockable = split;
+                }
+
+                break;
+            }
+        }
+
+        return layout;
+    }
+
+    /// <inheritdoc/>
+    public virtual void SplitToDock(IDock dock, IDockable dockable, DockOperation operation)
+    {
+        switch (operation)
+        {
+            case DockOperation.Left:
+            case DockOperation.Right:
+            case DockOperation.Top:
+            case DockOperation.Bottom:
+            {
+                if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
+                {
+                    var index = ownerDock.VisibleDockables.IndexOf(dock);
+                    if (index >= 0)
+                    {
+                        var layout = CreateSplitLayout(dock, dockable, operation);
+                        RemoveVisibleDockableAt(ownerDock, index);
+                        OnDockableRemoved(dockable);
+                        OnDockableUndocked(dockable, operation);
+                        InsertVisibleDockable(ownerDock, index, layout);
+                        OnDockableAdded(dockable);
+                        InitDockable(layout, ownerDock);
+                        ownerDock.ActiveDockable = layout;
+                        OnDockableDocked(dockable, operation);
+                    }
+                }
+                break;
+            }
+            default:
+                throw new NotSupportedException($"Not supported split operation: {operation}.");
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual IDockWindow? CreateWindowFrom(IDockable dockable)
+    {
+        IDockable? target;
+
+        switch (dockable)
+        {
+            case ITool:
+            {
+                target = CreateToolDock();
+                target.Title = nameof(IToolDock);
+                if (target is IDock dock)
+                {
+                    dock.VisibleDockables = CreateList<IDockable>();
+                    if (dock.VisibleDockables is not null)
+                    {
+                        AddVisibleDockable(dock, dockable);
+                        OnDockableAdded(dockable);
+                        dock.ActiveDockable = dockable;
+                    }
+                }
+                break;
+            }
+            case IDocument:
+            {
+                target = CreateDocumentDock();
+                target.Title = nameof(IDocumentDock);
+                if (target is IDock dock)
+                {
+                    dock.VisibleDockables = CreateList<IDockable>();
+                    if (dockable.Owner is IDocumentDock sourceDocumentDock)
+                    {
+                        if (target is IDocumentDock targetDocumentDock)
+                        {
+                            targetDocumentDock.Id = sourceDocumentDock.Id;
+                            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
+
+                            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
+                            {
+                                
+                                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                            }
+                        }
+                    }
+                    if (dock.VisibleDockables is not null)
+                    {
+                        AddVisibleDockable(dock, dockable);
+                        OnDockableAdded(dockable);
+                        dock.ActiveDockable = dockable;
+                    }
+                }
+                break;
+            }
+            case IToolDock:
+            {
+                target = dockable;
+                break;
+            }
+            case IDocumentDock:
+            {
+                target = dockable;
+                break;
+            }
+            case IProportionalDock proportionalDock:
+            {
+                target = proportionalDock;
+                break;
+            }
+            case IDockDock dockDock:
+            {
+                target = dockDock;
+                break;
+            }
+            case IRootDock rootDock:
+            {
+                target = rootDock.ActiveDockable;
+                break;
+            }
+            default:
+            {
+                return null;
+            }
+        }
+
+        var root = CreateRootDock();
+        root.Title = nameof(IRootDock);
+        root.VisibleDockables = CreateList<IDockable>();
+        if (root.VisibleDockables is not null && target is not null)
+        {
+            AddVisibleDockable(root, target);
+            OnDockableAdded(target);
+            root.ActiveDockable = target;
+            root.DefaultDockable = target;
+        }
+        root.Owner = null;
+
+        var window = CreateDockWindow();
+        window.Id = nameof(IDockWindow);
+        window.Title = "";
+        window.Width = double.NaN;
+        window.Height = double.NaN;
+        window.Layout = root;
+
+        root.Window = window;
+
+        return window;
+    }
+
+    /// <inheritdoc/>
+    public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)
+    {
+        var rootDock = FindRoot(dock, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        RemoveDockable(dockable, true);
+        OnDockableUndocked(dockable, DockOperation.Window);
+
+        var window = CreateWindowFrom(dockable);
+        if (window is not null)
+        {
+            AddWindow(rootDock, window);
+            window.X = x;
+            window.Y = y;
+            window.Width = width;
+            window.Height = height;
+            window.Present(false);
+
+            OnDockableDocked(dockable, DockOperation.Window);
+
+            if (window.Layout is { })
+            {
+                SetFocusedDockable(window.Layout, dockable);
+            }
+        }
+    }
+    /// <inheritdoc/>
+    public virtual void InitLayout(IDockable layout)
+    {
+        InitDockable(layout, null);
+
+        if (layout is IDock dock)
+        {
+            if (dock.DefaultDockable is not null)
+            {
+                dock.ActiveDockable = dock.DefaultDockable;
+            }
+        }
+
+        if (layout is IRootDock rootDock)
+        {
+            if (rootDock.ShowWindows.CanExecute(null))
+            {
+                rootDock.ShowWindows.Execute(null);
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void InitDockable(IDockable dockable, IDockable? owner)
+    {
+        if (dockable.Context is null)
+        {
+            if (GetContext(dockable.Id) is { } context)
+            {
+                dockable.Context = context;
+            }
+        }
+ 
+        dockable.Owner = owner;
+
+        if (dockable is IDock dock)
+        {
+            dock.Factory = this;
+
+            if (dock.VisibleDockables is not null)
+            {
+                InitDockables(dockable, dock.VisibleDockables);
+            }
+
+            UpdateIsEmpty(dock);
+        }
+
+        if (dockable is IRootDock rootDock)
+        {
+            if (rootDock.HiddenDockables is not null)
+            {
+                InitDockables(dockable, rootDock.HiddenDockables);
+            }
+
+            if (rootDock.LeftPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.LeftPinnedDockables);
+            }
+
+            if (rootDock.RightPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.RightPinnedDockables);
+            }
+
+            if (rootDock.TopPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.TopPinnedDockables);
+            }
+
+            if (rootDock.BottomPinnedDockables is not null)
+            {
+                InitDockables(dockable, rootDock.BottomPinnedDockables);
+            }
+
+            if (rootDock.Windows is not null)
+            {
+                foreach (var child in rootDock.Windows)
+                {
+                    InitDockWindow(child, dockable);
+                }
+            }
+        }
+
+        OnDockableInit(dockable);
+    }
+
+    private void InitDockables(IDockable dockable, IList<IDockable> dockables)
+    {
+        foreach (var child in dockables)
+        {
+            InitDockable(child, dockable);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void InitDockWindow(IDockWindow window, IDockable? owner)
+    {
+        window.Host = GetHostWindow(window.Id);
+        if (window.Host is not null)
+        {
+            window.Host.Window = window;
+        }
+
+        window.Owner = owner;
+
+        window.Factory = this;
+
+        if (window.Layout is not null)
+        {
+            InitDockable(window.Layout, window.Layout.Owner);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void InitActiveDockable(IDockable? dockable, IDock owner)
+    {
+        OnActiveDockableChanged(dockable);
+
+        if (dockable is { })
+        {
+            InitDockable(dockable, owner);
+            dockable.OnSelected();
+        }
+
+        if (dockable is { })
+        {
+            SetFocusedDockable(owner, dockable);
+        } 
+    }
+    
+    /// <inheritdoc/>
+    public virtual void SetActiveDockable(IDockable dockable)
+    {
+        if (dockable.Owner is IDock dock)
+        {
+            dock.ActiveDockable = dockable;
+        }
+    }
+
+    private void SetIsActive(IDockable dockable, bool active)
+    {
+        if (dockable is IDock dock)
+        {
+            dock.IsActive = active;
+        }
+    }
+
+    /// <inheritdoc />
+    public virtual void SetFocusedDockable(IDock dock, IDockable? dockable)
+    {
+        if (dock.ActiveDockable is not null && FindRoot(dock.ActiveDockable, x => x.IsFocusableRoot) is { } root)
+        {
+            if (dockable is not null)
+            {
+                var results = Find(x => x is IRootDock);
+
+                foreach (var result in results)
+                {
+                    if (result is IRootDock rootDock 
+                        && rootDock.IsFocusableRoot
+                        && rootDock != root)
+                    {
+                        if (rootDock.FocusedDockable?.Owner is not null)
+                        {
+                            SetIsActive(rootDock.FocusedDockable.Owner, false);
+                        }
+                    }
+                }
+            }
+
+            if (root.FocusedDockable?.Owner is not null)
+            {
+                SetIsActive(root.FocusedDockable.Owner, false);
+            }
+
+            if (dockable is not null)
+            {
+                if (root.FocusedDockable != dockable)
+                {
+                    root.FocusedDockable = dockable;
+                }
+            }
+
+            if (root.FocusedDockable?.Owner is not null)
+            {
+                SetIsActive(root.FocusedDockable.Owner, true);
+            }
+        }
+    }
+    /// <inheritdoc/>
+    public virtual Func<object?>? DefaultContextLocator { get; set; }
+
+    /// <inheritdoc/>
+    public virtual Func<IHostWindow?>? DefaultHostWindowLocator { get; set; }
+
+    /// <inheritdoc/>
+    public virtual Dictionary<string, Func<object?>>? ContextLocator { get; set; }
+
+    /// <inheritdoc/>
+    public virtual Dictionary<string, Func<IHostWindow?>>? HostWindowLocator { get; set; }
+
+    /// <inheritdoc/>
+    public virtual IDictionary<string, Func<IDockable?>>? DockableLocator { get; set; }
+
+    /// <inheritdoc/>
+    public virtual bool HideToolsOnClose { get; set; } = false;
+
+    /// <inheritdoc/>
+    public virtual bool HideDocumentsOnClose { get; set; } = false;
+
+    /// <inheritdoc/>
+    public virtual object? GetContext(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return null;
+        }
+
+        if (ContextLocator?.TryGetValue(id, out var locator) == true)
+        {
+            return locator?.Invoke();
+        }
+
+        return DefaultContextLocator?.Invoke();
+    }
+
+    /// <inheritdoc/>
+    public virtual IHostWindow? GetHostWindow(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return null;
+        }
+
+        if (HostWindowLocator?.TryGetValue(id, out var locator) == true)
+        {
+            return locator?.Invoke();
+        }
+
+        return DefaultHostWindowLocator?.Invoke();
+    }
+
+    /// <inheritdoc/>
+    public virtual T? GetDockable<T>(string id) where T: class, IDockable
+    {
+        if (string.IsNullOrEmpty(id))
+        {
+            return default;
+        }
+
+        if (DockableLocator?.TryGetValue(id, out var locator) == true)
+        {
+            return locator?.Invoke() as T;
+        }
+
+        return default;
+    }
+
+    /// <inheritdoc/>
+    public virtual IRootDock? FindRoot(IDockable dockable, Func<IRootDock, bool>? predicate = null)
+    {
+        if (dockable is IRootDock rootDockDockbale && (predicate?.Invoke(rootDockDockbale) ?? true))
+        {
+            return rootDockDockbale;
+        }
+
+        if (dockable.Owner is null)
+        {
+            return null;
+        }
+        if (dockable.Owner is IRootDock rootDock && (predicate?.Invoke(rootDock) ?? true))
+        {
+            return rootDock;
+        }
+        return FindRoot(dockable.Owner, predicate);
+    }
+
+    /// <inheritdoc/>
+    public virtual IDockable? FindDockable(IDock dock, Func<IDockable, bool> predicate)
+    {
+        if (predicate(dock))
+        {
+            return dock;
+        }
+
+        if (dock.VisibleDockables is not null)
+        {
+            foreach (var dockable in dock.VisibleDockables)
+            {
+                if (predicate(dockable))
+                {
+                    return dockable;
+                }
+
+                if (dockable is IDock childDock)
+                {
+                    var result = FindDockable(childDock, predicate);
+                    if (result is not null)
+                    {
+                        return result;
+                    }
+                }
+            }
+        }
+
+        if (dock is IRootDock rootDock && rootDock.Windows is not null)
+        {
+            foreach (var window in rootDock.Windows)
+            {
+                if (window.Layout is null)
+                {
+                    continue;
+                }
+
+                if (predicate(window.Layout))
+                {
+                    return window.Layout;
+                }
+
+                var result = FindDockable(window.Layout, predicate);
+                if (result is not null)
+                {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<IDockable> Find(Func<IDockable, bool> predicate)
+    {
+        foreach (var dockControl in DockControls)
+        {
+            var dock = dockControl.Layout;
+            if (dock is null)
+            {
+                continue;
+            }
+
+            foreach (var result in Find(dock, predicate))
+            {
+                yield return result;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<IDockable> Find(IDock dock, Func<IDockable, bool> predicate)
+    {
+        if (predicate(dock))
+        {
+            yield return dock;
+        }
+
+        if (dock.VisibleDockables is not null)
+        {
+            foreach (var dockable in dock.VisibleDockables)
+            {
+                if (predicate(dockable))
+                {
+                    yield return dockable;
+                }
+
+                if (dockable is IDock childDock)
+                {
+                    foreach (var result in Find(childDock, predicate))
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+    }
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -1090,6 +1850,37 @@ public abstract partial class FactoryBase
         if (dockable.Owner != null)
         {
             UpdateOpenedDockablesCount(dockable.Owner);
+        }
+    }
+    /// <inheritdoc/>
+    public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
+    {
+        rootDock.Windows ??= CreateList<IDockWindow>();
+        rootDock.Windows.Add(window);
+        OnWindowAdded(window);
+        InitDockWindow(window, rootDock);
+    }
+
+    /// <inheritdoc/>
+    public virtual void InsertWindow(IRootDock rootDock, IDockWindow window, int index)
+    {
+        if (index >= 0)
+        {
+            rootDock.Windows ??= CreateList<IDockWindow>();
+            rootDock.Windows.Insert(index, window);
+            OnWindowAdded(window);
+            InitDockWindow(window, rootDock);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void RemoveWindow(IDockWindow window)
+    {
+        if (window.Owner is IRootDock rootDock)
+        {
+            window.Exit();
+            rootDock.Windows?.Remove(window);
+            OnWindowRemoved(window);
         }
     }
 }

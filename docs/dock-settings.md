@@ -73,6 +73,21 @@ AppBuilder.Configure<App>()
     });
 ```
 
+### Dependency injection
+
+The same options can be provided through `IOptions<DockSettingsOptions>` when using the dependency injection helpers:
+
+```csharp
+services.Configure<DockSettingsOptions>(o =>
+{
+    o.MinimumHorizontalDragDistance = 6;
+    o.MinimumVerticalDragDistance = 6;
+    o.EnableWindowMagnetism = true;
+    o.WindowMagnetDistance = 16;
+});
+```
+
+`AddDock` applies these values to `DockSettings` at startup.
 ## Hide on close
 
 `FactoryBase` exposes two properties that control whether closing a tool or

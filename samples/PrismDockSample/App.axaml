@@ -1,0 +1,13 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PrismDockSample.App"
+             Name="Dock Prism Sample">
+  <Application.Resources>
+    <Color x:Key="RegionColor">Transparent</Color>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+  </Application.Styles>
+</Application>

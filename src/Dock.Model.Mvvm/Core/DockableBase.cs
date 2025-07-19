@@ -350,4 +350,22 @@ public abstract class DockableBase : ReactiveBase, IDockable
     public virtual void OnPointerScreenPositionChanged(double x, double y)
     {
     }
+
+    /// <inheritdoc/>
+    public virtual void Accept(IDockableVisitor visitor, IDockable target, DragAction action, DockOperation op, bool execute)
+    {
+        switch (this)
+        {
+            case ITool tool:
+                visitor.VisitTool(tool, target, action, op, execute);
+                break;
+            case IDocument document:
+                visitor.VisitDocument(document, target, action, op, execute);
+                break;
+            case IDock dock:
+                visitor.VisitDock(dock, target, action, op, execute);
+                break;
+        }
+    }
 }
+

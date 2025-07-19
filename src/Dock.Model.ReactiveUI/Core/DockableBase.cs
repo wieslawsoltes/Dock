@@ -10,7 +10,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract partial class DockableBase : ReactiveBase, IDockable
+public abstract partial class DockableBase : ReactiveBase, IDockable, IBoundsInfo, IPointerTracking, IPinnableDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
 

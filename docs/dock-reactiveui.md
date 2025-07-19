@@ -122,10 +122,10 @@ OpenDocument = ReactiveCommand.Create(() =>
 });
 ```
 
-Similarly you can set the `DocumentFactory` property so that the dock
-creates new documents when its `CreateDocument` command executes. The
-delegate should return an `IDockable` which is then passed to
-`AddDocument` and activated.
+Similarly you can set the `DocumentFactory` or `DocumentFactoryAsync`
+property so that the dock creates new documents when its `CreateDocument`
+command executes. The delegate should return an `IDockable` which is
+then passed to `AddDocument` or `AddDocumentAsync` and activated.
 
 ## Events
 

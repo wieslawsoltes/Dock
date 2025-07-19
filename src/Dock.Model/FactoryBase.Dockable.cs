@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -19,6 +20,19 @@ public abstract partial class FactoryBase
         dock.VisibleDockables ??= CreateList<IDockable>();
         AddVisibleDockable(dock, dockable);
         OnDockableAdded(dockable);
+    }
+
+    /// <summary>
+    /// Adds the specified document to the given dock and activates it.
+    /// </summary>
+    /// <param name="dock">The target dock.</param>
+    /// <param name="document">The document to add.</param>
+    public virtual Task AddDocumentAsync(IDock dock, IDockable document)
+    {
+        AddDockable(dock, document);
+        SetActiveDockable(document);
+        SetFocusedDockable(dock, document);
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc/>

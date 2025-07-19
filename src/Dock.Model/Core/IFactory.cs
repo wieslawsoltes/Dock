@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dock.Model.Controls;
 
 namespace Dock.Model.Core;
@@ -282,6 +283,13 @@ public partial interface IFactory
     /// <param name="dock">The owner dock.</param>
     /// <param name="dockable">The dockable to add.</param>
     void AddDockable(IDock dock, IDockable dockable);
+
+    /// <summary>
+    /// Adds a document to the dock asynchronously and activates it.
+    /// </summary>
+    /// <param name="dock">The owner dock.</param>
+    /// <param name="document">The document to add.</param>
+    Task AddDocumentAsync(IDock dock, IDockable document);
 
     /// <summary>
     /// Inserts <see cref="IDockable"/> into dock <see cref="IDock.VisibleDockables"/> collection.

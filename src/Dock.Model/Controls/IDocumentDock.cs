@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Dock.Model.Core;
 
@@ -29,6 +31,11 @@ public interface IDocumentDock : IDock
     /// Gets or sets document tabs layout.
     /// </summary>
     DocumentTabLayout TabsLayout { get; set; }
+
+    /// <summary>
+    /// Gets or sets asynchronous factory method used to create new documents.
+    /// </summary>
+    Func<Task<IDockable>>? DocumentFactoryAsync { get; set; }
 
     /// <summary>
     /// Adds the specified document to this dock and activates it.

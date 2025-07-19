@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Prism.Commands;
@@ -45,6 +46,12 @@ public class DocumentDock : DockBase, IDocumentDock
     [IgnoreDataMember]
     public Func<IDockable>? DocumentFactory { get; set; }
 
+    /// <summary>
+    /// Gets or sets asynchronous factory method used to create new documents.
+    /// </summary>
+    [IgnoreDataMember]
+    public Func<Task<IDockable>>? DocumentFactoryAsync { get; set; }
+
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
 
     /// <inheritdoc/>
@@ -63,9 +70,14 @@ public class DocumentDock : DockBase, IDocumentDock
         set => SetProperty(ref _tabsLayout, value);
     }
 
-    private void CreateNewDocument()
+    private async void CreateNewDocument()
     {
-        if (DocumentFactory is { } factory)
+        if (DocumentFactoryAsync is { } asyncFactory)
+        {
+            var document = await asyncFactory();
+            await AddDocumentAsync(document);
+        }
+        else if (DocumentFactory is { } factory)
         {
             var document = factory();
             AddDocument(document);
@@ -81,6 +93,18 @@ public class DocumentDock : DockBase, IDocumentDock
         Factory?.AddDockable(this, document);
         Factory?.SetActiveDockable(document);
         Factory?.SetFocusedDockable(this, document);
+    }
+
+    /// <summary>
+    /// Adds the specified document to this dock asynchronously and makes it active and focused.
+    /// </summary>
+    /// <param name="document">The document to add.</param>
+    public virtual async Task AddDocumentAsync(IDockable document)
+    {
+        if (Factory is not null)
+        {
+            await Factory.AddDocumentAsync(this, document);
+        }
     }
 
     /// <summary>

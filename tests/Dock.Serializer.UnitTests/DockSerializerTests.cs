@@ -102,4 +102,23 @@ public class DockSerializerTests
 
         Assert.Equal("null", text.Trim());
     }
+
+    [Fact]
+    public async Task SaveLoadAsync_Roundtrip_Works()
+    {
+        var serializer = new DockSerializer();
+        var sample = new Sample { Name = "Async", Numbers = new List<int> { 9, 10 } };
+        await using var stream = new NonClosingMemoryStream();
+
+        await serializer.SaveAsync(stream, sample);
+        Assert.True(stream.Length > 0);
+
+        stream.Position = 0;
+        var loaded = await serializer.LoadAsync<Sample>(stream);
+
+        Assert.NotNull(loaded);
+        Assert.Equal(sample.Name, loaded!.Name);
+        Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
+        Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
+    }
 }

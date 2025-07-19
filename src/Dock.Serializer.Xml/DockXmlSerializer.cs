@@ -87,4 +87,24 @@ public sealed class DockXmlSerializer : IDockSerializer
         using var writer = new StreamWriter(stream, Encoding.UTF8);
         writer.Write(text);
     }
+
+    /// <inheritdoc/>
+    public async Task<T?> LoadAsync<T>(Stream stream)
+    {
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+        var text = await reader.ReadToEndAsync().ConfigureAwait(false);
+        return Deserialize<T>(text);
+    }
+
+    /// <inheritdoc/>
+    public async Task SaveAsync<T>(Stream stream, T value)
+    {
+        var text = Serialize(value);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return;
+        }
+        using var writer = new StreamWriter(stream, Encoding.UTF8);
+        await writer.WriteAsync(text).ConfigureAwait(false);
+    }
 }

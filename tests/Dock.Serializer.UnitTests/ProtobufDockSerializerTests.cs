@@ -64,4 +64,23 @@ public class ProtobufDockSerializerTests
         Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
         Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
     }
+
+    [Fact]
+    public async Task SaveLoadAsync_Roundtrip_Works()
+    {
+        var serializer = new ProtobufDockSerializer();
+        var sample = new Sample { Name = "Async", Numbers = new List<int> { 9, 10 } };
+        await using var stream = new MemoryStream();
+
+        await serializer.SaveAsync(stream, sample);
+        Assert.True(stream.Length > 0);
+
+        stream.Position = 0;
+        var loaded = await serializer.LoadAsync<Sample>(stream);
+
+        Assert.NotNull(loaded);
+        Assert.Equal(sample.Name, loaded!.Name);
+        Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
+        Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
+    }
 }

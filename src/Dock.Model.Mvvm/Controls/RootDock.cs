@@ -33,6 +33,7 @@ public class RootDock : DockBase, IRootDock
     {
         ShowWindows = new RelayCommand(() => _navigateAdapter.ShowWindows());
         ExitWindows = new RelayCommand(() => _navigateAdapter.ExitWindows());
+        ResetLayout = new RelayCommand(() => Factory?.ResetLayout(this));
     }
 
     /// <inheritdoc/>
@@ -114,4 +115,8 @@ public class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ExitWindows { get; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand ResetLayout { get; }
 }

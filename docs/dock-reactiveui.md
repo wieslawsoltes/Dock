@@ -127,6 +127,15 @@ creates new documents when its `CreateDocument` command executes. The
 delegate should return an `IDockable` which is then passed to
 `AddDocument` and activated.
 
+## Resetting the layout
+
+Execute the `ResetLayout` command on the root dock to restore the
+initial layout.
+
+```csharp
+Layout?.ResetLayout.Execute(null);
+```
+
 ## Events
 
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.

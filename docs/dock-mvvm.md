@@ -129,6 +129,15 @@ var newDoc = new DocumentViewModel { Id = "Doc2", Title = "Another" };
 documentDock.AddDocument(newDoc);
 ```
 
+## Resetting the layout
+
+`IRootDock` provides a `ResetLayout` command that restores the original
+layout created during `InitLayout`.
+
+```csharp
+root.ResetLayout.Execute(null);
+```
+
 To drive a "New" command you can assign a delegate to the
 `DocumentFactory` property. The built-in `CreateDocument` command will
 invoke this factory, pass the result to `AddDocument` and activate the

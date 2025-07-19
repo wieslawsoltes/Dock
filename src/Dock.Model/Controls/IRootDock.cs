@@ -65,4 +65,9 @@ public interface IRootDock : IDock
     /// Exit windows.
     /// </summary>
     ICommand ExitWindows { get; }
+
+    /// <summary>
+    /// Reset layout to the initial state.
+    /// </summary>
+    ICommand ResetLayout { get; }
 }

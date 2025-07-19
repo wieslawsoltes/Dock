@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -12,6 +14,16 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    private IRootDock? _initialLayout;
+
+    private static T? CloneLayout<T>(T layout)
+    {
+        var serializer = new DataContractSerializer(typeof(T));
+        using var stream = new MemoryStream();
+        serializer.WriteObject(stream, layout!);
+        stream.Seek(0, SeekOrigin.Begin);
+        return (T?)serializer.ReadObject(stream);
+    }
     /// <inheritdoc/>
     public virtual void InitLayout(IDockable layout)
     {
@@ -27,6 +39,11 @@ public abstract partial class FactoryBase
 
         if (layout is IRootDock rootDock)
         {
+            if (_initialLayout is null)
+            {
+                _initialLayout = CloneLayout(rootDock);
+            }
+
             if (rootDock.ShowWindows.CanExecute(null))
             {
                 rootDock.ShowWindows.Execute(null);
@@ -44,7 +61,7 @@ public abstract partial class FactoryBase
                 dockable.Context = context;
             }
         }
- 
+
         dockable.Owner = owner;
 
         if (dockable is IDock dock)
@@ -139,9 +156,9 @@ public abstract partial class FactoryBase
         if (dockable is { })
         {
             SetFocusedDockable(owner, dockable);
-        } 
+        }
     }
-    
+
     /// <inheritdoc/>
     public virtual void SetActiveDockable(IDockable dockable)
     {
@@ -170,7 +187,7 @@ public abstract partial class FactoryBase
 
                 foreach (var result in results)
                 {
-                    if (result is IRootDock rootDock 
+                    if (result is IRootDock rootDock
                         && rootDock.IsFocusableRoot
                         && rootDock != root)
                     {
@@ -199,6 +216,36 @@ public abstract partial class FactoryBase
             {
                 SetIsActive(root.FocusedDockable.Owner, true);
             }
+        }
+    }
+
+    /// <summary>
+    /// Resets the layout to its initial state.
+    /// </summary>
+    /// <param name="root">The root dock to reset.</param>
+    public virtual void ResetLayout(IRootDock root)
+    {
+        if (_initialLayout is null)
+        {
+            return;
+        }
+
+        if (root.Close.CanExecute(null))
+        {
+            root.Close.Execute(null);
+        }
+
+        var layout = CloneLayout(_initialLayout);
+        if (layout is null)
+        {
+            return;
+        }
+
+        InitLayout(layout);
+
+        if (root.Owner is IDockControl dockControl)
+        {
+            dockControl.Layout = layout;
         }
     }
 }

@@ -21,7 +21,7 @@ public class HostWindowStateTests
     [AvaloniaFact]
     public void Process_CaptureLost_Resets_State()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var window = new HostWindow();
         var state = CreateState(manager, window);
 
@@ -35,7 +35,7 @@ public class HostWindowStateTests
     [AvaloniaFact]
     public void Process_Released_Completes_Drag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var window = new HostWindow();
         var state = CreateState(manager, window);
 
@@ -49,7 +49,7 @@ public class HostWindowStateTests
     [AvaloniaFact]
     public void Move_OutsideDockControl_Resets_DropControl()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var window = new HostWindow();
         var factory = new Factory();
         var layout = factory.CreateRootDock();
@@ -83,7 +83,7 @@ public class HostWindowStateTests
     [AvaloniaFact]
     public void Process_Moved_BelowThreshold_DoesNotStartDrag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var window = new HostWindow { Position = new PixelPoint(100, 100) };
         var state = CreateState(manager, window);
 
@@ -102,7 +102,7 @@ public class HostWindowStateTests
     [AvaloniaFact]
     public void Process_Moved_AboveThreshold_StartsDrag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var window = new HostWindow { Position = new PixelPoint(100, 100) };
         var state = CreateState(manager, window);
 

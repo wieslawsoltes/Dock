@@ -12,14 +12,14 @@ public class DockManagerTests
     [AvaloniaFact]
     public void PreventSizeConflicts_Default_True()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         Assert.True(manager.PreventSizeConflicts);
     }
 
     [AvaloniaFact]
     public void ValidateTool_ReturnsFalse_When_SourceCannotDrag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var sourceDock = new ToolDock { VisibleDockables = new global::Avalonia.Collections.AvaloniaList<IDockable>() };
         var tool = new Tool { CanDrag = false, Owner = sourceDock };
         sourceDock.VisibleDockables!.Add(tool);
@@ -32,7 +32,7 @@ public class DockManagerTests
     [AvaloniaFact]
     public void ValidateTool_ReturnsFalse_When_TargetCannotDrop()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var sourceDock = new ToolDock { VisibleDockables = new global::Avalonia.Collections.AvaloniaList<IDockable>() };
         var tool = new Tool { Owner = sourceDock };
         sourceDock.VisibleDockables!.Add(tool);
@@ -45,7 +45,7 @@ public class DockManagerTests
     [AvaloniaFact]
     public void ValidateTool_ReturnsTrue_When_Valid()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var sourceDock = new ToolDock { VisibleDockables = new global::Avalonia.Collections.AvaloniaList<IDockable>() };
         var tool = new Tool { Owner = sourceDock };
         sourceDock.VisibleDockables!.Add(tool);

@@ -38,6 +38,7 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _maxWidth = double.NaN;
         _minHeight = double.NaN;
         _maxHeight = double.NaN;
+        _isModified = false;
         _trackingAdapter = new TrackingAdapter();
     }
 
@@ -140,6 +141,10 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanDrop { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool IsModified { get; set; }
 
     /// <inheritdoc/>
     public string? GetControlRecyclingId() => _id;

@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockXamlSample", "samples\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockCodeOnlySample", "samples\DockCodeOnlySample\DockCodeOnlySample.csproj", "{0A7D7571-2957-4891-A4F1-3EE5E513CE90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockManagerRulesSample", "samples\DockManagerRulesSample\DockManagerRulesSample.csproj", "{8B31708E-D54B-4662-864D-1B1E6D338E6F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Avalonia.UnitTests", "tests\Dock.Model.Avalonia.UnitTests\Dock.Model.Avalonia.UnitTests.csproj", "{EC6AB3C6-7630-40AA-84CC-3BE17E77C63B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.UnitTests", "tests\Dock.Model.UnitTests\Dock.Model.UnitTests.csproj", "{D1354C0E-83C4-4D48-A5ED-0B153A26DC83}"

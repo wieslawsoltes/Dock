@@ -1,7 +1,8 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
-                    x:CompileBindings="True"
+                    xmlns:core="using:Dock.Model.Core"
+                    x:CompileBindings="False"
                     x:DataType="controls:IRootDock">
   <Design.PreviewWith>
     <HostWindow IsToolWindow="False" Width="300" Height="400" />
@@ -35,6 +36,15 @@
           <VisualLayerManager>
             <VisualLayerManager.ChromeOverlayLayer>
               <HostWindowTitleBar Name="PART_TitleBar" />
+              <DocumentTabStrip Name="PART_TitleTabStrip"
+                                IsVisible="{TemplateBinding ShowTabsInTitleBar}"
+                                ItemsSource="{Binding ActiveDockable.(core:IDock.VisibleDockables)}"
+                                SelectedItem="{Binding ActiveDockable.(core:IDock.ActiveDockable), Mode=TwoWay}"
+                                CanCreateItem="{Binding ActiveDockable.(controls:IDocumentDock.CanCreateDocument)}"
+                                EnableWindowDrag="{Binding ActiveDockable.(controls:IDocumentDock.EnableWindowDrag)}"
+                                Orientation="{Binding ActiveDockable.(controls:IDocumentDock.TabsLayout), Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                                DockPanel.Dock="{Binding ActiveDockable.(controls:IDocumentDock.TabsLayout), Converter={x:Static DocumentTabDockConverter.Instance}}"
+                                DockAdornerHost="{Binding #PART_ContentPresenter}" />
             </VisualLayerManager.ChromeOverlayLayer>
             <ContentPresenter Name="PART_ContentPresenter"
                               ContentTemplate="{TemplateBinding ContentTemplate}"

@@ -16,5 +16,9 @@ public enum DocumentTabLayout
     /// <summary>
     /// Tabs placed on the right.
     /// </summary>
-    Right
+    Right,
+    /// <summary>
+    /// Tabs placed inside the title bar.
+    /// </summary>
+    TitleBar
 }

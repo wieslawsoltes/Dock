@@ -45,7 +45,7 @@ from a saved state.
 
 ## Document dock options
 
-`IDocumentDock` exposes two key properties for controlling its tab strip. `EnableWindowDrag` allows the entire window to be dragged via the tab area. `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum.
+`IDocumentDock` exposes two key properties for controlling its tab strip. `EnableWindowDrag` allows the entire window to be dragged via the tab area. `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum, including a `TitleBar` option that places the tabs horizontally in the window chrome.
 
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 

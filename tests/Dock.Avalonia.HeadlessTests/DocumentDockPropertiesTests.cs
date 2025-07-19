@@ -52,4 +52,13 @@ public class DocumentDockPropertiesTests
 
         Assert.Equal(DocumentTabLayout.Top, dock.TabsLayout);
     }
+
+    [AvaloniaFact]
+    public void Set_TabsLayout_TitleBar()
+    {
+        var dock = new DocumentDock();
+        dock.TabsLayout = DocumentTabLayout.TitleBar;
+
+        Assert.Equal(DocumentTabLayout.TitleBar, dock.TabsLayout);
+    }
 }

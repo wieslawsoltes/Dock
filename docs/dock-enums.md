@@ -66,6 +66,7 @@ Controls where document tabs are placed around a document dock. Setting this aff
 | `Top` | Tabs are shown above the document content. |
 | `Left` | Tabs are arranged vertically to the left. |
 | `Right` | Tabs are arranged vertically to the right. |
+| `TitleBar` | Tabs appear horizontally inside the title bar. |
 
 ## GripMode
 

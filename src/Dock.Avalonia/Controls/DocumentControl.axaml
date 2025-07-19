@@ -75,11 +75,19 @@
       <Setter Property="Height" Value="NaN" />
     </Style>
     
-    <Style Selector="^[TabsLayout=Right]/template/ Grid#PART_Grid">
-      <Setter Property="DockPanel.Dock" Value="Right" />
-      <Setter Property="Width" Value="2" />
-      <Setter Property="Height" Value="NaN" />
-    </Style>
+  <Style Selector="^[TabsLayout=Right]/template/ Grid#PART_Grid">
+    <Setter Property="DockPanel.Dock" Value="Right" />
+    <Setter Property="Width" Value="2" />
+    <Setter Property="Height" Value="NaN" />
+  </Style>
+
+  <Style Selector="^[TabsLayout=TitleBar]/template/ Grid#PART_Grid">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="^[TabsLayout=TitleBar]/template/ DocumentTabStrip#PART_TabStrip">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
 
     <Style Selector="^/template/ Grid#PART_Grid">
       <Setter Property="Background" Value="{DynamicResource DockThemeBorderLowBrush}" />

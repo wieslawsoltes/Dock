@@ -15,10 +15,28 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
-          <DocumentControl IsActive="{Binding IsActive}" />
+          <DockPanel>
+            <DocumentTabStrip x:Name="PART_TitleStrip"
+                               ItemsSource="{Binding VisibleDockables}"
+                               SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                               CanCreateItem="{Binding CanCreateDocument}"
+                               IsActive="{Binding IsActive}"
+                               Orientation="Horizontal"
+                               DockPanel.Dock="Top"
+                               IsVisible="False" />
+            <DocumentControl x:Name="PART_Document" IsActive="{Binding IsActive}" TabsLayout="{Binding TabsLayout}" />
+          </DockPanel>
         </DockableControl>
       </ControlTemplate>
     </Setter>
+
+    <Style Selector="^[TabsLayout=TitleBar]/template/ DocumentTabStrip#PART_TitleStrip">
+      <Setter Property="IsVisible" Value="True" />
+    </Style>
+
+    <Style Selector="^[TabsLayout=TitleBar]/template/ DocumentControl#PART_Document">
+      <Setter Property="TabsLayout" Value="TitleBar" />
+    </Style>
 
   </ControlTheme>
 

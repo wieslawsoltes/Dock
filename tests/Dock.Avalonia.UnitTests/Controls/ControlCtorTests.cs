@@ -1,5 +1,7 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Internal;
+using Dock.Model;
 using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls;
@@ -9,7 +11,9 @@ public class ControlCtorTests
     [AvaloniaFact]
     public void DockControl_Ctor()
     {
-        var control = new DockControl();
+        var manager = new DockManager();
+        var state = new DockControlState(manager, new DefaultDragOffsetCalculator());
+        var control = new DockControl(manager, state);
         Assert.NotNull(control);
     }
 

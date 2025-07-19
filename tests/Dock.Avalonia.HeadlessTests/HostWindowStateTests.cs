@@ -68,7 +68,7 @@ public class HostWindowStateTests
         var contextField = typeof(HostWindowState)
             .GetField("_context", BindingFlags.Instance | BindingFlags.NonPublic)!;
         var context = contextField.GetValue(state)!;
-        context.GetType().GetProperty("TargetDockControl")!.SetValue(context, new DockControl());
+        context.GetType().GetProperty("TargetDockControl")!.SetValue(context, new DockControl(manager, new DockControlState(manager, new DefaultDragOffsetCalculator())));
         context.GetType().GetProperty("TargetPoint")!.SetValue(context, new Point(5,5));
         context.GetType().GetProperty("DoDragDrop")!.SetValue(context, true);
         context.GetType().GetProperty("PointerPressed")!.SetValue(context, true);

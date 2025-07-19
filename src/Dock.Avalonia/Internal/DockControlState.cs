@@ -48,7 +48,7 @@ internal class DockDragContext
 /// <summary>
 /// Dock control state.
 /// </summary>
-internal class DockControlState : DockManagerState, IDockControlState
+public class DockControlState : DockManagerState, IDockControlState
 {
     private readonly DockDragContext _context = new();
     private readonly DragPreviewHelper _dragPreviewHelper = new();

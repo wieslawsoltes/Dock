@@ -22,6 +22,13 @@ var dockControl = new DockControl
     DockManager = dockManager,
     Layout = factory.CreateLayout()
 };
+
+// or via the constructor
+var control2 = new DockControl(dockManager);
+
+// provide a custom state
+var state = new DockControlState(dockManager, new DefaultDragOffsetCalculator());
+var control3 = new DockControl(dockManager, state);
 ```
 
 During a drag operation `DockControlState` calls `DockManager.ValidateDockable` to test potential drop targets. When the pointer is released the same call is executed with `bExecute: true` so the layout is updated.

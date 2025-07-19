@@ -42,6 +42,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Sizing guide](dock-sizing.md) – Control pixel sizes and fixed dimensions.
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Enable window drag](dock-window-drag.md) – Drag the host window via the document tab strip.
+- [Tabs in the title bar](dock-titlebar-tabs.md) – Replace the title bar with document tabs.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.

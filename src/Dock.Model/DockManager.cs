@@ -41,12 +41,12 @@ public class DockManager : IDockManager
     {
         return operation switch
         {
-            DockOperation.Fill => _dockService.MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
-            DockOperation.Left => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Right => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Top => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Bottom => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Window => _dockService.DockDockableIntoWindow(sourceDockable, targetDock, ScreenPosition, bExecute),
+            DockOperation.Fill => _dockService.MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute).Success,
+            DockOperation.Left => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute).Success,
+            DockOperation.Right => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute).Success,
+            DockOperation.Top => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute).Success,
+            DockOperation.Bottom => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute).Success,
+            DockOperation.Window => _dockService.DockDockableIntoWindow(sourceDockable, targetDock, ScreenPosition, bExecute).Success,
             _ => false
         };
     }
@@ -66,8 +66,8 @@ public class DockManager : IDockManager
         return action switch
         {
             DragAction.Copy => false,
-            DragAction.Move => DockDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DragAction.Link => _dockService.SwapDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
+            DragAction.Move => DockDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute).Success,
+            DragAction.Link => _dockService.SwapDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute).Success,
             _ => false
         };
     }
@@ -118,7 +118,7 @@ public class DockManager : IDockManager
             foreach (var dockable in visible.Skip(1))
             {
                 var targetDockable = visible.FirstOrDefault();
-                if (targetDockable is null || _dockService.DockDockableIntoDockable(dockable, targetDockable, action, bExecute) == false)
+                if (targetDockable is null || _dockService.DockDockableIntoDockable(dockable, targetDockable, action, bExecute).Success == false)
                 {
                     return false;
                 }
@@ -147,14 +147,14 @@ public class DockManager : IDockManager
 
         return targetDockable switch
         {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceTool, targetDockable, ScreenPosition, bExecute),
+            IRootDock _ => _dockService.DockDockableIntoWindow(sourceTool, targetDockable, ScreenPosition, bExecute).Success,
             IToolDock toolDock =>
                 (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
                 && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute),
             ITool tool => (!PreventSizeConflicts || !HasSizeConflict(sourceTool, tool)) &&
-                          _dockService.DockDockableIntoDockable(sourceTool, tool, action, bExecute),
-            IDocument document => _dockService.DockDockableIntoDockable(sourceTool, document, action, bExecute),
+                          _dockService.DockDockableIntoDockable(sourceTool, tool, action, bExecute).Success,
+            IDocument document => _dockService.DockDockableIntoDockable(sourceTool, document, action, bExecute).Success,
             IProportionalDock proportionalDock => DockDockableIntoDock(sourceTool, proportionalDock, action, operation, bExecute),
             _ => false
         };

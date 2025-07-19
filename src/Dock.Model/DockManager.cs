@@ -9,9 +9,11 @@ namespace Dock.Model;
 /// <summary>
 /// Docking manager.
 /// </summary>
-public class DockManager : IDockManager
+public class DockManager : IDockManager, IDockableVisitor
 {
     private readonly DockService _dockService = new ();
+    private bool _result;
+    private bool _result;
 
     /// <inheritdoc/>
     public DockPoint Position { get; set; }
@@ -140,63 +142,22 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (!sourceTool.CanDrag || !targetDockable.CanDrop)
-        {
-            return false;
-        }
-
-        return targetDockable switch
-        {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceTool, targetDockable, ScreenPosition, bExecute),
-            IToolDock toolDock =>
-                (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
-                && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
-            IDocumentDock documentDock => DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute),
-            ITool tool => (!PreventSizeConflicts || !HasSizeConflict(sourceTool, tool)) &&
-                          _dockService.DockDockableIntoDockable(sourceTool, tool, action, bExecute),
-            IDocument document => _dockService.DockDockableIntoDockable(sourceTool, document, action, bExecute),
-            IProportionalDock proportionalDock => DockDockableIntoDock(sourceTool, proportionalDock, action, operation, bExecute),
-            _ => false
-        };
+        VisitTool(sourceTool, targetDockable, action, operation, bExecute);
+        return _result;
     }
 
     /// <inheritdoc/>
     public bool ValidateDocument(IDocument sourceDocument, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (!sourceDocument.CanDrag || !targetDockable.CanDrop)
-        {
-            return false;
-        }
-
-        return targetDockable switch
-        {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceDocument, targetDockable, ScreenPosition, bExecute),
-            IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
-            IDocument document => _dockService.DockDockableIntoDockable(sourceDocument, document, action, bExecute),
-            IProportionalDock proportionalDock => DockDockableIntoDock(sourceDocument, proportionalDock, action, operation, bExecute),
-            _ => false
-        };
+        VisitDocument(sourceDocument, targetDockable, action, operation, bExecute);
+        return _result;
     }
 
     /// <inheritdoc/>
     public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        if (!sourceDock.CanDrag || !targetDockable.CanDrop)
-        {
-            return false;
-        }
-
-        return targetDockable switch
-        {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceDock, targetDockable, ScreenPosition, bExecute),
-            IToolDock toolDock => sourceDock != toolDock &&
-                                  DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
-            IDocumentDock documentDock => sourceDock != documentDock &&
-                                          DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute),
-            IProportionalDock proportionalDock => sourceDock != proportionalDock &&
-                                                  DockDockable(sourceDock, targetDockable, proportionalDock, action, operation, bExecute),
-            _ => false
-        };
+        VisitDock(sourceDock, targetDockable, action, operation, bExecute);
+        return _result;
     }
 
     private bool ValidateProportionalDock(IProportionalDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
@@ -304,22 +265,102 @@ public class DockManager : IDockManager
         return all;
     }
 
+    public bool VisitTool(ITool tool, IDockable target, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (!tool.CanDrag || !target.CanDrop)
+        {
+            _result = false;
+            return _result;
+        }
+
+        _result = target switch
+        {
+            IRootDock _ => _dockService.DockDockableIntoWindow(tool, target, ScreenPosition, bExecute),
+            IToolDock toolDock => (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(tool, t)) != false) &&
+                                   DockDockableIntoDock(tool, toolDock, action, operation, bExecute),
+            IDocumentDock documentDock => DockDockableIntoDock(tool, documentDock, action, operation, bExecute),
+            ITool targetTool => (!PreventSizeConflicts || !HasSizeConflict(tool, targetTool)) && _dockService.DockDockableIntoDockable(tool, targetTool, action, bExecute),
+            IDocument document => _dockService.DockDockableIntoDockable(tool, document, action, bExecute),
+            IProportionalDock proportionalDock => DockDockableIntoDock(tool, proportionalDock, action, operation, bExecute),
+            _ => false
+        };
+        return _result;
+    }
+
+    public bool VisitDocument(IDocument document, IDockable target, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (!document.CanDrag || !target.CanDrop)
+        {
+            _result = false;
+            return _result;
+        }
+
+        _result = target switch
+        {
+            IRootDock _ => _dockService.DockDockableIntoWindow(document, target, ScreenPosition, bExecute),
+            IDocumentDock documentDock => DockDockableIntoDock(document, documentDock, action, operation, bExecute),
+            IDocument targetDocument => _dockService.DockDockableIntoDockable(document, targetDocument, action, bExecute),
+            IProportionalDock proportionalDock => DockDockableIntoDock(document, proportionalDock, action, operation, bExecute),
+            _ => false
+        };
+        return _result;
+    }
+
+    public bool VisitDock(IDock dock, IDockable target, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (dock is IProportionalDock proportional)
+        {
+            _result = ValidateProportionalDock(proportional, target, action, operation, bExecute);
+            return _result;
+        }
+
+        if (dock is IStackDock stack)
+        {
+            _result = ValidateStackDock(stack, target, action, operation, bExecute);
+            return _result;
+        }
+
+        if (dock is IGridDock grid)
+        {
+            _result = ValidateGridDock(grid, target, action, operation, bExecute);
+            return _result;
+        }
+
+        if (dock is IWrapDock wrap)
+        {
+            _result = ValidateWrapDock(wrap, target, action, operation, bExecute);
+            return _result;
+        }
+
+        if (dock is IUniformGridDock uniform)
+        {
+            _result = ValidateUniformGridDock(uniform, target, action, operation, bExecute);
+            return _result;
+        }
+
+        if (!dock.CanDrag || !target.CanDrop)
+        {
+            _result = false;
+            return _result;
+        }
+
+        _result = target switch
+        {
+            IRootDock _ => _dockService.DockDockableIntoWindow(dock, target, ScreenPosition, bExecute),
+            IToolDock toolDock => dock != toolDock && DockDockable(dock, target, toolDock, action, operation, bExecute),
+            IDocumentDock documentDock => dock != documentDock && DockDockable(dock, target, documentDock, action, operation, bExecute),
+            IProportionalDock proportionalDock => dock != proportionalDock && DockDockable(dock, target, proportionalDock, action, operation, bExecute),
+            _ => false
+        };
+        return _result;
+    }
+
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
-        return sourceDockable switch
-        {
-            IToolDock toolDock => ValidateDock(toolDock, targetDockable, action, operation, bExecute),
-            IDocumentDock documentDock => ValidateDock(documentDock, targetDockable, action, operation, bExecute),
-            ITool tool => ValidateTool(tool, targetDockable, action, operation, bExecute),
-            IDocument document => ValidateDocument(document, targetDockable, action, operation, bExecute),
-            IProportionalDock proportionalDock => ValidateProportionalDock(proportionalDock, targetDockable, action, operation, bExecute),
-            IStackDock stackDock => ValidateStackDock(stackDock, targetDockable, action, operation, bExecute),
-            IGridDock gridDock => ValidateGridDock(gridDock, targetDockable, action, operation, bExecute),
-            IWrapDock wrapDock => ValidateWrapDock(wrapDock, targetDockable, action, operation, bExecute),
-            IUniformGridDock uniformGridDock => ValidateUniformGridDock(uniformGridDock, targetDockable, action, operation, bExecute),
-            _ => false
-        };
+        _result = false;
+        sourceDockable.Accept(this, targetDockable, action, operation, bExecute);
+        return _result;
     }
 
     /// <inheritdoc/>

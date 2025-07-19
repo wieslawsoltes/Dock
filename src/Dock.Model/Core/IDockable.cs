@@ -268,4 +268,14 @@ public interface IDockable : IControlRecyclingIdProvider
     /// <param name="x">The pointer x axis position.</param>
     /// <param name="y">The pointer y axis position.</param>
     void OnPointerScreenPositionChanged(double x, double y);
+
+    /// <summary>
+    /// Accepts visitor for dockable operations.
+    /// </summary>
+    /// <param name="visitor">The visitor.</param>
+    /// <param name="target">The target dockable.</param>
+    /// <param name="action">The drag action.</param>
+    /// <param name="op">The dock operation.</param>
+    /// <param name="execute">The flag indicating whether to execute.</param>
+    void Accept(IDockableVisitor visitor, IDockable target, DragAction action, DockOperation op, bool execute);
 }

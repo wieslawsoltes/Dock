@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IsPackable>False</IsPackable>
+    <Nullable>enable</Nullable>
+    <AvaloniaNameGeneratorBehavior>OnlyProperties</AvaloniaNameGeneratorBehavior>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\build\ReferenceAssemblies.props" />
+  <Import Project="..\..\..\build\Avalonia.props" />
+  <Import Project="..\..\..\build\Avalonia.Themes.Fluent.props" />
+  <Import Project="..\..\..\build\Avalonia.Desktop.props" />
+  <Import Project="..\..\..\build\Avalonia.Diagnostics.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\PluginContracts\PluginContracts.csproj" />
+    <ProjectReference Include="..\..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
+    <ProjectReference Include="..\..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
+    <ProjectReference Include="..\..\..\src\Dock.Serializer.Newtonsoft\Dock.Serializer.Newtonsoft.csproj" />
+  </ItemGroup>
+</Project>

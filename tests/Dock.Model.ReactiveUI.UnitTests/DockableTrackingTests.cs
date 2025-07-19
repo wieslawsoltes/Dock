@@ -9,14 +9,14 @@ public class DockableTrackingTests
     public void VisibleBounds_Are_Tracked()
     {
         var doc = new Document();
-        doc.GetVisibleBounds(out var x, out var y, out var w, out var h);
+        doc.TrackingAdapter.GetVisibleBounds(out var x, out var y, out var w, out var h);
         Assert.True(double.IsNaN(x));
         Assert.True(double.IsNaN(y));
         Assert.True(double.IsNaN(w));
         Assert.True(double.IsNaN(h));
 
-        doc.SetVisibleBounds(1, 2, 3, 4);
-        doc.GetVisibleBounds(out x, out y, out w, out h);
+        doc.TrackingAdapter.SetVisibleBounds(1, 2, 3, 4);
+        doc.TrackingAdapter.GetVisibleBounds(out x, out y, out w, out h);
         Assert.Equal(1, x);
         Assert.Equal(2, y);
         Assert.Equal(3, w);
@@ -27,8 +27,8 @@ public class DockableTrackingTests
     public void PinnedBounds_Are_Tracked()
     {
         var doc = new Document();
-        doc.SetPinnedBounds(5, 6, 7, 8);
-        doc.GetPinnedBounds(out var x, out var y, out var w, out var h);
+        doc.TrackingAdapter.SetPinnedBounds(5, 6, 7, 8);
+        doc.TrackingAdapter.GetPinnedBounds(out var x, out var y, out var w, out var h);
         Assert.Equal(5, x);
         Assert.Equal(6, y);
         Assert.Equal(7, w);
@@ -39,8 +39,8 @@ public class DockableTrackingTests
     public void TabBounds_Are_Tracked()
     {
         var doc = new Document();
-        doc.SetTabBounds(9, 10, 11, 12);
-        doc.GetTabBounds(out var x, out var y, out var w, out var h);
+        doc.TrackingAdapter.SetTabBounds(9, 10, 11, 12);
+        doc.TrackingAdapter.GetTabBounds(out var x, out var y, out var w, out var h);
         Assert.Equal(9, x);
         Assert.Equal(10, y);
         Assert.Equal(11, w);
@@ -51,13 +51,13 @@ public class DockableTrackingTests
     public void PointerPositions_Are_Tracked()
     {
         var doc = new Document();
-        doc.SetPointerPosition(13, 14);
-        doc.GetPointerPosition(out var x, out var y);
+        doc.TrackingAdapter.SetPointerPosition(13, 14);
+        doc.TrackingAdapter.GetPointerPosition(out var x, out var y);
         Assert.Equal(13, x);
         Assert.Equal(14, y);
 
-        doc.SetPointerScreenPosition(15, 16);
-        doc.GetPointerScreenPosition(out x, out y);
+        doc.TrackingAdapter.SetPointerScreenPosition(15, 16);
+        doc.TrackingAdapter.GetPointerScreenPosition(out x, out y);
         Assert.Equal(15, x);
         Assert.Equal(16, y);
     }

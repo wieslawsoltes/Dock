@@ -10,24 +10,24 @@ public class DockableBaseTests
     {
         var doc = new Document();
 
-        doc.SetVisibleBounds(1, 2, 3, 4);
-        doc.GetVisibleBounds(out var vx, out var vy, out var vw, out var vh);
+        doc.TrackingAdapter.SetVisibleBounds(1, 2, 3, 4);
+        doc.TrackingAdapter.GetVisibleBounds(out var vx, out var vy, out var vw, out var vh);
         Assert.Equal((1,2,3,4), (vx,vy,vw,vh));
 
-        doc.SetPinnedBounds(5, 6, 7, 8);
-        doc.GetPinnedBounds(out var px, out var py, out var pw, out var ph);
+        doc.TrackingAdapter.SetPinnedBounds(5, 6, 7, 8);
+        doc.TrackingAdapter.GetPinnedBounds(out var px, out var py, out var pw, out var ph);
         Assert.Equal((5,6,7,8), (px,py,pw,ph));
 
-        doc.SetTabBounds(9, 10, 11, 12);
-        doc.GetTabBounds(out var tx, out var ty, out var tw, out var th);
+        doc.TrackingAdapter.SetTabBounds(9, 10, 11, 12);
+        doc.TrackingAdapter.GetTabBounds(out var tx, out var ty, out var tw, out var th);
         Assert.Equal((9,10,11,12), (tx,ty,tw,th));
 
-        doc.SetPointerPosition(13, 14);
-        doc.GetPointerPosition(out var ppx, out var ppy);
+        doc.TrackingAdapter.SetPointerPosition(13, 14);
+        doc.TrackingAdapter.GetPointerPosition(out var ppx, out var ppy);
         Assert.Equal((13,14), (ppx,ppy));
 
-        doc.SetPointerScreenPosition(15, 16);
-        doc.GetPointerScreenPosition(out var psx, out var psy);
+        doc.TrackingAdapter.SetPointerScreenPosition(15, 16);
+        doc.TrackingAdapter.GetPointerScreenPosition(out var psx, out var psy);
         Assert.Equal((15,16), (psx,psy));
     }
 }

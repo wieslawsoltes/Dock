@@ -6,6 +6,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Mvvm;
 using Dock.Model.Mvvm.Controls;
+using System.Threading.Tasks;
 using Notepad.ViewModels.Documents;
 using Notepad.ViewModels.Tools;
 
@@ -53,7 +54,7 @@ public class NotepadFactory : Factory
                 untitledFileViewModel
             ),
             CanCreateDocument = true,
-            DocumentFactory = CreateNewDocument
+            DocumentFactoryAsync = () => Task.FromResult<IDockable>(CreateNewDocument())
         };
 
         var tools = new ProportionalDock

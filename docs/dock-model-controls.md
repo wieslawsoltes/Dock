@@ -57,10 +57,10 @@ and allows dragging the host window via the tab area when
 `EnableWindowDrag` is `true`. `TabsLayout` determines where the tabs
 are placed.
 
-`DocumentDock` also exposes a `DocumentFactory` delegate that is used by
-the `CreateDocument` command. When assigned, this factory is invoked to
-create a new document which is then added and activated through the
-`AddDocument` helper.
+`DocumentDock` also exposes `DocumentFactory` and `DocumentFactoryAsync`
+delegates that are used by the `CreateDocument` command. When assigned,
+these factories are invoked to create a new document which is then added
+and activated through the `AddDocument` or `AddDocumentAsync` helper.
 
 `IDocumentDockContent` extends this concept by storing a
 `DocumentTemplate` object. Calling `CreateDocumentFromTemplate`

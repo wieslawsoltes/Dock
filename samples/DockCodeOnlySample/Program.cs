@@ -8,6 +8,7 @@ using Dock.Avalonia.Themes;
 using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using System.Threading.Tasks;
 using Dock.Model.Core;
 
 namespace DockCodeOnlySample;
@@ -47,9 +48,10 @@ public class App : Application
                 CanCreateDocument = true
             };
 
-            documentDock.DocumentFactory = () =>
+            documentDock.DocumentFactoryAsync = async () =>
             {
                 var index = documentDock.VisibleDockables?.Count ?? 0;
+                await Task.Delay(10);
                 return new Document { Id = $"Doc{index + 1}", Title = $"Document {index + 1}" };
             };
 

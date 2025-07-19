@@ -50,8 +50,9 @@ from a saved state.
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 
 To create new documents programmatically, set the `DocumentFactory`
-delegate. The `CreateDocument` command invokes this factory and then
-adds the returned document via `AddDocument`.
+or `DocumentFactoryAsync` delegate. The `CreateDocument` command invokes
+the provided factory and then adds the returned document via
+`AddDocument` or `AddDocumentAsync`.
 
 ## Host window options
 

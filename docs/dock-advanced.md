@@ -89,10 +89,11 @@ files.AddDocument(fileViewModel);
 These helper calls can be replaced by `files.AddDocument(fileViewModel)` for brevity.
 `ToolDock` offers a matching `AddTool` helper for dynamically created tools.
 
-`DocumentDock` includes a `DocumentFactory` delegate that works with the
-`CreateDocument` command. Assigning this factory lets the dock create a
-new document on demand which is then passed to `AddDocument` and
-activated automatically.
+`DocumentDock` includes `DocumentFactory` and `DocumentFactoryAsync`
+delegates that work with the `CreateDocument` command. Assigning one of
+these factories lets the dock create a new document on demand which is
+then passed to `AddDocument` or `AddDocumentAsync` and activated
+automatically.
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 

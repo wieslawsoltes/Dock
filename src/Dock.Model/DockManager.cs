@@ -12,6 +12,16 @@ namespace Dock.Model;
 public class DockManager : IDockManager
 {
     private readonly DockService _dockService = new ();
+    private readonly DockManagerOptions _options;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockManager"/> class.
+    /// </summary>
+    /// <param name="options">The dock manager options.</param>
+    public DockManager(DockManagerOptions? options = null)
+    {
+        _options = options ?? new DockManagerOptions();
+    }
 
     /// <inheritdoc/>
     public DockPoint Position { get; set; }
@@ -20,7 +30,11 @@ public class DockManager : IDockManager
     public DockPoint ScreenPosition { get; set; }
 
     /// <inheritdoc/>
-    public bool PreventSizeConflicts { get; set; } = true;
+    public bool PreventSizeConflicts
+    {
+        get => _options.PreventSizeConflicts;
+        set => _options.PreventSizeConflicts = value;
+    }
 
     private static bool IsFixed(double min, double max)
     {

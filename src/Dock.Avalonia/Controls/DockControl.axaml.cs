@@ -24,6 +24,7 @@ public class DockControl : TemplatedControl, IDockControl
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
+    private readonly DockManagerOptions _options;
     private bool _isInitialized;
 
     /// <summary>
@@ -132,11 +133,21 @@ public class DockControl : TemplatedControl, IDockControl
     }
 
     /// <summary>
-    /// Initialize the new instance of the <see cref="DockControl"/>.
+    /// Initializes a new instance of the <see cref="DockControl"/> class.
     /// </summary>
     public DockControl()
+        : this(new DockManagerOptions())
     {
-        _dockManager = new DockManager();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockControl"/> class with options.
+    /// </summary>
+    /// <param name="options">The dock manager options.</param>
+    public DockControl(DockManagerOptions options)
+    {
+        _options = options;
+        _dockManager = new DockManager(options);
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -189,13 +200,13 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
             layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () => new HostWindow(_options)
             };
             layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
             layout.Factory.DefaultContextLocator = GetContext;
             layout.Factory.DefaultHostWindowLocator = GetHostWindow;
- 
-            IHostWindow GetHostWindow() => new HostWindow();
+
+            IHostWindow GetHostWindow() => new HostWindow(_options);
 
             object? GetContext() => DefaultContext;
         }

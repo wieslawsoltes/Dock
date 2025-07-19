@@ -12,10 +12,12 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" />
-    <PackageReference Include="System.Runtime.Serialization.Formatters"  />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" />
   </ItemGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="Microsoft.Build.Tasks.Core" />
     <NukeMetadata Include="**\*.json" Exclude="bin\**;obj\**" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
     <None Remove="*.ref;*.txt" />

@@ -57,7 +57,7 @@ public class DockWindowTests
             width = Width; height = Height;
         }
 
-        public void SetTitle(string title)
+        public void SetTitle(string? title)
         {
             Title = title;
         }

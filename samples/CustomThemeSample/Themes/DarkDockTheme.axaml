@@ -1,0 +1,5 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StyleInclude Source="avares://Dock.Avalonia/Themes/DockFluentTheme.axaml" />
+  <ResourceInclude Source="avares://CustomThemeSample/Themes/AccentDark.axaml" />
+</Styles>

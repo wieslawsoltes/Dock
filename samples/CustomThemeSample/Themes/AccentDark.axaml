@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="#2B2B2B" />
+    <SolidColorBrush x:Key="DockThemeAccentBrush" Color="#FF8C00" />
+    <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#CFCFCF" />
+    <StreamGeometry x:Key="DockIconCloseGeometry" />
+</ResourceDictionary>

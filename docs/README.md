@@ -19,6 +19,7 @@ application created with the .NET SDK. For build instructions and an overview of
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
+- [Plug-in host sample](plugin-host-sample.md) – Example of dynamic plug-in loading.
 
 ## Concepts
 
@@ -79,3 +80,4 @@ including both `Dock.Avalonia` and `Dock.Model.Mvvm`.
 ## Troubleshooting
 
 - [FAQ](dock-faq.md) – Solutions to common issues.
+

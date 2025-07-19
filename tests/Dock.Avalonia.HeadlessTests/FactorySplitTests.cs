@@ -52,6 +52,27 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
+    public void CreateSplitLayout_Top_Creates_Vertical_Layout()
+    {
+        var factory = new Factory();
+        var container = new ProportionalDock
+        {
+            Proportion = 0.3,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        container.Factory = factory;
+        var doc = new Document();
+
+        var layout = factory.CreateSplitLayout(container, doc, DockOperation.Top);
+
+        Assert.IsType<ProportionalDock>(layout);
+        Assert.Equal(Orientation.Vertical, (layout as ProportionalDock)!.Orientation);
+        Assert.Equal(3, layout.VisibleDockables!.Count);
+        Assert.Same(container, layout.VisibleDockables[2]);
+        Assert.True(double.IsNaN(container.Proportion));
+    }
+
+    [AvaloniaFact]
     public void SplitToDock_Right_Replaces_Dock_With_Layout()
     {
         var factory = new Factory();
@@ -68,6 +89,26 @@ public class FactorySplitTests
 
         var layout = Assert.IsType<ProportionalDock>(root.VisibleDockables![0]);
         Assert.Equal(Orientation.Horizontal, layout.Orientation);
+        Assert.Equal(3, layout.VisibleDockables!.Count);
+    }
+
+    [AvaloniaFact]
+    public void SplitToDock_Bottom_Replaces_Dock_With_Layout()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+        var dock = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(root, dock);
+        var doc = new Document();
+
+        factory.SplitToDock(dock, doc, DockOperation.Bottom);
+
+        var layout = Assert.IsType<ProportionalDock>(root.VisibleDockables![0]);
+        Assert.Equal(Orientation.Vertical, layout.Orientation);
         Assert.Equal(3, layout.VisibleDockables!.Count);
     }
 

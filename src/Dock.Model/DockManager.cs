@@ -11,7 +11,24 @@ namespace Dock.Model;
 /// </summary>
 public class DockManager : IDockManager
 {
-    private readonly DockService _dockService = new ();
+    private readonly DockService _dockService = new();
+    private readonly Dictionary<DockOperation, Func<IDockable, IDock, IDock, bool, bool>> _dockActions;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockManager"/> class.
+    /// </summary>
+    public DockManager()
+    {
+        _dockActions = new Dictionary<DockOperation, Func<IDockable, IDock, IDock, bool, bool>>
+        {
+            [DockOperation.Fill] = (s, so, t, e) => _dockService.MoveDockable(s, so, t, e),
+            [DockOperation.Left] = (s, so, t, e) => _dockService.SplitDockable(s, so, t, DockOperation.Left, e),
+            [DockOperation.Right] = (s, so, t, e) => _dockService.SplitDockable(s, so, t, DockOperation.Right, e),
+            [DockOperation.Top] = (s, so, t, e) => _dockService.SplitDockable(s, so, t, DockOperation.Top, e),
+            [DockOperation.Bottom] = (s, so, t, e) => _dockService.SplitDockable(s, so, t, DockOperation.Bottom, e),
+            [DockOperation.Window] = (s, so, t, e) => _dockService.DockDockableIntoWindow(s, t, ScreenPosition, e)
+        };
+    }
 
     /// <inheritdoc/>
     public DockPoint Position { get; set; }
@@ -39,16 +56,7 @@ public class DockManager : IDockManager
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
     {
-        return operation switch
-        {
-            DockOperation.Fill => _dockService.MoveDockable(sourceDockable, sourceDockableOwner, targetDock, bExecute),
-            DockOperation.Left => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Right => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Top => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Bottom => _dockService.SplitDockable(sourceDockable, sourceDockableOwner, targetDock, operation, bExecute),
-            DockOperation.Window => _dockService.DockDockableIntoWindow(sourceDockable, targetDock, ScreenPosition, bExecute),
-            _ => false
-        };
+        return _dockActions.TryGetValue(operation, out var action) && action(sourceDockable, sourceDockableOwner, targetDock, bExecute);
     }
 
     private bool DockDockableIntoDock(IDockable sourceDockable, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
@@ -98,7 +106,7 @@ public class DockManager : IDockManager
         {
             return true;
         }
-            
+
         if (visible.Count == 1)
         {
             var sourceDockable = visible.FirstOrDefault();
@@ -114,7 +122,7 @@ public class DockManager : IDockManager
             {
                 return false;
             }
-                
+
             foreach (var dockable in visible.Skip(1))
             {
                 var targetDockable = visible.FirstOrDefault();

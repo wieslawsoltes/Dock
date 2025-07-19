@@ -21,7 +21,7 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void Process_CaptureLost_Ends_Drag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var state = CreateState(manager);
         var dock = new DockControl();
         var docks = new List<IDockControl> { dock };
@@ -36,7 +36,7 @@ public class DockControlStateTests
     [AvaloniaFact]
     public void Process_Released_Ends_Drag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var state = CreateState(manager);
         var dock = new DockControl();
         var docks = new List<IDockControl> { dock };

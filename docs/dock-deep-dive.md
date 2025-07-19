@@ -11,7 +11,7 @@ you need behaviour not covered by the default implementation.
 `DockControl` is the main Avalonia control that hosts a layout. Its constructor registers pointer handlers and creates both a `DockManager` and a `DockControlState`:
 
 ```csharp
-_dockManager = new DockManager();
+_dockManager = new DockManager(new DockService());
 _dockControlState = new DockControlState();
 AddHandler(PointerPressedEvent, PressedHandler);
 AddHandler(PointerReleasedEvent, ReleasedHandler);

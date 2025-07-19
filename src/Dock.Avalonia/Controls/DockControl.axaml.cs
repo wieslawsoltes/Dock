@@ -136,7 +136,7 @@ public class DockControl : TemplatedControl, IDockControl
     /// </summary>
     public DockControl()
     {
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(new DockService());
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

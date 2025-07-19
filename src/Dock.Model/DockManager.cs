@@ -11,7 +11,16 @@ namespace Dock.Model;
 /// </summary>
 public class DockManager : IDockManager
 {
-    private readonly DockService _dockService = new ();
+    private readonly IDockService _dockService;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockManager"/> class.
+    /// </summary>
+    /// <param name="dockService">The dock service.</param>
+    public DockManager(IDockService dockService)
+    {
+        _dockService = dockService;
+    }
 
     /// <inheritdoc/>
     public DockPoint Position { get; set; }

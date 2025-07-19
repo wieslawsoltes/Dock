@@ -4,7 +4,7 @@ using Dock.Model.Core;
 
 namespace Dock.Model;
 
-internal class DockService
+public class DockService : IDockService
 {
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)
     {

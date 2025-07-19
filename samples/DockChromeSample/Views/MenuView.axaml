@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="DockChromeSample.Views.MenuView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockChromeSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="20"
+             x:CompileBindings="True" x:DataType="vm:MainWindowViewModel">
+  <Menu>
+    <MenuItem Header="_File">
+      <MenuItem Header="_New" Command="{Binding FileNew}" />
+      <MenuItem Header="_Open..." Command="{Binding FileOpen}" />
+      <MenuItem Header="Save" Command="{Binding FileSave}" />
+      <MenuItem Header="Save _As..." Command="{Binding FileSaveAs}" />
+      <Separator />
+      <MenuItem Header="E_xit" Command="{Binding FileExit}" />
+    </MenuItem>
+    <MenuItem Header="_Edit">
+      <MenuItem Header="_Undo" Command="{Binding EditUndo}" />
+      <Separator />
+      <MenuItem Header="Cu_t" Command="{Binding EditCut}" />
+      <MenuItem Header="_Copy" Command="{Binding EditCopy}" />
+      <MenuItem Header="_Paste" Command="{Binding EditPaste}" />
+      <MenuItem Header="_Delete" Command="{Binding EditDelete}" />
+      <Separator />
+      <MenuItem Header="_Find..." Command="{Binding EditFind}" />
+      <MenuItem Header="Find _Next" Command="{Binding EditFindNext}" />
+      <MenuItem Header="_Replace..." Command="{Binding EditReplace}" />
+      <MenuItem Header="_Go to..." />
+      <Separator />
+      <MenuItem Header="Select _All" Command="{Binding EditSelectAll}" />
+      <MenuItem Header="_Time/date" Command="{Binding EditTimeDate}" />
+    </MenuItem>
+    <MenuItem Header="_Format">
+      <MenuItem Header="_Wrap lines" Command="{Binding EditWrapLines}" />
+      <MenuItem Header="_Font..." Command="{Binding FormatFont}" />
+    </MenuItem>
+    <MenuItem Header="_View">
+      <MenuItem Header="_Status bar" Command="{Binding ViewStatusBar}" />
+    </MenuItem>
+    <MenuItem Header="_Help">
+      <MenuItem Header="Get _Help" Command="{Binding HelpGetHelp}" />
+      <MenuItem Header="DockChromeSample - _About" Command="{Binding HelpAbout}" />
+    </MenuItem>
+  </Menu>
+</UserControl>

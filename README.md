@@ -69,7 +69,9 @@ Install-Package Dock.Serializer.Newtonsoft -Pre
 ## Resources
 * [Documentation index](docs/README.md)
 * Sample applications can be found under the [samples](samples/) directory
-  which illustrate each approach in a working project.
+  which illustrate each approach in a working project. The
+  [`DockChromeSample`](samples/DockChromeSample) project shows how to
+  host document tabs in the title bar with icons.
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

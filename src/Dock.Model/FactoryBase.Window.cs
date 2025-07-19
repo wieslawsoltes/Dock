@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -13,7 +14,7 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void AddWindow(IRootDock rootDock, IDockWindow window)
     {
-        rootDock.Windows ??= CreateList<IDockWindow>();
+        rootDock.Windows ??= new List<IDockWindow>();
         rootDock.Windows.Add(window);
         OnWindowAdded(window);
         InitDockWindow(window, rootDock);
@@ -24,7 +25,7 @@ public abstract partial class FactoryBase
     {
         if (index >= 0)
         {
-            rootDock.Windows ??= CreateList<IDockWindow>();
+            rootDock.Windows ??= new List<IDockWindow>();
             rootDock.Windows.Insert(index, window);
             OnWindowAdded(window);
             InitDockWindow(window, rootDock);

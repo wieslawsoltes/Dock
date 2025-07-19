@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
@@ -78,7 +79,7 @@ public class FactorySplitTests
         var root = new RootDock
         {
             VisibleDockables = factory.CreateList<IDockable>(),
-            Windows = factory.CreateList<IDockWindow>()
+            Windows = new List<IDockWindow>()
         };
         root.Factory = factory;
         var doc = new Document();

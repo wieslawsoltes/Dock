@@ -34,6 +34,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Architecture overview](dock-architecture.md) – High level design of the docking system.
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
+- [DockManager strategy and visitor](dockmanager-strategy-visitor.md) – Add new operations or dockable types.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
 - [Custom themes](dock-custom-theme.md) – Build and apply your own theme.
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.

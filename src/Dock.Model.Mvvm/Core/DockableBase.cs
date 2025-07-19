@@ -10,7 +10,7 @@ namespace Dock.Model.Mvvm.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IBoundsInfo, IPointerTracking, IPinnableDockable
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;

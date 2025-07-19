@@ -24,7 +24,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 [JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IBoundsInfo, IPointerTracking, IPinnableDockable
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.

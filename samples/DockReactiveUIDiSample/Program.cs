@@ -12,6 +12,7 @@ using DockReactiveUIDiSample.Views.Documents;
 using DockReactiveUIDiSample.Views.Tools;
 using ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DockReactiveUIDiSample;
 
@@ -21,6 +22,7 @@ internal class Program
     private static void Main(string[] args)
     {
         using var provider = Initialize();
+        using provider.UseDockEventLogger();
         BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
     }
 
@@ -45,7 +47,9 @@ internal class Program
         services.AddTransient<IViewFor<MainWindowViewModel>, MainWindow>();
 
         services.AddDock<DockFactory, DockSerializer>();
-   }
+        services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Debug));
+        services.UseDockEventLogger();
+    }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
         => AppBuilder.Configure(provider.GetRequiredService<App>)

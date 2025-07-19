@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
@@ -12,6 +14,7 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase
 {
+    private readonly Dictionary<IToolDock, (bool IsExpanded, bool AutoHide)> _toolDockStates = new();
     /// <inheritdoc/>
     public virtual void AddDockable(IDock dock, IDockable dockable)
     {
@@ -398,6 +401,13 @@ public abstract partial class FactoryBase
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
+                    if (!_toolDockStates.ContainsKey(toolDock))
+                    {
+                        _toolDockStates[toolDock] = (toolDock.IsExpanded, toolDock.AutoHide);
+                    }
+
+                    var index = toolDock.VisibleDockables?.IndexOf(dockable) ?? -1;
+                    var wasActive = toolDock.ActiveDockable == dockable;
 
                     switch (alignment)
                     {
@@ -428,6 +438,20 @@ public abstract partial class FactoryBase
                     {
                         RemoveVisibleDockable(toolDock, dockable);
                         OnDockableRemoved(dockable);
+
+                        if (wasActive)
+                        {
+                            if (toolDock.VisibleDockables.Count > 0)
+                            {
+                                var nextIndex = index > 0 ? index - 1 : 0;
+                                var next = toolDock.VisibleDockables[nextIndex];
+                                toolDock.ActiveDockable = next is not IProportionalDockSplitter ? next : null;
+                            }
+                            else
+                            {
+                                toolDock.ActiveDockable = null;
+                            }
+                        }
                     }
 
                     switch (alignment)
@@ -475,9 +499,10 @@ public abstract partial class FactoryBase
                         }
                     }
 
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    toolDock.IsExpanded = false;
+                    toolDock.AutoHide = true;
+
+                    dockable.OriginalOwner ??= toolDock;
                 }
                 else if (isPinned)
                 {
@@ -543,14 +568,18 @@ public abstract partial class FactoryBase
                     }
 
                     OnDockableAdded(dockable);
+                    toolDock.ActiveDockable = dockable;
 
-                    // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    if (_toolDockStates.TryGetValue(toolDock, out var state))
+                    {
+                        toolDock.IsExpanded = state.IsExpanded;
+                        toolDock.AutoHide = state.AutoHide;
+                        _toolDockStates.Remove(toolDock);
+                    }
                 }
                 else
                 {
-                    // TODO: Handle invalid state.
+                    throw new InvalidOperationException("Invalid pin state.");
                 }
 
                 break;

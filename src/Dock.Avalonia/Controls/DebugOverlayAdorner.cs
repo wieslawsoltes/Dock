@@ -1,9 +1,10 @@
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Avalonia.VisualTree;
 using System.Globalization;
 using Dock.Settings;
 
@@ -11,9 +12,9 @@ namespace Dock.Avalonia.Controls;
 
 internal class DebugOverlayAdorner : Control
 {
-    private static readonly Pen s_dockTargetPen = new(Brushes.Red, 1);
-    private static readonly Pen s_dragAreaPen = new(Brushes.Green, 1);
-    private static readonly Pen s_dropAreaPen = new(Brushes.Blue, 1);
+    private static readonly Pen s_dockTargetPen = new(Brushes.Red);
+    private static readonly Pen s_dragAreaPen = new(Brushes.Green);
+    private static readonly Pen s_dropAreaPen = new(Brushes.Blue);
 
     private static readonly ImmutableSolidColorBrush s_dockTargetFill =
         new(Color.FromArgb(80, 255, 0, 0));
@@ -38,7 +39,7 @@ internal class DebugOverlayAdorner : Control
     {
         base.Render(context);
 
-        if (AdornerLayer.GetAdornedElement(this) is not Visual root)
+        if (AdornerLayer.GetAdornedElement(this) is not { } root)
         {
             return;
         }

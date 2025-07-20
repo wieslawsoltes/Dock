@@ -7,6 +7,7 @@
   <Application.Resources>
     <ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
     <Color x:Key="RegionColor">Transparent</Color>
+    <x:String x:Key="DocumentTabStripItemFloatString">Schweben</x:String>
   </Application.Resources>
 
   <Application.Styles>

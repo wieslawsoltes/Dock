@@ -30,6 +30,17 @@ To translate the menu headers, add a resource dictionary to your application wit
 
 If you need to translate all menus, copy the string resources from the source dictionaries and provide localized versions for each key.
 
+You can also create the dictionary in code and merge it with `Application.Current.Resources`:
+
+```csharp
+var resources = new ResourceDictionary
+{
+    ["ToolTabStripItemCloseString"] = "Schließen",
+    ["DocumentTabStripItemCloseAllTabsString"] = "Alle Tabs schließen"
+};
+Application.Current!.Resources.MergedDictionaries.Add(resources);
+```
+
 ## Replacing entire menus
 
 Because the controls refer to their menus using `DynamicResource`, you can supply completely new `ContextMenu` or `MenuFlyout` instances. Define a resource with the same key in your application resources:
@@ -45,6 +56,16 @@ Because the controls refer to their menus using `DynamicResource`, you can suppl
 ```
 
 This approach allows you to customize the menu structure or attach your own commands without modifying Dock's source.
+
+You may also assign a custom menu at runtime:
+
+```csharp
+var menu = new ContextMenu
+{
+    Items = { new MenuItem { Header = "Custom action", Command = myCommand } }
+};
+myTabStripItem.ContextMenu = menu;
+```
 
 ## Extensibility analysis
 

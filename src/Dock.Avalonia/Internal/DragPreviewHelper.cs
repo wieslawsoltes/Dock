@@ -7,8 +7,14 @@ namespace Dock.Avalonia.Internal;
 
 internal class DragPreviewHelper
 {
+    private readonly bool _useFloatingDragPreview;
     private DragPreviewWindow? _window;
     private DragPreviewControl? _control;
+
+    public DragPreviewHelper(bool useFloatingDragPreview)
+    {
+        _useFloatingDragPreview = useFloatingDragPreview;
+    }
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -26,6 +32,11 @@ internal class DragPreviewHelper
 
     public void Show(IDockable dockable, PixelPoint position, PixelPoint offset)
     {
+        if (!_useFloatingDragPreview)
+        {
+            return;
+        }
+
         Hide();
 
         _control = new DragPreviewControl
@@ -46,7 +57,7 @@ internal class DragPreviewHelper
 
     public void Move(PixelPoint position, PixelPoint offset, string status)
     {
-        if (_window is null || _control is null)
+        if (!_useFloatingDragPreview || _window is null || _control is null)
         {
             return;
         }
@@ -57,7 +68,7 @@ internal class DragPreviewHelper
 
     public void Hide()
     {
-        if (_window is null)
+        if (!_useFloatingDragPreview || _window is null)
         {
             return;
         }

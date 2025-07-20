@@ -40,6 +40,11 @@ public static class AppBuilderExtensions
             DockSettings.UseFloatingDockAdorner = options.UseFloatingDockAdorner.Value;
         }
 
+        if (options.UseFloatingDragPreview != null)
+        {
+            DockSettings.UseFloatingDragPreview = options.UseFloatingDragPreview.Value;
+        }
+
         if (options.UsePinnedDockWindow != null)
         {
             DockSettings.UsePinnedDockWindow = options.UsePinnedDockWindow.Value;
@@ -79,6 +84,20 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UseFloatingDockAdorner = enable;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.UseFloatingDragPreview"/> to the given value.
+    /// </summary>
+    /// <param name="builder">The app builder.</param>
+    /// <param name="enable">Whether to use a floating preview window.</param>
+    /// <returns>The app builder instance.</returns>
+    public static AppBuilder UseFloatingDragPreview(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.UseFloatingDragPreview = enable;
         return builder;
     }
 

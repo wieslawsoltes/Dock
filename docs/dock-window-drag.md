@@ -31,3 +31,19 @@ With the property enabled, `DocumentTabStrip` listens for pointer events on its 
 - **Tabbed layouts** – When multiple documents share a single window, the tab strip becomes the primary handle for moving that window.
 
 See the [Advanced guide](dock-advanced.md) for details on customizing floating windows.
+
+## Floating preview window
+
+`DockSettings` exposes an option to show the dragged item in a floating preview window. This keeps the preview visible when dragging over native controls.
+
+```csharp
+DockSettings.UseFloatingDragPreview = true;
+```
+
+Enable it via the app builder with:
+
+```csharp
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .UseFloatingDragPreview();
+```

@@ -24,6 +24,11 @@ public class DockSettingsOptions
     public bool? UseFloatingDockAdorner { get; set; }
 
     /// <summary>
+    /// Optional floating drag preview flag.
+    /// </summary>
+    public bool? UseFloatingDragPreview { get; set; }
+
+    /// <summary>
     /// Optional floating pinned dock window flag.
     /// </summary>
     public bool? UsePinnedDockWindow { get; set; }

@@ -51,7 +51,6 @@ internal class DockDragContext
 internal class DockControlState : DockManagerState, IDockControlState
 {
     private readonly DockDragContext _context = new();
-    private readonly DragPreviewHelper _dragPreviewHelper = new();
 
     public IDragOffsetCalculator DragOffsetCalculator { get; set; }
 
@@ -296,7 +295,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     }
                 }
 
-                _dragPreviewHelper.Hide();
+                DragPreviewHelper.Hide();
 
                 Leave();
                 _context.End();
@@ -325,7 +324,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            DragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
                         }
                         _context.DoDragDrop = true;
                     }
@@ -439,7 +438,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                         preview = "Float";
                     }
 
-                    _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
+                    DragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
                 }
                 break;
             }
@@ -453,7 +452,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             }
             case EventType.CaptureLost:
             {
-                _dragPreviewHelper.Hide();
+                DragPreviewHelper.Hide();
                 Leave();
                 _context.End();
                 DropControl = null;

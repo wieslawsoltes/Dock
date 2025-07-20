@@ -27,6 +27,11 @@ public static class DockSettings
     public static bool UseFloatingDockAdorner = false;
 
     /// <summary>
+    /// Show drag preview using a floating window.
+    /// </summary>
+    public static bool UseFloatingDragPreview = false;
+
+    /// <summary>
     /// Show auto-hidden dockables inside a floating window.
     /// </summary>
     public static bool UsePinnedDockWindow = false;

@@ -20,6 +20,8 @@ internal abstract class DockManagerState : IDockManagerState
     protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
 
     protected AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
+
+    protected DragPreviewHelper DragPreviewHelper { get; }
  
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManagerState"/> class.
@@ -30,6 +32,7 @@ internal abstract class DockManagerState : IDockManagerState
         _dockManager = dockManager;
         LocalAdornerHelper = new AdornerHelper<DockTarget>(DockSettings.UseFloatingDockAdorner);
         GlobalAdornerHelper = new AdornerHelper<GlobalDockTarget>(DockSettings.UseFloatingDockAdorner);
+        DragPreviewHelper = new DragPreviewHelper(DockSettings.UseFloatingDragPreview);
     }
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)

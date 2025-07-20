@@ -52,6 +52,7 @@ public abstract partial class FactoryBase
 
         RemoveVisibleDockable(dock, dockable);
         OnDockableRemoved(dockable);
+        UnsubscribeDockable(dockable);
 
         var indexActiveDockable = index > 0 ? index - 1 : 0;
         if (dock.VisibleDockables.Count > 0)

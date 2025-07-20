@@ -37,6 +37,10 @@ public abstract partial class FactoryBase
         if (window.Owner is IRootDock rootDock)
         {
             window.Exit();
+            if (window.Layout is { })
+            {
+                UnsubscribeDockable(window.Layout);
+            }
             rootDock.Windows?.Remove(window);
             OnWindowRemoved(window);
         }

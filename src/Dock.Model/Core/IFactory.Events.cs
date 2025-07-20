@@ -121,6 +121,11 @@ public partial interface IFactory
     event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
 
     /// <summary>
+    /// Observable stream of dockable property changes.
+    /// </summary>
+    IObservable<DockablePropertyChangedEventArgs> DockableChanged { get; }
+
+    /// <summary>
     /// Called when the active dockable changed.
     /// </summary>
     /// <param name="dockable">The activate dockable.</param>

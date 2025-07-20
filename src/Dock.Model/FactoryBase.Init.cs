@@ -96,6 +96,8 @@ public abstract partial class FactoryBase
         }
 
         OnDockableInit(dockable);
+
+        SubscribeDockable(dockable);
     }
 
     private void InitDockables(IDockable dockable, IList<IDockable> dockables)

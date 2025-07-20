@@ -7,7 +7,7 @@ namespace Dock.Model.Inpc.Core;
 /// <summary>
 /// Helper extensions for <see cref="INotifyPropertyChanged"/>.
 /// </summary>
-public static class ObservableExtensions
+internal static class ObservableExtensions
 {
     /// <summary>
     /// Creates an observable sequence for property change notifications.

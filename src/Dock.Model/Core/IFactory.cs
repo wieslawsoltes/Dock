@@ -483,6 +483,12 @@ public partial interface IFactory
     void RemoveWindow(IDockWindow window);
 
     /// <summary>
+    /// Closes window layout and its dockables.
+    /// </summary>
+    /// <param name="window">The window to close.</param>
+    void CloseWindow(IDockWindow window);
+
+    /// <summary>
     /// Collapses dock.
     /// </summary>
     /// <param name="dock">The dock to collapse.</param>

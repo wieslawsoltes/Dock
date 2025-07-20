@@ -58,4 +58,7 @@
   <x:String x:Key="RootDockDebugSelectedTabString">Selected</x:String>
   <x:String x:Key="RootDockDebugWindowsTabString">Windows</x:String>
   <x:String x:Key="RootDockDebugRootTabString">Root</x:String>
+  <x:String x:Key="RootDockDebugEventsTabString">Events</x:String>
+  <x:String x:Key="RootDockDebugFilterString">Filter:</x:String>
+  <x:String x:Key="RootDockDebugResetString">Reset</x:String>
 </ResourceDictionary>

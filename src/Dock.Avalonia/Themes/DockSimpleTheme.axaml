@@ -32,6 +32,8 @@
         <ResourceInclude Source="/Controls/DockControl.axaml" />
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />
+        <ResourceInclude Source="/Controls/CustomHostWindow.axaml" />
+        <ResourceInclude Source="/Controls/TabbedHostWindow.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewControl.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />

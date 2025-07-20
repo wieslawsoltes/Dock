@@ -1,0 +1,53 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+                    x:CompileBindings="True"
+                    x:DataType="dmc:IRootDock">
+  <Design.PreviewWith>
+    <TabbedHostWindow Width="300" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type TabbedHostWindow}" TargetType="TabbedHostWindow" BasedOn="{StaticResource {x:Type CustomHostWindow}}">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Panel>
+          <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+          <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+          <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+          <VisualLayerManager>
+            <VisualLayerManager.ChromeOverlayLayer>
+              <DockPanel>
+                <DocumentTabStrip x:Name="PART_TabStrip"
+                                  DataContext="{Binding ActiveDockable}"
+                                  ItemsSource="{Binding VisibleDockables}"
+                                  SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                                  CanCreateItem="{Binding CanCreateDocument}"
+                                  EnableWindowDrag="True"
+                                  DockProperties.IsDropArea="True"
+                                  DockProperties.DockAdornerHost="{Binding #PART_ContentPresenter}"
+                                  DockPanel.Dock="Top" />
+                <HostWindowTitleBar Name="PART_TitleBar" />
+              </DockPanel>
+            </VisualLayerManager.ChromeOverlayLayer>
+            <ContentPresenter Name="PART_ContentPresenter"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding Content}"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </VisualLayerManager>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+
+    <Setter Property="Content">
+      <Template>
+        <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+          <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
+            <DockControl Layout="{Binding}" />
+          </Panel>
+        </Panel>
+      </Template>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

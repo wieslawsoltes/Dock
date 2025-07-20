@@ -1,0 +1,16 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    x:DataType="controls:IRootDock"
+                    xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <CustomHostWindow Width="300" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type CustomHostWindow}" TargetType="CustomHostWindow" BasedOn="{StaticResource {x:Type HostWindow}}">
+    <Setter Property="ToolChromeControlsWholeWindow" Value="True" />
+    <Setter Property="DocumentChromeControlsWholeWindow" Value="True" />
+    <Setter Property="ExtendClientAreaToDecorationsHint" Value="True" />
+    <Setter Property="ExtendClientAreaChromeHints" Value="NoChrome" />
+  </ControlTheme>
+</ResourceDictionary>

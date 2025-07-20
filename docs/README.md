@@ -43,6 +43,8 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Floating windows](dock-windows.md) – Detach dockables into separate windows.
 - [Enable window drag](dock-window-drag.md) – Drag the host window via the document tab strip.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
+- [Custom host window](dock-custom-host-window.md) – Use an Avalonia title bar on all windows.
+- [Tabbed host window](dock-tabbed-host-window.md) – Title bar with document tabs.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
 - [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.

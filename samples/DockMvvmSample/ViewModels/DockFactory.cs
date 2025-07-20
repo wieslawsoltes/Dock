@@ -55,7 +55,7 @@ public class DockFactory : Factory
                     Alignment = Alignment.Left,
                     // CanDrop = false
                 },
-                new ProportionalDockSplitter { CanResize = true },
+                new ProportionalDockSplitter { CanResize = true, ResizePreview = true },
                 new ToolDock
                 {
                     ActiveDockable = tool3,

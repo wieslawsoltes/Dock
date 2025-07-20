@@ -1,7 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
+using System;
+using System.Threading.Tasks;
 
 namespace Dock.Avalonia.Internal;
 
@@ -9,6 +12,16 @@ internal class DragPreviewHelper
 {
     private DragPreviewWindow? _window;
     private DragPreviewControl? _control;
+    private Control? _source;
+
+    private void SourceLayoutUpdated(object? sender, EventArgs e)
+    {
+        if (_source is { } src && _control is { })
+        {
+            _control.PreviewWidth = src.Bounds.Width;
+            _control.PreviewHeight = src.Bounds.Height;
+        }
+    }
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -24,14 +37,20 @@ internal class DragPreviewHelper
         return position;
     }
 
-    public void Show(IDockable dockable, PixelPoint position, PixelPoint offset)
+    public void Show(IDockable dockable, Control source, PixelPoint position, PixelPoint offset)
     {
         Hide();
 
+        _source = source;
         _control = new DragPreviewControl
         {
-            Status = string.Empty
+            Status = string.Empty,
+            PreviewVisual = source,
+            PreviewWidth = source.Bounds.Width,
+            PreviewHeight = source.Bounds.Height
         };
+
+        source.LayoutUpdated += SourceLayoutUpdated;
 
         _window = new DragPreviewWindow
         {
@@ -64,6 +83,13 @@ internal class DragPreviewHelper
  
         _window.Close();
         _window = null;
+
+        if (_source is { })
+        {
+            _source.LayoutUpdated -= SourceLayoutUpdated;
+            _source = null;
+        }
+
         _control = null;
     }
 }

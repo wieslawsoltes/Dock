@@ -325,7 +325,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            _dragPreviewHelper.Show(targetDockable, _context.DragControl, sp, _context.DragOffset);
                         }
                         _context.DoDragDrop = true;
                     }

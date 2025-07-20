@@ -7,16 +7,24 @@
       <ControlTemplate>
         <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
                 Padding="4" CornerRadius="4">
-          <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Content="{TemplateBinding DataContext}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
-            <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
-              <Path x:Name="PART_StatusIcon" />
-              <TextBlock x:Name="PART_StatusText"
-                         Text="{TemplateBinding Status}"
-                         FontSize="{DynamicResource DockDragPreviewFontSize}"
-                         VerticalAlignment="Center"/>
+          <StackPanel Orientation="Vertical" Spacing="4">
+            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+              <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding DataContext}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
+              <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <Path x:Name="PART_StatusIcon" />
+                <TextBlock x:Name="PART_StatusText"
+                           Text="{TemplateBinding Status}"
+                           FontSize="{DynamicResource DockDragPreviewFontSize}"
+                           VerticalAlignment="Center"/>
+              </StackPanel>
             </StackPanel>
+            <Border Width="{TemplateBinding PreviewWidth}"
+                    Height="{TemplateBinding PreviewHeight}">
+              <Border.Background>
+                <VisualBrush Visual="{TemplateBinding PreviewVisual}" Stretch="None"/>
+              </Border.Background>
+            </Border>
           </StackPanel>
         </Border>
       </ControlTemplate>

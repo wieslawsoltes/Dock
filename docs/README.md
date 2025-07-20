@@ -44,6 +44,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Enable window drag](dock-window-drag.md) – Drag the host window via the document tab strip.
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
+- [Drag preview window](dock-drag-preview-window.md) – Live preview while dragging dockables.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
 - [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.
 - [Floating window owner](dock-window-owner.md) – Keep floating windows in front of the main window.

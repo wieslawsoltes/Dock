@@ -19,7 +19,7 @@
     <Setter Property="TextBlock.Foreground" Value="{DynamicResource DockThemeForegroundBrush}" />
     <Setter Property="WindowState" Value="Normal" />
     <Setter Property="UseLayoutRounding" Value="True" />
-    <Setter Property="Title" Value="{Binding ActiveDockable.Title}"  />
+    <Setter Property="Title" Value="{Binding FocusedDockable.Title}"  />
     <Setter Property="Topmost" Value="{Binding Window.Topmost}" />
     <Setter Property="SystemDecorations" Value="Full" />
     <Setter Property="ToolChromeControlsWholeWindow" Value="{Binding OpenedDockablesCount, Converter={StaticResource LessThan2}}" />

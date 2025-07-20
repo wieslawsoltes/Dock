@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Dock.Avalonia.Controls;
 using DockReactiveUIRoutingSample.ViewModels;
 using DockReactiveUIRoutingSample.Views;
 
@@ -23,6 +25,11 @@ public class App : Application
             {
                 DataContext = vm
             };
+#if DEBUG
+            desktop.MainWindow.AttachDockDebug(
+                vm.Layout, 
+                new KeyGesture(Key.F11));
+#endif
         }
 
         base.OnFrameworkInitializationCompleted();

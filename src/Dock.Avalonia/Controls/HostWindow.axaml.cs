@@ -498,9 +498,14 @@ public class HostWindow : Window, IHostWindow
     }
 
     /// <inheritdoc/>
-    public void SetTitle(string title)
+    public void SetTitle(string? title)
     {
-        Title = title;
+        if (!string.IsNullOrEmpty(title))
+        {
+            // Only do this if the user intended to manually set the title.
+            // Otherwise binding to the active document title will no longer work due to local values taking priority.
+            Title = title;
+        }
     }
 
     /// <inheritdoc/>

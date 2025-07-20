@@ -47,6 +47,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
 - [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.
 - [Floating window owner](dock-window-owner.md) – Keep floating windows in front of the main window.
+- [RootDockDebug window](dock-root-dock-debug.md) – Toggle a runtime inspector for Dock layouts.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 

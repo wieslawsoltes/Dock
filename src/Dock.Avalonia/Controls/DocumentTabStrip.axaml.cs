@@ -183,53 +183,51 @@ public class DocumentTabStrip : TabStrip
         PseudoClasses.Set(":active", isActive);
     }
 
-    private WindowDragHelper CreateDragHelper(Control grip)
+    private WindowDragHelper CreateDragHelper()
     {
         return new WindowDragHelper(
-            grip,
+            this,
             () => EnableWindowDrag,
             source =>
             {
                 if (source == this)
                     return true;
 
-                return source is { } s &&
-                       !(s is DocumentTabStripItem) &&
-                       !(s is Button) &&
-                       !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                       !WindowDragHelper.IsChildOfType<Button>(this, s);
+                var allow = source is { } s &&
+                            !(s is DocumentTabStripItem) &&
+                            !(s is Button) &&
+                            !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                            !WindowDragHelper.IsChildOfType<Button>(this, s);
+
+                if (!allow &&
+                    Items is { } items && items.Count == 1 &&
+                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false })
+                {
+                    allow = true;
+                }
+
+                return allow;
             });
     }
 
     private void AttachToWindow()
     {
-        if (!EnableWindowDrag || _grip == null)
+        if (!EnableWindowDrag)
         {
             return;
         }
 
-        if (VisualRoot is Window window)
+        if (VisualRoot is Window window &&
+            window is HostWindow hostWindow &&
+            _grip is { } &&
+            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            if (window is HostWindow hostWindow)
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    hostWindow.AttachGrip(_grip, ":documentwindow");
-                    _attachedWindow = hostWindow;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _windowDragHelper = CreateDragHelper(_grip);
-                    _windowDragHelper.Attach();
-                }
-            }
-            else
-            {
-                _windowDragHelper = CreateDragHelper(_grip);
-                _windowDragHelper.Attach();
-            }
+            hostWindow.AttachGrip(_grip, ":documentwindow");
+            _attachedWindow = hostWindow;
         }
+
+        _windowDragHelper = CreateDragHelper();
+        _windowDragHelper.Attach();
     }
 
     private void DetachFromWindow()

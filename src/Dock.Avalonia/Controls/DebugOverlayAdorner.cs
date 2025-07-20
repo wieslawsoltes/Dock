@@ -20,7 +20,7 @@ internal class DebugOverlayAdorner : Control
         new(Color.FromArgb(80, 0, 255, 0));
     private static readonly ImmutableSolidColorBrush s_dropAreaFill =
         new(Color.FromArgb(80, 0, 0, 255));
-    private static readonly ImmutableSolidColorBrush s_textBrush = Brushes.White.ToImmutable();
+    private static readonly ImmutableSolidColorBrush s_textBrush = (ImmutableSolidColorBrush)Brushes.White.ToImmutable();
 
     private Control? _pointerOver;
 
@@ -42,7 +42,7 @@ internal class DebugOverlayAdorner : Control
             return;
         }
 
-        foreach (var visual in VisualExtensions.GetVisualDescendants(root))
+        foreach (var visual in Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(root))
         {
             if (visual is not Control control)
             {

@@ -3,6 +3,8 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 using System.Linq;
 using Dock.Avalonia.Controls;
 

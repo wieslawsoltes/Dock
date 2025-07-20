@@ -216,6 +216,10 @@ public abstract partial class FactoryBase
                 OnDockableDocked(sourceDockable, DockOperation.Fill);
                 InitDockable(sourceDockable, targetDock);
                 targetDock.ActiveDockable = sourceDockable;
+                if (targetDock is IToolDock targetToolDock)
+                {
+                    targetToolDock.IsExpanded = true;
+                }
             }
         }
     }

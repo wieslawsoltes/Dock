@@ -17,4 +17,49 @@ public static class ObservableExtensions
     {
         return new PropertyChangedObservable<TSource, TValue>(source, selector);
     }
+
+    /// <summary>
+    /// Subscribes to the observable sequence using a simple <see cref="Action{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the observable sequence elements.</typeparam>
+    /// <param name="source">The observable source.</param>
+    /// <param name="onNext">Callback invoked when a value is produced.</param>
+    /// <returns>An <see cref="IDisposable"/> representing the subscription.</returns>
+    public static IDisposable Subscribe<T>(this IObservable<T> source, Action<T> onNext)
+    {
+        if (source == null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (onNext == null)
+        {
+            throw new ArgumentNullException(nameof(onNext));
+        }
+
+        return source.Subscribe(new DelegateObserver<T>(onNext));
+    }
+
+    private sealed class DelegateObserver<T> : IObserver<T>
+    {
+        private readonly Action<T> _onNext;
+
+        public DelegateObserver(Action<T> onNext)
+        {
+            _onNext = onNext;
+        }
+
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(T value)
+        {
+            _onNext(value);
+        }
+    }
 }

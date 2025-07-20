@@ -476,8 +476,11 @@ public abstract partial class FactoryBase
                     }
 
                     // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    if (originalToolDock is { })
+                    {
+                        originalToolDock.IsExpanded = false;
+                        originalToolDock.AutoHide = true;
+                    }
                 }
                 else if (isPinned)
                 {
@@ -545,8 +548,16 @@ public abstract partial class FactoryBase
                     OnDockableAdded(dockable);
 
                     // TODO: Handle ActiveDockable state.
-                    // TODO: Handle IsExpanded property of IToolDock.
-                    // TODO: Handle AutoHide property of IToolDock.
+                    if (!isVisible)
+                    {
+                        toolDock.IsExpanded = true;
+                        toolDock.AutoHide = false;
+                    }
+                    else if (dockable.OriginalOwner is IToolDock ownerToolDock)
+                    {
+                        ownerToolDock.IsExpanded = true;
+                        ownerToolDock.AutoHide = false;
+                    }
                 }
                 else
                 {

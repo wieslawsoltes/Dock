@@ -8,3 +8,10 @@ DockSettings.UsePinnedDockWindow = true;
 ```
 
 When enabled the `PinnedDockControl` places the preview content inside a lightweight `PinnedDockWindow`. The window follows the host layout and closes automatically when the tool is hidden.
+
+`ToolChromeControl` exposes a `ShowPinMenu` option that hides pin and unpin commands when set to `false`.
+
+```csharp
+// Hide pin options
+ToolChromeControl.ShowPinMenu = false;
+```

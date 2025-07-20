@@ -27,8 +27,14 @@
     <MenuItem Header="{DynamicResource ToolChromeControlDockString}"
               Command="{Binding Owner.Factory.PinDockable}"
               CommandParameter="{Binding ActiveDockable}"
-              IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}"
-              IsVisible="{Binding ActiveDockable.CanPin, FallbackValue=False}"/>
+              IsEnabled="{Binding ActiveDockable.OriginalOwner, Converter={x:Static ObjectConverters.IsNotNull}, FallbackValue=False}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
+          <Binding Path="$parent[ToolChromeControl].ShowPinMenu" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
     <MenuItem Header="{DynamicResource ToolChromeControlDockAsDocumentString}"
               Command="{Binding Owner.Factory.DockAsDocument}"
               CommandParameter="{Binding ActiveDockable}"
@@ -41,6 +47,7 @@
         <MultiBinding Converter="{x:Static BoolConverters.And}">
           <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
           <Binding Path="$parent[ToolChromeControl].IsFloating" Converter="{x:Static BoolConverters.Not}" />
+          <Binding Path="$parent[ToolChromeControl].ShowPinMenu" />
         </MultiBinding>
       </MenuItem.IsVisible>
     </MenuItem>
@@ -121,6 +128,7 @@
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
                         <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
                         <TemplateBinding Property="IsFloating" Converter="{x:Static BoolConverters.Not}" />
+                        <TemplateBinding Property="ShowPinMenu" />
                       </MultiBinding>
                     </Button.IsVisible>
                     <Viewbox>

@@ -34,13 +34,11 @@ public class App : Application
                 {
                     DataContext = mainWindowViewModel
                 };
-
 #if DEBUG
                 mainWindow.AttachDockDebug(
                     mainWindowViewModel.Layout, 
                     new KeyGesture(Key.F11));
 #endif
-
                 mainWindow.Closing += (_, _) =>
                 {
                     mainWindowViewModel.CloseLayout();

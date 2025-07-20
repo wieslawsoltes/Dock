@@ -150,6 +150,11 @@ public class DockState : IDockState
         {
             RestoreDockable(dockable);
 
+            if (dockable.OriginalOwner is { })
+            {
+                dockable.Owner = dockable.OriginalOwner;
+            }
+
             if (dockable is IDock childDock)
             {
                 Restore(childDock);
@@ -162,35 +167,35 @@ public class DockState : IDockState
         switch (dockable)
         {
             case IToolContent tool:
-            {
-                var id = tool.Id;
-                if (!string.IsNullOrEmpty(id))
                 {
-                    _toolContents[id] = tool.Content;
-                }
+                    var id = tool.Id;
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        _toolContents[id] = tool.Content;
+                    }
 
-                break;
-            }
+                    break;
+                }
             case IDocumentContent document:
-            {
-                var id = document.Id;
-                if (!string.IsNullOrEmpty(id))
                 {
-                    _documentContents[id] = document.Content;
-                }
+                    var id = document.Id;
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        _documentContents[id] = document.Content;
+                    }
 
-                break;
-            }
+                    break;
+                }
             case IDocumentDockContent documentDock:
-            {
-                var id = documentDock.Id;
-                if (!string.IsNullOrEmpty(id))
                 {
-                    _documentTemplates[id] = documentDock.DocumentTemplate;
-                }
+                    var id = documentDock.Id;
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        _documentTemplates[id] = documentDock.DocumentTemplate;
+                    }
 
-                break;
-            }
+                    break;
+                }
         }
     }
 
@@ -199,57 +204,57 @@ public class DockState : IDockState
         switch (dockable)
         {
             case IToolContent tool:
-            {
-                var id = tool.Id;
-                if (!string.IsNullOrEmpty(id))
                 {
-                    if (_toolContents.TryGetValue(id, out var content))
+                    var id = tool.Id;
+                    if (!string.IsNullOrEmpty(id))
                     {
-                        tool.Content = content;
-                    }
-                }
-
-                break;
-            }
-            case IDocumentContent document:
-            {
-                var haveContent = false;
-                var id = document.Id;
-                if (!string.IsNullOrEmpty(id))
-                {
-                    if (_documentContents.TryGetValue(id, out var content))
-                    {
-                        document.Content = content;
-                        haveContent = true;
-                    }
-                }
-
-                if (haveContent == false)
-                {
-                    if (document.Owner is IDocumentDockContent documentDock)
-                    {
-                        if (documentDock.DocumentTemplate is { })
+                        if (_toolContents.TryGetValue(id, out var content))
                         {
-                           document.Content = documentDock.DocumentTemplate.Content;
+                            tool.Content = content;
                         }
                     }
-                }
 
-                break;
-            }
-            case IDocumentDockContent documentDock:
-            {
-                var id = documentDock.Id;
-                if (!string.IsNullOrEmpty(id))
+                    break;
+                }
+            case IDocumentContent document:
                 {
-                    if (_documentTemplates.TryGetValue(id, out var content))
+                    var haveContent = false;
+                    var id = document.Id;
+                    if (!string.IsNullOrEmpty(id))
                     {
-                        documentDock.DocumentTemplate = content;
+                        if (_documentContents.TryGetValue(id, out var content))
+                        {
+                            document.Content = content;
+                            haveContent = true;
+                        }
                     }
-                }
 
-                break;
-            }
+                    if (haveContent == false)
+                    {
+                        if (document.Owner is IDocumentDockContent documentDock)
+                        {
+                            if (documentDock.DocumentTemplate is { })
+                            {
+                                document.Content = documentDock.DocumentTemplate.Content;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            case IDocumentDockContent documentDock:
+                {
+                    var id = documentDock.Id;
+                    if (!string.IsNullOrEmpty(id))
+                    {
+                        if (_documentTemplates.TryGetValue(id, out var content))
+                        {
+                            documentDock.DocumentTemplate = content;
+                        }
+                    }
+
+                    break;
+                }
         }
     }
 

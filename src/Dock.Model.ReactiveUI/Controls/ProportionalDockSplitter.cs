@@ -19,8 +19,12 @@ public partial class ProportionalDockSplitter : DockableBase, IProportionalDockS
     {
         _canResize = true;
     }
-    
+
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanResize { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool ResizePreview { get; set; }
 }

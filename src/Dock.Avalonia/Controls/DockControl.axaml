@@ -25,7 +25,7 @@
               <ToolContentControl />
             </DataTemplate>
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
-              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" />
+              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" PreviewResize="{Binding ResizePreview}" />
             </DataTemplate>
             <DataTemplate DataType="dmc:IGridDockSplitter">
               <GridSplitter ResizeDirection="{Binding ResizeDirection}" />

@@ -62,6 +62,7 @@ public class DockControlsTests
     {
         var splitter = new ProportionalDockSplitter();
         Assert.True(splitter.CanResize);
+        Assert.False(splitter.ResizePreview);
     }
 
     [AvaloniaFact]

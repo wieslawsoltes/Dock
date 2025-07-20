@@ -22,7 +22,7 @@ public static class RootDockDebugExtensions
         object root,
         KeyGesture? gesture = null)
     {
-        var keyGesture = gesture ?? new KeyGesture(Key.F12);
+        var keyGesture = gesture ?? new KeyGesture(Key.F11);
         Window? debugWindow = null;
 
         void OnKeyDown(object? sender, KeyEventArgs e)

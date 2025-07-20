@@ -98,28 +98,50 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-          <Border Background="{TemplateBinding Background}"
-                  TextElement.FontFamily="{TemplateBinding FontFamily}"
-                  TextElement.FontSize="{TemplateBinding FontSize}"
-                  TextElement.FontWeight="{TemplateBinding FontWeight}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  Padding="{TemplateBinding Padding}"
-                  ContextMenu="{DynamicResource ToolTabStripItemContextMenu}">
-            <DockableControl TrackingMode="Tab">
-              <StackPanel x:Name="DragTool"
-                          Background="Transparent"
-                          Orientation="Horizontal"
-                          Spacing="2"
-                          DockProperties.IsDragArea="True"
-                          DockProperties.IsDropArea="True">
+          <Grid>
+            <Border Background="{TemplateBinding Background}"
+                    TextElement.FontFamily="{TemplateBinding FontFamily}"
+                    TextElement.FontSize="{TemplateBinding FontSize}"
+                    TextElement.FontWeight="{TemplateBinding FontWeight}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="{TemplateBinding Padding}"
+                    ContextMenu="{DynamicResource ToolTabStripItemContextMenu}">
+              <DockableControl TrackingMode="Tab">
+                <StackPanel x:Name="DragTool"
+                            Background="Transparent"
+                            Orientation="Horizontal"
+                            Spacing="2"
+                            DockProperties.IsDragArea="True"
+                            DockProperties.IsDropArea="True"
+                            DockProperties.IsDockTarget="True"
+                            DockProperties.ShowDockIndicatorOnly="True"
+                            DockProperties.IndicatorDockOperation="Fill"
+                            DockProperties.DockAdornerHost="{Binding $parent[ToolTabStrip].DockAdornerHost}">
                 <Panel Margin="2">
                   <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
                                     Content="{Binding}" />
                 </Panel>
               </StackPanel>
             </DockableControl>
-          </Border>
+            </Border>
+            <Border x:Name="PART_DropHighlight"
+                    IsHitTestVisible="False"
+                    Background="{DynamicResource DockApplicationAccentBrushIndicator}"
+                    Opacity="0">
+              <Border.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="$parent[DockControl].IsDraggingDock" />
+                  <Binding Path="CanDrop" />
+                </MultiBinding>
+              </Border.IsVisible>
+              <Border.Styles>
+                <Style Selector="^:pointerover">
+                  <Setter Property="Opacity" Value="0.3" />
+                </Style>
+              </Border.Styles>
+            </Border>
+          </Grid>
       </ControlTemplate>
     </Setter>
 

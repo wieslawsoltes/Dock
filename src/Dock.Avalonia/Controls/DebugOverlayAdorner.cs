@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using System.Globalization;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -42,7 +43,7 @@ internal class DebugOverlayAdorner : Control
             return;
         }
 
-        foreach (var visual in Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(root))
+        foreach (var visual in global::Avalonia.VisualTree.VisualExtensions.GetVisualDescendants(root))
         {
             if (visual is not Control control)
             {
@@ -90,10 +91,10 @@ internal class DebugOverlayAdorner : Control
                     s_textBrush);
 
                 var origin = new Point(
-                    Bounds.Width - ft.Bounds.Width - 4,
-                    Bounds.Height - ft.Bounds.Height - 4);
+                    Bounds.Width - ft.Width - 4,
+                    Bounds.Height - ft.Height - 4);
 
-                context.DrawText(s_textBrush, origin, ft);
+                context.DrawText(ft, origin);
             }
         }
     }

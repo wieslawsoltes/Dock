@@ -28,7 +28,6 @@ public static class DockDebugOverlayExtensions
     {
         if (app.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.WindowCreated += (_, args) => args.Window.AttachDockDebugOverlay();
             foreach (var window in desktop.Windows)
             {
                 window.AttachDockDebugOverlay();

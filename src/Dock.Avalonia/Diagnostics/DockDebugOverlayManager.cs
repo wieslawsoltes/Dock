@@ -19,11 +19,7 @@ internal sealed class DockDebugOverlayManager : IDisposable
     {
         _topLevel = topLevel;
         AttachExisting(topLevel);
-
-        _topLevel.AddHandler(Visual.VisualTreeAttachmentEvent, OnAttached,
-            RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-        _topLevel.AddHandler(Visual.VisualTreeDetachmentEvent, OnDetached,
-            RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        _topLevel.LayoutUpdated += OnRootLayoutUpdated;
     }
 
     private void AttachExisting(Visual root)
@@ -34,21 +30,27 @@ internal sealed class DockDebugOverlayManager : IDisposable
         }
     }
 
-    private void OnAttached(object? sender, VisualTreeAttachmentEventArgs e)
+    private void OnRootLayoutUpdated(object? sender, EventArgs e)
     {
-        if (e.Source is DockControl dock)
+        var current = _topLevel.GetVisualDescendants().OfType<DockControl>().ToList();
+
+        foreach (var dock in current)
         {
-            AttachOverlay(dock);
+            if (!_helpers.ContainsKey(dock))
+            {
+                AttachOverlay(dock);
+            }
+        }
+
+        foreach (var dock in _helpers.Keys.ToList())
+        {
+            if (!current.Contains(dock))
+            {
+                RemoveOverlay(dock);
+            }
         }
     }
 
-    private void OnDetached(object? sender, VisualTreeAttachmentEventArgs e)
-    {
-        if (e.Source is DockControl dock)
-        {
-            RemoveOverlay(dock);
-        }
-    }
 
     private void AttachOverlay(DockControl dock)
     {
@@ -83,11 +85,12 @@ internal sealed class DockDebugOverlayManager : IDisposable
 
     public void Dispose()
     {
-        _topLevel.RemoveHandler(Visual.VisualTreeAttachmentEvent, OnAttached);
-        _topLevel.RemoveHandler(Visual.VisualTreeDetachmentEvent, OnDetached);
+        _topLevel.LayoutUpdated -= OnRootLayoutUpdated;
 
-        foreach (var (dock, helper) in _helpers.ToList())
+        foreach (var pair in _helpers.ToList())
         {
+            var dock = pair.Key;
+            var helper = pair.Value;
             dock.LayoutUpdated -= OnDockLayoutUpdated;
             helper.RemoveOverlay(dock);
         }

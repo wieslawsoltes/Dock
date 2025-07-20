@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using System.Linq;
 using Dock.Avalonia.Controls;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -34,7 +35,7 @@ internal class DebugOverlayHelper
 
         control.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved,
             RoutingStrategies.Tunnel | RoutingStrategies.Bubble | RoutingStrategies.Direct);
-        control.AddHandler(InputElement.PointerLeaveEvent, OnPointerLeave,
+        control.AddHandler(InputElement.PointerExitedEvent, OnPointerLeave,
             RoutingStrategies.Tunnel | RoutingStrategies.Bubble | RoutingStrategies.Direct);
         control.LayoutUpdated += OnLayoutUpdated;
     }
@@ -54,7 +55,7 @@ internal class DebugOverlayHelper
 
         ((ISetLogicalParent)_adorner).SetParent(null);
         control.RemoveHandler(InputElement.PointerMovedEvent, OnPointerMoved);
-        control.RemoveHandler(InputElement.PointerLeaveEvent, OnPointerLeave);
+        control.RemoveHandler(InputElement.PointerExitedEvent, OnPointerLeave);
         control.LayoutUpdated -= OnLayoutUpdated;
         _control = null;
         _adorner = null;
@@ -68,7 +69,7 @@ internal class DebugOverlayHelper
         }
 
         var pos = e.GetPosition(_control);
-        var hit = _control.GetVisualsAt(pos)
+        var hit = global::Avalonia.VisualTree.VisualExtensions.GetVisualsAt(_control, pos)
             .OfType<Control>()
             .FirstOrDefault(IsDebugTarget);
 

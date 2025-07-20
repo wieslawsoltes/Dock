@@ -36,7 +36,7 @@ public class HostWindow : Window, IHostWindow
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> IsToolWindowProperty = 
+    public static readonly StyledProperty<bool> IsToolWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(IsToolWindow));
 
     /// <summary>
@@ -50,7 +50,7 @@ public class HostWindow : Window, IHostWindow
     /// </summary>
     public static readonly StyledProperty<bool> DocumentChromeControlsWholeWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(DocumentChromeControlsWholeWindow));
-    
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindow);
 
@@ -337,11 +337,14 @@ public class HostWindow : Window, IHostWindow
     {
         switch (dockable)
         {
-            case ITool: return 1;
-            case IDocument: return 1;
+            case ITool:
+                return 1;
+            case IDocument:
+                return 1;
             case IDock dock:
                 return dock.VisibleDockables?.Sum(CountVisibleToolsAndDocuments) ?? 0;
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
@@ -397,6 +400,19 @@ public class HostWindow : Window, IHostWindow
 
             if (Window.Layout is IDock root)
             {
+                var documents = Window.Factory?
+                    .Find(root, d => d is IDocument)
+                    .OfType<IDockable>()
+                    .ToList();
+
+                if (documents is not null)
+                {
+                    foreach (var document in documents)
+                    {
+                        Window.Factory.CloseDockable(document);
+                    }
+                }
+
                 if (root.Close.CanExecute(null))
                 {
                     root.Close.Execute(null);

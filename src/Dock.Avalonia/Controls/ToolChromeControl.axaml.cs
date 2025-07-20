@@ -55,6 +55,21 @@ public class ToolChromeControl : ContentControl
         AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsMaximized));
 
     /// <summary>
+    /// Define the <see cref="ShowPinMenu"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowPinMenuProperty =
+        AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(ShowPinMenu), true);
+
+    /// <summary>
+    /// Gets or sets if pin menu options are visible.
+    /// </summary>
+    public bool ShowPinMenu
+    {
+        get => GetValue(ShowPinMenuProperty);
+        set => SetValue(ShowPinMenuProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets is pinned
     /// </summary>
     public bool IsPinned

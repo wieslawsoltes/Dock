@@ -47,5 +47,7 @@ public class DockSettingsOptions
     /// Optional window magnet snap distance.
     /// </summary>
     public double? WindowMagnetDistance { get; set; }
+
 }
+
 

@@ -16,6 +16,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [XAML guide](dock-xaml.md) – Declare layouts purely in XAML.
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
+- [Views guide](dock-views.md) – Display content for documents and tools.
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

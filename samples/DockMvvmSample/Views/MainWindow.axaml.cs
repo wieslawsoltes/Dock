@@ -10,7 +10,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 #if DEBUG
-        this.AttachDockDebugOverlay();
+        // this.AttachDockDebugOverlay();
 #endif
     }
 

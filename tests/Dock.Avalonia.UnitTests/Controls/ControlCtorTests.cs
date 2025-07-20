@@ -1,5 +1,11 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Internal;
+using Dock.Avalonia.Contract;
+using Avalonia;
+using Avalonia.Controls;
+using Dock.Model;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls;
@@ -11,6 +17,28 @@ public class ControlCtorTests
     {
         var control = new DockControl();
         Assert.NotNull(control);
+    }
+
+    private sealed class DummyCalculator : IDragOffsetCalculator
+    {
+        public PixelPoint CalculateOffset(Control dragControl, DockControl dockControl, Point pointerPosition) => new PixelPoint();
+    }
+
+    private sealed class CustomDockState : DockControlState
+    {
+        public CustomDockState(IDockManager manager, IDragOffsetCalculator calc)
+            : base(manager, calc)
+        {
+        }
+    }
+
+    [AvaloniaFact]
+    public void DockControl_CustomState_Ctor()
+    {
+        var manager = new DockManager();
+        var state = new CustomDockState(manager, new DummyCalculator());
+        var control = new DockControl(manager, state);
+        Assert.Same(state, control.DockControlState);
     }
 
     [AvaloniaFact]
@@ -95,6 +123,22 @@ public class ControlCtorTests
     {
         var control = new HostWindow();
         Assert.NotNull(control);
+    }
+
+    private sealed class CustomWindowState : HostWindowState
+    {
+        public CustomWindowState(IDockManager manager, HostWindow window)
+            : base(manager, window)
+        {
+        }
+    }
+
+    [AvaloniaFact]
+    public void HostWindow_CustomState_Ctor()
+    {
+        var manager = new DockManager();
+        var window = new HostWindow(manager, w => new CustomWindowState(manager, w));
+        Assert.IsType<CustomWindowState>(window.HostWindowState);
     }
 
     [AvaloniaFact]

@@ -9,7 +9,10 @@ using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
-internal abstract class DockManagerState : IDockManagerState
+/// <summary>
+/// Base state class used by <see cref="DockControl"/> and <see cref="HostWindow"/>.
+/// </summary>
+public abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
 
@@ -17,9 +20,9 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected Control? DropControl { get; set; }
 
-    protected AdornerHelper<DockTarget> LocalAdornerHelper { get; }
+    internal AdornerHelper<DockTarget> LocalAdornerHelper { get; }
 
-    protected AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
+    internal AdornerHelper<GlobalDockTarget> GlobalAdornerHelper { get; }
  
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManagerState"/> class.

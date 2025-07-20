@@ -22,7 +22,7 @@ namespace Dock.Avalonia.Controls;
 /// </summary>
 public class DockControl : TemplatedControl, IDockControl
 {
-    private readonly DockManager _dockManager;
+    private readonly IDockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
 
@@ -132,12 +132,20 @@ public class DockControl : TemplatedControl, IDockControl
     }
 
     /// <summary>
-    /// Initialize the new instance of the <see cref="DockControl"/>.
+    /// Initializes a new instance of the <see cref="DockControl"/> class.
     /// </summary>
+    /// <param name="dockManager">Optional dock manager implementation.</param>
+    /// <param name="dockControlState">Optional state implementation.</param>
     public DockControl()
+        : this(null, null)
     {
-        _dockManager = new DockManager();
-        _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
+    }
+
+    public DockControl(IDockManager? dockManager = null, DockControlState? dockControlState = null)
+    {
+        _dockManager = dockManager ?? new DockManager();
+        _dockControlState = dockControlState ?? new DockControlState(_dockManager, _dragOffsetCalculator);
+        _dockControlState.DragOffsetCalculator = _dragOffsetCalculator;
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerMovedEvent, MovedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);

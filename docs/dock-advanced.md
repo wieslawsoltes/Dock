@@ -36,6 +36,19 @@ public override void InitLayout(IDockable layout)
 }
 ```
 
+## Custom state classes
+
+`DockControl` and `HostWindow` instantiate default implementations that handle
+dragging logic. You can supply your own implementations when constructing the
+controls. Both `DockControlState` and `HostWindowState` are public so they can be
+derived from or replaced entirely.
+
+```csharp
+var manager = new DockManager();
+var control = new DockControl(manager, new MyDockControlState(manager, new DefaultDragOffsetCalculator()));
+var window  = new HostWindow(manager, w => new MyHostWindowState(manager, w));
+```
+
 ## Handling events
 
 `FactoryBase` exposes events for virtually every docking action. The samples subscribe to them to trace runtime changes:

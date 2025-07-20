@@ -49,9 +49,9 @@ internal class WindowDragContext
 }
     
 /// <summary>
-/// Host window state.
+/// Default implementation of <see cref="IHostWindowState"/>.
 /// </summary>
-internal class HostWindowState : DockManagerState, IHostWindowState
+public class HostWindowState : DockManagerState, IHostWindowState
 {
     private readonly HostWindow _hostWindow;
     private readonly WindowDragContext _context = new();

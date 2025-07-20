@@ -27,7 +27,7 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
-    private readonly DockManager _dockManager;
+    private readonly IDockManager _dockManager;
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
@@ -96,13 +96,20 @@ public class HostWindow : Window, IHostWindow
     /// <summary>
     /// Initializes new instance of the <see cref="HostWindow"/> class.
     /// </summary>
+    /// <param name="dockManager">Optional dock manager implementation.</param>
+    /// <param name="stateFactory">Factory for the state object.</param>
     public HostWindow()
+        : this(null, null)
+    {
+    }
+
+    public HostWindow(IDockManager? dockManager = null, Func<HostWindow, HostWindowState>? stateFactory = null)
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
 
-        _dockManager = new DockManager();
-        _hostWindowState = new HostWindowState(_dockManager, this);
+        _dockManager = dockManager ?? new DockManager();
+        _hostWindowState = stateFactory?.Invoke(this) ?? new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }
 

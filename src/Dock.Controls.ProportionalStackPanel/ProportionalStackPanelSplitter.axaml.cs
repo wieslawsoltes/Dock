@@ -16,7 +16,7 @@ namespace Dock.Controls.ProportionalStackPanel;
 /// <summary>
 /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
 /// </summary>
-[PseudoClasses(":horizontal", ":vertical")]
+[PseudoClasses(":horizontal", ":vertical", ":preview")]
 public class ProportionalStackPanelSplitter : Thumb
 {
     /// <summary>
@@ -103,6 +103,11 @@ public class ProportionalStackPanelSplitter : Thumb
         if (change.Property == IsResizingEnabledProperty)
         {
             UpdateVisualState();
+        }
+
+        if (change.Property == PreviewResizeProperty)
+        {
+            PseudoClasses.Set(":preview", change.GetNewValue<bool>());
         }
     }
 
@@ -256,6 +261,7 @@ public class ProportionalStackPanelSplitter : Thumb
         }
 
         UpdateVisualState();
+        PseudoClasses.Set(":preview", PreviewResize);
     }
 
     private Control? FindNextChild(ProportionalStackPanel panel)

@@ -83,8 +83,9 @@ vertically. Each dockable specifies a `Proportion` value which is
 interpreted relative to the other siblings. Insert an
 `IProportionalDockSplitter` between dockables to allow the user to
 resize the areas at runtime. The splitter exposes `CanResize`
-which can disable dragging for fixed layouts.
-When `ResizePreview` is true the splitter updates sizes only after releasing the pointer.
+which can disable dragging for fixed layouts. When `ResizePreview` is
+true the splitter only shows a highlighted drag preview and applies the
+size changes once the pointer is released.
 
 ## IRootDock
 

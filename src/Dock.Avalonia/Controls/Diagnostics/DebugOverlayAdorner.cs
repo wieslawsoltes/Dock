@@ -31,6 +31,14 @@ internal class DebugOverlayAdorner : Control
     private Control? _pointerOver;
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="DebugOverlayAdorner"/> class.
+    /// </summary>
+    public DebugOverlayAdorner()
+    {
+        IsHitTestVisible = false;
+    }
+
+    /// <summary>
     /// Sets the control currently under the pointer.
     /// </summary>
     /// <param name="control">The hovered control or <c>null</c>.</param>

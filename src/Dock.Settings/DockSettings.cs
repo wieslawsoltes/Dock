@@ -51,6 +51,7 @@ public static class DockSettings
     /// </summary>
     public static double WindowMagnetDistance = 16;
 
+
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.
     /// </summary>
@@ -73,3 +74,4 @@ public static class DockSettings
                 || Math.Abs(diff.Y) > DockSettings.MinimumVerticalDragDistance);
     }
 }
+

@@ -45,6 +45,7 @@ The dock splits space proportionally and then clamps the result within the speci
 ```
 
 This is useful when combining fixed size panes with resizable ones or when you want to lock down a layout entirely.
+Setting `ResizePreview="True"` shows only a drag indicator while moving and applies the size when released. The splitter is highlighted during the drag so the preview remains visible against any background.
 
 ## Common scenarios
 

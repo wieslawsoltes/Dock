@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
+             x:Class="Dock.Avalonia.Controls.Diagnostics.DockDebugView"
+             x:DataType="core:IDock"
+             x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+        ColumnDefinitions="Auto,*">
+    <TextBlock Text="{DynamicResource RootDockDebugIdString}" Grid.Row="0" Grid.Column="0" />
+    <TextBox Text="{Binding Id, Mode=TwoWay}" Margin="2" Grid.Row="0" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugTitleString}" Grid.Row="1" Grid.Column="0" />
+    <TextBox Text="{Binding Title, Mode=TwoWay}" Margin="2" Grid.Row="1" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugContextString}" Grid.Row="2" Grid.Column="0" />
+    <TextBox Text="{Binding Context, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="2" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugOwnerString}" Grid.Row="3" Grid.Column="0" />
+    <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="3" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugActiveDockableString}" Grid.Row="4" Grid.Column="0" />
+    <TextBox Text="{Binding ActiveDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="4" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugDefaultDockableString}" Grid.Row="5" Grid.Column="0" />
+    <TextBox Text="{Binding DefaultDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="5" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugFocusedDockableString}" Grid.Row="6" Grid.Column="0" />
+    <TextBox Text="{Binding FocusedDockable.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="6" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugProportionString}" Grid.Row="7" Grid.Column="0" />
+    <TextBox Text="{Binding Proportion, Mode=TwoWay}" Margin="2" Grid.Row="7" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugIsActiveString}" Grid.Row="8" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" Margin="2" IsEnabled="True" Grid.Row="8" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugIsCollapsableString}" Grid.Row="9" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding IsCollapsable, Mode=TwoWay}" Margin="2" IsEnabled="True" Grid.Row="9" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugCanGoBackString}" Grid.Row="10" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding CanGoBack, Mode=OneWay}" Margin="2" IsEnabled="False" Grid.Row="10" Grid.Column="1" />
+    <TextBlock Text="{DynamicResource RootDockDebugCanGoForwardString}" Grid.Row="11" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding CanGoForward, Mode=OneWay}" Margin="2" IsEnabled="False" Grid.Row="11" Grid.Column="1" />
+    <TextBlock Text="OpenedDockablesCount" Grid.Row="12" Grid.Column="0" />
+    <TextBox Text="{Binding OpenedDockablesCount, Mode=TwoWay}" Margin="2" Grid.Row="12" Grid.Column="1" />
+    <TextBlock Text="CanCloseLastDockable" Grid.Row="13" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding CanCloseLastDockable, Mode=TwoWay}" Margin="2" Grid.Row="13" Grid.Column="1" />
+    <TextBlock Text="Dock" Grid.Row="14" Grid.Column="0" />
+    <TextBox Text="{Binding Dock, Mode=TwoWay}" Margin="2" Grid.Row="14" Grid.Column="1" />
+    <TextBlock Text="Column" Grid.Row="15" Grid.Column="0" />
+    <TextBox Text="{Binding Column, Mode=TwoWay}" Margin="2" Grid.Row="15" Grid.Column="1" />
+  </Grid>
+</UserControl>

@@ -77,8 +77,10 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    Add a `DockControl` placeholder to `MainWindow.axaml`:
 
    ```xaml
-   <DockControl x:Name="Dock" />
-   ```
+  <DockControl x:Name="Dock" />
+  ```
+
+   For instructions on mapping documents and tools to views see the [Views guide](dock-views.md).
 
 5. **Run the application**
 

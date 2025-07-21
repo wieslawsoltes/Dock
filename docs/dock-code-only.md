@@ -130,5 +130,19 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
 The window will show a document dock flanked by left and bottom tool panes without using XAML or MVVM helpers.
 `DocumentDock` exposes an `AddDocument` method for adding and activating documents in code, while `ToolDock` provides `AddTool` for tool panes.
 
+### Attaching a `UserControl`
+
+Documents can host any Avalonia control directly. Assign a control instance to
+`Content` before adding the document:
+
+```csharp
+var document = new Document
+{
+    Title = "View",
+    Content = new MyUserControl()
+};
+documentDock.AddDocument(document);
+```
+
 You can find a complete project in the repository under
 [`samples/DockCodeOnlySample`](../samples/DockCodeOnlySample).

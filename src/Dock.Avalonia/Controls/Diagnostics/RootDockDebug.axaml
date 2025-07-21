@@ -11,186 +11,6 @@
              x:DataType="controls:IRootDock"
              x:CompileBindings="True" >
   <UserControl.DataTemplates>
-  <TabControl>
-    <TabItem Header="{DynamicResource RootDockDebugLayoutTabString}">
-      <TreeView x:Name="Visible" 
-                ItemsSource="{Binding VisibleDockables}">
-        <TreeView.Styles>
-          <Style Selector="TreeViewItem">
-            <Setter Property="IsExpanded" Value="True" />
-          </Style>
-        </TreeView.Styles>
-        <TreeView.DataTemplates>
-          <TreeDataTemplate DataType="controls:IRootDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IProportionalDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IStackDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDockDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IGridDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IUniformGridDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IWrapDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IToolDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDocumentDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDocumentDockContent"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="core:IDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <DataTemplate DataType="controls:IGridDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IProportionalDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:ITool">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IToolContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IDocument">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IDocumentContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="core:IDockable">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-        </TreeView.DataTemplates>
-      </TreeView>
-    </TabItem>
-    <TabItem Header="{DynamicResource RootDockDebugSelectedTabString}">
-      <ContentControl Content="{Binding #Visible.SelectedItem}" />
-    </TabItem>
-    <TabItem Header="{DynamicResource RootDockDebugWindowsTabString}">
-      <TreeView x:Name="Windows" 
-                DataContext="{Binding #Visible.SelectedItem}" 
-                ItemsSource="{Binding Windows}"
-                x:DataType="controls:IRootDock">
-        <TreeView.Styles>
-          <Style Selector="TreeViewItem">
-            <Setter Property="IsExpanded" Value="True" />
-          </Style>
-        </TreeView.Styles>
-        <TreeView.DataTemplates>
-          <TreeDataTemplate DataType="controls:IRootDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IProportionalDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IStackDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDockDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IGridDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IUniformGridDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IWrapDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IToolDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDocumentDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="controls:IDocumentDockContent"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <TreeDataTemplate DataType="core:IDock"
-                            ItemsSource="{Binding VisibleDockables}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-          <DataTemplate DataType="controls:IGridDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IProportionalDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:ITool">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IToolContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IDocument">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IDocumentContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="core:IDockable">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <TreeDataTemplate DataType="core:IDockWindow" 
-                            ItemsSource="{Binding Layout.VisibleDockables, FallbackValue={x:Null}}">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </TreeDataTemplate>
-        </TreeView.DataTemplates>
-      </TreeView>
-    </TabItem>
-    <TabItem Header="{DynamicResource RootDockDebugEventsTabString}">
-      <DockPanel DataContext="{Binding #Root}">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,4">
-          <TextBlock Text="{DynamicResource RootDockDebugFilterString}" VerticalAlignment="Center"/>
-          <TextBox Width="120" Margin="2" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}"/>
-          <Button Content="{DynamicResource RootDockDebugResetString}" Margin="2" Click="OnClearEvents"/>
-        </StackPanel>
-        <ListBox ItemsSource="{Binding FilteredEvents}" FontFamily="Consolas"/>
-      </DockPanel>
-    </TabItem>
-    <TabItem Header="{DynamicResource RootDockDebugRootTabString}">
-      <ContentControl Content="{Binding}" />
-    </TabItem>
-  </TabControl>
-</UserControl>
-  <UserControl.DataTemplates>
     <DataTemplate DataType="core:IDock">
       <diagnostics:DockDebugView />
     </DataTemplate>
@@ -300,27 +120,27 @@
                             ItemsSource="{Binding VisibleDockables}">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </TreeDataTemplate>
-          <DataTemplate DataType="controls:IGridDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IProportionalDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IGridDockSplitter">
+      <diagnostics:GridDockSplitterDebugView />
+    </DataTemplate>
+    <DataTemplate DataType="controls:IProportionalDockSplitter">
+      <diagnostics:ProportionalDockSplitterDebugView />
+    </DataTemplate>
           <DataTemplate DataType="controls:ITool">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </DataTemplate>
-          <DataTemplate DataType="controls:IToolContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IToolContent">
+      <diagnostics:ToolContentDebugView />
+    </DataTemplate>
           <DataTemplate DataType="controls:IDocument">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </DataTemplate>
-          <DataTemplate DataType="controls:IDocumentContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="core:IDockable">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IDocumentContent">
+      <diagnostics:DocumentContentDebugView />
+    </DataTemplate>
+    <DataTemplate DataType="core:IDockable">
+      <diagnostics:DockableDebugView />
+    </DataTemplate>
         </TreeView.DataTemplates>
       </TreeView>
     </TabItem>
@@ -382,27 +202,27 @@
                             ItemsSource="{Binding VisibleDockables}">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </TreeDataTemplate>
-          <DataTemplate DataType="controls:IGridDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="controls:IProportionalDockSplitter">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IGridDockSplitter">
+      <diagnostics:GridDockSplitterDebugView />
+    </DataTemplate>
+    <DataTemplate DataType="controls:IProportionalDockSplitter">
+      <diagnostics:ProportionalDockSplitterDebugView />
+    </DataTemplate>
           <DataTemplate DataType="controls:ITool">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </DataTemplate>
-          <DataTemplate DataType="controls:IToolContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IToolContent">
+      <diagnostics:ToolContentDebugView />
+    </DataTemplate>
           <DataTemplate DataType="controls:IDocument">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
           </DataTemplate>
-          <DataTemplate DataType="controls:IDocumentContent">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
-          <DataTemplate DataType="core:IDockable">
-            <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />
-          </DataTemplate>
+    <DataTemplate DataType="controls:IDocumentContent">
+      <diagnostics:DocumentContentDebugView />
+    </DataTemplate>
+    <DataTemplate DataType="core:IDockable">
+      <diagnostics:DockableDebugView />
+    </DataTemplate>
           <TreeDataTemplate DataType="core:IDockWindow" 
                             ItemsSource="{Binding Layout.VisibleDockables, FallbackValue={x:Null}}">
             <TextBlock Text="{Binding Converter={x:Static converters:TitleOrTypeNameConverter.Instance}}" />

@@ -4,6 +4,7 @@ using Dock.Model.Core;
 
 namespace Dock.Model;
 
+/// <inheritdoc />
 public class DockService : IDockService
 {
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)
@@ -32,6 +33,7 @@ public class DockService : IDockService
         return true;
     }
 
+    /// <inheritdoc />
     public bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
     {
         if (sourceDockableOwner == targetDock)
@@ -70,6 +72,7 @@ public class DockService : IDockService
         return true;
     }
 
+    /// <inheritdoc />
     public bool SwapDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
     {
         var targetDockable = targetDock.ActiveDockable;
@@ -138,6 +141,7 @@ public class DockService : IDockService
         factory.SplitToDock(targetDock, targetDocumentDock, operation);
     }
 
+    /// <inheritdoc />
     public bool SplitDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
     {
         switch (sourceDockable)
@@ -183,6 +187,7 @@ public class DockService : IDockService
         }
     }
 
+    /// <inheritdoc />
     public bool DockDockableIntoWindow(IDockable sourceDockable, IDockable targetDockable, DockPoint screenPosition, bool bExecute)
     {
         if (sourceDockable == targetDockable)
@@ -232,6 +237,7 @@ public class DockService : IDockService
         return false;
     }
 
+    /// <inheritdoc />
     public bool DockDockableIntoDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, bool bExecute)
     {
         if (sourceDockable.Owner is not IDock sourceDockableOwner || targetDockable.Owner is not IDock targetDockableOwner)

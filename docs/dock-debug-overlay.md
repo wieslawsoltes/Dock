@@ -10,13 +10,15 @@ When enabled each `DockControl` gets an adorner that draws:
 Hovering over an area fills it with a translucent color and shows the hovered
 control's data context in the bottom-right corner.
 
-Enable the overlay in your application just like Avalonia's dev tools:
+Attach the overlay in your application just like Avalonia's dev tools. It can be
+toggled at runtime using <kbd>F10</kbd> by default:
 
 ```csharp
 #if DEBUG
-this.AttachDockDebugOverlay();
+var disposable = this.AttachDockDebugOverlay();
 #endif
 ```
 
 Call the extension method on your `App` or on a specific `Window`/`TopLevel` to
-activate the overlay.
+register the hot key. Optionally pass your own `KeyGesture` to change the
+shortcut.

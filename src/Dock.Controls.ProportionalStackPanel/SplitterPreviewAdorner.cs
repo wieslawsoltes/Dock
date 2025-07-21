@@ -1,6 +1,9 @@
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.Media;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -21,7 +24,7 @@ internal class SplitterPreviewAdorner : Control
             return;
         }
 
-        var brush = TryFindResource("DockApplicationAccentBrushIndicator") as IBrush ?? Brushes.Gray;
+        var brush = host.FindResource("DockApplicationAccentBrushIndicator") as IBrush ?? Brushes.Gray;
         var rect = Orientation == Orientation.Vertical
             ? new Rect(0, Offset, host.Bounds.Width, Thickness)
             : new Rect(Offset, 0, Thickness, host.Bounds.Height);

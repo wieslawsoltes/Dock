@@ -174,6 +174,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-custom-theme.md = docs\dock-custom-theme.md
 		docs\dock-layout-panels.md = docs\dock-layout-panels.md
 		docs\dock-window-drag.md = docs\dock-window-drag.md
+		docs\dock-debug-overlay.md = docs\dock-debug-overlay.md
+		docs\dock-dependency-injection.md = docs\dock-dependency-injection.md
+		docs\dock-pinned-window.md = docs\dock-pinned-window.md
+		docs\dock-root-dock-debug.md = docs\dock-root-dock-debug.md
+		docs\dock-window-owner.md = docs\dock-window-owner.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Protobuf", "src\Dock.Serializer.Protobuf\Dock.Serializer.Protobuf.csproj", "{12A0D873-2FF5-4AA0-9F66-56161DDE2D4E}"

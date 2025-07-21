@@ -6,7 +6,6 @@ using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Controls.Debug;
 using DockReactiveUIDiSample.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;

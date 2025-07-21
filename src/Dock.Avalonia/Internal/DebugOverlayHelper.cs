@@ -6,7 +6,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using System.Linq;
-using Dock.Avalonia.Controls.Debug;
+using Dock.Avalonia.Controls.Diagnostics;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;

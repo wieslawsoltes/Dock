@@ -3,7 +3,6 @@ using Avalonia.Layout;
 using LayoutOrientation = Avalonia.Layout.Orientation;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Controls.Debug;
 using Dock.Model.Core;
 using Xunit;
 

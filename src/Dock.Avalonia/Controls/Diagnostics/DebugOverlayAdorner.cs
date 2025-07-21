@@ -11,6 +11,9 @@ using Dock.Settings;
 
 namespace Dock.Avalonia.Controls.Diagnostics;
 
+/// <summary>
+/// Adorner that highlights docking areas for debugging purposes.
+/// </summary>
 internal class DebugOverlayAdorner : Control
 {
     private static readonly Pen s_dockTargetPen = new(Brushes.Red);
@@ -27,6 +30,10 @@ internal class DebugOverlayAdorner : Control
 
     private Control? _pointerOver;
 
+    /// <summary>
+    /// Sets the control currently under the pointer.
+    /// </summary>
+    /// <param name="control">The hovered control or <c>null</c>.</param>
     public void SetPointerOver(Control? control)
     {
         if (_pointerOver != control)
@@ -36,6 +43,10 @@ internal class DebugOverlayAdorner : Control
         }
     }
 
+    /// <summary>
+    /// Draws the overlay using the given drawing context.
+    /// </summary>
+    /// <param name="context">The drawing context.</param>
     public override void Render(DrawingContext context)
     {
         base.Render(context);

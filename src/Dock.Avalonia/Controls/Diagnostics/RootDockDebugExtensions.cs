@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 namespace Dock.Avalonia.Controls.Diagnostics;
 
 /// <summary>
-/// Provides extension method to attach <see cref="RootDockDebug"/> window.
+/// Provides extension method to attach a <see cref="RootDockDebug"/> window.
 /// </summary>
 public static class RootDockDebugExtensions
 {
@@ -68,6 +68,9 @@ public static class RootDockDebugExtensions
 
         public ActionDisposable(Action dispose) => _dispose = dispose;
 
+        /// <summary>
+        /// Executes the stored dispose action.
+        /// </summary>
         public void Dispose() => _dispose();
     }
 }

@@ -5,13 +5,22 @@ using Avalonia.Markup.Xaml;
 
 namespace Dock.Avalonia.Controls.Diagnostics;
 
+/// <summary>
+/// Debug view showing properties of a <see cref="DockDockControl"/>.
+/// </summary>
 public partial class DockDockDebugView : UserControl
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockDockDebugView"/> class.
+    /// </summary>
     public DockDockDebugView()
     {
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Loads the control's XAML.
+    /// </summary>
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);

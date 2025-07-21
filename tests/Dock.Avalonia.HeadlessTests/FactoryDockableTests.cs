@@ -2,6 +2,7 @@ using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Avalonia.Controls;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -109,5 +110,20 @@ public class FactoryDockableTests
         Assert.Equal(a, dockB.VisibleDockables![0]);
         Assert.Equal(dockA, b.Owner);
         Assert.Equal(dockB, a.Owner);
+    }
+
+    [AvaloniaFact]
+    public void AddDockable_Allows_UserControl_Content()
+    {
+        var factory = new Factory();
+        var dock = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
+        dock.Factory = factory;
+        var document = new Document { Content = new UserControl() };
+
+        var ex = Record.Exception(() => factory.AddDockable(dock, document));
+
+        Assert.Null(ex);
+        Assert.Contains(document, dock.VisibleDockables!);
+        Assert.Equal(dock, document.Owner);
     }
 }

@@ -22,6 +22,14 @@
       </DataTemplate>
     </Setter>
 
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
+      </DataTemplate>
+    </Setter>
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockPanel x:Name="PART_DockPanel"

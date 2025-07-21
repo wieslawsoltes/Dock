@@ -27,6 +27,9 @@ public abstract partial class FactoryBase
     public event EventHandler<DockableRemovedEventArgs>? DockableRemoved;
 
     /// <inheritdoc />
+    public event EventHandler<DockableClosingEventArgs>? DockableClosing;
+
+    /// <inheritdoc />
     public event EventHandler<DockableClosedEventArgs>? DockableClosed;
 
     /// <inheritdoc />
@@ -99,6 +102,21 @@ public abstract partial class FactoryBase
     public virtual void OnDockableRemoved(IDockable? dockable)
     {
         DockableRemoved?.Invoke(this, new DockableRemovedEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual bool OnDockableClosing(IDockable? dockable)
+    {
+        var canClose = dockable?.OnClose() ?? true;
+
+        var eventArgs = new DockableClosingEventArgs(dockable)
+        {
+            Cancel = !canClose
+        };
+
+        DockableClosing?.Invoke(this, eventArgs);
+
+        return !eventArgs.Cancel;
     }
 
     /// <inheritdoc />

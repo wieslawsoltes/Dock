@@ -145,4 +145,6 @@ public static class AppBuilderExtensions
         DockSettings.WindowMagnetDistance = distance;
         return builder;
     }
+
 }
+

@@ -16,6 +16,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [XAML guide](dock-xaml.md) – Declare layouts purely in XAML.
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
+- [Views guide](dock-views.md) – Display content for documents and tools.
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
@@ -45,8 +46,11 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Host window locators](dock-host-window-locator.md) – Provide platform windows for floating docks.
 - [Drag offset calculator](dock-drag-offset-calculator.md) – Control where the drag preview window appears.
 - [Floating dock adorners](dock-floating-adorners.md) – Display drop indicators in a transparent window.
+- [Debug overlay](dock-debug-overlay.md) – Visualize dock targets and drop areas.
 - [Pinned dock window](dock-pinned-window.md) – Show auto-hidden tools in a floating window.
 - [Floating window owner](dock-window-owner.md) – Keep floating windows in front of the main window.
+- [RootDockDebug window](dock-root-dock-debug.md) – Toggle a runtime inspector for Dock layouts.
+- [Debug views](dock-debug-views.md) – Reusable controls used by RootDockDebug.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 
@@ -79,3 +83,4 @@ including both `Dock.Avalonia` and `Dock.Model.Mvvm`.
 ## Troubleshooting
 
 - [FAQ](dock-faq.md) – Solutions to common issues.
+

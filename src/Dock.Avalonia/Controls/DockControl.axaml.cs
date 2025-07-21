@@ -250,6 +250,7 @@ public class DockControl : TemplatedControl, IDockControl
         {
             DeInitialize(Layout);
         }
+
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)

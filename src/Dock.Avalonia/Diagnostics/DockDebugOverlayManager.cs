@@ -25,7 +25,7 @@ internal sealed class DockDebugOverlayManager : IDisposable
 
     private void AttachExisting(Visual root)
     {
-        foreach (var dock in root.GetVisualDescendants().OfType<DockControl>())
+        foreach (var dock in root.GetVisualDescendants().OfType<DockControl>().ToList())
         {
             AttachOverlay(dock);
         }

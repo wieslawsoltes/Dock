@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics;
 using DockReactiveUIRoutingSample.ViewModels;
 using DockReactiveUIRoutingSample.Views;
 
@@ -30,6 +31,7 @@ public class App : Application
             desktop.MainWindow.AttachDockDebug(
                 vm.Layout, 
                 new KeyGesture(Key.F11));
+            desktop.MainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif
         }
 

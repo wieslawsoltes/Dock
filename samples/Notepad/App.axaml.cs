@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
+using Dock.Avalonia.Controls.Diagnostics;
 using Notepad.ViewModels;
 using Notepad.Views;
 

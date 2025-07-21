@@ -4,11 +4,9 @@
   <ControlTheme x:Key="{x:Type ProportionalStackPanelSplitter}" TargetType="ProportionalStackPanelSplitter">
 
     <Setter Property="Background" Value="Transparent" />
-    <Setter Property="ZIndex" Value="0" />
 
     <Style Selector="^:preview">
       <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushIndicator}" />
-      <Setter Property="ZIndex" Value="100" />
     </Style>
 
     <Setter Property="Template">

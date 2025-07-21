@@ -8,7 +8,6 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
-using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
@@ -93,7 +92,9 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private Point _startPoint;
     private bool _isMoving;
-    private TranslateTransform? _previewTransform;
+    private SplitterPreviewAdorner? _previewAdorner;
+    private AdornerLayer? _adornerLayer;
+    private double _startOffset;
 
     private void UpdatePreviewPseudoClass()
     {
@@ -156,8 +157,24 @@ public class ProportionalStackPanelSplitter : Thumb
 
             if (PreviewResize)
             {
-                _previewTransform = new TranslateTransform();
-                RenderTransform = _previewTransform;
+                var pos = TranslatePoint(new Point(), panel);
+                if (pos is not null)
+                {
+                    _adornerLayer = AdornerLayer.GetAdornerLayer(panel);
+                    if (_adornerLayer is not null)
+                    {
+                        _startOffset = panel.Orientation == Orientation.Vertical ? pos.Value.Y : pos.Value.X;
+                        _previewAdorner = new SplitterPreviewAdorner
+                        {
+                            Orientation = panel.Orientation,
+                            Thickness = Thickness,
+                            Offset = _startOffset,
+                            [AdornerLayer.AdornedElementProperty] = panel
+                        };
+                        ((ISetLogicalParent)_previewAdorner).SetParent(panel);
+                        _adornerLayer.Children.Add(_previewAdorner);
+                    }
+                }
             }
         }
     }
@@ -174,12 +191,12 @@ public class ProportionalStackPanelSplitter : Thumb
             {
                 var delta = point - _startPoint;
                 SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
-                if (_previewTransform is not null)
+                if (_previewAdorner is not null && _adornerLayer is not null)
                 {
-                    _previewTransform.X = 0;
-                    _previewTransform.Y = 0;
-                    RenderTransform = null;
-                    _previewTransform = null;
+                    _adornerLayer.Children.Remove(_previewAdorner);
+                    ((ISetLogicalParent)_previewAdorner).SetParent(null);
+                    _previewAdorner = null;
+                    _adornerLayer = null;
                 }
             }
         }
@@ -202,16 +219,11 @@ public class ProportionalStackPanelSplitter : Thumb
 
                 if (PreviewResize)
                 {
-                    if (_previewTransform is not null)
+                    if (_previewAdorner is not null)
                     {
-                        if (panel.Orientation == Orientation.Vertical)
-                        {
-                            _previewTransform.Y = delta.Y;
-                        }
-                        else
-                        {
-                            _previewTransform.X = delta.X;
-                        }
+                        var offset = _startOffset + (panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+                        _previewAdorner.Offset = offset;
+                        _previewAdorner.InvalidateVisual();
                     }
                 }
                 else
@@ -228,12 +240,12 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnPointerCaptureLost(e);
 
-        if (_previewTransform is not null)
+        if (_previewAdorner is not null && _adornerLayer is not null)
         {
-            _previewTransform.X = 0;
-            _previewTransform.Y = 0;
-            RenderTransform = null;
-            _previewTransform = null;
+            _adornerLayer.Children.Remove(_previewAdorner);
+            ((ISetLogicalParent)_previewAdorner).SetParent(null);
+            _previewAdorner = null;
+            _adornerLayer = null;
         }
 
         _isMoving = false;

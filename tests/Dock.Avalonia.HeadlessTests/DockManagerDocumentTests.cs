@@ -12,7 +12,7 @@ public class DockManagerDocumentTests
     [AvaloniaFact]
     public void ValidateDocument_ReturnsFalse_When_SourceCannotDrag()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var source = new Document { CanDrag = false };
         var target = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>(), CanDrop = true };
 
@@ -24,7 +24,7 @@ public class DockManagerDocumentTests
     [AvaloniaFact]
     public void ValidateDocument_ReturnsFalse_When_TargetCannotDrop()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var source = new Document();
         var target = new DocumentDock { VisibleDockables = new AvaloniaList<IDockable>(), CanDrop = false };
 
@@ -36,7 +36,7 @@ public class DockManagerDocumentTests
     [AvaloniaFact]
     public void IsDockTargetVisible_ReturnsFalse_For_Same_Dockable()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var doc = new Document();
 
         var result = manager.IsDockTargetVisible(doc, doc, DockOperation.Fill);
@@ -47,7 +47,7 @@ public class DockManagerDocumentTests
     [AvaloniaFact]
     public void IsDockTargetVisible_ReturnsFalse_When_Target_Is_Owner()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var dock = new DocumentDock();
         var doc = new Document { Owner = dock };
 
@@ -59,7 +59,7 @@ public class DockManagerDocumentTests
     [AvaloniaFact]
     public void IsDockTargetVisible_ReturnsTrue_For_Different_Dockables()
     {
-        var manager = new DockManager();
+        var manager = new DockManager(new DockService());
         var doc1 = new Document();
         var doc2 = new Document();
 

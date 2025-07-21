@@ -102,7 +102,7 @@ public class HostWindow : Window, IHostWindow
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
 
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(new DockService());
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
 #if DEBUG

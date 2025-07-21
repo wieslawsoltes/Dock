@@ -13,7 +13,7 @@
 `DockControl` automatically creates a `DockManager` when constructed. To use your own instance set the `DockManager` property before displaying the control:
 
 ```csharp
-var dockManager = new DockManager
+var dockManager = new DockManager(new DockService())
 {
     PreventSizeConflicts = true
 };

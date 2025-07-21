@@ -14,6 +14,12 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="TabsLayout" Value="{Binding TabsLayout, Mode=TwoWay}" />
 
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 

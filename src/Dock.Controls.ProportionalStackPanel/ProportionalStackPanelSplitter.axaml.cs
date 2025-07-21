@@ -157,7 +157,7 @@ public class ProportionalStackPanelSplitter : Thumb
 
             if (PreviewResize)
             {
-                var pos = TranslatePoint(new Point(), panel);
+                var pos = this.TranslatePoint(new Point(), panel);
                 if (pos is not null)
                 {
                     _adornerLayer = AdornerLayer.GetAdornerLayer(panel);

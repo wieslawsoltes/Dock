@@ -35,7 +35,7 @@ public static class RootDockDebugExtensions
                 {
                     debugWindow = new Window
                     {
-                        Width = 300,
+                        Width = 400,
                         Height = 680,
                         Content = new RootDockDebug { DataContext = root }
                     };

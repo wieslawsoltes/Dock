@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics;
 using DockReactiveUIDiSample.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
@@ -46,6 +47,7 @@ public partial class App : Application
                 window.AttachDockDebug(
                     vm.Layout, 
                     new KeyGesture(Key.F11));
+                window.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif
             }
         }

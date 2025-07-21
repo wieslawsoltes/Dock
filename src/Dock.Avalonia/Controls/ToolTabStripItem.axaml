@@ -124,10 +124,15 @@
                             Background="Transparent"
                             Orientation="Horizontal"
                             Spacing="2">
-                  <Panel Margin="2">
+                  <StackPanel Margin="2" Orientation="Horizontal">
+                    <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].IconTemplate}"
+                                      Content="{Binding}" />
                     <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
                                       Content="{Binding}" />
-                  </Panel>
+                  </StackPanel>
+                  <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].ModifiedTemplate}"
+                                    IsVisible="{Binding IsModified}"
+                                    Content="{Binding}" />
                 </StackPanel>
               </DockPanel>
             </DockableControl>

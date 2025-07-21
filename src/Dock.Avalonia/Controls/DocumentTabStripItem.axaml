@@ -207,10 +207,12 @@
                 <StackPanel Background="Transparent"
                             Orientation="Horizontal"
                             Spacing="2">
-                  <Panel Margin="2">
+                  <StackPanel Margin="2" Orientation="Horizontal">
+                    <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                                      Content="{Binding}" />
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                       Content="{Binding}" />
-                  </Panel>
+                  </StackPanel>
                   <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
                                     IsVisible="{Binding IsModified}"
                                     Content="{Binding}" />

@@ -17,9 +17,23 @@
     <Setter Property="MinHeight" Value="{Binding MinHeight}" />
     <Setter Property="MaxHeight" Value="{Binding MaxHeight}" />
 
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" Padding="2" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
       </DataTemplate>
     </Setter>
 

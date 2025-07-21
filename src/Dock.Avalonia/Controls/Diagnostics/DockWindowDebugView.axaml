@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="clr-namespace:Dock.Model.Core;assembly=Dock.Model"
+             x:Class="Dock.Avalonia.Controls.Diagnostics.DockWindowDebugView"
+             x:DataType="core:IDockWindow"
+             x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+    <TextBlock Text="Id" Grid.Row="0" Grid.Column="0" />
+    <TextBox Text="{Binding Id, Mode=TwoWay}" Margin="2" Grid.Row="0" Grid.Column="1" />
+    <TextBlock Text="X" Grid.Row="1" Grid.Column="0" />
+    <TextBox Text="{Binding X, Mode=TwoWay}" Margin="2" Grid.Row="1" Grid.Column="1" />
+    <TextBlock Text="Y" Grid.Row="2" Grid.Column="0" />
+    <TextBox Text="{Binding Y, Mode=TwoWay}" Margin="2" Grid.Row="2" Grid.Column="1" />
+    <TextBlock Text="Width" Grid.Row="3" Grid.Column="0" />
+    <TextBox Text="{Binding Width, Mode=TwoWay}" Margin="2" Grid.Row="3" Grid.Column="1" />
+    <TextBlock Text="Height" Grid.Row="4" Grid.Column="0" />
+    <TextBox Text="{Binding Height, Mode=TwoWay}" Margin="2" Grid.Row="4" Grid.Column="1" />
+    <TextBlock Text="Topmost" Grid.Row="5" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding Topmost, Mode=TwoWay}" Margin="2" Grid.Row="5" Grid.Column="1" />
+    <TextBlock Text="Title" Grid.Row="6" Grid.Column="0" />
+    <TextBox Text="{Binding Title, Mode=TwoWay}" Margin="2" Grid.Row="6" Grid.Column="1" />
+    <TextBlock Text="Owner" Grid.Row="7" Grid.Column="0" />
+    <TextBox Text="{Binding Owner.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="7" Grid.Column="1" />
+    <TextBlock Text="Factory" Grid.Row="8" Grid.Column="0" />
+    <TextBox Text="{Binding Factory, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="8" Grid.Column="1" />
+    <TextBlock Text="Layout" Grid.Row="9" Grid.Column="0" />
+    <TextBox Text="{Binding Layout.Title, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="9" Grid.Column="1" />
+    <TextBlock Text="Host" Grid.Row="10" Grid.Column="0" />
+    <TextBox Text="{Binding Host, Mode=OneWay, FallbackValue={x:Null}}" Margin="2" IsReadOnly="True" Grid.Row="10" Grid.Column="1" />
+  </Grid>
+</UserControl>

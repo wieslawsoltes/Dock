@@ -37,8 +37,10 @@ public class App : Application
                     DataContext = mainWindowViewModel
                 };
 #if DEBUG
-                mainWindow.AttachDockDebug(mainWindowViewModel.Layout);
-                mainWindow.AttachDockDebugOverlay();
+                mainWindow.AttachDockDebug(
+                    mainWindowViewModel.Layout, 
+                    new KeyGesture(Key.F11));
+                mainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif
                 mainWindow.Closing += (_, _) =>
                 {

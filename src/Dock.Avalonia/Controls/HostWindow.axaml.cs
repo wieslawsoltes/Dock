@@ -12,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -104,6 +105,9 @@ public class HostWindow : Window, IHostWindow
         _dockManager = new DockManager();
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
+#if DEBUG
+        this.AttachDockDebugOverlay();
+#endif
     }
 
     /// <inheritdoc/>

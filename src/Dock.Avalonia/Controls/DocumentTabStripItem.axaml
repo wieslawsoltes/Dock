@@ -199,12 +199,9 @@
                   <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                     Content="{Binding}" />
                 </Panel>
-                <Ellipse Width="6"
-                         Height="6"
-                         Fill="{DynamicResource DockApplicationAccentBrushIndicator}"
-                         VerticalAlignment="Center"
-                         IsVisible="{Binding IsModified}"
-                         Margin="0,0,2,0" />
+                <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                  IsVisible="{Binding IsModified}"
+                                  Content="{Binding}" />
                 <Button x:Name="PART_CloseButton"
                         Command="{Binding Owner.Factory.CloseDockable}"
                         CommandParameter="{Binding}">

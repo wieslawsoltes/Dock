@@ -1,5 +1,4 @@
 using System;
-using Dock.Model.Core;
 using Dock.Model.Core.Events;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +7,7 @@ namespace Dock.Model.Diagnostics;
 /// <summary>
 /// Logs <see cref="FactoryBase"/> events using <see cref="ILogger"/>.
 /// </summary>
-internal sealed class DockEventLogger : IDisposable
+public sealed class DockEventLogger : IDisposable
 {
     private readonly FactoryBase _factory;
     private readonly ILogger _logger;

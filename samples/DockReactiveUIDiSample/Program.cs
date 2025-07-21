@@ -22,7 +22,7 @@ internal class Program
     private static void Main(string[] args)
     {
         using var provider = Initialize();
-        using provider.UseDockEventLogger();
+        using var _ = provider.UseDockEventLogger();
         BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
     }
 

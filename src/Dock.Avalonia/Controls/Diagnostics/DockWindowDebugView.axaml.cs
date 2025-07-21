@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls.Diagnostics;
 

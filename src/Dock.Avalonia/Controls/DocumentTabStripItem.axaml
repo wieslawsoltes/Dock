@@ -211,6 +211,9 @@
                     <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                       Content="{Binding}" />
                   </Panel>
+                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                    IsVisible="{Binding IsModified}"
+                                    Content="{Binding}" />
                   <Button x:Name="PART_CloseButton"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding}">

@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics;
 using DockMvvmSample.Themes;
 using DockMvvmSample.ViewModels;
 using DockMvvmSample.Views;
@@ -36,9 +37,8 @@ public class App : Application
                     DataContext = mainWindowViewModel
                 };
 #if DEBUG
-                mainWindow.AttachDockDebug(
-                    mainWindowViewModel.Layout, 
-                    new KeyGesture(Key.F11));
+                mainWindow.AttachDockDebug(mainWindowViewModel.Layout);
+                mainWindow.AttachDockDebugOverlay();
 #endif
                 mainWindow.Closing += (_, _) =>
                 {

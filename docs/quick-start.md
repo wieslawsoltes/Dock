@@ -18,7 +18,13 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    dotnet add package Dock.Model.Mvvm
    ```
 
-3. **Add Dock styles**
+   **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:
+
+   ```powershell
+   dotnet add package Dock.Model.Avalonia
+   ```
+
+4. **Add Dock styles**
 
    Reference one of the built-in themes in `App.axaml` so the controls are styled:
 
@@ -29,7 +35,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    </Application.Styles>
    ```
 
-4. **Add a simple layout**
+5. **Add a simple layout**
 
    Create a `DockFactory` that derives from `Dock.Model.Mvvm.Factory` and returns a basic layout:
 

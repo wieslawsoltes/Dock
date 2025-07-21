@@ -27,7 +27,7 @@ public static class DockDebugOverlayExtensions
         this TopLevel topLevel,
         KeyGesture? gesture = null)
     {
-        var keyGesture = gesture ?? new KeyGesture(Key.F10);
+        var keyGesture = gesture ?? new KeyGesture(Key.F9);
         DockDebugOverlayManager? manager = null;
 
         void OnKeyDown(object? sender, KeyEventArgs e)

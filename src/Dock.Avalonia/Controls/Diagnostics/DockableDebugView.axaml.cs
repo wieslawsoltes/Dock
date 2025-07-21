@@ -5,13 +5,22 @@ using Avalonia.Markup.Xaml;
 
 namespace Dock.Avalonia.Controls.Diagnostics;
 
+/// <summary>
+/// Shows debug information common to all dockables.
+/// </summary>
 public partial class DockableDebugView : UserControl
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockableDebugView"/> class.
+    /// </summary>
     public DockableDebugView()
     {
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Loads the control's XAML.
+    /// </summary>
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);

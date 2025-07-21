@@ -16,7 +16,7 @@ using ModelWindowClosingEventArgs = Dock.Model.Core.Events.WindowClosingEventArg
 namespace Dock.Avalonia.Controls.Diagnostics;
 
 /// <summary>
-/// 
+/// Window that logs Dock events and displays layout information.
 /// </summary>
 public partial class RootDockDebug : UserControl, INotifyPropertyChanged
 {
@@ -66,7 +66,7 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (_subscriptions is not null)
@@ -182,6 +182,11 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
     private void OnWindowMoveDragEnd(object? sender, WindowMoveDragEndEventArgs e) =>
         AddEvent($"WindowMoveDragEnd {e.Window?.Title}");
 
+    /// <summary>
+    /// Clears the event log.
+    /// </summary>
+    /// <param name="sender">Event source.</param>
+    /// <param name="e">The routed event args.</param>
     private void OnClearEvents(object? sender, RoutedEventArgs e)
     {
         Events.Clear();
@@ -200,6 +205,9 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
 
         public ActionDisposable(Action dispose) => _dispose = dispose;
 
+        /// <summary>
+        /// Executes the stored dispose action.
+        /// </summary>
         public void Dispose() => _dispose();
     }
 }

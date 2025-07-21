@@ -111,7 +111,7 @@ public class DockFactory : Factory
             VisibleDockables = CreateList<IDockable>
             (
                 leftDock,
-                new ProportionalDockSplitter(),
+                new ProportionalDockSplitter { ResizePreview = true },
                 documentDock,
                 new ProportionalDockSplitter(),
                 rightDock

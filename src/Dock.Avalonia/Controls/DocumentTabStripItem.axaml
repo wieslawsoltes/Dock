@@ -195,7 +195,7 @@
                           Spacing="2"
                           DockProperties.IsDragArea="True"
                           DockProperties.IsDropArea="True">
-                <Panel Margin="2">
+                <Panel Margin="0">
                   <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
                                     Content="{Binding}" />
                 </Panel>

@@ -734,7 +734,7 @@ public abstract partial class FactoryBase
             return;
         }
 
-        if (dockable.CanClose && dockable.OnClose())
+        if (dockable.CanClose && OnDockableClosing(dockable))
         {
             var hide = (dockable is ITool && HideToolsOnClose)
                        || (dockable is IDocument && HideDocumentsOnClose);

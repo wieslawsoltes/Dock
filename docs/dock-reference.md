@@ -16,7 +16,7 @@ This reference summarizes the most commonly used classes in Dock. It is based on
 | `IUniformGridDock` | Dock that arranges items in equally sized cells using `Rows` and `Columns`. |
 | `IToolDock` / `IDocumentDock` | Specialized docks used for tools and documents. |
 | `ITool` | Represents a tool pane. Tools can specify `MinWidth`, `MaxWidth`, `MinHeight` and `MaxHeight` to control their size. |
-| `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` to enable or disable dragging. |
+| `IProportionalDockSplitter` | Thin splitter placed between proportional docks. Exposes `CanResize` and `ResizePreview` to control dragging. With preview enabled the splitter highlights while dragging. |
 | `IGridDockSplitter` | Splitter for `IGridDock` controlling the resize direction. |
 | `IDockWindow` / `IHostWindow` | Interfaces representing floating windows created when dockables are detached. |
 

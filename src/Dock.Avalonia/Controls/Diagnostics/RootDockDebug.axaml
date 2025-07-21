@@ -11,6 +11,9 @@
              d:DesignWidth="300" d:DesignHeight="680"
              x:DataType="controls:IRootDock"
              x:CompileBindings="True">
+  <UserControl.Resources>
+    <x:Double x:Key="TabItemHeaderFontSize">14</x:Double>
+  </UserControl.Resources>
   <UserControl.DataTemplates>
     <DataTemplate DataType="core:IDock">
       <diagnostics:DockDebugView />

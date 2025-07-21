@@ -24,6 +24,12 @@ public class DocumentControl : TemplatedControl
         AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(HeaderTemplate));
 
     /// <summary>
+    /// Define the <see cref="ModifiedTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate> ModifiedTemplateProperty = 
+        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(ModifiedTemplate));
+
+    /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
@@ -42,6 +48,15 @@ public class DocumentControl : TemplatedControl
     {
         get => GetValue(HeaderTemplateProperty);
         set => SetValue(HeaderTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab modified template.
+    /// </summary>
+    public IDataTemplate ModifiedTemplate
+    {
+        get => GetValue(ModifiedTemplateProperty);
+        set => SetValue(ModifiedTemplateProperty, value);
     }
 
     /// <summary>

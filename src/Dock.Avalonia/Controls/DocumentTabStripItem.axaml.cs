@@ -7,11 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.Styling;
-using Avalonia.VisualTree;
 using Dock.Model.Core;
-using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -45,23 +41,6 @@ public class DocumentTabStripItem : TabStripItem
     public DocumentTabStripItem()
     {
         UpdatePseudoClasses(IsActive);
-        
-        
-    }
-
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-        
-        var children = this.GetVisualDescendants();
-
-        foreach (var child in children)
-        {
-            DockProperties.SetIsDockTarget(child, true);
-            DockProperties.SetShowDockIndicatorOnly(child, true);
-            DockProperties.SetIsDropArea(child, true);
-            DockProperties.SetIsDropEnabled(child, true);
-        }
     }
 
     /// <inheritdoc/>
@@ -70,8 +49,6 @@ public class DocumentTabStripItem : TabStripItem
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
-
-        
     }
 
     /// <inheritdoc/>

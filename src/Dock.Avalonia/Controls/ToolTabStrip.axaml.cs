@@ -17,12 +17,6 @@ namespace Dock.Avalonia.Controls;
 public class ToolTabStrip : TabStrip
 {
     /// <summary>
-    /// Defines the <see cref="DockAdornerHost"/> property.
-    /// </summary>
-    public static readonly StyledProperty<Control?> DockAdornerHostProperty =
-        AvaloniaProperty.Register<ToolTabStrip, Control?>(nameof(DockAdornerHost));
-
-    /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> CanCreateItemProperty =
@@ -35,15 +29,6 @@ public class ToolTabStrip : TabStrip
     {
         get => GetValue(CanCreateItemProperty);
         set => SetValue(CanCreateItemProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the control that should host the dock adorner.
-    /// </summary>
-    public Control? DockAdornerHost
-    {
-        get => GetValue(DockAdornerHostProperty);
-        set => SetValue(DockAdornerHostProperty, value);
     }
 
     /// <inheritdoc/>

@@ -181,6 +181,15 @@
 
     <Setter Property="Template">
       <ControlTemplate>
+        <Panel>
+          <Panel.Styles>
+            <Style Selector=":is(Control)">
+              <Setter Property="(DockProperties.IsDockTarget)" Value="True" />
+              <Setter Property="(DockProperties.ShowDockIndicatorOnly)" Value="True" />
+              <Setter Property="(DockProperties.IsDropArea)" Value="True" />
+              <Setter Property="(DockProperties.IsDropEnabled)" Value="True" />
+            </Style>
+          </Panel.Styles>
           <Border Background="{TemplateBinding Background}"
                   TextElement.FontFamily="{TemplateBinding FontFamily}"
                   TextElement.FontSize="{TemplateBinding FontSize}"
@@ -192,17 +201,17 @@
                   DockProperties.IsDropArea="True">
             <DockableControl TrackingMode="Tab">
               <DockPanel Background="Transparent">
-                <Panel DockPanel.Dock="Left" 
-                       Background="Transparent" 
+                <Panel DockPanel.Dock="Left"
+                       Background="Transparent"
                        Width="{Binding Padding.Left, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Right" 
-                       Background="Transparent" 
+                <Panel DockPanel.Dock="Right"
+                       Background="Transparent"
                        Width="{Binding Padding.Right, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Top" 
-                       Background="Transparent" 
+                <Panel DockPanel.Dock="Top"
+                       Background="Transparent"
                        Height="{Binding Padding.Top, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Bottom" 
-                       Background="Transparent" 
+                <Panel DockPanel.Dock="Bottom"
+                       Background="Transparent"
                        Height="{Binding Padding.Bottom, RelativeSource={RelativeSource TemplatedParent}}" />
                 <StackPanel Background="Transparent"
                             Orientation="Horizontal"
@@ -256,6 +265,7 @@
               </DockPanel>
             </DockableControl>
           </Border>
+        </Panel>
       </ControlTemplate>
     </Setter>
 

@@ -47,7 +47,7 @@
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
                         DockPanel.Dock="Bottom"
                         DockProperties.IsDropArea="True"
-                        DockAdornerHost="{Binding #PART_DockPanel}" />
+                        DockProperties.DockAdornerHost="{Binding #PART_DockPanel}" />
           <Border x:Name="PART_Border">
             <DockableControl DataContext="{Binding ActiveDockable}"
                              TrackingMode="Visible">

@@ -22,12 +22,6 @@ public class DocumentTabStrip : TabStrip
     private HostWindow? _attachedWindow;
     private Control? _grip;
     private WindowDragHelper? _windowDragHelper;
-
-    /// <summary>
-    /// Defines the <see cref="DockAdornerHost"/> property.
-    /// </summary>
-    public static readonly StyledProperty<Control?> DockAdornerHostProperty =
-        AvaloniaProperty.Register<DocumentTabStrip, Control?>(nameof(DockAdornerHost));
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -87,15 +81,6 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the control that should host the dock adorner.
-    /// </summary>
-    public Control? DockAdornerHost
-    {
-        get => GetValue(DockAdornerHostProperty);
-        set => SetValue(DockAdornerHostProperty, value);
     }
 
     /// <inheritdoc/>

@@ -71,8 +71,7 @@
                   DockProperties.IsDropArea="True"
                   DockProperties.IsDockTarget="True"
                   DockProperties.ShowDockIndicatorOnly="True"
-                  DockProperties.IndicatorDockOperation="Fill"
-                  DockProperties.DockAdornerHost="{TemplateBinding DockAdornerHost}" />
+                  DockProperties.IndicatorDockOperation="Fill" />
         </DockPanel>
       </ControlTemplate>
     </Setter>

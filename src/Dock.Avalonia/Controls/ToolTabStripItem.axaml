@@ -17,7 +17,6 @@
   <x:Double x:Key="TabStripItemMinHeight">48</x:Double>
   <x:Double x:Key="TabStripItemPipeThickness">2</x:Double>
 
-
   <ContextMenu x:Key="ToolTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource ToolTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
@@ -104,20 +103,38 @@
                   TextElement.FontWeight="{TemplateBinding FontWeight}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
-                  Padding="{TemplateBinding Padding}"
-                  ContextMenu="{DynamicResource ToolTabStripItemContextMenu}">
+                  ContextMenu="{DynamicResource ToolTabStripItemContextMenu}"
+                  DockProperties.IsDragArea="True"
+                  DockProperties.IsDropArea="True">
             <DockableControl TrackingMode="Tab">
-              <StackPanel x:Name="DragTool"
-                          Background="Transparent"
-                          Orientation="Horizontal"
-                          Spacing="2"
-                          DockProperties.IsDragArea="True"
-                          DockProperties.IsDropArea="True">
-                <Panel Margin="2">
-                  <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
+              <DockPanel Background="Transparent">
+                <Panel DockPanel.Dock="Left" 
+                       Background="Transparent" 
+                       Width="{Binding Padding.Left, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Right" 
+                       Background="Transparent" 
+                       Width="{Binding Padding.Right, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Top" 
+                       Background="Transparent" 
+                       Height="{Binding Padding.Top, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Bottom" 
+                       Background="Transparent" 
+                       Height="{Binding Padding.Bottom, RelativeSource={RelativeSource TemplatedParent}}" />
+                <StackPanel x:Name="DragTool"
+                            Background="Transparent"
+                            Orientation="Horizontal"
+                            Spacing="2">
+                  <StackPanel Margin="2" Orientation="Horizontal">
+                    <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].IconTemplate}"
+                                      Content="{Binding}" />
+                    <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].HeaderTemplate}"
+                                      Content="{Binding}" />
+                  </StackPanel>
+                  <ContentPresenter ContentTemplate="{Binding $parent[ToolControl].ModifiedTemplate}"
+                                    IsVisible="{Binding IsModified}"
                                     Content="{Binding}" />
-                </Panel>
-              </StackPanel>
+                </StackPanel>
+              </DockPanel>
             </DockableControl>
           </Border>
       </ControlTemplate>

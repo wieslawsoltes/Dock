@@ -72,3 +72,4 @@ public class AppBuilderExtensionsTests
         Assert.False(DockSettings.UseOwnerForFloatingWindows);
     }
 }
+

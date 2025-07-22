@@ -64,7 +64,7 @@ public class DockProperties : AvaloniaObject
     /// the dock target adorner instead of the adorned control itself.
     /// </summary>
     public static readonly AttachedProperty<Control?> DockAdornerHostProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.

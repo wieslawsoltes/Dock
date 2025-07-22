@@ -13,4 +13,10 @@ public interface IProportionalDockSplitter : IDockable
     /// Gets or sets whether the splitter allows resizing.
     /// </summary>
     bool CanResize { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether resizing occurs only after the pointer is released.
+    /// When true a drag preview is shown during movement.
+    /// </summary>
+    bool ResizePreview { get; set; }
 }

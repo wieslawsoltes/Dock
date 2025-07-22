@@ -212,6 +212,7 @@ public class DockWindow : ReactiveBase, IDockWindow
     /// <inheritdoc/>
     public virtual bool OnClose()
     {
+        Factory?.CloseWindow(this);
         return true;
     }
 

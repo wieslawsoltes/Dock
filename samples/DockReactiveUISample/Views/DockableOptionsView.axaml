@@ -9,5 +9,6 @@
     <CheckBox IsChecked="{Binding CanPin}" ToolTip.Tip="CanPin" />
     <CheckBox IsChecked="{Binding CanDrag}" ToolTip.Tip="CanDrag" />
     <CheckBox IsChecked="{Binding CanDrop}" ToolTip.Tip="CanDrop" />
+    <CheckBox IsChecked="{Binding IsModified}" ToolTip.Tip="IsModified" />
   </StackPanel>
 </UserControl>

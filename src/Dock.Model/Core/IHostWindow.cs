@@ -70,7 +70,7 @@ public interface IHostWindow
     /// Sets host title.
     /// </summary>
     /// <param name="title">The host title.</param>
-    void SetTitle(string title);
+    void SetTitle(string? title);
 
     /// <summary>
     /// Sets host layout.

@@ -177,7 +177,7 @@
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Margin" Value="0" />
-    <Setter Property="Padding" Value="4 0 4 0" />
+    <Setter Property="Padding" Value="4,0,4,0" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -187,55 +187,73 @@
                   TextElement.FontWeight="{TemplateBinding FontWeight}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
-                  Padding="{TemplateBinding Padding}"
-                  ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
+                  ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}"
+                  DockProperties.IsDragArea="True"
+                  DockProperties.IsDropArea="True">
             <DockableControl TrackingMode="Tab">
-              <StackPanel Background="Transparent"
-                          Orientation="Horizontal"
-                          Spacing="2"
-                          DockProperties.IsDragArea="True"
-                          DockProperties.IsDropArea="True">
-                <Panel Margin="2">
-                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+              <DockPanel Background="Transparent">
+                <Panel DockPanel.Dock="Left" 
+                       Background="Transparent" 
+                       Width="{Binding Padding.Left, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Right" 
+                       Background="Transparent" 
+                       Width="{Binding Padding.Right, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Top" 
+                       Background="Transparent" 
+                       Height="{Binding Padding.Top, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Panel DockPanel.Dock="Bottom" 
+                       Background="Transparent" 
+                       Height="{Binding Padding.Bottom, RelativeSource={RelativeSource TemplatedParent}}" />
+                <StackPanel Background="Transparent"
+                            Orientation="Horizontal"
+                            Spacing="2">
+                  <StackPanel Margin="2" Orientation="Horizontal">
+                    <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].IconTemplate}"
+                                      Content="{Binding}" />
+                    <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].HeaderTemplate}"
+                                      Content="{Binding}" />
+                  </StackPanel>
+                  <ContentPresenter ContentTemplate="{Binding $parent[DocumentControl].ModifiedTemplate}"
+                                    IsVisible="{Binding IsModified}"
                                     Content="{Binding}" />
-                </Panel>
-                <Button x:Name="PART_CloseButton"
-                        Command="{Binding Owner.Factory.CloseDockable}"
-                        CommandParameter="{Binding}">
-                  <Button.IsVisible>
-                    <MultiBinding Converter="{x:Static BoolConverters.And}">
-                      <Binding Path="CanClose" />
-                      <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
-                        <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
-                        <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+                  <Button x:Name="PART_CloseButton"
+                          Command="{Binding Owner.Factory.CloseDockable}"
+                          CommandParameter="{Binding}">
+                    <Button.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.And}">
+                        <Binding Path="CanClose" />
+                        <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                          <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+                          <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+                        </MultiBinding>
                       </MultiBinding>
-                    </MultiBinding>
-                  </Button.IsVisible>
-                  <Button.Styles>
-                    <Style Selector="Button">
-                      <Setter Property="BorderThickness" Value="0" />
-                      <Setter Property="Padding" Value="0" />
-                      <Setter Property="Margin" Value="0" />
-                      <Setter Property="Width" Value="14" />
-                      <Setter Property="Height" Value="14" />
-                      <Setter Property="Background" Value="Transparent" />
-                      <Style Selector="^:pointerover">
-                        <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+                    </Button.IsVisible>
+                    <Button.Styles>
+                      <Style Selector="Button">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Width" Value="14" />
+                        <Setter Property="Height" Value="14" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Style Selector="^:pointerover">
+                          <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+                        </Style>
                       </Style>
-                    </Style>
-                  </Button.Styles>
-                  <Path x:Name="PART_ClosePath">
-                    <Path.Styles>
-                      <Style Selector="Path">
-                        <Setter Property="Margin" Value="2" />
-                        <Setter Property="Stretch" Value="Uniform" />
-                        <Setter Property="UseLayoutRounding" Value="False" />
-                        <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
-                      </Style>
-                    </Path.Styles>
-                  </Path>
-                </Button>
-              </StackPanel>
+                    </Button.Styles>
+                    <Path x:Name="PART_ClosePath">
+                      <Path.Styles>
+                        <Style Selector="Path">
+                          <Setter Property="Margin" Value="2" />
+                          <Setter Property="Stretch" Value="Uniform" />
+                          <Setter Property="UseLayoutRounding" Value="False" />
+                          <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
+                        </Style>
+                      </Path.Styles>
+                    </Path>
+                  </Button>
+                </StackPanel>
+              </DockPanel>
             </DockableControl>
           </Border>
       </ControlTemplate>

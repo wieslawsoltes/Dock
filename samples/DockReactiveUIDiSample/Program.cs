@@ -1,15 +1,16 @@
 using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Dock.Model;
-using Dock.Model.Core;
+using Dock.Model.Extensions.DependencyInjection;
 using Dock.Serializer;
 using DockReactiveUIDiSample.Models;
 using DockReactiveUIDiSample.ViewModels;
 using DockReactiveUIDiSample.ViewModels.Documents;
 using DockReactiveUIDiSample.ViewModels.Tools;
+using DockReactiveUIDiSample.Views;
 using DockReactiveUIDiSample.Views.Documents;
 using DockReactiveUIDiSample.Views.Tools;
+using ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DockReactiveUIDiSample;
@@ -34,17 +35,16 @@ internal class Program
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<App>();
-        services.AddSingleton<ViewLocator>();
+        services.AddSingleton<IViewLocator, ViewLocator>();
         services.AddSingleton<DemoData>();
         services.AddTransient<DocumentViewModel>();
         services.AddTransient<ToolViewModel>();
-        services.AddTransient<DocumentView>();
-        services.AddTransient<ToolView>();
-        services.AddSingleton<DockFactory>();
+        services.AddTransient<IViewFor<DocumentViewModel>, DocumentView>();
+        services.AddTransient<IViewFor<ToolViewModel>, ToolView>();
         services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<IFactory, DockFactory>();
-        services.AddSingleton<IDockSerializer, DockSerializer>();
-        services.AddSingleton<IDockState, DockState>();
+        services.AddTransient<IViewFor<MainWindowViewModel>, MainWindow>();
+
+        services.AddDock<DockFactory, DockSerializer>();
    }
 
     public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)

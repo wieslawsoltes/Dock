@@ -22,12 +22,6 @@ public class DocumentTabStrip : TabStrip
     private HostWindow? _attachedWindow;
     private Control? _grip;
     private WindowDragHelper? _windowDragHelper;
-
-    /// <summary>
-    /// Defines the <see cref="DockAdornerHost"/> property.
-    /// </summary>
-    public static readonly StyledProperty<Control?> DockAdornerHostProperty =
-        AvaloniaProperty.Register<DocumentTabStrip, Control?>(nameof(DockAdornerHost));
     
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -87,15 +81,6 @@ public class DocumentTabStrip : TabStrip
     {
         get => GetValue(OrientationProperty);
         set => SetValue(OrientationProperty, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the control that should host the dock adorner.
-    /// </summary>
-    public Control? DockAdornerHost
-    {
-        get => GetValue(DockAdornerHostProperty);
-        set => SetValue(DockAdornerHostProperty, value);
     }
 
     /// <inheritdoc/>
@@ -183,53 +168,51 @@ public class DocumentTabStrip : TabStrip
         PseudoClasses.Set(":active", isActive);
     }
 
-    private WindowDragHelper CreateDragHelper(Control grip)
+    private WindowDragHelper CreateDragHelper()
     {
         return new WindowDragHelper(
-            grip,
+            this,
             () => EnableWindowDrag,
             source =>
             {
                 if (source == this)
                     return true;
 
-                return source is { } s &&
-                       !(s is DocumentTabStripItem) &&
-                       !(s is Button) &&
-                       !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                       !WindowDragHelper.IsChildOfType<Button>(this, s);
+                var allow = source is { } s &&
+                            !(s is DocumentTabStripItem) &&
+                            !(s is Button) &&
+                            !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
+                            !WindowDragHelper.IsChildOfType<Button>(this, s);
+
+                if (!allow &&
+                    Items is { } items && items.Count == 1 &&
+                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false })
+                {
+                    allow = true;
+                }
+
+                return allow;
             });
     }
 
     private void AttachToWindow()
     {
-        if (!EnableWindowDrag || _grip == null)
+        if (!EnableWindowDrag)
         {
             return;
         }
 
-        if (VisualRoot is Window window)
+        if (VisualRoot is Window window &&
+            window is HostWindow hostWindow &&
+            _grip is { } &&
+            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
         {
-            if (window is HostWindow hostWindow)
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
-                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    hostWindow.AttachGrip(_grip, ":documentwindow");
-                    _attachedWindow = hostWindow;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    _windowDragHelper = CreateDragHelper(_grip);
-                    _windowDragHelper.Attach();
-                }
-            }
-            else
-            {
-                _windowDragHelper = CreateDragHelper(_grip);
-                _windowDragHelper.Attach();
-            }
+            hostWindow.AttachGrip(_grip, ":documentwindow");
+            _attachedWindow = hostWindow;
         }
+
+        _windowDragHelper = CreateDragHelper();
+        _windowDragHelper.Attach();
     }
 
     private void DetachFromWindow()

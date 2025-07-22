@@ -17,31 +17,47 @@ public sealed class DockSerializer : IDockSerializer
 {
     private readonly JsonSerializerSettings _settings;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type.
-    /// </summary>
-    /// <param name="listType">The type of list to use in the serialization process.</param>
-    public DockSerializer(Type listType)
+    private static JsonSerializerSettings CreateSettings(Type listType, IServiceProvider? provider)
     {
-        _settings = new JsonSerializerSettings()
+        var resolver = provider is null
+            ? new ListContractResolver(listType)
+            : new ServiceProviderContractResolver(listType, provider);
+
+        return new JsonSerializerSettings
         {
             Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.Objects,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-            ContractResolver = new ListContractResolver(listType),
+            ContractResolver = resolver,
             NullValueHandling = NullValueHandling.Ignore,
-            Converters =
-            {
-                new KeyValuePairConverter()
-            }
+            Converters = { new KeyValuePairConverter() }
         };
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type.
+    /// </summary>
+    /// <param name="listType">The type of list to use in the serialization process.</param>
+    public DockSerializer(Type listType)
+        : this(listType, provider: null)
+    {
+    }
+
+    public DockSerializer(Type listType, IServiceProvider? provider)
+    {
+        _settings = CreateSettings(listType, provider);
+    }
+
+    public DockSerializer(IServiceProvider provider)
+        : this(typeof(ObservableCollection<>), provider)
+    {
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DockSerializer"/> class using <see cref="ObservableCollection{T}"/> as the list type.
     /// </summary>
-    public DockSerializer() : this(typeof(ObservableCollection<>))
+    public DockSerializer() : this(typeof(ObservableCollection<>), provider: null)
     {
     }
 

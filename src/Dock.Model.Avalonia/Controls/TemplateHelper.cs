@@ -40,10 +40,16 @@ internal static class TemplateHelper
 
     internal static TemplateResult<Control>? Load(object? templateContent)
     {
+        if (templateContent is null)
+        {
+            return null;
+        }
+
         if (templateContent is Func<IServiceProvider, object> direct)
         {
             return (TemplateResult<Control>)direct(null!);
         }
-        throw new ArgumentException(nameof(templateContent));
+
+        return TemplateContent.Load(templateContent);
     }
 }

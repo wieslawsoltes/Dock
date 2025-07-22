@@ -14,11 +14,25 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="TabsLayout" Value="{Binding TabsLayout, Mode=TwoWay}" />
 
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
     <Setter Property="HeaderTemplate">
       <DataTemplate DataType="core:IDockable">
         <TextBlock Text="{Binding Title}" 
                    VerticalAlignment="Center"
                    Padding="2"  />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
       </DataTemplate>
     </Setter>
 
@@ -37,7 +51,7 @@
                             Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
                             DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
                             DockProperties.IsDropArea="True"
-                            DockAdornerHost="{Binding #PART_DockPanel}">
+                            DockProperties.DockAdornerHost="{Binding #PART_DockPanel}">
             <DocumentTabStrip.Styles>
               <Style Selector="DocumentTabStripItem">
                 <Setter Property="IsActive" Value="{Binding $parent[DocumentTabStrip].IsActive}" />

@@ -136,7 +136,7 @@ public class DockControl : TemplatedControl, IDockControl
     /// </summary>
     public DockControl()
     {
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(new DockService());
         _dockControlState = new DockControlState(_dockManager, _dragOffsetCalculator);
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerReleasedEvent, ReleasedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -250,6 +250,7 @@ public class DockControl : TemplatedControl, IDockControl
         {
             DeInitialize(Layout);
         }
+
     }
 
     private static DragAction ToDragAction(PointerEventArgs e)
@@ -272,9 +273,37 @@ public class DockControl : TemplatedControl, IDockControl
         return DragAction.Move;
     }
 
+    private bool ShouldIgnorePressedForWindowDrag(PointerPressedEventArgs e)
+    {
+        if (e.Source is not Control source)
+        {
+            return false;
+        }
+
+        var tabItem = source.FindAncestorOfType<DocumentTabStripItem>();
+        if (tabItem is null)
+        {
+            return false;
+        }
+
+        var tabStrip = tabItem.FindAncestorOfType<DocumentTabStrip>();
+        if (tabStrip is null)
+        {
+            return false;
+        }
+
+        return tabStrip.Items is { Count: 1 }
+               && tabStrip.DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false };
+    }
+
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
         if (e.Source is Visual visual && visual.FindAncestorOfType<ScrollBar>() != null)
+        {
+            return;
+        }
+
+        if (ShouldIgnorePressedForWindowDrag(e))
         {
             return;
         }

@@ -13,6 +13,7 @@ namespace Dock.Model.Mvvm.Controls;
 public class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
 {
     private bool _canResize = true;
+    private bool _resizePreview;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -20,5 +21,13 @@ public class ProportionalDockSplitter : DockableBase, IProportionalDockSplitter
     {
         get => _canResize;
         set => SetProperty(ref _canResize, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool ResizePreview
+    {
+        get => _resizePreview;
+        set => SetProperty(ref _resizePreview, value);
     }
 }

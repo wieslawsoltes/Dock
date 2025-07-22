@@ -100,6 +100,7 @@ public class FactoryTests
         Assert.NotNull(actual);
         Assert.IsType<ProportionalDockSplitter>(actual);
         Assert.True(actual.CanResize);
+        Assert.False(actual.ResizePreview);
     }
 
     [AvaloniaFact]

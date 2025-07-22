@@ -10,8 +10,8 @@
 
   <ControlTheme x:Key="{x:Type DockControl}" TargetType="DockControl">
 
-    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding Layout.CanDrag, FallbackValue={x:True}}" x:DataType="DockControl"  />
-    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding Layout.CanDrop, FallbackValue={x:True}}" x:DataType="DockControl"  />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding $self.Layout.CanDrag, FallbackValue={x:True}}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding $self.Layout.CanDrop, FallbackValue={x:True}}"  />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -25,7 +25,7 @@
               <ToolContentControl />
             </DataTemplate>
             <DataTemplate DataType="dmc:IProportionalDockSplitter">
-              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" />
+              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" PreviewResize="{Binding ResizePreview}" />
             </DataTemplate>
             <DataTemplate DataType="dmc:IGridDockSplitter">
               <GridSplitter ResizeDirection="{Binding ResizeDirection}" />

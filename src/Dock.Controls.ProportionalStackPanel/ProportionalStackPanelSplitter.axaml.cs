@@ -15,7 +15,7 @@ namespace Dock.Controls.ProportionalStackPanel;
 /// <summary>
 /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
 /// </summary>
-[PseudoClasses(":horizontal", ":vertical")]
+[PseudoClasses(":horizontal", ":vertical", ":preview")]
 public class ProportionalStackPanelSplitter : Thumb
 {
     /// <summary>
@@ -29,6 +29,12 @@ public class ProportionalStackPanelSplitter : Thumb
     /// </summary>
     public static readonly StyledProperty<bool> IsResizingEnabledProperty =
         AvaloniaProperty.Register<ProportionalStackPanelSplitter, bool>(nameof(IsResizingEnabled), true);
+
+    /// <summary>
+    /// Defines the <see cref="PreviewResize"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> PreviewResizeProperty =
+        AvaloniaProperty.Register<ProportionalStackPanelSplitter, bool>(nameof(PreviewResize));
 
     /// <summary>
     /// Defines the MinimumProportionSize attached property.
@@ -55,7 +61,7 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         control.SetValue(MinimumProportionSizeProperty, value);
     }
-        
+
     /// <summary>
     /// Gets or sets the thickness (height or width, depending on orientation).
     /// </summary>
@@ -75,8 +81,25 @@ public class ProportionalStackPanelSplitter : Thumb
         set => SetValue(IsResizingEnabledProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether resizing only previews changes until released.
+    /// </summary>
+    public bool PreviewResize
+    {
+        get => GetValue(PreviewResizeProperty);
+        set => SetValue(PreviewResizeProperty, value);
+    }
+
     private Point _startPoint;
     private bool _isMoving;
+    private SplitterPreviewAdorner? _previewAdorner;
+    private AdornerLayer? _adornerLayer;
+    private double _startOffset;
+
+    private void UpdatePreviewPseudoClass()
+    {
+        PseudoClasses.Set(":preview", PreviewResize && _isMoving);
+    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -86,6 +109,11 @@ public class ProportionalStackPanelSplitter : Thumb
         if (change.Property == IsResizingEnabledProperty)
         {
             UpdateVisualState();
+        }
+
+        if (change.Property == PreviewResizeProperty)
+        {
+            UpdatePreviewPseudoClass();
         }
     }
 
@@ -125,6 +153,29 @@ public class ProportionalStackPanelSplitter : Thumb
             var point = e.GetPosition(panel);
             _startPoint = point;
             _isMoving = true;
+            UpdatePreviewPseudoClass();
+
+            if (PreviewResize)
+            {
+                var pos = this.TranslatePoint(new Point(), panel);
+                if (pos is not null)
+                {
+                    _adornerLayer = AdornerLayer.GetAdornerLayer(panel);
+                    if (_adornerLayer is not null)
+                    {
+                        _startOffset = panel.Orientation == Orientation.Vertical ? pos.Value.Y : pos.Value.X;
+                        _previewAdorner = new SplitterPreviewAdorner
+                        {
+                            Orientation = panel.Orientation,
+                            Thickness = Thickness,
+                            Offset = _startOffset,
+                            [AdornerLayer.AdornedElementProperty] = panel
+                        };
+                        ((ISetLogicalParent)_previewAdorner).SetParent(panel);
+                        _adornerLayer.Children.Add(_previewAdorner);
+                    }
+                }
+            }
         }
     }
 
@@ -132,8 +183,26 @@ public class ProportionalStackPanelSplitter : Thumb
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
-        
+
+        if (_isMoving && IsResizingEnabled && GetPanel() is { } panel)
+        {
+            var point = e.GetPosition(panel);
+            if (PreviewResize)
+            {
+                var delta = point - _startPoint;
+                SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+                if (_previewAdorner is not null && _adornerLayer is not null)
+                {
+                    _adornerLayer.Children.Remove(_previewAdorner);
+                    ((ISetLogicalParent)_previewAdorner).SetParent(null);
+                    _previewAdorner = null;
+                    _adornerLayer = null;
+                }
+            }
+        }
+
         _isMoving = false;
+        UpdatePreviewPseudoClass();
     }
 
     /// <inheritdoc/>
@@ -147,8 +216,21 @@ public class ProportionalStackPanelSplitter : Thumb
             {
                 var point = e.GetPosition(panel);
                 var delta = point - _startPoint;
-                _startPoint = point;
-                SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+
+                if (PreviewResize)
+                {
+                    if (_previewAdorner is not null)
+                    {
+                        var offset = _startOffset + (panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+                        _previewAdorner.Offset = offset;
+                        _previewAdorner.InvalidateVisual();
+                    }
+                }
+                else
+                {
+                    _startPoint = point;
+                    SetTargetProportion(panel.Orientation == Orientation.Vertical ? delta.Y : delta.X);
+                }
             }
         }
     }
@@ -158,7 +240,16 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         base.OnPointerCaptureLost(e);
 
+        if (_previewAdorner is not null && _adornerLayer is not null)
+        {
+            _adornerLayer.Children.Remove(_previewAdorner);
+            ((ISetLogicalParent)_previewAdorner).SetParent(null);
+            _previewAdorner = null;
+            _adornerLayer = null;
+        }
+
         _isMoving = false;
+        UpdatePreviewPseudoClass();
     }
 
     /// <inheritdoc/>
@@ -191,6 +282,7 @@ public class ProportionalStackPanelSplitter : Thumb
         }
 
         UpdateVisualState();
+        UpdatePreviewPseudoClass();
     }
 
     private Control? FindNextChild(ProportionalStackPanel panel)
@@ -205,7 +297,7 @@ public class ProportionalStackPanelSplitter : Thumb
         {
             return;
         }
-        
+
         var target = GetTargetElement(panel);
         if (target is null)
         {
@@ -301,7 +393,7 @@ public class ProportionalStackPanelSplitter : Thumb
     private Control? GetSiblingInDirection(ProportionalStackPanel panel, int direction)
     {
         Debug.Assert(direction == -1 || direction == 1);
-        
+
         var children = panel.Children;
         int siblingIndex;
 
@@ -314,7 +406,7 @@ public class ProportionalStackPanelSplitter : Thumb
             siblingIndex = children.IndexOf(this) + direction;
         }
 
-        while (siblingIndex >= 0 && siblingIndex < children.Count && 
+        while (siblingIndex >= 0 && siblingIndex < children.Count &&
                (ProportionalStackPanel.GetIsCollapsed(children[siblingIndex]) || IsSplitter(children[siblingIndex], out _)))
         {
             siblingIndex += direction;
@@ -322,7 +414,7 @@ public class ProportionalStackPanelSplitter : Thumb
 
         return siblingIndex >= 0 && siblingIndex < children.Count ? children[siblingIndex] : null;
     }
-    
+
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
         return GetSiblingInDirection(panel, -1);

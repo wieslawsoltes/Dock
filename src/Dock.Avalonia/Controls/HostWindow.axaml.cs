@@ -12,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -101,9 +102,12 @@ public class HostWindow : Window, IHostWindow
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
 
-        _dockManager = new DockManager();
+        _dockManager = new DockManager(new DockService());
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
+#if DEBUG
+        this.AttachDockDebugOverlay();
+#endif
     }
 
     /// <inheritdoc/>
@@ -498,9 +502,14 @@ public class HostWindow : Window, IHostWindow
     }
 
     /// <inheritdoc/>
-    public void SetTitle(string title)
+    public void SetTitle(string? title)
     {
-        Title = title;
+        if (!string.IsNullOrEmpty(title))
+        {
+            // Only do this if the user intended to manually set the title.
+            // Otherwise binding to the active document title will no longer work due to local values taking priority.
+            Title = title;
+        }
     }
 
     /// <inheritdoc/>

@@ -18,10 +18,22 @@ namespace Dock.Avalonia.Controls;
 public class DocumentControl : TemplatedControl
 {
     /// <summary>
+    /// Define the <see cref="IconTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<object?> IconTemplateProperty = 
+        AvaloniaProperty.Register<DocumentControl, object?>(nameof(IconTemplate));
+
+    /// <summary>
     /// Define the <see cref="HeaderTemplate"/> property.
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = 
         AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(HeaderTemplate));
+
+    /// <summary>
+    /// Define the <see cref="ModifiedTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate> ModifiedTemplateProperty = 
+        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(ModifiedTemplate));
 
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
@@ -33,7 +45,16 @@ public class DocumentControl : TemplatedControl
     /// Defines the <see cref="TabsLayout"/> property.
     /// </summary>
     public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
-        AvaloniaProperty.Register<DocumentControl, DocumentTabLayout>(nameof(TabsLayout), DocumentTabLayout.Top);
+        AvaloniaProperty.Register<DocumentControl, DocumentTabLayout>(nameof(TabsLayout));
+
+    /// <summary>
+    /// Gets or sets tab icon template.
+    /// </summary>
+    public object? IconTemplate
+    {
+        get => GetValue(IconTemplateProperty);
+        set => SetValue(IconTemplateProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets tab header template.
@@ -42,6 +63,15 @@ public class DocumentControl : TemplatedControl
     {
         get => GetValue(HeaderTemplateProperty);
         set => SetValue(HeaderTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab modified template.
+    /// </summary>
+    public IDataTemplate ModifiedTemplate
+    {
+        get => GetValue(ModifiedTemplateProperty);
+        set => SetValue(ModifiedTemplateProperty, value);
     }
 
     /// <summary>

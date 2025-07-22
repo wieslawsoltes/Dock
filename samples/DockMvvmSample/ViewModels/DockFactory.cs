@@ -55,7 +55,7 @@ public class DockFactory : Factory
                     Alignment = Alignment.Left,
                     // CanDrop = false
                 },
-                new ProportionalDockSplitter { CanResize = true },
+                new ProportionalDockSplitter { CanResize = true, ResizePreview = true },
                 new ToolDock
                 {
                     ActiveDockable = tool3,
@@ -102,6 +102,7 @@ public class DockFactory : Factory
             CanCreateDocument = true,
             // CanDrop = false,
             EnableWindowDrag = true,
+            // CanCloseLastDockable = false,
         };
 
         var mainLayout = new ProportionalDock
@@ -110,7 +111,7 @@ public class DockFactory : Factory
             VisibleDockables = CreateList<IDockable>
             (
                 leftDock,
-                new ProportionalDockSplitter(),
+                new ProportionalDockSplitter { ResizePreview = true },
                 documentDock,
                 new ProportionalDockSplitter(),
                 rightDock

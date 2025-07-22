@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
+using Avalonia.LogicalTree;
 
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
@@ -22,6 +25,10 @@ public class DocumentTabStrip : TabStrip
     private HostWindow? _attachedWindow;
     private Control? _grip;
     private WindowDragHelper? _windowDragHelper;
+    private AdornerLayer? _dragLayer;
+    private TabStripDragAdorner? _dragAdorner;
+    private DocumentTabStripItem? _dragItem;
+    private int _dragIndex;
 
     /// <summary>
     /// Defines the <see cref="DockAdornerHost"/> property.
@@ -243,5 +250,87 @@ public class DocumentTabStrip : TabStrip
             _windowDragHelper.Detach();
             _windowDragHelper = null;
         }
+    }
+
+    internal void StartItemDrag(DocumentTabStripItem item)
+    {
+        if (_dragAdorner is not null)
+        {
+            return;
+        }
+
+        _dragIndex = ItemContainerGenerator.IndexFromContainer(item);
+        _dragItem = item;
+
+        _dragLayer = AdornerLayer.GetAdornerLayer(this);
+        if (_dragLayer is null)
+        {
+            return;
+        }
+
+        _dragAdorner = new TabStripDragAdorner(this);
+        _dragAdorner.Show();
+        ((ISetLogicalParent)_dragAdorner).SetParent(this);
+        _dragLayer.Children.Add(_dragAdorner);
+    }
+
+    internal void UpdateItemDrag(DocumentTabStripItem item, Vector delta, Point point)
+    {
+        if (_dragAdorner is null || _dragItem != item)
+        {
+            return;
+        }
+
+        _dragAdorner.Move(item, delta);
+
+        for (var i = 0; i < Items.Count; i++)
+        {
+            var container = ItemContainerGenerator.ContainerFromIndex(i) as DocumentTabStripItem;
+            if (container is null || container == item)
+            {
+                continue;
+            }
+
+            var center = _dragAdorner.GetCenter(container);
+            if (point.X < center && i < _dragIndex)
+            {
+                var list = Items as IList<object> ?? Items.Cast<object>().ToList();
+                var obj = list[_dragIndex];
+                list.RemoveAt(_dragIndex);
+                list.Insert(i, obj);
+                _dragIndex = i;
+                _dragAdorner.UpdatePositions();
+                break;
+            }
+            else if (point.X > center && i > _dragIndex)
+            {
+                var list = Items as IList<object> ?? Items.Cast<object>().ToList();
+                var obj = list[_dragIndex];
+                list.RemoveAt(_dragIndex);
+                list.Insert(i, obj);
+                _dragIndex = i;
+                _dragAdorner.UpdatePositions();
+                break;
+            }
+        }
+    }
+
+    internal void EndItemDrag(DocumentTabStripItem item)
+    {
+        if (_dragAdorner is null || _dragItem != item)
+        {
+            return;
+        }
+
+        _dragAdorner.Hide();
+        if (_dragLayer is { })
+        {
+            _dragLayer.Children.Remove(_dragAdorner);
+            ((ISetLogicalParent)_dragAdorner).SetParent(null);
+        }
+
+        _dragAdorner = null;
+        _dragLayer = null;
+        _dragItem = null;
     }
 }

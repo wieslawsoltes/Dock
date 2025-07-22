@@ -105,7 +105,11 @@
                   BorderThickness="{TemplateBinding BorderThickness}"
                   ContextMenu="{DynamicResource ToolTabStripItemContextMenu}"
                   DockProperties.IsDragArea="True"
-                  DockProperties.IsDropArea="True">
+                  DockProperties.IsDropArea="True"
+                  DockProperties.IsDockTarget="True"
+                  DockProperties.ShowDockIndicatorOnly="True"
+                  DockProperties.IndicatorDockOperation="Fill"
+                  DockProperties.DockAdornerHost="{Binding $parent[ToolTabStrip].DockAdornerHost}">
             <DockableControl TrackingMode="Tab">
               <DockPanel Background="Transparent">
                 <Panel DockPanel.Dock="Left" 

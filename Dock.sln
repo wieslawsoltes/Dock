@@ -55,8 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
-	ProjectSection(SolutionItems) = preProject
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample", "samples\DockMvvmSample\DockMvvmSample.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
 EndProject
@@ -202,6 +200,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.Inpc", "src\Dock.Model.Inpc\Dock.Model.Inpc.csproj", "{6935745C-0201-4256-8E81-9FF9AB75E1F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockInpcSample", "samples\DockInpcSample\DockInpcSample.csproj", "{EB97FB4A-CA7C-4391-B3CE-31359B19FA7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebViewSample", "samples\WebViewSample\WebViewSample.csproj", "{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestedDockSample", "samples\NestedDockSample\NestedDockSample.csproj", "{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -681,6 +683,30 @@ Global
 		{EB97FB4A-CA7C-4391-B3CE-31359B19FA7D}.Release|x64.Build.0 = Release|Any CPU
 		{EB97FB4A-CA7C-4391-B3CE-31359B19FA7D}.Release|x86.ActiveCfg = Release|Any CPU
 		{EB97FB4A-CA7C-4391-B3CE-31359B19FA7D}.Release|x86.Build.0 = Release|Any CPU
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|Any CPU.Build.0 = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|x64.ActiveCfg = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|x64.Build.0 = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|x86.ActiveCfg = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Debug|x86.Build.0 = Debug|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|Any CPU.ActiveCfg = Release|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|Any CPU.Build.0 = Release|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|x64.ActiveCfg = Release|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|x64.Build.0 = Release|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|x86.ActiveCfg = Release|x64
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76}.Release|x86.Build.0 = Release|x64
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|x64.Build.0 = Release|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -729,6 +755,8 @@ Global
 		{485B94B7-C0E2-4037-8942-58FDC22FE751} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{6935745C-0201-4256-8E81-9FF9AB75E1F7} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{EB97FB4A-CA7C-4391-B3CE-31359B19FA7D} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{695F1FE4-BA6F-4349-A126-EC3EE70B5E76} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{9D1B4F44-CBEE-4B79-B106-2E2CD6EC8CD9} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

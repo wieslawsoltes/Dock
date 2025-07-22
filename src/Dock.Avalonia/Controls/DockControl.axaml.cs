@@ -298,6 +298,11 @@ public class DockControl : TemplatedControl, IDockControl
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            return;
+        }
+
         if (e.Source is Visual visual && visual.FindAncestorOfType<ScrollBar>() != null)
         {
             return;
@@ -319,6 +324,11 @@ public class DockControl : TemplatedControl, IDockControl
 
     private void ReleasedHandler(object? sender, PointerReleasedEventArgs e)
     {
+        if (e.InitialPressMouseButton != MouseButton.Left)
+        {
+            return;
+        }
+
         if (Layout?.Factory?.DockControls is { })
         {
             var position = e.GetPosition(this);
@@ -330,6 +340,11 @@ public class DockControl : TemplatedControl, IDockControl
 
     private void MovedHandler(object? sender, PointerEventArgs e)
     {
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            return;
+        }
+
         if (Layout?.Factory?.DockControls is { })
         {
             var position = e.GetPosition(this);

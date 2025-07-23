@@ -136,7 +136,7 @@ internal class WindowDragHelper
         {
             if (root is Window window)
             {
-                if (DockSettings.BringWindowsToFrontOnDrag && _owner.DataContext is IDockWindow { Factory: var dockWindowFactory })
+                if (DockSettings.BringWindowsToFrontOnDrag && _owner.DataContext is IDockWindow { Factory: { } dockWindowFactory })
                 {
                     WindowActivationHelper.ActivateAllWindows(dockWindowFactory, _owner);
                 }
@@ -179,7 +179,7 @@ internal class WindowDragHelper
                 dw.Factory?.OnWindowMoveDrag(dw);
             }
 
-            if (hostWindow?.HostWindowState is HostWindowState st)
+            if (hostWindow.HostWindowState is HostWindowState st)
             {
                 st.Process(_dragWindow.Position, EventType.Moved);
             }

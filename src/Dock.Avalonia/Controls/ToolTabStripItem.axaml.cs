@@ -23,6 +23,7 @@ public class ToolTabStripItem : TabStripItem
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
+        AddHandler(DoubleTappedEvent, DoubleTappedHandler, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
     }
 
     /// <inheritdoc/>
@@ -31,6 +32,7 @@ public class ToolTabStripItem : TabStripItem
         base.OnDetachedFromVisualTree(e);
 
         RemoveHandler(PointerPressedEvent, PressedHandler);
+        RemoveHandler(DoubleTappedEvent, DoubleTappedHandler);
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -41,6 +43,14 @@ public class ToolTabStripItem : TabStripItem
             {
                 factory.CloseDockable(dockable);
             }
+        }
+    }
+
+    private void DoubleTappedHandler(object? sender, TappedEventArgs e)
+    {
+        if (DataContext is IDockable { Owner: IDock { Factory: { } factory }, CanFloat: true } dockable)
+        {
+            factory.FloatDockable(dockable);
         }
     }
 }

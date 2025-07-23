@@ -1,11 +1,11 @@
-using LayoutOrientation = Avalonia.Layout.Orientation;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Model.Core;
 using Xunit;
+using LayoutOrientation = Avalonia.Layout.Orientation;
 
-namespace Dock.Avalonia.HeadlessTests;
+namespace Dock.Avalonia.Diagnostics.UnitTests;
 
 public class DockControlInstantiationTests
 {

@@ -160,7 +160,7 @@ public abstract class DockTargetBase : TemplatedControl
             }
 
             return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate,
-                visible)
+                visible, ShowIndicatorsOnly)
                 ? operation
                 : DefaultDockOperation;
         }
@@ -173,7 +173,7 @@ public abstract class DockTargetBase : TemplatedControl
             SelectorsOperations.TryGetValue(operation, out var selector);
             
             if (InvalidateIndicator(selector, kvp.Value, point, relativeTo,operation, dragAction,
-                    validate, visible))
+                    validate, visible, ShowIndicatorsOnly))
             {
                 result = operation;
             }
@@ -211,6 +211,7 @@ public abstract class DockTargetBase : TemplatedControl
     /// <param name="dragAction">Current drag action type.</param>
     /// <param name="validate">Callback validating the operation.</param>
     /// <param name="visible">Optional callback determining indicator visibility.</param>
+    /// <param name="showIndicatorsOnly">Flag whether only drop indicators should be shown.</param>
     /// <returns>True if the indicator should be shown as active.</returns>
     protected bool InvalidateIndicator(
         Control? selector,
@@ -220,7 +221,8 @@ public abstract class DockTargetBase : TemplatedControl
         DockOperation operation,
         DragAction dragAction,
         DockOperationHandler validate,
-        DockOperationHandler? visible)
+        DockOperationHandler? visible,
+        bool showIndicatorsOnly)
     {
         if (selector is null || indicator is null)
         {
@@ -256,12 +258,23 @@ public abstract class DockTargetBase : TemplatedControl
 
         if (selectorPoint is not null)
         {
-            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement && Equals(inputElement, selector))
+            // Do not hit-test it if only indicators should be shown.
+            if (showIndicatorsOnly)
             {
-                if (validate(point, operation, dragAction, relativeTo))
+                indicator.Opacity = 0.5;
+                return true;
+            }
+
+            // Check if the input element is the selector itself.
+            if (selector.InputHitTest(selectorPoint.Value) is { } inputElement)
+            {
+                if (Equals(inputElement, selector))
                 {
-                    indicator.Opacity = 0.5;
-                    return true;
+                    if (validate(point, operation, dragAction, relativeTo))
+                    {
+                        indicator.Opacity = 0.5;
+                        return true;
+                    }
                 }
             }
         }

@@ -80,6 +80,10 @@ For the complete source code visit the
 published on [NuGet.org](https://www.nuget.org/packages/Dock.Avalonia/),
 including both `Dock.Avalonia` and `Dock.Model.Mvvm`.
 
+## Testing
+
+- [Appium test guide](appium-tests.md) – Install Appium and run the UI tests.
+
 ## Troubleshooting
 
 - [FAQ](dock-faq.md) – Solutions to common issues.

@@ -8,22 +8,17 @@ using Dock.Avalonia.Controls;
 
 namespace Dock.Avalonia.Internal;
 
-internal class AdornerHelper<T> where T : Control, new()
+internal class AdornerHelper<T>(bool useFloatingDockAdorner)
+    where T : Control, new()
 {
-    private readonly bool _useFloatingDockAdorner;
+    private readonly Control _adorner = new T();
     public Control? Adorner;
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
-    private Control _adorner = new T();
-
-    public AdornerHelper(bool useFloatingDockAdorner)
-    {
-        _useFloatingDockAdorner = useFloatingDockAdorner;
-    }
 
     public void AddAdorner(Visual visual, bool indicatorsOnly)
     {
-        if (_useFloatingDockAdorner)
+        if (useFloatingDockAdorner)
         {
             AddFloatingAdorner(visual, indicatorsOnly);
         }
@@ -43,7 +38,7 @@ internal class AdornerHelper<T> where T : Control, new()
 
         Adorner = _adorner;
 
-        if (Adorner is Control adorner)
+        if (Adorner is { } adorner)
         {
             if (adorner is DockTarget dockTarget)
             {
@@ -119,7 +114,7 @@ internal class AdornerHelper<T> where T : Control, new()
 
     public void RemoveAdorner(Visual visual)
     {
-        if (_useFloatingDockAdorner)
+        if (useFloatingDockAdorner)
         {
             RemoveFloatingAdorner();
         }

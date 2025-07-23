@@ -79,6 +79,7 @@ Follow these instructions to create a minimal ReactiveUI based application using
 ```powershell
 Install-Package Dock.Avalonia
 Install-Package Dock.Model.ReactiveUI
+Install-Package Dock.Avalonia.Themes.Fluent
 ```
 
 ## Creating a layout

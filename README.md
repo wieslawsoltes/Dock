@@ -51,6 +51,7 @@ You can find the packages here [NuGet](https://www.nuget.org/packages/Dock.Avalo
 Install-Package Dock.Avalonia
 Install-Package Dock.Model.Mvvm
 Install-Package Dock.Serializer.Newtonsoft
+Install-Package Dock.Avalonia.Themes.Fluent
 ```
 
 or by using nightly build feed:
@@ -64,6 +65,7 @@ and install the package like this:
 Install-Package Dock.Avalonia -Pre
 Install-Package Dock.Model.Mvvm -Pre
 Install-Package Dock.Serializer.Newtonsoft -Pre
+Install-Package Dock.Avalonia.Themes.Fluent -Pre
 ```
 
 ## Resources

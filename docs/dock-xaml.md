@@ -67,6 +67,7 @@ Install-Package Dock.Avalonia
 Install-Package Dock.Model.Avalonia
 Install-Package Dock.Serializer.Newtonsoft
 Install-Package Dock.Serializer.Protobuf
+Install-Package Dock.Avalonia.Themes.Fluent
 ```
 
 These packages provide the `DockControl` and layout serialization helpers.

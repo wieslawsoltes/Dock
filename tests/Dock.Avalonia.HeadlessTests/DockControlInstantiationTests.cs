@@ -1,7 +1,7 @@
 using LayoutOrientation = Avalonia.Layout.Orientation;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Model.Core;
 using Xunit;
 

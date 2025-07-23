@@ -83,6 +83,7 @@ Add the packages for Dock and the MVVM model to your project:
 ```powershell
 Install-Package Dock.Avalonia
 Install-Package Dock.Model.Mvvm
+Install-Package Dock.Avalonia.Themes.Fluent
 ```
 
 ## Creating a layout

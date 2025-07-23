@@ -52,4 +52,10 @@ When magnetism is enabled, `HostWindow` compares its position against other trac
 and adjusts the position if it falls within the snap distance. This makes it easy to align multiple floating
 windows.
 
+## Bringing windows to front
+
+If `DockSettings.BringWindowsToFrontOnDrag` is enabled, initiating a drag will activate
+all floating windows and any main window hosting a `DockControl` so they stay above other
+applications until the drag completes.
+
 For more advanced scenarios see [Adapter Classes](dock-adapters.md) and the [Advanced Guide](dock-advanced.md).

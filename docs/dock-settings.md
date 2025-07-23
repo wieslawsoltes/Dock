@@ -53,6 +53,12 @@ hidden and drags are limited to the originating control.
 `DockSettings.EnableWindowMagnetism` toggles snapping of floating windows. The snap distance
 is controlled by `DockSettings.WindowMagnetDistance`.
 
+## Bring windows to front on drag
+
+`DockSettings.BringWindowsToFrontOnDrag` determines whether all floating windows
+and any main window hosting a `DockControl` are activated when dragging begins.
+Enabled by default.
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:
@@ -67,6 +73,7 @@ AppBuilder.Configure<App>()
     .EnableGlobalDocking(false)
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
+    .BringWindowsToFrontOnDrag()
     .WithDockSettings(new DockSettingsOptions
     {
         MinimumHorizontalDragDistance = 6

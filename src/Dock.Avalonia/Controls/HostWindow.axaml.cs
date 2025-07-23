@@ -35,7 +35,7 @@ public class HostWindow : Window, IHostWindow
     /// <summary>
     /// Define <see cref="IsToolWindow"/> property.
     /// </summary>
-    public static readonly StyledProperty<bool> IsToolWindowProperty = 
+    public static readonly StyledProperty<bool> IsToolWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(IsToolWindow));
 
     /// <summary>
@@ -49,7 +49,7 @@ public class HostWindow : Window, IHostWindow
     /// </summary>
     public static readonly StyledProperty<bool> DocumentChromeControlsWholeWindowProperty =
         AvaloniaProperty.Register<HostWindow, bool>(nameof(DocumentChromeControlsWholeWindow));
-    
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(HostWindow);
 
@@ -141,6 +141,11 @@ public class HostWindow : Window, IHostWindow
         if (Window?.Factory?.OnWindowMoveDragBegin(Window) != true)
         {
             return;
+        }
+
+        if (DockSettings.BringWindowsToFrontOnDrag && Window?.Factory is { } factory)
+        {
+            WindowActivationHelper.ActivateAllWindows(factory, this);
         }
 
         _mouseDown = true;
@@ -336,11 +341,14 @@ public class HostWindow : Window, IHostWindow
     {
         switch (dockable)
         {
-            case ITool: return 1;
-            case IDocument: return 1;
+            case ITool:
+                return 1;
+            case IDocument:
+                return 1;
             case IDock dock:
                 return dock.VisibleDockables?.Sum(CountVisibleToolsAndDocuments) ?? 0;
-            default: return 0;
+            default:
+                return 0;
         }
     }
 

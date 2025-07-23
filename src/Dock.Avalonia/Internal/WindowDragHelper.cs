@@ -5,9 +5,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Dock.Settings;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -122,7 +123,7 @@ internal class WindowDragHelper
             return;
         }
 
-  
+
 
         if (_lastPointerPressedArgs is null)
         {
@@ -135,6 +136,11 @@ internal class WindowDragHelper
         {
             if (root is Window window)
             {
+                if (DockSettings.BringWindowsToFrontOnDrag && _owner.DataContext is IDockWindow { Factory: var dockWindowFactory })
+                {
+                    WindowActivationHelper.ActivateAllWindows(dockWindowFactory, _owner);
+                }
+
                 window.BeginMoveDrag(_lastPointerPressedArgs);
                 _pointerPressed = false;
                 _isDragging = false;
@@ -142,7 +148,7 @@ internal class WindowDragHelper
             }
             return;
         }
-        
+
         _isDragging = true;
         _pointerPressed = false;
 
@@ -151,6 +157,11 @@ internal class WindowDragHelper
         {
             _isDragging = false;
             return;
+        }
+
+        if (DockSettings.BringWindowsToFrontOnDrag && dockWindow.Factory is { } factory)
+        {
+            WindowActivationHelper.ActivateAllWindows(factory, hostWindow);
         }
 
         if (hostWindow.HostWindowState is HostWindowState state)

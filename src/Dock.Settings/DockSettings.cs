@@ -51,6 +51,11 @@ public static class DockSettings
     /// </summary>
     public static double WindowMagnetDistance = 16;
 
+    /// <summary>
+    /// Bring all windows to the front when a window starts being dragged.
+    /// </summary>
+    public static bool BringWindowsToFrontOnDrag = true;
+
 
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.

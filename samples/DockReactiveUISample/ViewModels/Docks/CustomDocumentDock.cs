@@ -1,9 +1,12 @@
-﻿using DockReactiveUISample.ViewModels.Documents;
+﻿using System.Diagnostics.CodeAnalysis;
+using DockReactiveUISample.ViewModels.Documents;
 using Dock.Model.ReactiveUI.Controls;
 using ReactiveUI;
 
 namespace DockReactiveUISample.ViewModels.Docks;
 
+[RequiresUnreferencedCode("Requires unreferenced code for ReactiveCommand.Create.")]
+[RequiresDynamicCode("Requires unreferenced code for ReactiveCommand.Create.")]
 public class CustomDocumentDock : DocumentDock
 {
     public CustomDocumentDock()

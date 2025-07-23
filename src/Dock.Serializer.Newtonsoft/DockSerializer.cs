@@ -44,11 +44,20 @@ public sealed class DockSerializer : IDockSerializer
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class with the specified list type and service provider.
+    /// </summary>
+    /// <param name="listType">The type of list to use in the serialization process.</param>
+    /// <param name="provider">The service provider.</param>
     public DockSerializer(Type listType, IServiceProvider? provider)
     {
         _settings = CreateSettings(listType, provider);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DockSerializer"/> class using <see cref="ObservableCollection{T}"/> as the list type and a service provider.
+    /// </summary>
+    /// <param name="provider">The service provider.</param>
     public DockSerializer(IServiceProvider provider)
         : this(typeof(ObservableCollection<>), provider)
     {

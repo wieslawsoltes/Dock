@@ -3,7 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
 using DockInpcSample.Themes;
 using DockInpcSample.ViewModels;

@@ -1,6 +1,6 @@
 # Debug views
 
-`RootDockDebug` uses several helper controls located under `Dock.Avalonia.Controls.Diagnostics`. These views expose properties of docks, dockables and windows in a simple grid and can be reused to build custom inspection tools.
+`RootDockDebug` uses several helper controls located under `Dock.Avalonia.Diagnostics.Controls`. These views expose properties of docks, dockables and windows in a simple grid and can be reused to build custom inspection tools.
 
 ## Available views
 

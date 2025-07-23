@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.ReactiveUI;
 using Dock.Settings;
 
 namespace DockReactiveUISample;
 
+[RequiresUnreferencedCode("Requires unreferenced code for App.")]
+[RequiresDynamicCode("Requires unreferenced code for App.")]
 internal class Program
 {
     [STAThread]

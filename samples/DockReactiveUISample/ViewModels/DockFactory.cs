@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using DockReactiveUISample.Models.Documents;
 using DockReactiveUISample.Models.Tools;
 using DockReactiveUISample.ViewModels.Docks;
@@ -14,6 +15,8 @@ using Dock.Model.ReactiveUI.Controls;
 
 namespace DockReactiveUISample.ViewModels;
 
+[RequiresUnreferencedCode("Requires unreferenced code for CustomDocumentDock.")]
+[RequiresDynamicCode("Requires unreferenced code for CustomDocumentDock.")]
 public class DockFactory : Factory
 {
     private readonly object _context;

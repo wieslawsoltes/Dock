@@ -6,12 +6,12 @@ using Avalonia.Data.Converters;
 namespace Dock.Avalonia.Converters;
 
 /// <summary>
-/// Converts an <see cref="IList.Count"/> to a boolean indicating whether it is equal to a specified value.
+/// Converts an <see cref="ICollection.Count"/> to a boolean indicating whether it is equal to a specified value.
 /// </summary>
 public class ListCountEqualConverter : IValueConverter
 {
     /// <summary>
-    /// Gets or sets the value to compare against. The converter will return true if the input <see cref="IList.Count"/> is equal to this value.
+    /// Gets or sets the value to compare against. The converter will return true if the input <see cref="ICollection.Count"/> is equal to this value.
     /// </summary>
     public int TrueIfEqual { get; set; }
 

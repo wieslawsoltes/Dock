@@ -1,10 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia;
-using Dock.Settings;
 
 namespace DockReactiveUISample.Views;
 
+[RequiresUnreferencedCode("Requires unreferenced code for ThemeManager.")]
+[RequiresDynamicCode("Requires unreferenced code for ThemeManager.")]
 public partial class MainView : UserControl
 {
     public MainView()

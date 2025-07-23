@@ -6,12 +6,12 @@ using Avalonia.Data.Converters;
 namespace Dock.Avalonia.Converters;
 
 /// <summary>
-/// Converts an <see cref="IList.Count"/> to a boolean indicating whether it is less than a specified value.
+/// Converts an <see cref="ICollection.Count"/> to a boolean indicating whether it is less than a specified value.
 /// </summary>
 public class ListCountLessThanConverter : IValueConverter
 {
     /// <summary>
-    /// Gets or sets the value to compare against. The converter will return true if the input <see cref="IList.Count"/> is less than this value.
+    /// Gets or sets the value to compare against. The converter will return true if the input <see cref="ICollection.Count"/> is less than this value.
     /// </summary>
     public int TrueIfLessThan { get; set; }
 

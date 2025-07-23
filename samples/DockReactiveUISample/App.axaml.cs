@@ -1,8 +1,8 @@
-﻿using Avalonia;
+﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
 using DockReactiveUISample.Themes;
@@ -11,6 +11,8 @@ using DockReactiveUISample.Views;
 
 namespace DockReactiveUISample;
 
+[RequiresUnreferencedCode("Requires unreferenced code for MainWindowViewModel.")]
+[RequiresDynamicCode("Requires unreferenced code for MainWindowViewModel.")]
 public class App : Application
 {
     public static IThemeManager? ThemeManager;
@@ -38,7 +40,7 @@ public class App : Application
                 };
 #if DEBUG
                 mainWindow.AttachDockDebug(
-                    mainWindowViewModel.Layout, 
+                    mainWindowViewModel.Layout!, 
                     new KeyGesture(Key.F11));
                 mainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif

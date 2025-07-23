@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using DockReactiveUISample.Models;
 using Dock.Model.Controls;
@@ -7,6 +8,8 @@ using ReactiveUI;
 
 namespace DockReactiveUISample.ViewModels;
 
+[RequiresUnreferencedCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
+[RequiresDynamicCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
 public class MainWindowViewModel : ReactiveObject
 {
     private readonly IFactory? _factory;

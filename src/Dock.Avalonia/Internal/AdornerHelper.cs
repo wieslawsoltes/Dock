@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
-using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -15,6 +14,7 @@ internal class AdornerHelper<T> where T : Control, new()
     public Control? Adorner;
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
+    private Control _adorner = new T();
 
     public AdornerHelper(bool useFloatingDockAdorner)
     {
@@ -41,7 +41,7 @@ internal class AdornerHelper<T> where T : Control, new()
             _window = null;
         }
 
-        Adorner = new T();
+        Adorner = _adorner;
 
         if (Adorner is Control adorner)
         {
@@ -96,10 +96,8 @@ internal class AdornerHelper<T> where T : Control, new()
             return;
         }
 
-        Adorner = new T
-        {
-            [AdornerLayer.AdornedElementProperty] = visual
-        };
+        Adorner = _adorner;
+        AdornerLayer.SetAdornedElement(Adorner, visual);
 
         if (Adorner is { } adorner)
         {

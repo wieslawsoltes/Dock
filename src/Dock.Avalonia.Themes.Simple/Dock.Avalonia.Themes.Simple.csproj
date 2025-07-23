@@ -18,7 +18,7 @@
   
   <ItemGroup>
     <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Controls\**\*.axaml">
-      <SubType>Designer</SubType>
+      <Link>Controls\%(Filename)%(Extension)</Link>
     </AvaloniaResource>
   </ItemGroup>
   

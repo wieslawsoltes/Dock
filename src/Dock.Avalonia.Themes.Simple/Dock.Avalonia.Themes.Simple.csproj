@@ -18,7 +18,7 @@
   
   <ItemGroup>
     <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Controls\**\*.axaml">
-      <Link>Controls\%(Filename)%(Extension)</Link>
+      <Link>Controls\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </AvaloniaResource>
   </ItemGroup>
   
@@ -29,7 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Assets\*" 
+                      Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)">
+      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AvaloniaResource> 
   </ItemGroup>
 
   <ItemGroup>

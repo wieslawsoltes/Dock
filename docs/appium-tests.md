@@ -1,6 +1,9 @@
 # Running Appium Tests
 
-This guide explains how to install Appium and execute the UI tests that drive the `DockMvvmSample` application. The tests require an Appium server with the Windows driver installed.
+This guide explains how to install Appium and execute the UI tests that drive the
+`DockMvvmSample` application. The tests rely on Appium's Windows driver and
+therefore must run on a Windows host. Linux or macOS users will need a Windows
+virtual machine or remote PC to follow along.
 
 ## Windows
 
@@ -15,26 +18,15 @@ This guide explains how to install Appium and execute the UI tests that drive th
 
 ## Linux
 
-1. Install **Node.js** using your package manager or from [NodeSource](https://github.com/nodesource/distributions).
-2. Run the same commands as on Windows:
-   ```bash
-   npm install -g appium
-   appium driver install windows
-   appium
-   ```
+The DockMvvmSample tests require the Windows Appium driver, which only runs on
+Windows. Use a Windows virtual machine or a remote Windows host and follow the
+instructions from the [Windows](#windows) section there.
 
 ## macOS
 
-1. Install **Node.js**, for example with Homebrew:
-   ```bash
-   brew install node
-   ```
-2. Install and start Appium:
-   ```bash
-   npm install -g appium
-   appium driver install windows
-   appium
-   ```
+Like on Linux, the Appium tests can only run on Windows because they depend on
+the Windows driver. Set up a Windows VM or remote machine, install Node.js there
+and follow the steps from the [Windows](#windows) section.
 
 ## Running the tests
 

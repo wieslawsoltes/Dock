@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Avalonia.Diagnostics;
 using DockReactiveUIDiSample.ViewModels;
@@ -18,6 +17,13 @@ public partial class App : Application
 {
     public IServiceProvider? ServiceProvider { get; }
     private readonly IViewLocator _viewLocator;
+
+    // ReSharper disable once UnusedMember.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public App()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    {
+    }
 
     public App(IServiceProvider? serviceProvider, IViewLocator viewLocator)
     {

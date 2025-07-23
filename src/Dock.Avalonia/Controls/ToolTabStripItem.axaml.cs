@@ -23,7 +23,7 @@ public class ToolTabStripItem : TabStripItem
         base.OnAttachedToVisualTree(e);
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
-        AddHandler(DoubleTappedEvent, DoubleTappedHandler, RoutingStrategies.Tunnel);
+        AddHandler(DoubleTappedEvent, DoubleTappedHandler, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
     }
 
     /// <inheritdoc/>

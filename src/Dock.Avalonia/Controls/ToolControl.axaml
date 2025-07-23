@@ -41,7 +41,8 @@
       <ControlTemplate>
         <DockPanel x:Name="PART_DockPanel"
                    DockProperties.IsDropArea="True"
-                   DockProperties.IsDockTarget="True">
+                   DockProperties.IsDockTarget="True"
+                   DockProperties.IsDockTargetScope="True">
           <ToolTabStrip x:Name="PART_TabStrip"
                         ItemsSource="{Binding VisibleDockables}"
                         SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"

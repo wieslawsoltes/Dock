@@ -41,6 +41,7 @@
         <DockPanel x:Name="PART_DockPanel"
                    DockProperties.IsDropArea="True"
                    DockProperties.IsDockTarget="True"
+                   DockProperties.IsDockTargetScope="True"
                    Background="Transparent"
                    ZIndex="1">
           <DocumentTabStrip x:Name="PART_TabStrip"

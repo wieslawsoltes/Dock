@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -117,30 +118,30 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     public async void FileOpen()
     {
-        var dlg = new OpenFileDialog
-        {
-            Filters = new List<FileDialogFilter>
-            {
-                new() {Name = "Text document", Extensions = {"txt"}},
-                new() {Name = "All", Extensions = {"*"}}
-            },
-            AllowMultiple = true
-        };
         var window = GetWindow();
-        if (window is null)
+        if (window?.StorageProvider is not { } storageProvider)
         {
             return;
         }
-        var result = await dlg.ShowAsync(window);
-        if (result is { Length: > 0 })
+
+        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            foreach (var path in result)
+            Title = "Open file",
+            FileTypeFilter =
+            [
+                new FilePickerFileType("Text document") { Patterns = ["*.txt"] },
+                new FilePickerFileType("All") { Patterns = ["*.*"] }
+            ],
+            AllowMultiple = true
+        });
+
+        foreach (var file in result)
+        {
+            var path = StorageProviderExtensions.TryGetLocalPath(file);
+            if (path is not null)
             {
-                if (!string.IsNullOrEmpty(path))
-                {
-                    var untitledFileViewModel = OpenFileViewModel(path);
-                    AddFileViewModel(untitledFileViewModel);
-                }
+                var untitledFileViewModel = OpenFileViewModel(path);
+                AddFileViewModel(untitledFileViewModel);
             }
         }
     }
@@ -170,27 +171,31 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     private async Task FileSaveAsImpl(FileViewModel fileViewModel)
     {
-        var dlg = new SaveFileDialog
-        {
-            Filters = new List<FileDialogFilter>
-            {
-                new() {Name = "Text document", Extensions = {"txt"}},
-                new() {Name = "All", Extensions = {"*"}}
-            },
-            InitialFileName = fileViewModel.Title,
-            DefaultExtension = "txt"
-        };
         var window = GetWindow();
-        if (window is null)
+        if (window?.StorageProvider is not { } storageProvider)
         {
             return;
         }
-        var result = await dlg.ShowAsync(window);
-        if (result is { })
+
+        var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
         {
-            if (!string.IsNullOrEmpty(result))
+            Title = "Save file",
+            FileTypeChoices =
+            [
+                new FilePickerFileType("Text document") { Patterns = ["*.txt"] },
+                new FilePickerFileType("All") { Patterns = ["*.*"] }
+            ],
+            SuggestedFileName = fileViewModel.Title,
+            DefaultExtension = "txt",
+            ShowOverwritePrompt = true
+        });
+
+        if (file is not null)
+        {
+            var path = StorageProviderExtensions.TryGetLocalPath(file);
+            if (path is not null)
             {
-                UpdateFileViewModel(fileViewModel, result);
+                UpdateFileViewModel(fileViewModel, path);
                 SaveFileViewModel(fileViewModel);
             }
         }
@@ -337,7 +342,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
     {
         if (GetFileViewModel() is { } file)
         {
-            var insert = DateTime.Now.ToString();
+            var insert = DateTime.Now.ToString(CultureInfo.CurrentCulture);
             var start = file.SelectionStart;
             var length = file.SelectionEnd - file.SelectionStart;
             file.Text = file.Text.Remove(start, length).Insert(start, insert);
@@ -417,12 +422,13 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
     {
         if (e.Data.Contains(DataFormats.Files))
         {
-            var result = e.Data.GetFileNames();
-            if (result is { })
+            var storageItems = e.Data.GetFiles();
+            if (storageItems is not null)
             {
-                foreach (var path in result)
+                foreach (var file in storageItems)
                 {
-                    if (!string.IsNullOrEmpty(path))
+                    var path = file.TryGetLocalPath();
+                    if (path is not null)
                     {
                         var untitledFileViewModel = OpenFileViewModel(path);
                         AddFileViewModel(untitledFileViewModel);

@@ -5,25 +5,20 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
-using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
-internal class AdornerHelper<T> where T : Control, new()
+internal class AdornerHelper<T>(bool useFloatingDockAdorner)
+    where T : Control, new()
 {
-    private readonly bool _useFloatingDockAdorner;
+    private readonly Control _adorner = new T();
     public Control? Adorner;
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
 
-    public AdornerHelper(bool useFloatingDockAdorner)
-    {
-        _useFloatingDockAdorner = useFloatingDockAdorner;
-    }
-
     public void AddAdorner(Visual visual, bool indicatorsOnly)
     {
-        if (_useFloatingDockAdorner)
+        if (useFloatingDockAdorner)
         {
             AddFloatingAdorner(visual, indicatorsOnly);
         }
@@ -41,9 +36,9 @@ internal class AdornerHelper<T> where T : Control, new()
             _window = null;
         }
 
-        Adorner = new T();
+        Adorner = _adorner;
 
-        if (Adorner is Control adorner)
+        if (Adorner is { } adorner)
         {
             if (adorner is DockTarget dockTarget)
             {
@@ -96,10 +91,8 @@ internal class AdornerHelper<T> where T : Control, new()
             return;
         }
 
-        Adorner = new T
-        {
-            [AdornerLayer.AdornedElementProperty] = visual
-        };
+        Adorner = _adorner;
+        AdornerLayer.SetAdornedElement(Adorner, visual);
 
         if (Adorner is { } adorner)
         {
@@ -121,7 +114,7 @@ internal class AdornerHelper<T> where T : Control, new()
 
     public void RemoveAdorner(Visual visual)
     {
-        if (_useFloatingDockAdorner)
+        if (useFloatingDockAdorner)
         {
             RemoveFloatingAdorner();
         }

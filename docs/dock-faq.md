@@ -143,4 +143,9 @@ you.
 Dockables may still be floated programmatically unless their `CanFloat` property
 is set to `false`.
 
+**How do I float a dockable from its tab?**
+
+Double-click the tab of a document or tool to detach it into a separate window.
+The dockable must have `CanFloat` enabled.
+
 For a general overview of Dock see the [documentation index](README.md).

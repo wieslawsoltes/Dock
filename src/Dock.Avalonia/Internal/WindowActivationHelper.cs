@@ -13,12 +13,6 @@ internal static class WindowActivationHelper
     {
         var activated = new HashSet<Window>();
 
-        if (initiator?.GetVisualRoot() is Window root)
-        {
-            activated.Add(root);
-            root.Activate();
-        }
-
         foreach (var host in factory.HostWindows.OfType<Window>())
         {
             if (activated.Add(host))
@@ -33,6 +27,12 @@ internal static class WindowActivationHelper
             {
                 window.Activate();
             }
+        }
+
+        if (initiator?.GetVisualRoot() is Window root)
+        {
+            activated.Add(root);
+            root.Activate();
         }
     }
 }

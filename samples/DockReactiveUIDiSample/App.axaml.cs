@@ -45,7 +45,7 @@ public partial class App : Application
                 desktop.Exit += async (_, _) => await vm.SaveLayoutAsync();
 #if DEBUG
                 window.AttachDockDebug(
-                    vm.Layout, 
+                    vm.Layout!, 
                     new KeyGesture(Key.F11));
                 window.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif

@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.Inpc.Core;
-using Dock.Model.Inpc.Core;
 
 namespace Dock.Model.Inpc.Controls;
 

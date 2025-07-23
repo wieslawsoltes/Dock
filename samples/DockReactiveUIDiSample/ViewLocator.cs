@@ -58,6 +58,5 @@ public class ViewLocator : IDataTemplate, IViewLocator
         return data is ReactiveObject || data is IDockable;
     }
 
-    IViewFor? IViewLocator.ResolveView<T>(T viewModel, string? contract)
-        => viewModel is null ? null : Resolve(viewModel!);
+    IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => viewModel is null ? null : Resolve(viewModel);
 }

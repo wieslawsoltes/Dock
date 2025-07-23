@@ -104,7 +104,7 @@ internal class DebugOverlayAdorner : Control
             if (!string.IsNullOrEmpty(text))
             {
                 var ft = new FormattedText(
-                    text,
+                    text!,
                     CultureInfo.InvariantCulture,
                     FlowDirection.LeftToRight,
                     Typeface.Default,

@@ -29,7 +29,7 @@ public class App : Application
             };
 #if DEBUG
             desktop.MainWindow.AttachDockDebug(
-                vm.Layout, 
+                vm.Layout!, 
                 new KeyGesture(Key.F11));
             desktop.MainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif

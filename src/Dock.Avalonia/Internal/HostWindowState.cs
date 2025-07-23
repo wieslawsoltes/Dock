@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Model.Core;
-using Dock.Model.Controls;
-using Dock.Avalonia.Contract;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
@@ -311,7 +308,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 }
 
                 var found = false;
-                foreach (var dockControl in factory.DockControls.GetZOrderedDockControls())
+                foreach (var dockControl in DockHelpers.GetZOrderedDockControls(factory.DockControls))
                 {
                     if (dockControl.Layout == _hostWindow.Window?.Layout)
                     {

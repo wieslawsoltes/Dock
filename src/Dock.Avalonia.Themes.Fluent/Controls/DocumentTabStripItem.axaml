@@ -14,7 +14,6 @@
     </Border>
   </Design.PreviewWith>
 
-
   <ContextMenu x:Key="DocumentTabStripItemContextMenu">
     <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
@@ -182,14 +181,6 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
-          <Panel.Styles>
-            <Style Selector=":is(Control)">
-              <Setter Property="(DockProperties.IsDockTarget)" Value="True" />
-              <Setter Property="(DockProperties.ShowDockIndicatorOnly)" Value="True" />
-              <Setter Property="(DockProperties.IsDropArea)" Value="True" />
-              <Setter Property="(DockProperties.IsDropEnabled)" Value="True" />
-            </Style>
-          </Panel.Styles>
           <Border Background="{TemplateBinding Background}"
                   TextElement.FontFamily="{TemplateBinding FontFamily}"
                   TextElement.FontSize="{TemplateBinding FontSize}"
@@ -198,7 +189,10 @@
                   BorderThickness="{TemplateBinding BorderThickness}"
                   ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}"
                   DockProperties.IsDragArea="True"
-                  DockProperties.IsDropArea="True">
+                  DockProperties.IsDropArea="True"
+                  DockProperties.IsDockTarget="True"
+                  DockProperties.ShowDockIndicatorOnly="True"
+                  DockProperties.IndicatorDockOperation="Fill">
             <DockableControl TrackingMode="Tab">
               <DockPanel Background="Transparent">
                 <Panel DockPanel.Dock="Left"

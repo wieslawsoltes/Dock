@@ -48,18 +48,11 @@ internal static class DockHelpers
             Print(ex);
         }
 
-        var controls = inputElements?.OfType<Control>().ToList();
-        if (controls is { })
-        {
-            foreach (var control in controls)
-            {
-                if (control.GetValue(property))
-                {
-                    return control;
-                }
-            }
-        }
-        return null;
+        return inputElements?
+            .OfType<Control>()
+            .ToList()
+            .Where(control => control.IsSet(property))
+            .FirstOrDefault(control => control.GetValue(property));
     }
 
     private static void Print(Exception ex)

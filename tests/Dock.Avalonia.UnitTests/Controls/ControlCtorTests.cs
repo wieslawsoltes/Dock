@@ -1,6 +1,6 @@
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Controls.Diagnostics;
+using Dock.Avalonia.Diagnostics.Controls;
 using Xunit;
 
 namespace Dock.Avalonia.UnitTests.Controls;

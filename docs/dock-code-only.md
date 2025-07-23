@@ -32,7 +32,7 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    using Avalonia.Styling;
    using Avalonia.Themes.Fluent;
    using Dock.Avalonia.Controls;
-   using Dock.Avalonia.Themes;
+   using Dock.Avalonia.Themes.Fluent;
    using Dock.Model.Avalonia;
    using Dock.Model.Avalonia.Controls;
    using Dock.Model.Core;

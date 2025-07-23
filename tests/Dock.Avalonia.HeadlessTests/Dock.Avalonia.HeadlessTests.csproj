@@ -16,6 +16,9 @@
   <Import Project="..\..\build\SignAssembly.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics\Dock.Avalonia.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent\Dock.Avalonia.Themes.Fluent.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Simple\Dock.Avalonia.Themes.Simple.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />

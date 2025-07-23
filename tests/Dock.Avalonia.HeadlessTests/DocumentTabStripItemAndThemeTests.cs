@@ -1,7 +1,8 @@
 using Avalonia.Styling;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Themes;
+using Dock.Avalonia.Themes.Fluent;
+using Dock.Avalonia.Themes.Simple;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;

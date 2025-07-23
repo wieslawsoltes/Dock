@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Dock.Model.Controls;assembly=Dock.Model"
+             x:Class="Dock.Avalonia.Diagnostics.Controls.ToolDockDebugView"
+             x:DataType="controls:IToolDock"
+             x:CompileBindings="True">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+    <TextBlock Text="Alignment" Grid.Row="0" Grid.Column="0" />
+    <TextBox Text="{Binding Alignment, Mode=TwoWay}" Margin="2" Grid.Row="0" Grid.Column="1" />
+    <TextBlock Text="IsExpanded" Grid.Row="1" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding IsExpanded, Mode=TwoWay}" Margin="2" Grid.Row="1" Grid.Column="1" />
+    <TextBlock Text="AutoHide" Grid.Row="2" Grid.Column="0" />
+    <CheckBox IsChecked="{Binding AutoHide, Mode=TwoWay}" Margin="2" Grid.Row="2" Grid.Column="1" />
+    <TextBlock Text="GripMode" Grid.Row="3" Grid.Column="0" />
+    <TextBox Text="{Binding GripMode, Mode=TwoWay}" Margin="2" Grid.Row="3" Grid.Column="1" />
+  </Grid>
+</UserControl>

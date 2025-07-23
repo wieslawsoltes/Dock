@@ -15,6 +15,8 @@
   <Import Project="..\..\build\XUnit.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics\Dock.Avalonia.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Avalonia.Themes.Fluent\Dock.Avalonia.Themes.Fluent.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
   </ItemGroup>

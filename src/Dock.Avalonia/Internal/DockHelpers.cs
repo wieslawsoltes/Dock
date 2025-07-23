@@ -10,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
@@ -64,6 +65,11 @@ internal static class DockHelpers
                     {
                         return ancestor;
                     }
+
+                    if (ancestor.GetValue(DockProperties.IsDockTargetScopeProperty))
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -88,9 +94,9 @@ internal static class DockHelpers
 
     public static void ShowWindows(IDockable dockable)
     {
-        if (dockable.Owner is IDock {Factory: { } factory} dock)
+        if (dockable.Owner is IDock { Factory: { } factory } dock)
         {
-            if (factory.FindRoot(dock, _ => true) is {ActiveDockable: IRootDock activeRootDockable})
+            if (factory.FindRoot(dock, _ => true) is { ActiveDockable: IRootDock activeRootDockable })
             {
                 if (activeRootDockable.ShowWindows.CanExecute(null))
                 {

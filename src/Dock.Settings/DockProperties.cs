@@ -67,6 +67,13 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true, BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the IsDockTargetScope attached property.
+    /// When true the dock target search stops at this element.
+    /// </summary>
+    public static readonly AttachedProperty<bool> IsDockTargetScopeProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDockTargetScope", false, false, BindingMode.TwoWay);
+
+    /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
@@ -224,5 +231,25 @@ public class DockProperties : AvaloniaObject
     public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
     {
         control.SetValue(DockAdornerHostProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the IsDockTargetScope attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The IsDockTargetScope attached property.</returns>
+    public static bool GetIsDockTargetScope(AvaloniaObject control)
+    {
+        return control.GetValue(IsDockTargetScopeProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the IsDockTargetScope attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The value of the IsDockTargetScope property.</param>
+    public static void SetIsDockTargetScope(AvaloniaObject control, bool value)
+    {
+        control.SetValue(IsDockTargetScopeProperty, value);
     }
 }

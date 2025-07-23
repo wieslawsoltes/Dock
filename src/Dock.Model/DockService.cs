@@ -33,6 +33,17 @@ public class DockService : IDockService
         return true;
     }
 
+    private IDockable? GetDockable(IDock dock)
+    {
+        var targetDockable = dock.VisibleDockables?.LastOrDefault();
+        return targetDockable switch
+        {
+            null => null,
+            IDock childDock => GetDockable(childDock),
+            _ => targetDockable
+        };
+    }
+
     /// <inheritdoc />
     public bool MoveDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, bool bExecute)
     {
@@ -44,7 +55,7 @@ public class DockService : IDockService
             }
         }
 
-        var targetDockable = targetDock.VisibleDockables?.LastOrDefault();
+        var targetDockable = GetDockable(targetDock);
         if (targetDockable is null)
         {
             if (bExecute)
@@ -56,6 +67,13 @@ public class DockService : IDockService
             }
             return true;
         }
+
+        if (targetDockable.Owner is not IDock targetDockableOwner)
+        {
+            return false;
+        }
+
+        targetDock = targetDockableOwner;
 
         if (!IsValidMove(sourceDockable, sourceDockableOwner, targetDock, targetDockable))
         {

@@ -136,6 +136,9 @@ internal class WindowDragHelper
             if (root is Window window)
             {
                 window.BeginMoveDrag(_lastPointerPressedArgs);
+                _pointerPressed = false;
+                _isDragging = false;
+                e.Handled = true;
             }
             return;
         }

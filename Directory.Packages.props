@@ -40,5 +40,6 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageVersion Include="Prism.Core" Version="9.0.537" />
     <PackageVersion Include="ReactiveProperty" Version="9.7.0" />
+    <PackageVersion Include="Appium.WebDriver" Version="5.0.0" />
   </ItemGroup>
 </Project>

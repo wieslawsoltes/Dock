@@ -3,7 +3,7 @@ using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Xunit;
 
-namespace Dock.Avalonia.UnitTests.Controls;
+namespace Dock.Avalonia.Diagnostics.UnitTests.Controls;
 
 public class ControlCtorTests
 {

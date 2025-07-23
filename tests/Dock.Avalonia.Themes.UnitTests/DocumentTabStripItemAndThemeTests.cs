@@ -1,11 +1,11 @@
-using Avalonia.Styling;
 using Avalonia.Headless.XUnit;
+using Avalonia.Styling;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Themes.Fluent;
 using Dock.Avalonia.Themes.Simple;
 using Xunit;
 
-namespace Dock.Avalonia.HeadlessTests;
+namespace Dock.Avalonia.Themes.UnitTests;
 
 public class DocumentTabStripItemAndThemeTests
 {

@@ -211,6 +211,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Avalonia.Themes.Simple
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Avalonia.Diagnostics", "src\Dock.Avalonia.Diagnostics\Dock.Avalonia.Diagnostics.csproj", "{6ADA0F01-6FCD-4447-82AB-058D48F260DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Avalonia.Themes.UnitTests", "tests\Dock.Avalonia.Themes.UnitTests\Dock.Avalonia.Themes.UnitTests.csproj", "{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Avalonia.Diagnostics.UnitTests", "tests\Dock.Avalonia.Diagnostics.UnitTests\Dock.Avalonia.Diagnostics.UnitTests.csproj", "{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -737,6 +741,30 @@ Global
 		{6ADA0F01-6FCD-4447-82AB-058D48F260DF}.Release|x64.Build.0 = Release|Any CPU
 		{6ADA0F01-6FCD-4447-82AB-058D48F260DF}.Release|x86.ActiveCfg = Release|Any CPU
 		{6ADA0F01-6FCD-4447-82AB-058D48F260DF}.Release|x86.Build.0 = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|x64.Build.0 = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|x64.Build.0 = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0}.Release|x86.Build.0 = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|x64.Build.0 = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Debug|x86.Build.0 = Debug|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|x64.ActiveCfg = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|x64.Build.0 = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|x86.ActiveCfg = Release|Any CPU
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -789,6 +817,8 @@ Global
 		{AB41B88C-DF32-43B5-8AD5-9FD1F6E65D78} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{1D307918-0B34-4575-B4CD-D4A14FB46FF0} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
 		{6ADA0F01-6FCD-4447-82AB-058D48F260DF} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
+		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

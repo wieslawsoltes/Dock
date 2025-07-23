@@ -48,6 +48,10 @@ public class DockSettingsOptions
     /// </summary>
     public double? WindowMagnetDistance { get; set; }
 
+    /// <summary>
+    /// Optional bring windows to front on drag flag.
+    /// </summary>
+    public bool? BringWindowsToFrontOnDrag { get; set; }
 }
 
 

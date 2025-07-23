@@ -65,6 +65,11 @@ public static class AppBuilderExtensions
             DockSettings.WindowMagnetDistance = options.WindowMagnetDistance.Value;
         }
 
+        if (options.BringWindowsToFrontOnDrag != null)
+        {
+            DockSettings.BringWindowsToFrontOnDrag = options.BringWindowsToFrontOnDrag.Value;
+        }
+
         return builder;
     }
 
@@ -143,6 +148,17 @@ public static class AppBuilderExtensions
         double distance)
     {
         DockSettings.WindowMagnetDistance = distance;
+        return builder;
+    }
+
+    /// <summary>
+    /// Sets <see cref="DockSettings.BringWindowsToFrontOnDrag"/> to the given value.
+    /// </summary>
+    public static AppBuilder BringWindowsToFrontOnDrag(
+        this AppBuilder builder,
+        bool enable = true)
+    {
+        DockSettings.BringWindowsToFrontOnDrag = enable;
         return builder;
     }
 

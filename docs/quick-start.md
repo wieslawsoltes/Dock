@@ -16,6 +16,8 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```powershell
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
+   dotnet add package Dock.Avalonia.Themes.Fluent
+   # or use Dock.Avalonia.Themes.Simple
    ```
 
    **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:

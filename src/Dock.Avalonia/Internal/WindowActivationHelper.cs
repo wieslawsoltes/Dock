@@ -13,28 +13,37 @@ internal static class WindowActivationHelper
 {
     public static void ActivateAllWindows(IFactory factory, Visual? initiator)
     {
-        var activated = new HashSet<Window>();
+        var windows = new HashSet<Window>();
 
         foreach (var host in factory.HostWindows.OfType<Window>())
         {
-            if (activated.Add(host))
-            {
-                host.Activate();
-            }
+            windows.Add(host);
         }
 
         foreach (var dockControl in factory.DockControls.OfType<Control>())
         {
-            if (dockControl.GetVisualRoot() is Window window && activated.Add(window))
+            if (dockControl.GetVisualRoot() is Window window)
             {
-                window.Activate();
+                windows.Add(window);
             }
         }
 
+        Window? rootWindow = null;
         if (initiator?.GetVisualRoot() is Window root)
         {
-            activated.Add(root);
-            root.Activate();
+            rootWindow = root;
+            windows.Remove(rootWindow);
         }
+
+        var sortedWindows = windows.ToArray();
+
+        Window.SortWindowsByZOrder(sortedWindows);
+
+        foreach (var window in sortedWindows)
+        {
+            window.Activate();
+        }
+
+        rootWindow?.Activate();
     }
 }

@@ -3,10 +3,10 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Windows.Input;
-using Reactive.Bindings;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveProperty.Core;
+using Reactive.Bindings;
 
 namespace Dock.Model.ReactiveProperty.Controls;
 

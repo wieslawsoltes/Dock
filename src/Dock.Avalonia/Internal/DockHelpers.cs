@@ -57,8 +57,17 @@ internal static class DockHelpers
                 {
                     return control;
                 }
+
+                foreach (var ancestor in control.GetVisualAncestors().OfType<Control>())
+                {
+                    if (ancestor.GetValue(property))
+                    {
+                        return ancestor;
+                    }
+                }
             }
         }
+
         return null;
     }
 

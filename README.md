@@ -72,7 +72,6 @@ Install-Package Dock.Avalonia.Themes.Fluent -Pre
 * [Documentation index](docs/README.md)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project.
-* [Appium test guide](docs/appium-tests.md) – Set up and run the UI tests.
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

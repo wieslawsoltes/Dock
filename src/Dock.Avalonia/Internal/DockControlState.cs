@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
@@ -8,7 +7,6 @@ using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
 using Dock.Model.Core;
-using Dock.Model.Controls;
 using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
@@ -340,7 +338,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 
-                    foreach (var inputDockControl in dockControls.GetZOrderedDockControls())
+                    foreach (var inputDockControl in DockHelpers.GetZOrderedDockControls(dockControls))
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {

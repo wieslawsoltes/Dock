@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.VisualTree;
+using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -92,5 +93,41 @@ internal static class DockHelpers
         }
 
         return null;
+    }
+    
+    private static int IndexOf(Window[] windowsArray, Window? windowToFind)
+    {
+        if (windowToFind == null)
+        {
+            return -1;
+        }
+
+        for (var i = 0; i < windowsArray.Length; i++)
+        {
+            if (ReferenceEquals(windowsArray[i], windowToFind))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public static IEnumerable<DockControl> GetZOrderedDockControls(IList<IDockControl> dockControls)
+    {
+        var windows = dockControls
+            .OfType<DockControl>()
+            .Select(dock => dock.GetVisualRoot() as Window)
+            .OfType<Window>()
+            .Distinct()
+            .ToArray();
+
+        Window.SortWindowsByZOrder(windows);
+
+        return dockControls
+            .OfType<DockControl>()
+            .Select(dock => (dock, order: IndexOf(windows, dock.GetVisualRoot() as Window)))
+            .OrderByDescending(x => x.order)
+            .Select(pair => pair.dock);
     }
 }

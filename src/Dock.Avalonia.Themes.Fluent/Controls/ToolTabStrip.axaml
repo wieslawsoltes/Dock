@@ -25,7 +25,7 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <DockPanel>
+        <Panel>
           <Border Name="PART_Border"
                   Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
@@ -35,15 +35,25 @@
                   DockPanel.Dock="Left">
             <ScrollViewer x:Name="PART_ScrollViewer">
               <ItemsPresenter Name="PART_ItemsPresenter"
-                              ItemsPanel="{TemplateBinding ItemsPanel}"/>
+                              ItemsPanel="{TemplateBinding ItemsPanel}" />
             </ScrollViewer>
           </Border>
-         <Border Name="PART_BorderFill"
-                 DockProperties.IsDropArea="True"
-                 DockProperties.IsDockTarget="True"
-                 DockProperties.ShowDockIndicatorOnly="True"
-                 DockProperties.IndicatorDockOperation="Fill" />
-        </DockPanel>
+          <Border Name="PART_BorderFill"
+                  DockProperties.IsDropArea="True"
+                  DockProperties.IsDockTarget="True"
+                  DockProperties.ShowDockIndicatorOnly="True"
+                  DockProperties.IndicatorDockOperation="Fill">
+            <Border.Margin>
+              <MultiBinding Converter="{x:Static BorderFillMarginConverter.Instance}">
+                <Binding Path="#PART_ItemsPresenter.Bounds.Width" />
+                <Binding Path="#PART_ItemsPresenter.Bounds.Height" />
+                <Binding Path="#PART_ItemsPresenter.IsVisible" />
+                <Binding Path="#PART_ItemsPresenter.VerticalAlignment" />
+                <Binding Path="#PART_ItemsPresenter.HorizontalAlignment" />
+              </MultiBinding>
+            </Border.Margin>
+          </Border>
+        </Panel>
       </ControlTemplate>
     </Setter>
 
@@ -52,6 +62,11 @@
         <StackPanel Orientation="Horizontal" ClipToBounds="False" />
       </ItemsPanelTemplate>
     </Setter>
+
+    <Style Selector="^/template/ ItemsPresenter#PART_ItemsPresenter">
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
     <Style Selector="^:singleitem /template/ ItemsPresenter#PART_ItemsPresenter">
       <Setter Property="IsVisible" Value="False" />

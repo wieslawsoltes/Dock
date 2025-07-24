@@ -171,6 +171,11 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnPointerPressed(e);
 
+        if (e.Handled)
+        {
+            return;
+        }
+
         if (_chromeGrips.Any(grip => grip.IsPointerOver))
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
@@ -184,6 +189,11 @@ public class HostWindow : Window, IHostWindow
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
+
+        if (e.Handled)
+        {
+            return;
+        }
 
         if (_draggingWindow)
         {

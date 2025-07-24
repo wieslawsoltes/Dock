@@ -70,7 +70,8 @@
       <diagnostics:RootDockInfoDebugView />
     </DataTemplate>
   </UserControl.DataTemplates>
-  <TabControl>
+  <DockPanel>
+  <TabControl DockPanel.Dock="Top">
     <TabItem Header="{DynamicResource RootDockDebugLayoutTabString}">
       <TreeView x:Name="Visible"
                 ItemsSource="{Binding VisibleDockables}">
@@ -254,4 +255,9 @@
       </ScrollViewer>
     </TabItem>
   </TabControl>
+  <TextBlock Margin="4"
+             HorizontalAlignment="Center"
+             FontSize="{DynamicResource TabItemHeaderFontSize}"
+             Text="{DynamicResource RootDockDebugPickInfoString}" />
+  </DockPanel>
 </UserControl>

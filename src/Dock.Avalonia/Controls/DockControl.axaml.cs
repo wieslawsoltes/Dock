@@ -8,10 +8,11 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 using Avalonia.Metadata;
-using Dock.Avalonia.Internal;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Contract;
+using Dock.Avalonia.Diagnostics;
+using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Core;
 
@@ -194,7 +195,7 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
             layout.Factory.DefaultContextLocator = GetContext;
             layout.Factory.DefaultHostWindowLocator = GetHostWindow;
- 
+
             IHostWindow GetHostWindow() => new HostWindow();
 
             object? GetContext() => DefaultContext;
@@ -300,6 +301,24 @@ public class DockControl : TemplatedControl, IDockControl
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
+            return;
+        }
+
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+        {
+            var pos = e.GetPosition(this);
+            if (this.InputHitTest(pos) is Control control)
+            {
+                IDockable? dockable = null;
+                while (control is { } && dockable is null)
+                {
+                    dockable = control.DataContext as IDockable;
+                    control = control.FindAncestorOfType<Control>();
+                }
+
+                DockDiagnosticEvents.RaiseSelectDockableRequested(dockable);
+            }
+
             return;
         }
 

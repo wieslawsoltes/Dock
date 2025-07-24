@@ -14,3 +14,5 @@ mainWindow.AttachDockDebug(
 
 Pass a custom `KeyGesture` to use another shortcut. The method returns an `IDisposable` that unregisters the hotkey and closes the window when disposed.
 
+While the window is open you can press **Ctrl+Shift** over any `DockControl` to automatically select the underlying model in the tree view.
+

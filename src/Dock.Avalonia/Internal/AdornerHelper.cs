@@ -9,9 +9,9 @@ using Dock.Avalonia.Controls;
 namespace Dock.Avalonia.Internal;
 
 internal class AdornerHelper<T>(bool useFloatingDockAdorner)
-    where T : Control, new()
+    where T : Control, IDockTarget, new()
 {
-    private readonly Control _adorner = new T();
+    private readonly T _adorner = new T();
     public Control? Adorner;
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
@@ -133,6 +133,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
 
         Adorner = null;
+        _adorner.Reset();
     }
 
     private void RemoveRegularAdorner()
@@ -142,8 +143,9 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             _layer.Children.Remove(Adorner);
             ((ISetLogicalParent)Adorner).SetParent(null);
         }
-
+        
         Adorner = null;
         _layer = null;
+        _adorner.Reset();
     }
 }

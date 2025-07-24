@@ -128,6 +128,69 @@ creates new documents when its `CreateDocument` command executes. The
 delegate should return an `IDockable` which is then passed to
 `AddDocument` and activated.
 
+## Routing between documents and tools
+
+Dock supports nested navigation through ReactiveUI's `RoutingState`. The
+`DockReactiveUIRoutingSample` shows how documents and tools act as
+`IScreen` instances with their own `Router`. Navigation commands switch
+between dockables via the host screen:
+
+```csharp
+public class DocumentViewModel : RoutableDocument
+{
+    public ReactiveCommand<Unit, Unit>? GoDocument { get; private set; }
+    public ReactiveCommand<Unit, Unit>? GoTool1 { get; private set; }
+    public ReactiveCommand<Unit, Unit>? GoTool2 { get; private set; }
+
+    public DocumentViewModel(IScreen host) : base(host)
+    {
+        Router.Navigate.Execute(new InnerViewModel(this, "Home"));
+    }
+
+    public void InitNavigation(
+        IRoutableViewModel? document,
+        IRoutableViewModel? tool1,
+        IRoutableViewModel? tool2)
+    {
+        if (document is not null)
+        {
+            GoDocument = ReactiveCommand.Create(() =>
+                HostScreen.Router.Navigate.Execute(document).Subscribe(_ => { }));
+        }
+
+        if (tool1 is not null)
+        {
+            GoTool1 = ReactiveCommand.Create(() =>
+                HostScreen.Router.Navigate.Execute(tool1).Subscribe(_ => { }));
+        }
+
+        if (tool2 is not null)
+        {
+            GoTool2 = ReactiveCommand.Create(() =>
+                HostScreen.Router.Navigate.Execute(tool2).Subscribe(_ => { }));
+        }
+    }
+}
+```
+
+Commands are wired up in the factory so documents and tools can navigate to
+each other:
+
+```csharp
+var document1 = new DocumentViewModel(this) { Id = "Doc1", Title = "Document 1" };
+var document2 = new DocumentViewModel(this) { Id = "Doc2", Title = "Document 2" };
+var tool1 = new ToolViewModel(this) { Id = "Tool1", Title = "Tool 1" };
+var tool2 = new ToolViewModel(this) { Id = "Tool2", Title = "Tool 2" };
+
+document1.InitNavigation(document2, tool1, tool2);
+document2.InitNavigation(document1, tool1, tool2);
+tool1.InitNavigation(document1, document2, tool2);
+tool2.InitNavigation(document1, document2, tool1);
+```
+
+Each view contains a `RoutedViewHost` bound to the `Router` property so the
+nested content appears automatically when navigation commands execute.
+
 ## Events
 
 All the events shown in the MVVM guide are present here as well. Subscribe to them in the same way using ReactiveUI commands or observables.

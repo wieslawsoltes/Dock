@@ -24,10 +24,12 @@ public class DockFactory : Factory
         var document1 = new DocumentViewModel(_host) { Id = "Doc1", Title = "Document 1" };
         var document2 = new DocumentViewModel(_host) { Id = "Doc2", Title = "Document 2" };
         var tool1 = new ToolViewModel(_host) { Id = "Tool1", Title = "Tool 1" };
+        var tool2 = new ToolViewModel(_host) { Id = "Tool2", Title = "Tool 2" };
 
-        document1.InitNavigation(document2, tool1);
-        document2.InitNavigation(document1, tool1);
-        tool1.InitNavigation(document1, document2);
+        document1.InitNavigation(document2, tool1, tool2);
+        document2.InitNavigation(document1, tool1, tool2);
+        tool1.InitNavigation(document1, document2, tool2);
+        tool2.InitNavigation(document1, document2, tool1);
 
         var documentDock = new DocumentDock
         {
@@ -40,7 +42,7 @@ public class DockFactory : Factory
         var toolDock = new ToolDock
         {
             Id = "Tools",
-            VisibleDockables = CreateList<IDockable>(tool1),
+            VisibleDockables = CreateList<IDockable>(tool1, tool2),
             ActiveDockable = tool1,
             Alignment = Alignment.Left,
             Proportion = 0.25

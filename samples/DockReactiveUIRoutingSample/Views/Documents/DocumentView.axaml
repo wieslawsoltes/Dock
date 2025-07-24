@@ -7,8 +7,9 @@
     <StackPanel Margin="10" Spacing="5">
         <TextBlock Text="{Binding Title}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Spacing="5">
-            <Button Content="Open Other Doc" Command="{Binding GoDocument}"/>
-            <Button Content="Open Tool" Command="{Binding GoTool}"/>
+            <Button Content="Next Doc" Command="{Binding GoDocument}"/>
+            <Button Content="Tool 1" Command="{Binding GoTool1}"/>
+            <Button Content="Tool 2" Command="{Binding GoTool2}"/>
         </StackPanel>
         <rxui:RoutedViewHost Router="{Binding Router}" />
     </StackPanel>

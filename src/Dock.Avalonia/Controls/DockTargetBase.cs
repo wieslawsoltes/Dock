@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -25,7 +26,7 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_LeftSelector", typeof(Control))]
 [TemplatePart("PART_RightSelector", typeof(Control))]
 [TemplatePart("PART_CenterSelector", typeof(Control))]
-public abstract class DockTargetBase : TemplatedControl
+public abstract class DockTargetBase : TemplatedControl, IDockTarget
 {
     private static readonly string[] s_indicators =
     [
@@ -337,5 +338,13 @@ public abstract class DockTargetBase : TemplatedControl
 
         indicator.Opacity = 0;
         return false;
+    }
+
+    void IDockTarget.Reset()
+    {
+        foreach (var control in IndicatorOperations.Values.Concat(SelectorsOperations.Values))
+        {
+            control.Opacity = 0;
+        }
     }
 }

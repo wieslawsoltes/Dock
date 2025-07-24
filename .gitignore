@@ -289,4 +289,3 @@ tools/**
 
 # macOS
 .DS_Store
-*.cs

@@ -11,7 +11,7 @@ Hovering over an area fills it with a translucent color and shows the hovered
 control's data context in the bottom-right corner.
 
 Attach the overlay in your application just like Avalonia's dev tools. It can be
-toggled at runtime using <kbd>F10</kbd> by default:
+toggled at runtime using <kbd>F9</kbd> by default:
 
 ```csharp
 #if DEBUG

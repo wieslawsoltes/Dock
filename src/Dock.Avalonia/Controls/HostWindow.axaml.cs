@@ -30,6 +30,7 @@ public class HostWindow : Window, IHostWindow
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
+    private WindowDragHelper? _titleBarDragHelper;
     private bool _mouseDown, _draggingWindow;
 
     /// <summary>
@@ -115,12 +116,15 @@ public class HostWindow : Window, IHostWindow
         {
             _hostWindowTitleBar.ApplyTemplate();
 
-            if (_hostWindowTitleBar.BackgroundControl is { })
+            if (_hostWindowTitleBar.BackgroundControl is { } background)
             {
-                _hostWindowTitleBar.BackgroundControl.PointerPressed += (_, args) =>
-                {
-                    MoveDrag(args);
-                };
+                _titleBarDragHelper?.Detach();
+                _titleBarDragHelper = new WindowDragHelper(
+                    background,
+                    () => true,
+                    source => source is { } s && !(s is Button) &&
+                               !WindowDragHelper.IsChildOfType<Button>(background, s));
+                _titleBarDragHelper.Attach();
             }
         }
     }
@@ -171,6 +175,11 @@ public class HostWindow : Window, IHostWindow
     {
         base.OnPointerPressed(e);
 
+        if (e.Handled)
+        {
+            return;
+        }
+
         if (_chromeGrips.Any(grip => grip.IsPointerOver))
         {
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
@@ -184,6 +193,11 @@ public class HostWindow : Window, IHostWindow
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
         base.OnPointerReleased(e);
+
+        if (e.Handled)
+        {
+            return;
+        }
 
         if (_draggingWindow)
         {

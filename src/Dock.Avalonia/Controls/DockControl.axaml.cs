@@ -296,6 +296,17 @@ public class DockControl : TemplatedControl, IDockControl
                && tabStrip.DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false };
     }
 
+    private static bool ShouldIgnorePressedForItemDrag(PointerPressedEventArgs e)
+    {
+        if (e.Source is not Control source)
+        {
+            return false;
+        }
+
+        return source.FindAncestorOfType<DocumentTabStripItem>() is not null ||
+               source.FindAncestorOfType<ToolTabStripItem>() is not null;
+    }
+
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
@@ -308,7 +319,7 @@ public class DockControl : TemplatedControl, IDockControl
             return;
         }
 
-        if (ShouldIgnorePressedForWindowDrag(e))
+        if (ShouldIgnorePressedForWindowDrag(e) || ShouldIgnorePressedForItemDrag(e))
         {
             return;
         }

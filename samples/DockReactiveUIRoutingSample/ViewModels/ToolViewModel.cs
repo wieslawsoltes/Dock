@@ -9,9 +9,9 @@ namespace DockReactiveUIRoutingSample.ViewModels.Tools;
 
 public class ToolViewModel : RoutableTool
 {
-    public ReactiveCommand<Unit, Unit>? GoDocument1 { get; private set; }
-    public ReactiveCommand<Unit, Unit>? GoDocument2 { get; private set; }
-    public ReactiveCommand<Unit, Unit>? GoNextTool { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoDocument1 { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoDocument2 { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoNextTool { get; private set; }
 
     public ToolViewModel(IScreen host) : base(host)
     {

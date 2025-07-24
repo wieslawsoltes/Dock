@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -99,10 +98,6 @@ public class HostWindow : Window, IHostWindow
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
-        AddHandler(PointerCaptureLostEvent,
-            (_, e) => OnPointerCaptureLost(e),
-            RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
-
         _dockManager = new DockManager(new DockService());
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
@@ -202,22 +197,6 @@ public class HostWindow : Window, IHostWindow
         {
             EndDrag(e);
         }
-    }
-
-    /// <inheritdoc/>
-    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
-    {
-        base.OnPointerCaptureLost(e);
-
-        if (_draggingWindow)
-        {
-            PseudoClasses.Set(":dragging", false);
-            Window?.Factory?.OnWindowMoveDragEnd(Window);
-        }
-
-        _hostWindowState.Process(new PixelPoint(), EventType.CaptureLost);
-        _mouseDown = false;
-        _draggingWindow = false;
     }
 
     private void HostWindow_PositionChanged(object? sender, PixelPointEventArgs e)

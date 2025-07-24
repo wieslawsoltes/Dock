@@ -63,12 +63,12 @@ public abstract class DockTargetBase : TemplatedControl
     /// <summary>
     /// A dictionary that maps dock operations to their corresponding indicator controls.
     /// </summary>
-    protected Dictionary<DockOperation, Control> IndicatorOperations { get; set; } = new ();
+    protected Dictionary<DockOperation, Control> IndicatorOperations { get; set; } = new();
 
     /// <summary>
     /// A dictionary that maps dock operations to their corresponding selector controls.
     /// </summary>
-    protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new ();
+    protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -145,40 +145,56 @@ public abstract class DockTargetBase : TemplatedControl
         DockOperationHandler validate,
         DockOperationHandler? visible = null)
     {
-        if (ShowIndicatorsOnly)
+        return ShowIndicatorsOnly 
+            ? GetDockOperationIndicatorsOnly(point, dropControl, relativeTo, dragAction, visible) 
+            : GetDockOperationFromSelectors(point, relativeTo, dragAction, validate, visible);
+    }
+
+    private DockOperation GetDockOperationIndicatorsOnly(
+        Point point, 
+        Control dropControl, 
+        Visual relativeTo,
+        DragAction dragAction, 
+        DockOperationHandler? visible)
+    {
+        var operation = DockProperties.GetIndicatorDockOperation(dropControl);
+
+        IndicatorOperations.TryGetValue(operation, out var indicator);
+
+        foreach (var kvp in IndicatorOperations)
         {
-            var operation = DockProperties.GetIndicatorDockOperation(dropControl);
-
-            IndicatorOperations.TryGetValue(operation, out var indicator);
-
-            foreach (var kvp in IndicatorOperations)
+            if (indicator != kvp.Value)
             {
-                if (indicator != kvp.Value)
-                {
-                    kvp.Value.Opacity = 0;
-                }
+                kvp.Value.Opacity = 0;
             }
-
-            return InvalidateIndicator(dropControl, indicator, point, relativeTo, operation, dragAction, validate,
-                visible, ShowIndicatorsOnly)
-                ? operation
-                : DefaultDockOperation;
         }
 
+        return InvalidateIndicatorOnly(dropControl, indicator, point, relativeTo, operation, dragAction, visible)
+            ? operation
+            : DefaultDockOperation;
+    }
+
+    private DockOperation GetDockOperationFromSelectors(
+        Point point, 
+        Visual relativeTo, 
+        DragAction dragAction,
+        DockOperationHandler validate, 
+        DockOperationHandler? visible)
+    {
         var result = DefaultDockOperation;
 
         foreach (var kvp in IndicatorOperations)
         {
             var operation = kvp.Key;
             SelectorsOperations.TryGetValue(operation, out var selector);
-            
-            if (InvalidateIndicator(selector, kvp.Value, point, relativeTo,operation, dragAction,
-                    validate, visible, ShowIndicatorsOnly))
+
+            if (InvalidateIndicator(selector, kvp.Value, point, relativeTo, operation, dragAction,
+                    validate, visible))
             {
                 result = operation;
             }
         }
- 
+
         return result;
     }
 
@@ -196,7 +212,7 @@ public abstract class DockTargetBase : TemplatedControl
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -211,9 +227,8 @@ public abstract class DockTargetBase : TemplatedControl
     /// <param name="dragAction">Current drag action type.</param>
     /// <param name="validate">Callback validating the operation.</param>
     /// <param name="visible">Optional callback determining indicator visibility.</param>
-    /// <param name="showIndicatorsOnly">Flag whether only drop indicators should be shown.</param>
     /// <returns>True if the indicator should be shown as active.</returns>
-    protected bool InvalidateIndicator(
+    private bool InvalidateIndicator(
         Control? selector,
         Control? indicator,
         Point point,
@@ -221,8 +236,7 @@ public abstract class DockTargetBase : TemplatedControl
         DockOperation operation,
         DragAction dragAction,
         DockOperationHandler validate,
-        DockOperationHandler? visible,
-        bool showIndicatorsOnly)
+        DockOperationHandler? visible)
     {
         if (selector is null || indicator is null)
         {
@@ -258,13 +272,6 @@ public abstract class DockTargetBase : TemplatedControl
 
         if (selectorPoint is not null)
         {
-            // Do not hit-test it if only indicators should be shown.
-            if (showIndicatorsOnly)
-            {
-                indicator.Opacity = 0.5;
-                return true;
-            }
-
             // Check if the input element is the selector itself.
             if (selector.InputHitTest(selectorPoint.Value) is { } inputElement)
             {
@@ -277,6 +284,55 @@ public abstract class DockTargetBase : TemplatedControl
                     }
                 }
             }
+        }
+
+        indicator.Opacity = 0;
+        return false;
+    }
+
+    /// <summary>
+    /// Invalidates the indicator when only drop indicators are shown.
+    /// </summary>
+    /// <param name="selector">Selector used to translate the pointer.</param>
+    /// <param name="indicator">Visual indicator to update.</param>
+    /// <param name="point">Pointer position relative to <paramref name="relativeTo"/>.</param>
+    /// <param name="relativeTo">Visual used for coordinate translation.</param>
+    /// <param name="operation">Dock operation represented by the selector.</param>
+    /// <param name="dragAction">Current drag action type.</param>
+    /// <param name="visible">Optional callback determining indicator visibility.</param>
+    /// <returns>True if the indicator should be shown as active.</returns>
+    private bool InvalidateIndicatorOnly(
+        Control? selector,
+        Control? indicator,
+        Point point,
+        Visual relativeTo,
+        DockOperation operation,
+        DragAction dragAction,
+        DockOperationHandler? visible)
+    {
+        if (selector is null || indicator is null)
+        {
+            return false;
+        }
+
+        if (visible is not null && !visible(point, operation, dragAction, relativeTo))
+        {
+            indicator.Opacity = 0;
+            return false;
+        }
+
+        var selectorPoint = relativeTo.TranslatePoint(point, selector);
+        if (selectorPoint is null)
+        {
+            var screenPoint = relativeTo.PointToScreen(point);
+            var localPoint = this.PointToClient(screenPoint);
+            selectorPoint = this.TranslatePoint(localPoint, selector);
+        }
+
+        if (selectorPoint is not null)
+        {
+            indicator.Opacity = 0.5;
+            return true;
         }
 
         indicator.Opacity = 0;

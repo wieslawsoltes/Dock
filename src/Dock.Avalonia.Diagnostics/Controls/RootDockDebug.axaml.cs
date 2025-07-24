@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Dock.Avalonia.Diagnostics.Helpers;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
 using ModelWindowClosingEventArgs = Dock.Model.Core.Events.WindowClosingEventArgs;
@@ -22,6 +24,8 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
 {
     private List<IDisposable>? _subscriptions;
     private string? _filter;
+    private SelectionOverlayHelper? _overlayHelper;
+    private TreeView? _visibleTree;
 
     /// <summary>
     /// Gets collection with logged events.
@@ -60,6 +64,33 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        _visibleTree = this.FindControl<TreeView>("Visible");
+        if (_visibleTree is not null)
+        {
+            _visibleTree.SelectionChanged += OnVisibleSelectionChanged;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (_visibleTree is not null)
+        {
+            _visibleTree.SelectionChanged -= OnVisibleSelectionChanged;
+            _visibleTree = null;
+        }
+
+        _overlayHelper?.RemoveOverlay();
+        _overlayHelper = null;
     }
 
     private void InitializeComponent()
@@ -181,6 +212,27 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
         AddEvent($"WindowMoveDrag {e.Window?.Title}");
     private void OnWindowMoveDragEnd(object? sender, WindowMoveDragEndEventArgs e) =>
         AddEvent($"WindowMoveDragEnd {e.Window?.Title}");
+
+    private void OnVisibleSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_visibleTree?.SelectedItem is not IDockable dockable || dockable.Factory is not { } factory)
+        {
+            _overlayHelper?.Highlight(null);
+            return;
+        }
+
+        if (SelectionOverlayHelper.TryGetControl(factory, dockable, out var root, out var control) &&
+            root is not null && control is not null)
+        {
+            _overlayHelper ??= new SelectionOverlayHelper();
+            _overlayHelper.AttachOverlay(root);
+            _overlayHelper.Highlight(control);
+        }
+        else
+        {
+            _overlayHelper?.Highlight(null);
+        }
+    }
 
     /// <summary>
     /// Clears the event log.

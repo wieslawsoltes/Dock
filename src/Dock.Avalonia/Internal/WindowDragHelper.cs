@@ -39,6 +39,7 @@ internal class WindowDragHelper
         _owner.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
         _owner.AddHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
         _owner.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+        _owner.AddHandler(InputElement.PointerCaptureLostEvent, OnPointerCaptureLost, RoutingStrategies.Tunnel);
     }
 
     public void Detach()
@@ -46,6 +47,12 @@ internal class WindowDragHelper
         _owner.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
         _owner.RemoveHandler(InputElement.PointerReleasedEvent, OnPointerReleased);
         _owner.RemoveHandler(InputElement.PointerMovedEvent, OnPointerMoved);
+        _owner.RemoveHandler(InputElement.PointerCaptureLostEvent, OnPointerCaptureLost);
+
+        if (_isDragging || _dragWindow is not null)
+        {
+            ResetDragState();
+        }
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -105,6 +112,28 @@ internal class WindowDragHelper
         _dragWindow = null;
 
         e.Handled = true;
+    }
+
+    private void OnPointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
+    {
+        ResetDragState();
+    }
+
+    private void ResetDragState()
+    {
+        _pointerPressed = false;
+        _isDragging = false;
+
+        if (_dragWindow is not null)
+        {
+            if (_positionChangedHandler is not null)
+            {
+                _dragWindow.PositionChanged -= _positionChangedHandler;
+                _positionChangedHandler = null;
+            }
+
+            _dragWindow = null;
+        }
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs e)

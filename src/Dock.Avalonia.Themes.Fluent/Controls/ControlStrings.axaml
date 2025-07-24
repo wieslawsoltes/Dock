@@ -61,4 +61,5 @@
   <x:String x:Key="RootDockDebugEventsTabString">Events</x:String>
   <x:String x:Key="RootDockDebugFilterString">Filter:</x:String>
   <x:String x:Key="RootDockDebugResetString">Reset</x:String>
+  <x:String x:Key="RootDockDebugPickInfoString">Hold Ctrl+Shift to pick a control</x:String>
 </ResourceDictionary>

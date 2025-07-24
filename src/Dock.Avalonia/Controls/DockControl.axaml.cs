@@ -14,6 +14,7 @@ using Dock.Avalonia.Internal;
 using Dock.Avalonia.Contract;
 using Dock.Model;
 using Dock.Model.Core;
+using Dock.Avalonia.Diagnostics.Controls;
 
 namespace Dock.Avalonia.Controls;
 
@@ -300,6 +301,24 @@ public class DockControl : TemplatedControl, IDockControl
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
+            return;
+        }
+
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+        {
+            var pos = e.GetPosition(this);
+            if (this.InputHitTest(pos) is Control control)
+            {
+                IDockable? dockable = null;
+                while (control is { } && dockable is null)
+                {
+                    dockable = control.DataContext as IDockable;
+                    control = control.FindAncestorOfType<Control>();
+                }
+
+                RootDockDebug.SelectDockableRequested?.Invoke(dockable);
+            }
+
             return;
         }
 

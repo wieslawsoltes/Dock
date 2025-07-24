@@ -10,6 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Diagnostics.Helpers;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
@@ -25,7 +26,6 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
     /// <summary>
     /// Event raised when a dockable should be selected from hit testing.
     /// </summary>
-    public static event Action<IDockable?>? SelectDockableRequested;
 
     private List<IDisposable>? _subscriptions;
     private string? _filter;
@@ -82,7 +82,7 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
             _visibleTree.SelectionChanged += OnVisibleSelectionChanged;
         }
 
-        SelectDockableRequested += OnSelectDockableRequested;
+        DockDiagnosticEvents.SelectDockableRequested += OnSelectDockableRequested;
     }
 
     /// <inheritdoc/>
@@ -99,7 +99,7 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
         _overlayHelper?.RemoveOverlay();
         _overlayHelper = null;
 
-        SelectDockableRequested -= OnSelectDockableRequested;
+        DockDiagnosticEvents.SelectDockableRequested -= OnSelectDockableRequested;
     }
 
     private void InitializeComponent()

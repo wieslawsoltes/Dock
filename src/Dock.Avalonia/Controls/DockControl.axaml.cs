@@ -8,13 +8,13 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 using Avalonia.Metadata;
-using Dock.Avalonia.Internal;
+using Avalonia.VisualTree;
 using Dock.Avalonia.Contract;
+using Dock.Avalonia.Diagnostics;
+using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Core;
-using Dock.Avalonia.Diagnostics.Controls;
 
 namespace Dock.Avalonia.Controls;
 
@@ -195,7 +195,7 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
             layout.Factory.DefaultContextLocator = GetContext;
             layout.Factory.DefaultHostWindowLocator = GetHostWindow;
- 
+
             IHostWindow GetHostWindow() => new HostWindow();
 
             object? GetContext() => DefaultContext;
@@ -316,7 +316,7 @@ public class DockControl : TemplatedControl, IDockControl
                     control = control.FindAncestorOfType<Control>();
                 }
 
-                RootDockDebug.SelectDockableRequested?.Invoke(dockable);
+                DockDiagnosticEvents.RaiseSelectDockableRequested(dockable);
             }
 
             return;

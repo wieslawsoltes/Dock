@@ -27,6 +27,28 @@ internal class WindowDragHelper
     private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
 
+    private void CancelDrag()
+    {
+        _pointerPressed = false;
+        _isDragging = false;
+
+        if (_dragWindow is not null)
+        {
+            if (_positionChangedHandler is not null)
+            {
+                _dragWindow.PositionChanged -= _positionChangedHandler;
+                _positionChangedHandler = null;
+            }
+
+            if (_dragWindow is HostWindow hostWindow)
+            {
+                hostWindow.Window?.Factory?.OnWindowMoveDragEnd(hostWindow.Window);
+            }
+
+            _dragWindow = null;
+        }
+    }
+
     public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
     {
         _owner = owner;
@@ -39,6 +61,7 @@ internal class WindowDragHelper
         _owner.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
         _owner.AddHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
         _owner.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+        _owner.AddHandler(InputElement.PointerCaptureLostEvent, OnPointerCaptureLost, RoutingStrategies.Tunnel);
     }
 
     public void Detach()
@@ -46,6 +69,12 @@ internal class WindowDragHelper
         _owner.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
         _owner.RemoveHandler(InputElement.PointerReleasedEvent, OnPointerReleased);
         _owner.RemoveHandler(InputElement.PointerMovedEvent, OnPointerMoved);
+        _owner.RemoveHandler(InputElement.PointerCaptureLostEvent, OnPointerCaptureLost);
+
+        if (_dragWindow is not null || _pointerPressed || _isDragging)
+        {
+            CancelDrag();
+        }
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
@@ -105,6 +134,11 @@ internal class WindowDragHelper
         _dragWindow = null;
 
         e.Handled = true;
+    }
+
+    private void OnPointerCaptureLost(object? sender, PointerCaptureLostEventArgs e)
+    {
+        CancelDrag();
     }
 
     private void OnPointerMoved(object? sender, PointerEventArgs e)

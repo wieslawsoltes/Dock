@@ -25,6 +25,11 @@ The following properties on `IFactory` keep track of runtime controls.  Each dic
 
 These collections are populated automatically by `FactoryBase` when layouts are initialised.  They can be inspected or modified at runtime if you create custom host controls or windows.
 
+The default Avalonia controls update these dictionaries whenever the `DataContext`
+changes. `ToolContentControl` and `DocumentContentControl` subscribe to the
+`DataContext` property so the `ToolControls` and `DocumentControls` mappings stay
+in sync with the currently visible dockables.
+
 ## Typical usage
 
 Most applications rely on these collections indirectly via the factory helpers.  For example `ShowWindows` iterates `HostWindows` to open any floating tools and documents.  You can also retrieve a specific control:

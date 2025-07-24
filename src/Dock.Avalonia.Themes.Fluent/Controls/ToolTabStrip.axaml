@@ -33,8 +33,10 @@
                   CornerRadius="{TemplateBinding CornerRadius}"
                   Padding="{TemplateBinding Padding}"
                   DockPanel.Dock="Left">
-            <ItemsPresenter Name="PART_ItemsPresenter"
-                            ItemsPanel="{TemplateBinding ItemsPanel}"/>
+            <ScrollViewer x:Name="PART_ScrollViewer">
+              <ItemsPresenter Name="PART_ItemsPresenter"
+                              ItemsPanel="{TemplateBinding ItemsPanel}"/>
+            </ScrollViewer>
           </Border>
          <Border Name="PART_BorderFill"
                  DockProperties.IsDropArea="True"
@@ -59,6 +61,11 @@
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="BorderThickness" Value="0 1 0  0" />
+    </Style>
+
+    <Style Selector="^/template/ ScrollViewer#PART_ScrollViewer">
+      <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+      <Setter Property="VerticalScrollBarVisibility" Value="Disabled" />
     </Style>
 
   </ControlTheme>

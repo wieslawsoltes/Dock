@@ -188,11 +188,8 @@ public class ToolChromeControl : ContentControl
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
-                    if (VisualRoot is Window win)
-                    {
-                        _windowDragHelper = CreateDragHelper(win);
-                        _windowDragHelper.Attach(win);
-                    }
+                    _windowDragHelper = CreateDragHelper(hostWindow);
+                    _windowDragHelper.Attach();
                 }
             }
 #if false

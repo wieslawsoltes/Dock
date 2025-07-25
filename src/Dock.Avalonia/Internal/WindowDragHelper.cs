@@ -27,6 +27,7 @@ internal class WindowDragHelper
     private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
     private IDisposable[]? _disposables;
+    private IDisposable? _releasedEventDisposable;
 
     public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
     {
@@ -35,15 +36,14 @@ internal class WindowDragHelper
         _canStartDrag = canStartDrag;
     }
 
-    public void Attach(Window window)
+    public void Attach()
     {
         Detach();
         
         _disposables =
         [
-            window.AddDisposableHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel),
-            window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel),
-            window.AddDisposableHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel)
+            _owner.AddDisposableHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel),
+            _owner.AddDisposableHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel)
         ];
     }
 
@@ -84,6 +84,9 @@ internal class WindowDragHelper
 
     private void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
+        _releasedEventDisposable?.Dispose();
+        _releasedEventDisposable = null;
+        
         if (!_pointerPressed && !_isDragging)
         {
             return;
@@ -152,7 +155,10 @@ internal class WindowDragHelper
                     WindowActivationHelper.ActivateAllWindows(dockWindowFactory, _owner);
                 }
 
+                _releasedEventDisposable?.Dispose();
+                _releasedEventDisposable = SubscribeToPointerReleased(window);
                 window.BeginMoveDrag(_lastPointerPressedArgs);
+                
                 _pointerPressed = false;
                 _isDragging = false;
                 e.Handled = true;
@@ -197,8 +203,16 @@ internal class WindowDragHelper
         };
 
         hostWindow.PositionChanged += _positionChangedHandler;
+        
+        _releasedEventDisposable?.Dispose();
+        _releasedEventDisposable = SubscribeToPointerReleased(hostWindow);
         hostWindow.BeginMoveDrag(_lastPointerPressedArgs);
         e.Handled = true;
+    }
+
+    private IDisposable SubscribeToPointerReleased(Window window)
+    {
+        return window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
     }
 
     internal static bool IsChildOfType<T>(Control owner, Control control) where T : Control

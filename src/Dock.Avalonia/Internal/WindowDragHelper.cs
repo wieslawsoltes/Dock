@@ -26,6 +26,7 @@ internal class WindowDragHelper
     private PointerPressedEventArgs? _lastPointerPressedArgs;
     private Window? _dragWindow;
     private EventHandler<PixelPointEventArgs>? _positionChangedHandler;
+    private IDisposable[]? _disposables;
 
     public WindowDragHelper(Control owner, Func<bool> isEnabled, Func<Control?, bool> canStartDrag)
     {
@@ -34,18 +35,28 @@ internal class WindowDragHelper
         _canStartDrag = canStartDrag;
     }
 
-    public void Attach()
+    public void Attach(Window window)
     {
-        _owner.AddHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel);
-        _owner.AddHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel);
-        _owner.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel);
+        Detach();
+        
+        _disposables =
+        [
+            window.AddDisposableHandler(InputElement.PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel),
+            window.AddDisposableHandler(InputElement.PointerReleasedEvent, OnPointerReleased, RoutingStrategies.Tunnel),
+            window.AddDisposableHandler(InputElement.PointerMovedEvent, OnPointerMoved, RoutingStrategies.Tunnel)
+        ];
     }
 
     public void Detach()
     {
-        _owner.RemoveHandler(InputElement.PointerPressedEvent, OnPointerPressed);
-        _owner.RemoveHandler(InputElement.PointerReleasedEvent, OnPointerReleased);
-        _owner.RemoveHandler(InputElement.PointerMovedEvent, OnPointerMoved);
+        if (_disposables != null)
+        {
+            foreach (var disposable in _disposables)
+            {
+                disposable.Dispose();
+            }
+            _disposables = null;
+        }
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)

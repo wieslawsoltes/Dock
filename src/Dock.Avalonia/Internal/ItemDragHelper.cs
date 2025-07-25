@@ -80,6 +80,7 @@ internal class ItemDragHelper
             if (_draggedContainer is not null)
             {
                 SetDraggingPseudoClasses(_draggedContainer, true);
+                _draggedContainer.SetCurrentValue(Visual.ZIndexProperty, 1);
             }
 
             AddTransforms(_itemsControl);
@@ -114,6 +115,8 @@ internal class ItemDragHelper
             return;
         }
 
+        _draggedContainer?.ClearValue(Visual.ZIndexProperty);
+        
         RemoveTransforms(_itemsControl);
 
         if (_itemsControl is not null)

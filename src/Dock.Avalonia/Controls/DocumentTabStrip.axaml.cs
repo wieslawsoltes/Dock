@@ -202,17 +202,11 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
-        if (VisualRoot is Window window &&
-            window is HostWindow hostWindow &&
-            _grip is { } &&
-            (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX)))
+        if (VisualRoot is Window win)
         {
-            hostWindow.AttachGrip(_grip, ":documentwindow");
-            _attachedWindow = hostWindow;
+            _windowDragHelper = CreateDragHelper();
+            _windowDragHelper.Attach(win);
         }
-
-        _windowDragHelper = CreateDragHelper();
-        _windowDragHelper.Attach();
     }
 
     private void DetachFromWindow()

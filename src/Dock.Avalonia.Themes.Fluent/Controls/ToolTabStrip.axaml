@@ -38,6 +38,10 @@
                               ItemsPanel="{TemplateBinding ItemsPanel}" />
             </ScrollViewer>
           </Border>
+          <Border Name="PART_BorderLeftFill"
+                  IsHitTestVisible="False" />
+          <Border Name="PART_BorderRightFill"
+                  IsHitTestVisible="False" />
           <Border Name="PART_BorderFill"
                   DockProperties.IsDropArea="True"
                   DockProperties.IsDockTarget="True"
@@ -73,6 +77,18 @@
     </Style>
 
     <Style Selector="^/template/ Border#PART_BorderFill">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_BorderLeftFill">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+      <Setter Property="BorderThickness" Value="0 1 0  0" />
+    </Style>
+
+    <Style Selector="^/template/ Border#PART_BorderRightFill">
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
       <Setter Property="BorderThickness" Value="0 1 0  0" />

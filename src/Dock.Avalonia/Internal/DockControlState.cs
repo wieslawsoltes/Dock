@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -323,7 +324,10 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
-                            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            if (targetDockable.Owner is IDocumentDock { VisibleDockables.Count: > 1 } or not IDocumentDock)
+                            {
+                                _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            }
                         }
                         _context.DoDragDrop = true;
                     }

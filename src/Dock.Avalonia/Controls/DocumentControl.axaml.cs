@@ -36,6 +36,12 @@ public class DocumentControl : TemplatedControl
         AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(ModifiedTemplate));
 
     /// <summary>
+    /// Define the <see cref="CloseTemplate"/> property.
+    /// </summary>
+    public static readonly StyledProperty<IDataTemplate> CloseTemplateProperty = 
+        AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(CloseTemplate));
+
+    /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
@@ -72,6 +78,15 @@ public class DocumentControl : TemplatedControl
     {
         get => GetValue(ModifiedTemplateProperty);
         set => SetValue(ModifiedTemplateProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets tab close template.
+    /// </summary>
+    public IDataTemplate CloseTemplate
+    {
+        get => GetValue(CloseTemplateProperty);
+        set => SetValue(CloseTemplateProperty, value);
     }
 
     /// <summary>

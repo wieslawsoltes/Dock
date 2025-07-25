@@ -198,12 +198,16 @@ public class DockManager : IDockManager
         return targetDockable switch
         {
             IRootDock _ => _dockService.DockDockableIntoWindow(sourceDock, targetDockable, ScreenPosition, bExecute),
-            IToolDock toolDock => sourceDock != toolDock &&
-                                  DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
-            IDocumentDock documentDock => sourceDock != documentDock &&
-                                          DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute),
-            IProportionalDock proportionalDock => sourceDock != proportionalDock &&
-                                                  DockDockable(sourceDock, targetDockable, proportionalDock, action, operation, bExecute),
+            IToolDock toolDock => 
+                sourceDock != toolDock && DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
+            ITool { Owner: IToolDock toolDock } => 
+                sourceDock != toolDock && DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
+            IDocumentDock documentDock => 
+                sourceDock != documentDock && DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute),
+            IDocument { Owner: IDocumentDock documentDock } => 
+                sourceDock != documentDock && DockDockable(sourceDock, targetDockable, documentDock, action, operation, bExecute),
+            IProportionalDock proportionalDock => 
+                sourceDock != proportionalDock && DockDockable(sourceDock, targetDockable, proportionalDock, action, operation, bExecute),
             _ => false
         };
     }

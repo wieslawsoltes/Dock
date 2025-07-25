@@ -177,6 +177,11 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (targetDockable is ITool or IToolDock)
+        {
+            return false;
+        }
+
         return targetDockable switch
         {
             IRootDock _ => _dockService.DockDockableIntoWindow(sourceDocument, targetDockable, ScreenPosition, bExecute),

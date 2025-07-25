@@ -105,6 +105,7 @@
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}"
                   ContextMenu="{DynamicResource ToolTabStripItemContextMenu}"
+                  Padding="{TemplateBinding Padding}"
                   DockProperties.IsDragArea="True"
                   DockProperties.IsDropArea="True"
                   DockProperties.IsDockTarget="True"
@@ -112,18 +113,6 @@
                   DockProperties.IndicatorDockOperation="Fill">
             <DockableControl TrackingMode="Tab">
               <DockPanel Background="Transparent">
-                <Panel DockPanel.Dock="Left"
-                       Background="Transparent"
-                       Width="{Binding Padding.Left, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Right"
-                       Background="Transparent"
-                       Width="{Binding Padding.Right, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Top"
-                       Background="Transparent"
-                       Height="{Binding Padding.Top, RelativeSource={RelativeSource TemplatedParent}}" />
-                <Panel DockPanel.Dock="Bottom"
-                       Background="Transparent"
-                       Height="{Binding Padding.Bottom, RelativeSource={RelativeSource TemplatedParent}}" />
                 <StackPanel x:Name="DragTool"
                             Background="Transparent"
                             Orientation="Horizontal"

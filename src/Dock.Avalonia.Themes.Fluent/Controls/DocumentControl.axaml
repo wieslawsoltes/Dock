@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dmc="using:Dock.Model.Controls"
                     xmlns:core="using:Dock.Model.Core"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     x:CompileBindings="True"
                     x:DataType="dmc:IDocumentDock">
   <Design.PreviewWith>
@@ -33,6 +34,55 @@
         <TextBlock VerticalAlignment="Center"
                    Text="*"
                    Margin="0,0,2,0" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="CloseTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Button Command="{Binding Owner.Factory.CloseDockable}"
+                CommandParameter="{Binding}">
+          <Button.IsVisible>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="CanClose" />
+              <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+                <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+              </MultiBinding>
+            </MultiBinding>
+          </Button.IsVisible>
+          <Button.Styles>
+            <Style Selector="Button">
+              <Setter Property="BorderThickness" Value="0" />
+              <Setter Property="Padding" Value="0" />
+              <Setter Property="Margin" Value="0" />
+              <Setter Property="Width" Value="14" />
+              <Setter Property="Height" Value="14" />
+              <Setter Property="Background" Value="Transparent" />
+              <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+              </Style>
+            </Style>
+          </Button.Styles>
+          <Path x:Name="PART_ClosePath"
+                Classes.selected="{Binding $parent[DocumentTabStripItem].IsSelected}"
+                Classes.pointerover="{Binding $parent[DocumentTabStripItem].IsPointerOver}">
+            <Path.Styles>
+              <Style Selector="Path">
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="Stretch" Value="Uniform" />
+                <Setter Property="UseLayoutRounding" Value="False" />
+                <Setter Property="Data" Value="{DynamicResource DockIconCloseGeometry}" />
+              </Style>
+              <Style Selector="Path.selected">
+                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+              </Style>
+
+              <Style Selector="Path.pointerover">
+                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+              </Style>
+            </Path.Styles>
+          </Path>
+        </Button>
       </DataTemplate>
     </Setter>
 
@@ -76,7 +126,7 @@
         </DockPanel>
       </ControlTemplate>
     </Setter>
-    
+ 
     <Style Selector="^[TabsLayout=Top]/template/ Grid#PART_Grid">
       <Setter Property="DockPanel.Dock" Value="Top" />
       <Setter Property="Width" Value="NaN" />

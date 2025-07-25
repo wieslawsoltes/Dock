@@ -185,7 +185,8 @@ public class DocumentTabStrip : TabStrip
                             !WindowDragHelper.IsChildOfType<Button>(this, s);
 
                 if (!allow &&
-                    Items is { Count: 1 })
+                    Items is { } items && items.Count == 1 &&
+                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false })
                 {
                     allow = true;
                 }

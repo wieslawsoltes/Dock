@@ -202,11 +202,8 @@ public class DocumentTabStrip : TabStrip
             return;
         }
 
-        if (VisualRoot is Window win)
-        {
-            _windowDragHelper = CreateDragHelper();
-            _windowDragHelper.Attach(win);
-        }
+        _windowDragHelper = CreateDragHelper();
+        _windowDragHelper.Attach();
     }
 
     private void DetachFromWindow()

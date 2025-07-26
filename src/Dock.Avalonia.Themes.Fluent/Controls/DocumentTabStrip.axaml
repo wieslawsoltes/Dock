@@ -144,7 +144,7 @@
     <Style Selector="^[Orientation=Horizontal]">
       <Setter Property="ItemsPanel">
         <ItemsPanelTemplate>
-          <WrapPanel Orientation="Horizontal" ClipToBounds="False" />
+          <StackPanel Orientation="Horizontal" ClipToBounds="False" />
         </ItemsPanelTemplate>
       </Setter>
     </Style>

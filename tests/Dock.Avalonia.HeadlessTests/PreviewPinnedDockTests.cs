@@ -25,11 +25,11 @@ public class PreviewPinnedDockTests
         Assert.Equal(Alignment.Right, root.PinnedDock!.Alignment);
         Assert.Contains(tool, root.PinnedDock.VisibleDockables!);
         Assert.Equal(toolDock, tool.OriginalOwner);
-        Assert.Equal(toolDock, tool.Owner);
+        Assert.Equal(root.PinnedDock, tool.Owner);
 
         factory.HidePreviewingDockables(root);
 
-        Assert.Empty(root.PinnedDock.VisibleDockables!);
+        Assert.Null(root.PinnedDock);
         Assert.Equal(toolDock, tool.Owner);
         Assert.Null(tool.OriginalOwner);
     }

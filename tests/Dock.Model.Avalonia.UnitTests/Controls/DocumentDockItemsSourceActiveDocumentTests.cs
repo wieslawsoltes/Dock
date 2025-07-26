@@ -73,7 +73,8 @@ public class DocumentDockItemsSourceActiveDocumentTests
         var documentDock = new DocumentDock
         {
             Factory = factory,
-            Id = "TestDock"
+            Id = "TestDock",
+            DocumentTemplate = new DocumentTemplate() // Add DocumentTemplate
         };
 
         var documents = new ObservableCollection<TestDocumentModel>();
@@ -111,7 +112,8 @@ public class DocumentDockItemsSourceActiveDocumentTests
         var documentDock = new DocumentDock
         {
             Factory = factory,
-            Id = "TestDock"
+            Id = "TestDock",
+            DocumentTemplate = new DocumentTemplate() // Add DocumentTemplate
         };
 
         var documents = new ObservableCollection<TestDocumentModel>();
@@ -146,7 +148,8 @@ public class DocumentDockItemsSourceActiveDocumentTests
         var documentDock = new DocumentDock
         {
             Factory = factory,
-            Id = "TestDock"
+            Id = "TestDock",
+            DocumentTemplate = new DocumentTemplate() // Add DocumentTemplate
         };
 
         var documents = new ObservableCollection<TestDocumentModel>();

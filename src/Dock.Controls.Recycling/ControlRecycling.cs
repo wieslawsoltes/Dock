@@ -1,8 +1,11 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
+using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
+using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Recycling;
 
@@ -81,6 +84,12 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
 
         if (TryGetValue(key, out var control))
         {
+            // If the cached control is currently in the visual tree, remove it from its parent
+            if (control is Visual visual)
+            {
+                RemoveFromVisualParent(visual);
+            }
+            
             return control;
         }
 
@@ -103,5 +112,30 @@ public class ControlRecycling : AvaloniaObject, IControlRecycling
     public void Clear()
     {
         _cache.Clear();
+    }
+
+    /// <summary>
+    /// Removes a visual control from its current parent in the visual tree.
+    /// </summary>
+    /// <param name="visual">The visual to remove from its parent.</param>
+    private static void RemoveFromVisualParent(Visual visual)
+    {
+        var parent = visual.GetVisualParent();
+        
+        switch (parent)
+        {
+            case Panel panel when visual is Control control:
+                panel.Children.Remove(control);
+                break;
+            case ContentPresenter contentPresenter:
+                contentPresenter.Content = null;
+                break;
+            case ContentControl contentControl:
+                contentControl.Content = null;
+                break;
+            case Decorator decorator:
+                decorator.Child = null;
+                break;
+        }
     }
 }

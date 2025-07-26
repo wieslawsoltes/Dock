@@ -68,22 +68,22 @@ public abstract partial class FactoryBase
 
             if (rootDock.LeftPinnedDockables is not null)
             {
-                InitDockables(dockable, rootDock.LeftPinnedDockables);
+                InitPinnedDockables(rootDock.LeftPinnedDockables);
             }
 
             if (rootDock.RightPinnedDockables is not null)
             {
-                InitDockables(dockable, rootDock.RightPinnedDockables);
+                InitPinnedDockables(rootDock.RightPinnedDockables);
             }
 
             if (rootDock.TopPinnedDockables is not null)
             {
-                InitDockables(dockable, rootDock.TopPinnedDockables);
+                InitPinnedDockables(rootDock.TopPinnedDockables);
             }
 
             if (rootDock.BottomPinnedDockables is not null)
             {
-                InitDockables(dockable, rootDock.BottomPinnedDockables);
+                InitPinnedDockables(rootDock.BottomPinnedDockables);
             }
 
             if (rootDock.Windows is not null)
@@ -103,6 +103,14 @@ public abstract partial class FactoryBase
         foreach (var child in dockables)
         {
             InitDockable(child, dockable);
+        }
+    }
+
+    private void InitPinnedDockables(IList<IDockable> dockables)
+    {
+        foreach (var child in dockables)
+        {
+            InitDockable(child, child.Owner);
         }
     }
 

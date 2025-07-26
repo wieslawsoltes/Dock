@@ -7,7 +7,10 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
+using Dock.Avalonia.Internal;
 using Dock.Model.Core;
+using AvaloniaOrientation = Avalonia.Layout.Orientation;
 
 namespace Dock.Avalonia.Controls;
 
@@ -17,6 +20,39 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":active")]
 public class DocumentTabStripItem : TabStripItem
 {
+    private ItemDragHelper? _dragHelper;
+    private static DragAction ToDragAction(PointerEventArgs e)
+    {
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Alt))
+        {
+            return DragAction.Link;
+        }
+
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+        {
+            return DragAction.Move;
+        }
+
+        if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
+        {
+            return DragAction.Copy;
+        }
+
+        return DragAction.Move;
+    }
+
+    private void StartDockDrag(PointerEventArgs e)
+    {
+        var dockControl = this.FindAncestorOfType<DockControl>();
+        if (dockControl?.Layout?.Factory?.DockControls is { } dockControls
+            && dockControl.DockControlState is DockControlState state)
+        {
+            var position = e.GetPosition(dockControl);
+            var action = ToDragAction(e);
+            state.StartDrag(this, position, dockControl);
+            state.Process(position, default, EventType.Moved, action, dockControl, dockControls);
+        }
+    }
     /// <summary>
     /// Define the <see cref="IsActive"/> property.
     /// </summary>
@@ -34,7 +70,7 @@ public class DocumentTabStripItem : TabStripItem
 
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStripItem);
-        
+
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentTabStripItem"/> class.
     /// </summary>
@@ -50,6 +86,14 @@ public class DocumentTabStripItem : TabStripItem
 
         AddHandler(PointerPressedEvent, PressedHandler, RoutingStrategies.Tunnel);
         AddHandler(DoubleTappedEvent, DoubleTappedHandler, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        _dragHelper = new ItemDragHelper(
+            this,
+            () => Parent as ItemsControl,
+            () => (Parent as DocumentTabStrip)?.Orientation ?? AvaloniaOrientation.Horizontal,
+            dragOutside: StartDockDrag,
+            getBoundsContainer: () => this.FindAncestorOfType<DocumentTabStrip>());
+        _dragHelper.Attach();
     }
 
     /// <inheritdoc/>
@@ -59,6 +103,9 @@ public class DocumentTabStripItem : TabStripItem
 
         RemoveHandler(PointerPressedEvent, PressedHandler);
         RemoveHandler(DoubleTappedEvent, DoubleTappedHandler);
+
+        _dragHelper?.Detach();
+        _dragHelper = null;
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)
@@ -96,3 +143,4 @@ public class DocumentTabStripItem : TabStripItem
         PseudoClasses.Set(":active", isActive);
     }
 }
+

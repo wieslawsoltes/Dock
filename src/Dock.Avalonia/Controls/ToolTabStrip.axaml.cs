@@ -22,6 +22,7 @@ public class ToolTabStrip : TabStrip
     private Border? _borderLeftFill;
     private Border? _borderRightFill;
     private ItemsPresenter? _itemsPresenter;
+    private ScrollViewer? _scrollViewer;
 
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -57,9 +58,13 @@ public class ToolTabStrip : TabStrip
         _borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
         _borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
         _itemsPresenter = e.NameScope.Find<ItemsPresenter>("PART_ItemsPresenter");
+        _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
 
         _itemsPresenter?.GetObservable(Border.BoundsProperty)
             .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
+
+        _scrollViewer?.GetObservable(ScrollViewer.OffsetProperty)
+            .Subscribe(new AnonymousObserver<Vector>(_ => UpdateBorders()));
 
         this.GetObservable(SelectedItemProperty)
             .Subscribe(new AnonymousObserver<object?>(_ => UpdateBorders()));
@@ -115,13 +120,14 @@ public class ToolTabStrip : TabStrip
     {
         var selectedIndex = SelectedIndex;
         var bounds = _itemsPresenter?.Bounds ?? new Rect();
+        var scrollOffset = _scrollViewer?.Offset.X ?? 0.0;
         
         if (selectedIndex >= 0 && selectedIndex < Items.Count && Items.Count != 1)
         {
             var selectedTabStripItem = ContainerFromIndex(selectedIndex) as ToolTabStripItem;
             var width = selectedTabStripItem?.Bounds.Width ?? 0.0;
             var translateX = selectedTabStripItem?.RenderTransform?.Value.M31 ?? 0.0;
-            var x = (selectedTabStripItem?.Bounds.X ?? 0.0) + translateX;
+            var x = (selectedTabStripItem?.Bounds.X ?? 0.0) + translateX - scrollOffset;
             var leftMargin = new Thickness(0, 0, Bounds.Width - x, 0);
             var rightMargin = new Thickness(x + width, 0, 0, 0);
             _borderLeftFill?.SetCurrentValue(Border.MarginProperty, leftMargin);

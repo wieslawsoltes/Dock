@@ -8,6 +8,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Transformation;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Dock.Model.Core;
 using Dock.Settings;
 using Orientation = Avalonia.Layout.Orientation;
@@ -18,6 +20,7 @@ internal class ItemDragHelper
 {
     private readonly Control _owner;
     private readonly Func<ItemsControl?> _getItemsControl;
+    private readonly Func<Control?> _getBoundsContainer;
     private readonly Func<Orientation> _getOrientation;
     private readonly Func<double> _getHorizontalDragThreshold;
     private readonly Func<double> _getVerticalDragThreshold;
@@ -31,6 +34,12 @@ internal class ItemDragHelper
     private ItemsControl? _itemsControl;
     private Control? _draggedContainer;
     private bool _captured;
+    private DispatcherTimer? _autoScrollTimer;
+    private ScrollViewer? _currentScrollViewer;
+    private Vector _autoScrollVelocity;
+    private const double AutoScrollEdgeSize = 20.0;
+    private const double AutoScrollSpeed = 200.0; // pixels per second
+    private const double AutoScrollTimerInterval = 16.0; // ~60fps
 
     public ItemDragHelper(
         Control owner,
@@ -38,10 +47,12 @@ internal class ItemDragHelper
         Func<Orientation> getOrientation,
         Func<double>? getHorizontalDragThreshold = null,
         Func<double>? getVerticalDragThreshold = null,
-        Action<PointerEventArgs>? dragOutside = null)
+        Action<PointerEventArgs>? dragOutside = null,
+        Func<Control?>? getBoundsContainer = null)
     {
         _owner = owner;
         _getItemsControl = getItemsControl;
+        _getBoundsContainer = getBoundsContainer ?? (() => null);
         _getOrientation = getOrientation;
         _getHorizontalDragThreshold = getHorizontalDragThreshold ?? (() => DockSettings.MinimumHorizontalDragDistance);
         _getVerticalDragThreshold = getVerticalDragThreshold ?? (() => DockSettings.MinimumVerticalDragDistance);
@@ -62,6 +73,8 @@ internal class ItemDragHelper
         _owner.RemoveHandler(InputElement.PointerPressedEvent, PointerPressed);
         _owner.RemoveHandler(InputElement.PointerMovedEvent, PointerMoved);
         _owner.RemoveHandler(InputElement.PointerCaptureLostEvent, PointerCaptureLost);
+        
+        StopAutoScroll();
     }
 
     private void PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -114,6 +127,8 @@ internal class ItemDragHelper
         {
             return;
         }
+
+        StopAutoScroll();
 
         _draggedContainer?.ClearValue(Visual.ZIndexProperty);
         
@@ -244,6 +259,169 @@ internal class ItemDragHelper
         }
     }
 
+    private void StartAutoScroll(ScrollViewer scrollViewer, Vector velocity)
+    {
+        if (_autoScrollTimer?.IsEnabled == true && 
+            _currentScrollViewer == scrollViewer && 
+            _autoScrollVelocity.Equals(velocity))
+        {
+            return; // Already scrolling in the same direction
+        }
+
+        StopAutoScroll();
+
+        _currentScrollViewer = scrollViewer;
+        _autoScrollVelocity = velocity;
+
+        _autoScrollTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(AutoScrollTimerInterval)
+        };
+
+        _autoScrollTimer.Tick += (_, _) =>
+        {
+            if (_currentScrollViewer == null)
+            {
+                StopAutoScroll();
+                return;
+            }
+
+            var deltaTime = AutoScrollTimerInterval / 1000.0; // Convert to seconds
+            var deltaX = _autoScrollVelocity.X * deltaTime;
+            var deltaY = _autoScrollVelocity.Y * deltaTime;
+
+            var newOffsetX = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Width - _currentScrollViewer.Viewport.Width, 
+                _currentScrollViewer.Offset.X + deltaX));
+            var newOffsetY = Math.Max(0, Math.Min(_currentScrollViewer.Extent.Height - _currentScrollViewer.Viewport.Height, 
+                _currentScrollViewer.Offset.Y + deltaY));
+
+            _currentScrollViewer.Offset = new Vector(newOffsetX, newOffsetY);
+        };
+
+        _autoScrollTimer.Start();
+    }
+
+    private void StopAutoScroll()
+    {
+        if (_autoScrollTimer != null)
+        {
+            _autoScrollTimer.Stop();
+            _autoScrollTimer = null;
+        }
+        _currentScrollViewer = null;
+        _autoScrollVelocity = default;
+    }
+
+    private Vector CalculateAutoScrollVelocity(Point position, ScrollViewer scrollViewer)
+    {
+        var viewport = new Rect(scrollViewer.Viewport);
+        var velocityX = 0.0;
+        var velocityY = 0.0;
+
+        // Calculate horizontal auto-scroll
+        if (position.X < AutoScrollEdgeSize)
+        {
+            // Scroll left
+            var intensity = (AutoScrollEdgeSize - position.X) / AutoScrollEdgeSize;
+            velocityX = -AutoScrollSpeed * intensity;
+        }
+        else if (position.X > viewport.Width - AutoScrollEdgeSize)
+        {
+            // Scroll right  
+            var intensity = (position.X - (viewport.Width - AutoScrollEdgeSize)) / AutoScrollEdgeSize;
+            velocityX = AutoScrollSpeed * intensity;
+        }
+
+        // Calculate vertical auto-scroll
+        if (position.Y < AutoScrollEdgeSize)
+        {
+            // Scroll up
+            var intensity = (AutoScrollEdgeSize - position.Y) / AutoScrollEdgeSize;
+            velocityY = -AutoScrollSpeed * intensity;
+        }
+        else if (position.Y > viewport.Height - AutoScrollEdgeSize)
+        {
+            // Scroll down
+            var intensity = (position.Y - (viewport.Height - AutoScrollEdgeSize)) / AutoScrollEdgeSize;
+            velocityY = AutoScrollSpeed * intensity;
+        }
+
+        return new Vector(velocityX, velocityY);
+    }
+
+    private bool IsPositionWithinDragBounds(Point position, ItemsControl itemsControl)
+    {
+        // Use the bounds container (TabStrip) if provided, otherwise use ItemsControl
+        var boundsContainer = _getBoundsContainer() ?? itemsControl;
+        
+        // Get position relative to the bounds container
+        var containerPosition = position;
+        if (!ReferenceEquals(boundsContainer, itemsControl))
+        {
+            // Transform position from ItemsControl to bounds container coordinate space
+            var transform = itemsControl.TransformToVisual(boundsContainer);
+            if (transform != null)
+            {
+                containerPosition = transform.Value.Transform(position);
+            }
+        }
+        
+        var boundsRect = new Rect(boundsContainer.Bounds.Size);
+        
+        // Check if we have a ScrollViewer - look for it as a descendant of the TabStrip
+        // since the ScrollViewer is inside the TabStrip template, not above it
+        var scrollViewer = itemsControl.FindDescendantOfType<ScrollViewer>();
+        if (scrollViewer != null)
+        {
+            // For scrollable areas, we need to consider the full scrollable extent
+            var scrollViewerPosition = position;
+            if (!ReferenceEquals(scrollViewer, itemsControl))
+            {
+                var scrollTransform = itemsControl.TransformToVisual(scrollViewer);
+                if (scrollTransform != null)
+                {
+                    scrollViewerPosition = scrollTransform.Value.Transform(position);
+                }
+            }
+            
+            // Calculate auto-scroll velocity and start/stop auto-scrolling
+            var autoScrollVelocity = CalculateAutoScrollVelocity(scrollViewerPosition, scrollViewer);
+            if (autoScrollVelocity.Length > 0)
+            {
+                StartAutoScroll(scrollViewer, autoScrollVelocity);
+            }
+            else
+            {
+                StopAutoScroll();
+            }
+            
+            // Create bounds that include the full scrollable area
+            var scrollableBounds = new Rect(
+                -scrollViewer.Offset.X,
+                -scrollViewer.Offset.Y,
+                Math.Max(scrollViewer.Viewport.Width, scrollViewer.Extent.Width),
+                Math.Max(scrollViewer.Viewport.Height, scrollViewer.Extent.Height)
+            );
+            
+            // Check if position is within scrollable bounds
+            if (!scrollableBounds.Contains(scrollViewerPosition))
+            {
+                return false;
+            }
+            
+            // Also check if position is within the container bounds (TabStrip visual area)
+            return boundsRect.Contains(containerPosition);
+        }
+        else
+        {
+            // No scrolling, stop any auto-scroll that might be running
+            StopAutoScroll();
+        }
+        
+        // No scrolling, just check container bounds
+        return boundsRect.Contains(containerPosition);
+    }
+
     private void PointerMoved(object? sender, PointerEventArgs e)
     {
         var properties = e.GetCurrentPoint(_owner).Properties;
@@ -255,7 +433,7 @@ internal class ItemDragHelper
             }
 
             var position = e.GetPosition(_itemsControl);
-            if (!new Rect(_itemsControl.Bounds.Size).Contains(position))
+            if (!IsPositionWithinDragBounds(position, _itemsControl))
             {
                 _dragStarted = false;
                 Released();

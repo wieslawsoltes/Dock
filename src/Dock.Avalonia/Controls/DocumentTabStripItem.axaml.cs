@@ -91,7 +91,8 @@ public class DocumentTabStripItem : TabStripItem
             this,
             () => Parent as ItemsControl,
             () => (Parent as DocumentTabStrip)?.Orientation ?? AvaloniaOrientation.Horizontal,
-            dragOutside: StartDockDrag);
+            dragOutside: StartDockDrag,
+            getBoundsContainer: () => this.FindAncestorOfType<DocumentTabStrip>());
         _dragHelper.Attach();
     }
 

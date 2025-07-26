@@ -67,7 +67,8 @@ public class ToolTabStripItem : TabStripItem
             this,
             () => Parent as ItemsControl,
             () => AvaloniaOrientation.Horizontal,
-            dragOutside: StartDockDrag);
+            dragOutside: StartDockDrag,
+            getBoundsContainer: () => this.FindAncestorOfType<ToolTabStrip>());
         _dragHelper.Attach();
     }
 

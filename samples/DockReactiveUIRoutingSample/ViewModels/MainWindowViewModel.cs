@@ -21,11 +21,12 @@ public class MainWindowViewModel : ReactiveObject, IScreen
     public MainWindowViewModel()
     {
         _factory = new DockFactory(this);
-        Layout = _factory.CreateLayout();
-        if (Layout is { })
+        var layout = _factory.CreateLayout();
+        if (layout is not null)
         {
-            _factory.InitLayout(Layout);
-            Router.Navigate.Execute((IRoutableViewModel)Layout).Subscribe(new Action<object>(_ => { }));
+            _factory.InitLayout(layout);
+            Router.Navigate.Execute((IRoutableViewModel)layout).Subscribe(new Action<object>(_ => { }));
         }
+        Layout = layout;
     }
 }

@@ -32,6 +32,11 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     {
         if (_window is not null)
         {
+            // Ensure the content is properly detached before closing the window
+            if (_window.Content == _adorner)
+            {
+                _window.Content = null;
+            }
             _window.Close();
             _window = null;
         }
@@ -128,6 +133,11 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     {
         if (_window is not null)
         {
+            // Ensure the content is properly detached before closing the window
+            if (_window.Content == _adorner)
+            {
+                _window.Content = null;
+            }
             _window.Close();
             _window = null;
         }

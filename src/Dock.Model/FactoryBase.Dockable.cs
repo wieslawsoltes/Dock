@@ -339,6 +339,8 @@ public abstract partial class FactoryBase
         }
 
         RemoveAllVisibleDockables(rootDock.PinnedDock);
+
+        rootDock.PinnedDock = null;
     }
 
     /// <inheritdoc/>

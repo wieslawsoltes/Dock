@@ -1,6 +1,7 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -8,6 +9,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Reactive;
+using Avalonia.VisualTree;
 
 namespace Dock.Avalonia.Controls;
 
@@ -17,8 +19,10 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":create")]
 public class ToolTabStrip : TabStrip
 {
-    private IDisposable? _dispose1;
-    private IDisposable? _dispose2;
+    private readonly Dictionary<ToolTabStripItem, IDisposable[]> _containerObservables = new();
+    private Border? _borderLeftFill;
+    private Border? _borderRightFill;
+    private ItemsPresenter? _itemsPresenter;
 
     /// <summary>
     /// Defines the <see cref="CanCreateItem"/> property.
@@ -51,52 +55,90 @@ public class ToolTabStrip : TabStrip
     {
         base.OnApplyTemplate(e);
 
-        var borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
-        var borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
-        var itemsPresenter = e.NameScope.Find<ItemsPresenter>("PART_ItemsPresenter");
+        _borderLeftFill = e.NameScope.Find<Border>("PART_BorderLeftFill");
+        _borderRightFill = e.NameScope.Find<Border>("PART_BorderRightFill");
+        _itemsPresenter = e.NameScope.Find<ItemsPresenter>("PART_ItemsPresenter");
 
-        itemsPresenter?.GetObservable(Border.BoundsProperty)
-            .Subscribe(new AnonymousObserver<Rect>(bounds =>
-            {
-                UpdateBorders(SelectedIndex, bounds, borderLeftFill, borderRightFill);
-            }));
+        // Subscribe to items presenter bounds changes
+        _itemsPresenter?.GetObservable(Border.BoundsProperty)
+            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
 
+        // Subscribe to selected item changes
         this.GetObservable(SelectedItemProperty)
-            .Subscribe(new AnonymousObserver<object?>(selectedItem =>
-            {
-                UpdateBorders(SelectedIndex, itemsPresenter?.Bounds ?? new Rect(), borderLeftFill, borderRightFill);
+            .Subscribe(new AnonymousObserver<object?>(_ => UpdateBorders()));
 
-                _dispose1?.Dispose();
-                _dispose2?.Dispose();
-
-                if (selectedItem is null)
-                {
-                    return;
-                }
-
-                // TODO: Use generator events instead of SelectedItemProperty to get containers and hook observers.
-                var selectedTabStripItem = ContainerFromItem(selectedItem) as ToolTabStripItem;
-                _dispose1 = selectedTabStripItem?.GetObservable(Control.RenderTransformProperty)
-                    .Subscribe(new AnonymousObserver<ITransform?>(_ =>
-                    {
-                        UpdateBorders(SelectedIndex, itemsPresenter?.Bounds ?? new Rect(), borderLeftFill, borderRightFill);
-                    }));
-                _dispose2 = selectedTabStripItem?.GetObservable(Control.BoundsProperty)
-                    .Subscribe(new AnonymousObserver<Rect>(_ =>
-                    {
-                        UpdateBorders(SelectedIndex, itemsPresenter?.Bounds ?? new Rect(), borderLeftFill, borderRightFill);
-                    }));
-            }));
-
+        // Subscribe to bounds changes
         this.GetObservable(BoundsProperty)
-            .Subscribe(new AnonymousObserver<Rect>(_ =>
-            {
-                UpdateBorders(SelectedIndex, itemsPresenter?.Bounds ?? new Rect(), borderLeftFill, borderRightFill);
-            }));
+            .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
+
+        // Update borders initially
+        UpdateBorders();
     }
 
-    private void UpdateBorders(int selectedIndex, Rect bounds, Border? borderLeftFill, Border? borderRightFill)
+    /// <inheritdoc/>
+    protected override void PrepareContainerForItemOverride(Control container, object? item, int index)
     {
+        base.PrepareContainerForItemOverride(container, item, index);
+
+        if (container is ToolTabStripItem tabStripItem)
+        {
+            // Subscribe to container lifecycle events
+            tabStripItem.AttachedToVisualTree += OnContainerAttachedToVisualTree;
+            tabStripItem.DetachedFromVisualTree += OnContainerDetachedFromVisualTree;
+        }
+    }
+
+    private void OnContainerAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        if (sender is ToolTabStripItem tabStripItem)
+        {
+            // Unsubscribe from events first to avoid duplicates
+            if (_containerObservables.TryGetValue(tabStripItem, out var existingDisposables))
+            {
+                foreach (var disposable in existingDisposables)
+                {
+                    disposable?.Dispose();
+                }
+                _containerObservables.Remove(tabStripItem);
+            }
+
+            // Subscribe to container-specific observables for border updates
+            var renderTransformDisposable = tabStripItem.GetObservable(Control.RenderTransformProperty)
+                .Subscribe(new AnonymousObserver<ITransform?>(_ => UpdateBorders()));
+            
+            var boundsDisposable = tabStripItem.GetObservable(Control.BoundsProperty)
+                .Subscribe(new AnonymousObserver<Rect>(_ => UpdateBorders()));
+
+            // Store the disposables for this container
+            _containerObservables[tabStripItem] = new[] { renderTransformDisposable, boundsDisposable };
+        }
+    }
+
+    private void OnContainerDetachedFromVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        if (sender is ToolTabStripItem tabStripItem)
+        {
+            // Clean up observables when container is detached
+            if (_containerObservables.TryGetValue(tabStripItem, out var disposables))
+            {
+                foreach (var disposable in disposables)
+                {
+                    disposable?.Dispose();
+                }
+                _containerObservables.Remove(tabStripItem);
+            }
+
+            // Unsubscribe from lifecycle events
+            tabStripItem.AttachedToVisualTree -= OnContainerAttachedToVisualTree;
+            tabStripItem.DetachedFromVisualTree -= OnContainerDetachedFromVisualTree;
+        }
+    }
+
+    private void UpdateBorders()
+    {
+        var selectedIndex = SelectedIndex;
+        var bounds = _itemsPresenter?.Bounds ?? new Rect();
+        
         if (selectedIndex >= 0 && selectedIndex < Items.Count && Items.Count != 1)
         {
             var selectedTabStripItem = ContainerFromIndex(selectedIndex) as ToolTabStripItem;
@@ -110,16 +152,15 @@ public class ToolTabStrip : TabStrip
 
             var leftMargin = new Thickness(0, 0, Bounds.Width - x, 0);
             var rightMargin = new Thickness(x + width, 0, 0, 0);
-            borderLeftFill?.SetCurrentValue(Border.MarginProperty, leftMargin);
-            borderRightFill?.SetCurrentValue(Border.MarginProperty, rightMargin);
-
+            _borderLeftFill?.SetCurrentValue(Border.MarginProperty, leftMargin);
+            _borderRightFill?.SetCurrentValue(Border.MarginProperty, rightMargin);
         }
         else
         {
             var leftMargin = new Thickness(0, 0, bounds.Width, 0);
             var rightMargin = new Thickness(bounds.Width, 0, 0, 0);
-            borderLeftFill?.SetCurrentValue(Border.MarginProperty, leftMargin);
-            borderRightFill?.SetCurrentValue(Border.MarginProperty, rightMargin);
+            _borderLeftFill?.SetCurrentValue(Border.MarginProperty, leftMargin);
+            _borderRightFill?.SetCurrentValue(Border.MarginProperty, rightMargin);
         }
     }
 

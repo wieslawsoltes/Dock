@@ -44,20 +44,21 @@ public class MainWindowViewModel : ReactiveObject
         if (File.Exists(path))
         {
             using var stream = File.OpenRead(path);
-            var layout = _serializer.Load<IRootDock?>(stream);
-            if (layout is { })
+            var rootDockLayout = _serializer.Load<IRootDock?>(stream);
+            if (rootDockLayout is { })
             {
-                _factory.InitLayout(layout);
-                _state.Restore(layout);
-                Layout = layout;
+                _factory.InitLayout(rootDockLayout);
+                _state.Restore(rootDockLayout);
+                Layout = rootDockLayout;
                 return;
             }
         }
-        Layout = _factory.CreateLayout();
-        if (Layout is { })
+        var layout = _factory.CreateLayout();
+        if (layout is not null)
         {
-            _factory.InitLayout(Layout);
+            _factory.InitLayout(layout);
         }
+        Layout = layout;
     }
 
     public async Task SaveLayoutAsync()

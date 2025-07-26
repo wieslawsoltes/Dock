@@ -29,15 +29,13 @@ public class MainWindowViewModel : ReactiveObject
 
         DebugFactoryEvents(_factory);
 
-        Layout = _factory?.CreateLayout();
-        if (Layout is { })
+        var layout = _factory?.CreateLayout();
+        if (layout is not null)
         {
-            _factory?.InitLayout(Layout);
-            if (Layout is { } root)
-            {
-                root.Navigate.Execute("Home");
-            }
+            _factory?.InitLayout(layout);
+            layout.Navigate.Execute("Home");
         }
+        Layout = layout;
 
         NewLayout = ReactiveCommand.Create(ResetLayout);
     }

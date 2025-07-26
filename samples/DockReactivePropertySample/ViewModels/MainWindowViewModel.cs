@@ -27,9 +27,12 @@ public class MainWindowViewModel : ReactiveBase
 
         DebugFactoryEvents(_factory);
 
-        Layout = _factory?.CreateLayout();
-
-        InitLayout();
+        var layout = _factory?.CreateLayout();
+        if (layout is not null)
+        {
+            _factory?.InitLayout(layout);
+        }
+        Layout = layout;
 
         if (Layout is { } root)
         {

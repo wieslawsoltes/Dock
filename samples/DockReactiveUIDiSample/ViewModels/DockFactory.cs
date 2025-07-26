@@ -52,6 +52,13 @@ public class DockFactory : Factory
         root.ActiveDockable = proportionalDock;
         root.DefaultDockable = proportionalDock;
 
+        root.LeftPinnedDockables = CreateList<IDockable>();
+        root.RightPinnedDockables = CreateList<IDockable>();
+        root.TopPinnedDockables = CreateList<IDockable>();
+        root.BottomPinnedDockables = CreateList<IDockable>();
+
+        root.PinnedDock = null;
+
         return root;
     }
 

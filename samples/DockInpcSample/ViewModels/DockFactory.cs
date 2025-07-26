@@ -139,6 +139,13 @@ public class DockFactory : Factory
         rootDock.DefaultDockable = homeView;
         rootDock.VisibleDockables = CreateList<IDockable>(dashboardView, homeView);
 
+        rootDock.LeftPinnedDockables = CreateList<IDockable>();
+        rootDock.RightPinnedDockables = CreateList<IDockable>();
+        rootDock.TopPinnedDockables = CreateList<IDockable>();
+        rootDock.BottomPinnedDockables = CreateList<IDockable>();
+
+        rootDock.PinnedDock = null;
+
         _documentDock = documentDock;
         _rootDock = rootDock;
 

@@ -137,7 +137,7 @@
     </Style>
 
     <Style Selector="^[Orientation=Vertical]/template/ ScrollViewer#PART_ScrollViewer">
-      <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+      <Setter Property="VerticalScrollBarVisibility" Value="Hidden" />
       <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>
 

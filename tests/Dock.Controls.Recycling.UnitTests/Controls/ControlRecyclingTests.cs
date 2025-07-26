@@ -1,10 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Recycling;
 using Avalonia.Controls.Recycling.Model;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Xunit;
 
 namespace Dock.Controls.Recycling.UnitTests.Controls;
@@ -101,5 +103,60 @@ public class ControlRecyclingTests
         var result2 = recycling.Build(data2, null, parent);
 
         Assert.NotSame(result1, result2);
+    }
+
+    [AvaloniaFact]
+    public void Build_Removes_Cached_Control_From_Visual_Parent()
+    {
+        var recycling = new ControlRecycling();
+        var data = new object();
+        var control = new TextBlock { Background = Brushes.Red };
+        var parentPanel = new StackPanel();
+        
+        // Add the control to the parent panel
+        parentPanel.Children.Add(control);
+        
+        // Cache the control
+        recycling.Add(data, control);
+        
+        // Build should return the cached control and remove it from its parent
+        var result = recycling.Build(data, null, null);
+        
+        Assert.Same(control, result);
+        Assert.Empty(parentPanel.Children); // Parent should no longer contain the control
+    }
+
+    [AvaloniaFact]
+    public void Build_Handles_Cached_Control_Without_Visual_Parent()
+    {
+        var recycling = new ControlRecycling();
+        var data = new object();
+        var control = new TextBlock { Background = Brushes.Blue };
+        
+        // Cache the control without adding it to any parent first
+        recycling.Add(data, control);
+        
+        // Build should return the cached control
+        var result = recycling.Build(data, null, null);
+        
+        Assert.Same(control, result);
+    }
+
+    [AvaloniaFact]
+    public void Build_Reuses_Cached_Control_Successfully()
+    {
+        var recycling = new ControlRecycling();
+        var data = new object();
+        var control = new TextBlock { Background = Brushes.Green };
+        
+        // Cache the control
+        recycling.Add(data, control);
+        
+        // Build should return the cached control
+        var result1 = recycling.Build(data, null, null);
+        var result2 = recycling.Build(data, null, null);
+        
+        Assert.Same(control, result1);
+        Assert.Same(control, result2);
     }
 }

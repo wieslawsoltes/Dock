@@ -354,21 +354,18 @@ public abstract partial class FactoryBase
 
         HidePreviewingDockables(rootDock);
 
-        var alignment = (dockable.Owner as IToolDock)?.Alignment ?? Alignment.Unset;
+        var owner = dockable.Owner;
+        var alignment = (owner as IToolDock)?.Alignment ?? Alignment.Unset;
 
-        if (rootDock.PinnedDock == null)
-        {
-            rootDock.PinnedDock = CreateToolDock();
-            InitDockable(rootDock.PinnedDock, rootDock);
-        }
+        rootDock.PinnedDock ??= CreateToolDock();
         rootDock.PinnedDock.Alignment = alignment;
 
-        Debug.Assert(rootDock.PinnedDock != null);
+        RemoveAllVisibleDockables(rootDock.PinnedDock);
 
-        RemoveAllVisibleDockables(rootDock.PinnedDock!);
-
-        dockable.OriginalOwner = dockable.Owner;
+        dockable.OriginalOwner = owner;
         AddVisibleDockable(rootDock.PinnedDock!, dockable);
+ 
+        InitDockable(rootDock.PinnedDock, rootDock);
     }
 
     /// <inheritdoc/>

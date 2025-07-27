@@ -1,4 +1,5 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28315.86
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -59,16 +60,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample", "samples\DockMvvmSample\DockMvvmSample.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
-	ProjectSection(SolutionItems) = preProject
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71FD12F4-0BCB-422A-9FB0-4137E898E991}"
-	ProjectSection(SolutionItems) = preProject
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.UnitTests", "tests\Dock.Avalonia.UnitTests\Dock.Avalonia.UnitTests.csproj", "{2A9959DB-769C-4524-A817-507C554615EA}"
 EndProject
@@ -220,6 +217,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockReactivePropertySample", "samples\DockReactivePropertySample\DockReactivePropertySample.csproj", "{C4F9DDFA-309B-4819-896D-E423EDF16598}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Model.ReactiveProperty.UnitTests", "tests\Dock.Model.ReactiveProperty.UnitTests\Dock.Model.ReactiveProperty.UnitTests.csproj", "{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockMvvmSample.AppiumTests", "tests\DockMvvmSample.AppiumTests\DockMvvmSample.AppiumTests.csproj", "{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -803,10 +802,22 @@ Global
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Debug|x86.Build.0 = Debug|Any CPU
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|Any CPU.Build.0 = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.ActiveCfg = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.Build.0 = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.ActiveCfg = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.Build.0 = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.ActiveCfg = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.Build.0 = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.Build.0 = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|x64.Build.0 = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Debug|x86.Build.0 = Debug|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|x64.ActiveCfg = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|x64.Build.0 = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|x86.ActiveCfg = Release|Any CPU
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -862,8 +873,9 @@ Global
 		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{2172794F-EF5A-4737-89E6-0670A7122FC8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-																{C4F9DDFA-309B-4819-896D-E423EDF16598} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{C4F9DDFA-309B-4819-896D-E423EDF16598} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{F322C20D-5E1E-4398-AB5C-78FEF7C0AD53} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

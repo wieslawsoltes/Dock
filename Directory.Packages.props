@@ -43,5 +43,11 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
     <PackageVersion Include="Prism.Core" Version="9.0.537" />
     <PackageVersion Include="ReactiveProperty" Version="9.7.0" />
+    <PackageVersion Include="Appium.WebDriver" Version="4.2.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageVersion Include="Selenium.Support" Version="3.141.0" />
+    <PackageVersion Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
   </ItemGroup>
 </Project>

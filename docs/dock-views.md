@@ -2,6 +2,8 @@
 
 Dock renders `Document` and `Tool` instances using standard Avalonia data templating. This guide shows how to present your own controls for these items.
 
+> **💡 New to Dock content setup?** For a comprehensive guide with step-by-step examples and troubleshooting, see the [Document and Tool Content Guide](dock-content-guide.md).
+
 ## Using `DataTemplate`
 
 The easiest approach is to define templates for the view models representing your documents and tools. Add them to `App.axaml` or another resource dictionary:
@@ -60,4 +62,13 @@ The `[StaticViewLocator]` attribute generates the `s_views` dictionary at build 
 ```
 
 With either approach in place, documents and tools will show your custom controls when they are displayed.
+
+## Common Issues
+
+If you're experiencing problems with content setup such as:
+- "Unexpected content" errors when adding documents
+- Empty or blank document/tool tabs  
+- Missing dock types in XAML
+
+See the [Document and Tool Content Guide](dock-content-guide.md) for detailed troubleshooting and multiple setup approaches.
 

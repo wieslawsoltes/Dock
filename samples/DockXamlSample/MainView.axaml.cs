@@ -173,6 +173,12 @@ public partial class MainView : UserControl
         CloseLayout();
     }
 
+    private void FileItemsSourceExample_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var window = new ItemsSourceExampleWindow();
+        window.Show();
+    }
+
     private void ViewsMenuItem_OnClick(object? sender, RoutedEventArgs e)
     {
         if (sender is MenuItem { Tag: IDockable dockable } && DockControl?.Factory is { } factory)

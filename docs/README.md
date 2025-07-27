@@ -17,6 +17,8 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
 - [Views guide](dock-views.md) – Display content for documents and tools.
+- [Document and Tool Content Guide](dock-content-guide.md) – Comprehensive guide for setting up document and tool content with examples.
+- [ItemsSource Migration Guide](ITEMSSOURCE_MIGRATION_GUIDE.md) – Guide for migrating to the new ItemsSource functionality.
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.
@@ -52,6 +54,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [RootDockDebug window](dock-root-dock-debug.md) – Toggle a runtime inspector for Dock layouts.
 - [Debug views](dock-debug-views.md) – Reusable controls used by RootDockDebug.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
+- [Advanced Content Wrapper Pattern](dock-content-wrapper-pattern.md) – Separate domain models from docking infrastructure.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 
 ## Reference

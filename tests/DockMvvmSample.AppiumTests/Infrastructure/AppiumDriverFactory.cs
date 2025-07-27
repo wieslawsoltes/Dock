@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using DockMvvmSample.AppiumTests.Configuration;
@@ -10,11 +9,9 @@ using OpenQA.Selenium.Appium.Windows;
 
 namespace DockMvvmSample.AppiumTests.Infrastructure;
 
-public record DriverResult(IWebDriver Driver, Process? AppProcess);
-
 public static class AppiumDriverFactory
 {
-    public static DriverResult CreateDriver(TestConfiguration config)
+    public static IWebDriver CreateDriver(TestConfiguration config)
     {
         var options = new AppiumOptions();
         
@@ -55,14 +52,29 @@ public static class AppiumDriverFactory
         }
     }
 
-
-
-    private static DriverResult CreateWindowsDriver(TestConfiguration config, AppiumOptions options)
+    private static IWebDriver CreateWindowsDriver(TestConfiguration config, AppiumOptions options)
     {
-        // Start the DockMvvmSample application
-        var appProcess = StartApplication(config);
+        // For Windows, we still need to start the application manually since Windows driver doesn't handle this
+        if (!File.Exists(config.DockMvvmSample.ExecutablePath))
+        {
+            throw new FileNotFoundException($"DockMvvmSample executable not found at: {config.DockMvvmSample.ExecutablePath}");
+        }
+
+        var startInfo = new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = config.DockMvvmSample.ExecutablePath,
+            WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
+            UseShellExecute = false,
+            CreateNoWindow = false
+        };
         
-        // Wait a moment for the app to start
+        var process = System.Diagnostics.Process.Start(startInfo);
+        if (process == null)
+        {
+            throw new InvalidOperationException("Failed to start the DockMvvmSample application");
+        }
+        
+        // Wait for the app to start
         Thread.Sleep(2000);
 
         // Create the Windows driver
@@ -72,28 +84,32 @@ public static class AppiumDriverFactory
         // Set implicit wait
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
         
-        return new DriverResult(driver, appProcess);
+        return driver;
     }
 
-    private static DriverResult CreateMacDriver(TestConfiguration config, AppiumOptions options)
+    private static IWebDriver CreateMacDriver(TestConfiguration config, AppiumOptions options)
     {
-        // Launch the app bundle using standard macOS approach
-        var appProcess = StartApplication(config);
-        
-        // Standard wait for app initialization
-        Thread.Sleep(3000);
-
-        // Set app bundle path for proper app targeting
         var appBundlePath = config.DockMvvmSample.ExecutablePath;
+        
+        // Validate app bundle exists
+        if (!Directory.Exists(appBundlePath))
+        {
+            throw new DirectoryNotFoundException($"DockMvvmSample app bundle not found at: {appBundlePath}");
+        }
+        
+        // Configure app bundle for Appium Mac2 driver - let Appium handle app lifecycle
         if (appBundlePath.EndsWith(".app"))
         {
             options.AddAdditionalCapability("appium:bundleId", "com.avaloniaui.dockmvvmsample");
             options.AddAdditionalCapability("appium:app", appBundlePath);
         }
 
-        // Standard Mac2 automation capabilities
+        // Standard Mac2 automation capabilities for better stability
         options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
         options.AddAdditionalCapability("appium:waitForQuiescence", false);
+        
+        // Let Appium handle app launching and management
+        options.AddAdditionalCapability("appium:noReset", false);
 
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);
         var driver = new MacDriver<AppiumWebElement>(serverUri, options);
@@ -101,75 +117,6 @@ public static class AppiumDriverFactory
         // Set implicit wait
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
         
-        return new DriverResult(driver, appProcess);
-    }
-
-    private static Process StartApplication(TestConfiguration config)
-    {
-        var executablePath = config.DockMvvmSample.ExecutablePath;
-        
-        // Handle macOS app bundles
-        if (executablePath.EndsWith(".app"))
-        {
-            if (!Directory.Exists(executablePath))
-            {
-                throw new DirectoryNotFoundException($"DockMvvmSample app bundle not found at: {executablePath}");
-            }
-            
-            // Use 'open' command to launch macOS app bundle
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = "open",
-                Arguments = $"\"{executablePath}\"",
-                WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
-                UseShellExecute = false,
-                CreateNoWindow = false
-            };
-            
-            SetMacOSEnvironment(startInfo);
-            var process = Process.Start(startInfo);
-            if (process == null)
-            {
-                throw new InvalidOperationException("Failed to start the DockMvvmSample application");
-            }
-            return process;
-        }
-        else
-        {
-            // Regular executable file
-            if (!File.Exists(executablePath))
-            {
-                throw new FileNotFoundException($"DockMvvmSample executable not found at: {executablePath}");
-            }
-
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = executablePath,
-                WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
-                UseShellExecute = false,
-                CreateNoWindow = false
-            };
-            
-            SetMacOSEnvironment(startInfo);
-            var process = Process.Start(startInfo);
-            if (process == null)
-            {
-                throw new InvalidOperationException("Failed to start the DockMvvmSample application");
-            }
-            return process;
-        }
-    }
-
-    private static void SetMacOSEnvironment(ProcessStartInfo startInfo)
-    {
-        // On macOS, set environment variables for GUI applications
-        if (ConfigurationHelper.IsMacOS)
-        {
-            startInfo.EnvironmentVariables["DISPLAY"] = ":0";
-            startInfo.EnvironmentVariables["NSHighResolutionCapable"] = "YES";
-            // Enable accessibility for Avalonia applications
-            startInfo.EnvironmentVariables["AVALONIA_OSX_ENABLE_ACCESSIBILITY"] = "1";
-            startInfo.EnvironmentVariables["NSApplication"] = "1";
-        }
+        return driver;
     }
 } 

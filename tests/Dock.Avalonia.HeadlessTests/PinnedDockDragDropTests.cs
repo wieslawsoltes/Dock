@@ -192,7 +192,7 @@ public class PinnedDockDragDropTests
     #region Same-Side Reordering Tests
 
     [AvaloniaFact]
-    public void ValidateTool_SameSidePinned_UsesNormalDocking()
+    public void ValidateTool_SameSidePinned_PreventNormalDocking()
     {
         var (factory, root, _, _) = CreateTestLayout();
         var sourceTool = CreatePinnedTool(factory, root, Alignment.Left);
@@ -201,7 +201,7 @@ public class PinnedDockDragDropTests
 
         var result = manager.ValidateTool(sourceTool, targetTool, DragAction.Move, DockOperation.Fill, bExecute: false);
 
-        Assert.True(result);
+        Assert.False(result);
         // Both should still be in the same collection
         Assert.Contains(sourceTool, root.LeftPinnedDockables!);
         Assert.Contains(targetTool, root.LeftPinnedDockables!);

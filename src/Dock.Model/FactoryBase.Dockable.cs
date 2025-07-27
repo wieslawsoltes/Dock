@@ -367,6 +367,9 @@ public abstract partial class FactoryBase
 
         rootDock.PinnedDock ??= CreateToolDock();
         rootDock.PinnedDock.Alignment = alignment;
+        
+        // Disable dropping into the preview dock since it's only for preview purposes
+        rootDock.PinnedDock.CanDrop = false;
 
         RemoveAllVisibleDockables(rootDock.PinnedDock);
 

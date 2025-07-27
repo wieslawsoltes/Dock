@@ -176,7 +176,7 @@ public class DockManager : IDockManager
         }
 
         // Check if target tool is pinned - if so, pin the source tool instead of docking normally
-        if (bExecute && targetTool.Owner?.Factory is { } factory)
+        if (targetTool.Owner?.Factory is { } factory)
         {
             if (factory.IsDockablePinned(targetTool))
             {
@@ -186,20 +186,27 @@ public class DockManager : IDockManager
                 // Check if source is also pinned
                 if (factory.IsDockablePinned(sourceTool))
                 {
+                    // Same alignment - prevent normal docking, reordering should be handled by ItemDragHelper
+                    if (sourceAlignment == targetAlignment)
+                    {
+                        return false;
+                    }
+                    
                     // Move from one pinned side to another
-                    if (sourceAlignment != targetAlignment)
+                    if (bExecute)
                     {
                         MovePinnedDockable(sourceTool, sourceAlignment, targetAlignment, factory);
-                        return true;
                     }
-                    // Same alignment - use normal docking behavior for reordering within same side
-                    return _dockService.DockDockableIntoDockable(sourceTool, targetTool, action, bExecute);
+                    return true;
                 }
                 else
                 {
                     // Set source tool alignment to match target's pin alignment before pinning
-                    SetToolAlignment(sourceTool, targetAlignment);
-                    factory.PinDockable(sourceTool);
+                    if (bExecute)
+                    {
+                        SetToolAlignment(sourceTool, targetAlignment);
+                        factory.PinDockable(sourceTool);
+                    }
                     return true;
                 }
             }

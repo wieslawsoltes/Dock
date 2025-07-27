@@ -17,7 +17,9 @@
       <Button Content="Clear All" Command="{Binding ClearAllCommand}" />
     </StackPanel>
     
-    <!-- Simple DockControl setup focused on ItemsSource -->
+    <!-- Simple DockControl setup focused on ItemsSource 
+         Note: Documents created via ItemsSource can be safely detached to other docks
+         without causing crashes when the source collection is modified. -->
     <DockControl Grid.Row="1" x:Name="DockControl" InitializeLayout="True" InitializeFactory="True">
       
       <DockControl.Factory>

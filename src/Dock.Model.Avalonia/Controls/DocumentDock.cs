@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections;
@@ -16,6 +16,7 @@ using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Core.Events;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -68,6 +69,9 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         
         // Subscribe to ItemsSource property changes
         _itemsSourceSubscription = this.GetObservable(ItemsSourceProperty).Subscribe(new AnonymousObserver<IEnumerable?>(OnItemsSourceChanged));
+        
+        // Subscribe to factory events to track when our generated documents are moved/removed
+        this.GetObservable(FactoryProperty).Subscribe(new AnonymousObserver<IFactory?>(OnFactoryChanged));
     }
 
     /// <summary>
@@ -80,6 +84,10 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
             // Unsubscribe from ItemsSource changes
             _itemsSourceSubscription?.Dispose();
             _itemsSourceSubscription = null;
+
+            // Unsubscribe from factory events
+            _factoryEventSubscription?.Dispose();
+            _factoryEventSubscription = null;
 
             // Unsubscribe from collection changes
             if (_currentCollectionChanged != null)
@@ -410,7 +418,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
         if (documentToRemove != null)
         {
             _generatedDocuments.Remove(documentToRemove);
-            VisibleDockables?.Remove(documentToRemove);
+            
+            // Only remove from VisibleDockables if this dock still owns the document
+            if (VisibleDockables != null && documentToRemove.Owner == this)
+            {
+                VisibleDockables.Remove(documentToRemove);
+            }
         }
     }
 
@@ -418,11 +431,14 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
     {
         if (VisibleDockables != null)
         {
-            // Remove all generated documents from VisibleDockables
+            // Remove all generated documents from VisibleDockables, but only if they're still owned by this dock
             var documentsToRemove = _generatedDocuments.ToList();
             foreach (var document in documentsToRemove)
             {
-                VisibleDockables.Remove(document);
+                if (document.Owner == this)
+                {
+                    VisibleDockables.Remove(document);
+                }
             }
         }
 
@@ -463,5 +479,80 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 
         // Default to true
         return true;
+    }
+
+    private IDisposable? _factoryEventSubscription;
+
+    /// <summary>
+    /// Helper class for creating disposables from actions.
+    /// </summary>
+    private sealed class ActionDisposable : IDisposable
+    {
+        private readonly Action _dispose;
+
+        public ActionDisposable(Action dispose) => _dispose = dispose;
+
+        public void Dispose() => _dispose();
+    }
+
+    /// <summary>
+    /// Helper class for composing multiple disposables.
+    /// </summary>
+    private sealed class CompositeDisposable : IDisposable
+    {
+        private readonly IDisposable[] _disposables;
+
+        public CompositeDisposable(params IDisposable[] disposables) => _disposables = disposables;
+
+        public void Dispose()
+        {
+            foreach (var disposable in _disposables)
+            {
+                disposable?.Dispose();
+            }
+        }
+    }
+
+    private void OnFactoryChanged(IFactory? factory)
+    {
+        // Unsubscribe from old factory events
+        _factoryEventSubscription?.Dispose();
+        _factoryEventSubscription = null;
+
+        if (factory != null)
+        {
+            // Subscribe to factory events to track when our generated documents are moved or removed
+            var disposables = new List<IDisposable>();
+            
+            factory.DockableRemoved += OnFactoryDockableRemoved;
+            disposables.Add(new ActionDisposable(() => factory.DockableRemoved -= OnFactoryDockableRemoved));
+            
+            factory.DockableMoved += OnFactoryDockableMoved;
+            disposables.Add(new ActionDisposable(() => factory.DockableMoved -= OnFactoryDockableMoved));
+            
+                         _factoryEventSubscription = new CompositeDisposable(disposables.ToArray());
+        }
+    }
+
+    private void OnFactoryDockableRemoved(object? sender, DockableRemovedEventArgs e)
+    {
+        // If a document we generated was removed, clean it up from our tracking
+        if (e.Dockable != null && _generatedDocuments.Contains(e.Dockable))
+        {
+            _generatedDocuments.Remove(e.Dockable);
+        }
+    }
+
+    private void OnFactoryDockableMoved(object? sender, DockableMovedEventArgs e)
+    {
+        // If a document we generated was moved to a different dock, stop tracking it
+        if (e.Dockable != null && _generatedDocuments.Contains(e.Dockable))
+        {
+            // Check if the document is no longer owned by this dock
+            if (e.Dockable.Owner != this)
+            {
+                _generatedDocuments.Remove(e.Dockable);
+            }
+        }
     }
 }

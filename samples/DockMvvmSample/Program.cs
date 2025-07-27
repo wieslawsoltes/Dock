@@ -19,5 +19,11 @@ internal class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace()
+            .With(new MacOSPlatformOptions 
+            { 
+                ShowInDock = true,
+                DisableDefaultApplicationMenuItems = false,
+                DisableNativeMenus = false
+            });
 }

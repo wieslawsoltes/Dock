@@ -8,6 +8,7 @@ using Dock.Avalonia.Diagnostics;
 using DockMvvmSample.Themes;
 using DockMvvmSample.ViewModels;
 using DockMvvmSample.Views;
+using Avalonia.Automation;
 
 namespace DockMvvmSample;
 

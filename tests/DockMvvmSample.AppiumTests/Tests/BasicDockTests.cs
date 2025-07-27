@@ -30,22 +30,50 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Try to find all windows
-            var allWindows = Driver.FindElements(By.XPath("//*[@AXRole='AXWindow']"));
-            _output.WriteLine($"Found {allWindows.Count} windows:");
+            // Try to find app window using standard approach
+            var appWindows = Driver.FindElements(By.XPath("//XCUIElementTypeWindow"));
+            _output.WriteLine($"Found {appWindows.Count} app windows:");
             
-            for (int i = 0; i < allWindows.Count; i++)
+            for (int i = 0; i < appWindows.Count; i++)
             {
                 try
                 {
-                    var window = allWindows[i];
-                    var name = window.GetAttribute("AXTitle") ?? window.GetAttribute("name") ?? "No Name";
-                    var role = window.GetAttribute("AXRole") ?? "No Role";
-                    _output.WriteLine($"  Window {i}: Name='{name}', Role='{role}'");
+                    var window = appWindows[i];
+                    var name = window.GetAttribute("name") ?? window.GetAttribute("title") ?? "No Name";
+                    var visible = window.GetAttribute("visible") ?? "unknown";
+                    _output.WriteLine($"  Window {i}: Name='{name}', Visible='{visible}'");
                 }
                 catch (Exception ex)
                 {
                     _output.WriteLine($"  Window {i}: Error getting info - {ex.Message}");
+                }
+            }
+            
+            // Try to find elements by automation ID using standard selectors
+            try
+            {
+                var mainWindow = Driver.FindElement(By.Id("MainWindow"));
+                _output.WriteLine("✓ Found MainWindow by Id");
+                
+                var mainMenu = Driver.FindElement(By.Id("MainMenu"));
+                _output.WriteLine("✓ Found MainMenu by Id");
+                
+                var fileMenu = Driver.FindElement(By.Id("FileMenu"));
+                _output.WriteLine("✓ Found FileMenu by Id");
+            }
+            catch (Exception ex)
+            {
+                _output.WriteLine($"Could not find elements by Id: {ex.Message}");
+                
+                // Fallback: try with XPath
+                try
+                {
+                    var mainWindow = Driver.FindElement(By.XPath("//*[@identifier='MainWindow']"));
+                    _output.WriteLine("✓ Found MainWindow by XPath identifier");
+                }
+                catch (Exception ex2)
+                {
+                    _output.WriteLine($"Could not find MainWindow by XPath: {ex2.Message}");
                 }
             }
             
@@ -72,17 +100,17 @@ public class BasicDockTests : BaseTest
             Thread.Sleep(5000);
             
             // Try again after waiting
-            allWindows = Driver.FindElements(By.XPath("//*[@AXRole='AXWindow']"));
-            _output.WriteLine($"\nAfter 5 second wait, found {allWindows.Count} windows:");
+            appWindows = Driver.FindElements(By.XPath("//XCUIElementTypeWindow"));
+            _output.WriteLine($"\nAfter 5 second wait, found {appWindows.Count} windows:");
             
-            for (int i = 0; i < allWindows.Count; i++)
+            for (int i = 0; i < appWindows.Count; i++)
             {
                 try
                 {
-                    var window = allWindows[i];
-                    var name = window.GetAttribute("AXTitle") ?? window.GetAttribute("name") ?? "No Name";
-                    var role = window.GetAttribute("AXRole") ?? "No Role";
-                    _output.WriteLine($"  Window {i}: Name='{name}', Role='{role}'");
+                    var window = appWindows[i];
+                    var name = window.GetAttribute("name") ?? window.GetAttribute("title") ?? "No Name";
+                    var visible = window.GetAttribute("visible") ?? "unknown";
+                    _output.WriteLine($"  Window {i}: Name='{name}', Visible='{visible}'");
                 }
                 catch (Exception ex)
                 {
@@ -107,10 +135,10 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Create a new system-wide driver
-            var systemDriver = AppiumDriverFactory.CreateSystemWideMacDriver(Configuration).Driver;
+            // Use the main driver for system-wide access
+            var systemDriver = Driver;
             
-            _output.WriteLine("System-wide driver created successfully");
+            _output.WriteLine("Using main driver for system-wide access");
             
             // Try to find all applications
             var allApps = systemDriver.FindElements(By.XPath("//*[@AXRole='AXApplication']"));
@@ -204,8 +232,8 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Create a new system-wide driver
-            var systemDriver = AppiumDriverFactory.CreateSystemWideMacDriver(Configuration).Driver;
+            // Use main driver for system access
+            var systemDriver = Driver;
             
             // Get all elements
             var allElements = systemDriver.FindElements(By.XPath("//*"));
@@ -290,8 +318,8 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Create a new system-wide driver
-            var systemDriver = AppiumDriverFactory.CreateSystemWideMacDriver(Configuration).Driver;
+            // Use main driver for system access
+            var systemDriver = Driver;
             
             // Get all elements
             var allElements = systemDriver.FindElements(By.XPath("//*"));
@@ -379,8 +407,8 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Create a system-wide driver
-            var systemDriver = AppiumDriverFactory.CreateSystemWideMacDriver(Configuration).Driver;
+            // Use main driver for system access
+            var systemDriver = Driver;
             
             _output.WriteLine("System-wide driver created successfully");
             
@@ -478,8 +506,8 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Create a system-wide driver
-            var systemDriver = AppiumDriverFactory.CreateSystemWideMacDriver(Configuration).Driver;
+            // Use main driver for system access
+            var systemDriver = Driver;
             
             // Get initial window count
             var initialWindows = systemDriver.FindElements(By.XPath("//*[@elementType='55']"));

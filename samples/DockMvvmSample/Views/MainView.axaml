@@ -17,20 +17,38 @@
     <StreamGeometry x:Key="DarkTheme">M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Zm0-2V4a8 8 0 1 1 0 16Z</StreamGeometry>
   </UserControl.Resources>
   <Grid RowDefinitions="Auto,*,25" ColumnDefinitions="Auto,*" Background="Transparent">
-    <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
-      <MenuItem Header="_File">
-        <MenuItem Header="_New Layout" Command="{Binding NewLayout}" />
+    <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top"
+          AutomationProperties.AutomationId="MainMenu"
+          AutomationProperties.Name="Main Menu">
+      <MenuItem Header="_File"
+                AutomationProperties.AutomationId="FileMenu"
+                AutomationProperties.Name="File Menu">
+        <MenuItem Header="_New Layout" Command="{Binding NewLayout}"
+                  AutomationProperties.AutomationId="NewLayoutMenuItem"
+                  AutomationProperties.Name="New Layout" />
         <Separator/>
-        <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
+        <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick"
+                  AutomationProperties.AutomationId="OpenLayoutMenuItem"
+                  AutomationProperties.Name="Open Layout" />
         <Separator/>
-        <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
+        <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick"
+                  AutomationProperties.AutomationId="SaveLayoutMenuItem"
+                  AutomationProperties.Name="Save Layout" />
         <Separator/>
-        <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
+        <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick"
+                  AutomationProperties.AutomationId="CloseLayoutMenuItem"
+                  AutomationProperties.Name="Close Layout" />
       </MenuItem>
-      <MenuItem Header="_Window" DataContext="{Binding Layout}">
-        <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}" />
+      <MenuItem Header="_Window" DataContext="{Binding Layout}"
+                AutomationProperties.AutomationId="WindowMenu"
+                AutomationProperties.Name="Window Menu">
+        <MenuItem Header="_Exit Windows" Command="{Binding ExitWindows}"
+                  AutomationProperties.AutomationId="ExitWindowsMenuItem"
+                  AutomationProperties.Name="Exit Windows" />
         <Separator />
-        <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}" />
+        <MenuItem Header="_Show Windows" Command="{Binding ShowWindows}"
+                  AutomationProperties.AutomationId="ShowWindowsMenuItem"
+                  AutomationProperties.Name="Show Windows" />
       </MenuItem>
     </Menu>
     <Panel x:Name="ToolBar" DataContext="{Binding Layout}" Grid.Row="0" Grid.Column="1">
@@ -57,20 +75,36 @@
             <Setter Property="Padding" Value="4" />
           </Style>
         </Grid.Styles>
-        <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
-        <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1" />
-        <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
+        <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0"
+                AutomationProperties.AutomationId="BackButton"
+                AutomationProperties.Name="Back" />
+        <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1"
+                AutomationProperties.AutomationId="ForwardButton"
+                AutomationProperties.Name="Forward" />
+        <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2"
+                AutomationProperties.AutomationId="DashboardButton"
+                AutomationProperties.Name="Dashboard" />
         <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}"
-                Grid.Column="3" />
-        <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
-        <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
-        <Button x:Name="ThemeButton" Grid.Column="6" Background="Transparent">
+                Grid.Column="3"
+                AutomationProperties.AutomationId="HomeButton"
+                AutomationProperties.Name="Home" />
+        <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4"
+                 AutomationProperties.AutomationId="NavigationTextBox"
+                 AutomationProperties.Name="Navigation Text Box" />
+        <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5"
+                AutomationProperties.AutomationId="NavigateButton"
+                AutomationProperties.Name="Navigate" />
+        <Button x:Name="ThemeButton" Grid.Column="6" Background="Transparent"
+                AutomationProperties.AutomationId="ThemeButton"
+                AutomationProperties.Name="Theme Toggle">
           <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
         </Button>
       </Grid>
     </Panel>
     <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
-                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                     AutomationProperties.AutomationId="MainDockControl"
+                     AutomationProperties.Name="Main Docking Area" />
     <Panel DataContext="{Binding Layout.ActiveDockable}"
            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
       <TextBlock Text="{Binding FocusedDockable, FallbackValue={}}"

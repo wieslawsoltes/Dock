@@ -14,6 +14,22 @@
   <PropertyGroup>
     <PublishAot>true</PublishAot>
   </PropertyGroup>
+  
+  <!-- macOS App Bundle Properties -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64' OR '$(RuntimeIdentifier)' == 'osx-arm64'">
+    <UseAppHost>true</UseAppHost>
+    <CFBundleName>DockMvvmSample</CFBundleName>
+    <CFBundleDisplayName>Dock Avalonia Demo</CFBundleDisplayName>
+    <CFBundleIdentifier>com.avaloniaui.dockmvvmsample</CFBundleIdentifier>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
+    <CFBundleShortVersionString>1.0</CFBundleShortVersionString>
+    <CFBundlePackageType>APPL</CFBundlePackageType>
+    <CFBundleSignature>????</CFBundleSignature>
+    <CFBundleExecutable>DockMvvmSample</CFBundleExecutable>
+    <NSPrincipalClass>NSApplication</NSPrincipalClass>
+    <NSHighResolutionCapable>true</NSHighResolutionCapable>
+    <LSMinimumSystemVersion>10.15</LSMinimumSystemVersion>
+  </PropertyGroup>
 
   <Import Project="..\..\build\ReferenceAssemblies.props" />
   <Import Project="..\..\build\Avalonia.props" />

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIconFile</key>
+    <string>DockMvvmSample.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.avaloniaui.dockmvvmsample</string>
+    <key>CFBundleName</key>
+    <string>DockMvvmSample</string>
+    <key>CFBundleDisplayName</key>
+    <string>Dock Avalonia Demo</string>
+    <key>CFBundleVersion</key>
+    <string>1.0.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.15</string>
+    <key>CFBundleExecutable</key>
+    <string>DockMvvmSample</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+    <key>NSRequiresAquaSystemAppearance</key>
+    <false/>
+    <!-- Accessibility and Automation Support -->
+    <key>NSAccessibilityUsageDescription</key>
+    <string>This application uses accessibility features for automated testing.</string>
+    <!-- Allow automation testing -->
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This application allows automation for testing purposes.</string>
+</dict>
+</plist> 

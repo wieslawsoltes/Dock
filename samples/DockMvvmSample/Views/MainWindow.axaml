@@ -17,6 +17,8 @@
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
         Title="Dock Avalonia Demo" Height="680" Width="1200"
+        AutomationProperties.AutomationId="MainWindow"
+        AutomationProperties.Name="Dock Avalonia Demo"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome">
   <Window.Resources>

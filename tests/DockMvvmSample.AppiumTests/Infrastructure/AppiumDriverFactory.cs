@@ -55,32 +55,7 @@ public static class AppiumDriverFactory
         }
     }
 
-    public static DriverResult CreateSystemWideMacDriver(TestConfiguration config)
-    {
-        var options = new AppiumOptions();
-        
-        // Set standard W3C capabilities
-        options.AddAdditionalCapability("platformName", "Mac");
-        options.AddAdditionalCapability("appium:automationName", "Mac2");
-        
-        // System-wide capabilities - don't launch any specific app
-        options.AddAdditionalCapability("appium:systemWide", true);
-        options.AddAdditionalCapability("appium:systemPort", 8200);
-        options.AddAdditionalCapability("appium:skipLogCapture", true);
-        options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
-        options.AddAdditionalCapability("appium:waitForQuiescence", false);
-        options.AddAdditionalCapability("appium:launchTimeout", 30000);
-        options.AddAdditionalCapability("appium:sessionStartupTimeout", 30000);
-        options.AddAdditionalCapability("appium:newCommandTimeout", config.AppiumSettings.CommandTimeout);
 
-        var serverUri = new Uri(config.AppiumSettings.ServerUrl);
-        var driver = new MacDriver<AppiumWebElement>(serverUri, options);
-        
-        // Set implicit wait
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
-        
-        return new DriverResult(driver, null);
-    }
 
     private static DriverResult CreateWindowsDriver(TestConfiguration config, AppiumOptions options)
     {
@@ -102,21 +77,23 @@ public static class AppiumDriverFactory
 
     private static DriverResult CreateMacDriver(TestConfiguration config, AppiumOptions options)
     {
-        // For macOS with Mac2 automation, launch the app externally first
+        // Launch the app bundle using standard macOS approach
         var appProcess = StartApplication(config);
         
-        // Wait for the app to start and become ready - Avalonia apps need more time on macOS
-        Thread.Sleep(5000);
+        // Standard wait for app initialization
+        Thread.Sleep(3000);
 
-        // Add capabilities for Mac2 automation
+        // Set app bundle path for proper app targeting
+        var appBundlePath = config.DockMvvmSample.ExecutablePath;
+        if (appBundlePath.EndsWith(".app"))
+        {
+            options.AddAdditionalCapability("appium:bundleId", "com.avaloniaui.dockmvvmsample");
+            options.AddAdditionalCapability("appium:app", appBundlePath);
+        }
+
+        // Standard Mac2 automation capabilities
         options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
         options.AddAdditionalCapability("appium:waitForQuiescence", false);
-        options.AddAdditionalCapability("appium:launchTimeout", 30000);
-        options.AddAdditionalCapability("appium:sessionStartupTimeout", 30000);
-        
-        // For Mac2, we can try to connect to system-wide accessibility
-        // Instead of specific bundle, try to access all running applications
-        options.AddAdditionalCapability("appium:systemWide", true);
 
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);
         var driver = new MacDriver<AppiumWebElement>(serverUri, options);
@@ -129,19 +106,62 @@ public static class AppiumDriverFactory
 
     private static Process StartApplication(TestConfiguration config)
     {
-        if (!File.Exists(config.DockMvvmSample.ExecutablePath))
+        var executablePath = config.DockMvvmSample.ExecutablePath;
+        
+        // Handle macOS app bundles
+        if (executablePath.EndsWith(".app"))
         {
-            throw new FileNotFoundException($"DockMvvmSample executable not found at: {config.DockMvvmSample.ExecutablePath}");
+            if (!Directory.Exists(executablePath))
+            {
+                throw new DirectoryNotFoundException($"DockMvvmSample app bundle not found at: {executablePath}");
+            }
+            
+            // Use 'open' command to launch macOS app bundle
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "open",
+                Arguments = $"\"{executablePath}\"",
+                WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = false
+            };
+            
+            SetMacOSEnvironment(startInfo);
+            var process = Process.Start(startInfo);
+            if (process == null)
+            {
+                throw new InvalidOperationException("Failed to start the DockMvvmSample application");
+            }
+            return process;
         }
-
-        var startInfo = new ProcessStartInfo
+        else
         {
-            FileName = config.DockMvvmSample.ExecutablePath,
-            WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
-            UseShellExecute = false,
-            CreateNoWindow = false
-        };
+            // Regular executable file
+            if (!File.Exists(executablePath))
+            {
+                throw new FileNotFoundException($"DockMvvmSample executable not found at: {executablePath}");
+            }
 
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = executablePath,
+                WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = false
+            };
+            
+            SetMacOSEnvironment(startInfo);
+            var process = Process.Start(startInfo);
+            if (process == null)
+            {
+                throw new InvalidOperationException("Failed to start the DockMvvmSample application");
+            }
+            return process;
+        }
+    }
+
+    private static void SetMacOSEnvironment(ProcessStartInfo startInfo)
+    {
         // On macOS, set environment variables for GUI applications
         if (ConfigurationHelper.IsMacOS)
         {
@@ -150,15 +170,6 @@ public static class AppiumDriverFactory
             // Enable accessibility for Avalonia applications
             startInfo.EnvironmentVariables["AVALONIA_OSX_ENABLE_ACCESSIBILITY"] = "1";
             startInfo.EnvironmentVariables["NSApplication"] = "1";
-            // Wait for app to fully initialize
         }
-
-        var process = Process.Start(startInfo);
-        if (process == null)
-        {
-            throw new InvalidOperationException("Failed to start the DockMvvmSample application");
-        }
-        
-        return process;
     }
 } 

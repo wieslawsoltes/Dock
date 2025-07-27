@@ -17,21 +17,17 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <ItemsControl ItemsSource="{TemplateBinding Items}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel Orientation="{Binding $parent[ToolPinnedControl].Orientation}"
-                          DockProperties.IsDropArea="True" />
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.DataTemplates>
-            <DataTemplate DataType="core:IDockable">
-              <ToolPinItemControl Orientation="{Binding $parent[ToolPinnedControl].Orientation}" />
-            </DataTemplate>
-          </ItemsControl.DataTemplates>
-        </ItemsControl>
+        <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
       </ControlTemplate>
     </Setter>
+
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="{Binding $parent[ToolPinnedControl].Orientation}"
+                    DockProperties.IsDropArea="True" />
+      </ItemsPanelTemplate>
+    </Setter>
+
   </ControlTheme>
 
 </ResourceDictionary>

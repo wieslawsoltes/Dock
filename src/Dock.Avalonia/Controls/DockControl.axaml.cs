@@ -305,7 +305,8 @@ public class DockControl : TemplatedControl, IDockControl
         }
 
         return source.FindAncestorOfType<DocumentTabStripItem>() is not null ||
-               source.FindAncestorOfType<ToolTabStripItem>() is not null;
+               source.FindAncestorOfType<ToolTabStripItem>() is not null ||
+               source.FindAncestorOfType<ToolPinItemControl>() is not null;
     }
 
     private void PressedHandler(object? sender, PointerPressedEventArgs e)

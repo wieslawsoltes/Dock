@@ -19,19 +19,19 @@
                      DockProperties.IsDropArea="False">
             <ToolPinnedControl DockPanel.Dock="Left" 
                                Orientation="Vertical"
-                               Items="{Binding LeftPinnedDockables}"
+                               ItemsSource="{Binding LeftPinnedDockables}"
                                IsVisible="{Binding !!LeftPinnedDockables.Count, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Right" 
                                Orientation="Vertical"
-                               Items="{Binding RightPinnedDockables}"
+                               ItemsSource="{Binding RightPinnedDockables}"
                                IsVisible="{Binding !!RightPinnedDockables.Count, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Top" 
                                Orientation="Horizontal"
-                               Items="{Binding TopPinnedDockables}"
+                               ItemsSource="{Binding TopPinnedDockables}"
                                IsVisible="{Binding !!TopPinnedDockables.Count, FallbackValue={x:False}}" />
             <ToolPinnedControl DockPanel.Dock="Bottom" 
                                Orientation="Horizontal"
-                               Items="{Binding BottomPinnedDockables}"
+                               ItemsSource="{Binding BottomPinnedDockables}"
                                IsVisible="{Binding !!BottomPinnedDockables.Count, FallbackValue={x:False}}" />
             <Panel>
               <ContentControl Content="{Binding ActiveDockable}" Name="PART_MainContent" />

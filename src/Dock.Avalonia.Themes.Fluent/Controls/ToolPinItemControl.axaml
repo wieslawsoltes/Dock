@@ -51,23 +51,32 @@
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 
+    <Setter Property="Background" Value="Transparent" />
+
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Pinned">
           <LayoutTransformControl x:Name="PART_LayoutTransformControl">
-            <Button Background="Transparent"
-                    BorderBrush="Transparent"
-                    BorderThickness="0"
-                    CornerRadius="0"
-                    Command="{Binding Owner.Factory.PreviewPinnedDockable}"
-                    CommandParameter="{Binding}"
-                    IsVisible="{Binding CanPin}">
-              <TextBlock Text="{Binding Title}"
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Left"
-                         ContextMenu="{DynamicResource ToolPinItemControlContextMenu}">
-              </TextBlock>
-            </Button>
+            <Border Background="{TemplateBinding Background}"
+                    DockProperties.IsDragArea="True"
+                    DockProperties.IsDropArea="True"
+                    DockProperties.IsDockTarget="True"
+                    DockProperties.ShowDockIndicatorOnly="True"
+                    DockProperties.IndicatorDockOperation="Fill">
+              <Button Background="Transparent"
+                      BorderBrush="Transparent"
+                      BorderThickness="0"
+                      CornerRadius="0"
+                      Command="{Binding Owner.Factory.PreviewPinnedDockable}"
+                      CommandParameter="{Binding}"
+                      IsVisible="{Binding CanPin}">
+                <TextBlock Text="{Binding Title}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           ContextMenu="{DynamicResource ToolPinItemControlContextMenu}">
+                </TextBlock>
+              </Button>
+            </Border>
           </LayoutTransformControl>
         </DockableControl>
       </ControlTemplate>

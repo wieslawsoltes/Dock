@@ -161,12 +161,156 @@ public class DockManager : IDockManager
                 (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
                 && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceTool, documentDock, action, operation, bExecute),
-            ITool tool => (!PreventSizeConflicts || !HasSizeConflict(sourceTool, tool)) &&
-                          _dockService.DockDockableIntoDockable(sourceTool, tool, action, bExecute),
+            ITool tool => ValidateToolToTool(sourceTool, tool, action, bExecute),
             IDocument document => _dockService.DockDockableIntoDockable(sourceTool, document, action, bExecute),
             IProportionalDock proportionalDock => DockDockableIntoDock(sourceTool, proportionalDock, action, operation, bExecute),
             _ => false
         };
+    }
+
+    private bool ValidateToolToTool(ITool sourceTool, ITool targetTool, DragAction action, bool bExecute)
+    {
+        if (PreventSizeConflicts && HasSizeConflict(sourceTool, targetTool))
+        {
+            return false;
+        }
+
+        // Check if target tool is pinned - if so, pin the source tool instead of docking normally
+        if (bExecute && targetTool.Owner?.Factory is { } factory)
+        {
+            if (factory.IsDockablePinned(targetTool))
+            {
+                var targetAlignment = GetPinnedDockableAlignment(targetTool, factory);
+                var sourceAlignment = GetPinnedDockableAlignment(sourceTool, factory);
+                
+                // Check if source is also pinned
+                if (factory.IsDockablePinned(sourceTool))
+                {
+                    // Move from one pinned side to another
+                    if (sourceAlignment != targetAlignment)
+                    {
+                        MovePinnedDockable(sourceTool, sourceAlignment, targetAlignment, factory);
+                        return true;
+                    }
+                    // Same alignment - use normal docking behavior for reordering within same side
+                    return _dockService.DockDockableIntoDockable(sourceTool, targetTool, action, bExecute);
+                }
+                else
+                {
+                    // Set source tool alignment to match target's pin alignment before pinning
+                    SetToolAlignment(sourceTool, targetAlignment);
+                    factory.PinDockable(sourceTool);
+                    return true;
+                }
+            }
+        }
+
+        return _dockService.DockDockableIntoDockable(sourceTool, targetTool, action, bExecute);
+    }
+
+    private static Alignment GetPinnedDockableAlignment(IDockable dockable, IFactory factory)
+    {
+        var rootDock = factory.FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return Alignment.Unset;
+        }
+
+        if (rootDock.LeftPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Left;
+        }
+
+        if (rootDock.RightPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Right;
+        }
+
+        if (rootDock.TopPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Top;
+        }
+
+        if (rootDock.BottomPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Bottom;
+        }
+
+        return Alignment.Unset;
+    }
+
+    private static void SetToolAlignment(ITool tool, Alignment alignment)
+    {
+        if (tool.Owner is IToolDock toolDock)
+        {
+            toolDock.Alignment = alignment;
+        }
+    }
+
+    private static void MovePinnedDockable(IDockable dockable, Alignment sourceAlignment, Alignment targetAlignment, IFactory factory)
+    {
+        var rootDock = factory.FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        // Remove from source pinned collection
+        RemoveFromPinnedCollection(dockable, sourceAlignment, rootDock, factory);
+
+        // Add to target pinned collection
+        AddToPinnedCollection(dockable, targetAlignment, rootDock, factory);
+    }
+
+    private static void RemoveFromPinnedCollection(IDockable dockable, Alignment alignment, IRootDock rootDock, IFactory factory)
+    {
+        switch (alignment)
+        {
+            case Alignment.Left:
+                rootDock.LeftPinnedDockables?.Remove(dockable);
+                break;
+            case Alignment.Right:
+                rootDock.RightPinnedDockables?.Remove(dockable);
+                break;
+            case Alignment.Top:
+                rootDock.TopPinnedDockables?.Remove(dockable);
+                break;
+            case Alignment.Bottom:
+                rootDock.BottomPinnedDockables?.Remove(dockable);
+                break;
+        }
+        
+        // Note: We don't call OnDockableUnpinned here since we're moving, not unpinning
+    }
+
+    private static void AddToPinnedCollection(IDockable dockable, Alignment alignment, IRootDock rootDock, IFactory factory)
+    {
+        switch (alignment)
+        {
+            case Alignment.Unset:
+            case Alignment.Left:
+                rootDock.LeftPinnedDockables ??= factory.CreateList<IDockable>();
+                rootDock.LeftPinnedDockables?.Add(dockable);
+                break;
+            case Alignment.Right:
+                rootDock.RightPinnedDockables ??= factory.CreateList<IDockable>();
+                rootDock.RightPinnedDockables?.Add(dockable);
+                break;
+            case Alignment.Top:
+                rootDock.TopPinnedDockables ??= factory.CreateList<IDockable>();
+                rootDock.TopPinnedDockables?.Add(dockable);
+                break;
+            case Alignment.Bottom:
+                rootDock.BottomPinnedDockables ??= factory.CreateList<IDockable>();
+                rootDock.BottomPinnedDockables?.Add(dockable);
+                break;
+        }
+        
+        // Fire moved event since we moved the dockable between pinned collections
+        if (factory is FactoryBase factoryBase)
+        {
+            factoryBase.OnDockableMoved(dockable);
+        }
     }
 
     /// <inheritdoc/>

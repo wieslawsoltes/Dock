@@ -355,7 +355,15 @@ public abstract partial class FactoryBase
         HidePreviewingDockables(rootDock);
 
         var owner = dockable.Owner;
-        var alignment = (owner as IToolDock)?.Alignment ?? Alignment.Unset;
+        
+        // For pinned dockables, determine alignment based on which pinned collection they belong to
+        var alignment = GetPinnedDockableAlignment(dockable, rootDock);
+        
+        // If not found in pinned collections, fall back to owner alignment
+        if (alignment == Alignment.Unset)
+        {
+            alignment = (owner as IToolDock)?.Alignment ?? Alignment.Unset;
+        }
 
         rootDock.PinnedDock ??= CreateToolDock();
         rootDock.PinnedDock.Alignment = alignment;
@@ -366,6 +374,31 @@ public abstract partial class FactoryBase
         AddVisibleDockable(rootDock.PinnedDock!, dockable);
  
         InitDockable(rootDock.PinnedDock, rootDock);
+    }
+
+    private Alignment GetPinnedDockableAlignment(IDockable dockable, IRootDock rootDock)
+    {
+        if (rootDock.LeftPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Left;
+        }
+
+        if (rootDock.RightPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Right;
+        }
+
+        if (rootDock.TopPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Top;
+        }
+
+        if (rootDock.BottomPinnedDockables?.Contains(dockable) == true)
+        {
+            return Alignment.Bottom;
+        }
+
+        return Alignment.Unset;
     }
 
     /// <inheritdoc/>

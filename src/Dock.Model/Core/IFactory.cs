@@ -364,6 +364,13 @@ public partial interface IFactory
     bool IsDockablePinned(IDockable dockable, IRootDock? rootDock = null);
 
     /// <summary>
+    /// Moves pinned dockable within the same pinned collection (reordering).
+    /// </summary>
+    /// <param name="sourceDockable">The source pinned dockable to move.</param>
+    /// <param name="targetDockable">The target pinned dockable to move relative to.</param>
+    void MovePinnedDockable(IDockable sourceDockable, IDockable targetDockable);
+
+    /// <summary>
     /// Floats dockable.
     /// </summary>
     /// <param name="dockable">The dockable to float.</param>

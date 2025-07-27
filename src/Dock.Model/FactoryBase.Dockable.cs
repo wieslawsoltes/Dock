@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
@@ -115,6 +116,58 @@ public abstract partial class FactoryBase
             OnDockableDocked(sourceDockable, DockOperation.Fill);
             dock.ActiveDockable = sourceDockable;
         }
+    }
+
+    /// <inheritdoc/>
+    public virtual void MovePinnedDockable(IDockable sourceDockable, IDockable targetDockable)
+    {
+        var rootDock = FindRoot(sourceDockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        // Find which pinned collection contains both dockables
+        var pinnedCollection = GetPinnedCollection(sourceDockable, rootDock);
+        if (pinnedCollection is null || !pinnedCollection.Contains(targetDockable))
+        {
+            return; // Source and target must be in the same pinned collection
+        }
+
+        var sourceIndex = pinnedCollection.IndexOf(sourceDockable);
+        var targetIndex = pinnedCollection.IndexOf(targetDockable);
+
+        if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
+        {
+            pinnedCollection.RemoveAt(sourceIndex);
+            pinnedCollection.Insert(targetIndex, sourceDockable);
+            OnDockableMoved(sourceDockable);
+        }
+    }
+
+    private IList<IDockable>? GetPinnedCollection(IDockable dockable, IRootDock rootDock)
+    {
+        if (rootDock.LeftPinnedDockables?.Contains(dockable) == true)
+        {
+            return rootDock.LeftPinnedDockables;
+        }
+
+        if (rootDock.RightPinnedDockables?.Contains(dockable) == true)
+        {
+            return rootDock.RightPinnedDockables;
+        }
+
+        if (rootDock.TopPinnedDockables?.Contains(dockable) == true)
+        {
+            return rootDock.TopPinnedDockables;
+        }
+
+        if (rootDock.BottomPinnedDockables?.Contains(dockable) == true)
+        {
+            return rootDock.BottomPinnedDockables;
+        }
+
+        return null;
     }
 
     /// <inheritdoc/>

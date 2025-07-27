@@ -59,6 +59,35 @@ internal class DockControlState : DockManagerState, IDockControlState
         DragOffsetCalculator = dragOffsetCalculator;
     }
 
+    public void StartDrag(Control dragControl, Point point, DockControl activeDockControl)
+    {
+        if (!dragControl.GetValue(DockProperties.IsDragEnabledProperty))
+        {
+            return;
+        }
+
+        if (dragControl.DataContext is IDockable { CanDrag: false })
+        {
+            return;
+        }
+
+        _context.Start(dragControl, point);
+        DropControl = null;
+        activeDockControl.IsDraggingDock = true;
+
+        if (dragControl.DataContext is IDockable targetDockable)
+        {
+            DockHelpers.ShowWindows(targetDockable);
+            var sp = activeDockControl.PointToScreen(point);
+            _context.DragOffset = DragOffsetCalculator.CalculateOffset(
+                dragControl,
+                activeDockControl,
+                point);
+            _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+            _context.DoDragDrop = true;
+        }
+    }
+
     private void Enter(Point point, DragAction dragAction, Visual relativeTo)
     {
         var isLocalValid = ValidateLocal(point, DockOperation.Fill, dragAction, relativeTo);

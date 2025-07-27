@@ -225,7 +225,15 @@ internal class ItemDragHelper
             target.DataContext is IDockable targetDockable &&
             draggedDockable.Owner is IDock { Factory: { } factory } dock)
         {
-            factory.MoveDockable(dock, draggedDockable, targetDockable);
+            // Check if we're dealing with pinned dockables
+            if (factory.IsDockablePinned(draggedDockable) && factory.IsDockablePinned(targetDockable))
+            {
+                factory.MovePinnedDockable(draggedDockable, targetDockable);
+            }
+            else
+            {
+                factory.MoveDockable(dock, draggedDockable, targetDockable);
+            }
 
             if (itemsControl is SelectingItemsControl selectingItemsControl)
             {

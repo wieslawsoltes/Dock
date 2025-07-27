@@ -9,6 +9,9 @@
 
   <ControlTheme x:Key="{x:Type DocumentDockControl}" TargetType="DocumentDockControl">
 
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 

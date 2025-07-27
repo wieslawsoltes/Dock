@@ -14,6 +14,8 @@
         <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
         <Separator/>
         <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
+        <Separator/>
+        <MenuItem x:Name="FileItemsSourceExample" Header="_ItemsSource Example..." Click="FileItemsSourceExample_OnClick" />
       </MenuItem>
       <MenuItem Header="_View" x:Name="ViewsMenu" />
     </Menu>

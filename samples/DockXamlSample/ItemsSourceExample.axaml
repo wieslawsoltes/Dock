@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockXamlSample"
+             x:Class="DockXamlSample.ItemsSourceExample">
+
+  <UserControl.DataContext>
+    <local:ItemsSourceExampleViewModel />
+  </UserControl.DataContext>
+
+  <Grid RowDefinitions="Auto,*">
+    
+    <!-- Controls to add/remove items -->
+    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+      <TextBlock Text="{Binding DebugInfo}" Margin="0,0,10,0" VerticalAlignment="Center" FontWeight="Bold"/>
+      <Button Content="Add Document" Command="{Binding AddDocumentCommand}" Margin="0,0,5,0" />
+      <Button Content="Remove Document" Command="{Binding RemoveDocumentCommand}" Margin="0,0,5,0" />
+      <Button Content="Clear All" Command="{Binding ClearAllCommand}" />
+    </StackPanel>
+    
+    <!-- Simple DockControl setup focused on ItemsSource -->
+    <DockControl Grid.Row="1" x:Name="DockControl" InitializeLayout="True" InitializeFactory="True">
+      
+      <DockControl.Factory>
+        <Factory HideToolsOnClose="True" HideDocumentsOnClose="True" />
+      </DockControl.Factory>
+
+      <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #DocumentsPane}" ActiveDockable="{Binding #DocumentsPane}">
+
+        <!-- Direct DocumentDock with ItemsSource -->
+        <DocumentDock x:Name="DocumentsPane" 
+                      Id="DocumentsPane" 
+                      CanCreateDocument="True"
+                      ItemsSource="{Binding DataContext.Documents, RelativeSource={RelativeSource AncestorType=UserControl}}">
+          
+          <!-- DocumentTemplate for rendering document content -->
+          <DocumentDock.DocumentTemplate>
+            <DocumentTemplate>
+              <StackPanel Margin="10" x:DataType="Document">
+                <TextBlock Text="Document Title:" FontWeight="Bold"/>
+                <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
+                <TextBlock Text="Context Data:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Context}" TextWrapping="Wrap" Height="100" Background="LightGray" Padding="5"/>
+              </StackPanel>
+            </DocumentTemplate>
+          </DocumentDock.DocumentTemplate>
+          
+        </DocumentDock>
+
+      </RootDock>
+      
+    </DockControl>
+    
+  </Grid>
+
+</UserControl> 

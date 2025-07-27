@@ -2,6 +2,89 @@
 
 This page answers common questions that come up when using Dock.
 
+## Content setup
+
+**What's the best way to create documents dynamically?**
+
+Use the new `ItemsSource` property on `DocumentDock` for automatic document management:
+
+```xml
+<DocumentDock ItemsSource="{Binding Documents}">
+  <DocumentDock.DocumentTemplate>
+    <DocumentTemplate>
+      <StackPanel x:DataType="Document">
+        <TextBlock Text="{Binding Title}"/>
+        <TextBox Text="{Binding Context.Content}"/>
+      </StackPanel>
+    </DocumentTemplate>
+  </DocumentDock.DocumentTemplate>
+</DocumentDock>
+```
+
+This approach automatically creates/removes documents when you add/remove items from your collection, similar to how `ListBox.ItemsSource` works.
+
+**My document tabs are blank/empty (ItemsSource approach)**
+
+For `ItemsSource` documents, check:
+1. `DocumentTemplate` has `x:DataType="Document"` on the root element
+2. Access your model via `{Binding Context.PropertyName}` not `{Binding PropertyName}`
+3. Your model implements `INotifyPropertyChanged`
+4. Collection items have recognizable property names like `Title`, `Name`, or `CanClose`
+
+**My document tabs are blank/empty (ViewModel approach)**
+
+For the ViewModel + DataTemplate approach, check:
+1. DataTemplate is registered in `App.axaml` 
+2. DataType matches your ViewModel type exactly
+3. ViewModel namespace is imported correctly
+4. View's `x:DataType` matches the ViewModel
+
+For comprehensive setup guides, see [Document and Tool Content Guide](dock-content-guide.md).
+
+**I get "Unexpected content" errors when adding documents**
+
+This happens when you set a UserControl instance directly to the `Content` property. Use one of these approaches instead:
+- Use `ItemsSource` with `DocumentTemplate` (recommended for most cases)
+- Create a ViewModel that inherits from `Document` and use DataTemplate
+- Use `Content = new Func<IServiceProvider, object>(_ => new MyView())`
+
+See [Document and Tool Content Guide](dock-content-guide.md) for examples.
+
+**How do I bind to collections of business objects?**
+
+Use the `ItemsSource` property to bind your existing domain models directly:
+
+```csharp
+// Your existing model
+public class FileModel : INotifyPropertyChanged
+{
+    public string Title { get; set; }      // Used for tab title
+    public string Content { get; set; }    // Accessible via Context.Content
+    public bool CanClose { get; set; }     // Controls if tab can be closed
+}
+
+// In your ViewModel
+public ObservableCollection<FileModel> OpenFiles { get; } = new();
+```
+
+Then bind in XAML:
+```xml
+<DocumentDock ItemsSource="{Binding OpenFiles}">
+  <DocumentDock.DocumentTemplate>
+    <DocumentTemplate>
+      <TextBox Text="{Binding Context.Content}" x:DataType="Document"/>
+    </DocumentTemplate>
+  </DocumentDock.DocumentTemplate>
+</DocumentDock>
+```
+
+**Missing dock types in XAML (e.g., "Unable to resolve type RootDock")**
+
+Add the `Dock.Model.Avalonia` package and namespace:
+```xml
+xmlns:dock="using:Dock.Model.Avalonia.Controls"
+```
+
 ## Focus management
 
 **Why does the active document lose focus when I load a saved layout?**

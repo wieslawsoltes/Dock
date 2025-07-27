@@ -32,8 +32,8 @@ public class AutomationPropertiesTests : BaseTest
             Assert.NotNull(mainWindow);
             _output.WriteLine("✓ Found MainWindow by Id");
             
-            // Verify window title
-            var windowTitle = mainWindow.GetAttribute("name") ?? mainWindow.GetAttribute("title");
+            // Verify window title (use 'title' attribute on macOS)
+            var windowTitle = mainWindow.GetAttribute("title");
             Assert.Contains("Dock Avalonia Demo", windowTitle ?? "");
             _output.WriteLine($"✓ Window title: {windowTitle}");
             

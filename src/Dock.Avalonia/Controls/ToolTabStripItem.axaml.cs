@@ -40,15 +40,16 @@ public class ToolTabStripItem : TabStripItem
         return DragAction.Move;
     }
 
-    private void StartDockDrag(PointerEventArgs e)
+    private void StartDockDrag(PointerEventArgs startArgs, PointerEventArgs e)
     {
         var dockControl = this.FindAncestorOfType<DockControl>();
         if (dockControl?.Layout?.Factory?.DockControls is { } dockControls
             && dockControl.DockControlState is DockControlState state)
         {
+            var startPosition = startArgs.GetPosition(dockControl);
             var position = e.GetPosition(dockControl);
             var action = ToDragAction(e);
-            state.StartDrag(this, position, dockControl);
+            state.StartDrag(this, startPosition, position, dockControl);
             state.Process(position, default, EventType.Moved, action, dockControl, dockControls);
         }
     }

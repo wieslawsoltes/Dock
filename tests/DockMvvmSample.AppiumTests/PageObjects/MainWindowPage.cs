@@ -17,16 +17,170 @@ public class MainWindowPage
     public MainWindowPage(IWebDriver driver)
     {
         _driver = driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+        _wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
     }
 
-    // Main window elements - using automation IDs
-    public IWebElement MainWindow => _wait.Until(d => d.FindElement(By.Id("MainWindow")));
-    
-    // Menu elements - using automation IDs  
-    public IWebElement FileMenu => _wait.Until(d => d.FindElement(By.Id("FileMenu")));
-    public IWebElement WindowMenu => _wait.Until(d => d.FindElement(By.Id("WindowMenu")));
-    
+    #region Clean AccessibilityId Helper Methods
+
+    /// <summary>
+    /// Finds an element by AccessibilityId with automatic fallback to By.Id
+    /// </summary>
+    private IWebElement FindElementByAccessibilityId(string accessibilityId)
+    {
+        return (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
+               ?? _driver.FindElement(By.Id(accessibilityId));
+    }
+
+    /// <summary>
+    /// Finds an element by AccessibilityId with explicit wait and automatic fallback
+    /// </summary>
+    private IWebElement FindElementByAccessibilityIdWithWait(string accessibilityId, int timeoutInSeconds = 10)
+    {
+        var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeoutInSeconds));
+        return wait.Until(driver =>
+        {
+            try
+            {
+                return (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
+                       ?? driver.FindElement(By.Id(accessibilityId));
+            }
+            catch (NoSuchElementException)
+            {
+                return null;
+            }
+        });
+    }
+
+    /// <summary>
+    /// Clicks an element by AccessibilityId with wait
+    /// </summary>
+    private void ClickElement(string accessibilityId, int timeoutInSeconds = 10)
+    {
+        var element = FindElementByAccessibilityIdWithWait(accessibilityId, timeoutInSeconds);
+        element.Click();
+    }
+
+    /// <summary>
+    /// Types text into an element by AccessibilityId with wait
+    /// </summary>
+    private void TypeInElement(string accessibilityId, string text, bool clearFirst = true, int timeoutInSeconds = 10)
+    {
+        var element = FindElementByAccessibilityIdWithWait(accessibilityId, timeoutInSeconds);
+        if (clearFirst) element.Clear();
+        element.SendKeys(text);
+    }
+
+    #endregion
+
+    #region Page Elements - Clean API
+
+    // Main window elements using clean AccessibilityId methods
+    public IWebElement MainWindow => FindElementByAccessibilityIdWithWait("MainWindow");
+    public IWebElement FileMenu => FindElementByAccessibilityIdWithWait("FileMenu");
+    public IWebElement WindowMenu => FindElementByAccessibilityIdWithWait("WindowMenu");
+
+    // Navigation elements
+    public IWebElement BackButton => FindElementByAccessibilityIdWithWait("BackButton");
+    public IWebElement ForwardButton => FindElementByAccessibilityIdWithWait("ForwardButton");
+    public IWebElement DashboardButton => FindElementByAccessibilityIdWithWait("DashboardButton");
+    public IWebElement HomeButton => FindElementByAccessibilityIdWithWait("HomeButton");
+    public IWebElement NavigationTextBox => FindElementByAccessibilityIdWithWait("NavigationTextBox");
+    public IWebElement NavigateButton => FindElementByAccessibilityIdWithWait("NavigateButton");
+    public IWebElement ThemeButton => FindElementByAccessibilityIdWithWait("ThemeButton");
+
+    // Main dock control
+    public IWebElement MainDockControl => FindElementByAccessibilityIdWithWait("MainDockControl");
+
+    #endregion
+
+    #region Legacy Elements (for backward compatibility)
+
+    public IWebElement MainWindowLegacy => _wait.Until(d => d.FindElement(By.Id("MainWindow")));
+    public IWebElement FileMenuLegacy => _wait.Until(d => d.FindElement(By.Id("FileMenu")));
+    public IWebElement WindowMenuLegacy => _wait.Until(d => d.FindElement(By.Id("WindowMenu")));
+
+    #endregion
+
+    #region High-Level Actions using Clean Methods
+
+    /// <summary>
+    /// Clicks the File menu using clean AccessibilityId method
+    /// </summary>
+    public void ClickFileMenu()
+    {
+        ClickElement("FileMenu");
+    }
+
+    /// <summary>
+    /// Navigates to a specific path using clean AccessibilityId methods
+    /// </summary>
+    public void NavigateToPath(string path)
+    {
+        TypeInElement("NavigationTextBox", path);
+        ClickElement("NavigateButton");
+    }
+
+    /// <summary>
+    /// Clicks the dashboard button using clean AccessibilityId method
+    /// </summary>
+    public void ClickDashboard()
+    {
+        ClickElement("DashboardButton");
+    }
+
+    /// <summary>
+    /// Navigates back using clean AccessibilityId method
+    /// </summary>
+    public void NavigateBack()
+    {
+        ClickElement("BackButton");
+    }
+
+    /// <summary>
+    /// Navigates forward using clean AccessibilityId method
+    /// </summary>
+    public void NavigateForward()
+    {
+        ClickElement("ForwardButton");
+    }
+
+    /// <summary>
+    /// Gets the current navigation path
+    /// </summary>
+    public string GetCurrentNavigationPath()
+    {
+        var textBox = FindElementByAccessibilityIdWithWait("NavigationTextBox");
+        return textBox.GetAttribute("value") ?? textBox.Text;
+    }
+
+    /// <summary>
+    /// Verifies that all main UI elements are accessible
+    /// </summary>
+    public bool VerifyMainElementsAccessible()
+    {
+        var essentialElements = new[]
+        {
+            "MainWindow", "FileMenu", "MainDockControl", 
+            "BackButton", "ForwardButton", "DashboardButton"
+        };
+
+        foreach (var elementId in essentialElements)
+        {
+            try
+            {
+                var element = FindElementByAccessibilityIdWithWait(elementId, 5);
+                if (element == null) return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    #endregion
+
     // Tool elements - using automation IDs with fallback strategies
     public IWebElement Tool1Tab => _wait.Until(d => FindToolElement(d, "Tool1"));
     public IWebElement Tool2Tab => _wait.Until(d => FindToolElement(d, "Tool2"));
@@ -45,96 +199,25 @@ public class MainWindowPage
     public IList<IWebElement> ToolWindows => _driver.FindElements(By.ClassName("XCUIElementTypeToolDock")).Cast<IWebElement>().ToList();
     public IList<IWebElement> DocumentTabs => _driver.FindElements(By.ClassName("XCUIElementTypeDocumentTab")).Cast<IWebElement>().ToList();
 
-    // Actions
-    public void ClickFileMenu()
-    {
-        FileMenu.Click();
-    }
+    #region Missing Methods (for backward compatibility with existing tests)
 
     public void ClickWindowMenu()
     {
-        WindowMenu.Click();
+        ClickElement("WindowMenu");
     }
 
     public bool IsMainWindowVisible()
     {
         try
         {
-            // Use automation ID to check if main window is visible
-            var mainWindow = _driver.FindElement(By.Id("MainWindow"));
+            var mainWindow = FindElementByAccessibilityId("MainWindow");
             return mainWindow.Displayed;
-        }
-        catch (NoSuchElementException)
-        {
-            // Fallback to flexible search patterns if automation ID doesn't work
-            try
-            {
-                var searchPatterns = new[]
-                {
-                    "//*[@identifier='MainWindow']",
-                    "//*[contains(@title, 'Dock Avalonia Demo') or contains(@label, 'Dock Avalonia Demo')]",
-                    "//*[contains(@title, 'DockMvvm') or contains(@label, 'DockMvvm')]",
-                    "//*[contains(@title, 'Sample') or contains(@label, 'Sample')]",
-                    "//*[@elementType='55' and @enabled='true']" // Look for any enabled window
-                };
-
-                foreach (var pattern in searchPatterns)
-                {
-                    var elements = _driver.FindElements(By.XPath(pattern));
-                    if (elements.Count > 0)
-                    {
-                        return true;
-                    }
-                }
-                
-                return false;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-    }
-    
-    // Helper method for drag and drop operations
-    public void DragToolToToolDock(IWebElement sourceToolTab, IWebElement targetToolDock)
-    {
-        var actions = new OpenQA.Selenium.Interactions.Actions(_driver);
-        actions.DragAndDrop(sourceToolTab, targetToolDock).Perform();
-        
-        // Wait for the UI to update
-        System.Threading.Thread.Sleep(2000);
-    }
-
-    // Helper method for reordering tools within the same tab strip
-    public void DragToolOverTool(IWebElement sourceToolTab, IWebElement targetToolTab)
-    {
-        var actions = new OpenQA.Selenium.Interactions.Actions(_driver);
-        actions.MoveToElement(sourceToolTab)
-               .ClickAndHold()
-               .MoveToElement(targetToolTab)
-               .Release()
-               .Build()
-               .Perform();
-        
-        // Wait for the UI to update
-        System.Threading.Thread.Sleep(2000);
-    }
-
-    public bool IsDocumentTabPresent(string tabName)
-    {
-        try
-        {
-            var tab = _driver.FindElement(By.Name(tabName));
-            return tab.Displayed;
         }
         catch (NoSuchElementException)
         {
             return false;
         }
     }
-
-
 
     public IList<string> GetVisibleDocumentTabs()
     {
@@ -184,11 +267,34 @@ public class MainWindowPage
         return new List<string>();
     }
 
+    #endregion
+
     public void WaitForApplicationToLoad()
     {
-        _wait.Until(d => IsMainWindowVisible());
-        // Additional wait for UI to stabilize
-        System.Threading.Thread.Sleep(1000);
+        var maxWaitTime = TimeSpan.FromSeconds(30);
+        var startTime = DateTime.Now;
+        
+        while (DateTime.Now - startTime < maxWaitTime)
+        {
+            try
+            {
+                var mainWindow = _driver.FindElement(By.Id("MainWindow"));
+                if (mainWindow.Displayed)
+                {
+                    // Additional wait for UI elements to be ready
+                    Thread.Sleep(2000);
+                    return;
+                }
+            }
+            catch (NoSuchElementException)
+            {
+                // Window not ready yet, continue waiting
+            }
+            
+            Thread.Sleep(500);
+        }
+        
+        throw new TimeoutException("Application did not load within the expected time frame");
     }
 
     private IWebElement FindToolElement(IWebDriver driver, string toolName)
@@ -362,5 +468,22 @@ public class MainWindowPage
 
         // If all strategies fail, throw a descriptive exception
         throw new NoSuchElementException($"Could not find dock container '{dockContainerName}' using any available strategy. Tried: automation ID, accessibility name, partial name match, and exhaustive search.");
+    }
+
+    // Alternative methods using FindElementByAccessibilityId
+    public IWebElement MainWindowByAccessibilityId => _wait.Until(d => 
+        (d as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId("MainWindow") ?? d.FindElement(By.Id("MainWindow")));
+    public IWebElement FileMenuByAccessibilityId => _wait.Until(d => 
+        (d as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId("FileMenu") ?? d.FindElement(By.Id("FileMenu")));
+    public IWebElement WindowMenuByAccessibilityId => _wait.Until(d => 
+        (d as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId("WindowMenu") ?? d.FindElement(By.Id("WindowMenu")));
+    
+    // Method to find any element by accessibility ID with wait
+    public IWebElement FindByAccessibilityId(string accessibilityId, int timeoutInSeconds = 10)
+    {
+        var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeoutInSeconds));
+        return wait.Until(driver => 
+            (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
+            ?? driver.FindElement(By.Id(accessibilityId)));
     }
 } 

@@ -27,10 +27,10 @@ public class BasicDockTests : BaseTest
     public void ApplicationStartsSuccessfully()
     {
         // Arrange & Act
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
 
         // Assert
-        Assert.True(_mainWindow.IsMainWindowVisible(), "Main window should be visible after application starts");
+        Assert.True(_mainWindow.IsElementVisible("MainWindow"), "Main window should be visible after application starts");
         
         _output.WriteLine("✓ Application started successfully and main window is visible");
     }
@@ -39,7 +39,7 @@ public class BasicDockTests : BaseTest
     public void MainMenuIsAccessible()
     {
         // Arrange
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
 
         // Act & Assert
         _mainWindow.ClickFileMenu();
@@ -53,7 +53,7 @@ public class BasicDockTests : BaseTest
     public void DocumentTabsAreVisible()
     {
         // Arrange
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
 
         // Act
         var documentTabs = _mainWindow.GetVisibleDocumentTabs();
@@ -70,7 +70,7 @@ public class BasicDockTests : BaseTest
     public void ToolWindowsAreVisible()
     {
         // Arrange
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
 
         // Act
         var toolWindows = _mainWindow.GetVisibleToolWindows();
@@ -292,7 +292,7 @@ public class BasicDockTests : BaseTest
         _output.WriteLine("=== Testing Float Tool1 and Dock Back to Tool2 ===");
         
         // Wait for app to load and ensure main window is visible
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
         _output.WriteLine("✓ Application loaded successfully");
         
         // Wait additional time for dock layout to stabilize
@@ -527,7 +527,7 @@ public class BasicDockTests : BaseTest
         _output.WriteLine("=== Diagnostic Test: Finding Tool1 ===");
         
         // Wait for app to load
-        _mainWindow.WaitForApplicationToLoad();
+        _mainWindow.WaitForPageLoad();
         _output.WriteLine("✓ Application loaded successfully");
         
         // Wait additional time for dock layout to stabilize

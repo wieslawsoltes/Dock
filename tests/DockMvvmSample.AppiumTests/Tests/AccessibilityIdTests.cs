@@ -30,8 +30,8 @@ public class AccessibilityIdTests : BaseTest
         try
         {
             // Test 1: Use clean helper method
-            _output.WriteLine("Finding MainWindow using FindElementByAccessibilityId...");
-            var mainWindow = FindElementByAccessibilityId("MainWindow");
+            _output.WriteLine("Finding MainWindow using Elements.FindByAccessibilityId...");
+            var mainWindow = Elements.FindByAccessibilityId("MainWindow");
             Assert.NotNull(mainWindow);
             _output.WriteLine("✓ Found MainWindow using AccessibilityId");
             
@@ -46,9 +46,9 @@ public class AccessibilityIdTests : BaseTest
             
             // Method 2: New clean AccessibilityId approach
             startTime = DateTime.Now;
-            var menuByAccessibilityId = FindElementByAccessibilityId("MainMenu");
+            var menuByAccessibilityId = Elements.FindByAccessibilityId("MainMenu");
             var accessibilityIdTime = DateTime.Now - startTime;
-            _output.WriteLine($"FindElementByAccessibilityId time: {accessibilityIdTime.TotalMilliseconds}ms");
+            _output.WriteLine($"Elements.FindByAccessibilityId time: {accessibilityIdTime.TotalMilliseconds}ms");
             
             // Both should find the same element
             Assert.Equal(menuById.GetAttribute("AutomationId"), menuByAccessibilityId.GetAttribute("AutomationId"));
@@ -71,7 +71,7 @@ public class AccessibilityIdTests : BaseTest
             {
                 try
                 {
-                    var element = FindElementByAccessibilityId(elementId);
+                    var element = Elements.FindByAccessibilityId(elementId);
                     Assert.NotNull(element);
                     _output.WriteLine($"✓ Found {elementId} using clean AccessibilityId method");
                 }
@@ -85,8 +85,8 @@ public class AccessibilityIdTests : BaseTest
             // Test 4: Verify accessibility attributes using helper method
             _output.WriteLine("\n--- Verifying Accessibility Properties ---");
             
-            var automationId = GetElementAttribute("FileMenu", "AutomationId");
-            var name = GetElementAttribute("FileMenu", "Name") ?? GetElementAttribute("FileMenu", "title");
+            var automationId = Elements.GetAttribute("FileMenu", "AutomationId");
+            var name = Elements.GetAttribute("FileMenu", "Name") ?? Elements.GetAttribute("FileMenu", "title");
             
             _output.WriteLine($"AutomationId: {automationId}");
             _output.WriteLine($"Name/Title: {name}");
@@ -123,7 +123,7 @@ public class AccessibilityIdTests : BaseTest
         };
         
         // Use the clean validation helper method
-        var results = ValidateAccessibilityIds(platformIndependentElements);
+        var results = Elements.ValidateElements(platformIndependentElements);
         
         foreach (var result in results)
         {
@@ -145,13 +145,13 @@ public class AccessibilityIdTests : BaseTest
         {
             // Test menu interaction using clean helper methods
             _output.WriteLine("Testing menu interaction...");
-            ClickElement("FileMenu");
+            Elements.Click("FileMenu");
             Thread.Sleep(500);
             
             // Try to find submenu items
             try
             {
-                var newLayoutMenuItem = FindElementByAccessibilityId("NewLayoutMenuItem");
+                var newLayoutMenuItem = Elements.FindByAccessibilityId("NewLayoutMenuItem");
                 Assert.NotNull(newLayoutMenuItem);
                 _output.WriteLine("✓ Found submenu item using clean AccessibilityId method");
             }
@@ -162,14 +162,14 @@ public class AccessibilityIdTests : BaseTest
             
             // Test navigation using clean helper methods
             _output.WriteLine("Testing navigation...");
-            TypeInElement("NavigationTextBox", "test navigation");
+            Elements.Type("NavigationTextBox", "test navigation");
             
             // Verify the text was entered correctly
-            var enteredText = GetElementText("NavigationTextBox");
+            var enteredText = Elements.GetText("NavigationTextBox");
             _output.WriteLine($"Entered text: {enteredText}");
             
             // Test clickable element waiting
-            var navigateButton = WaitForElementToBeClickable("NavigateButton");
+            var navigateButton = Elements.WaitForClickable("NavigateButton");
             Assert.True(navigateButton.Enabled, "Navigate button should be enabled");
             // navigateButton.Click(); // Commented out to avoid actual navigation
             
@@ -193,30 +193,30 @@ public class AccessibilityIdTests : BaseTest
         try
         {
             // Test basic element finding
-            var mainWindow = FindElementByAccessibilityIdWithWait("MainWindow", 15);
+            var mainWindow = Elements.FindByAccessibilityIdWithWait("MainWindow", 15);
             Assert.NotNull(mainWindow);
-            _output.WriteLine("✓ FindElementByAccessibilityIdWithWait works");
+            _output.WriteLine("✓ Elements.FindByAccessibilityIdWithWait works");
             
             // Test try-find pattern
-            bool found = TryFindElementByAccessibilityId("MainMenu", out var menuElement);
+            bool found = Elements.TryFindByAccessibilityId("MainMenu", out var menuElement);
             Assert.True(found);
             Assert.NotNull(menuElement);
-            _output.WriteLine("✓ TryFindElementByAccessibilityId works");
+            _output.WriteLine("✓ Elements.TryFindByAccessibilityId works");
             
             // Test attribute retrieval
-            var windowTitle = GetElementAttribute("MainWindow", "title");
+            var windowTitle = Elements.GetAttribute("MainWindow", "title");
             Assert.NotNull(windowTitle);
-            _output.WriteLine($"✓ GetElementAttribute works: {windowTitle}");
+            _output.WriteLine($"✓ Elements.GetAttribute works: {windowTitle}");
             
             // Test multiple elements finding
-            var elements = FindElementsByAccessibilityId("MainMenu");
+            var elements = Elements.FindAllByAccessibilityId("MainMenu");
             Assert.True(elements.Count > 0);
-            _output.WriteLine("✓ FindElementsByAccessibilityId works");
+            _output.WriteLine("✓ Elements.FindAllByAccessibilityId works");
             
             // Test validation helper
-            var validationResults = ValidateAccessibilityIds("MainWindow", "MainMenu", "FileMenu");
+            var validationResults = Elements.ValidateElements("MainWindow", "MainMenu", "FileMenu");
             Assert.True(validationResults.All(r => r.Value));
-            _output.WriteLine("✓ ValidateAccessibilityIds works");
+            _output.WriteLine("✓ Elements.ValidateElements works");
             
             _output.WriteLine("✓ All helper methods provide a clean, easy-to-use API");
             

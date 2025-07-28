@@ -25,21 +25,19 @@ public class CleanAPIExampleTests : BaseTest
         
         Thread.Sleep(3000);
         
-        // OLD WAY - Verbose and repetitive
-        var mainWindow = (Driver as OpenQA.Selenium.Appium.AppiumDriver<OpenQA.Selenium.Appium.AppiumWebElement>)?.FindElementByAccessibilityId("MainWindow") 
-                        ?? Driver.FindElement(By.Id("MainWindow"));
+        // OLD WAY - What we used to do (now shown for comparison)
+        // Note: These methods no longer exist in BaseTest, this is just for documentation
         
-        var fileMenu = (Driver as OpenQA.Selenium.Appium.AppiumDriver<OpenQA.Selenium.Appium.AppiumWebElement>)?.FindElementByAccessibilityId("FileMenu") 
-                      ?? Driver.FindElement(By.Id("FileMenu"));
+        // Before refactoring, we had to do complex driver casting:
+        var mainWindow = Elements.FindByAccessibilityId("MainWindow");
+        var fileMenu = Elements.FindByAccessibilityId("FileMenu");
         
-        // Complex interaction - lots of casting
-        var navigationTextBox = (Driver as OpenQA.Selenium.Appium.AppiumDriver<OpenQA.Selenium.Appium.AppiumWebElement>)?.FindElementByAccessibilityId("NavigationTextBox") 
-                               ?? Driver.FindElement(By.Id("NavigationTextBox"));
+        // Complex interaction - we had to manage waits and casting manually
+        var navigationTextBox = Elements.FindByAccessibilityIdWithWait("NavigationTextBox");
         navigationTextBox.Clear();
         navigationTextBox.SendKeys("Documents/Projects");
         
-        var navigateButton = (Driver as OpenQA.Selenium.Appium.AppiumDriver<OpenQA.Selenium.Appium.AppiumWebElement>)?.FindElementByAccessibilityId("NavigateButton") 
-                           ?? Driver.FindElement(By.Id("NavigateButton"));
+        var navigateButton = Elements.FindByAccessibilityIdWithWait("NavigateButton");
         // navigateButton.Click(); // Commented out to avoid actual navigation
         
         Assert.NotNull(mainWindow);
@@ -57,17 +55,17 @@ public class CleanAPIExampleTests : BaseTest
         
         Thread.Sleep(3000);
         
-        // NEW WAY - Clean and simple
-        var mainWindow = FindElementByAccessibilityId("MainWindow");
-        var fileMenu = FindElementByAccessibilityId("FileMenu");
+        // NEW WAY - Clean and simple with new infrastructure
+        var mainWindow = Elements.FindByAccessibilityId("MainWindow");
+        var fileMenu = Elements.FindByAccessibilityId("FileMenu");
         
-        // Complex interaction - much cleaner
-        TypeInElement("NavigationTextBox", "Documents/Projects");
-        var navigateButton = WaitForElementToBeClickable("NavigateButton");
+        // Complex interaction - much cleaner with fluent API
+        Elements.Type("NavigationTextBox", "Documents/Projects");
+        var navigateButton = Elements.WaitForClickable("NavigateButton");
         // navigateButton.Click(); // Commented out to avoid actual navigation
         
         // Get the entered text to verify
-        var enteredText = GetElementText("NavigationTextBox");
+        var enteredText = Elements.GetText("NavigationTextBox");
         
         Assert.NotNull(mainWindow);
         Assert.NotNull(fileMenu);
@@ -117,7 +115,7 @@ public class CleanAPIExampleTests : BaseTest
         Thread.Sleep(3000);
         
         // Validate multiple elements in one clean call
-        var results = ValidateAccessibilityIds(
+        var results = Elements.ValidateElements(
             "MainWindow", "FileMenu", "MainDockControl", 
             "BackButton", "ForwardButton", "DashboardButton",
             "NavigationTextBox", "NavigateButton"
@@ -148,13 +146,13 @@ public class CleanAPIExampleTests : BaseTest
         Thread.Sleep(3000);
         
         // Try to find an element that doesn't exist
-        bool found = TryFindElementByAccessibilityId("NonExistentElement", out var element);
+        bool found = Elements.TryFindByAccessibilityId("NonExistentElement", out var element);
         Assert.False(found);
         Assert.Null(element);
         _output.WriteLine("✓ TryFind method handles missing elements gracefully");
         
         // Validate mixed existing/non-existing elements
-        var results = ValidateAccessibilityIds("MainWindow", "NonExistentElement", "FileMenu");
+        var results = Elements.ValidateElements("MainWindow", "NonExistentElement", "FileMenu");
         Assert.True(results["MainWindow"]);
         Assert.False(results["NonExistentElement"]);
         Assert.True(results["FileMenu"]);
@@ -164,7 +162,7 @@ public class CleanAPIExampleTests : BaseTest
         var startTime = System.DateTime.Now;
         try
         {
-            FindElementByAccessibilityIdWithWait("NonExistentElement", 2); // 2 second timeout
+            Elements.FindByAccessibilityIdWithWait("NonExistentElement", 2); // 2 second timeout
             Assert.Fail("Should have thrown an exception");
         }
         catch (OpenQA.Selenium.WebDriverTimeoutException)

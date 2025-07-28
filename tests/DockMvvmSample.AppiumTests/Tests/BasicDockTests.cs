@@ -93,9 +93,9 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Find Tool1 tab and Tool5 tab using automation IDs
-            var tool1Tab = Driver.FindElement(By.Id("Tool1"));
-            var tool5Tab = Driver.FindElement(By.Id("Tool5"));
+            // Find Tool1 tab and Tool5 tab using MainWindowPage with proper wait logic
+            var tool1Tab = _mainWindow.Tool1Tab;
+            var tool5Tab = _mainWindow.Tool5Tab;
             
             _output.WriteLine("✓ Found Tool1 tab and Tool5 tab");
             
@@ -108,7 +108,7 @@ public class BasicDockTests : BaseTest
             try
             {
                 // Try to find RightTopToolDock which contains Tool5
-                targetDropArea = Driver.FindElement(By.Id("RightTopToolDock"));
+                targetDropArea = _mainWindow.RightTopToolDock;
                 _output.WriteLine("✓ Found RightTopToolDock as drop target");
             }
             catch (NoSuchElementException)
@@ -138,7 +138,7 @@ public class BasicDockTests : BaseTest
             try
             {
                 // Try to find Tool1 again - it might have moved
-                var tool1AfterDrop = Driver.FindElement(By.Id("Tool1"));
+                var tool1AfterDrop = _mainWindow.Tool1Tab;
                 var newPosition = tool1AfterDrop.Location;
                 
                 var distanceMoved = Math.Sqrt(Math.Pow(newPosition.X - initialPosition.X, 2) + 
@@ -190,9 +190,9 @@ public class BasicDockTests : BaseTest
         
         try
         {
-            // Find Tool1 and Tool2 tabs using automation IDs
-            var tool1Tab = Driver.FindElement(By.Id("Tool1"));
-            var tool2Tab = Driver.FindElement(By.Id("Tool2"));
+            // Find Tool1 and Tool2 tabs using MainWindowPage with proper wait logic
+            var tool1Tab = _mainWindow.Tool1Tab;
+            var tool2Tab = _mainWindow.Tool2Tab;
             
             _output.WriteLine("✓ Found Tool1 tab and Tool2 tab");
             
@@ -232,8 +232,8 @@ public class BasicDockTests : BaseTest
             try
             {
                 // Get tools again after the drag operation
-                var tool1AfterDrag = Driver.FindElement(By.Id("Tool1"));
-                var tool2AfterDrag = Driver.FindElement(By.Id("Tool2"));
+                var tool1AfterDrag = _mainWindow.Tool1Tab;
+                var tool2AfterDrag = _mainWindow.Tool2Tab;
                 
                 var tool1NewPosition = tool1AfterDrag.Location;
                 var tool2NewPosition = tool2AfterDrag.Location;
@@ -299,15 +299,15 @@ public class BasicDockTests : BaseTest
             // Phase 1: Float Tool1 by dragging it far out of the tab strip
             _output.WriteLine("--- Phase 1: Floating Tool1 ---");
             
-            // Find Tool1 tab
-            var tool1Tab = Driver.FindElement(By.Id("Tool1"));
+            // Find Tool1 tab using MainWindowPage with proper wait logic
+            var tool1Tab = _mainWindow.Tool1Tab;
             _output.WriteLine("✓ Found Tool1 tab");
             
             var tool1InitialPosition = tool1Tab.Location;
             _output.WriteLine($"Tool1 initial position: X={tool1InitialPosition.X}, Y={tool1InitialPosition.Y}");
             
             // Store Tool2 position for later docking
-            var tool2Tab = Driver.FindElement(By.Id("Tool2"));
+            var tool2Tab = _mainWindow.Tool2Tab;
             var tool2InitialPosition = tool2Tab.Location;
             _output.WriteLine($"Tool2 initial position: X={tool2InitialPosition.X}, Y={tool2InitialPosition.Y}");
             
@@ -335,7 +335,7 @@ public class BasicDockTests : BaseTest
             
             try
             {
-                floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+                floatedTool1 = _mainWindow.Tool1Tab;
                 var newPosition = floatedTool1.Location;
                 var distanceMoved = Math.Sqrt(
                     Math.Pow(newPosition.X - tool1InitialPosition.X, 2) + 
@@ -361,7 +361,7 @@ public class BasicDockTests : BaseTest
                     
                     // Wait for extended floating operation
                     Thread.Sleep(2000);
-                    floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+                    floatedTool1 = _mainWindow.Tool1Tab;
                     _output.WriteLine("✓ Performed extended drag - assuming Tool1 is now floating");
                 }
             }
@@ -382,12 +382,12 @@ public class BasicDockTests : BaseTest
             _output.WriteLine("--- Phase 2: Docking Tool1 back to Tool2 ---");
             
             // Find Tool2 again (in case positions changed)
-            tool2Tab = Driver.FindElement(By.Id("Tool2"));
+            tool2Tab = _mainWindow.Tool2Tab;
             var currentTool2Position = tool2Tab.Location;
             _output.WriteLine($"Tool2 current position: X={currentTool2Position.X}, Y={currentTool2Position.Y}");
             
             // Find the floating Tool1 again
-            floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+            floatedTool1 = _mainWindow.Tool1Tab;
             var floatingPosition = floatedTool1.Location;
             _output.WriteLine($"Floating Tool1 position: X={floatingPosition.X}, Y={floatingPosition.Y}");
             
@@ -395,7 +395,7 @@ public class BasicDockTests : BaseTest
             IWebElement leftTopToolDock;
             try
             {
-                leftTopToolDock = Driver.FindElement(By.Id("LeftTopToolDock"));
+                leftTopToolDock = _mainWindow.LeftTopToolDock;
                 _output.WriteLine("✓ Found LeftTopToolDock container");
             }
             catch (NoSuchElementException)
@@ -436,8 +436,8 @@ public class BasicDockTests : BaseTest
             try
             {
                 // Find Tool1 and Tool2 again to check their final positions
-                var tool1AfterDock = Driver.FindElement(By.Id("Tool1"));
-                var tool2AfterDock = Driver.FindElement(By.Id("Tool2"));
+                var tool1AfterDock = _mainWindow.Tool1Tab;
+                var tool2AfterDock = _mainWindow.Tool2Tab;
                 
                 var tool1FinalPosition = tool1AfterDock.Location;
                 var tool2FinalPosition = tool2AfterDock.Location;

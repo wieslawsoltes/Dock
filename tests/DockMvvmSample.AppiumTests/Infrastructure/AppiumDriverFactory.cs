@@ -7,7 +7,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Mac;
 using OpenQA.Selenium.Appium.Windows;
-using OpenQA.Selenium.Support.UI;
 
 namespace DockMvvmSample.AppiumTests.Infrastructure;
 
@@ -42,29 +41,18 @@ public static class AppiumDriverFactory
         // Set timeouts - use explicit waits instead of implicit waits for Windows
         options.AddAdditionalCapability("appium:newCommandTimeout", config.AppiumSettings.CommandTimeout);
         
-        // Platform-specific wait and timeout configurations
+        // Windows-specific capabilities to improve element finding
         if (ConfigurationHelper.IsWindows)
         {
-            // Windows-specific capabilities to improve element finding reliability
+            // Add Windows-specific capabilities to improve element finding reliability
             options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
             options.AddAdditionalCapability("appium:waitForQuiescence", false);
             options.AddAdditionalCapability("appium:shouldTerminateApp", true);
             options.AddAdditionalCapability("appium:forceAppLaunch", true);
             
-            // Windows Application Driver specific settings for better stability
+            // Windows Application Driver specific settings
             options.AddAdditionalCapability("appium:ms:experimental-webdriver", true);
             options.AddAdditionalCapability("appium:ms:waitForAppLaunch", 10);
-            options.AddAdditionalCapability("appium:ms:elementSearchTimeout", 30000);
-            
-            // Disable implicit waits for Windows (they don't work properly)
-            options.AddAdditionalCapability("appium:implicitWaitMs", 0);
-        }
-        else
-        {
-            // macOS-specific optimizations
-            options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
-            options.AddAdditionalCapability("appium:waitForQuiescence", false);
-            options.AddAdditionalCapability("appium:implicitWaitMs", config.AppiumSettings.ImplicitWait * 1000);
         }
 
         if (ConfigurationHelper.IsWindows)
@@ -141,41 +129,15 @@ public static class AppiumDriverFactory
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Failed to create Windows driver. Make sure:\n" +
-                "1. WinAppDriver is running as Administrator on port 4724\n" +
-                "2. Appium server is running on port 4723\n" +
-                "3. Developer Mode is enabled in Windows Settings\n" +
-                "4. Both servers started in correct order (WinAppDriver first, then Appium)\n" +
-                $"Error: {ex.Message}", ex);
+            throw new InvalidOperationException($"Failed to create Windows driver. Make sure WinAppDriver is running on port 4724 and Appium server is running on port 4723. Error: {ex.Message}", ex);
         }
         
-        // IMPORTANT: Do NOT set implicit wait for Windows (it doesn't work properly)
-        // All waits must be explicit waits in our ElementHelper
+        // Set explicit wait instead of implicit wait (fixes Windows driver issues)
+        // Note: We don't set implicit wait as it doesn't work properly with Windows driver
+        // Instead, we use explicit waits in our ElementHelper
         
-        // Enhanced wait for application to be fully loaded with Windows-specific timing
-        Thread.Sleep(5000); // Increased wait time for Windows app stabilization
-        
-        // Validate that the driver can find basic window elements
-        try
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            wait.Until(d => {
-                try 
-                {
-                    var windows = d.FindElements(By.XPath("//Window"));
-                    return windows.Count > 0;
-                }
-                catch 
-                {
-                    return false;
-                }
-            });
-        }
-        catch (WebDriverTimeoutException)
-        {
-            throw new InvalidOperationException("Windows driver started but cannot find any window elements. " +
-                "This may indicate WinAppDriver connectivity issues or application startup problems.");
-        }
+        // Wait for the application to be fully loaded
+        Thread.Sleep(3000);
         
         return driver;
     }

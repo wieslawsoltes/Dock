@@ -102,8 +102,8 @@ if (Test-Port $winAppDriverPort) {
 } else {
     Write-Host "Starting WinAppDriver on port $winAppDriverPort..." -ForegroundColor Yellow
     try {
-        # Start WinAppDriver using cmd with specific port
-        $winAppDriverArgs = "/c `"$winAppDriverPath`" $winAppDriverPort"
+        # Start WinAppDriver using cmd
+        $winAppDriverArgs = "/c `"$winAppDriverPath`""
         $winAppDriverProcess = Start-Process -FilePath "cmd.exe" -ArgumentList $winAppDriverArgs -PassThru -NoNewWindow
         Write-Host "✅ WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
         

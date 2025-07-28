@@ -25,21 +25,21 @@ if (-not (Test-Command "node")) {
     Write-Host "Node.js is not installed. Please install Node.js from https://nodejs.org/" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Node.js is installed: $(node --version)" -ForegroundColor Green
+Write-Host "Node.js is installed: $(node --version)" -ForegroundColor Green
 
 # Check npm
 if (-not (Test-Command "npm")) {
     Write-Host "npm is not installed. Please install npm (usually comes with Node.js)" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ npm is installed: $(npm --version)" -ForegroundColor Green
+Write-Host "npm is installed: $(npm --version)" -ForegroundColor Green
 
 # Check .NET
 if (-not (Test-Command "dotnet")) {
     Write-Host ".NET is not installed. Please install .NET 9.0 SDK from https://dotnet.microsoft.com/download" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ .NET is installed: $(dotnet --version)" -ForegroundColor Green
+Write-Host ".NET is installed: $(dotnet --version)" -ForegroundColor Green
 
 # Install Appium if not skipped
 if (-not $SkipAppiumInstall) {
@@ -49,7 +49,7 @@ if (-not $SkipAppiumInstall) {
         Write-Host "Failed to install Appium" -ForegroundColor Red
         exit 1
     }
-    Write-Host "✓ Appium installed successfully" -ForegroundColor Green
+    Write-Host "Appium installed successfully" -ForegroundColor Green
 
     # Install Windows driver
     Write-Host "Installing Appium Windows driver..." -ForegroundColor Yellow
@@ -58,7 +58,7 @@ if (-not $SkipAppiumInstall) {
         Write-Host "Failed to install Appium Windows driver" -ForegroundColor Red
         exit 1
     }
-    Write-Host "✓ Appium Windows driver installed successfully" -ForegroundColor Green
+    Write-Host "Appium Windows driver installed successfully" -ForegroundColor Green
 } else {
     Write-Host "Skipping Appium installation (SkipAppiumInstall parameter specified)" -ForegroundColor Yellow
 }
@@ -76,14 +76,14 @@ if (-not (Test-Path $winAppDriverPath)) {
         Invoke-WebRequest -Uri $downloadUrl -OutFile $msiPath
         Start-Process msiexec.exe -Wait -ArgumentList "/i `"$msiPath`" /quiet"
         Remove-Item $msiPath -Force
-        Write-Host "✓ WinAppDriver installed successfully" -ForegroundColor Green
+        Write-Host "WinAppDriver installed successfully" -ForegroundColor Green
     } catch {
         Write-Host "Failed to download/install WinAppDriver: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host "Please download and install WinAppDriver manually from:" -ForegroundColor Yellow
         Write-Host "https://github.com/Microsoft/WinAppDriver/releases" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "✓ WinAppDriver is already installed" -ForegroundColor Green
+    Write-Host "WinAppDriver is already installed" -ForegroundColor Green
 }
 
 # Enable Developer Mode (required for WinAppDriver)
@@ -94,7 +94,7 @@ try {
         New-Item -Path $registryPath -Force | Out-Null
     }
     Set-ItemProperty -Path $registryPath -Name "AllowDevelopmentWithoutDevLicense" -Value 1 -Type DWord
-    Write-Host "✓ Developer Mode enabled" -ForegroundColor Green
+    Write-Host "Developer Mode enabled" -ForegroundColor Green
 } catch {
     Write-Host "Warning: Failed to enable Developer Mode. You may need to enable it manually in Settings." -ForegroundColor Yellow
 }
@@ -111,7 +111,7 @@ if (-not $SkipBuild) {
                 Write-Host "Failed to build DockMvvmSample" -ForegroundColor Red
                 exit 1
             }
-            Write-Host "✓ DockMvvmSample built successfully" -ForegroundColor Green
+            Write-Host "DockMvvmSample built successfully" -ForegroundColor Green
         } finally {
             Pop-Location
         }
@@ -130,10 +130,13 @@ if ($LASTEXITCODE -ne 0) {
     Write-Host "Failed to build test project" -ForegroundColor Red
     exit 1
 }
-Write-Host "✓ Test project built successfully" -ForegroundColor Green
+Write-Host "Test project built successfully" -ForegroundColor Green
 
-Write-Host "`nSetup completed successfully!" -ForegroundColor Green
-Write-Host "`nTo run the tests:" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "Setup completed successfully!" -ForegroundColor Green
+Write-Host ""
+Write-Host "To run the tests:" -ForegroundColor Yellow
 Write-Host "1. Start WinAppDriver: `"${winAppDriverPath}`"" -ForegroundColor Cyan
 Write-Host "2. Run tests: dotnet test" -ForegroundColor Cyan
-Write-Host "`nNote: Make sure to run WinAppDriver as Administrator" -ForegroundColor Yellow 
+Write-Host ""
+Write-Host "Note: Make sure to run WinAppDriver as Administrator" -ForegroundColor Yellow 

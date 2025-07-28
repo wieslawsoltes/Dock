@@ -1,180 +1,224 @@
 # DockMvvmSample Appium Tests
 
-This project contains automated UI tests for the DockMvvmSample application using Appium.
+This project contains Appium-based UI tests for the DockMvvmSample Avalonia application, supporting both Windows and macOS platforms.
 
-## Overview
+## Prerequisites
 
-The tests use Appium to automate the DockMvvmSample application on multiple platforms:
-- **Windows**: Uses WinAppDriver with Windows automation
-- **macOS**: Uses Mac2 driver with macOS automation
+### Common Requirements
+- **.NET 9.0 SDK** - [Download](https://dotnet.microsoft.com/download)
+- **Node.js** (v16 or later) - [Download](https://nodejs.org/)
+- **npm** (comes with Node.js)
 
-## Platform-Specific Configuration
+### Windows-Specific Requirements
+- **Windows 10/11**
+- **Administrator privileges** for setup
+- **Developer Mode enabled** (handled by setup script)
 
-### Windows Configuration (`appsettings.windows.json`)
-- Uses WinAppDriver with `automationName: "Windows"`
-- Includes enhanced capabilities for better app launching:
-  - `ms:waitForAppLaunch`: Waits for app to launch before connecting
-  - `ms:experimental-webdriver`: Enables experimental WebDriver features
-  - Extended timeouts for slower Windows environments
+### macOS-Specific Requirements
+- **macOS 10.15 or later**
+- **Xcode Command Line Tools**
+- **Accessibility permissions** for automation apps
 
-### macOS Configuration (`appsettings.macos.json`)
-- Uses Mac2 driver with `automationName: "Mac2"`
-- Uses bundle ID for app identification
-- Configured for app bundle management
+## Quick Setup
 
-## Enhanced Application Loading (Windows Compatibility Fix)
+### Windows Setup
+```powershell
+# Run PowerShell as Administrator
+cd tests/DockMvvmSample.AppiumTests
+.\Scripts\setup-windows.ps1
+```
 
-The `WaitForApplicationToLoad()` method has been significantly enhanced to address Windows-specific issues:
-
-### Multi-Stage Loading Detection
-1. **Application Process Ready**: Verifies WinAppDriver can communicate with the app
-2. **Main Window Visible**: Checks if the main window is accessible and ready
-3. **Essential Elements Ready**: Validates that core UI elements are available and interactable
-4. **Final Stabilization**: Platform-specific wait time (2s for Windows, 1s for others)
-
-### Windows-Specific Improvements
-- **Enhanced Element Detection**: Uses Windows-specific XPath patterns (`@AutomationId`, `@Name`, `@ControlType`)
-- **State Validation**: Checks both `Displayed` and `Enabled` properties on Windows
-- **Better Error Handling**: Provides detailed diagnostic information on failures
-- **Improved App Lifecycle**: Enhanced startup detection with main window handle verification
-
-### Diagnostic Features
-- Comprehensive error logging with platform detection
-- Element enumeration for debugging
-- Window handle information
-- Detailed failure diagnostics
+### macOS Setup
+```bash
+cd tests/DockMvvmSample.AppiumTests
+chmod +x Scripts/setup-macos.sh
+./Scripts/setup-macos.sh
+```
 
 ## Running Tests
 
-### Prerequisites
-1. **Windows**: 
-   - Install WinAppDriver from Microsoft
-   - Start WinAppDriver: `WinAppDriver.exe`
-   
-2. **macOS**:
-   - Install Appium with Mac2 driver
-   - Start Appium: `appium --base-path /wd/hub --port 4723`
+### Windows
+```powershell
+# Option 1: Using the run script (recommended)
+.\Scripts\run-tests-windows.ps1
 
-### Build the Test Application
-```bash
-# Build DockMvvmSample
-cd ../../samples/DockMvvmSample
-dotnet build
-```
+# Option 2: Manual approach
+# Terminal 1: Start WinAppDriver
+"C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe"
 
-### Run Tests
-```bash
-# Run all tests
+# Terminal 2: Run tests
 dotnet test
-
-# Run specific test
-dotnet test --filter "ApplicationStartsSuccessfully"
-
-# Run with verbose output
-dotnet test --logger "console;verbosity=detailed"
 ```
 
-## Common Issues and Solutions
+### macOS
+```bash
+# Option 1: Using the run script (recommended)
+./Scripts/run-tests-macos.sh
 
-### Windows-Specific Issues
+# Option 2: Manual approach
+# Terminal 1: Start Appium server
+appium --base-path /wd/hub --port 4723
 
-#### Issue: `WaitForApplicationToLoad()` Timeout
-**Solution**: The enhanced implementation now provides better Windows compatibility with:
-- Multi-stage loading detection
-- Platform-specific element detection strategies
-- Enhanced diagnostic information on failures
+# Terminal 2: Run tests
+dotnet test
+```
 
-#### Issue: Element Not Found
-**Solution**: The improved element detection now uses multiple strategies:
-1. Automation ID lookup
-2. Name attribute search
-3. Windows-specific XPath patterns
-4. Fallback element enumeration
+## Test Configuration
 
-#### Issue: Application Startup Delays
-**Solution**: Enhanced application lifecycle management:
-- Main window handle detection
-- Process exit monitoring
-- Configurable timeout values
-- Better error reporting
+The tests use configuration files to support different platforms:
 
-### Debugging Tips
+- `appsettings.json` - Common settings
+- `appsettings.windows.json` - Windows-specific settings
+- `appsettings.macos.json` - macOS-specific settings
 
-1. **Enable Detailed Logging**: Check test output for diagnostic information
-2. **Check App State**: Verify the application starts correctly outside of tests
-3. **Validate Configuration**: Ensure paths in `appsettings.windows.json` are correct
-4. **WinAppDriver Status**: Confirm WinAppDriver is running and accessible
+### Customizing Paths
+
+If your DockMvvmSample executable is in a different location, update the appropriate configuration file:
+
+```json
+{
+  "DockMvvmSample": {
+    "ExecutablePath": "path/to/your/DockMvvmSample.exe",
+    "WorkingDirectory": "path/to/working/directory/"
+  }
+}
+```
 
 ## Test Structure
 
-### Page Objects
-- `MainWindowPage`: Represents the main application window with enhanced Windows compatibility
-- Enhanced element detection with fallback strategies
-- Platform-specific wait logic
-
-### Base Classes
-- `BaseTest`: Provides common test infrastructure
-- `AppiumDriverFactory`: Creates platform-specific drivers with enhanced Windows support
-
-### Test Categories
-- `BasicDockTests`: Core application functionality
-- `DebugTests`: Development and debugging features
-- `AutomationPropertiesTests`: UI automation verification
-
-## Configuration
-
-### Test Settings
-- **CommandTimeout**: Maximum time for individual commands (60s)
-- **ImplicitWait**: Default element wait time (10s)
-- **WaitForApplicationToLoad**: Enhanced multi-stage timeout (30s total)
-
-### Platform Detection
-The test framework automatically detects the platform and applies appropriate:
-- Driver configuration
-- Element detection strategies
-- Timeout values
-- Diagnostic approaches
-
-## Recent Windows Compatibility Improvements
-
-### Enhanced WaitForApplicationToLoad Method
-- **Multi-stage detection**: Process ready → Window visible → Elements ready → Stabilization
-- **Platform-specific strategies**: Different approaches for Windows vs other platforms
-- **Better error handling**: Detailed diagnostic information on failures
-- **Improved reliability**: Reduced false positives and timeout issues
-
-### Windows-Specific Element Detection
-- Uses proper Windows automation attributes (`@AutomationId`, `@Name`, `@ControlType`)
-- Validates element state (`Displayed` and `Enabled`)
-- Fallback strategies for different Windows versions
-- Enhanced XPath patterns for WinAppDriver
-
-### Enhanced Application Lifecycle Management
-- Better startup detection with main window handle verification
-- Process monitoring during startup
-- Extended timeout values for Windows environments
-- Improved error reporting and diagnostics
-
-These improvements significantly enhance the reliability of Appium tests on Windows platforms, addressing common issues with application loading detection and element accessibility.
-
-## Running the Example Application
-
-Before running tests, you can manually verify the application works:
-
-```bash
-cd ../../samples/DockMvvmSample/bin/Debug/net9.0
-./DockMvvmSample.exe  # Windows
-./DockMvvmSample      # macOS/Linux
+```
+DockMvvmSample.AppiumTests/
+├── Configuration/          # Configuration models
+├── Infrastructure/         # Base classes and utilities
+├── PageObjects/           # Page object models
+├── Scripts/              # Setup, verification, and run scripts
+│   ├── setup-windows.ps1     # Windows setup
+│   ├── setup-macos.sh        # macOS setup
+│   ├── verify-setup.ps1      # Windows verification
+│   ├── verify-setup-macos.sh # macOS verification
+│   ├── run-tests-windows.ps1 # Windows test runner
+│   └── run-tests-macos.sh    # macOS test runner
+├── Tests/                # Actual test classes
+└── appsettings*.json     # Configuration files
 ```
 
-The application should start and display the main dock interface with tools and document areas.
+## Available Tests
 
-## Architecture
+### BasicDockTests
+- **ApplicationStartsSuccessfully** - Verifies the app launches and main window is visible
+- **MainMenuIsAccessible** - Tests File and Window menu accessibility
+- **DocumentTabsAreVisible** - Checks for default document tabs
+- **ToolWindowsAreVisible** - Verifies tool windows are present
+- **CanCreateNewLayout** - Tests the "New Layout" functionality
+- **DocumentTabsAreClickable** - Verifies document tab interaction
 
-The test project follows the Page Object Model pattern:
-- **Page Objects**: Represent UI components and interactions
-- **Test Classes**: Contain test logic and assertions  
-- **Infrastructure**: Handles driver creation, configuration, and utilities
-- **Configuration**: Platform-specific settings and capabilities
+## Troubleshooting
 
-This architecture provides maintainable, readable tests that can run reliably across different platforms with platform-specific optimizations. 
+### Windows Issues
+
+**WinAppDriver fails to start**
+- Ensure you're running as Administrator
+- Check that Developer Mode is enabled in Windows Settings
+- Verify WinAppDriver is installed correctly
+
+**Tests can't find the application**
+- Build the DockMvvmSample project: `dotnet build samples/DockMvvmSample -c Debug`
+- Verify the executable path in `appsettings.windows.json`
+
+**Port already in use**
+- Use a different port: `.\Scripts\run-tests-windows.ps1 -Port 4724`
+- Or stop the existing WinAppDriver process
+
+### macOS Issues
+
+**Permission denied errors**
+- Grant Accessibility permissions to Terminal, Appium, and DockMvvmSample
+- Go to System Preferences > Security & Privacy > Privacy > Accessibility
+
+**App fails to launch or automation elements not found**
+- **Use the test runner script**: Always use `./Scripts/run-tests-macos.sh` instead of `dotnet test` directly
+- **App bundling required**: The script automatically creates a proper macOS app bundle (`DockMvvmSample.app`) needed for automation
+- If building manually: `cd samples/DockMvvmSample && ./build-app-bundle.sh`
+- Check the executable path in `appsettings.macos.json` points to the `.app` bundle
+- Verify the app has necessary permissions
+
+**Appium connection issues**
+- Ensure Appium server is running on the correct port
+- Check firewall settings
+- Try restarting the Appium server
+
+### General Issues
+
+**Element not found errors**
+- The UI automation selectors might need adjustment for your specific Avalonia version
+- Check if the application UI has changed
+- Increase timeout values in configuration
+
+**Build errors**
+- Ensure all NuGet packages are restored: `dotnet restore`
+- Check .NET version compatibility
+- Update package versions if needed
+
+## Extending Tests
+
+### Adding New Tests
+1. Create new test classes in the `Tests/` folder
+2. Inherit from `BaseTest` for driver management
+3. Use the `[Collection("AppiumTests")]` attribute for proper test isolation
+
+### Adding New Page Objects
+1. Create page object classes in `PageObjects/` folder
+2. Follow the existing pattern for element location and interaction methods
+3. Use explicit waits for better reliability
+
+### Platform-Specific Tests
+Use the `ConfigurationHelper` to detect platform:
+```csharp
+[Fact]
+public void WindowsSpecificTest()
+{
+    if (!ConfigurationHelper.IsWindows)
+    {
+        Skip.If(true, "This test is Windows-specific");
+    }
+    // Test implementation
+}
+```
+
+## Script Options
+
+### Windows Script Options
+```powershell
+# Setup script
+.\Scripts\setup-windows.ps1 -SkipAppiumInstall -SkipBuild
+
+# Verification script
+.\Scripts\verify-setup.ps1
+
+# Run script
+.\Scripts\run-tests-windows.ps1 -TestFilter "BasicDockTests" -Verbose -Port 4724
+```
+
+### macOS Script Options
+```bash
+# Setup script
+./Scripts/setup-macos.sh --skip-appium-install --skip-build
+
+# Verification script
+./Scripts/verify-setup-macos.sh
+
+# Run script
+./Scripts/run-tests-macos.sh --filter "BasicDockTests" --verbose --port 4724
+```
+
+## Contributing
+
+When adding new tests:
+1. Follow the existing naming conventions
+2. Add appropriate documentation
+3. Test on both platforms if possible
+4. Update this README if needed
+
+## License
+
+This project follows the same license as the main Dock project. 

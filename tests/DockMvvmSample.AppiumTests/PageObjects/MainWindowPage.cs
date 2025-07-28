@@ -344,24 +344,4 @@ public class MainWindowPage : BasePage
     }
 
     #endregion
-
-    #region Backward Compatibility Methods
-
-    /// <summary>
-    /// Legacy method for backward compatibility - now much simpler
-    /// </summary>
-    public void WaitForApplicationToLoad()
-    {
-        WaitForPageLoad();
-    }
-
-    /// <summary>
-    /// Legacy method for backward compatibility
-    /// </summary>
-    public bool IsMainWindowVisible()
-    {
-        return IsElementVisible("MainWindow");
-    }
-
-    #endregion
 } 

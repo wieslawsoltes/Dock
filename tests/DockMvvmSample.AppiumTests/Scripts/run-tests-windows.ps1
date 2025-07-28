@@ -7,7 +7,26 @@ param(
 
 Write-Host "Running Appium tests on Windows..." -ForegroundColor Green
 
-# Check if WinAppDriver is installed
+# Check if Appium is installed
+$appiumAvailable = $false
+try {
+    $appiumVersion = & appium --version 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        $appiumAvailable = $true
+        Write-Host "Appium found: $appiumVersion" -ForegroundColor Green
+    }
+} catch {
+    $appiumAvailable = $false
+}
+
+if (-not $appiumAvailable) {
+    Write-Host "Appium is not installed or not in PATH" -ForegroundColor Red
+    Write-Host "Please install Appium: npm install -g appium" -ForegroundColor Yellow
+    Write-Host "Or run setup-windows.ps1 first" -ForegroundColor Yellow
+    exit 1
+}
+
+# Check if WinAppDriver is installed (needed by Appium)
 $winAppDriverPath = "${env:ProgramFiles(x86)}\Windows Application Driver\WinAppDriver.exe"
 if (-not (Test-Path $winAppDriverPath)) {
     Write-Host "WinAppDriver not found at: $winAppDriverPath" -ForegroundColor Red
@@ -39,28 +58,30 @@ if (Test-Port -Port $Port) {
     $startNewServer = $true
 }
 
-# Start WinAppDriver if needed
-$winAppDriverProcess = $null
+# Start Appium server if needed
+$appiumProcess = $null
 if ($startNewServer) {
-    Write-Host "Starting WinAppDriver on port $Port..." -ForegroundColor Yellow
+    Write-Host "Starting Appium server on port $Port..." -ForegroundColor Yellow
     try {
-        $winAppDriverProcess = Start-Process -FilePath $winAppDriverPath -ArgumentList $Port -PassThru -NoNewWindow
-        Write-Host "WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
+        # Start Appium server with Windows driver support
+        $appiumProcess = Start-Process -FilePath "appium" -ArgumentList "--base-path", "/wd/hub", "--port", $Port -PassThru -NoNewWindow
+        Write-Host "Appium server started (PID: $($appiumProcess.Id))" -ForegroundColor Green
         
-        # Wait for WinAppDriver to start
-        Start-Sleep -Seconds 3
+        # Wait for Appium to start
+        Write-Host "Waiting for Appium server to start..." -ForegroundColor Yellow
+        Start-Sleep -Seconds 5
         
         # Verify it's running
-        if ($winAppDriverProcess.HasExited) {
-            Write-Host "WinAppDriver failed to start or exited immediately" -ForegroundColor Red
+        if ($appiumProcess.HasExited) {
+            Write-Host "Appium server failed to start or exited immediately" -ForegroundColor Red
             exit 1
         }
     } catch {
-        Write-Host "Failed to start WinAppDriver: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "Failed to start Appium server: $($_.Exception.Message)" -ForegroundColor Red
         exit 1
     }
 } else {
-    Write-Host "Using existing Appium/WinAppDriver server on port $Port" -ForegroundColor Yellow
+    Write-Host "Using existing Appium server on port $Port" -ForegroundColor Yellow
 }
 
 # Build test arguments
@@ -84,15 +105,15 @@ try {
     $testExitCode = 1
 }
 
-# Cleanup: Stop WinAppDriver if we started it
-if ($winAppDriverProcess -and -not $winAppDriverProcess.HasExited) {
-    Write-Host "Stopping WinAppDriver..." -ForegroundColor Yellow
+# Cleanup: Stop Appium server if we started it
+if ($appiumProcess -and -not $appiumProcess.HasExited) {
+    Write-Host "Stopping Appium server..." -ForegroundColor Yellow
     try {
-        $winAppDriverProcess.Kill()
-        $winAppDriverProcess.WaitForExit(5000)
-        Write-Host "WinAppDriver stopped" -ForegroundColor Green
+        $appiumProcess.Kill()
+        $appiumProcess.WaitForExit(5000)
+        Write-Host "Appium server stopped" -ForegroundColor Green
     } catch {
-        Write-Host "Warning: Could not stop WinAppDriver gracefully" -ForegroundColor Yellow
+        Write-Host "Warning: Could not stop Appium server gracefully" -ForegroundColor Yellow
     }
 }
 

@@ -66,7 +66,7 @@ function Stop-AppiumProcesses {
 
 # Check if port is already in use
 if (Test-Port -Port $Port) {
-    Write-Host "⚠️ Port $Port is already in use. Appium server might already be running." -ForegroundColor Yellow
+    Write-Host "WARNING Port $Port is already in use. Appium server might already be running." -ForegroundColor Yellow
     
     # Try to stop existing Appium processes automatically
     $stopped = Stop-AppiumProcesses
@@ -76,10 +76,10 @@ if (Test-Port -Port $Port) {
         
         # Check if port is now free
         if (-not (Test-Port -Port $Port)) {
-            Write-Host "✅ Port $Port is now free. Will start new Appium server." -ForegroundColor Green
+            Write-Host "OK Port $Port is now free. Will start new Appium server." -ForegroundColor Green
             $startNewServer = $true
         } else {
-            Write-Host "❌ Port $Port is still in use after stopping processes." -ForegroundColor Red
+            Write-Host "X Port $Port is still in use after stopping processes." -ForegroundColor Red
             Write-Host "Please manually stop the process using port $Port or use a different port with -Port parameter" -ForegroundColor Yellow
             exit 1
         }
@@ -98,14 +98,14 @@ $winAppDriverPort = 4724  # Default WinAppDriver port
 
 # Check if WinAppDriver is already running
 if (Test-Port $winAppDriverPort) {
-    Write-Host "⚠️ Port $winAppDriverPort is already in use. WinAppDriver might already be running." -ForegroundColor Yellow
+    Write-Host "WARNING Port $winAppDriverPort is already in use. WinAppDriver might already be running." -ForegroundColor Yellow
 } else {
     Write-Host "Starting WinAppDriver on port $winAppDriverPort..." -ForegroundColor Yellow
     try {
         # Start WinAppDriver using cmd
         $winAppDriverArgs = "/c `"$winAppDriverPath`""
         $winAppDriverProcess = Start-Process -FilePath "cmd.exe" -ArgumentList $winAppDriverArgs -PassThru -NoNewWindow
-        Write-Host "✅ WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
+        Write-Host "OK WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
         
         # Wait for WinAppDriver to start
         Write-Host "Waiting for WinAppDriver to start..." -ForegroundColor Yellow
@@ -113,7 +113,7 @@ if (Test-Port $winAppDriverPort) {
         
         # Verify it's running
         if ($winAppDriverProcess.HasExited) {
-            Write-Host "❌ WinAppDriver failed to start or exited immediately" -ForegroundColor Red
+            Write-Host "X WinAppDriver failed to start or exited immediately" -ForegroundColor Red
             Write-Host "Note: WinAppDriver requires Developer Mode and should run as Administrator" -ForegroundColor Yellow
             exit 1
         }

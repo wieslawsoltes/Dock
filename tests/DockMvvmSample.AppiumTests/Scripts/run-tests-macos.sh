@@ -113,7 +113,7 @@ fi
 APPIUM_PID=""
 if [ "$START_NEW_SERVER" = true ]; then
     echo "Starting Appium server on port $PORT..."
-    appium --base-path /wd/hub --port $PORT &
+    appium --port $PORT &
     APPIUM_PID=$!
     echo "✅ Appium server started (PID: $APPIUM_PID)"
     

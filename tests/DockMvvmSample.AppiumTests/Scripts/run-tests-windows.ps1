@@ -98,7 +98,7 @@ if ($startNewServer) {
     Write-Host "Starting Appium server on port $Port..." -ForegroundColor Yellow
     try {
         # Start Appium server with Windows driver support using cmd
-        $appiumArgs = "/c appium --base-path /wd/hub --port $Port"
+        $appiumArgs = "/c appium --port $Port"
         $appiumProcess = Start-Process -FilePath "cmd.exe" -ArgumentList $appiumArgs -PassThru -NoNewWindow
         Write-Host "Appium server started (PID: $($appiumProcess.Id))" -ForegroundColor Green
         

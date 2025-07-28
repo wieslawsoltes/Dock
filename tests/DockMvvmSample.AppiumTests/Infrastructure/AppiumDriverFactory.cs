@@ -57,28 +57,53 @@ public static class AppiumDriverFactory
 
     private static IWebDriver CreateWindowsDriver(TestConfiguration config, AppiumOptions options, out Process? applicationProcess)
     {
-        // For Windows, we still need to start the application manually since Windows driver doesn't handle this
-        if (!File.Exists(config.DockMvvmSample.ExecutablePath))
-        {
-            throw new FileNotFoundException($"DockMvvmSample executable not found at: {config.DockMvvmSample.ExecutablePath}");
-        }
+        applicationProcess = null;
 
-        var startInfo = new ProcessStartInfo
+        // Check if WinAppDriver should handle app lifecycle (when app capability is set to executable)
+        if (options.ToDictionary().ContainsKey("appium:app") && 
+            options.ToDictionary()["appium:app"].ToString() != "Root")
         {
-            FileName = config.DockMvvmSample.ExecutablePath,
-            WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
-            UseShellExecute = false,
-            CreateNoWindow = false
-        };
-        
-        applicationProcess = Process.Start(startInfo);
-        if (applicationProcess == null)
-        {
-            throw new InvalidOperationException("Failed to start the DockMvvmSample application");
+            // Let WinAppDriver handle the application lifecycle
+            // Convert relative path to absolute path for WinAppDriver
+            var appPath = config.DockMvvmSample.ExecutablePath;
+            if (!Path.IsPathRooted(appPath))
+            {
+                appPath = Path.GetFullPath(appPath);
+            }
+
+            if (!File.Exists(appPath))
+            {
+                throw new FileNotFoundException($"DockMvvmSample executable not found at: {appPath}");
+            }
+
+            // Update the app capability with absolute path
+            options.AddAdditionalCapability("appium:app", appPath);
         }
-        
-        // Wait for the app to start
-        Thread.Sleep(2000);
+        else
+        {
+            // Manual app lifecycle management (legacy approach)
+            if (!File.Exists(config.DockMvvmSample.ExecutablePath))
+            {
+                throw new FileNotFoundException($"DockMvvmSample executable not found at: {config.DockMvvmSample.ExecutablePath}");
+            }
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = config.DockMvvmSample.ExecutablePath,
+                WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = false
+            };
+            
+            applicationProcess = Process.Start(startInfo);
+            if (applicationProcess == null)
+            {
+                throw new InvalidOperationException("Failed to start the DockMvvmSample application");
+            }
+            
+            // Wait for the app to start
+            Thread.Sleep(2000);
+        }
 
         // Create the Windows driver
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);

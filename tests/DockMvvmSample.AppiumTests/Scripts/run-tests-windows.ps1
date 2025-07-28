@@ -45,15 +45,49 @@ function Test-Port {
     }
 }
 
+# Function to kill existing Appium processes
+function Stop-AppiumProcesses {
+    try {
+        $appiumProcesses = Get-Process -Name "node" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*appium*" }
+        if ($appiumProcesses) {
+            Write-Host "Found existing Appium processes. Stopping them..." -ForegroundColor Yellow
+            $appiumProcesses | ForEach-Object { 
+                Write-Host "Stopping Appium process (PID: $($_.Id))" -ForegroundColor Yellow
+                Stop-Process -Id $_.Id -Force -ErrorAction SilentlyContinue
+            }
+            Start-Sleep -Seconds 2
+            return $true
+        }
+        return $false
+    } catch {
+        return $false
+    }
+}
+
 # Check if port is already in use
 if (Test-Port -Port $Port) {
-    Write-Host "Port $Port is already in use. Appium server might already be running." -ForegroundColor Yellow
-    $useExisting = Read-Host "Do you want to use the existing server? (y/n)"
-    if ($useExisting -ne "y" -and $useExisting -ne "Y") {
-        Write-Host "Please stop the existing server or use a different port with -Port parameter" -ForegroundColor Yellow
+    Write-Host "⚠️ Port $Port is already in use. Appium server might already be running." -ForegroundColor Yellow
+    
+    # Try to stop existing Appium processes automatically
+    $stopped = Stop-AppiumProcesses
+    if ($stopped) {
+        Write-Host "Stopped existing Appium processes. Waiting for port to be free..." -ForegroundColor Yellow
+        Start-Sleep -Seconds 3
+        
+        # Check if port is now free
+        if (-not (Test-Port -Port $Port)) {
+            Write-Host "✅ Port $Port is now free. Will start new Appium server." -ForegroundColor Green
+            $startNewServer = $true
+        } else {
+            Write-Host "❌ Port $Port is still in use after stopping processes." -ForegroundColor Red
+            Write-Host "Please manually stop the process using port $Port or use a different port with -Port parameter" -ForegroundColor Yellow
+            exit 1
+        }
+    } else {
+        Write-Host "No Appium processes found to stop. Port might be used by another service." -ForegroundColor Yellow
+        Write-Host "Please manually stop the process using port $Port or use a different port with -Port parameter" -ForegroundColor Yellow
         exit 1
     }
-    $startNewServer = $false
 } else {
     $startNewServer = $true
 }

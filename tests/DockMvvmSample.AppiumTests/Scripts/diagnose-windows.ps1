@@ -79,19 +79,19 @@ function Test-ElementFinding {
     try {
         $response = Invoke-WebRequest -Uri "http://127.0.0.1:4723/status" -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
-            Write-Host "✓ Appium server is responding" -ForegroundColor Green
+            Write-Host "OK Appium server is responding" -ForegroundColor Green
         }
     } catch {
-        Write-Host "✗ Appium server is not responding" -ForegroundColor Red
+        Write-Host "X Appium server is not responding" -ForegroundColor Red
     }
     
     try {
         $response = Invoke-WebRequest -Uri "http://127.0.0.1:4724/status" -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
-            Write-Host "✓ WinAppDriver is responding" -ForegroundColor Green
+            Write-Host "OK WinAppDriver is responding" -ForegroundColor Green
         }
     } catch {
-        Write-Host "✗ WinAppDriver is not responding" -ForegroundColor Red
+        Write-Host "X WinAppDriver is not responding" -ForegroundColor Red
     }
 }
 
@@ -102,9 +102,9 @@ Write-Host "   Windows Version: $windowsCaption ($windowsVersion)" -ForegroundCo
 
 $developerMode = Test-DeveloperMode
 if ($developerMode) {
-    Write-Host "   ✓ Developer Mode is enabled" -ForegroundColor Green
+    Write-Host "   OK Developer Mode is enabled" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ Developer Mode is not enabled" -ForegroundColor Red
+    Write-Host "   X Developer Mode is not enabled" -ForegroundColor Red
     if ($FixIssues) {
         Write-Host "   Attempting to enable Developer Mode..." -ForegroundColor Yellow
         try {
@@ -113,9 +113,9 @@ if ($developerMode) {
                 New-Item -Path $registryPath -Force | Out-Null
             }
             Set-ItemProperty -Path $registryPath -Name "AllowDevelopmentWithoutDevLicense" -Value 1 -Type DWord
-            Write-Host "   ✓ Developer Mode enabled" -ForegroundColor Green
+            Write-Host "   OK Developer Mode enabled" -ForegroundColor Green
         } catch {
-            Write-Host "   ✗ Failed to enable Developer Mode. Please enable it manually in Settings." -ForegroundColor Red
+            Write-Host "   X Failed to enable Developer Mode. Please enable it manually in Settings." -ForegroundColor Red
         }
     }
 }
@@ -124,9 +124,9 @@ Write-Host ""
 Write-Host "2. Checking WinAppDriver..." -ForegroundColor Yellow
 $winAppDriverInstalled = Test-WinAppDriver
 if ($winAppDriverInstalled) {
-    Write-Host "   ✓ WinAppDriver is installed" -ForegroundColor Green
+    Write-Host "   OK WinAppDriver is installed" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ WinAppDriver is not installed" -ForegroundColor Red
+    Write-Host "   X WinAppDriver is not installed" -ForegroundColor Red
     if ($FixIssues) {
         Write-Host "   Downloading and installing WinAppDriver..." -ForegroundColor Yellow
         try {
@@ -135,9 +135,9 @@ if ($winAppDriverInstalled) {
             Invoke-WebRequest -Uri $downloadUrl -OutFile $msiPath
             Start-Process msiexec.exe -Wait -ArgumentList "/i `"$msiPath`" /quiet"
             Remove-Item $msiPath -Force
-            Write-Host "   ✓ WinAppDriver installed" -ForegroundColor Green
+            Write-Host "   OK WinAppDriver installed" -ForegroundColor Green
         } catch {
-            Write-Host "   ✗ Failed to install WinAppDriver" -ForegroundColor Red
+            Write-Host "   X Failed to install WinAppDriver" -ForegroundColor Red
         }
     }
 }
@@ -146,16 +146,16 @@ Write-Host ""
 Write-Host "3. Checking Appium Installation..." -ForegroundColor Yellow
 $appiumInstalled, $appiumVersion = Test-Appium
 if ($appiumInstalled) {
-    Write-Host "   ✓ Appium is installed (Version: $appiumVersion)" -ForegroundColor Green
+    Write-Host "   OK Appium is installed (Version: $appiumVersion)" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ Appium is not installed" -ForegroundColor Red
+    Write-Host "   X Appium is not installed" -ForegroundColor Red
     if ($FixIssues) {
         Write-Host "   Installing Appium..." -ForegroundColor Yellow
         try {
             npm install -g appium
-            Write-Host "   ✓ Appium installed" -ForegroundColor Green
+            Write-Host "   OK Appium installed" -ForegroundColor Green
         } catch {
-            Write-Host "   ✗ Failed to install Appium" -ForegroundColor Red
+            Write-Host "   X Failed to install Appium" -ForegroundColor Red
         }
     }
 }
@@ -164,16 +164,16 @@ Write-Host ""
 Write-Host "4. Checking Windows Driver..." -ForegroundColor Yellow
 $windowsDriverInstalled = Test-WindowsDriver
 if ($windowsDriverInstalled) {
-    Write-Host "   ✓ Windows driver is installed" -ForegroundColor Green
+    Write-Host "   OK Windows driver is installed" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ Windows driver is not installed" -ForegroundColor Red
+    Write-Host "   X Windows driver is not installed" -ForegroundColor Red
     if ($FixIssues) {
         Write-Host "   Installing Windows driver..." -ForegroundColor Yellow
         try {
             appium driver install windows
-            Write-Host "   ✓ Windows driver installed" -ForegroundColor Green
+            Write-Host "   OK Windows driver installed" -ForegroundColor Green
         } catch {
-            Write-Host "   ✗ Failed to install Windows driver" -ForegroundColor Red
+            Write-Host "   X Failed to install Windows driver" -ForegroundColor Red
         }
     }
 }
@@ -184,15 +184,15 @@ $appiumPort = Test-Port -Port 4723
 $winAppDriverPort = Test-Port -Port 4724
 
 if ($appiumPort) {
-    Write-Host "   ✓ Appium server is running on port 4723" -ForegroundColor Green
+    Write-Host "   OK Appium server is running on port 4723" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ Appium server is not running on port 4723" -ForegroundColor Red
+    Write-Host "   X Appium server is not running on port 4723" -ForegroundColor Red
 }
 
 if ($winAppDriverPort) {
-    Write-Host "   ✓ WinAppDriver is running on port 4724" -ForegroundColor Green
+    Write-Host "   OK WinAppDriver is running on port 4724" -ForegroundColor Green
 } else {
-    Write-Host "   ✗ WinAppDriver is not running on port 4724" -ForegroundColor Red
+    Write-Host "   X WinAppDriver is not running on port 4724" -ForegroundColor Red
 }
 
 Write-Host ""
@@ -212,9 +212,9 @@ if (-not $appiumPort) { $issues += "Appium server not running" }
 if (-not $winAppDriverPort) { $issues += "WinAppDriver not running" }
 
 if ($issues.Count -eq 0) {
-    Write-Host "✓ All checks passed! Your Windows Appium setup should work correctly." -ForegroundColor Green
+    Write-Host "OK All checks passed! Your Windows Appium setup should work correctly." -ForegroundColor Green
 } else {
-    Write-Host "✗ Found $($issues.Count) issue(s):" -ForegroundColor Red
+    Write-Host "X Found $($issues.Count) issue(s):" -ForegroundColor Red
     foreach ($issue in $issues) {
         Write-Host "  - $issue" -ForegroundColor Red
     }
@@ -230,8 +230,8 @@ if ($issues.Count -eq 0) {
 
 Write-Host ""
 Write-Host "=== Additional Troubleshooting Tips ===" -ForegroundColor Cyan
-Write-Host "• Windows driver has known issues with implicit waits - use explicit waits" -ForegroundColor White
-Write-Host "• Element finding may require multiple strategies (automationid, name, id)" -ForegroundColor White
-Write-Host "• WinAppDriver must run as Administrator" -ForegroundColor White
-Write-Host "• Appium 2.0 uses different URL format than 1.x" -ForegroundColor White
-Write-Host "• Check application logs for accessibility identifier issues" -ForegroundColor White 
+Write-Host "- Windows driver has known issues with implicit waits - use explicit waits" -ForegroundColor White
+Write-Host "- Element finding may require multiple strategies (automationid, name, id)" -ForegroundColor White
+Write-Host "- WinAppDriver must run as Administrator" -ForegroundColor White
+Write-Host "- Appium 2.0 uses different URL format than 1.x" -ForegroundColor White
+Write-Host "- Check application logs for accessibility identifier issues" -ForegroundColor White 

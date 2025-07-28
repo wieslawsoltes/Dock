@@ -91,9 +91,10 @@ function Stop-AppiumProcesses {
     }
 }
 
-# Check if port is already in use
-if (Test-Port -Port $Port) {
-    Write-Host "WARNING Port $Port is already in use. Appium server might already be running." -ForegroundColor Yellow
+# Check if Appium port is already in use
+$startNewServer = $false
+if (Test-Port -Port $AppiumPort) {
+    Write-Host "WARNING: Port $AppiumPort is already in use. Appium server might already be running." -ForegroundColor Yellow
     
     # Try to stop existing Appium processes automatically
     $stopped = Stop-AppiumProcesses
@@ -102,17 +103,17 @@ if (Test-Port -Port $Port) {
         Start-Sleep -Seconds 3
         
         # Check if port is now free
-        if (-not (Test-Port -Port $Port)) {
-            Write-Host "OK Port $Port is now free. Will start new Appium server." -ForegroundColor Green
+        if (-not (Test-Port -Port $AppiumPort)) {
+            Write-Host "✓ Port $AppiumPort is now free. Will start new Appium server." -ForegroundColor Green
             $startNewServer = $true
         } else {
-            Write-Host "X Port $Port is still in use after stopping processes." -ForegroundColor Red
-            Write-Host "Please manually stop the process using port $Port or use a different port with -Port parameter" -ForegroundColor Yellow
+            Write-Host "✗ Port $AppiumPort is still in use after stopping processes." -ForegroundColor Red
+            Write-Host "Please manually stop the process using port $AppiumPort or use a different port with -AppiumPort parameter" -ForegroundColor Yellow
             exit 1
         }
     } else {
         Write-Host "No Appium processes found to stop. Port might be used by another service." -ForegroundColor Yellow
-        Write-Host "Please manually stop the process using port $Port or use a different port with -Port parameter" -ForegroundColor Yellow
+        Write-Host "Please manually stop the process using port $AppiumPort or use a different port with -AppiumPort parameter" -ForegroundColor Yellow
         exit 1
     }
 } else {
@@ -121,29 +122,25 @@ if (Test-Port -Port $Port) {
 
 # Start WinAppDriver first (required for Windows automation)
 $winAppDriverProcess = $null
-$winAppDriverPort = 4723  # WinAppDriver always uses port 4723
 
 # Check if WinAppDriver is already running
-if (Test-Port $winAppDriverPort) {
-    Write-Host "WARNING Port $winAppDriverPort is already in use. WinAppDriver might already be running." -ForegroundColor Yellow
+if (Test-Port $WinAppDriverPort) {
+    Write-Host "WinAppDriver is already running on port $WinAppDriverPort" -ForegroundColor Green
 } else {
-    Write-Host "Starting WinAppDriver on port $winAppDriverPort..." -ForegroundColor Yellow
+    Write-Host "Starting WinAppDriver on port $WinAppDriverPort..." -ForegroundColor Yellow
     try {
-        # Start WinAppDriver using cmd
-        $winAppDriverArgs = "/c `"$winAppDriverPath`""
-        $winAppDriverProcess = Start-Process -FilePath "cmd.exe" -ArgumentList $winAppDriverArgs -PassThru -NoNewWindow
-        Write-Host "OK WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
+        # Start WinAppDriver - it automatically uses port 4724
+        $winAppDriverProcess = Start-Process -FilePath $winAppDriverPath -PassThru -WindowStyle Minimized
+        Write-Host "✓ WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
         
         # Wait for WinAppDriver to start
         Write-Host "Waiting for WinAppDriver to start..." -ForegroundColor Yellow
-        Start-Sleep -Seconds 3
-        
-        # Verify it's running
-        if ($winAppDriverProcess.HasExited) {
-            Write-Host "X WinAppDriver failed to start or exited immediately" -ForegroundColor Red
+        if (-not (Wait-ForPort -Port $WinAppDriverPort -TimeoutSeconds 10)) {
+            Write-Host "✗ WinAppDriver failed to start on port $WinAppDriverPort" -ForegroundColor Red
             Write-Host "Note: WinAppDriver requires Developer Mode and should run as Administrator" -ForegroundColor Yellow
             exit 1
         }
+        Write-Host "✓ WinAppDriver is responding on port $WinAppDriverPort" -ForegroundColor Green
     } catch {
         Write-Host "Failed to start WinAppDriver: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host "Note: WinAppDriver requires Developer Mode and should run as Administrator" -ForegroundColor Yellow
@@ -154,28 +151,29 @@ if (Test-Port $winAppDriverPort) {
 # Start Appium server if needed
 $appiumProcess = $null
 if ($startNewServer) {
-    Write-Host "Starting Appium server on port $Port..." -ForegroundColor Yellow
+    Write-Host "Starting Appium server on port $AppiumPort..." -ForegroundColor Yellow
     try {
-        # Start Appium server with Windows driver support using cmd
-        $appiumArgs = "/c appium --port $Port"
-        $appiumProcess = Start-Process -FilePath "cmd.exe" -ArgumentList $appiumArgs -PassThru -NoNewWindow
-        Write-Host "Appium server started (PID: $($appiumProcess.Id))" -ForegroundColor Green
+        # Start Appium server with proper argument syntax
+        $appiumProcess = Start-Process -FilePath "appium" -ArgumentList "--port", $AppiumPort -PassThru -WindowStyle Minimized
+        Write-Host "✓ Appium server started (PID: $($appiumProcess.Id))" -ForegroundColor Green
         
         # Wait for Appium to start
         Write-Host "Waiting for Appium server to start..." -ForegroundColor Yellow
-        Start-Sleep -Seconds 5
-        
-        # Verify it's running
-        if ($appiumProcess.HasExited) {
-            Write-Host "Appium server failed to start or exited immediately" -ForegroundColor Red
+        if (-not (Wait-ForPort -Port $AppiumPort -TimeoutSeconds 15)) {
+            Write-Host "✗ Appium server failed to start on port $AppiumPort" -ForegroundColor Red
+            if ($appiumProcess -and -not $appiumProcess.HasExited) {
+                Write-Host "Stopping failed Appium process..." -ForegroundColor Yellow
+                $appiumProcess.Kill()
+            }
             exit 1
         }
+        Write-Host "✓ Appium server is responding on port $AppiumPort" -ForegroundColor Green
     } catch {
         Write-Host "Failed to start Appium server: $($_.Exception.Message)" -ForegroundColor Red
         exit 1
     }
 } else {
-    Write-Host "Using existing Appium server on port $Port" -ForegroundColor Yellow
+    Write-Host "Using existing Appium server on port $AppiumPort" -ForegroundColor Yellow
 }
 
 # Build test arguments

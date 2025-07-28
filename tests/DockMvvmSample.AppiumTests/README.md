@@ -134,13 +134,17 @@ DockMvvmSample.AppiumTests/
 
 ### Windows Issues
 
-#### **NEW: Windows Diagnostic Tool**
-First, run the diagnostic tool to identify issues:
+#### **NEW: Windows Diagnostic Tools**
+First, run the diagnostic tools to identify and fix issues:
+
 ```powershell
-# Run as Administrator
+# Run as Administrator - comprehensive system check
 .\Scripts\diagnose-windows.ps1
 
-# To automatically fix common issues
+# Quick setup verification
+.\Scripts\test-setup-windows.ps1
+
+# Auto-fix common issues
 .\Scripts\diagnose-windows.ps1 -FixIssues
 ```
 

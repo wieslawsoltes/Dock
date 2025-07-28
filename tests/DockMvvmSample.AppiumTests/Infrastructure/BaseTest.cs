@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using DockMvvmSample.AppiumTests.Configuration;
 using OpenQA.Selenium;
@@ -9,11 +10,13 @@ public abstract class BaseTest : IDisposable
 {
     protected IWebDriver Driver { get; private set; }
     protected TestConfiguration Configuration { get; private set; }
+    protected Process? ApplicationProcess { get; set; }
 
     protected BaseTest()
     {
         Configuration = ConfigurationHelper.LoadConfiguration();
-        Driver = AppiumDriverFactory.CreateDriver(Configuration);
+        Driver = AppiumDriverFactory.CreateDriver(Configuration, out var appProcess);
+        ApplicationProcess = appProcess;
     }
 
     protected void TakeScreenshot(string testName)
@@ -43,12 +46,31 @@ public abstract class BaseTest : IDisposable
     {
         try
         {
-            // Appium handles app lifecycle management properly now
+            // Quit the Appium driver first
             Driver?.Quit();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error disposing driver: {ex.Message}");
+        }
+
+        // Kill the application process if it's still running (Windows only)
+        try
+        {
+            if (ApplicationProcess != null && !ApplicationProcess.HasExited)
+            {
+                Console.WriteLine($"Killing application process with PID: {ApplicationProcess.Id}");
+                ApplicationProcess.Kill();
+                ApplicationProcess.WaitForExit(5000);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error killing application process: {ex.Message}");
+        }
+        finally
+        {
+            ApplicationProcess?.Dispose();
         }
     }
 } 

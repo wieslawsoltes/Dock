@@ -23,19 +23,85 @@ public class ElementHelper
         _defaultWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(defaultTimeoutSeconds));
     }
 
+    #region Platform-Specific Helpers
+
+    /// <summary>
+    /// Gets the appropriate AccessibilityId locator based on the platform
+    /// </summary>
+    private By GetAccessibilityIdLocator(string accessibilityId)
+    {
+        // Check if we can determine platform from capabilities
+        var capabilities = (_driver as AppiumDriver<AppiumWebElement>)?.Capabilities;
+        var platformName = capabilities?.GetCapability("platformName")?.ToString();
+        
+        if (string.Equals(platformName, "Windows", StringComparison.OrdinalIgnoreCase))
+        {
+            // Windows Application Driver - try accessibility id and name attributes
+            return By.XPath($"//*[@automationid='{accessibilityId}' or @name='{accessibilityId}']");
+        }
+        else if (string.Equals(platformName, "Mac", StringComparison.OrdinalIgnoreCase))
+        {
+            // Mac2 driver - use accessibility identifier
+            return By.XPath($"//*[@identifier='{accessibilityId}' or @name='{accessibilityId}']");
+        }
+        else
+        {
+            // Generic fallback - try multiple approaches
+            try 
+            {
+                // Try to use reflection to access AppiumBy if available
+                var appiumByType = System.Type.GetType("OpenQA.Selenium.Appium.AppiumBy, Appium.WebDriver");
+                if (appiumByType != null)
+                {
+                    var method = appiumByType.GetMethod("AccessibilityId", new[] { typeof(string) });
+                    if (method != null)
+                    {
+                        return (By)method.Invoke(null, new object[] { accessibilityId });
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore reflection errors
+            }
+            
+            // Ultimate fallback
+            return By.Id(accessibilityId);
+        }
+    }
+
+    #endregion
+
     #region Core Element Finding Methods
 
     /// <summary>
-    /// Finds an element by AccessibilityId with automatic fallback to By.Id
+    /// Finds an element by AccessibilityId with platform-specific strategies
     /// </summary>
     public IWebElement FindByAccessibilityId(string accessibilityId)
     {
-        return (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-               ?? _driver.FindElement(By.Id(accessibilityId));
+        try
+        {
+            // Try modern AppiumBy approach first (works with newer versions)
+            return _driver.FindElement(GetAccessibilityIdLocator(accessibilityId));
+        }
+        catch (NoSuchElementException)
+        {
+            // Fallback for older versions or different platform behaviors
+            try
+            {
+                return (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
+                       ?? _driver.FindElement(By.Id(accessibilityId));
+            }
+            catch (NoSuchElementException)
+            {
+                // Final fallback - try by name attribute for Windows
+                return _driver.FindElement(By.XPath($"//*[@name='{accessibilityId}' or @automationid='{accessibilityId}']"));
+            }
+        }
     }
 
     /// <summary>
-    /// Finds an element by AccessibilityId with explicit wait and automatic fallback
+    /// Finds an element by AccessibilityId with explicit wait and platform-specific strategies
     /// </summary>
     public IWebElement FindByAccessibilityIdWithWait(string accessibilityId, int? timeoutSeconds = null)
     {
@@ -46,8 +112,8 @@ public class ElementHelper
         {
             try
             {
-                return (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-                       ?? driver.FindElement(By.Id(accessibilityId));
+                // Use the new platform-aware finding method
+                return FindByAccessibilityId(accessibilityId);
             }
             catch (NoSuchElementException)
             {
@@ -90,7 +156,7 @@ public class ElementHelper
     }
 
     /// <summary>
-    /// Waits for an element to be clickable using AccessibilityId
+    /// Waits for an element to be clickable using AccessibilityId with platform-specific strategies
     /// </summary>
     public IWebElement WaitForClickable(string accessibilityId, int? timeoutSeconds = null)
     {
@@ -101,8 +167,7 @@ public class ElementHelper
         {
             try
             {
-                var element = (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-                             ?? driver.FindElement(By.Id(accessibilityId));
+                var element = FindByAccessibilityId(accessibilityId);
                 return element.Enabled && element.Displayed ? element : null;
             }
             catch (NoSuchElementException)
@@ -113,7 +178,7 @@ public class ElementHelper
     }
 
     /// <summary>
-    /// Waits for an element to be visible using AccessibilityId
+    /// Waits for an element to be visible using AccessibilityId with platform-specific strategies
     /// </summary>
     public IWebElement WaitForVisible(string accessibilityId, int? timeoutSeconds = null)
     {
@@ -124,8 +189,7 @@ public class ElementHelper
         {
             try
             {
-                var element = (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-                             ?? driver.FindElement(By.Id(accessibilityId));
+                var element = FindByAccessibilityId(accessibilityId);
                 return element.Displayed ? element : null;
             }
             catch (NoSuchElementException)
@@ -297,7 +361,7 @@ public class ElementHelper
     }
 
     /// <summary>
-    /// Waits for a custom condition on an element
+    /// Waits for a custom condition on an element with platform-specific strategies
     /// </summary>
     public IWebElement WaitForCondition(string accessibilityId, Func<IWebElement, bool> condition, int? timeoutSeconds = null)
     {
@@ -308,8 +372,7 @@ public class ElementHelper
         {
             try
             {
-                var element = (driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-                             ?? driver.FindElement(By.Id(accessibilityId));
+                var element = FindByAccessibilityId(accessibilityId);
                 return condition(element) ? element : null;
             }
             catch (NoSuchElementException)

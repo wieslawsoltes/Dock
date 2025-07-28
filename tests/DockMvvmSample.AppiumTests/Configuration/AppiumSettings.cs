@@ -4,7 +4,7 @@ namespace DockMvvmSample.AppiumTests.Configuration;
 
 public class AppiumSettings
 {
-    public string ServerUrl { get; set; } = "http://127.0.0.1:4723";
+    public string ServerUrl { get; set; } = "http://127.0.0.1:4724";
     public int CommandTimeout { get; set; } = 60;
     public int ImplicitWait { get; set; } = 10;
     public Dictionary<string, object> DesiredCapabilities { get; set; } = new();

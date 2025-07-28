@@ -2,7 +2,7 @@
 param(
     [string]$TestFilter = "",
     [switch]$Verbose,
-    [int]$Port = 4723
+    [int]$Port = 4724
 )
 
 Write-Host "Running Appium tests on Windows..." -ForegroundColor Green
@@ -94,7 +94,7 @@ if (Test-Port -Port $Port) {
 
 # Start WinAppDriver first (required for Windows automation)
 $winAppDriverProcess = $null
-$winAppDriverPort = 4724  # Default WinAppDriver port
+$winAppDriverPort = 4723  # WinAppDriver always uses port 4723
 
 # Check if WinAppDriver is already running
 if (Test-Port $winAppDriverPort) {

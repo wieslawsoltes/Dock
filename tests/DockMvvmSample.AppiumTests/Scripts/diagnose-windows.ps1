@@ -77,7 +77,7 @@ function Test-ElementFinding {
     # This would require the application to be running
     # For now, we'll just check if the servers are responding
     try {
-        $response = Invoke-WebRequest -Uri "http://127.0.0.1:4723/status" -TimeoutSec 5
+        $response = Invoke-WebRequest -Uri "http://127.0.0.1:4724/status" -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
             Write-Host "OK Appium server is responding" -ForegroundColor Green
         }
@@ -180,19 +180,19 @@ if ($windowsDriverInstalled) {
 
 Write-Host ""
 Write-Host "5. Checking Server Status..." -ForegroundColor Yellow
-$appiumPort = Test-Port -Port 4723
-$winAppDriverPort = Test-Port -Port 4724
+$appiumPort = Test-Port -Port 4724
+$winAppDriverPort = Test-Port -Port 4723
 
 if ($appiumPort) {
-    Write-Host "   OK Appium server is running on port 4723" -ForegroundColor Green
+    Write-Host "   OK Appium server is running on port 4724" -ForegroundColor Green
 } else {
-    Write-Host "   X Appium server is not running on port 4723" -ForegroundColor Red
+    Write-Host "   X Appium server is not running on port 4724" -ForegroundColor Red
 }
 
 if ($winAppDriverPort) {
-    Write-Host "   OK WinAppDriver is running on port 4724" -ForegroundColor Green
+    Write-Host "   OK WinAppDriver is running on port 4723" -ForegroundColor Green
 } else {
-    Write-Host "   X WinAppDriver is not running on port 4724" -ForegroundColor Red
+    Write-Host "   X WinAppDriver is not running on port 4723" -ForegroundColor Red
 }
 
 Write-Host ""

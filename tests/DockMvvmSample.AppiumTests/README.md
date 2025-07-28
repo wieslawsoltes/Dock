@@ -135,9 +135,11 @@ DockMvvmSample.AppiumTests/
 - Grant Accessibility permissions to Terminal, Appium, and DockMvvmSample
 - Go to System Preferences > Security & Privacy > Privacy > Accessibility
 
-**App fails to launch**
-- Ensure DockMvvmSample is built: `dotnet build samples/DockMvvmSample -c Debug`
-- Check the executable path in `appsettings.macos.json`
+**App fails to launch or automation elements not found**
+- **Use the test runner script**: Always use `./Scripts/run-tests-macos.sh` instead of `dotnet test` directly
+- **App bundling required**: The script automatically creates a proper macOS app bundle (`DockMvvmSample.app`) needed for automation
+- If building manually: `cd samples/DockMvvmSample && ./build-app-bundle.sh`
+- Check the executable path in `appsettings.macos.json` points to the `.app` bundle
 - Verify the app has necessary permissions
 
 **Appium connection issues**

@@ -48,13 +48,52 @@ if ! command -v appium >/dev/null 2>&1; then
     exit 1
 fi
 
-# Check if DockMvvmSample is built
-SAMPLE_PATH="../../samples/DockMvvmSample/bin/Debug/net9.0/DockMvvmSample"
-if [ ! -f "$SAMPLE_PATH" ]; then
-    echo "❌ DockMvvmSample executable not found at: $SAMPLE_PATH"
-    echo "Please build it first: dotnet build samples/DockMvvmSample -c Debug"
+# Build DockMvvmSample app bundle for macOS automation testing
+echo "Building DockMvvmSample app bundle..."
+cd ../../samples/DockMvvmSample
+if [ ! -f "build-app-bundle.sh" ]; then
+    echo "❌ build-app-bundle.sh script not found"
     exit 1
 fi
+
+# Make sure the script is executable
+chmod +x build-app-bundle.sh
+
+# Run the bundle build script
+./build-app-bundle.sh
+
+# Check if the app bundle was created
+BUNDLE_PATH="bin/Debug/net9.0/DockMvvmSample.app"
+if [ ! -d "$BUNDLE_PATH" ]; then
+    echo "❌ DockMvvmSample.app bundle not found at: $BUNDLE_PATH"
+    echo "App bundle creation failed"
+    exit 1
+fi
+
+# Verify app bundle structure
+EXECUTABLE_PATH="$BUNDLE_PATH/Contents/MacOS/DockMvvmSample"
+INFO_PLIST_PATH="$BUNDLE_PATH/Contents/Info.plist"
+
+if [ ! -f "$EXECUTABLE_PATH" ]; then
+    echo "❌ Executable not found in app bundle: $EXECUTABLE_PATH"
+    exit 1
+fi
+
+if [ ! -f "$INFO_PLIST_PATH" ]; then
+    echo "❌ Info.plist not found in app bundle: $INFO_PLIST_PATH"
+    exit 1
+fi
+
+# Verify executable permissions
+if [ ! -x "$EXECUTABLE_PATH" ]; then
+    echo "❌ Executable does not have execute permissions: $EXECUTABLE_PATH"
+    exit 1
+fi
+
+echo "✅ DockMvvmSample.app bundle created successfully with correct structure"
+
+# Go back to test directory
+cd ../../tests/DockMvvmSample.AppiumTests
 
 # Check if port is already in use
 START_NEW_SERVER=true

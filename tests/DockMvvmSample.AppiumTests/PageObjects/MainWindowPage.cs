@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace DockMvvmSample.AppiumTests.PageObjects;
@@ -19,12 +20,22 @@ public class MainWindowPage
         _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
     }
 
-    // Main window elements - using Mac2/XCUITest attributes and application name
-    public IWebElement MainWindow => _wait.Until(d => d.FindElement(By.XPath("//*[@title='Dock Avalonia Demo' or @label='Dock Avalonia Demo' or contains(@title, 'DockMvvmSample') or contains(@label, 'DockMvvmSample')]")));
+    // Main window elements - using automation IDs
+    public IWebElement MainWindow => _wait.Until(d => d.FindElement(By.Id("MainWindow")));
     
-    // Menu elements - using Mac2/XCUITest attributes  
-    public IWebElement FileMenu => _wait.Until(d => d.FindElement(By.XPath("//*[@title='File']")));
-    public IWebElement WindowMenu => _wait.Until(d => d.FindElement(By.XPath("//*[@title='Window']")));
+    // Menu elements - using automation IDs  
+    public IWebElement FileMenu => _wait.Until(d => d.FindElement(By.Id("FileMenu")));
+    public IWebElement WindowMenu => _wait.Until(d => d.FindElement(By.Id("WindowMenu")));
+    
+    // Tool elements - using automation IDs
+    public IWebElement Tool1Tab => _wait.Until(d => d.FindElement(By.Id("Tool1")));
+    public IWebElement Tool5Tab => _wait.Until(d => d.FindElement(By.Id("Tool5")));
+    
+    // ToolDock containers - using automation IDs  
+    public IWebElement LeftTopToolDock => _wait.Until(d => d.FindElement(By.Id("LeftTopToolDock")));
+    public IWebElement LeftBottomToolDock => _wait.Until(d => d.FindElement(By.Id("LeftBottomToolDock")));
+    public IWebElement RightTopToolDock => _wait.Until(d => d.FindElement(By.Id("RightTopToolDock")));
+    public IWebElement RightBottomToolDock => _wait.Until(d => d.FindElement(By.Id("RightBottomToolDock")));
 
 
 
@@ -48,30 +59,50 @@ public class MainWindowPage
     {
         try
         {
-            // Look for elements that could be our app - more flexible search
-            var searchPatterns = new[]
-            {
-                "//*[contains(@title, 'Dock Avalonia Demo') or contains(@label, 'Dock Avalonia Demo')]",
-                "//*[contains(@title, 'DockMvvm') or contains(@label, 'DockMvvm')]",
-                "//*[contains(@title, 'Sample') or contains(@label, 'Sample')]",
-                "//*[@elementType='55' and @enabled='true']" // Look for any enabled window
-            };
-
-            foreach (var pattern in searchPatterns)
-            {
-                var elements = _driver.FindElements(By.XPath(pattern));
-                if (elements.Count > 0)
-                {
-                    return true;
-                }
-            }
-            
-            return false;
+            // Use automation ID to check if main window is visible
+            var mainWindow = _driver.FindElement(By.Id("MainWindow"));
+            return mainWindow.Displayed;
         }
         catch (NoSuchElementException)
         {
-            return false;
+            // Fallback to flexible search patterns if automation ID doesn't work
+            try
+            {
+                var searchPatterns = new[]
+                {
+                    "//*[@identifier='MainWindow']",
+                    "//*[contains(@title, 'Dock Avalonia Demo') or contains(@label, 'Dock Avalonia Demo')]",
+                    "//*[contains(@title, 'DockMvvm') or contains(@label, 'DockMvvm')]",
+                    "//*[contains(@title, 'Sample') or contains(@label, 'Sample')]",
+                    "//*[@elementType='55' and @enabled='true']" // Look for any enabled window
+                };
+
+                foreach (var pattern in searchPatterns)
+                {
+                    var elements = _driver.FindElements(By.XPath(pattern));
+                    if (elements.Count > 0)
+                    {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
+    }
+    
+    // Helper method for drag and drop operations
+    public void DragToolToToolDock(IWebElement sourceToolTab, IWebElement targetToolDock)
+    {
+        var actions = new OpenQA.Selenium.Interactions.Actions(_driver);
+        actions.DragAndDrop(sourceToolTab, targetToolDock).Perform();
+        
+        // Wait for the UI to update
+        System.Threading.Thread.Sleep(2000);
     }
 
     public bool IsDocumentTabPresent(string tabName)

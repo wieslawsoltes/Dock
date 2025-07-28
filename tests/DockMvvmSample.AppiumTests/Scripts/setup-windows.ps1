@@ -60,7 +60,7 @@ if (-not $SkipAppiumInstall) {
     }
     Write-Host "✓ Appium Windows driver installed successfully" -ForegroundColor Green
 } else {
-    Write-Host "Skipping Appium installation (--SkipAppiumInstall specified)" -ForegroundColor Yellow
+    Write-Host "Skipping Appium installation (SkipAppiumInstall parameter specified)" -ForegroundColor Yellow
 }
 
 # Download and install WinAppDriver
@@ -119,7 +119,7 @@ if (-not $SkipBuild) {
         Write-Host "Warning: DockMvvmSample path not found: $samplePath" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "Skipping build (--SkipBuild specified)" -ForegroundColor Yellow
+    Write-Host "Skipping build (SkipBuild parameter specified)" -ForegroundColor Yellow
 }
 
 # Build test project

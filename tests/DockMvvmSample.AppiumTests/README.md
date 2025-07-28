@@ -57,7 +57,7 @@ dotnet test
 
 # Option 2: Manual approach
 # Terminal 1: Start Appium server
-appium --base-path /wd/hub --port 4723
+appium --port 4723
 
 # Terminal 2: Run tests
 dotnet test

@@ -291,8 +291,13 @@ public class BasicDockTests : BaseTest
     {
         _output.WriteLine("=== Testing Float Tool1 and Dock Back to Tool2 ===");
         
-        // Wait for app to load
-        Thread.Sleep(3000);
+        // Wait for app to load and ensure main window is visible
+        _mainWindow.WaitForApplicationToLoad();
+        _output.WriteLine("✓ Application loaded successfully");
+        
+        // Wait additional time for dock layout to stabilize
+        Thread.Sleep(2000);
+        _output.WriteLine("✓ Waiting for dock layout to stabilize");
         
         try
         {
@@ -512,6 +517,79 @@ public class BasicDockTests : BaseTest
         catch (Exception ex)
         {
             _output.WriteLine($"❌ Float and dock test failed: {ex.Message}");
+            throw;
+        }
+    }
+
+    [Fact]
+    public void DiagnosticTestFindTool1()
+    {
+        _output.WriteLine("=== Diagnostic Test: Finding Tool1 ===");
+        
+        // Wait for app to load
+        _mainWindow.WaitForApplicationToLoad();
+        _output.WriteLine("✓ Application loaded successfully");
+        
+        // Wait additional time for dock layout to stabilize
+        Thread.Sleep(3000);
+        _output.WriteLine("✓ Waiting for dock layout to stabilize");
+        
+        try
+        {
+            // Try to find Tool1 using MainWindowPage
+            var tool1Tab = _mainWindow.Tool1Tab;
+            _output.WriteLine("✓ Successfully found Tool1 using MainWindowPage");
+            
+            // Get information about the element
+            _output.WriteLine($"Tool1 Location: X={tool1Tab.Location.X}, Y={tool1Tab.Location.Y}");
+            _output.WriteLine($"Tool1 Size: Width={tool1Tab.Size.Width}, Height={tool1Tab.Size.Height}");
+            _output.WriteLine($"Tool1 Displayed: {tool1Tab.Displayed}");
+            _output.WriteLine($"Tool1 Enabled: {tool1Tab.Enabled}");
+            _output.WriteLine($"Tool1 TagName: {tool1Tab.TagName}");
+            _output.WriteLine($"Tool1 Text: '{tool1Tab.Text}'");
+            
+            // Try to get various attributes
+            var attributes = new[] { "automationid", "name", "title", "id", "class", "role" };
+            foreach (var attr in attributes)
+            {
+                var value = tool1Tab.GetAttribute(attr);
+                _output.WriteLine($"Tool1 {attr}: '{value}'");
+            }
+        }
+        catch (Exception ex)
+        {
+            _output.WriteLine($"❌ Failed to find Tool1: {ex.Message}");
+            
+            // Try to list all available elements in MainDockControl
+            try
+            {
+                _output.WriteLine("--- Listing all elements in MainDockControl ---");
+                var dockControl = Driver.FindElement(By.Id("MainDockControl"));
+                var allElements = dockControl.FindElements(By.XPath(".//*"));
+                _output.WriteLine($"Found {allElements.Count} elements in MainDockControl");
+                
+                for (int i = 0; i < Math.Min(allElements.Count, 20); i++) // Limit to first 20 elements
+                {
+                    var element = allElements[i];
+                    var tagName = element.TagName;
+                    var text = element.Text;
+                    var automationId = element.GetAttribute("automationid");
+                    var name = element.GetAttribute("name");
+                    var className = element.GetAttribute("class");
+                    
+                    _output.WriteLine($"Element {i}: TagName='{tagName}', Text='{text}', AutomationId='{automationId}', Name='{name}', Class='{className}'");
+                }
+                
+                if (allElements.Count > 20)
+                {
+                    _output.WriteLine($"... and {allElements.Count - 20} more elements");
+                }
+            }
+            catch (Exception listEx)
+            {
+                _output.WriteLine($"❌ Failed to list elements: {listEx.Message}");
+            }
+            
             throw;
         }
     }

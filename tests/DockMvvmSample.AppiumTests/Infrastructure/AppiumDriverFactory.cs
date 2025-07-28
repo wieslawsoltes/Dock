@@ -38,8 +38,22 @@ public static class AppiumDriverFactory
             }
         }
 
-        // Set timeouts
+        // Set timeouts - use explicit waits instead of implicit waits for Windows
         options.AddAdditionalCapability("appium:newCommandTimeout", config.AppiumSettings.CommandTimeout);
+        
+        // Windows-specific capabilities to improve element finding
+        if (ConfigurationHelper.IsWindows)
+        {
+            // Add Windows-specific capabilities to improve element finding reliability
+            options.AddAdditionalCapability("appium:shouldWaitForQuiescence", false);
+            options.AddAdditionalCapability("appium:waitForQuiescence", false);
+            options.AddAdditionalCapability("appium:shouldTerminateApp", true);
+            options.AddAdditionalCapability("appium:forceAppLaunch", true);
+            
+            // Windows Application Driver specific settings
+            options.AddAdditionalCapability("appium:ms:experimental-webdriver", true);
+            options.AddAdditionalCapability("appium:ms:waitForAppLaunch", 10);
+        }
 
         if (ConfigurationHelper.IsWindows)
         {
@@ -105,12 +119,25 @@ public static class AppiumDriverFactory
             Thread.Sleep(2000);
         }
 
-        // Create the Windows driver
+        // Create the Windows driver with enhanced error handling
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);
-        var driver = new WindowsDriver<WindowsElement>(serverUri, options);
+        WindowsDriver<WindowsElement> driver;
         
-        // Set implicit wait
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
+        try
+        {
+            driver = new WindowsDriver<WindowsElement>(serverUri, options);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to create Windows driver. Make sure WinAppDriver is running on port 4724 and Appium server is running on port 4723. Error: {ex.Message}", ex);
+        }
+        
+        // Set explicit wait instead of implicit wait (fixes Windows driver issues)
+        // Note: We don't set implicit wait as it doesn't work properly with Windows driver
+        // Instead, we use explicit waits in our ElementHelper
+        
+        // Wait for the application to be fully loaded
+        Thread.Sleep(3000);
         
         return driver;
     }
@@ -142,7 +169,7 @@ public static class AppiumDriverFactory
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);
         var driver = new MacDriver<AppiumWebElement>(serverUri, options);
         
-        // Set implicit wait
+        // Set implicit wait for macOS (works properly)
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
         
         return driver;

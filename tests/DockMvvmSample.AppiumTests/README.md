@@ -100,7 +100,8 @@ DockMvvmSample.AppiumTests/
 │   ├── verify-setup.ps1      # Windows verification
 │   ├── verify-setup-macos.sh # macOS verification
 │   ├── run-tests-windows.ps1 # Windows test runner
-│   └── run-tests-macos.sh    # macOS test runner
+│   ├── run-tests-macos.sh    # macOS test runner
+│   └── diagnose-windows.ps1  # Windows diagnostic tool
 ├── Tests/                # Actual test classes
 └── appsettings*.json     # Configuration files
 ```
@@ -119,18 +120,94 @@ DockMvvmSample.AppiumTests/
 
 ### Windows Issues
 
-**WinAppDriver fails to start**
+#### **NEW: Windows Diagnostic Tool**
+First, run the diagnostic tool to identify issues:
+```powershell
+# Run as Administrator
+.\Scripts\diagnose-windows.ps1
+
+# To automatically fix common issues
+.\Scripts\diagnose-windows.ps1 -FixIssues
+```
+
+#### **Element Not Found Issues (Most Common)**
+The Windows driver has known issues with element finding. Our enhanced ElementHelper includes multiple workarounds:
+
+**Symptoms:**
+- `NoSuchElementException` even when elements exist
+- Elements found inconsistently
+- Implicit waits not working
+
+**Solutions:**
+1. **Use explicit waits instead of implicit waits** (already implemented in our ElementHelper)
+2. **Multiple element finding strategies** (automationid, name, id attributes)
+3. **Enhanced error handling** with fallback strategies
+4. **Windows-specific capabilities** in driver configuration
+
+**Code Example:**
+```csharp
+// Instead of relying on implicit waits, use explicit waits:
+var element = Elements.FindByAccessibilityIdWithWait("MyElement", 10);
+
+// Or use the enhanced wait methods:
+var element = Elements.WaitForClickable("MyElement", 10);
+```
+
+#### **WinAppDriver fails to start**
 - Ensure you're running as Administrator
 - Check that Developer Mode is enabled in Windows Settings
 - Verify WinAppDriver is installed correctly
 
-**Tests can't find the application**
+#### **Tests can't find the application**
 - Build the DockMvvmSample project: `dotnet build samples/DockMvvmSample -c Debug`
 - Verify the executable path in `appsettings.windows.json`
 
-**Port already in use**
+#### **Port already in use**
 - Use a different port: `.\Scripts\run-tests-windows.ps1 -Port 4724`
 - Or stop the existing WinAppDriver process
+
+#### **Session Creation Fails**
+**Error:** `SessionNotCreatedException: UiAutomation not connected`
+
+**Solutions:**
+1. **Ensure both servers are running:**
+   - WinAppDriver on port 4724 (as Administrator)
+   - Appium server on port 4723
+
+2. **Check Windows version compatibility:**
+   - Windows 10 version 1607 or later required
+   - Windows 11 recommended
+
+3. **Verify Developer Mode:**
+   ```powershell
+   # Check if Developer Mode is enabled
+   Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense"
+   ```
+
+4. **Restart services:**
+   ```powershell
+   # Stop existing processes
+   Stop-Process -Name "WinAppDriver" -Force -ErrorAction SilentlyContinue
+   Stop-Process -Name "node" -Force -ErrorAction SilentlyContinue
+   
+   # Restart in correct order
+   Start-Process "C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe" -Verb RunAs
+   Start-Sleep -Seconds 3
+   appium --port 4723
+   ```
+
+#### **Implicit Wait Issues**
+**Problem:** Implicit waits don't work properly with Windows driver
+
+**Solution:** Use explicit waits (already implemented):
+```csharp
+// ✅ Good - explicit wait
+var element = Elements.WaitForClickable("MyElement", 10);
+
+// ❌ Bad - implicit wait (doesn't work on Windows)
+driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+var element = driver.FindElement(By.Id("MyElement"));
+```
 
 ### macOS Issues
 
@@ -161,6 +238,54 @@ DockMvvmSample.AppiumTests/
 - Ensure all NuGet packages are restored: `dotnet restore`
 - Check .NET version compatibility
 - Update package versions if needed
+
+## Windows-Specific Best Practices
+
+### 1. **Element Finding Strategies**
+Our enhanced ElementHelper uses multiple strategies for Windows:
+```csharp
+// Multiple fallback strategies:
+// 1. automationid attribute
+// 2. name attribute  
+// 3. id attribute
+// 4. Legacy AppiumBy approach
+// 5. Generic ID
+// 6. Case-insensitive search
+// 7. Contains search
+```
+
+### 2. **Wait Strategies**
+```csharp
+// Use explicit waits instead of implicit waits
+var element = Elements.WaitForClickable("MyElement", 10);
+var element = Elements.WaitForVisible("MyElement", 10);
+var element = Elements.WaitForCondition("MyElement", e => e.Enabled, 10);
+```
+
+### 3. **Error Handling**
+```csharp
+// Enhanced error handling with multiple strategies
+try
+{
+    var element = Elements.FindByAccessibilityId("MyElement");
+}
+catch (NoSuchElementException)
+{
+    // Element not found with any strategy
+    // Log detailed information for debugging
+}
+```
+
+### 4. **Server Management**
+```powershell
+# Always start servers in this order:
+# 1. WinAppDriver (as Administrator)
+# 2. Appium server
+# 3. Run tests
+
+# Use the provided scripts for proper server management
+.\Scripts\run-tests-windows.ps1
+```
 
 ## Extending Tests
 
@@ -198,6 +323,9 @@ public void WindowsSpecificTest()
 # Verification script
 .\Scripts\verify-setup.ps1
 
+# Diagnostic script (NEW)
+.\Scripts\diagnose-windows.ps1 -FixIssues
+
 # Run script
 .\Scripts\run-tests-windows.ps1 -TestFilter "BasicDockTests" -Verbose -Port 4724
 ```
@@ -221,6 +349,7 @@ When adding new tests:
 2. Add appropriate documentation
 3. Test on both platforms if possible
 4. Update this README if needed
+5. Use explicit waits instead of implicit waits for Windows compatibility
 
 ## License
 

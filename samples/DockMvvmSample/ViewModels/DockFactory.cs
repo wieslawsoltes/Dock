@@ -50,6 +50,7 @@ public class DockFactory : Factory
             (
                 new ToolDock
                 {
+                    Id = "LeftTopToolDock",
                     ActiveDockable = tool1,
                     VisibleDockables = CreateList<IDockable>(tool1, tool2),
                     Alignment = Alignment.Left,
@@ -58,6 +59,7 @@ public class DockFactory : Factory
                 new ProportionalDockSplitter { CanResize = true, ResizePreview = true },
                 new ToolDock
                 {
+                    Id = "LeftBottomToolDock",
                     ActiveDockable = tool3,
                     VisibleDockables = CreateList<IDockable>(tool3, tool4),
                     Alignment = Alignment.Bottom,
@@ -77,6 +79,7 @@ public class DockFactory : Factory
             (
                 new ToolDock
                 {
+                    Id = "RightTopToolDock",
                     ActiveDockable = tool5,
                     VisibleDockables = CreateList<IDockable>(tool5, tool6),
                     Alignment = Alignment.Top,
@@ -85,6 +88,7 @@ public class DockFactory : Factory
                 new ProportionalDockSplitter(),
                 new ToolDock
                 {
+                    Id = "RightBottomToolDock",
                     ActiveDockable = tool7,
                     VisibleDockables = CreateList<IDockable>(tool7, tool8),
                     Alignment = Alignment.Right,

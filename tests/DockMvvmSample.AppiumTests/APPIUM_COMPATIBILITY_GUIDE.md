@@ -56,8 +56,10 @@ If using the legacy server startup, revert URLs to:
    - Requires Windows Developer Mode enabled
    - Runs on default port 4724 with legacy `/wd/hub` URLs (this is correct!)
 5. **Common Issues**:
+   - **Port Conflicts**: WinAppDriver defaults to port 4723 if no port specified, conflicting with Appium
+     - **Solution**: Always start WinAppDriver with explicit port: `WinAppDriver.exe 4724`
    - WinAppDriver not running: Check if port 4724 is listening
-   - Permission errors: Run PowerShell as Administrator
+   - Permission errors: Run PowerShell as Administrator  
    - Developer Mode: Enable in Windows Settings > Privacy & Security > For developers
 
 ### macOS-Specific Issues

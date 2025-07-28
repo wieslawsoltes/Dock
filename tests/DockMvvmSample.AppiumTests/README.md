@@ -44,7 +44,7 @@ chmod +x Scripts/setup-macos.sh
 
 # Option 2: Manual approach
 # Terminal 1: Start WinAppDriver (run as Administrator)
-"C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe"
+"C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe" 4724
 
 # Terminal 2: Start Appium (in separate terminal)
 appium --port 4723

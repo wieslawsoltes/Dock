@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using DockMvvmSample.AppiumTests.Configuration;
@@ -11,8 +12,10 @@ namespace DockMvvmSample.AppiumTests.Infrastructure;
 
 public static class AppiumDriverFactory
 {
-    public static IWebDriver CreateDriver(TestConfiguration config)
+    public static IWebDriver CreateDriver(TestConfiguration config, out Process? applicationProcess)
     {
+        applicationProcess = null;
+        
         var options = new AppiumOptions();
         
         // Set standard W3C capabilities
@@ -40,7 +43,7 @@ public static class AppiumDriverFactory
 
         if (ConfigurationHelper.IsWindows)
         {
-            return CreateWindowsDriver(config, options);
+            return CreateWindowsDriver(config, options, out applicationProcess);
         }
         else if (ConfigurationHelper.IsMacOS)
         {
@@ -52,7 +55,7 @@ public static class AppiumDriverFactory
         }
     }
 
-    private static IWebDriver CreateWindowsDriver(TestConfiguration config, AppiumOptions options)
+    private static IWebDriver CreateWindowsDriver(TestConfiguration config, AppiumOptions options, out Process? applicationProcess)
     {
         // For Windows, we still need to start the application manually since Windows driver doesn't handle this
         if (!File.Exists(config.DockMvvmSample.ExecutablePath))
@@ -60,7 +63,7 @@ public static class AppiumDriverFactory
             throw new FileNotFoundException($"DockMvvmSample executable not found at: {config.DockMvvmSample.ExecutablePath}");
         }
 
-        var startInfo = new System.Diagnostics.ProcessStartInfo
+        var startInfo = new ProcessStartInfo
         {
             FileName = config.DockMvvmSample.ExecutablePath,
             WorkingDirectory = config.DockMvvmSample.WorkingDirectory,
@@ -68,8 +71,8 @@ public static class AppiumDriverFactory
             CreateNoWindow = false
         };
         
-        var process = System.Diagnostics.Process.Start(startInfo);
-        if (process == null)
+        applicationProcess = Process.Start(startInfo);
+        if (applicationProcess == null)
         {
             throw new InvalidOperationException("Failed to start the DockMvvmSample application");
         }

@@ -19,8 +19,6 @@ public abstract class BasePage
         Elements = new ElementHelper(driver);
     }
 
-    #region Common Page Actions
-
     /// <summary>
     /// Waits for the page to load by verifying key elements are present
     /// Override this method in derived classes to specify page-specific elements
@@ -72,10 +70,6 @@ public abstract class BasePage
         return Array.Empty<string>();
     }
 
-    #endregion
-
-    #region Fluent Element Interaction API
-
     /// <summary>
     /// Clicks an element and returns this page for method chaining
     /// </summary>
@@ -111,10 +105,6 @@ public abstract class BasePage
         Elements.WaitForVisible(accessibilityId, timeoutSeconds);
         return this;
     }
-
-    #endregion
-
-    #region Element Property Access
 
     /// <summary>
     /// Gets text from an element
@@ -156,10 +146,6 @@ public abstract class BasePage
         return Elements.TryFindByAccessibilityId(accessibilityId, out element);
     }
 
-    #endregion
-
-    #region Advanced Operations
-
     /// <summary>
     /// Performs a custom action on an element with error handling
     /// </summary>
@@ -184,10 +170,6 @@ public abstract class BasePage
     {
         return Elements.WaitForCondition(accessibilityId, condition, timeoutSeconds);
     }
-
-    #endregion
-
-    #region Common UI Patterns
 
     /// <summary>
     /// Clicks a menu item and waits for it to open
@@ -223,10 +205,6 @@ public abstract class BasePage
         
         return this;
     }
-
-    #endregion
-
-    #region Screenshot and Debugging
 
     /// <summary>
     /// Takes a screenshot for debugging purposes
@@ -268,6 +246,4 @@ public abstract class BasePage
             Console.WriteLine($"{status} {info.Key}: {visibility}, {enabled}, Text: '{info.Value.Text}'");
         }
     }
-
-    #endregion
 } 

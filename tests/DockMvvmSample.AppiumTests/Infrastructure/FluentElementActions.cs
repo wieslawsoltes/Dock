@@ -15,8 +15,6 @@ public class FluentElementActions
         _elements = elements ?? throw new ArgumentNullException(nameof(elements));
     }
 
-    #region Fluent Element Interaction API
-
     /// <summary>
     /// Starts a fluent action chain on a specific element
     /// </summary>
@@ -83,10 +81,6 @@ public class FluentElementActions
         }
         return this;
     }
-
-    #endregion
-
-    #region Assertion and Validation Methods
 
     /// <summary>
     /// Asserts that an element is visible
@@ -158,10 +152,6 @@ public class FluentElementActions
         return this;
     }
 
-    #endregion
-
-    #region Utility Methods
-
     /// <summary>
     /// Executes a custom action and returns the fluent actions instance for chaining
     /// </summary>
@@ -195,8 +185,6 @@ public class FluentElementActions
     {
         return _elements.GetAttribute(accessibilityId, attributeName, timeoutSeconds);
     }
-
-    #endregion
 }
 
 /// <summary>

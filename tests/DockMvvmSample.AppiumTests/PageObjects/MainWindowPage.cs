@@ -17,8 +17,6 @@ public class MainWindowPage : BasePage
     {
     }
 
-    #region Essential Elements Definition
-
     protected override bool IsPageLoaded()
     {
         return TryFindElement("MainWindow", out var mainWindow) && 
@@ -39,10 +37,6 @@ public class MainWindowPage : BasePage
             "DashboardButton" 
         };
     }
-
-    #endregion
-
-    #region Page Elements (Clean Property Access)
 
     public IWebElement MainWindow => Elements.FindByAccessibilityIdWithWait("MainWindow");
     public IWebElement FileMenu => Elements.FindByAccessibilityIdWithWait("FileMenu");
@@ -66,10 +60,6 @@ public class MainWindowPage : BasePage
     public IWebElement LeftBottomToolDock => FindDockContainer("LeftBottomToolDock");
     public IWebElement RightTopToolDock => FindDockContainer("RightTopToolDock");
     public IWebElement RightBottomToolDock => FindDockContainer("RightBottomToolDock");
-
-    #endregion
-
-    #region High-Level Page Actions (Fluent API)
 
     /// <summary>
     /// Clicks the File menu using the new fluent API
@@ -141,10 +131,6 @@ public class MainWindowPage : BasePage
         return ValidatePageElements();
     }
 
-    #endregion
-
-    #region Advanced Interactions (Showing Fluent API Capabilities)
-
     /// <summary>
     /// Demonstrates fluent API for complex workflows
     /// </summary>
@@ -188,10 +174,6 @@ public class MainWindowPage : BasePage
 
         return Elements.ValidateVisibility(elementsToCheck);
     }
-
-    #endregion
-
-    #region Tool and Dock Management (Simplified with New Infrastructure)
 
     /// <summary>
     /// Finds tool elements using the advanced element finding with fallback strategies
@@ -281,10 +263,6 @@ public class MainWindowPage : BasePage
         }
     }
 
-    #endregion
-
-    #region Demonstration of New Helper Features
-
     /// <summary>
     /// Shows how to use the advanced element information gathering
     /// </summary>
@@ -342,6 +320,4 @@ public class MainWindowPage : BasePage
             return false;
         }
     }
-
-    #endregion
 } 

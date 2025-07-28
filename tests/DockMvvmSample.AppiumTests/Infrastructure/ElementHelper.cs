@@ -29,8 +29,6 @@ public class ElementHelper
         _isWindows = IsWindowsPlatform();
     }
 
-    #region Platform Detection
-
     /// <summary>
     /// Detects if we're running on Windows platform
     /// </summary>
@@ -52,10 +50,6 @@ public class ElementHelper
             return false;
         }
     }
-
-    #endregion
-
-    #region Platform-Specific Helpers
 
     /// <summary>
     /// Gets the appropriate AccessibilityId locator based on the platform
@@ -115,10 +109,6 @@ public class ElementHelper
             return "Unknown";
         }
     }
-
-    #endregion
-
-    #region Enhanced Element Finding Methods with Windows Workarounds
 
     /// <summary>
     /// Finds an element by AccessibilityId with enhanced Windows workarounds
@@ -289,10 +279,6 @@ public class ElementHelper
         }
     }
 
-    #endregion
-
-    #region Enhanced Wait Methods
-
     /// <summary>
     /// Enhanced wait for clickable with Windows workarounds
     /// </summary>
@@ -337,10 +323,6 @@ public class ElementHelper
         });
     }
 
-    #endregion
-
-    #region Action Methods
-
     /// <summary>
     /// Enhanced click with Windows workarounds
     /// </summary>
@@ -383,10 +365,6 @@ public class ElementHelper
         return element.GetAttribute(attributeName);
     }
 
-    #endregion
-
-    #region Validation Methods
-
     /// <summary>
     /// Enhanced visibility check with Windows workarounds
     /// </summary>
@@ -418,10 +396,6 @@ public class ElementHelper
             return false;
         }
     }
-
-    #endregion
-
-    #region Utility Methods
 
     /// <summary>
     /// Enhanced element validation with Windows workarounds
@@ -471,10 +445,6 @@ public class ElementHelper
         return results;
     }
 
-    #endregion
-
-    #region Action Delegation Methods
-
     /// <summary>
     /// Enhanced element action with Windows workarounds
     /// </summary>
@@ -515,8 +485,6 @@ public class ElementHelper
             }
         });
     }
-
-    #endregion
 }
 
 /// <summary>

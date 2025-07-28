@@ -28,8 +28,6 @@ public abstract class BaseTest : IDisposable
         Elements = new ElementHelper(Driver);
     }
 
-    #region Enhanced Helper Methods
-
     /// <summary>
     /// Fluent API for element interactions
     /// </summary>
@@ -85,8 +83,6 @@ public abstract class BaseTest : IDisposable
         }
         Console.WriteLine("=================================");
     }
-
-    #endregion
 
     protected void TakeScreenshot(string testName)
     {

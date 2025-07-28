@@ -48,7 +48,17 @@ If using the legacy server startup, revert URLs to:
 ### Windows-Specific Issues
 1. Ensure Appium 2.x is installed: `npm install -g appium`
 2. Check Windows driver: `appium driver install windows`
-3. Verify WinAppDriver compatibility
+3. **WinAppDriver Architecture**: Windows requires TWO servers:
+   - **WinAppDriver** (port 4724, uses `/wd/hub`) - Microsoft's legacy server
+   - **Appium Server** (port 4723, modern URLs) - Appium Windows Driver proxies to WinAppDriver
+4. **WinAppDriver Requirements**:
+   - Must run as Administrator
+   - Requires Windows Developer Mode enabled
+   - Runs on default port 4724 with legacy `/wd/hub` URLs (this is correct!)
+5. **Common Issues**:
+   - WinAppDriver not running: Check if port 4724 is listening
+   - Permission errors: Run PowerShell as Administrator
+   - Developer Mode: Enable in Windows Settings > Privacy & Security > For developers
 
 ### macOS-Specific Issues
 1. Ensure Mac2 driver is installed: `appium driver install mac2`

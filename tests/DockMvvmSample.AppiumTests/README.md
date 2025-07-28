@@ -43,10 +43,13 @@ chmod +x Scripts/setup-macos.sh
 .\Scripts\run-tests-windows.ps1
 
 # Option 2: Manual approach
-# Terminal 1: Start WinAppDriver
+# Terminal 1: Start WinAppDriver (run as Administrator)
 "C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe"
 
-# Terminal 2: Run tests
+# Terminal 2: Start Appium (in separate terminal)
+appium --port 4723
+
+# Terminal 3: Run tests
 dotnet test
 ```
 

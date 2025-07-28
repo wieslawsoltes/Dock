@@ -70,25 +70,6 @@ function Test-WindowsDriver {
     }
 }
 
-# Function to start WinAppDriver
-function Start-WinAppDriver {
-    $winAppDriverPath = "${env:ProgramFiles(x86)}\Windows Application Driver\WinAppDriver.exe"
-    if (Test-Path $winAppDriverPath) {
-        Write-Host "Starting WinAppDriver..." -ForegroundColor Yellow
-        Start-Process -FilePath $winAppDriverPath -PassThru -NoNewWindow
-        Start-Sleep -Seconds 3
-        return $true
-    }
-    return $false
-}
-
-# Function to start Appium server
-function Start-AppiumServer {
-    Write-Host "Starting Appium server..." -ForegroundColor Yellow
-    Start-Process -FilePath "cmd.exe" -ArgumentList "/c appium --port 4723" -PassThru -NoNewWindow
-    Start-Sleep -Seconds 5
-}
-
 # Function to test element finding
 function Test-ElementFinding {
     Write-Host "Testing element finding capabilities..." -ForegroundColor Yellow

@@ -2,10 +2,23 @@
 param(
     [string]$TestFilter = "",
     [switch]$Verbose,
-    [int]$Port = 4724
+    [int]$AppiumPort = 4723,
+    [int]$WinAppDriverPort = 4724
 )
 
-Write-Host "Running Appium tests on Windows..." -ForegroundColor Green
+Write-Host "=== Windows Appium Test Runner ===" -ForegroundColor Cyan
+Write-Host "Appium Port: $AppiumPort" -ForegroundColor White
+Write-Host "WinAppDriver Port: $WinAppDriverPort" -ForegroundColor White
+Write-Host ""
+
+# Run diagnostics first
+Write-Host "Running pre-flight checks..." -ForegroundColor Yellow
+try {
+    & "$PSScriptRoot\diagnose-windows.ps1" -Verbose:$Verbose
+    Write-Host ""
+} catch {
+    Write-Host "Warning: Could not run diagnostics" -ForegroundColor Yellow
+}
 
 # Check if Appium is installed
 $appiumAvailable = $false
@@ -43,6 +56,20 @@ function Test-Port {
     } catch {
         return $false
     }
+}
+
+# Function to wait for port to be available
+function Wait-ForPort {
+    param([int]$Port, [int]$TimeoutSeconds = 30)
+    
+    $timeout = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $timeout) {
+        if (Test-Port -Port $Port) {
+            return $true
+        }
+        Start-Sleep -Milliseconds 500
+    }
+    return $false
 }
 
 # Function to kill existing Appium processes

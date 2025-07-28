@@ -1,6 +1,15 @@
 # DockMvvmSample Appium Tests
 
-This project contains Appium-based UI tests for the DockMvvmSample Avalonia application, supporting both Windows and macOS platforms.
+This project contains Appium-based UI tests for the DockMvvmSample Avalonia application, supporting both Windows and macOS platforms with **platform-optimized element finding strategies**.
+
+## Key Features
+
+- **Cross-platform compatibility** with automatic platform detection
+- **Enhanced element finding** with multiple fallback strategies  
+- **Platform-optimized wait strategies** (Windows: 500ms polling, macOS: 250ms polling)
+- **Comprehensive diagnostic tools** for setup validation
+- **Automatic server configuration** handling Windows dual-server architecture
+- **Robust error handling** with detailed troubleshooting guidance
 
 ## Prerequisites
 
@@ -21,14 +30,19 @@ This project contains Appium-based UI tests for the DockMvvmSample Avalonia appl
 
 ## Quick Setup
 
-### Windows Setup
+### Windows Setup (Enhanced)
 ```powershell
 # Run PowerShell as Administrator
 cd tests/DockMvvmSample.AppiumTests
+
+# Run diagnostics and auto-fix common issues
+.\Scripts\diagnose-windows.ps1 -FixIssues
+
+# Setup everything (if diagnostics found issues)
 .\Scripts\setup-windows.ps1
 ```
 
-### macOS Setup
+### macOS Setup (Unchanged)
 ```bash
 cd tests/DockMvvmSample.AppiumTests
 chmod +x Scripts/setup-macos.sh
@@ -138,18 +152,24 @@ The Windows driver has known issues with element finding. Our enhanced ElementHe
 - Elements found inconsistently
 - Implicit waits not working
 
+**Root Cause:**
+- **Windows requires TWO servers**: WinAppDriver (port 4724) + Appium (port 4723)
+- **Server URL must point to Appium server** (port 4723), NOT WinAppDriver (port 4724)
+- **Implicit waits don't work** on Windows - only explicit waits work
+- **AutomationId attribute casing** matters (use @AutomationId, not @automationid)
+
 **Solutions:**
-1. **Use explicit waits instead of implicit waits** (already implemented in our ElementHelper)
-2. **Multiple element finding strategies** (automationid, name, id attributes)
+1. **Correct server configuration** (fixed in appsettings.windows.json)
+2. **Multiple element finding strategies** with platform-specific optimizations
 3. **Enhanced error handling** with fallback strategies
 4. **Windows-specific capabilities** in driver configuration
 
 **Code Example:**
 ```csharp
-// Instead of relying on implicit waits, use explicit waits:
+// Enhanced element finding with automatic platform optimization:
 var element = Elements.FindByAccessibilityIdWithWait("MyElement", 10);
 
-// Or use the enhanced wait methods:
+// Platform-specific wait strategies are automatically applied
 var element = Elements.WaitForClickable("MyElement", 10);
 ```
 
@@ -242,24 +262,36 @@ var element = driver.FindElement(By.Id("MyElement"));
 ## Windows-Specific Best Practices
 
 ### 1. **Element Finding Strategies**
-Our enhanced ElementHelper uses multiple strategies for Windows:
+Our enhanced ElementHelper uses platform-optimized strategies:
+
+**Windows (Automatic Detection):**
 ```csharp
-// Multiple fallback strategies:
-// 1. automationid attribute
-// 2. name attribute  
-// 3. id attribute
-// 4. Legacy AppiumBy approach
-// 5. Generic ID
-// 6. Case-insensitive search
-// 7. Contains search
+// Multiple fallback strategies with proper casing:
+// 1. @AutomationId attribute (case-sensitive)
+// 2. @Name attribute  
+// 3. Combined AutomationId or Name
+// 4. Legacy approaches for compatibility
+// 5. AppiumBy fallback
+```
+
+**macOS (Automatic Detection):**
+```csharp
+// Mac2 driver optimized strategies:
+// 1. @identifier attribute (primary)
+// 2. @name attribute
+// 3. Combined approach
+// 4. AppiumBy fallback
 ```
 
 ### 2. **Wait Strategies**
 ```csharp
-// Use explicit waits instead of implicit waits
-var element = Elements.WaitForClickable("MyElement", 10);
-var element = Elements.WaitForVisible("MyElement", 10);
+// Platform-optimized wait strategies (automatic detection)
+var element = Elements.WaitForClickable("MyElement", 10);  // Uses optimized polling
+var element = Elements.WaitForVisible("MyElement", 10);    // Platform-specific timing
 var element = Elements.WaitForCondition("MyElement", e => e.Enabled, 10);
+
+// Windows: 500ms polling intervals for WinAppDriver stability
+// macOS: 250ms polling intervals for responsive Mac2 driver
 ```
 
 ### 3. **Error Handling**
@@ -278,12 +310,17 @@ catch (NoSuchElementException)
 
 ### 4. **Server Management**
 ```powershell
-# Always start servers in this order:
-# 1. WinAppDriver (as Administrator)
-# 2. Appium server
-# 3. Run tests
+# CORRECT startup order for Windows:
+# 1. WinAppDriver (as Administrator) on port 4724
+"C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe"
 
-# Use the provided scripts for proper server management
+# 2. Appium server on port 4723 (connects to WinAppDriver)
+appium --port 4723
+
+# 3. Tests connect to Appium (port 4723), which proxies to WinAppDriver
+dotnet test
+
+# Use the automated script for proper server management:
 .\Scripts\run-tests-windows.ps1
 ```
 

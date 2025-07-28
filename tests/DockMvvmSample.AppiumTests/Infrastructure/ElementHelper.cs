@@ -86,7 +86,7 @@ public class ElementHelper
                     var method = appiumByType.GetMethod("AccessibilityId", new[] { typeof(string) });
                     if (method != null)
                     {
-                        return (By)method.Invoke(null, new object[] { accessibilityId });
+                        return (By)method.Invoke(null, new object[] { accessibilityId })!;
                     }
                 }
             }
@@ -122,74 +122,89 @@ public class ElementHelper
 
     /// <summary>
     /// Finds an element by AccessibilityId with enhanced Windows workarounds
+    /// Now uses platform-specific optimized strategies
     /// </summary>
     public IWebElement FindByAccessibilityId(string accessibilityId)
     {
         if (_isWindows)
         {
-            // Windows-specific enhanced finding with multiple strategies
+            // Use enhanced Windows-specific finding with multiple strategies
             return FindByAccessibilityIdWindows(accessibilityId);
         }
 
-        try
-        {
-            // Try modern AppiumBy approach first (works with newer versions)
-            return _driver.FindElement(GetAccessibilityIdLocator(accessibilityId));
-        }
-        catch (NoSuchElementException)
-        {
-            // Fallback for older versions or different platform behaviors
-            try
-            {
-                return (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId) 
-                       ?? _driver.FindElement(By.Id(accessibilityId));
-            }
-            catch (NoSuchElementException)
-            {
-                // Final fallback - try by name attribute for Windows
-                return _driver.FindElement(By.XPath($"//*[@name='{accessibilityId}' or @automationid='{accessibilityId}']"));
-            }
-        }
-    }
-
-    /// <summary>
-    /// Windows-specific element finding with multiple fallback strategies
-    /// </summary>
-    private IWebElement FindByAccessibilityIdWindows(string accessibilityId)
-    {
-        var strategies = new[]
-        {
-            // Strategy 1: Direct automationid
-            () => _driver.FindElement(By.XPath($"//*[@automationid='{accessibilityId}']")),
-            
-            // Strategy 2: Name attribute
-            () => _driver.FindElement(By.XPath($"//*[@name='{accessibilityId}']")),
-            
-            // Strategy 3: ID attribute
-            () => _driver.FindElement(By.XPath($"//*[@id='{accessibilityId}']")),
-            
-            // Strategy 4: Legacy AppiumBy approach
-            () => (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId),
-            
-            // Strategy 5: Generic ID
-            () => _driver.FindElement(By.Id(accessibilityId)),
-            
-            // Strategy 6: Case-insensitive search
-            () => _driver.FindElement(By.XPath($"//*[translate(@automationid,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='{accessibilityId.ToLower()}']")),
-            
-            // Strategy 7: Contains search
-            () => _driver.FindElement(By.XPath($"//*[contains(@automationid,'{accessibilityId}') or contains(@name,'{accessibilityId}')]"))
-        };
-
-        Exception lastException = null;
+        // For non-Windows platforms, use platform-optimized approach
+        var strategies = PlatformSpecificElementHelper.GetPlatformStrategies(_driver);
         
         foreach (var strategy in strategies)
         {
             try
             {
+                var element = strategy(_driver, accessibilityId);
+                if (element != null)
+                {
+                    return element;
+                }
+            }
+            catch (NoSuchElementException)
+            {
+                continue;
+            }
+        }
+
+        throw new NoSuchElementException($"Element with accessibility ID '{accessibilityId}' not found using any platform strategy");
+    }
+
+    /// <summary>
+    /// Windows-specific element finding with multiple fallback strategies
+    /// Enhanced with more robust error handling and timing
+    /// </summary>
+    private IWebElement FindByAccessibilityIdWindows(string accessibilityId)
+    {
+        var strategies = new[]
+        {
+            // Strategy 1: Direct automationid (most common)
+            () => _driver.FindElement(By.XPath($"//*[@AutomationId='{accessibilityId}']")),
+            
+            // Strategy 2: Case-sensitive automationid (WinAppDriver specific)
+            () => _driver.FindElement(By.XPath($"//*[@automationid='{accessibilityId}']")),
+            
+            // Strategy 3: Name attribute (fallback for legacy elements)
+            () => _driver.FindElement(By.XPath($"//*[@Name='{accessibilityId}']")),
+            
+            // Strategy 4: Lowercase name attribute
+            () => _driver.FindElement(By.XPath($"//*[@name='{accessibilityId}']")),
+            
+            // Strategy 5: ID attribute (generic fallback)
+            () => _driver.FindElement(By.XPath($"//*[@id='{accessibilityId}']")),
+            
+            // Strategy 6: Legacy AppiumBy approach (compatibility)
+            () => (_driver as AppiumDriver<AppiumWebElement>)?.FindElementByAccessibilityId(accessibilityId),
+            
+            // Strategy 7: Generic ID selector
+            () => _driver.FindElement(By.Id(accessibilityId)),
+            
+            // Strategy 8: Case-insensitive AutomationId search
+            () => _driver.FindElement(By.XPath($"//*[translate(@AutomationId,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='{accessibilityId.ToLower()}']")),
+            
+            // Strategy 9: Contains search for partial matches
+            () => _driver.FindElement(By.XPath($"//*[contains(@AutomationId,'{accessibilityId}') or contains(@Name,'{accessibilityId}')]")),
+            
+            // Strategy 10: Windows-specific ClassName + AutomationId combination
+            () => _driver.FindElement(By.XPath($"//*[@AutomationId='{accessibilityId}' or (@ClassName and @AutomationId='{accessibilityId}')]"))
+        };
+
+        Exception? lastException = null;
+        
+        for (int i = 0; i < strategies.Length; i++)
+        {
+            try
+            {
+                var strategy = strategies[i];
                 var element = strategy();
                 if (element != null)
                 {
+                    // Log successful strategy for debugging
+                    Console.WriteLine($"Windows element '{accessibilityId}' found using strategy {i + 1}");
                     return element;
                 }
             }
@@ -210,11 +225,12 @@ public class ElementHelper
 
     /// <summary>
     /// Finds an element by AccessibilityId with explicit wait (fixes implicit wait issues)
+    /// Now uses platform-optimized wait strategies
     /// </summary>
     public IWebElement FindByAccessibilityIdWithWait(string accessibilityId, int? timeoutSeconds = null)
     {
         var timeout = timeoutSeconds ?? _defaultTimeoutSeconds;
-        var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeout));
+        var wait = PlatformSpecificElementHelper.CreateOptimizedWait(_driver, timeout);
         
         if (_isWindows)
         {
@@ -229,7 +245,7 @@ public class ElementHelper
                 {
                     return null;
                 }
-            });
+            }) ?? throw new NoSuchElementException($"Element with accessibility ID '{accessibilityId}' not found after {timeout} seconds");
         }
 
         return wait.Until(driver =>
@@ -242,7 +258,7 @@ public class ElementHelper
             {
                 return null;
             }
-        });
+        }) ?? throw new NoSuchElementException($"Element with accessibility ID '{accessibilityId}' not found after {timeout} seconds");
     }
 
     /// <summary>

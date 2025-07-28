@@ -74,24 +74,34 @@ function Test-WindowsDriver {
 function Test-ElementFinding {
     Write-Host "Testing element finding capabilities..." -ForegroundColor Yellow
     
-    # This would require the application to be running
-    # For now, we'll just check if the servers are responding
+    # Check if Appium server is responding
     try {
-        $response = Invoke-WebRequest -Uri "http://127.0.0.1:4724/status" -TimeoutSec 5
+        $response = Invoke-WebRequest -Uri "http://127.0.0.1:4723/status" -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
-            Write-Host "OK Appium server is responding" -ForegroundColor Green
+            Write-Host "   OK Appium server is responding on port 4723" -ForegroundColor Green
         }
     } catch {
-        Write-Host "X Appium server is not responding" -ForegroundColor Red
+        Write-Host "   X Appium server is not responding on port 4723" -ForegroundColor Red
     }
     
+    # Check if WinAppDriver is responding  
     try {
         $response = Invoke-WebRequest -Uri "http://127.0.0.1:4724/status" -TimeoutSec 5
         if ($response.StatusCode -eq 200) {
-            Write-Host "OK WinAppDriver is responding" -ForegroundColor Green
+            Write-Host "   OK WinAppDriver is responding on port 4724" -ForegroundColor Green
         }
     } catch {
-        Write-Host "X WinAppDriver is not responding" -ForegroundColor Red
+        Write-Host "   X WinAppDriver is not responding on port 4724" -ForegroundColor Red
+    }
+    
+    # Test server communication
+    try {
+        $sessionResponse = Invoke-WebRequest -Uri "http://127.0.0.1:4723/wd/hub/sessions" -TimeoutSec 5
+        if ($sessionResponse.StatusCode -eq 200) {
+            Write-Host "   OK Appium session endpoint accessible" -ForegroundColor Green
+        }
+    } catch {
+        Write-Host "   X Appium session endpoint not accessible" -ForegroundColor Red
     }
 }
 
@@ -180,19 +190,21 @@ if ($windowsDriverInstalled) {
 
 Write-Host ""
 Write-Host "5. Checking Server Status..." -ForegroundColor Yellow
-$appiumPort = Test-Port -Port 4724
-$winAppDriverPort = Test-Port -Port 4723
+$appiumPort = Test-Port -Port 4723
+$winAppDriverPort = Test-Port -Port 4724
 
 if ($appiumPort) {
-    Write-Host "   OK Appium server is running on port 4724" -ForegroundColor Green
+    Write-Host "   OK Appium server is running on port 4723" -ForegroundColor Green
 } else {
-    Write-Host "   X Appium server is not running on port 4724" -ForegroundColor Red
+    Write-Host "   X Appium server is not running on port 4723" -ForegroundColor Red
+    Write-Host "   Start with: appium --port 4723" -ForegroundColor Yellow
 }
 
 if ($winAppDriverPort) {
-    Write-Host "   OK WinAppDriver is running on port 4723" -ForegroundColor Green
+    Write-Host "   OK WinAppDriver is running on port 4724" -ForegroundColor Green
 } else {
-    Write-Host "   X WinAppDriver is not running on port 4723" -ForegroundColor Red
+    Write-Host "   X WinAppDriver is not running on port 4724" -ForegroundColor Red
+    Write-Host "   Start with: 'C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe' (as Administrator)" -ForegroundColor Yellow
 }
 
 Write-Host ""
@@ -208,21 +220,25 @@ if (-not $developerMode) { $issues += "Developer Mode not enabled" }
 if (-not $winAppDriverInstalled) { $issues += "WinAppDriver not installed" }
 if (-not $appiumInstalled) { $issues += "Appium not installed" }
 if (-not $windowsDriverInstalled) { $issues += "Windows driver not installed" }
-if (-not $appiumPort) { $issues += "Appium server not running" }
-if (-not $winAppDriverPort) { $issues += "WinAppDriver not running" }
+if (-not $appiumPort) { $issues += "Appium server not running on port 4723" }
+if (-not $winAppDriverPort) { $issues += "WinAppDriver not running on port 4724" }
 
 if ($issues.Count -eq 0) {
-    Write-Host "OK All checks passed! Your Windows Appium setup should work correctly." -ForegroundColor Green
-} else {
-    Write-Host "X Found $($issues.Count) issue(s):" -ForegroundColor Red
-    foreach ($issue in $issues) {
-        Write-Host "  - $issue" -ForegroundColor Red
-    }
-    
+    Write-Host "✅ All checks passed! Your Windows Appium environment is ready." -ForegroundColor Green
     Write-Host ""
-    Write-Host "=== Recommended Solutions ===" -ForegroundColor Yellow
-    Write-Host "1. Run this script with -FixIssues parameter to automatically fix common issues" -ForegroundColor White
-    Write-Host "2. Ensure you're running PowerShell as Administrator" -ForegroundColor White
+    Write-Host "Next steps:" -ForegroundColor Cyan
+    Write-Host "1. Start WinAppDriver as Administrator: 'C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe'" -ForegroundColor White
+    Write-Host "2. Start Appium server: appium --port 4723" -ForegroundColor White
+    Write-Host "3. Run tests: dotnet test" -ForegroundColor White
+    Write-Host "   Or use the automated script: .\Scripts\run-tests-windows.ps1" -ForegroundColor White
+} else {
+    Write-Host "❌ Found $($issues.Count) issue(s):" -ForegroundColor Red
+    foreach ($issue in $issues) {
+        Write-Host "   - $issue" -ForegroundColor Red
+    }
+    Write-Host ""
+    Write-Host "Run with -FixIssues to automatically fix some problems:" -ForegroundColor Yellow
+    Write-Host "   .\Scripts\diagnose-windows.ps1 -FixIssues" -ForegroundColor White
     Write-Host "3. Check that your application has proper accessibility identifiers" -ForegroundColor White
     Write-Host "4. Verify that your application is built and accessible" -ForegroundColor White
     Write-Host "5. Try running the tests with explicit waits instead of implicit waits" -ForegroundColor White

@@ -50,90 +50,61 @@ public class MainWindowPage : BasePage
     public IWebElement ThemeButton => Elements.FindByAccessibilityIdWithWait("ThemeButton");
     public IWebElement MainDockControl => Elements.FindByAccessibilityIdWithWait("MainDockControl");
 
-    // Tool elements - using advanced finding strategies for backward compatibility
     public IWebElement Tool1Tab => FindTool("Tool1");
     public IWebElement Tool2Tab => FindTool("Tool2");
     public IWebElement Tool5Tab => FindTool("Tool5");
     
-    // ToolDock containers - using element finding with fallback strategies
     public IWebElement LeftTopToolDock => FindDockContainer("LeftTopToolDock");
     public IWebElement LeftBottomToolDock => FindDockContainer("LeftBottomToolDock");
     public IWebElement RightTopToolDock => FindDockContainer("RightTopToolDock");
     public IWebElement RightBottomToolDock => FindDockContainer("RightBottomToolDock");
 
-    /// <summary>
-    /// Clicks the File menu using the new fluent API
-    /// </summary>
     public MainWindowPage ClickFileMenu()
     {
         ClickMenu("FileMenu");
         return this;
     }
 
-    /// <summary>
-    /// Clicks the Window menu using the new fluent API
-    /// </summary>
     public MainWindowPage ClickWindowMenu()
     {
         ClickMenu("WindowMenu");
         return this;
     }
 
-    /// <summary>
-    /// Navigates to a specific path using the navigation controls
-    /// </summary>
     public MainWindowPage NavigateToPath(string path)
     {
         base.NavigateToPath("NavigationTextBox", "NavigateButton", path);
         return this;
     }
 
-    /// <summary>
-    /// Clicks the dashboard button
-    /// </summary>
     public MainWindowPage ClickDashboard()
     {
         ClickElement("DashboardButton");
         return this;
     }
 
-    /// <summary>
-    /// Navigates back using the back button
-    /// </summary>
     public MainWindowPage NavigateBack()
     {
         ClickElement("BackButton");
         return this;
     }
 
-    /// <summary>
-    /// Navigates forward using the forward button
-    /// </summary>
     public MainWindowPage NavigateForward()
     {
         ClickElement("ForwardButton");
         return this;
     }
 
-    /// <summary>
-    /// Gets the current navigation path
-    /// </summary>
     public string GetCurrentNavigationPath()
     {
         return GetElementAttribute("NavigationTextBox", "value") ?? GetElementText("NavigationTextBox");
     }
 
-    /// <summary>
-    /// Verifies that all main UI elements are accessible using the new validation methods
-    /// </summary>
     public bool VerifyMainElementsAccessible()
     {
         return ValidatePageElements();
     }
 
-    /// <summary>
-    /// Demonstrates fluent API for complex workflows
-    /// </summary>
     public MainWindowPage PerformComplexNavigation(string targetPath)
     {
         // Chain multiple operations using fluent API
@@ -145,9 +116,6 @@ public class MainWindowPage : BasePage
         return this;
     }
 
-    /// <summary>
-    /// Demonstrates element-specific fluent chains
-    /// </summary>
     public string GetNavigationPathWithValidation()
     {
         // Using the fluent element actions
@@ -161,9 +129,6 @@ public class MainWindowPage : BasePage
         return pathText;
     }
 
-    /// <summary>
-    /// Shows how to use the new validation methods
-    /// </summary>
     public Dictionary<string, bool> GetDetailedElementStatus()
     {
         var elementsToCheck = new[]
@@ -175,9 +140,6 @@ public class MainWindowPage : BasePage
         return Elements.ValidateVisibility(elementsToCheck);
     }
 
-    /// <summary>
-    /// Finds tool elements using the advanced element finding with fallback strategies
-    /// </summary>
     public IWebElement FindTool(string toolName)
     {
         // Try direct accessibility ID first
@@ -197,9 +159,6 @@ public class MainWindowPage : BasePage
         return foundTool;
     }
 
-    /// <summary>
-    /// Finds dock container elements using advanced element finding with fallback strategies
-    /// </summary>
     private IWebElement FindDockContainer(string containerName)
     {
         // Try direct accessibility ID first
@@ -219,9 +178,6 @@ public class MainWindowPage : BasePage
         return foundContainer;
     }
 
-    /// <summary>
-    /// Gets visible document tabs using the new element helpers
-    /// </summary>
     public IList<string> GetVisibleDocumentTabs()
     {
         try
@@ -241,9 +197,6 @@ public class MainWindowPage : BasePage
         }
     }
 
-    /// <summary>
-    /// Gets visible tool windows using the new element helpers
-    /// </summary>
     public IList<string> GetVisibleToolWindows()
     {
         try
@@ -263,9 +216,6 @@ public class MainWindowPage : BasePage
         }
     }
 
-    /// <summary>
-    /// Shows how to use the advanced element information gathering
-    /// </summary>
     public void LogCurrentUIState()
     {
         LogElementsInfo(
@@ -274,9 +224,6 @@ public class MainWindowPage : BasePage
         );
     }
 
-    /// <summary>
-    /// Demonstrates bulk element validation
-    /// </summary>
     public bool ValidateAllCriticalElements()
     {
         var criticalElements = new[]
@@ -296,9 +243,6 @@ public class MainWindowPage : BasePage
         return allFound;
     }
 
-    /// <summary>
-    /// Shows how to use custom element conditions
-    /// </summary>
     public bool WaitForApplicationToBeFullyLoaded(int timeoutSeconds = 30)
     {
         try

@@ -45,7 +45,7 @@ if ($startNewServer) {
     Write-Host "Starting WinAppDriver on port $Port..." -ForegroundColor Yellow
     try {
         $winAppDriverProcess = Start-Process -FilePath $winAppDriverPath -ArgumentList $Port -PassThru -NoNewWindow
-        Write-Host "✓ WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
+        Write-Host "WinAppDriver started (PID: $($winAppDriverProcess.Id))" -ForegroundColor Green
         
         # Wait for WinAppDriver to start
         Start-Sleep -Seconds 3
@@ -90,7 +90,7 @@ if ($winAppDriverProcess -and -not $winAppDriverProcess.HasExited) {
     try {
         $winAppDriverProcess.Kill()
         $winAppDriverProcess.WaitForExit(5000)
-        Write-Host "✓ WinAppDriver stopped" -ForegroundColor Green
+        Write-Host "WinAppDriver stopped" -ForegroundColor Green
     } catch {
         Write-Host "Warning: Could not stop WinAppDriver gracefully" -ForegroundColor Yellow
     }
@@ -98,9 +98,9 @@ if ($winAppDriverProcess -and -not $winAppDriverProcess.HasExited) {
 
 # Exit with test result
 if ($testExitCode -eq 0) {
-    Write-Host "✓ All tests completed successfully!" -ForegroundColor Green
+    Write-Host "All tests completed successfully!" -ForegroundColor Green
 } else {
-    Write-Host "✗ Some tests failed or there were errors" -ForegroundColor Red
+    Write-Host "Some tests failed or there were errors" -ForegroundColor Red
 }
 
 exit $testExitCode 

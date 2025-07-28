@@ -29,6 +29,7 @@ public class MainWindowPage
     
     // Tool elements - using automation IDs
     public IWebElement Tool1Tab => _wait.Until(d => d.FindElement(By.Id("Tool1")));
+    public IWebElement Tool2Tab => _wait.Until(d => d.FindElement(By.Id("Tool2")));
     public IWebElement Tool5Tab => _wait.Until(d => d.FindElement(By.Id("Tool5")));
     
     // ToolDock containers - using automation IDs  
@@ -100,6 +101,21 @@ public class MainWindowPage
     {
         var actions = new OpenQA.Selenium.Interactions.Actions(_driver);
         actions.DragAndDrop(sourceToolTab, targetToolDock).Perform();
+        
+        // Wait for the UI to update
+        System.Threading.Thread.Sleep(2000);
+    }
+
+    // Helper method for reordering tools within the same tab strip
+    public void DragToolOverTool(IWebElement sourceToolTab, IWebElement targetToolTab)
+    {
+        var actions = new OpenQA.Selenium.Interactions.Actions(_driver);
+        actions.MoveToElement(sourceToolTab)
+               .ClickAndHold()
+               .MoveToElement(targetToolTab)
+               .Release()
+               .Build()
+               .Perform();
         
         // Wait for the UI to update
         System.Threading.Thread.Sleep(2000);

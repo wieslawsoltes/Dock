@@ -23,8 +23,6 @@ public class BasicDockTests : BaseTest
         _mainWindow = new MainWindowPage(Driver);
     }
 
-
-
     [Fact]
     public void ApplicationStartsSuccessfully()
     {
@@ -84,14 +82,6 @@ public class BasicDockTests : BaseTest
         // Check for expected default tools
         Assert.Contains(toolWindows, tool => tool.Contains("Tool"));
     }
-
-
-
-
-
-
-
-
 
     [Fact]
     public void CanDragTool1IntoTool5Dock()
@@ -203,4 +193,4 @@ public class BasicDockTests : BaseTest
         
         base.Dispose();
     }
-} 
+}

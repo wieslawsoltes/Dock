@@ -78,6 +78,11 @@ public static class AppiumDriverFactory
 
             // Update the app capability with absolute path
             options.AddAdditionalCapability("appium:app", appPath);
+            
+            // Enhanced capabilities for better Windows app handling
+            options.AddAdditionalCapability("appium:appWorkingDir", Path.GetDirectoryName(appPath));
+            
+            Console.WriteLine($"WinAppDriver will manage application lifecycle for: {appPath}");
         }
         else
         {
@@ -95,23 +100,51 @@ public static class AppiumDriverFactory
                 CreateNoWindow = false
             };
             
+            Console.WriteLine($"Manually starting application: {config.DockMvvmSample.ExecutablePath}");
             applicationProcess = Process.Start(startInfo);
             if (applicationProcess == null)
             {
                 throw new InvalidOperationException("Failed to start the DockMvvmSample application");
             }
             
-            // Wait for the app to start
-            Thread.Sleep(2000);
+            // Enhanced wait for manual app startup - wait for main window to appear
+            Console.WriteLine($"Application started with PID: {applicationProcess.Id}. Waiting for main window...");
+            var maxWaitTime = TimeSpan.FromSeconds(15);
+            var startTime = DateTime.Now;
+            
+            while (DateTime.Now - startTime < maxWaitTime)
+            {
+                if (applicationProcess.HasExited)
+                {
+                    throw new InvalidOperationException($"Application exited unexpectedly with code: {applicationProcess.ExitCode}");
+                }
+                
+                // Check if the main window is available
+                if (applicationProcess.MainWindowHandle != IntPtr.Zero)
+                {
+                    Console.WriteLine("Main window detected, application appears ready");
+                    break;
+                }
+                
+                Thread.Sleep(500);
+            }
+            
+            if (applicationProcess.MainWindowHandle == IntPtr.Zero)
+            {
+                Console.WriteLine("Warning: Main window handle not detected after waiting, but continuing...");
+            }
         }
 
         // Create the Windows driver
         var serverUri = new Uri(config.AppiumSettings.ServerUrl);
+        Console.WriteLine($"Creating WindowsDriver connecting to: {serverUri}");
+        
         var driver = new WindowsDriver<WindowsElement>(serverUri, options);
         
         // Set implicit wait
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(config.AppiumSettings.ImplicitWait);
         
+        Console.WriteLine("WindowsDriver created successfully");
         return driver;
     }
 

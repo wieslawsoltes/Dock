@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using DockMvvmSample.AppiumTests.Infrastructure;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Interactions;
@@ -17,7 +18,7 @@ public class MainWindowPage
     public MainWindowPage(IWebDriver driver)
     {
         _driver = driver;
-        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+        _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(30)); // Increased from 10 to 30 seconds
     }
 
     // Main window elements - using automation IDs
@@ -56,43 +57,228 @@ public class MainWindowPage
         WindowMenu.Click();
     }
 
+    public void WaitForApplicationToLoad()
+    {
+        // Multi-stage approach for better Windows compatibility
+        try
+        {
+            // Stage 1: Wait for basic window availability
+            _wait.Until(d => IsApplicationProcessReady(d));
+            
+            // Stage 2: Wait for main window to be visible and ready
+            _wait.Until(d => IsMainWindowVisible());
+            
+            // Stage 3: Wait for essential UI elements to be available
+            _wait.Until(d => AreEssentialElementsReady(d));
+            
+            // Stage 4: Final stabilization wait (dynamic based on platform)
+            var stabilizationTime = ConfigurationHelper.IsWindows ? 2000 : 1000;
+            System.Threading.Thread.Sleep(stabilizationTime);
+            
+            System.Diagnostics.Debug.WriteLine("Application successfully loaded and ready for interaction");
+        }
+        catch (WebDriverTimeoutException ex)
+        {
+            var diagnosticInfo = GetDiagnosticInfo();
+            System.Diagnostics.Debug.WriteLine($"WaitForApplicationToLoad failed: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Diagnostic info: {diagnosticInfo}");
+            throw new InvalidOperationException($"Application failed to load within the expected time. {diagnosticInfo}", ex);
+        }
+    }
+
+    private bool IsApplicationProcessReady(IWebDriver driver)
+    {
+        try
+        {
+            // On Windows, check if we can interact with the application at all
+            if (ConfigurationHelper.IsWindows)
+            {
+                // Try to get the current window handle - this ensures WinAppDriver can communicate with the app
+                var currentWindow = driver.CurrentWindowHandle;
+                return !string.IsNullOrEmpty(currentWindow);
+            }
+            else
+            {
+                // On other platforms, just check if driver is responsive
+                return driver.WindowHandles.Count > 0;
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"IsApplicationProcessReady failed: {ex.Message}");
+            return false;
+        }
+    }
+
+    private bool AreEssentialElementsReady(IWebDriver driver)
+    {
+        try
+        {
+            // Check if main UI elements are available and interactable
+            var essentialElements = new[]
+            {
+                "MainDockControl",  // Main dock container
+                "FileMenu",         // File menu
+                "WindowMenu"        // Window menu
+            };
+
+            foreach (var elementId in essentialElements)
+            {
+                try
+                {
+                    var element = driver.FindElement(By.Id(elementId));
+                    // On Windows, also verify the element is enabled and displayed
+                    if (ConfigurationHelper.IsWindows)
+                    {
+                        if (!element.Displayed || !element.Enabled)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Essential element {elementId} not ready: Displayed={element.Displayed}, Enabled={element.Enabled}");
+                            return false;
+                        }
+                    }
+                }
+                catch (NoSuchElementException)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Essential element {elementId} not found");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"AreEssentialElementsReady failed: {ex.Message}");
+            return false;
+        }
+    }
+
     public bool IsMainWindowVisible()
     {
         try
         {
-            // Use automation ID to check if main window is visible
+            // Strategy 1: Use automation ID to check if main window is visible
             var mainWindow = _driver.FindElement(By.Id("MainWindow"));
+            
+            // On Windows, additional checks for window state
+            if (ConfigurationHelper.IsWindows)
+            {
+                // Verify window is not just visible but also enabled and ready for interaction
+                return mainWindow.Displayed && mainWindow.Enabled;
+            }
+            
             return mainWindow.Displayed;
         }
         catch (NoSuchElementException)
         {
-            // Fallback to flexible search patterns if automation ID doesn't work
+            // Fallback to platform-specific search patterns
             try
             {
-                var searchPatterns = new[]
-                {
-                    "//*[@identifier='MainWindow']",
-                    "//*[contains(@title, 'Dock Avalonia Demo') or contains(@label, 'Dock Avalonia Demo')]",
-                    "//*[contains(@title, 'DockMvvm') or contains(@label, 'DockMvvm')]",
-                    "//*[contains(@title, 'Sample') or contains(@label, 'Sample')]",
-                    "//*[@elementType='55' and @enabled='true']" // Look for any enabled window
-                };
+                var searchPatterns = GetPlatformSpecificWindowSearchPatterns();
 
                 foreach (var pattern in searchPatterns)
                 {
                     var elements = _driver.FindElements(By.XPath(pattern));
                     if (elements.Count > 0)
                     {
+                        var element = elements[0];
+                        
+                        // Windows-specific additional validation
+                        if (ConfigurationHelper.IsWindows)
+                        {
+                            return element.Displayed && element.Enabled;
+                        }
+                        
                         return true;
                     }
                 }
                 
                 return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"IsMainWindowVisible fallback failed: {ex.Message}");
                 return false;
             }
+        }
+    }
+
+    private string[] GetPlatformSpecificWindowSearchPatterns()
+    {
+        if (ConfigurationHelper.IsWindows)
+        {
+            // Windows-specific patterns for WinAppDriver
+            return new[]
+            {
+                "//*[@AutomationId='MainWindow']",
+                "//*[@Name='MainWindow']",
+                "//*[contains(@Name, 'Dock Avalonia Demo')]",
+                "//*[contains(@Name, 'DockMvvm')]",
+                "//*[contains(@Name, 'Sample')]",
+                "//*[@ControlType='Window' and @IsEnabled='True']",
+                "//*[@ClassName='Window']",
+                // Backup patterns for different Windows versions
+                "//*[@LocalizedControlType='window']"
+            };
+        }
+        else
+        {
+            // macOS and other platforms
+            return new[]
+            {
+                "//*[@identifier='MainWindow']",
+                "//*[contains(@title, 'Dock Avalonia Demo') or contains(@label, 'Dock Avalonia Demo')]",
+                "//*[contains(@title, 'DockMvvm') or contains(@label, 'DockMvvm')]",
+                "//*[contains(@title, 'Sample') or contains(@label, 'Sample')]",
+                "//*[@elementType='55' and @enabled='true']" // Look for any enabled window
+            };
+        }
+    }
+
+    private string GetDiagnosticInfo()
+    {
+        try
+        {
+            var info = new List<string>();
+            
+            info.Add($"Platform: {(ConfigurationHelper.IsWindows ? "Windows" : "Other")}");
+            info.Add($"Driver type: {_driver.GetType().Name}");
+            
+            try
+            {
+                info.Add($"Window handles count: {_driver.WindowHandles.Count}");
+                info.Add($"Current window handle: {_driver.CurrentWindowHandle}");
+            }
+            catch (Exception ex)
+            {
+                info.Add($"Window handle info unavailable: {ex.Message}");
+            }
+
+            try
+            {
+                var allElements = _driver.FindElements(By.XPath("//*"));
+                info.Add($"Total elements found: {allElements.Count}");
+                
+                // Log first few elements for debugging
+                for (int i = 0; i < Math.Min(5, allElements.Count); i++)
+                {
+                    var element = allElements[i];
+                    var tagName = element.TagName;
+                    var automationId = element.GetAttribute("AutomationId") ?? element.GetAttribute("automationid") ?? element.GetAttribute("id");
+                    var name = element.GetAttribute("Name") ?? element.GetAttribute("name");
+                    info.Add($"Element {i}: TagName={tagName}, AutomationId={automationId}, Name={name}");
+                }
+            }
+            catch (Exception ex)
+            {
+                info.Add($"Element enumeration failed: {ex.Message}");
+            }
+
+            return string.Join("; ", info);
+        }
+        catch (Exception ex)
+        {
+            return $"Diagnostic info collection failed: {ex.Message}";
         }
     }
     
@@ -182,13 +368,6 @@ public class MainWindowPage
         }
         
         return new List<string>();
-    }
-
-    public void WaitForApplicationToLoad()
-    {
-        _wait.Until(d => IsMainWindowVisible());
-        // Additional wait for UI to stabilize
-        System.Threading.Thread.Sleep(1000);
     }
 
     private IWebElement FindToolElement(IWebDriver driver, string toolName)

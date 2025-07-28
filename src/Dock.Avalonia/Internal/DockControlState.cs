@@ -59,7 +59,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         DragOffsetCalculator = dragOffsetCalculator;
     }
 
-    public void StartDrag(Control dragControl, Point point, DockControl activeDockControl)
+    public void StartDrag(Control dragControl, Point startPoint, Point point, DockControl activeDockControl)
     {
         if (!dragControl.GetValue(DockProperties.IsDragEnabledProperty))
         {
@@ -71,7 +71,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             return;
         }
 
-        _context.Start(dragControl, point);
+        _context.Start(dragControl, startPoint);
         DropControl = null;
         activeDockControl.IsDraggingDock = true;
 
@@ -82,7 +82,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             _context.DragOffset = DragOffsetCalculator.CalculateOffset(
                 dragControl,
                 activeDockControl,
-                point);
+                _context.DragStartPoint);
             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
             _context.DoDragDrop = true;
         }

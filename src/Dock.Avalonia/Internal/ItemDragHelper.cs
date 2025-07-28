@@ -24,7 +24,7 @@ internal class ItemDragHelper
     private readonly Func<Orientation> _getOrientation;
     private readonly Func<double> _getHorizontalDragThreshold;
     private readonly Func<double> _getVerticalDragThreshold;
-    private readonly Action<PointerEventArgs>? _dragOutside;
+    private readonly Action<PointerEventArgs, PointerEventArgs>? _dragOutside;
 
     private bool _enableDrag;
     private bool _dragStarted;
@@ -40,6 +40,7 @@ internal class ItemDragHelper
     private const double AutoScrollEdgeSize = 20.0;
     private const double AutoScrollSpeed = 200.0; // pixels per second
     private const double AutoScrollTimerInterval = 16.0; // ~60fps
+    private PointerEventArgs? _pressedArgs;
 
     public ItemDragHelper(
         Control owner,
@@ -47,7 +48,7 @@ internal class ItemDragHelper
         Func<Orientation> getOrientation,
         Func<double>? getHorizontalDragThreshold = null,
         Func<double>? getVerticalDragThreshold = null,
-        Action<PointerEventArgs>? dragOutside = null,
+        Action<PointerEventArgs, PointerEventArgs>? dragOutside = null,
         Func<Control?>? getBoundsContainer = null)
     {
         _owner = owner;
@@ -99,6 +100,7 @@ internal class ItemDragHelper
             AddTransforms(_itemsControl);
 
             _captured = true;
+            _pressedArgs = e;
         }
     }
 
@@ -112,6 +114,7 @@ internal class ItemDragHelper
             }
 
             _captured = false;
+            _pressedArgs = null;
         }
     }
 
@@ -119,6 +122,7 @@ internal class ItemDragHelper
     {
         Released();
         _captured = false;
+        _pressedArgs = null;
     }
 
     private void Released()
@@ -433,7 +437,7 @@ internal class ItemDragHelper
     private void PointerMoved(object? sender, PointerEventArgs e)
     {
         var properties = e.GetCurrentPoint(_owner).Properties;
-        if (_captured && properties.IsLeftButtonPressed)
+        if (_captured && properties.IsLeftButtonPressed && _pressedArgs != null)
         {
             if (_itemsControl?.Items is null || _draggedContainer?.RenderTransform is null || !_enableDrag)
             {
@@ -446,7 +450,8 @@ internal class ItemDragHelper
                 _dragStarted = false;
                 Released();
                 _captured = false;
-                _dragOutside?.Invoke(e);
+                _dragOutside?.Invoke(_pressedArgs, e);
+                _pressedArgs = null;
                 return;
             }
 

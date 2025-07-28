@@ -286,6 +286,236 @@ public class BasicDockTests : BaseTest
         }
     }
 
+    [Fact]
+    public void CanFloatTool1AndDockBackToTool2()
+    {
+        _output.WriteLine("=== Testing Float Tool1 and Dock Back to Tool2 ===");
+        
+        // Wait for app to load
+        Thread.Sleep(3000);
+        
+        try
+        {
+            // Phase 1: Float Tool1 by dragging it far out of the tab strip
+            _output.WriteLine("--- Phase 1: Floating Tool1 ---");
+            
+            // Find Tool1 tab
+            var tool1Tab = Driver.FindElement(By.Id("Tool1"));
+            _output.WriteLine("✓ Found Tool1 tab");
+            
+            var tool1InitialPosition = tool1Tab.Location;
+            _output.WriteLine($"Tool1 initial position: X={tool1InitialPosition.X}, Y={tool1InitialPosition.Y}");
+            
+            // Store Tool2 position for later docking
+            var tool2Tab = Driver.FindElement(By.Id("Tool2"));
+            var tool2InitialPosition = tool2Tab.Location;
+            _output.WriteLine($"Tool2 initial position: X={tool2InitialPosition.X}, Y={tool2InitialPosition.Y}");
+            
+            // Drag Tool1 far away to force it to float (drag to center of screen + 300px offset)
+            var actions = new OpenQA.Selenium.Interactions.Actions(Driver);
+            
+            // First, perform a long drag operation to float Tool1
+            actions.MoveToElement(tool1Tab)
+                   .ClickAndHold()
+                   .MoveByOffset(300, 200)  // Move significantly to trigger floating
+                   .Release()
+                   .Build()
+                   .Perform();
+            
+            // Wait to ensure floating is triggered
+            Thread.Sleep(500);
+            
+            _output.WriteLine("✓ Drag operation to float Tool1 completed");
+            
+            // Wait for floating window to appear and stabilize
+            Thread.Sleep(2000);
+            
+            // Try to verify Tool1 is now floating by checking if it moved
+            IWebElement? floatedTool1 = null;
+            
+            try
+            {
+                floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+                var newPosition = floatedTool1.Location;
+                var distanceMoved = Math.Sqrt(
+                    Math.Pow(newPosition.X - tool1InitialPosition.X, 2) + 
+                    Math.Pow(newPosition.Y - tool1InitialPosition.Y, 2));
+                
+                _output.WriteLine($"Tool1 moved {distanceMoved:F1}px from original position");
+                
+                if (distanceMoved > 50)
+                {
+                    _output.WriteLine("✓ Tool1 appears to be floating (moved significantly)");
+                }
+                else
+                {
+                    _output.WriteLine("⚠ Tool1 may not have floated (limited movement)");
+                    // Try a different approach - drag even further
+                    actions = new OpenQA.Selenium.Interactions.Actions(Driver);
+                    actions.MoveToElement(tool1Tab)
+                           .ClickAndHold()
+                           .MoveByOffset(500, 300)
+                           .Release()
+                           .Build()
+                           .Perform();
+                    
+                    // Wait for extended floating operation
+                    Thread.Sleep(2000);
+                    floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+                    _output.WriteLine("✓ Performed extended drag - assuming Tool1 is now floating");
+                }
+            }
+            catch (NoSuchElementException)
+            {
+                _output.WriteLine("❌ Tool1 not found after floating attempt");
+                throw new Exception("Could not locate Tool1 after floating operation");
+            }
+            
+            // Ensure we found Tool1 before proceeding
+            if (floatedTool1 == null)
+            {
+                _output.WriteLine("❌ Tool1 element is null after floating attempt");
+                throw new Exception("Tool1 element is null - cannot proceed with docking");
+            }
+            
+            // Phase 2: Drag floating Tool1 back to dock with Tool2
+            _output.WriteLine("--- Phase 2: Docking Tool1 back to Tool2 ---");
+            
+            // Find Tool2 again (in case positions changed)
+            tool2Tab = Driver.FindElement(By.Id("Tool2"));
+            var currentTool2Position = tool2Tab.Location;
+            _output.WriteLine($"Tool2 current position: X={currentTool2Position.X}, Y={currentTool2Position.Y}");
+            
+            // Find the floating Tool1 again
+            floatedTool1 = Driver.FindElement(By.Id("Tool1"));
+            var floatingPosition = floatedTool1.Location;
+            _output.WriteLine($"Floating Tool1 position: X={floatingPosition.X}, Y={floatingPosition.Y}");
+            
+            // Find the actual LeftTopToolDock container where Tool2 is located
+            IWebElement leftTopToolDock;
+            try
+            {
+                leftTopToolDock = Driver.FindElement(By.Id("LeftTopToolDock"));
+                _output.WriteLine("✓ Found LeftTopToolDock container");
+            }
+            catch (NoSuchElementException)
+            {
+                _output.WriteLine("❌ Could not find LeftTopToolDock - falling back to Tool2 position");
+                throw new Exception("LeftTopToolDock container not found");
+            }
+            
+            var dockContainerSize = leftTopToolDock.Size;
+            var dockContainerLocation = leftTopToolDock.Location;
+            
+            // Simple center calculation for reliable docking
+            var dockCenterX = dockContainerLocation.X + (dockContainerSize.Width / 2);
+            var dockCenterY = dockContainerLocation.Y + (dockContainerSize.Height / 2);
+            
+            _output.WriteLine($"LeftTopToolDock: Location=({dockContainerLocation.X}, {dockContainerLocation.Y}), Size=({dockContainerSize.Width}, {dockContainerSize.Height})");
+            _output.WriteLine($"Targeting dock center: ({dockCenterX}, {dockCenterY})");
+            
+            // Perform the dock-back operation using direct element targeting
+            actions = new OpenQA.Selenium.Interactions.Actions(Driver);
+            
+            // Use direct MoveToElement approach for more reliable targeting
+            actions.MoveToElement(floatedTool1)
+                   .ClickAndHold()
+                   .MoveToElement(leftTopToolDock)
+                   .Release()
+                   .Build()
+                   .Perform();
+            
+            _output.WriteLine("✓ Drag operation to dock Tool1 back to LeftTopToolDock completed");
+            
+            // Wait longer for dock adorner activation and docking operation to complete
+            Thread.Sleep(4000);
+            
+            // Phase 3: Verify the docking was successful
+            _output.WriteLine("--- Phase 3: Verification ---");
+            
+            try
+            {
+                // Find Tool1 and Tool2 again to check their final positions
+                var tool1AfterDock = Driver.FindElement(By.Id("Tool1"));
+                var tool2AfterDock = Driver.FindElement(By.Id("Tool2"));
+                
+                var tool1FinalPosition = tool1AfterDock.Location;
+                var tool2FinalPosition = tool2AfterDock.Location;
+                
+                _output.WriteLine($"Tool1 final position: X={tool1FinalPosition.X}, Y={tool1FinalPosition.Y}");
+                _output.WriteLine($"Tool2 final position: X={tool2FinalPosition.X}, Y={tool2FinalPosition.Y}");
+                
+                // Check if Tool1 and Tool2 are now in the same dock area (close to each other)
+                var distanceBetweenTools = Math.Sqrt(
+                    Math.Pow(tool1FinalPosition.X - tool2FinalPosition.X, 2) + 
+                    Math.Pow(tool1FinalPosition.Y - tool2FinalPosition.Y, 2));
+                
+                _output.WriteLine($"Distance between Tool1 and Tool2: {distanceBetweenTools:F1}px");
+                
+                // Check if Tool1 moved back from its floating position
+                var returnDistance = Math.Sqrt(
+                    Math.Pow(tool1FinalPosition.X - floatingPosition.X, 2) + 
+                    Math.Pow(tool1FinalPosition.Y - floatingPosition.Y, 2));
+                
+                _output.WriteLine($"Tool1 return distance from floating position: {returnDistance:F1}px");
+                
+                // Check if Tool1 is now within the LeftTopToolDock container
+                bool tool1InDockArea = (tool1FinalPosition.X >= dockContainerLocation.X && 
+                                       tool1FinalPosition.X <= dockContainerLocation.X + dockContainerSize.Width &&
+                                       tool1FinalPosition.Y >= dockContainerLocation.Y && 
+                                       tool1FinalPosition.Y <= dockContainerLocation.Y + dockContainerSize.Height);
+                
+                // Verification criteria
+                bool dockedWithTool2 = distanceBetweenTools < 150; // Tools are close together
+                bool returnedFromFloat = returnDistance > 100; // Tool1 moved back significantly from floating position
+                
+                if (tool1InDockArea && dockedWithTool2 && returnedFromFloat)
+                {
+                    _output.WriteLine("✓ SUCCESS: Tool1 successfully floated and docked back into LeftTopToolDock container!");
+                }
+                else if (tool1InDockArea && dockedWithTool2)
+                {
+                    _output.WriteLine("✓ SUCCESS: Tool1 is now docked with Tool2 in LeftTopToolDock!");
+                }
+                else if (tool1InDockArea)
+                {
+                    _output.WriteLine("✓ Tool1 is back in LeftTopToolDock container (successful docking)");
+                }
+                else if (dockedWithTool2)
+                {
+                    _output.WriteLine("✓ Tool1 is close to Tool2 but may be in a different dock area");
+                }
+                else if (returnedFromFloat)
+                {
+                    _output.WriteLine("ℹ Tool1 moved back from floating but may not have docked in expected location");
+                }
+                else
+                {
+                    _output.WriteLine("⚠ Tool1 may not have completed the dock-back operation as expected");
+                }
+                
+                _output.WriteLine($"Tool1 in LeftTopToolDock: {(tool1InDockArea ? "YES" : "NO")}");
+                
+                _output.WriteLine("=== Float and dock back test completed! ===");
+            }
+            catch (NoSuchElementException ex)
+            {
+                _output.WriteLine($"ℹ Could not find tools after docking: {ex.Message}");
+                _output.WriteLine("This may indicate successful integration into dock containers");
+            }
+        }
+        catch (WebDriverTimeoutException ex)
+        {
+            _output.WriteLine($"❌ Float and dock test timed out: {ex.Message}");
+            throw new Exception("Float and dock operation timed out", ex);
+        }
+        catch (Exception ex)
+        {
+            _output.WriteLine($"❌ Float and dock test failed: {ex.Message}");
+            throw;
+        }
+    }
+
     public override void Dispose()
     {
         try

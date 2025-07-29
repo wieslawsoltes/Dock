@@ -223,6 +223,14 @@ public partial interface IFactory
     /// <param name="window">The window to update.</param>
     /// <param name="owner">The window owner dockable.</param>
     void InitDockWindow(IDockWindow window, IDockable? owner);
+    
+    /// <summary>
+    /// Initialize dock window.
+    /// </summary>
+    /// <param name="window">The window to update.</param>
+    /// <param name="owner">The window owner dockable.</param>
+    /// <param name="host">The window host.</param>
+    void InitDockWindow(IDockWindow window, IDockable? owner, IHostWindow? host);
 
     /// <summary>
     /// Initialize active dockable.

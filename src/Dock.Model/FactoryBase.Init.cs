@@ -117,7 +117,13 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void InitDockWindow(IDockWindow window, IDockable? owner)
     {
-        window.Host = GetHostWindow(window.Id);
+        InitDockWindow(window, owner, GetHostWindow(window.Id));
+    }
+
+    /// <inheritdoc/>
+    public virtual void InitDockWindow(IDockWindow window, IDockable? owner, IHostWindow? hostWindow)
+    {
+        window.Host = hostWindow;
         if (window.Host is not null)
         {
             window.Host.Window = window;

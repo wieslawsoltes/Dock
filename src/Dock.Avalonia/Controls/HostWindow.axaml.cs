@@ -25,7 +25,6 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_TitleBar", typeof(HostWindowTitleBar))]
 public class HostWindow : Window, IHostWindow
 {
-    private readonly DockManager _dockManager;
     private readonly HostWindowState _hostWindowState;
     private List<Control> _chromeGrips = new();
     private HostWindowTitleBar? _hostWindowTitleBar;
@@ -80,9 +79,6 @@ public class HostWindow : Window, IHostWindow
     }
 
     /// <inheritdoc/>
-    public IDockManager DockManager => _dockManager;
-
-    /// <inheritdoc/>
     public IHostWindowState HostWindowState => _hostWindowState;
 
     /// <inheritdoc/>
@@ -100,8 +96,7 @@ public class HostWindow : Window, IHostWindow
         LayoutUpdated += HostWindow_LayoutUpdated;
         Activated += HostWindow_Activated;
         Deactivated += HostWindow_Deactivated;
-        _dockManager = new DockManager(new DockService());
-        _hostWindowState = new HostWindowState(_dockManager, this);
+        _hostWindowState = new HostWindowState(new DockManager(new DockService()), this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }
 

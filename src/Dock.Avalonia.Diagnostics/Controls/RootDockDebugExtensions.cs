@@ -50,11 +50,33 @@ public static class RootDockDebugExtensions
             }
         }
 
+        void OnMainWindowClosing(object? sender, EventArgs e)
+        {
+            if (debugWindow is { })
+            {
+                debugWindow.Close();
+                debugWindow = null;
+            }
+        }
+
         topLevel.AddHandler(InputElement.KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
+        
+        // Listen for the main window closing event
+        if (topLevel is Window mainWindow)
+        {
+            mainWindow.Closing += OnMainWindowClosing;
+        }
 
         return new ActionDisposable(() =>
         {
             topLevel.RemoveHandler(InputElement.KeyDownEvent, OnKeyDown);
+            
+            // Remove the main window closing event handler
+            if (topLevel is Window mainWindow)
+            {
+                mainWindow.Closing -= OnMainWindowClosing;
+            }
+            
             if (debugWindow is { })
             {
                 debugWindow.Close();

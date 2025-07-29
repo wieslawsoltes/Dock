@@ -1,4 +1,6 @@
 using Avalonia.Headless.XUnit;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Diagnostics.Controls;
 using Xunit;
@@ -132,6 +134,8 @@ public class ControlCtorTests
         var control = new RootDockDebug();
         Assert.NotNull(control);
     }
+
+
 
     [AvaloniaFact]
     public void StackDockControl_Ctor()

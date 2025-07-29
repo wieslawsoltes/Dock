@@ -240,6 +240,24 @@ public class DockControl : TemplatedControl, IDockControl
         }
 
         Initialize(Layout);
+
+        var root = Layout?.Factory?.FindRoot(Layout);
+
+        if (root is { Window: null })
+        {
+            var windowModel = Layout?.Factory?.CreateWindowFrom(root);
+
+            if (windowModel != null)
+            {
+                if (TopLevel.GetTopLevel(this) is IHostWindow window)
+                {
+                    root.Factory?.InitDockWindow(windowModel, root, window);
+                }
+
+                root.Window = windowModel;
+                
+            }
+        }
     }
 
     /// <inheritdoc/>

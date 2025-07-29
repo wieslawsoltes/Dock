@@ -9,7 +9,6 @@
   <ToolChromeControl Width="300" Height="400" />
   </Design.PreviewWith>
 
-
   <MenuFlyout x:Key="ToolChromeControlContextMenu">
     <MenuItem Header="{DynamicResource ToolChromeControlFloatString}"
               Command="{Binding Owner.Factory.FloatDockable}"
@@ -83,6 +82,7 @@
     <Setter Property="Padding" Value="0" />
     <Setter Property="IsPinned" Value="{Binding ActiveDockable.OriginalOwner, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" />
     <Setter Property="IsMaximized" Value="{Binding $parent[Window].WindowState, FallbackValue=False, Converter={x:Static IsMaximizedConverter.Instance}}" />
+    <Setter Property="ToolFlyout" Value="{DynamicResource ToolChromeControlContextMenu}" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -97,7 +97,7 @@
           <Border x:Name="PART_Border"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   VerticalAlignment="Top"
-                  ContextFlyout="{DynamicResource ToolChromeControlContextMenu}"
+                  ContextFlyout="{TemplateBinding ToolFlyout}"
                   Grid.Row="{Binding GripMode, Converter={x:Static GripModeConverters.GridRowAutoHideConverter}}">
             <Grid x:Name="PART_Grip">
               <DockPanel LastChildFill="True" Margin="8 0">
@@ -108,7 +108,7 @@
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
                           Theme="{StaticResource ChromeButton}"
-                          Flyout="{DynamicResource ToolChromeControlContextMenu}">
+                          Flyout="{TemplateBinding ToolFlyout}">
                     <Viewbox Margin="2">
                       <Path x:Name="PART_MenuPath" />
                     </Viewbox>

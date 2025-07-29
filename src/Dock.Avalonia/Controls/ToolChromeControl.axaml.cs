@@ -55,6 +55,12 @@ public class ToolChromeControl : ContentControl
         AvaloniaProperty.Register<ToolChromeControl, bool>(nameof(IsMaximized));
 
     /// <summary>
+    /// Define the <see cref="ToolFlyout"/> property.
+    /// </summary>
+    public static readonly StyledProperty<FlyoutBase?> ToolFlyoutProperty =
+        AvaloniaProperty.Register<ToolChromeControl, FlyoutBase?>(nameof(ToolFlyout));
+
+    /// <summary>
     /// Gets or sets is pinned
     /// </summary>
     public bool IsPinned
@@ -79,6 +85,15 @@ public class ToolChromeControl : ContentControl
     {
         get => GetValue(IsMaximizedProperty);
         set => SetValue(IsMaximizedProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the tool flyout.
+    /// </summary>
+    public FlyoutBase? ToolFlyout
+    {
+        get => GetValue(ToolFlyoutProperty);
+        set => SetValue(ToolFlyoutProperty, value);
     }
 
     /// <summary>

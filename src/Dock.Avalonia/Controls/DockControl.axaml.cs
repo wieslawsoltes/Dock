@@ -255,7 +255,6 @@ public class DockControl : TemplatedControl, IDockControl
                 }
 
                 root.Window = windowModel;
-                
             }
         }
     }

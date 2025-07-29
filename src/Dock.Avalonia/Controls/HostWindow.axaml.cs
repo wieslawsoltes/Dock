@@ -96,7 +96,6 @@ public class HostWindow : Window, IHostWindow
         LayoutUpdated += HostWindow_LayoutUpdated;
         Activated += HostWindow_Activated;
         Deactivated += HostWindow_Deactivated;
-        _dockManager = new DockManager(new DockService())
         _hostWindowState = new HostWindowState(new DockManager(new DockService()), this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }

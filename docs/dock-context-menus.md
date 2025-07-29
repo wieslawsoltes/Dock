@@ -15,9 +15,9 @@ Each dictionary also declares `x:String` resources used for menu item headers. F
 
 When a dock's `CanCloseLastDockable` property is set to `false` the built-in menus automatically disable commands like **Close** or **Float** if executing them would remove the final item from that dock.
 
-## Customizing menus per control
+## Customizing menus and themes per control
 
-Each control now exposes a property that allows you to customize the context menu or flyout for individual instances:
+Each control now exposes properties that allow you to customize the context menus, flyouts, and button themes for individual instances:
 
 ### ToolChromeControl
 ```csharp
@@ -27,6 +27,25 @@ myToolChromeControl.ToolFlyout = new MenuFlyout
     Items = 
     {
         new MenuItem { Header = "Custom Action", Command = myCommand }
+    }
+};
+
+// Set custom themes for individual buttons
+myToolChromeControl.CloseButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters = 
+    {
+        new Setter(Button.BackgroundProperty, Brushes.Red),
+        new Setter(Button.ForegroundProperty, Brushes.White)
+    }
+};
+
+myToolChromeControl.MaximizeButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters = 
+    {
+        new Setter(Button.BackgroundProperty, Brushes.Blue),
+        new Setter(Button.ForegroundProperty, Brushes.White)
     }
 };
 ```
@@ -67,6 +86,36 @@ myToolPinItemControl.PinContextMenu = new ContextMenu
 };
 ```
 
+### DocumentTabStrip
+```csharp
+// Set a custom theme for the create document button
+myDocumentTabStrip.CreateButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters = 
+    {
+        new Setter(Button.BackgroundProperty, Brushes.Green),
+        new Setter(Button.ForegroundProperty, Brushes.White),
+        new Setter(Button.WidthProperty, 30.0),
+        new Setter(Button.HeightProperty, 30.0)
+    }
+};
+```
+
+### DocumentControl
+```csharp
+// Set a custom theme for the document close button
+myDocumentControl.CloseButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters = 
+    {
+        new Setter(Button.BackgroundProperty, Brushes.Orange),
+        new Setter(Button.ForegroundProperty, Brushes.White),
+        new Setter(Button.WidthProperty, 20.0),
+        new Setter(Button.HeightProperty, 20.0)
+    }
+};
+```
+
 ## Localizing strings
 
 To translate the menu headers, add a resource dictionary to your application with the same string keys. Avalonia will resolve dynamic resources from the application scope first, so your localized values override the defaults:
@@ -102,7 +151,7 @@ This approach allows you to customize the menu structure or attach your own comm
 
 The current design provides multiple levels of customization:
 
-1. **Per-control customization**: Use the control properties (`ToolFlyout`, `TabContextMenu`, `DocumentContextMenu`, `PinContextMenu`) to customize menus for individual control instances.
+1. **Per-control customization**: Use the control properties (`ToolFlyout`, `TabContextMenu`, `DocumentContextMenu`, `PinContextMenu`, `CreateButtonTheme`, `CloseButtonTheme`, etc.) to customize menus and themes for individual control instances.
 
 2. **Global customization**: Override resource keys to replace menus for all instances of a control type.
 
@@ -112,10 +161,12 @@ The current design provides multiple levels of customization:
 
 The new property-based approach provides the most flexibility for runtime customization, while the resource-based approach remains available for global changes. This design allows you to:
 
-- Customize menus for specific controls while keeping the default for others
+- Customize menus and button themes for specific controls while keeping the default for others
 - Add or remove menu items dynamically
 - Bind menu items to view model properties
 - Create context-sensitive menus based on the control's state
+- Customize button appearances (colors, sizes, hover effects) for individual controls
+- Create themed buttons that match your application's design system
 
 If you need to add items to the default menus rather than replacing them entirely, you can:
 

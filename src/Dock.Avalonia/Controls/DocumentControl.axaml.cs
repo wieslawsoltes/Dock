@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -40,6 +41,21 @@ public class DocumentControl : TemplatedControl
     /// </summary>
     public static readonly StyledProperty<IDataTemplate> CloseTemplateProperty = 
         AvaloniaProperty.Register<DocumentControl, IDataTemplate>(nameof(CloseTemplate));
+
+    /// <summary>
+    /// Define the <see cref="CloseButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentControl, ControlTheme?>(nameof(CloseButtonTheme));
+
+    /// <summary>
+    /// Gets or sets the close button theme.
+    /// </summary>
+    public ControlTheme? CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
+    }
 
     /// <summary>
     /// Define the <see cref="IsActive"/> property.

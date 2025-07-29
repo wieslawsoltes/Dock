@@ -9,11 +9,24 @@
     <DocumentControl Width="300" Height="400" />
   </Design.PreviewWith>
 
+  <ControlTheme x:Key="DocumentCloseButtonTheme" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="14" />
+    <Setter Property="Background" Value="Transparent" />
+    <Style Selector="^:pointerover">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
+    </Style>
+  </ControlTheme>
+
   <ControlTheme x:Key="{x:Type DocumentControl}" TargetType="DocumentControl">
 
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="TabsLayout" Value="{Binding TabsLayout, Mode=TwoWay}" />
+    <Setter Property="CloseButtonTheme" Value="{DynamicResource DocumentCloseButtonTheme}" />
 
     <Setter Property="IconTemplate">
       <DataTemplate DataType="core:IDockable">
@@ -40,7 +53,8 @@
     <Setter Property="CloseTemplate">
       <DataTemplate DataType="core:IDockable">
         <Button Command="{Binding Owner.Factory.CloseDockable}"
-                CommandParameter="{Binding}">
+                CommandParameter="{Binding}"
+                Theme="{Binding $parent[DocumentControl].CloseButtonTheme}">
           <Button.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="CanClose" />
@@ -50,19 +64,7 @@
               </MultiBinding>
             </MultiBinding>
           </Button.IsVisible>
-          <Button.Styles>
-            <Style Selector="Button">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="Padding" Value="0" />
-              <Setter Property="Margin" Value="0" />
-              <Setter Property="Width" Value="14" />
-              <Setter Property="Height" Value="14" />
-              <Setter Property="Background" Value="Transparent" />
-              <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushHigh}" />
-              </Style>
-            </Style>
-          </Button.Styles>
+
           <Path x:Name="PART_ClosePath"
                 Classes.selected="{Binding $parent[DocumentTabStripItem].IsSelected}"
                 Classes.pointerover="{Binding $parent[DocumentTabStripItem].IsPointerOver}">

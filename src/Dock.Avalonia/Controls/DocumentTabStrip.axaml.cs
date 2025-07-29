@@ -10,6 +10,7 @@ using Avalonia.VisualTree;
 using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
+using Avalonia.Styling;
 
 namespace Dock.Avalonia.Controls;
 
@@ -46,6 +47,21 @@ public class DocumentTabStrip : TabStrip
     /// </summary>
     public static readonly StyledProperty<Orientation> OrientationProperty =
         AvaloniaProperty.Register<DocumentTabStrip, Orientation>(nameof(Orientation));
+
+    /// <summary>
+    /// Define the <see cref="CreateButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> CreateButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentTabStrip, ControlTheme?>(nameof(CreateButtonTheme));
+
+    /// <summary>
+    /// Gets or sets the create button theme.
+    /// </summary>
+    public ControlTheme? CreateButtonTheme
+    {
+        get => GetValue(CreateButtonThemeProperty);
+        set => SetValue(CreateButtonThemeProperty, value);
+    }
 
     /// <summary>
     /// Gets or sets if tab strop dock can create new items.

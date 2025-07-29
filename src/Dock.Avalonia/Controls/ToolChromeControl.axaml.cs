@@ -7,6 +7,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using Dock.Model.Core;
 using Dock.Avalonia.Internal;
 
@@ -61,6 +62,30 @@ public class ToolChromeControl : ContentControl
         AvaloniaProperty.Register<ToolChromeControl, FlyoutBase?>(nameof(ToolFlyout));
 
     /// <summary>
+    /// Define the <see cref="CloseButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<ToolChromeControl, ControlTheme?>(nameof(CloseButtonTheme));
+
+    /// <summary>
+    /// Define the <see cref="MaximizeButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> MaximizeButtonThemeProperty =
+        AvaloniaProperty.Register<ToolChromeControl, ControlTheme?>(nameof(MaximizeButtonTheme));
+
+    /// <summary>
+    /// Define the <see cref="PinButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> PinButtonThemeProperty =
+        AvaloniaProperty.Register<ToolChromeControl, ControlTheme?>(nameof(PinButtonTheme));
+
+    /// <summary>
+    /// Define the <see cref="MenuButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> MenuButtonThemeProperty =
+        AvaloniaProperty.Register<ToolChromeControl, ControlTheme?>(nameof(MenuButtonTheme));
+
+    /// <summary>
     /// Gets or sets is pinned
     /// </summary>
     public bool IsPinned
@@ -94,6 +119,42 @@ public class ToolChromeControl : ContentControl
     {
         get => GetValue(ToolFlyoutProperty);
         set => SetValue(ToolFlyoutProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the close button theme.
+    /// </summary>
+    public ControlTheme? CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the maximize button theme.
+    /// </summary>
+    public ControlTheme? MaximizeButtonTheme
+    {
+        get => GetValue(MaximizeButtonThemeProperty);
+        set => SetValue(MaximizeButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the pin button theme.
+    /// </summary>
+    public ControlTheme? PinButtonTheme
+    {
+        get => GetValue(PinButtonThemeProperty);
+        set => SetValue(PinButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the menu button theme.
+    /// </summary>
+    public ControlTheme? MenuButtonTheme
+    {
+        get => GetValue(MenuButtonThemeProperty);
+        set => SetValue(MenuButtonThemeProperty, value);
     }
 
     /// <summary>

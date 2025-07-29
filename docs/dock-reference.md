@@ -61,7 +61,9 @@ the window so styles can react to different chrome configurations.
 
 ## Control customization properties
 
-Several Dock controls expose properties for customizing their context menus and flyouts:
+Several Dock controls expose properties for customizing their context menus, flyouts, and button themes:
+
+### Context Menus and Flyouts
 
 | Control | Property | Type | Description |
 |---------|----------|------|-------------|
@@ -70,7 +72,18 @@ Several Dock controls expose properties for customizing their context menus and 
 | `DocumentTabStripItem` | `DocumentContextMenu` | `ContextMenu?` | Custom context menu for document tab items |
 | `ToolPinItemControl` | `PinContextMenu` | `ContextMenu?` | Custom context menu for pinned tool items |
 
-These properties allow you to customize the context menus and flyouts for individual control instances. When not set, the controls use their default menus defined in the theme resources. See the [Context menus](dock-context-menus.md) guide for detailed examples.
+### Button Themes
+
+| Control | Property | Type | Description |
+|---------|----------|------|-------------|
+| `DocumentTabStrip` | `CreateButtonTheme` | `ControlTheme?` | Custom theme for the create document button |
+| `ToolChromeControl` | `CloseButtonTheme` | `ControlTheme?` | Custom theme for the close button |
+| `ToolChromeControl` | `MaximizeButtonTheme` | `ControlTheme?` | Custom theme for the maximize/restore button |
+| `ToolChromeControl` | `PinButtonTheme` | `ControlTheme?` | Custom theme for the pin button |
+| `ToolChromeControl` | `MenuButtonTheme` | `ControlTheme?` | Custom theme for the menu button |
+| `DocumentControl` | `CloseButtonTheme` | `ControlTheme?` | Custom theme for the document close button |
+
+These properties allow you to customize the context menus, flyouts, and button themes for individual control instances. When not set, the controls use their default themes defined in the theme resources. See the [Context menus](dock-context-menus.md) guide for detailed examples.
 
 ## Factory API
 

@@ -35,6 +35,20 @@ public class ToolPinItemControl : TemplatedControl
         set => SetValue(OrientationProperty, value);
     }
 
+    /// <summary>
+    /// Define the <see cref="PinContextMenu"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ContextMenu?> PinContextMenuProperty =
+        AvaloniaProperty.Register<ToolPinItemControl, ContextMenu?>(nameof(PinContextMenu));
+
+    /// <summary>
+    /// Gets or sets the pin context menu.
+    /// </summary>
+    public ContextMenu? PinContextMenu
+    {
+        get => GetValue(PinContextMenuProperty);
+        set => SetValue(PinContextMenuProperty, value);
+    }
 
 
     private static DragAction ToDragAction(PointerEventArgs e)

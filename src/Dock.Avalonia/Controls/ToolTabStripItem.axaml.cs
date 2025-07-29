@@ -56,6 +56,21 @@ public class ToolTabStripItem : TabStripItem
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(ToolTabStripItem);
 
+    /// <summary>
+    /// Define the <see cref="TabContextMenu"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ContextMenu?> TabContextMenuProperty =
+        AvaloniaProperty.Register<ToolTabStripItem, ContextMenu?>(nameof(TabContextMenu));
+
+    /// <summary>
+    /// Gets or sets the tab context menu.
+    /// </summary>
+    public ContextMenu? TabContextMenu
+    {
+        get => GetValue(TabContextMenuProperty);
+        set => SetValue(TabContextMenuProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {

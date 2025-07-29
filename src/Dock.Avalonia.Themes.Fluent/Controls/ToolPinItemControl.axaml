@@ -55,6 +55,7 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 
     <Setter Property="Background" Value="Transparent" />
+    <Setter Property="PinContextMenu" Value="{DynamicResource ToolPinItemControlContextMenu}" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -76,7 +77,7 @@
                 <TextBlock Text="{Binding Title}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left"
-                           ContextMenu="{DynamicResource ToolPinItemControlContextMenu}">
+                           ContextMenu="{TemplateBinding PinContextMenu}">
                 </TextBlock>
               </Button>
             </Border>

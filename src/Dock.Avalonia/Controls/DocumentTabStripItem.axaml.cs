@@ -69,6 +69,21 @@ public class DocumentTabStripItem : TabStripItem
         set => SetValue(IsActiveProperty, value);
     }
 
+    /// <summary>
+    /// Define the <see cref="DocumentContextMenu"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ContextMenu?> DocumentContextMenuProperty =
+        AvaloniaProperty.Register<DocumentTabStripItem, ContextMenu?>(nameof(DocumentContextMenu));
+
+    /// <summary>
+    /// Gets or sets the document context menu.
+    /// </summary>
+    public ContextMenu? DocumentContextMenu
+    {
+        get => GetValue(DocumentContextMenuProperty);
+        set => SetValue(DocumentContextMenuProperty, value);
+    }
+
     /// <inheritdoc/>
     protected override Type StyleKeyOverride => typeof(DocumentTabStripItem);
 

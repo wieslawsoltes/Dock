@@ -149,6 +149,17 @@ public abstract partial class FactoryBase
             SetFocusedDockable(owner, dockable);
         } 
     }
+
+    public void ActivateWindow(IDockable dockable)
+    {
+        var root = FindRoot(dockable);
+
+        if (root is { Window: not null })
+        {
+            root.Window.Activate();
+        }
+    }
+    
     
     /// <inheritdoc/>
     public virtual void SetActiveDockable(IDockable dockable)

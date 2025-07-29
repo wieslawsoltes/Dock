@@ -101,4 +101,6 @@ public interface IDockWindow
     /// Exits window.
     /// </summary>
     void Exit();
+
+    void Activate();
 }

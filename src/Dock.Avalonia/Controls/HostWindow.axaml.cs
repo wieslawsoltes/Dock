@@ -528,4 +528,9 @@ public class HostWindow : Window, IHostWindow
     {
         DataContext = layout;
     }
+
+    void IHostWindow.Activate()
+    {
+        this.Activate();    
+    }
 }

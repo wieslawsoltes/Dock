@@ -77,4 +77,6 @@ public interface IHostWindow
     /// </summary>
     /// <param name="layout">The host layout.</param>
     void SetLayout(IDock layout);
+
+    void Activate();
 }

@@ -66,6 +66,11 @@ public class DockWindowTests
         {
             Layout = layout;
         }
+
+        public void SetActive()
+        {
+            // Test implementation - could add a flag to track if called
+        }
     }
 
     private class HostFactory : Factory

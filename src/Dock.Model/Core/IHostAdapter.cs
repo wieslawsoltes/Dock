@@ -22,4 +22,9 @@ public interface IHostAdapter
     /// Implementation of the <see cref="IDockWindow.Exit()"/> method.
     /// </summary>
     void Exit();
+    
+    /// <summary>
+    /// Implementation of the <see cref="IDockWindow.SetActive()"/> method.
+    /// </summary>
+    void SetActive();
 }

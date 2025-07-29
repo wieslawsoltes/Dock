@@ -81,6 +81,18 @@ public abstract partial class FactoryBase
     public event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
 
     /// <inheritdoc />
+    public event EventHandler<WindowActivatedEventArgs>? WindowActivated;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableActivatedEventArgs>? DockableActivated;
+
+    /// <inheritdoc />
+    public event EventHandler<WindowDeactivatedEventArgs>? WindowDeactivated;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableDeactivatedEventArgs>? DockableDeactivated;
+
+    /// <inheritdoc />
     public virtual void OnActiveDockableChanged(IDockable? dockable)
     {
         ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
@@ -255,5 +267,29 @@ public abstract partial class FactoryBase
     {
         window?.OnMoveDragEnd();
         WindowMoveDragEnd?.Invoke(this, new WindowMoveDragEndEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnWindowActivated(IDockWindow? window)
+    {
+        WindowActivated?.Invoke(this, new WindowActivatedEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableActivated(IDockable? dockable)
+    {
+        DockableActivated?.Invoke(this, new DockableActivatedEventArgs(dockable));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnWindowDeactivated(IDockWindow? window)
+    {
+        WindowDeactivated?.Invoke(this, new WindowDeactivatedEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableDeactivated(IDockable? dockable)
+    {
+        DockableDeactivated?.Invoke(this, new DockableDeactivatedEventArgs(dockable));
     }
 }

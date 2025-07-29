@@ -30,6 +30,7 @@ public class DockWindowTests
         public void GetSize(out double width, out double height) { width=GetW; height=GetH; }
         public void SetTitle(string? title) { Title = title; }
         public void SetLayout(IDock layout) { Layout = layout; }
+        public void SetActive() { }
     }
 
     [Fact]

@@ -59,6 +59,19 @@ adds the returned document via `AddDocument`.
 `DocumentChromeControlsWholeWindow`. These properties toggle pseudo classes on
 the window so styles can react to different chrome configurations.
 
+## Control customization properties
+
+Several Dock controls expose properties for customizing their context menus and flyouts:
+
+| Control | Property | Type | Description |
+|---------|----------|------|-------------|
+| `ToolChromeControl` | `ToolFlyout` | `FlyoutBase?` | Custom flyout for the tool chrome grip button |
+| `ToolTabStripItem` | `TabContextMenu` | `ContextMenu?` | Custom context menu for tool tab items |
+| `DocumentTabStripItem` | `DocumentContextMenu` | `ContextMenu?` | Custom context menu for document tab items |
+| `ToolPinItemControl` | `PinContextMenu` | `ContextMenu?` | Custom context menu for pinned tool items |
+
+These properties allow you to customize the context menus and flyouts for individual control instances. When not set, the controls use their default menus defined in the theme resources. See the [Context menus](dock-context-menus.md) guide for detailed examples.
+
 ## Factory API
 
 The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`) contains numerous helpers used by the samples to build and manipulate layouts. Important members include:

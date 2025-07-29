@@ -159,6 +159,7 @@ public class FactoryTests
         
         // Set up the dock hierarchy
         dock.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        dockable.Owner = dock; // Set the owner relationship
         
         var eventRaised = false;
         var raisedDockable = (IDockable?)null;
@@ -213,6 +214,36 @@ public class FactoryTests
 
         Assert.True(eventRaised);
         Assert.Same(dockable, raisedDockable);
+    }
+
+    [Fact]
+    public void ActivateWindow_Triggers_WindowActivated_Event()
+    {
+        var factory = new TestFactory();
+        var dockable = factory.CreateToolDock();
+        var root = factory.CreateRootDock();
+        var window = factory.CreateDockWindow();
+        
+        // Set up the window hierarchy
+        root.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        root.ActiveDockable = dockable;
+        dockable.Owner = root; // Set the owner relationship
+        window.Layout = root;
+        root.Window = window;
+        
+        var eventRaised = false;
+        var raisedWindow = (IDockWindow?)null;
+
+        factory.WindowActivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedWindow = args.Window;
+        };
+
+        factory.ActivateWindow(dockable);
+
+        Assert.True(eventRaised);
+        Assert.Same(window, raisedWindow);
     }
 }
 

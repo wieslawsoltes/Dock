@@ -161,6 +161,7 @@ public class FactoryTests
         // Set up the window hierarchy
         root.VisibleDockables = factory.CreateList<IDockable>(dockable);
         root.ActiveDockable = dockable;
+        dockable.Owner = root; // Set the owner relationship
         window.Layout = root;
         root.Window = window;
         
@@ -188,6 +189,7 @@ public class FactoryTests
         
         // Set up the dock hierarchy
         dock.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        dockable.Owner = dock; // Set the owner relationship
         
         var eventRaised = false;
         var raisedDockable = (IDockable?)null;

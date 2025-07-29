@@ -231,6 +231,10 @@ public partial interface IFactory
     /// <param name="owner">The owner dockable.</param>
     void InitActiveDockable(IDockable? dockable, IDock owner);
     
+    /// <summary>
+    /// Activates the specified dockable window.
+    /// </summary>
+    /// <param name="dockable">The dockable window to activate.</param>
     void ActivateWindow(IDockable dockable);
 
     /// <summary>

@@ -98,6 +98,8 @@ public class HostWindow : Window, IHostWindow
     {
         PositionChanged += HostWindow_PositionChanged;
         LayoutUpdated += HostWindow_LayoutUpdated;
+        Activated += HostWindow_Activated;
+        Deactivated += HostWindow_Deactivated;
         _dockManager = new DockManager(new DockService());
         _hostWindowState = new HostWindowState(_dockManager, this);
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
@@ -257,6 +259,34 @@ public class HostWindow : Window, IHostWindow
         if (Window is { } && IsTracked)
         {
             Window.Save();
+        }
+    }
+
+    private void HostWindow_Activated(object? sender, EventArgs e)
+    {
+        if (Window is { })
+        {
+            Window.Factory?.OnWindowActivated(Window);
+            
+            // Also activate the active dockable in this window
+            if (Window.Layout?.ActiveDockable is { } activeDockable)
+            {
+                Window.Factory?.OnDockableActivated(activeDockable);
+            }
+        }
+    }
+
+    private void HostWindow_Deactivated(object? sender, EventArgs e)
+    {
+        if (Window is { })
+        {
+            Window.Factory?.OnWindowDeactivated(Window);
+            
+            // Also deactivate the active dockable in this window
+            if (Window.Layout?.ActiveDockable is { } activeDockable)
+            {
+                Window.Factory?.OnDockableDeactivated(activeDockable);
+            }
         }
     }
 

@@ -149,6 +149,100 @@ public class FactoryTests
         Assert.True(eventRaised);
         Assert.Same(dockable, raisedDockable);
     }
+
+    [Fact]
+    public void ActivateWindow_Triggers_WindowActivated_Event()
+    {
+        var factory = new TestFactory();
+        var dockable = factory.CreateToolDock();
+        var root = factory.CreateRootDock();
+        var window = factory.CreateDockWindow();
+        
+        // Set up the window hierarchy
+        root.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        root.ActiveDockable = dockable;
+        window.Layout = root;
+        root.Window = window;
+        
+        var eventRaised = false;
+        var raisedWindow = (IDockWindow?)null;
+
+        factory.WindowActivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedWindow = args.Window;
+        };
+
+        factory.ActivateWindow(dockable);
+
+        Assert.True(eventRaised);
+        Assert.Same(window, raisedWindow);
+    }
+
+    [Fact]
+    public void SetActiveDockable_Triggers_DockableActivated_Event()
+    {
+        var factory = new TestFactory();
+        var dockable = factory.CreateToolDock();
+        var dock = factory.CreateDocumentDock();
+        
+        // Set up the dock hierarchy
+        dock.VisibleDockables = factory.CreateList<IDockable>(dockable);
+        
+        var eventRaised = false;
+        var raisedDockable = (IDockable?)null;
+
+        factory.DockableActivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedDockable = args.Dockable;
+        };
+
+        factory.SetActiveDockable(dockable);
+
+        Assert.True(eventRaised);
+        Assert.Same(dockable, raisedDockable);
+    }
+
+    [Fact]
+    public void OnWindowDeactivated_Raises_Event()
+    {
+        var factory = new TestFactory();
+        var window = factory.CreateDockWindow();
+        var eventRaised = false;
+        var raisedWindow = (IDockWindow?)null;
+
+        factory.WindowDeactivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedWindow = args.Window;
+        };
+
+        factory.OnWindowDeactivated(window);
+
+        Assert.True(eventRaised);
+        Assert.Same(window, raisedWindow);
+    }
+
+    [Fact]
+    public void OnDockableDeactivated_Raises_Event()
+    {
+        var factory = new TestFactory();
+        var dockable = factory.CreateToolDock();
+        var eventRaised = false;
+        var raisedDockable = (IDockable?)null;
+
+        factory.DockableDeactivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedDockable = args.Dockable;
+        };
+
+        factory.OnDockableDeactivated(dockable);
+
+        Assert.True(eventRaised);
+        Assert.Same(dockable, raisedDockable);
+    }
 }
 
 public class TestFactory : Factory

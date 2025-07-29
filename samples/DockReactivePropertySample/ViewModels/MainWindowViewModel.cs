@@ -195,5 +195,15 @@ public class MainWindowViewModel : ReactiveBase
         {
             Debug.WriteLine($"[DockableActivated] Title='{args.Dockable?.Title}'");
         };
+
+        factory.WindowDeactivated += (_, args) =>
+        {
+            Debug.WriteLine($"[WindowDeactivated] Title='{args.Window?.Title}'");
+        };
+
+        factory.DockableDeactivated += (_, args) =>
+        {
+            Debug.WriteLine($"[DockableDeactivated] Title='{args.Dockable?.Title}'");
+        };
     }
 }

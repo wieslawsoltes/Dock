@@ -136,6 +136,16 @@ public partial interface IFactory
     event EventHandler<DockableActivatedEventArgs>? DockableActivated;
 
     /// <summary>
+    /// Window deactivated event handler.
+    /// </summary>
+    event EventHandler<WindowDeactivatedEventArgs>? WindowDeactivated;
+
+    /// <summary>
+    /// Dockable deactivated event handler.
+    /// </summary>
+    event EventHandler<DockableDeactivatedEventArgs>? DockableDeactivated;
+
+    /// <summary>
     /// Called when the active dockable changed.
     /// </summary>
     /// <param name="dockable">The activate dockable.</param>
@@ -289,4 +299,16 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The activated dockable.</param>
     void OnDockableActivated(IDockable? dockable);
+
+    /// <summary>
+    /// Called when the window has been deactivated.
+    /// </summary>
+    /// <param name="window">The deactivated window.</param>
+    void OnWindowDeactivated(IDockWindow? window);
+
+    /// <summary>
+    /// Called when the dockable has been deactivated.
+    /// </summary>
+    /// <param name="dockable">The deactivated dockable.</param>
+    void OnDockableDeactivated(IDockable? dockable);
 }

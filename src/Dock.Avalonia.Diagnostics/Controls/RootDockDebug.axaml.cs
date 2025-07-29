@@ -170,6 +170,10 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
             disposables.Add(new ActionDisposable(() => factory.WindowActivated -= OnWindowActivated));
             factory.DockableActivated += OnDockableActivated;
             disposables.Add(new ActionDisposable(() => factory.DockableActivated -= OnDockableActivated));
+            factory.WindowDeactivated += OnWindowDeactivated;
+            disposables.Add(new ActionDisposable(() => factory.WindowDeactivated -= OnWindowDeactivated));
+            factory.DockableDeactivated += OnDockableDeactivated;
+            disposables.Add(new ActionDisposable(() => factory.DockableDeactivated -= OnDockableDeactivated));
 
             _subscriptions = disposables;
         }
@@ -229,6 +233,10 @@ public partial class RootDockDebug : UserControl, INotifyPropertyChanged
         AddEvent($"WindowActivated {e.Window?.Title}");
     private void OnDockableActivated(object? sender, DockableActivatedEventArgs e) =>
         AddEvent($"DockableActivated {e.Dockable?.Title}");
+    private void OnWindowDeactivated(object? sender, WindowDeactivatedEventArgs e) =>
+        AddEvent($"WindowDeactivated {e.Window?.Title}");
+    private void OnDockableDeactivated(object? sender, DockableDeactivatedEventArgs e) =>
+        AddEvent($"DockableDeactivated {e.Dockable?.Title}");
 
     private void OnVisibleSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {

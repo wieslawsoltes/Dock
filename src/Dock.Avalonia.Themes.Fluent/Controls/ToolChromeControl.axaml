@@ -83,6 +83,10 @@
     <Setter Property="IsPinned" Value="{Binding ActiveDockable.OriginalOwner, FallbackValue=False, Converter={x:Static ObjectConverters.IsNotNull}}" />
     <Setter Property="IsMaximized" Value="{Binding $parent[Window].WindowState, FallbackValue=False, Converter={x:Static IsMaximizedConverter.Instance}}" />
     <Setter Property="ToolFlyout" Value="{DynamicResource ToolChromeControlContextMenu}" />
+    <Setter Property="CloseButtonTheme" Value="{StaticResource ChromeButton}" />
+    <Setter Property="MaximizeButtonTheme" Value="{StaticResource ChromeButton}" />
+    <Setter Property="PinButtonTheme" Value="{StaticResource ChromeButton}" />
+    <Setter Property="MenuButtonTheme" Value="{StaticResource ChromeButton}" />
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -107,7 +111,7 @@
                 </Panel>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
-                          Theme="{StaticResource ChromeButton}"
+                          Theme="{TemplateBinding MenuButtonTheme}"
                           Flyout="{TemplateBinding ToolFlyout}">
                     <Viewbox Margin="2">
                       <Path x:Name="PART_MenuPath" />
@@ -116,7 +120,7 @@
                   <Button x:Name="PART_PinButton"
                           Command="{Binding Owner.Factory.PinDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          Theme="{StaticResource ChromeButton}">
+                          Theme="{TemplateBinding PinButtonTheme}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
                         <Binding Path="ActiveDockable.CanPin" FallbackValue="{x:False}" />
@@ -129,7 +133,7 @@
                   </Button>
                   <Button x:Name="PART_MaximizeRestoreButton"
                           IsVisible="{TemplateBinding IsFloating}"
-                          Theme="{StaticResource ChromeButton}">
+                          Theme="{TemplateBinding MaximizeButtonTheme}">
                     <Viewbox>
                       <Path x:Name="PART_MaximizeRestorePath" />
                     </Viewbox>
@@ -137,7 +141,7 @@
                   <Button x:Name="PART_CloseButton"
                           Command="{Binding Owner.Factory.CloseDockable}"
                           CommandParameter="{Binding ActiveDockable}"
-                          Theme="{StaticResource ChromeButton}">
+                          Theme="{TemplateBinding CloseButtonTheme}">
                     <Button.IsVisible>
                       <MultiBinding Converter="{x:Static BoolConverters.And}">
                         <Binding Path="ActiveDockable.CanClose" FallbackValue="{x:False}" />

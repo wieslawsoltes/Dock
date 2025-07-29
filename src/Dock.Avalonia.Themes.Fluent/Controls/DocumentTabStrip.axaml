@@ -40,6 +40,7 @@
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
 
     <Setter Property="EnableWindowDrag" Value="{Binding EnableWindowDrag}" />
+    <Setter Property="CreateButtonTheme" Value="{DynamicResource ButtonCreateDocument}" />
     
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Focusable" Value="False" />
@@ -52,7 +53,7 @@
                    ClipToBounds="False">
           <Button x:Name="PART_ButtonCreate"
                   Command="{Binding CreateDocument}"
-                  Theme="{DynamicResource ButtonCreateDocument}"
+                  Theme="{TemplateBinding CreateButtonTheme}"
                   IsVisible="{Binding CanCreateDocument}">
             <Path x:Name="PART_PathCreate">
               <Path.Styles>

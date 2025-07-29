@@ -81,6 +81,12 @@ public abstract partial class FactoryBase
     public event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
 
     /// <inheritdoc />
+    public event EventHandler<WindowActivatedEventArgs>? WindowActivated;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableActivatedEventArgs>? DockableActivated;
+
+    /// <inheritdoc />
     public virtual void OnActiveDockableChanged(IDockable? dockable)
     {
         ActiveDockableChanged?.Invoke(this, new ActiveDockableChangedEventArgs(dockable));
@@ -255,5 +261,17 @@ public abstract partial class FactoryBase
     {
         window?.OnMoveDragEnd();
         WindowMoveDragEnd?.Invoke(this, new WindowMoveDragEndEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnWindowActivated(IDockWindow? window)
+    {
+        WindowActivated?.Invoke(this, new WindowActivatedEventArgs(window));
+    }
+
+    /// <inheritdoc />
+    public virtual void OnDockableActivated(IDockable? dockable)
+    {
+        DockableActivated?.Invoke(this, new DockableActivatedEventArgs(dockable));
     }
 }

@@ -150,6 +150,7 @@ public abstract partial class FactoryBase
         } 
     }
 
+    /// <inheritdoc/>
     public void ActivateWindow(IDockable dockable)
     {
         var root = FindRoot(dockable);
@@ -157,6 +158,7 @@ public abstract partial class FactoryBase
         if (root is { Window: not null })
         {
             root.Window.SetActive();
+            OnWindowActivated(root.Window);
         }
     }
     
@@ -167,6 +169,7 @@ public abstract partial class FactoryBase
         if (dockable.Owner is IDock dock)
         {
             dock.ActiveDockable = dockable;
+            OnDockableActivated(dockable);
         }
     }
 

@@ -126,6 +126,16 @@ public partial interface IFactory
     event EventHandler<WindowMoveDragEndEventArgs>? WindowMoveDragEnd;
 
     /// <summary>
+    /// Window activated event handler.
+    /// </summary>
+    event EventHandler<WindowActivatedEventArgs>? WindowActivated;
+
+    /// <summary>
+    /// Dockable activated event handler.
+    /// </summary>
+    event EventHandler<DockableActivatedEventArgs>? DockableActivated;
+
+    /// <summary>
     /// Called when the active dockable changed.
     /// </summary>
     /// <param name="dockable">The activate dockable.</param>
@@ -267,4 +277,16 @@ public partial interface IFactory
     /// </summary>
     /// <param name="window">The dragged window.</param>
     void OnWindowMoveDragEnd(IDockWindow? window);
+
+    /// <summary>
+    /// Called when the window has been activated.
+    /// </summary>
+    /// <param name="window">The activated window.</param>
+    void OnWindowActivated(IDockWindow? window);
+
+    /// <summary>
+    /// Called when the dockable has been activated.
+    /// </summary>
+    /// <param name="dockable">The activated dockable.</param>
+    void OnDockableActivated(IDockable? dockable);
 }

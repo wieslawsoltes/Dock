@@ -157,6 +157,46 @@ public class FactoryTests
         Assert.NotNull(actual);
         Assert.IsType<RootDock>(actual);
     }
+
+    [Fact]
+    public void OnWindowActivated_Raises_Event()
+    {
+        var factory = new TestFactory();
+        var window = factory.CreateDockWindow();
+        var eventRaised = false;
+        var raisedWindow = (IDockWindow?)null;
+
+        factory.WindowActivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedWindow = args.Window;
+        };
+
+        factory.OnWindowActivated(window);
+
+        Assert.True(eventRaised);
+        Assert.Same(window, raisedWindow);
+    }
+
+    [Fact]
+    public void OnDockableActivated_Raises_Event()
+    {
+        var factory = new TestFactory();
+        var dockable = factory.CreateToolDock();
+        var eventRaised = false;
+        var raisedDockable = (IDockable?)null;
+
+        factory.DockableActivated += (sender, args) =>
+        {
+            eventRaised = true;
+            raisedDockable = args.Dockable;
+        };
+
+        factory.OnDockableActivated(dockable);
+
+        Assert.True(eventRaised);
+        Assert.Same(dockable, raisedDockable);
+    }
 }
 
 public class TestFactory : Factory

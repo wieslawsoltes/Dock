@@ -144,6 +144,16 @@ public class MainWindowViewModel : ReactiveObject
         {
             Debug.WriteLine($"[WindowMoveDragEnd] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
         };
+
+        factory.WindowActivated += (_, args) =>
+        {
+            Debug.WriteLine($"[WindowActivated] Title='{args.Window?.Title}'");
+        };
+
+        factory.DockableActivated += (_, args) =>
+        {
+            Debug.WriteLine($"[DockableActivated] Title='{args.Dockable?.Title}'");
+        };
     }
 
     public void CloseLayout()

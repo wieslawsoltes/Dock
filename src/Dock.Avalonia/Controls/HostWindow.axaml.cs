@@ -531,6 +531,6 @@ public class HostWindow : Window, IHostWindow
 
     void IHostWindow.SetActive()
     {
-        this.Activate();    
+        this.Activate();
     }
 }

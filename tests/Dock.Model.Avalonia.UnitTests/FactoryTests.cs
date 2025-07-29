@@ -158,7 +158,7 @@ public class FactoryTests
         Assert.IsType<RootDock>(actual);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void OnWindowActivated_Raises_Event()
     {
         var factory = new TestFactory();
@@ -178,7 +178,7 @@ public class FactoryTests
         Assert.Same(window, raisedWindow);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void OnDockableActivated_Raises_Event()
     {
         var factory = new TestFactory();
@@ -198,7 +198,7 @@ public class FactoryTests
         Assert.Same(dockable, raisedDockable);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void SetActiveDockable_Triggers_DockableActivated_Event()
     {
         var factory = new TestFactory();
@@ -224,7 +224,7 @@ public class FactoryTests
         Assert.Same(dockable, raisedDockable);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void OnWindowDeactivated_Raises_Event()
     {
         var factory = new TestFactory();
@@ -244,7 +244,7 @@ public class FactoryTests
         Assert.Same(window, raisedWindow);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void OnDockableDeactivated_Raises_Event()
     {
         var factory = new TestFactory();
@@ -264,7 +264,7 @@ public class FactoryTests
         Assert.Same(dockable, raisedDockable);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void ActivateWindow_Triggers_WindowActivated_Event()
     {
         var factory = new TestFactory();

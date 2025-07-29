@@ -108,7 +108,7 @@
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                   <Button x:Name="PART_MenuButton"
                           Theme="{StaticResource ChromeButton}"
-                          Flyout="{StaticResource ToolChromeControlContextMenu}">
+                          Flyout="{DynamicResource ToolChromeControlContextMenu}">
                     <Viewbox Margin="2">
                       <Path x:Name="PART_MenuPath" />
                     </Viewbox>

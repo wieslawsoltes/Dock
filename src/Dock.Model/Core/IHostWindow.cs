@@ -8,11 +8,6 @@
 public interface IHostWindow
 {
     /// <summary>
-    /// Gets dock manager.
-    /// </summary>
-    IDockManager? DockManager { get; }
-
-    /// <summary>
     /// Gets host window state.
     /// </summary>
     IHostWindowState? HostWindowState { get; }

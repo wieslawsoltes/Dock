@@ -74,4 +74,13 @@ public class HostAdapter : IHostAdapter
             _window.Host = null;
         }
     }
+
+    /// <inheritdoc />
+    public void SetActive()
+    {
+        if (_window.Host is not null)
+        {
+            _window.Host.SetActive();
+        }
+    }
 }

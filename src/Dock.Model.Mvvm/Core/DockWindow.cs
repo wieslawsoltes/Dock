@@ -164,8 +164,9 @@ public class DockWindow : ReactiveBase, IDockWindow
         _hostAdapter.Exit();
     }
 
-    public void Activate()
+    /// <inheritdoc/>
+    public void SetActive()
     {
-        _host?.Activate();
+        _hostAdapter.SetActive();
     }
 }

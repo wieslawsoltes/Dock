@@ -156,7 +156,7 @@ public abstract partial class FactoryBase
 
         if (root is { Window: not null })
         {
-            root.Window.Activate();
+            root.Window.SetActive();
         }
     }
     

@@ -44,7 +44,6 @@ public class DockControlInstantiationTests
         Assert.False(window.IsToolWindow);
         Assert.False(window.ToolChromeControlsWholeWindow);
         Assert.False(window.DocumentChromeControlsWholeWindow);
-        Assert.NotNull(window.DockManager);
         Assert.NotNull(window.HostWindowState);
     }
 

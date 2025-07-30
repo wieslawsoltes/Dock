@@ -26,7 +26,7 @@ internal static class TemplateHelper
                 return control as Control;
             }
 
-            control = TemplateContent.Load(content)?.Result;
+            control = Load(content)?.Result;
             if (control is not null)
             {
                 controlRecycling.Add(content, control);
@@ -35,7 +35,7 @@ internal static class TemplateHelper
             return control as Control;
         }
 
-        return TemplateContent.Load(content)?.Result;
+        return Load(content)?.Result;
     }
 
     internal static TemplateResult<Control>? Load(object? templateContent)
@@ -45,9 +45,19 @@ internal static class TemplateHelper
             return null;
         }
 
-        if (templateContent is Func<IServiceProvider, object> direct)
+        if (templateContent is Func<IServiceProvider, object> directFunc)
         {
-            return (TemplateResult<Control>)direct(null!);
+            return (TemplateResult<Control>)directFunc(null!);
+        }
+
+        if (templateContent is FuncControlTemplate funcControlTemplate)
+        {
+            return funcControlTemplate.Build(null!);
+        }
+
+        if (templateContent is Control control)
+        {
+            return new TemplateResult<Control>(control, null!);
         }
 
         return TemplateContent.Load(templateContent);

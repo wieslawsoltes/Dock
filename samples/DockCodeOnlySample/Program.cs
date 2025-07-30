@@ -9,6 +9,8 @@ using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
+using Avalonia.Controls.Templates;
+using Avalonia.Markup.Xaml.Templates;
 
 namespace DockCodeOnlySample;
 
@@ -28,6 +30,7 @@ internal class Program
 
 public class App : Application
 {
+
     public override void OnFrameworkInitializationCompleted()
     {
         Styles.Add(new FluentTheme());
@@ -50,7 +53,14 @@ public class App : Application
             documentDock.DocumentFactory = () =>
             {
                 var index = documentDock.VisibleDockables?.Count ?? 0;
-                return new Document { Id = $"Doc{index + 1}", Title = $"Document {index + 1}" };
+                return new Document {
+                    Id = $"Doc{index + 1}",
+                    Title = $"Document {index + 1}",
+                    Content = new TextBlock()
+                    {
+                        Text = "test"
+                    }
+                };
             };
 
             var document = new Document { Id = "Doc1", Title = "Document 1" };

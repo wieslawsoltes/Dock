@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Avalonia;
@@ -99,5 +100,26 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     public Control? Build(object? data, Control? existing)
     {
         return TemplateHelper.Build(Content, this);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public override bool OnClose()
+    {
+        var canClose = base.OnClose();
+
+        if (!canClose)
+        {
+            return false;
+        }
+
+        if (Context is { } context && Owner is DocumentDock docDock && docDock.ItemsSource is IList items)
+        {
+            items.Remove(context);
+        }
+
+        return true;
     }
 }

@@ -71,16 +71,20 @@ public class DockFactory : Factory
         var rightDock = new ProportionalDock
         {
             Proportion = 0.25,
+            // MinWidth = 200,
+            // MaxWidth = 400,
             Orientation = Orientation.Vertical,
             ActiveDockable = null,
             VisibleDockables = CreateList<IDockable>
             (
                 new ToolDock
                 {
+                    // MinHeight = 200,
+                    // MaxHeight = 400,
                     ActiveDockable = tool5,
                     VisibleDockables = CreateList<IDockable>(tool5, tool6),
                     Alignment = Alignment.Top,
-                    GripMode = GripMode.Hidden
+                    GripMode = GripMode.Hidden,
                 },
                 new ProportionalDockSplitter(),
                 new ToolDock

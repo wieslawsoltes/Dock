@@ -360,7 +360,7 @@ public class ProportionalStackPanel : Panel
                 {
                     case Orientation.Horizontal:
                     {
-                        var width = CalculateDimension(constraint.Width - splitterThickness, proportion,
+                        var width = CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithWidth(width);
                         control.Measure(size);
@@ -368,7 +368,7 @@ public class ProportionalStackPanel : Panel
                     }
                     case Orientation.Vertical:
                     {
-                        var height = CalculateDimension(constraint.Height - splitterThickness, proportion,
+                        var height = CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithHeight(height);
                         control.Measure(size);
@@ -406,7 +406,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedWidth += CalculateDimension(constraint.Width - splitterThickness, proportion,
+                        usedWidth += CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
                             ref sumOfFractions);
                     }
 
@@ -422,7 +422,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedHeight += CalculateDimension(constraint.Height - splitterThickness, proportion,
+                        usedHeight += CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
                             ref sumOfFractions);
                     }
 
@@ -507,7 +507,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var width = CalculateDimension(arrangeSize.Width - splitterThickness, proportion,
+                            var width = CalculateDimensionWithConstraints(control, Orientation.Horizontal, arrangeSize.Width - splitterThickness, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithWidth(width);
                             left += width;
@@ -525,7 +525,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var height = CalculateDimension(arrangeSize.Height - splitterThickness, proportion,
+                            var height = CalculateDimensionWithConstraints(control, Orientation.Vertical, arrangeSize.Height - splitterThickness, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithHeight(height);
                             top += height;
@@ -580,6 +580,32 @@ public class ProportionalStackPanel : Panel
             return value;
         }
 #endif
+    }
+
+    private double CalculateDimensionWithConstraints(
+        Control control,
+        Orientation orientation,
+        double dimension,
+        double proportion,
+        ref double sumOfFractions)
+    {
+        var calculatedDimension = CalculateDimension(dimension, proportion, ref sumOfFractions);
+        
+        // Apply min/max constraints to the final calculated dimension
+        double min = orientation == Orientation.Horizontal ? control.MinWidth : control.MinHeight;
+        double max = orientation == Orientation.Horizontal ? control.MaxWidth : control.MaxHeight;
+
+        if (!double.IsNaN(min) && calculatedDimension < min)
+        {
+            calculatedDimension = min;
+        }
+        
+        if (!double.IsNaN(max) && !double.IsPositiveInfinity(max) && calculatedDimension > max)
+        {
+            calculatedDimension = max;
+        }
+
+        return calculatedDimension;
     }
 
     /// <inheritdoc/>

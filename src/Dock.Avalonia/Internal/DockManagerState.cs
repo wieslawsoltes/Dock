@@ -96,6 +96,11 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
+        if (!ValidateLocalTarget(targetDockable))
+        {
+            return false;
+        }
+
         _dockManager.Position = DockHelpers.ToDockPoint(point);
 
         if (relativeTo.GetVisualRoot() is null)
@@ -109,6 +114,15 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
+    protected bool ValidateLocalTarget(IDockable targetDockable)
+    {
+        return targetDockable is ILocalTarget;
+    }
+
+    protected bool ValidateGlobalTarget(IDockable targetDockable)
+    {
+        return targetDockable is IGlobalTarget;
+    }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
     {

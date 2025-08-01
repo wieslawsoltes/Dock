@@ -8,7 +8,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Document dock contract.
 /// </summary>
-public interface IDocumentDock : IDock
+public interface IDocumentDock : IDock, ILocalTarget
 {
     /// <summary>
     /// Gets or sets if document dock can create new documents.

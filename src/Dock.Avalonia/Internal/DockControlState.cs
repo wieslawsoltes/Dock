@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -161,6 +162,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                 && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
+    
+                if (!ValidateGlobalTarget(targetDock))
+                {
+                    return;
+                }
+
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
             }
         }
@@ -169,6 +176,11 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable &&
                 DropControl.DataContext is IDockable targetDockable)
             {
+                if (!ValidateLocalTarget(targetDockable))
+                {
+                    return;
+                }
+
                 Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
             }
         }

@@ -7,7 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Tool dock contract.
 /// </summary>
-public interface IToolDock : IDock
+public interface IToolDock : IDock, ILocalTarget
 {
     /// <summary>
     /// Gets or sets dock auto hide alignment.

@@ -18,6 +18,11 @@ internal static class TemplateHelper
             return null;
         }
 
+        if (content is Control directControl)
+        {
+            return directControl;
+        }
+
         var controlRecycling = ControlRecyclingDataTemplate.GetControlRecycling(parent);
         if (controlRecycling is not null)
         {
@@ -43,6 +48,11 @@ internal static class TemplateHelper
         if (templateContent is null)
         {
             return null;
+        }
+
+        if (templateContent is Control control)
+        {
+            return new TemplateResult<Control>(control, null!);
         }
 
         if (templateContent is Func<IServiceProvider, object> direct)

@@ -50,10 +50,20 @@ public class App : Application
             documentDock.DocumentFactory = () =>
             {
                 var index = documentDock.VisibleDockables?.Count ?? 0;
-                return new Document { Id = $"Doc{index + 1}", Title = $"Document {index + 1}" };
+                return new Document
+                {
+                    Id = $"Doc{index + 1}",
+                    Title = $"Document {index + 1}",
+                    Content = new TextBox { Text = $"Document {index + 1}", AcceptsReturn = true }
+                };
             };
 
-            var document = new Document { Id = "Doc1", Title = "Document 1" };
+            var document = new Document 
+            { 
+                Id = "Doc1", 
+                Title = "Document 1",
+                // Content = new TextBox { Text = "Document 1", AcceptsReturn = true }
+            };
             documentDock.VisibleDockables = factory.CreateList<IDockable>(document);
             documentDock.ActiveDockable = document;
 

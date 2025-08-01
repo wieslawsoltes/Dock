@@ -56,9 +56,9 @@ public class App : Application
                 return new Document {
                     Id = $"Doc{index + 1}",
                     Title = $"Document {index + 1}",
-                    Content = new TextBlock()
+                    Content = new TextBlock
                     {
-                        Text = "test"
+                        Text = $"Document {index + 1}"
                     }
                 };
             };

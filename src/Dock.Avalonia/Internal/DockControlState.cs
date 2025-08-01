@@ -162,6 +162,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                 && dockControlLayout.ActiveDockable is IDock dockControlActiveDock)
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
+    
+                if (!ValidateGlobalTarget(targetDock))
+                {
+                    return;
+                }
+
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
             }
         }
@@ -170,7 +176,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable &&
                 DropControl.DataContext is IDockable targetDockable)
             {
-                if (!ValidateLocalTargetDockables(targetDockable))
+                if (!ValidateLocalTarget(targetDockable))
                 {
                     return;
                 }

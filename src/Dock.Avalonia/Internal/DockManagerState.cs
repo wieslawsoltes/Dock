@@ -1,12 +1,9 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
-using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -99,7 +96,7 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
-        if (!ValidateLocalTargetDockables(targetDockable))
+        if (!ValidateLocalTarget(targetDockable))
         {
             return false;
         }
@@ -117,14 +114,14 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
-    protected bool ValidateLocalTargetDockables(IDockable targetDockable)
+    protected bool ValidateLocalTarget(IDockable targetDockable)
     {
-        // Console.WriteLine($"ValidateLocalTargetDockables {targetDockable.GetType().Name}");
-        return targetDockable 
-            is ITool 
-            or IToolDock
-            or IDocument
-            or IDocumentDock;
+        return targetDockable is ILocalTarget;
+    }
+
+    protected bool ValidateGlobalTarget(IDockable targetDockable)
+    {
+        return targetDockable is IGlobalTarget;
     }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)

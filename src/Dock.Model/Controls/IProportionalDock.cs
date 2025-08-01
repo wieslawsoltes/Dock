@@ -7,7 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Proportional dock contract.
 /// </summary>
-public interface IProportionalDock : IDock
+public interface IProportionalDock : IDock, IGlobalTarget
 {
     /// <summary>
     /// Gets or sets layout orientation.

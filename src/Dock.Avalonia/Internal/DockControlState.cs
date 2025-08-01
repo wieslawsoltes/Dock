@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -169,6 +170,11 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable &&
                 DropControl.DataContext is IDockable targetDockable)
             {
+                if (!ValidateLocalTargetDockables(targetDockable))
+                {
+                    return;
+                }
+
                 Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
             }
         }

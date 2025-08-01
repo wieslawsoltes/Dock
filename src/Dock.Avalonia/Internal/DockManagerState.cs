@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -96,6 +97,11 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
+        if (!ValidateLocalTargetDockables(targetDockable))
+        {
+            return false;
+        }
+
         _dockManager.Position = DockHelpers.ToDockPoint(point);
 
         if (relativeTo.GetVisualRoot() is null)
@@ -109,6 +115,17 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
+    protected bool ValidateLocalTargetDockables(IDockable targetDockable)
+    {
+        if (targetDockable 
+            is IProportionalDock 
+            or IProportionalDockSplitter)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)
     {

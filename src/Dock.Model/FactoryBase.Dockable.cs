@@ -848,6 +848,9 @@ public abstract partial class FactoryBase
 
         if (dockable.CanClose && OnDockableClosing(dockable))
         {
+            // Check if this document was generated from ItemsSource and remove the source item
+            HandleItemsSourceDocumentClosing(dockable);
+
             var hide = (dockable is ITool && HideToolsOnClose)
                        || (dockable is IDocument && HideDocumentsOnClose);
 
@@ -861,6 +864,33 @@ public abstract partial class FactoryBase
             }
 
             OnDockableClosed(dockable);
+        }
+    }
+
+    /// <summary>
+    /// Handles closing of documents that were generated from ItemsSource by removing the source item from the collection.
+    /// </summary>
+    /// <param name="dockable">The dockable being closed.</param>
+    protected virtual void HandleItemsSourceDocumentClosing(IDockable dockable)
+    {
+        // Only handle documents
+        if (dockable is not IDocument document)
+            return;
+
+        // Check if the owner dock supports ItemsSource
+        if (dockable.Owner is IItemsSourceDock itemsSourceDock)
+        {
+            // Check if this document was generated from ItemsSource
+            if (itemsSourceDock.IsDocumentFromItemsSource(dockable))
+            {
+                // Get the source item from the document's Context
+                var sourceItem = document.Context;
+                if (sourceItem != null)
+                {
+                    // Remove the source item from the ItemsSource collection
+                    itemsSourceDock.RemoveItemFromSource(sourceItem);
+                }
+            }
         }
     }
 

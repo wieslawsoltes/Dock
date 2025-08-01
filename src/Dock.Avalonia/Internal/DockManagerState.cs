@@ -117,14 +117,12 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected bool ValidateLocalTargetDockables(IDockable targetDockable)
     {
-        if (targetDockable 
-            is IProportionalDock 
-            or IProportionalDockSplitter)
-        {
-            return false;
-        }
-
-        return true;
+        // Console.WriteLine($"ValidateLocalTargetDockables {targetDockable.GetType().Name}");
+        return targetDockable 
+            is ITool 
+            or IToolDock
+            or IDocument
+            or IDocumentDock;
     }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)

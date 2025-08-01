@@ -23,7 +23,7 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document dock.
 /// </summary>
 [DataContract(IsReference = true)]
-public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
+public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItemsSourceDock
 {
     /// <summary>
     /// Defines the <see cref="CanCreateDocument"/> property.
@@ -463,5 +463,40 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent
 
         // Default to true
         return true;
+    }
+
+    /// <summary>
+    /// Removes an item from the ItemsSource collection if it supports removal.
+    /// This method is called by the factory when a document generated from ItemsSource is closed.
+    /// Only supports collections that implement IList.
+    /// </summary>
+    /// <param name="item">The item to remove from the ItemsSource collection.</param>
+    /// <returns>True if the item was successfully removed, false otherwise.</returns>
+    public virtual bool RemoveItemFromSource(object? item)
+    {
+        if (item == null || ItemsSource == null)
+            return false;
+
+        // Only support IList<T> or IList collections
+        if (ItemsSource is System.Collections.IList list)
+        {
+            if (list.Contains(item))
+            {
+                list.Remove(item);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if a document was generated from ItemsSource.
+    /// </summary>
+    /// <param name="document">The document to check.</param>
+    /// <returns>True if the document was generated from ItemsSource, false otherwise.</returns>
+    public virtual bool IsDocumentFromItemsSource(IDockable document)
+    {
+        return _generatedDocuments.Contains(document);
     }
 }

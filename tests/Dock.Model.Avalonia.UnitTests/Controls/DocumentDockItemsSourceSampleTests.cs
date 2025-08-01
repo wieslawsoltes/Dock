@@ -226,4 +226,92 @@ public class DocumentDockItemsSourceSampleTests
         // Assert
         Assert.Empty(dock.VisibleDockables);
     }
+
+    [AvaloniaFact]
+    public void ClosingItemsSourceDocument_RemovesItemFromSourceCollection()
+    {
+        // Arrange
+        var factory = new Factory();
+        var dock = new DocumentDock();
+        dock.Factory = factory;
+        var template = new DocumentTemplate();
+        dock.DocumentTemplate = template;
+
+        var doc1 = new MyDocumentModel { Title = "Doc1", CanClose = true };
+        var doc2 = new MyDocumentModel { Title = "Doc2", CanClose = true };
+        
+        var documents = new ObservableCollection<MyDocumentModel> { doc1, doc2 };
+        dock.ItemsSource = documents;
+        
+        // Verify initial state
+        Assert.Equal(2, dock.VisibleDockables!.Count);
+        Assert.Equal(2, documents.Count);
+        
+        var document1 = dock.VisibleDockables[0] as Document;
+        var document2 = dock.VisibleDockables[1] as Document;
+        
+        Assert.NotNull(document1);
+        Assert.NotNull(document2);
+        Assert.Equal(doc1, document1.Context);
+        Assert.Equal(doc2, document2.Context);
+
+        // Act - Close a document using the factory (simulating UI close button)
+        factory.CloseDockable(document1);
+
+        // Assert - Document should be removed from UI AND from source collection
+        Assert.Single(dock.VisibleDockables);
+        Assert.Single(documents);
+        
+        // Verify the correct document remains
+        var remainingDocument = dock.VisibleDockables[0] as Document;
+        Assert.NotNull(remainingDocument);
+        Assert.Equal(doc2, remainingDocument.Context);
+        Assert.Equal("Doc2", remainingDocument.Title);
+        
+        // Verify the correct item remains in the source collection
+        Assert.Contains(doc2, documents);
+        Assert.DoesNotContain(doc1, documents);
+    }
+
+    [AvaloniaFact]  
+    public void ClosingNonItemsSourceDocument_DoesNotAffectSourceCollection()
+    {
+        // Arrange
+        var factory = new Factory();
+        var dock = new DocumentDock();
+        dock.Factory = factory;
+        var template = new DocumentTemplate();
+        dock.DocumentTemplate = template;
+
+        var documents = new ObservableCollection<MyDocumentModel>
+        {
+            new() { Title = "ItemsSource Doc", CanClose = true }
+        };
+        dock.ItemsSource = documents;
+        
+        // Add a manual document (not from ItemsSource)
+        var manualDocument = new Document
+        {
+            Title = "Manual Doc",
+            CanClose = true,
+            Content = "Manual content"
+        };
+        
+        factory.AddDockable(dock, manualDocument);
+        
+        // Verify initial state
+        Assert.Equal(2, dock.VisibleDockables!.Count);
+        Assert.Single(documents); // ItemsSource collection should still have 1 item
+        
+        // Act - Close the manual document
+        factory.CloseDockable(manualDocument);
+        
+        // Assert - Only UI document should be removed, ItemsSource should be unchanged
+        Assert.Single(dock.VisibleDockables);
+        Assert.Single(documents); // ItemsSource collection should still have 1 item
+        
+        var remainingDocument = dock.VisibleDockables[0] as Document;
+        Assert.NotNull(remainingDocument);
+        Assert.Equal("ItemsSource Doc", remainingDocument.Title);
+    }
 } 

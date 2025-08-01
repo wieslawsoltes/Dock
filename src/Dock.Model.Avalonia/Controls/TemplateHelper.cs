@@ -50,9 +50,9 @@ internal static class TemplateHelper
             return (TemplateResult<Control>)directFunc(null!);
         }
 
-        if (templateContent is FuncControlTemplate funcControlTemplate)
+        if (templateContent is IControlTemplate controlTemplate)
         {
-            return funcControlTemplate.Build(null!);
+            return controlTemplate.Build(null!);
         }
 
         if (templateContent is Control control)

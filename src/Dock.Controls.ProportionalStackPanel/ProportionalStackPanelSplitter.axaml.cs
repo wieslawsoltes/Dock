@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
@@ -309,7 +310,8 @@ public class ProportionalStackPanelSplitter : Thumb
         var targetElementProportion = ProportionalStackPanel.GetProportion(target);
         var neighbourProportion = child is not null ? ProportionalStackPanel.GetProportion(child) : double.NaN;
 
-        var dProportion = dragDelta / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+        var availableSize = panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width;
+        var dProportion = dragDelta / availableSize;
 
         if (targetElementProportion + dProportion < 0)
         {
@@ -324,14 +326,68 @@ public class ProportionalStackPanelSplitter : Thumb
         targetElementProportion += dProportion;
         neighbourProportion -= dProportion;
 
-        var minProportion = GetValue(MinimumProportionSizeProperty) / (panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width);
+        // Check MinimumProportionSize first (for backward compatibility)
+        var minProportion = GetValue(MinimumProportionSizeProperty) / availableSize;
 
+        // Check min/max constraints for target element
+        if (target is Control targetControl)
+        {
+            var targetMin = panel.Orientation == Orientation.Horizontal ? targetControl.MinWidth : targetControl.MinHeight;
+            var targetMax = panel.Orientation == Orientation.Horizontal ? targetControl.MaxWidth : targetControl.MaxHeight;
+            
+            if (!double.IsNaN(targetMin) && targetMin > 0)
+            {
+                var targetMinProp = targetMin / availableSize;
+                minProportion = Math.Max(minProportion, targetMinProp);
+            }
+            
+            if (!double.IsNaN(targetMax) && !double.IsPositiveInfinity(targetMax))
+            {
+                var targetMaxProp = targetMax / availableSize;
+                if (targetElementProportion > targetMaxProp)
+                {
+                    var excess = targetElementProportion - targetMaxProp;
+                    targetElementProportion = targetMaxProp;
+                    neighbourProportion += excess;
+                }
+            }
+        }
+
+        // Check min/max constraints for neighbor element
+        if (child is Control neighbourControl)
+        {
+            var neighbourMin = panel.Orientation == Orientation.Horizontal ? neighbourControl.MinWidth : neighbourControl.MinHeight;
+            var neighbourMax = panel.Orientation == Orientation.Horizontal ? neighbourControl.MaxWidth : neighbourControl.MaxHeight;
+            
+            if (!double.IsNaN(neighbourMin) && neighbourMin > 0)
+            {
+                var neighbourMinProp = neighbourMin / availableSize;
+                if (neighbourProportion < neighbourMinProp)
+                {
+                    var deficit = neighbourMinProp - neighbourProportion;
+                    neighbourProportion = neighbourMinProp;
+                    targetElementProportion -= deficit;
+                }
+            }
+            
+            if (!double.IsNaN(neighbourMax) && !double.IsPositiveInfinity(neighbourMax))
+            {
+                var neighbourMaxProp = neighbourMax / availableSize;
+                if (neighbourProportion > neighbourMaxProp)
+                {
+                    var excess = neighbourProportion - neighbourMaxProp;
+                    neighbourProportion = neighbourMaxProp;
+                    targetElementProportion += excess;
+                }
+            }
+        }
+
+        // Apply MinimumProportionSize constraints (backward compatibility)
         if (targetElementProportion < minProportion)
         {
             dProportion = targetElementProportion - minProportion;
             neighbourProportion += dProportion;
             targetElementProportion -= dProportion;
-
         }
         else if (neighbourProportion < minProportion)
         {
@@ -339,6 +395,10 @@ public class ProportionalStackPanelSplitter : Thumb
             neighbourProportion -= dProportion;
             targetElementProportion += dProportion;
         }
+
+        // Ensure proportions are non-negative
+        targetElementProportion = Math.Max(0, targetElementProportion);
+        neighbourProportion = Math.Max(0, neighbourProportion);
 
         ProportionalStackPanel.SetProportion(target, targetElementProportion);
 

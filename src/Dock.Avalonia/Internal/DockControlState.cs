@@ -234,7 +234,14 @@ internal class DockControlState : DockManagerState, IDockControlState
         var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-        return DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false);
+        // Validate basic docking operation
+        if (!DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false))
+        {
+            return false;
+        }
+
+        // Also validate docking groups for adorner display
+        return DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, dock);
     }
 
     private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)

@@ -312,4 +312,91 @@ public class DockGroupValidationTests
 
         Assert.False(result);
     }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroups_SameGroup_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var target = new SimpleDockable { Id = "Target", DockGroup = "GroupA" };
+
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroups_DifferentGroup_ShouldReject()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var target = new SimpleDockable { Id = "Target", DockGroup = "GroupB" };
+
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
+
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroups_BothNullGroups_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = null };
+        var target = new SimpleDockable { Id = "Target", DockGroup = null };
+
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroups_MixedStates_ShouldReject()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var target = new SimpleDockable { Id = "Target", DockGroup = null };
+
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
+
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_EmptyDock_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var targetDock = new SimpleDock { Id = "TargetDock", VisibleDockables = new List<IDockable>() };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_CompatibleGroup_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var existing = new SimpleDockable { Id = "Existing", DockGroup = "GroupA" };
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = new List<IDockable> { existing } 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_IncompatibleGroup_ShouldReject()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var existing = new SimpleDockable { Id = "Existing", DockGroup = "GroupB" };
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = new List<IDockable> { existing } 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.False(result);
+    }
 }

@@ -18,6 +18,7 @@ The available properties are:
 | `ShowDockIndicatorOnly` | `bool` | Hides the dock target visuals and displays only drop indicators. |
 | `IndicatorDockOperation` | `DockOperation` | Specifies which dock operation a control represents when only indicators are shown. |
 | `DockAdornerHost` | `Control` | Specifies the element that should display the dock target adorner. |
+| `DockGroup` | `string` | Group identifier for restriction-based docking. See [Docking Groups](dock-docking-groups.md). |
 
 ## Using the properties in control themes
 

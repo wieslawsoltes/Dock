@@ -9,7 +9,7 @@ using Xunit;
 namespace Dock.Model.UnitTests;
 
 /// <summary>
-/// Unit tests for docking group validation in DockManager.
+/// Unit tests for docking group validation in DockService.
 /// Tests focus on the core validation logic using reflection to access private methods.
 /// </summary>
 public class DockGroupValidationTests
@@ -132,7 +132,7 @@ public class DockGroupValidationTests
         var child = new SimpleDockable("ChildGroup") { Owner = parent };
 
         // Use reflection to test the private method
-        var method = typeof(DockManager).GetMethod("GetEffectiveDockGroup", 
+        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (string?)method?.Invoke(null, new object[] { child });
 
@@ -145,7 +145,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable("ParentGroup");
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockManager).GetMethod("GetEffectiveDockGroup", 
+        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (string?)method?.Invoke(null, new object[] { child });
 
@@ -159,7 +159,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable(null) { Owner = grandparent };
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockManager).GetMethod("GetEffectiveDockGroup", 
+        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (string?)method?.Invoke(null, new object[] { child });
 
@@ -172,7 +172,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable(null);
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockManager).GetMethod("GetEffectiveDockGroup", 
+        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (string?)method?.Invoke(null, new object[] { child });
 
@@ -185,7 +185,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("GroupA");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -198,7 +198,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("GroupB");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -211,7 +211,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable(null);
         var target = new SimpleDockable("GroupA");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -224,7 +224,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable(null);
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -237,7 +237,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable(null);
         var target = new SimpleDockable(null);
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -250,7 +250,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("");
         var target = new SimpleDockable("");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -263,7 +263,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("groupa");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroups", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
@@ -276,7 +276,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var targetDock = new SimpleDock("GroupB");
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroupsInDock", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
 
@@ -291,7 +291,7 @@ public class DockGroupValidationTests
         var targetDock = new SimpleDock("GroupA");
         targetDock.VisibleDockables!.Add(existing);
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroupsInDock", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
 
@@ -306,7 +306,7 @@ public class DockGroupValidationTests
         var targetDock = new SimpleDock("GroupB");
         targetDock.VisibleDockables!.Add(existing);
 
-        var method = typeof(DockManager).GetMethod("ValidateDockingGroupsInDock", 
+        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
 

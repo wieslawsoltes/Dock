@@ -141,6 +141,14 @@ public interface IDockable : IControlRecyclingIdProvider
     bool IsModified { get; set; }
 
     /// <summary>
+    /// Gets or sets the docking group identifier. 
+    /// Dockables can only be docked with other dockables that have the same group identifier.
+    /// If null or empty, the dockable can be docked with any other dockable.
+    /// This enables creating isolated docking areas where only specific types of content can be docked together.
+    /// </summary>
+    string? DockGroup { get; set; }
+
+    /// <summary>
     /// Called when the dockable is closed.
     /// </summary>
     /// <returns>true to accept the close, and false to cancel the close.</returns>

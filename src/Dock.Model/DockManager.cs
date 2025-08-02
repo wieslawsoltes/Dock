@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -44,6 +45,83 @@ public class DockManager : IDockManager
         // ReSharper disable once CompareOfFloatsByEqualityOperator
         var heightConflict = IsFixed(a.MinHeight, a.MaxHeight) && IsFixed(b.MinHeight, b.MaxHeight) && a.MinHeight != b.MinHeight;
         return widthConflict || heightConflict;
+    }
+
+    /// <summary>
+    /// Validates if two dockables can be docked together based on their docking groups.
+    /// Dockables with the same non-null group can only be docked together.
+    /// Dockables with null groups can dock with any other dockable.
+    /// This method considers group inheritance through the dock hierarchy.
+    /// </summary>
+    /// <param name="sourceDockable">The source dockable being dragged.</param>
+    /// <param name="targetDockable">The target dockable or dock.</param>
+    /// <returns>True if the docking groups are compatible; otherwise false.</returns>
+    private static bool ValidateDockingGroups(IDockable sourceDockable, IDockable targetDockable)
+    {
+        var sourceGroup = GetEffectiveDockGroup(sourceDockable);
+        var targetGroup = GetEffectiveDockGroup(targetDockable);
+
+        // If either group is null or empty, they can dock with anything
+        if (string.IsNullOrEmpty(sourceGroup) || string.IsNullOrEmpty(targetGroup))
+        {
+            return true;
+        }
+
+        // Both groups are specified - they must match
+        return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+    }
+
+    /// <summary>
+    /// Gets the effective docking group for a dockable, considering inheritance.
+    /// If the dockable has its own group, that is used. Otherwise, walks up the
+    /// ownership hierarchy to find an inherited group.
+    /// </summary>
+    /// <param name="dockable">The dockable to get the effective group for.</param>
+    /// <returns>The effective docking group, or null if none is found.</returns>
+    private static string? GetEffectiveDockGroup(IDockable dockable)
+    {
+        var current = dockable;
+        
+        // Walk up the hierarchy until we find a group or reach the root
+        while (current != null)
+        {
+            if (!string.IsNullOrEmpty(current.DockGroup))
+            {
+                return current.DockGroup;
+            }
+            
+            current = current.Owner;
+        }
+        
+        return null;
+    }
+
+    /// <summary>
+    /// Validates if a dockable can be docked into a dock based on docking groups.
+    /// The source must be compatible with all existing dockables in the target dock.
+    /// This method considers group inheritance through the dock hierarchy.
+    /// </summary>
+    /// <param name="sourceDockable">The source dockable being dragged.</param>
+    /// <param name="targetDock">The target dock.</param>
+    /// <returns>True if the docking groups are compatible; otherwise false.</returns>
+    private static bool ValidateDockingGroupsInDock(IDockable sourceDockable, IDock targetDock)
+    {
+        // If the target dock has no visible dockables, allow the operation
+        if (targetDock.VisibleDockables == null || targetDock.VisibleDockables.Count == 0)
+        {
+            return true;
+        }
+
+        // Check compatibility with all existing dockables in the target dock
+        foreach (var existingDockable in targetDock.VisibleDockables)
+        {
+            if (!ValidateDockingGroups(sourceDockable, existingDockable))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
@@ -150,6 +228,19 @@ public class DockManager : IDockManager
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
         if (!sourceTool.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
+        // Check docking groups compatibility
+        if (targetDockable is IDock targetDock)
+        {
+            if (!ValidateDockingGroupsInDock(sourceTool, targetDock))
+            {
+                return false;
+            }
+        }
+        else if (!ValidateDockingGroups(sourceTool, targetDockable))
         {
             return false;
         }
@@ -328,6 +419,19 @@ public class DockManager : IDockManager
             return false;
         }
 
+        // Check docking groups compatibility
+        if (targetDockable is IDock targetDock)
+        {
+            if (!ValidateDockingGroupsInDock(sourceDocument, targetDock))
+            {
+                return false;
+            }
+        }
+        else if (!ValidateDockingGroups(sourceDocument, targetDockable))
+        {
+            return false;
+        }
+
         if (targetDockable is ITool or IToolDock)
         {
             return false;
@@ -347,6 +451,19 @@ public class DockManager : IDockManager
     public bool ValidateDock(IDock sourceDock, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
         if (!sourceDock.CanDrag || !targetDockable.CanDrop)
+        {
+            return false;
+        }
+
+        // Check docking groups compatibility
+        if (targetDockable is IDock targetDock)
+        {
+            if (!ValidateDockingGroupsInDock(sourceDock, targetDock))
+            {
+                return false;
+            }
+        }
+        else if (!ValidateDockingGroups(sourceDock, targetDockable))
         {
             return false;
         }

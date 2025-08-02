@@ -15,6 +15,7 @@
 
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding $self.Layout.CanDrag, FallbackValue={x:True}}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding $self.Layout.CanDrop, FallbackValue={x:True}}"  />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding $self.Layout.DockGroup, FallbackValue={x:Null}}" />
 
     <Setter Property="Template">
       <ControlTemplate>

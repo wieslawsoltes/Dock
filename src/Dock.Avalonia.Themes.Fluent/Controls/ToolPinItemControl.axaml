@@ -53,6 +53,7 @@
 
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="PinContextMenu" Value="{DynamicResource ToolPinItemControlContextMenu}" />

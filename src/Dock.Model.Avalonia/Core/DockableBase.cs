@@ -159,6 +159,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(IsModified), o => o.IsModified, (o, v) => o.IsModified = v);
 
     /// <summary>
+    /// Defines the <see cref="DockGroup"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, string?> DockGroupProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, string?>(nameof(DockGroup), o => o.DockGroup, (o, v) => o.DockGroup = v);
+
+    /// <summary>
     /// Defines the <see cref="MinWidth"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, double> MinWidthProperty =
@@ -209,6 +215,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
     private bool _isModified;
+    private string? _dockGroup;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -452,6 +459,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _isModified;
         set => SetAndRaise(IsModifiedProperty, ref _isModified, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("DockGroup")]
+    public string? DockGroup
+    {
+        get => _dockGroup;
+        set => SetAndRaise(DockGroupProperty, ref _dockGroup, value);
     }
 
     /// <inheritdoc/>

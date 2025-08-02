@@ -135,6 +135,38 @@ To drive a "New" command you can assign a delegate to the
 invoke this factory, pass the result to `AddDocument` and activate the
 new document.
 
+## Docking groups
+
+You can use docking groups to control which dockables can be docked together. This is useful for creating isolated areas where only specific types of content can be placed.
+
+```csharp
+// Documents can only dock with other documents
+var doc1 = new DocumentViewModel 
+{ 
+    Id = "Doc1", 
+    Title = "Document 1",
+    DockGroup = "Documents" 
+};
+
+// Tools can only dock with other tools
+var tool1 = new ToolViewModel 
+{ 
+    Id = "Tool1", 
+    Title = "Tool 1",
+    DockGroup = "Tools" 
+};
+
+// This tool can dock anywhere (no restrictions)
+var flexibleTool = new ToolViewModel 
+{ 
+    Id = "FlexTool", 
+    Title = "Flexible Tool",
+    DockGroup = null 
+};
+```
+
+For a complete guide on docking groups see [Docking Groups](dock-docking-groups.md).
+
 ## Events
 
 `FactoryBase` also publishes events for most actions. They allow you to observe changes in active dockable, pinned state or window management.

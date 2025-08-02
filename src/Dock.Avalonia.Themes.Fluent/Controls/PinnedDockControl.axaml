@@ -17,6 +17,7 @@
 
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
 
     <Setter Property="PinnedDockAlignment" Value="{Binding PinnedDock.Alignment, FallbackValue={x:Static core:Alignment.Unset}}" />
 

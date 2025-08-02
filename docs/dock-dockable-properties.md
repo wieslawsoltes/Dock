@@ -24,6 +24,7 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `CanFloat` | Controls if the item may be detached into a floating window. |
 | `CanDrag` | Enables dragging the dockable to another position. |
 | `CanDrop` | Determines if other dockables can be dropped onto this one. |
+| `DockGroup` | Group identifier that restricts which dockables can dock together. See [Docking Groups](dock-docking-groups.md). |
 
 ## Sample usage
 

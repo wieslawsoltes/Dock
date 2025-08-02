@@ -11,6 +11,8 @@ the [deep dive](dock-deep-dive.md).
 - **DockManager** – Implements the algorithms that move, swap or split
   dockables during drag operations. It exposes a `PreventSizeConflicts`
   property that stops docking tools together when their fixed sizes clash.
+  It also enforces docking group restrictions to control which dockables
+  can be docked together.
 - **DockControlState** – Tracks pointer interactions and validates potential
   drop targets using `DockManager`.
 - **Factories** – Build and initialize dock view models. They expose

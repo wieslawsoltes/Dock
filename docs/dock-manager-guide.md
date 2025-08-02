@@ -54,7 +54,7 @@ Assign the subclass to the control as shown earlier. All other methods will cont
 
 1. **Keep factory calls intact.** Most methods delegate changes to the factory. If you override them ensure you still call the factory so view models remain in sync.
 2. **Check `PreventSizeConflicts`.** When splitting tools always respect this flag or provide an alternative mechanism to avoid invalid layouts.
-3. **Validate before executing.** The built-in state first validates with `bExecute: false` then re-validates with `bExecute: true` on drop. Your overrides should follow this pattern to avoid inconsistent states.
+3. **Validate before executing.** The built-in state first validates with `bExecute: false` then re-validates with `bExecute: true` on drop. Your overrides should follow this pattern to avoid inconsistent states. The validation also considers docking groups - see [Docking Groups](dock-docking-groups.md) for details on how this restriction system works.
 4. **Consider user experience.** Changes to docking rules can dramatically affect how the UI feels. Provide visual feedback if an action is disallowed.
 
 The manager is a small but critical part of Dock. By tailoring it you can adapt the docking behaviour to suit almost any workflow.

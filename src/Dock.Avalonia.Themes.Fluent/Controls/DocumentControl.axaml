@@ -25,6 +25,7 @@
 
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
     <Setter Property="TabsLayout" Value="{Binding TabsLayout, Mode=TwoWay}" />
     <Setter Property="CloseButtonTheme" Value="{DynamicResource DocumentCloseButtonTheme}" />
 

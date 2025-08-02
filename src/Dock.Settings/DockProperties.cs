@@ -67,6 +67,16 @@ public class DockProperties : AvaloniaObject
         AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true, BindingMode.TwoWay);
 
     /// <summary>
+    /// Defines the DockGroup attached property.
+    /// Specifies the docking group for restriction-based docking operations.
+    /// Elements can only dock with other elements of the same or compatible group.
+    /// This property is inherited down the visual tree, allowing parent containers
+    /// to set a group that automatically applies to all child dockables.
+    /// </summary>
+    public static readonly AttachedProperty<string?> DockGroupProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DockGroup", null, inherits: true, defaultBindingMode: BindingMode.TwoWay);
+
+    /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
     /// </summary>
     /// <param name="control">The control.</param>
@@ -224,5 +234,25 @@ public class DockProperties : AvaloniaObject
     public static void SetDockAdornerHost(AvaloniaObject control, Control? value)
     {
         control.SetValue(DockAdornerHostProperty, value);
+    }
+
+    /// <summary>
+    /// Gets the value of the DockGroup attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <returns>The DockGroup attached property.</returns>
+    public static string? GetDockGroup(AvaloniaObject control)
+    {
+        return control.GetValue(DockGroupProperty);
+    }
+
+    /// <summary>
+    /// Sets the value of the DockGroup attached property on the specified control.
+    /// </summary>
+    /// <param name="control">The control.</param>
+    /// <param name="value">The docking group name.</param>
+    public static void SetDockGroup(AvaloniaObject control, string? value)
+    {
+        control.SetValue(DockGroupProperty, value);
     }
 }

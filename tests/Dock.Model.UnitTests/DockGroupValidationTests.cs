@@ -206,7 +206,7 @@ public class DockGroupValidationTests
     }
 
     [Fact]
-    public void ValidateDockingGroups_SourceNullGroup_ShouldAllow()
+    public void ValidateDockingGroups_SourceNullGroup_ShouldReject()
     {
         var source = new SimpleDockable(null);
         var target = new SimpleDockable("GroupA");
@@ -215,11 +215,11 @@ public class DockGroupValidationTests
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
-        Assert.True(result);
+        Assert.False(result);
     }
 
     [Fact]
-    public void ValidateDockingGroups_TargetNullGroup_ShouldAllow()
+    public void ValidateDockingGroups_TargetNullGroup_ShouldReject()
     {
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable(null);
@@ -228,7 +228,7 @@ public class DockGroupValidationTests
             BindingFlags.NonPublic | BindingFlags.Static);
         var result = (bool)method?.Invoke(null, new object[] { source, target })!;
 
-        Assert.True(result);
+        Assert.False(result);
     }
 
     [Fact]

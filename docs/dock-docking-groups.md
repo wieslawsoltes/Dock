@@ -11,7 +11,11 @@ The `DockGroup` property is available on all dockables (`IDockable`) and allows 
 - Prevent accidental mixing of incompatible content
 - Build complex layouts with isolated functional areas
 
-When a dockable has a `DockGroup` set, it can only be docked with other dockables that have the same group identifier. Dockables with `null` or empty groups can dock with any other dockable, providing maximum flexibility.
+**Key Behavior:**
+- **Both source and target must be in the same "group state"** for docking to be allowed
+- **Ungrouped docking**: Both source and target have `null`/empty groups (maximum flexibility)
+- **Grouped docking**: Both source and target have the same non-null group identifier (restricted within group)
+- **Mixed states are rejected**: One grouped + one ungrouped = docking denied (prevents contamination and breakouts)
 
 ## Basic Usage
 
@@ -48,12 +52,20 @@ var toolB = new Tool
     DockGroup = "Tools"
 };
 
-// Create a flexible dockable that can dock anywhere
-var flexibleTool = new Tool
+// Create an unrestricted dock that only accepts other unrestricted dockables
+var unrestrictedDock = new ToolDock
 {
-    Id = "FlexTool",
-    Title = "Flexible Tool",
-    DockGroup = null // Can dock with anything
+    Id = "UnrestrictedDock",
+    Title = "Unrestricted Dock",
+    DockGroup = null // Only accepts other null-group dockables
+};
+
+// Create unrestricted tools that can only dock in unrestricted areas
+var unrestrictedTool = new Tool
+{
+    Id = "UnrestrictedTool",
+    Title = "Unrestricted Tool",
+    DockGroup = null // Can only dock with other null-group targets
 };
 ```
 
@@ -338,14 +350,24 @@ private static bool ValidateDockingGroups(IDockable sourceDockable, IDockable ta
     var sourceGroup = GetEffectiveDockGroup(sourceDockable);
     var targetGroup = GetEffectiveDockGroup(targetDockable);
 
-    // If either group is null or empty, they can dock with anything
-    if (string.IsNullOrEmpty(sourceGroup) || string.IsNullOrEmpty(targetGroup))
+    // Both must be in the same "group state"
+    var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+    var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+    // If both have no group, allow unrestricted docking
+    if (!sourceHasGroup && !targetHasGroup)
     {
         return true;
     }
 
-    // Both groups are specified - they must match
-    return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+    // If both have groups, they must match exactly
+    if (sourceHasGroup && targetHasGroup)
+    {
+        return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+    }
+
+    // Mixed states (one grouped, one ungrouped) are not allowed
+    return false;
 }
 ```
 

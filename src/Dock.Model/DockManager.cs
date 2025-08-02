@@ -49,8 +49,10 @@ public class DockManager : IDockManager
 
     /// <summary>
     /// Validates if two dockables can be docked together based on their docking groups.
-    /// Dockables with the same non-null group can only be docked together.
-    /// Dockables with null groups can dock with any other dockable.
+    /// Both source and target must be in the same "group state":
+    /// - Both have null/empty groups (unrestricted docking)
+    /// - Both have the same non-null group (restricted docking within group)
+    /// Mixed states (one grouped, one ungrouped) are rejected to prevent contamination.
     /// This method considers group inheritance through the dock hierarchy.
     /// </summary>
     /// <param name="sourceDockable">The source dockable being dragged.</param>
@@ -61,14 +63,24 @@ public class DockManager : IDockManager
         var sourceGroup = GetEffectiveDockGroup(sourceDockable);
         var targetGroup = GetEffectiveDockGroup(targetDockable);
 
-        // If either group is null or empty, they can dock with anything
-        if (string.IsNullOrEmpty(sourceGroup) || string.IsNullOrEmpty(targetGroup))
+        // Both must be in the same "group state"
+        var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+        var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+        // If both have no group, allow unrestricted docking
+        if (!sourceHasGroup && !targetHasGroup)
         {
             return true;
         }
 
-        // Both groups are specified - they must match
-        return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+        // If both have groups, they must match exactly
+        if (sourceHasGroup && targetHasGroup)
+        {
+            return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+        }
+
+        // Mixed states (one grouped, one ungrouped) are not allowed
+        return false;
     }
 
     /// <summary>

@@ -163,10 +163,11 @@ internal class DockControlState : DockManagerState, IDockControlState
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
     
-                if (!ValidateGlobalTarget(sourceDockable, targetDock))
-                {
-                    return;
-                }
+                // TODO: The validation fails in floating window as ActiveDockable is a tool dock.
+                // if (!ValidateGlobalTarget(sourceDockable, targetDock))
+                // {
+                //     return;
+                // }
 
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
             }

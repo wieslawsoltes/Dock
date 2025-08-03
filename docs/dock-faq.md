@@ -231,17 +231,19 @@ is set to `false`.
 Use docking groups to control which dockables can dock together. Set the `DockGroup` property on your dockables:
 
 ```csharp
-// Only documents can dock with other documents
+// Documents can only dock locally with other documents
+// Cannot dock globally (grouped sources are blocked from global docking)
 document.DockGroup = "Documents";
 
-// Only tools can dock with other tools  
+// Tools can only dock locally with other tools
+// Cannot dock globally (grouped sources are blocked from global docking)
 tool.DockGroup = "Tools";
 
-// This can dock anywhere (no restrictions)
+// This can dock globally anywhere and locally with other ungrouped dockables
 flexibleTool.DockGroup = null;
 ```
 
-Dockables with the same group can dock together, while different groups cannot mix. Null groups can dock with anything. See [Docking Groups](dock-docking-groups.md) for details.
+Dockables with the same group can dock together locally, while different groups cannot mix. Grouped dockables cannot participate in global docking operations. Non-grouped dockables (null/empty groups) can dock globally anywhere and locally with other non-grouped dockables. See [Docking Groups](dock-docking-groups.md) for details.
 
 **How do I float a dockable from its tab?**
 

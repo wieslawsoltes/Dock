@@ -18,7 +18,7 @@ application created with the .NET SDK. For build instructions and an overview of
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
 - [Views guide](dock-views.md) – Display content for documents and tools.
 - [Document and Tool Content Guide](dock-content-guide.md) – Comprehensive guide for setting up document and tool content with examples.
-- [ItemsSource Migration Guide](ITEMSSOURCE_MIGRATION_GUIDE.md) – Guide for migrating to the new ItemsSource functionality.
+- [DocumentDock ItemsSource](dock-itemssource.md) – Automatic document management using data binding.
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

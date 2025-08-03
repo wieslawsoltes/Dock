@@ -1,5 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -35,6 +37,7 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
+        Console.WriteLine($"Adding adorners: LocalValid={isLocalValid}, GlobalValid={isGlobalValid}");
         // Local dock target
         if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {
@@ -124,13 +127,15 @@ internal abstract class DockManagerState : IDockManagerState
         // Validate docking groups before execution
         if (targetDockable is IDock targetDock)
         {
-            if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetDock))
+            // For global docking operations (target is a dock), use global validation logic
+            if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
             {
                 return; // Reject execution if docking groups are incompatible
             }
         }
         else
         {
+            // For local docking operations (target is a specific dockable), use strict validation
             if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
             {
                 return; // Reject execution if docking groups are incompatible
@@ -184,7 +189,13 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
-        // Validate docking groups according to business rules
+        // For global targets, use special validation that allows non-grouped dockables
+        if (targetDockable is IDock targetDock)
+        {
+            return DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock);
+        }
+
+        // Fallback to standard validation for non-dock targets
         return DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable);
     }
 

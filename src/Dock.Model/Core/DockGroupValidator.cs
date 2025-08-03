@@ -87,6 +87,23 @@ public static class DockGroupValidator
     }
 
     /// <summary>
+    /// Validates if a dockable can be docked globally based on docking groups.
+    /// For global docking, we only prevent it if the source dockable has a docking group set.
+    /// Non-grouped dockables should always be allowed to dock globally, regardless of target content.
+    /// </summary>
+    /// <param name="sourceDockable">The source dockable being dragged.</param>
+    /// <param name="targetDock">The target dock for global docking.</param>
+    /// <returns>True if global docking should be allowed; otherwise false.</returns>
+    public static bool ValidateGlobalDocking(IDockable sourceDockable, IDock targetDock)
+    {
+        var sourceGroup = GetEffectiveDockGroup(sourceDockable);
+        
+        // For global docking, only restrict if source has a docking group set
+        // Always allow global docking for non-grouped dockables
+        return string.IsNullOrEmpty(sourceGroup);
+    }
+
+    /// <summary>
     /// Gets the effective docking group for a dockable, considering inheritance.
     /// If the dockable has its own group, that is used. Otherwise, walks up the
     /// ownership hierarchy to find an inherited group.

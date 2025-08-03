@@ -221,8 +221,9 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
         // Check docking groups for global docking visual validation
-        // Global adorners should only show when source and target groups are compatible
-        if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDock))
+        // Global adorners should only show when source dockable doesn't have a docking group
+        // or when docking groups are compatible
+        if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
         {
             return false;
         }

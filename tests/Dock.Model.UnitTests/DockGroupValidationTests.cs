@@ -132,9 +132,7 @@ public class DockGroupValidationTests
         var child = new SimpleDockable("ChildGroup") { Owner = parent };
 
         // Use reflection to test the private method
-        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (string?)method?.Invoke(null, new object[] { child });
+                var result = DockGroupValidator.GetEffectiveDockGroup(child);
 
         Assert.Equal("ChildGroup", result);
     }
@@ -145,9 +143,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable("ParentGroup");
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (string?)method?.Invoke(null, new object[] { child });
+                var result = DockGroupValidator.GetEffectiveDockGroup(child);
 
         Assert.Equal("ParentGroup", result);
     }
@@ -159,9 +155,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable(null) { Owner = grandparent };
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (string?)method?.Invoke(null, new object[] { child });
+                var result = DockGroupValidator.GetEffectiveDockGroup(child);
 
         Assert.Equal("GrandparentGroup", result);
     }
@@ -172,9 +166,7 @@ public class DockGroupValidationTests
         var parent = new SimpleDockable(null);
         var child = new SimpleDockable(null) { Owner = parent };
 
-        var method = typeof(DockService).GetMethod("GetEffectiveDockGroup", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (string?)method?.Invoke(null, new object[] { child });
+                var result = DockGroupValidator.GetEffectiveDockGroup(child);
 
         Assert.Null(result);
     }
@@ -185,9 +177,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("GroupA");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.True(result);
     }
@@ -198,9 +188,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("GroupB");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.False(result);
     }
@@ -211,9 +199,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable(null);
         var target = new SimpleDockable("GroupA");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.False(result);
     }
@@ -224,9 +210,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable(null);
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.False(result);
     }
@@ -237,9 +221,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable(null);
         var target = new SimpleDockable(null);
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.True(result);
     }
@@ -250,9 +232,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("");
         var target = new SimpleDockable("");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.True(result);
     }
@@ -263,9 +243,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var target = new SimpleDockable("groupa");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroups", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, target })!;
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
         Assert.False(result);
     }
@@ -276,9 +254,7 @@ public class DockGroupValidationTests
         var source = new SimpleDockable("GroupA");
         var targetDock = new SimpleDock("GroupB");
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
+                var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
 
         Assert.True(result);
     }
@@ -291,9 +267,7 @@ public class DockGroupValidationTests
         var targetDock = new SimpleDock("GroupA");
         targetDock.VisibleDockables!.Add(existing);
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
+                var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
 
         Assert.True(result);
     }
@@ -306,9 +280,7 @@ public class DockGroupValidationTests
         var targetDock = new SimpleDock("GroupB");
         targetDock.VisibleDockables!.Add(existing);
 
-        var method = typeof(DockService).GetMethod("ValidateDockingGroupsInDock", 
-            BindingFlags.NonPublic | BindingFlags.Static);
-        var result = (bool)method?.Invoke(null, new object[] { source, targetDock })!;
+                var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
 
         Assert.False(result);
     }
@@ -354,7 +326,7 @@ public class DockGroupValidationTests
 
         var result = DockGroupValidator.ValidateDockingGroups(source, target);
 
-        Assert.False(result);
+        Assert.False(result); // Mixed states rejected (grouped can't break out to global)
     }
 
     [Fact]
@@ -398,5 +370,116 @@ public class DockGroupValidationTests
         var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
 
         Assert.False(result);
+    }
+
+    // ========== COMPREHENSIVE DOCKING GROUP VALIDATION TESTS ==========
+
+    [Theory]
+    [InlineData(null, null, true)]     // Rule 1: Non-grouped ↔ Non-grouped = ALLOWED
+    [InlineData("", "", true)]         // Rule 1: Empty groups = ALLOWED  
+    [InlineData("GroupA", "GroupA", true)]  // Rule 2: Same group = ALLOWED
+    [InlineData("GroupA", "GroupB", false)] // Rule 3: Different groups = REJECTED
+    [InlineData(null, "GroupA", false)]     // Rule 4: Non-grouped → Grouped = REJECTED (can't contaminate)
+    [InlineData("GroupA", null, false)]     // Rule 4: Grouped → Non-grouped = REJECTED (can't break out)
+    [InlineData("", "GroupA", false)]       // Rule 4: Empty → Grouped = REJECTED (can't contaminate)
+    [InlineData("GroupA", "", false)]       // Rule 4: Grouped → Empty = REJECTED (can't break out)
+    public void DockGroupValidator_ValidateDockingGroups_AllScenarios(string? sourceGroup, string? targetGroup, bool expected)
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = sourceGroup };
+        var target = new SimpleDockable { Id = "Target", DockGroup = targetGroup };
+
+        var result = DockGroupValidator.ValidateDockingGroups(source, target);
+
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData(null, null, true)]     // Non-grouped into dock with non-grouped dockable
+    [InlineData("", "", true)]         // Empty groups
+    [InlineData("GroupA", "GroupA", true)]  // Same group into dock with same group
+    [InlineData("GroupA", "GroupB", false)] // Different group into dock with different group
+    [InlineData(null, "GroupA", false)]     // Non-grouped into dock with grouped dockable = REJECTED (can't contaminate)
+    [InlineData("GroupA", null, false)]     // Grouped into dock with non-grouped dockable = REJECTED (can't break out)
+    [InlineData("", "GroupA", false)]       // Empty into dock with grouped dockable = REJECTED (can't contaminate)
+    [InlineData("GroupA", "", false)]       // Grouped into dock with empty group dockable = REJECTED (can't break out)
+    public void DockGroupValidator_ValidateDockingGroupsInDock_AllScenarios(string? sourceGroup, string? existingGroup, bool expected)
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = sourceGroup };
+        var existing = new SimpleDockable { Id = "Existing", DockGroup = existingGroup };
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = new List<IDockable> { existing } 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_NullVisibleDockables_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = null 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.True(result); // Dock with null VisibleDockables should allow any dockable
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_MultipleCompatibleDockables_ShouldAllow()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var existing1 = new SimpleDockable { Id = "Existing1", DockGroup = "GroupA" };
+        var existing2 = new SimpleDockable { Id = "Existing2", DockGroup = "GroupA" };
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = new List<IDockable> { existing1, existing2 } 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateDockingGroupsInDock_OneIncompatibleDockable_ShouldReject()
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = "GroupA" };
+        var existing1 = new SimpleDockable { Id = "Existing1", DockGroup = "GroupA" };
+        var existing2 = new SimpleDockable { Id = "Existing2", DockGroup = "GroupB" }; // Incompatible
+        var targetDock = new SimpleDock 
+        { 
+            Id = "TargetDock", 
+            VisibleDockables = new List<IDockable> { existing1, existing2 } 
+        };
+
+        var result = DockGroupValidator.ValidateDockingGroupsInDock(source, targetDock);
+
+        Assert.False(result); // Should reject if ANY existing dockable is incompatible
+    }
+
+    [Theory]
+    [InlineData(null, null, null, true)]   // Child null, parent null, grandparent null
+    [InlineData(null, "GroupA", null, true)]   // Child inherits from parent
+    [InlineData("GroupB", "GroupA", null, false)]  // Child group different from parent
+    [InlineData(null, null, "GroupC", true)]   // Child inherits from grandparent
+    public void DockGroupValidator_GetEffectiveDockGroup_Inheritance_WorksCorrectly(string? childGroup, string? parentGroup, string? grandparentGroup, bool shouldMatch)
+    {
+        var grandparent = new SimpleDock { Id = "Grandparent", DockGroup = grandparentGroup };
+        var parent = new SimpleDock { Id = "Parent", DockGroup = parentGroup, Owner = grandparent };
+        var child = new SimpleDockable { Id = "Child", DockGroup = childGroup, Owner = parent };
+
+        var effectiveGroup = DockGroupValidator.GetEffectiveDockGroup(child);
+        var expectedGroup = childGroup ?? parentGroup ?? grandparentGroup;
+
+        Assert.Equal(expectedGroup, effectiveGroup);
     }
 }

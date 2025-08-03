@@ -12,10 +12,12 @@ public static class DockGroupValidator
 {
     /// <summary>
     /// Validates if two dockables can be docked together based on their docking groups.
-    /// Both source and target must be in the same "group state":
-    /// - Both have null/empty groups (unrestricted docking)
-    /// - Both have the same non-null group (restricted docking within group)
-    /// Mixed states (one grouped, one ungrouped) are rejected to prevent contamination.
+    /// 
+    /// Business Rules:
+    /// - Non-grouped dockables can dock anywhere EXCEPT grouped dockables (prevents contamination)
+    /// - Grouped dockables can only dock into same group (can't break out to global targets)
+    /// - Different groups are incompatible
+    /// 
     /// This method considers group inheritance through the dock hierarchy.
     /// </summary>
     /// <param name="sourceDockable">The source dockable being dragged.</param>
@@ -26,24 +28,31 @@ public static class DockGroupValidator
         var sourceGroup = GetEffectiveDockGroup(sourceDockable);
         var targetGroup = GetEffectiveDockGroup(targetDockable);
 
-        // Both must be in the same "group state"
+        // Correct docking group compatibility rules:
+        // 1. Non-grouped can dock anywhere EXCEPT grouped dockables
+        // 2. Grouped can dock into same group only (can't dock into global targets)
+        // 3. Different groups are incompatible
+        
         var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
         var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
 
-        // If both have no group, allow unrestricted docking
         if (!sourceHasGroup && !targetHasGroup)
         {
-            return true;
+            return true; // Both non-grouped - always compatible
         }
 
-        // If both have groups, they must match exactly
-        if (sourceHasGroup && targetHasGroup)
+        if (!sourceHasGroup && targetHasGroup)
         {
-            return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+            return false; // Non-grouped can't dock into grouped dockables
         }
 
-        // Mixed states (one grouped, one ungrouped) are not allowed
-        return false;
+        if (sourceHasGroup && !targetHasGroup)
+        {
+            return false; // Grouped can't dock into global targets
+        }
+
+        // Both are grouped - they must have the same group
+        return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
     }
 
     /// <summary>

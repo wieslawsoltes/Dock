@@ -60,7 +60,7 @@ public class DockService : IDockService
         if (targetDockable is null)
         {
                     // Validate docking groups before executing
-        if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetDock))
+        if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDock))
         {
             return false;
         }

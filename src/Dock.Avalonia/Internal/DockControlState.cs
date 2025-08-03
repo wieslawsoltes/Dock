@@ -163,7 +163,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
     
-                if (!ValidateGlobalTarget(targetDock))
+                if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 {
                     return;
                 }
@@ -176,7 +176,7 @@ internal class DockControlState : DockManagerState, IDockControlState
             if (_context.DragControl.DataContext is IDockable sourceDockable &&
                 DropControl.DataContext is IDockable targetDockable)
             {
-                if (!ValidateLocalTarget(targetDockable))
+                if (!ValidateLocalTarget(sourceDockable, targetDockable))
                 {
                     return;
                 }
@@ -198,7 +198,15 @@ internal class DockControlState : DockManagerState, IDockControlState
             return false;
         }
 
-        return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
+        // For local validation during Enter, we just check if source can do local docking
+        // Detailed target validation happens later in ValidateDockable when DropControl is set
+        if (DropControl?.DataContext is IDockable targetDockable)
+        {
+            return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
+        }
+
+        // If no specific target yet, allow local adorners if this control is marked as a dock target
+        return DropControl?.GetValue(DockProperties.IsDockTargetProperty) == true;
     }
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
@@ -219,10 +227,13 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
 
         var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
-        if (dockControl?.Layout is not { ActiveDockable: IDock dock })
+        if (dockControl?.Layout is not { ActiveDockable: IDock activeDock })
         {
             return false;
         }
+
+        // Use the same target dock as execution for consistency
+        var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
 
         DockManager.Position = DockHelpers.ToDockPoint(point);
 
@@ -234,14 +245,14 @@ internal class DockControlState : DockManagerState, IDockControlState
         var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
         DockManager.ScreenPosition = DockHelpers.ToDockPoint(screenPoint);
 
-        // Validate basic docking operation
-        if (!DockManager.ValidateDockable(sourceDockable, dock, dragAction, operation, bExecute: false))
+        // Check docking groups for global docking visual validation
+        // Global adorners should only show when source and target groups are compatible
+        if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDock))
         {
             return false;
         }
-
-        // Also validate docking groups for adorner display
-        return DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, dock);
+        
+        return DockManager.ValidateDockable(sourceDockable, targetDock, dragAction, operation, bExecute: false);
     }
 
     private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)

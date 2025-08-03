@@ -75,12 +75,6 @@ public class DockManager : IDockManager
 
     private bool DockDockableIntoDock(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DragAction action, DockOperation operation, bool bExecute)
     {
-        // Validate docking groups before proceeding
-        if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetDock))
-        {
-            return false;
-        }
-
         return action switch
         {
             DragAction.Copy => false,
@@ -179,12 +173,6 @@ public class DockManager : IDockManager
 
     private bool ValidateToolToTool(ITool sourceTool, ITool targetTool, DragAction action, bool bExecute)
     {
-        // Validate docking groups before proceeding
-        if (!DockGroupValidator.ValidateDockingGroups(sourceTool, targetTool))
-        {
-            return false;
-        }
-
         if (PreventSizeConflicts && HasSizeConflict(sourceTool, targetTool))
         {
             return false;

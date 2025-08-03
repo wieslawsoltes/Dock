@@ -70,7 +70,7 @@ public class DockFactory : Factory
 
         var rightDock = new ProportionalDock
         {
-            // DockGroup = "RightDock",
+            DockGroup = "RightDock",
             Proportion = 0.25,
             // MinWidth = 200,
             // MaxWidth = 400,

@@ -37,7 +37,6 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected void AddAdorners(bool isLocalValid, bool isGlobalValid)
     {
-        Console.WriteLine($"Adding adorners: LocalValid={isLocalValid}, GlobalValid={isGlobalValid}");
         // Local dock target
         if (isLocalValid && DropControl is { } control && control.GetValue(DockProperties.IsDockTargetProperty))
         {

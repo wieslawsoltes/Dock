@@ -179,6 +179,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-window-owner.md = docs\dock-window-owner.md
 		docs\dock-debug-views.md = docs\dock-debug-views.md
 		docs\dock-views.md = docs\dock-views.md
+		docs\dock-content-guide.md = docs\dock-content-guide.md
+		docs\dock-content-wrapper-pattern.md = docs\dock-content-wrapper-pattern.md
+		docs\dock-docking-groups.md = docs\dock-docking-groups.md
+		docs\dock-itemssource.md = docs\dock-itemssource.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Protobuf", "src\Dock.Serializer.Protobuf\Dock.Serializer.Protobuf.csproj", "{12A0D873-2FF5-4AA0-9F66-56161DDE2D4E}"

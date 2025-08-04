@@ -77,7 +77,7 @@ public abstract partial class FactoryBase
     /// <summary>
     /// Cleans up orphaned splitters that are no longer needed.
     /// </summary>
-    private void CleanupOrphanedSplitters(IDock dock)
+    protected void CleanupOrphanedSplitters(IDock dock)
     {
         if (dock.VisibleDockables is null || dock.VisibleDockables.Count == 0)
             return;

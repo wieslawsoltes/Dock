@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/samples/AvaloniaDemo/bin/AnyCPU/Debug/netcoreapp3.0/AvaloniaDemo.dll",
+            "program": "${workspaceFolder}/samples/DockMvvmSample/bin/Debug/net9.0/DockMvvmSample.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/samples/AvaloniaDemo",
+            "cwd": "${workspaceFolder}/samples/DockMvvmSample",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
             "stopAtEntry": false,

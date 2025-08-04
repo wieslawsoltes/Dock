@@ -23,6 +23,20 @@ Follow these instructions to create a minimal ReactiveUI based application using
    ```powershell
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.ReactiveUI
+   dotnet add package Dock.Avalonia.Themes.Fluent
+   ```
+
+   **Optional packages:**
+   ```powershell
+   # For serialization (choose one):
+   dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+   dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+   
+   # For navigation scenarios:
+   dotnet add package Dock.Model.ReactiveUI.Navigation
+   
+   # For dependency injection:
+   dotnet add package Dock.Model.Extensions.DependencyInjection
    ```
 
 3. **Create a factory and view models**

@@ -8,6 +8,8 @@ commands and events for you.  The sample project `DockMvvmSample` in the
 repository shows a full implementation. For a breakdown of interfaces such as
 `IDockable` or `IRootDock` see the [Dock API Reference](dock-reference.md).
 
+> **💡 Modern Approach**: For easier document management, consider using [DocumentDock.ItemsSource](dock-itemssource.md) which automatically creates and manages documents from collections. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
+
 ## Step-by-step tutorial
 
 The following steps walk you through creating a very small application that uses Dock with the MVVM helpers.

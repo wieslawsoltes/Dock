@@ -304,6 +304,9 @@ public abstract partial class FactoryBase : IFactory
                                     }
                                 }
 
+                                // Clean up any orphaned splitters that might have been created
+                                CleanupOrphanedSplitters(proportionalOwner);
+
                                 OnDockableUndocked(dockable, operation);
                                 OnDockableDocked(dockable, operation);
                                 return;

@@ -2,6 +2,8 @@
 
 Applications often have their own view models that expose domain specific properties. Dock's MVVM helpers let you derive from its `Document`, `Tool` or `Dock` classes so that your models participate in the docking system. This guide explains how to combine your own view models with the Dock view models.
 
+> **💡 Alternative Approach**: Consider using [DocumentDock.ItemsSource](dock-itemssource.md) if you prefer to keep your domain models completely separate from the docking infrastructure. With ItemsSource, you can bind directly to your existing business objects without inheriting from Dock base classes.
+
 ## Step-by-step tutorial
 
 1. **Create a custom view model**

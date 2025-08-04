@@ -4,6 +4,8 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
 
 ## Step-by-step tutorial
 
+This approach is ideal when you need complete programmatic control over the layout without any XAML or when building dynamic layouts at runtime. For document management with data binding, consider the [ItemsSource approach](dock-itemssource.md) instead.
+
 1. **Create a new Avalonia project**
 
    ```bash

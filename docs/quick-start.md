@@ -55,6 +55,8 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
 5. **Add a simple layout**
 
+   **Option A: Traditional MVVM Approach**
+
    Create a `DockFactory` that derives from `Dock.Model.Mvvm.Factory` and returns a basic layout:
 
    ```csharp
@@ -81,9 +83,98 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    }
    ```
 
-   > **💡 Tip**: For more dynamic document management, consider using the [ItemsSource approach](dock-itemssource.md) which automatically creates and manages documents from collections.
+   **Option B: Modern ItemsSource Approach (Recommended)**
 
-   Initialize this layout in `MainWindow.axaml.cs`:
+   For more dynamic document management, use the ItemsSource approach. First, create a simple document model:
+
+   ```csharp
+   using System.ComponentModel;
+   using System.Runtime.CompilerServices;
+
+   public class FileDocument : INotifyPropertyChanged
+   {
+       private string _title = "Untitled";
+       private string _content = "";
+
+       public string Title
+       {
+           get => _title;
+           set => SetProperty(ref _title, value);
+       }
+
+       public string Content
+       {
+           get => _content;
+           set => SetProperty(ref _content, value);
+       }
+
+       public bool CanClose { get; set; } = true;
+
+       public event PropertyChangedEventHandler? PropertyChanged;
+
+       protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+       {
+           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+       }
+
+       protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+       {
+           if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+           field = value;
+           OnPropertyChanged(propertyName);
+           return true;
+       }
+   }
+   ```
+
+   Then create a MainWindow view model:
+
+   ```csharp
+   using System.Collections.ObjectModel;
+
+   public class MainWindowViewModel
+   {
+       public ObservableCollection<FileDocument> Documents { get; } = new()
+       {
+           new FileDocument { Title = "Document 1", Content = "Content of document 1" },
+           new FileDocument { Title = "Document 2", Content = "Content of document 2" }
+       };
+   }
+   ```
+
+   For the ItemsSource approach, set up the layout in XAML (`MainWindow.axaml`):
+
+   ```xaml
+   <Window x:Class="DockQuickStart.MainWindow"
+           xmlns="https://github.com/avaloniaui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:dock="https://github.com/avaloniaui">
+       <DockControl>
+           <DocumentDock ItemsSource="{Binding Documents}">
+               <DocumentDock.DocumentTemplate>
+                   <DocumentTemplate>
+                       <TextBox Text="{Binding Content}" AcceptsReturn="True" />
+                   </DocumentTemplate>
+               </DocumentDock.DocumentTemplate>
+           </DocumentDock>
+       </DockControl>
+   </Window>
+   ```
+
+   Initialize the view model in `MainWindow.axaml.cs`:
+
+   ```csharp
+   public partial class MainWindow : Window
+   {
+       public MainWindow()
+       {
+           InitializeComponent();
+           DataContext = new MainWindowViewModel();
+       }
+   }
+   ```
+
+   **For Traditional MVVM (Option A)**, initialize the layout in `MainWindow.axaml.cs`:
 
    ```csharp
    public partial class MainWindow : Window
@@ -100,18 +191,26 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    }
    ```
 
-   Add a `DockControl` placeholder to `MainWindow.axaml`:
+   And add a `DockControl` placeholder to `MainWindow.axaml`:
 
    ```xaml
-  <DockControl x:Name="Dock" />
-  ```
+   <DockControl x:Name="Dock" />
+   ```
+
+   > **💡 Tip**: The ItemsSource approach (Option B) is recommended for most scenarios as it provides automatic document management, data binding, and easier maintenance. See the [DocumentDock ItemsSource guide](dock-itemssource.md) for more details.
 
    For instructions on mapping documents and tools to views see the [Views guide](dock-views.md).
 
-5. **Run the application**
+6. **Run the application**
 
    ```bash
    dotnet run
    ```
 
-The window should show a single document hosted by `DockControl`. See the other guides for more advanced layouts.
+The window should show document tabs that can be opened, closed, and managed automatically. The ItemsSource approach automatically creates document instances from your data models and keeps them synchronized with the collection.
+
+For more advanced scenarios including tools, complex layouts, and custom content, see:
+- [DocumentDock ItemsSource guide](dock-itemssource.md) - Complete ItemsSource documentation
+- [Document and Tool Content Guide](dock-content-guide.md) - Comprehensive content setup
+- [MVVM guide](dock-mvvm.md) - Traditional MVVM approach 
+- [Complex layout tutorials](dock-complex-layouts.md) - Multi-pane layouts

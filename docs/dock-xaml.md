@@ -35,7 +35,9 @@ These steps outline how to set up a small Dock application that defines its layo
 
 3. **Declare the layout in XAML**
 
-   Add a `DockControl` and the initial docks in `MainWindow.axaml`.
+   **Option A: Traditional Static Layout**
+
+   Add a `DockControl` and the initial docks in `MainWindow.axaml`:
 
    ```xaml
    <DockControl x:Name="Dock" InitializeLayout="True" InitializeFactory="True">
@@ -49,6 +51,69 @@ These steps outline how to set up a small Dock application that defines its layo
        </RootDock>
    </DockControl>
    ```
+
+   **Option B: ItemsSource Data Binding (Recommended)**
+
+   For dynamic document management, use `ItemsSource` to bind to your data collections:
+
+   ```xaml
+   <DockControl InitializeLayout="True" InitializeFactory="True">
+       <DockControl.Factory>
+           <Factory />
+       </DockControl.Factory>
+       <RootDock>
+           <DocumentDock ItemsSource="{Binding Documents}">
+               <DocumentDock.DocumentTemplate>
+                   <DocumentTemplate>
+                       <StackPanel Margin="10" x:DataType="Document">
+                           <TextBlock Text="Title:" FontWeight="Bold"/>
+                           <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
+                           <TextBlock Text="Content:" FontWeight="Bold"/>
+                           <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" Height="200"/>
+                       </StackPanel>
+                   </DocumentTemplate>
+               </DocumentDock.DocumentTemplate>
+           </DocumentDock>
+       </RootDock>
+   </DockControl>
+   ```
+
+   For this approach, you'll need a ViewModel with a document collection:
+
+   ```csharp
+   public class MainViewModel : INotifyPropertyChanged
+   {
+       public ObservableCollection<FileDocument> Documents { get; } = new()
+       {
+           new FileDocument { Title = "Document 1", Content = "Content here..." },
+           new FileDocument { Title = "Document 2", Content = "More content..." }
+       };
+   }
+
+   public class FileDocument : INotifyPropertyChanged
+   {
+       private string _title = "";
+       private string _content = "";
+
+       public string Title
+       {
+           get => _title;
+           set => SetProperty(ref _title, value);
+       }
+
+       public string Content
+       {
+           get => _content;
+           set => SetProperty(ref _content, value);
+       }
+
+       public bool CanClose { get; set; } = true;
+
+       // INotifyPropertyChanged implementation...
+   }
+   ```
+
+   > **💡 Tip**: The ItemsSource approach (Option B) provides automatic document management and is recommended for most applications. For details, see the [DocumentDock ItemsSource guide](dock-itemssource.md).
 
 4. **Save and load layouts**
 

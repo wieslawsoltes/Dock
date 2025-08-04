@@ -19,9 +19,9 @@ This guide explains how to add actual content to your documents and tools in the
 Make sure you have the required NuGet packages installed:
 
 ```xml
-<PackageReference Include="Dock.Avalonia" Version="11.3.2" />
-<PackageReference Include="Dock.Model.Avalonia" Version="11.3.2" />
-<PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="11.3.2" />
+<PackageReference Include="Dock.Avalonia" />
+<PackageReference Include="Dock.Model.Avalonia" />
+<PackageReference Include="Dock.Avalonia.Themes.Fluent" />
 ```
 
 For XAML usage, you need these namespace declarations:

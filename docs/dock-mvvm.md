@@ -41,6 +41,8 @@ The following steps walk you through creating a very small application that uses
 
 3. **Create a factory and view models**
 
+   **Option A: Traditional Factory Approach**
+
    Derive from `Dock.Model.Mvvm.Factory` and build the layout by composing docks. Documents and tools should derive from the MVVM versions of `Document` and `Tool`.
 
    ```csharp
@@ -63,6 +65,62 @@ The following steps walk you through creating a very small application that uses
        }
    }
    ```
+
+   **Option B: ItemsSource Approach (Recommended for document management)**
+
+   For dynamic document management, you can also use the ItemsSource approach with MVVM. Create a simple data model and let DocumentDock manage the documents automatically:
+
+   ```csharp
+   // Simple data model (no need to inherit from Document)
+   public class FileDocumentModel : INotifyPropertyChanged
+   {
+       private string _title = "";
+       private string _content = "";
+
+       public string Title
+       {
+           get => _title;
+           set => SetProperty(ref _title, value);
+       }
+
+       public string Content
+       {
+           get => _content;
+           set => SetProperty(ref _content, value);
+       }
+
+       public bool CanClose { get; set; } = true;
+
+       // INotifyPropertyChanged implementation...
+   }
+
+   // Main ViewModel  
+   public class MainViewModel : INotifyPropertyChanged
+   {
+       public ObservableCollection<FileDocumentModel> Documents { get; } = new();
+       
+       // Add commands as needed...
+   }
+   ```
+
+   Then use XAML with ItemsSource:
+
+   ```xaml
+   <DockControl>
+       <DocumentDock ItemsSource="{Binding Documents}">
+           <DocumentDock.DocumentTemplate>
+               <DocumentTemplate>
+                   <StackPanel Margin="10" x:DataType="Document">
+                       <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
+                       <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" Height="300"/>
+                   </StackPanel>
+               </DocumentTemplate>
+           </DocumentDock.DocumentTemplate>
+       </DocumentDock>
+   </DockControl>
+   ```
+
+   > **💡 Tip**: The ItemsSource approach (Option B) provides cleaner separation between your business models and the docking infrastructure, while still working perfectly with MVVM patterns.
 
 4. **Initialize the layout in your main view model**
 

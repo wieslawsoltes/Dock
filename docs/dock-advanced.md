@@ -81,18 +81,46 @@ if (layout is { })
 
 ## Dynamic documents and tools
 
+### Traditional approach
+
 The Notepad sample shows how to create documents at runtime. New `FileViewModel` instances are added to an `IDocumentDock` using factory methods:
 
 ```csharp
 files.AddDocument(fileViewModel);
 ```
-These helper calls can be replaced by `files.AddDocument(fileViewModel)` for brevity.
+
 `ToolDock` offers a matching `AddTool` helper for dynamically created tools.
 
 `DocumentDock` includes a `DocumentFactory` delegate that works with the
 `CreateDocument` command. Assigning this factory lets the dock create a
 new document on demand which is then passed to `AddDocument` and
 activated automatically.
+
+### Modern ItemsSource approach
+
+For more efficient document management, use the ItemsSource property to bind directly to data collections:
+
+```csharp
+// In your ViewModel
+public ObservableCollection<FileModel> OpenFiles { get; } = new();
+
+// Add/remove documents by manipulating the collection
+OpenFiles.Add(new FileModel { Title = "New File", Content = "..." });
+OpenFiles.Remove(fileToClose);
+```
+
+With XAML binding:
+```xml
+<DocumentDock ItemsSource="{Binding OpenFiles}">
+    <DocumentDock.DocumentTemplate>
+        <DocumentTemplate>
+            <TextEditor Text="{Binding Context.Content}" x:DataType="Document"/>
+        </DocumentTemplate>
+    </DocumentDock.DocumentTemplate>
+</DocumentDock>
+```
+
+This approach automatically creates and removes documents as the collection changes, provides automatic title mapping from properties like `Title` or `Name`, and integrates seamlessly with MVVM patterns. See the [DocumentDock ItemsSource guide](dock-itemssource.md) for comprehensive details.
 
 Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.
 

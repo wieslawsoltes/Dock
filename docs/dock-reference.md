@@ -45,13 +45,30 @@ from a saved state.
 
 ## Document dock options
 
-`IDocumentDock` exposes two key properties for controlling its tab strip. `EnableWindowDrag` allows the entire window to be dragged via the tab area. `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum.
+`IDocumentDock` exposes several key properties for controlling its behavior:
+
+- `EnableWindowDrag` allows the entire window to be dragged via the tab area
+- `TabsLayout` chooses where the tabs appear using the `DocumentTabLayout` enum
+- `ItemsSource` enables automatic document creation from data collections (see `IItemsSourceDock`)
+- `DocumentTemplate` defines how document content is rendered when using `ItemsSource`
 
 The factory provides helper methods `SetDocumentDockTabsLayoutLeft`, `SetDocumentDockTabsLayoutTop` and `SetDocumentDockTabsLayoutRight` to change the layout at runtime.
 
 To create new documents programmatically, set the `DocumentFactory`
 delegate. The `CreateDocument` command invokes this factory and then
 adds the returned document via `AddDocument`.
+
+## ItemsSource document generation
+
+`IItemsSourceDock` is implemented by `DocumentDock` in the Avalonia package to provide automatic document management:
+
+- `ItemsSource` - Collection of data objects that become documents
+- `IsDocumentFromItemsSource(IDockable)` - Checks if a document was auto-generated
+- `RemoveItemFromSource(object)` - Removes an item from the source collection
+
+When `ItemsSource` is set, `DocumentDock` automatically creates `Document` instances for each item in the collection. The document's `Title` is derived from common properties like `Title`, `Name`, or `DisplayName` on the source object. The `Context` property is set to the source item, making it accessible in `DocumentTemplate` bindings.
+
+Changes to `ObservableCollection<T>` automatically add or remove corresponding documents. When a document generated from `ItemsSource` is closed, the factory attempts to remove the source item from the collection if it implements `IList`.
 
 ## Host window options
 

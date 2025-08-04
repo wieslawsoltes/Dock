@@ -15,6 +15,15 @@ A docking layout system.
 
 **Dock** is a docking layout system for [Avalonia](https://github.com/AvaloniaUI/Avalonia) applications. Use of Dock is governed by the MIT License.
 
+**Key Features:**
+- **ItemsSource Support**: Bind document collections directly to DocumentDock for automatic document management
+- **Flexible Content Templates**: Use DocumentTemplate for customizable document content rendering
+- **Multiple MVVM Frameworks**: Support for ReactiveUI, Prism, ReactiveProperty, and standard MVVM patterns
+- **Comprehensive Serialization**: Save and restore layouts with multiple format options (JSON, XML, YAML, Protobuf)
+- **Rich Theming**: Fluent and Simple themes with full customization support
+- **Floating Windows**: Detach documents and tools into separate windows
+- **Dependency Injection**: First-class support for .NET DI containers
+
 [![Dock](images/Dock.png)](images/Dock.png)
 
 ## Building Dock
@@ -103,7 +112,14 @@ Install-Package Dock.Avalonia.Themes.Fluent -Pre
 ## Resources
 * [Documentation index](docs/README.md)
 * Sample applications can be found under the [samples](samples/) directory
-  which illustrate each approach in a working project.
+  which illustrate each approach in a working project:
+  - **`DockXamlSample`** - XAML layouts with ItemsSource examples
+  - **`DockMvvmSample`** - Full MVVM implementation
+  - **`DockReactiveUISample`** - ReactiveUI patterns
+  - **`DockCodeOnlySample`** - Pure C# layouts
+  - **`Notepad`** - Real-world text editor example
+  - **`VisualStudioDemo`** - Visual Studio-like interface
+  - And many more specialized examples
 
 * [GitHub source code repository.](https://github.com/wieslawsoltes/Dock)
 

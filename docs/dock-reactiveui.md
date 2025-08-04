@@ -7,6 +7,8 @@ commands are implemented using `ReactiveCommand`. The sample project
 interface details refer to the [Dock API Reference](dock-reference.md) and see
 the [Advanced Guide](dock-advanced.md) for more customization options.
 
+> **💡 Modern Approach**: For easier document management, consider using [DocumentDock.ItemsSource](dock-itemssource.md) which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with ReactiveUI's `ObservableCollectionExtended` and `ReactiveCommand`. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
+
 ## Step-by-step tutorial
 
 Follow these instructions to create a minimal ReactiveUI based application using Dock.

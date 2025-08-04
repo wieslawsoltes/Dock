@@ -308,7 +308,7 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
-    public void SplitToDock_And_RemoveDockable_Maintains_Clean_Splitter_Layout()
+    public void SplitToDock_And_RemoveDockable_Keeps_Functional_Splitter()
     {
         var factory = new Factory();
         var proportionalDock = new ProportionalDock
@@ -332,17 +332,19 @@ public class FactorySplitTests
         // Verify we have the expected layout: dock1, splitter, newDoc container, dock2
         Assert.Equal(4, proportionalDock.VisibleDockables!.Count);
         
-        // Now remove the new document container - this should clean up the splitter
+        // Now remove the new document container - this should keep the splitter between dock1 and dock2
         var newDocContainer = proportionalDock.VisibleDockables[2];
         factory.RemoveDockable(newDocContainer, false);
         
-        // Should be back to: dock1, dock2 (splitter should be cleaned up)
-        Assert.Equal(2, proportionalDock.VisibleDockables.Count);
+        // Should be: dock1, splitter, dock2 (splitter between two docks is NOT orphaned)
+        Assert.Equal(3, proportionalDock.VisibleDockables.Count);
         Assert.Same(dock1, proportionalDock.VisibleDockables[0]);
-        Assert.Same(dock2, proportionalDock.VisibleDockables[1]);
+        Assert.IsType<ProportionalDockSplitter>(proportionalDock.VisibleDockables[1]);
+        Assert.Same(dock2, proportionalDock.VisibleDockables[2]);
         
-        // Verify no splitters remain
-        Assert.All(proportionalDock.VisibleDockables, dockable => 
-            Assert.False(dockable is IProportionalDockSplitter, "No splitters should remain"));
+        // Verify the splitter is functional (between two non-splitter dockables)
+        Assert.False(proportionalDock.VisibleDockables[0] is IProportionalDockSplitter);
+        Assert.True(proportionalDock.VisibleDockables[1] is IProportionalDockSplitter);
+        Assert.False(proportionalDock.VisibleDockables[2] is IProportionalDockSplitter);
     }
 }

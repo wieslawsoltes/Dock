@@ -1,8 +1,56 @@
 # Dock Serialization and Persistence
 
-This guide expands on the FAQ and shows how layouts can be serialized and restored using `DockSerializer`.
+This guide expands on the FAQ and shows how layouts can be serialized and restored using the available serializers.
 
-`DockSerializer` lives in the `Dock.Serializer.Newtonsoft` package and works together with `DockState` to track focus changes. The code snippets below use asynchronous file APIs but any `Stream` works. For binary persistence there is also `ProtobufDockSerializer` provided by the `Dock.Serializer.Protobuf` package.
+Dock provides multiple serialization options:
+
+- **`Dock.Serializer.Newtonsoft`** - JSON serialization using Newtonsoft.Json
+- **`Dock.Serializer.SystemTextJson`** - JSON serialization using System.Text.Json  
+- **`Dock.Serializer.Protobuf`** - Binary serialization using protobuf-net
+- **`Dock.Serializer.Xml`** - XML serialization
+- **`Dock.Serializer.Yaml`** - YAML serialization
+
+All serializers implement `IDockSerializer` and work with `DockState` to track focus changes. The code snippets below use asynchronous file APIs but any `Stream` works.
+
+## Using JSON serialization (Newtonsoft.Json)
+
+```csharp
+using Dock.Serializer;
+
+var serializer = new DockSerializer();
+```
+
+## Using JSON serialization (System.Text.Json)
+
+```csharp
+using Dock.Serializer.SystemTextJson;
+
+var serializer = new DockSerializer();
+```
+
+## Using binary serialization (Protobuf)
+
+```csharp
+using Dock.Serializer.Protobuf;
+
+var serializer = new ProtobufDockSerializer();
+```
+
+## Using XML serialization
+
+```csharp
+using Dock.Serializer.Xml;
+
+var serializer = new DockXmlSerializer();
+```
+
+## Using YAML serialization
+
+```csharp
+using Dock.Serializer.Yaml;
+
+var serializer = new DockYamlSerializer();
+```
 
 ## Saving a layout
 

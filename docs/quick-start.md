@@ -20,6 +20,22 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    # or use Dock.Avalonia.Themes.Simple
    ```
 
+   **Optional packages for specific scenarios:**
+   ```powershell
+   # For serialization (choose one):
+   dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+   dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json) 
+   dotnet add package Dock.Serializer.Protobuf          # Binary (protobuf-net)
+   dotnet add package Dock.Serializer.Xml               # XML
+   dotnet add package Dock.Serializer.Yaml              # YAML
+
+   # For dependency injection:
+   dotnet add package Dock.Model.Extensions.DependencyInjection
+
+   # For diagnostics and debugging:
+   dotnet add package Dock.Avalonia.Diagnostics
+   ```
+
    **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:
 
    ```powershell

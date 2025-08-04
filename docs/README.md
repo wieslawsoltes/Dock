@@ -17,8 +17,8 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
 - [Views guide](dock-views.md) – Display content for documents and tools.
-- [Document and Tool Content Guide](dock-content-guide.md) – Comprehensive guide for setting up document and tool content with examples.
-- [DocumentDock ItemsSource](dock-itemssource.md) – Automatic document management using data binding.
+- **[Document and Tool Content Guide](dock-content-guide.md)** – **Comprehensive guide for setting up document and tool content with examples (START HERE for content setup)**.
+- [DocumentDock ItemsSource](dock-itemssource.md) – Automatic document management using data binding (recommended for most scenarios).
 
 ## How-to guides
 - [Complex layout tutorials](dock-complex-layouts.md) – Multi-window and plug-in walkthroughs.

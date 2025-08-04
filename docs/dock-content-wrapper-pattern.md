@@ -4,7 +4,7 @@ This guide covers an advanced pattern for wrapping your own domain models with D
 
 > **⚠️ Important**: With the introduction of `DocumentDock.ItemsSource`, most scenarios that required this wrapper pattern can now be solved more elegantly. See [Method 1: ItemsSource Collection Binding](dock-content-guide.md#method-1-itemssource-collection-binding-recommended) in the content guide for the recommended approach.
 
-> **Note**: This is an advanced pattern. For most use cases, the standard [Document and Tool Content Guide](dock-content-guide.md) approaches are recommended.
+> **Note**: This is an advanced pattern. For most use cases, the standard [Document and Tool Content Guide](dock-content-guide.md) approaches are recommended. **Consider ItemsSource first** - it provides the same domain separation with much less code.
 
 ## Modern Approach: ItemsSource (Recommended)
 

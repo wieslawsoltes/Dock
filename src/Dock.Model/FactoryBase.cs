@@ -237,6 +237,80 @@ public abstract partial class FactoryBase : IFactory
                     var index = ownerDock.VisibleDockables.IndexOf(dock);
                     if (index >= 0)
                     {
+                        // Check if the owner is already a ProportionalDock with compatible orientation
+                        if (ownerDock is IProportionalDock proportionalOwner)
+                        {
+                            var requiredOrientation = operation switch
+                            {
+                                DockOperation.Left or DockOperation.Right => Orientation.Horizontal,
+                                DockOperation.Top or DockOperation.Bottom => Orientation.Vertical,
+                                _ => throw new NotSupportedException($"Not supported split operation: {operation}.")
+                            };
+
+                            // If the owner already has the required orientation, add directly to it
+                            if (proportionalOwner.Orientation == requiredOrientation)
+                            {
+                                IDock? split;
+
+                                if (dockable is IDock dockableDock)
+                                {
+                                    split = dockableDock;
+                                }
+                                else
+                                {
+                                    split = CreateProportionalDock();
+                                    split.Title = nameof(IProportionalDock);
+                                    split.VisibleDockables = CreateList<IDockable>();
+                                    if (split.VisibleDockables is not null)
+                                    {
+                                        AddVisibleDockable(split, dockable);
+                                        OnDockableAdded(dockable);
+                                        split.ActiveDockable = dockable;
+                                    }
+                                }
+
+                                var splitter = CreateProportionalDockSplitter();
+                                splitter.Title = nameof(IProportionalDockSplitter);
+
+                                // Store the original dock's proportion and split it equally
+                                var originalProportion = dock.Proportion;
+                                var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
+                                dock.Proportion = halfProportion;
+                                split.Proportion = halfProportion;
+
+                                switch (operation)
+                                {
+                                    case DockOperation.Left:
+                                    case DockOperation.Top:
+                                    {
+                                        // Insert split before dock
+                                        InsertVisibleDockable(proportionalOwner, index, split);
+                                        OnDockableAdded(split);
+                                        InsertVisibleDockable(proportionalOwner, index + 1, splitter);
+                                        OnDockableAdded(splitter);
+                                        InitDockable(split, proportionalOwner);
+                                        break;
+                                    }
+                                    case DockOperation.Right:
+                                    case DockOperation.Bottom:
+                                    {
+                                        // Insert split after dock
+                                        InsertVisibleDockable(proportionalOwner, index + 1, splitter);
+                                        OnDockableAdded(splitter);
+                                        InsertVisibleDockable(proportionalOwner, index + 2, split);
+                                        OnDockableAdded(split);
+                                        InitDockable(split, proportionalOwner);
+                                        break;
+                                    }
+                                }
+
+                                OnDockableUndocked(dockable, operation);
+                                OnDockableDocked(dockable, operation);
+                                return;
+                            }
+                        }
+
+                        // Fallback to the original behavior when optimization is not applicable
                         var layout = CreateSplitLayout(dock, dockable, operation);
                         RemoveVisibleDockableAt(ownerDock, index);
                         OnDockableRemoved(dockable);

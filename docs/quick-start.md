@@ -42,18 +42,105 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    dotnet add package Dock.Model.Avalonia
    ```
 
-4. **Add Dock styles**
+4. **Set up View Locator (Required)**
 
-   Reference one of the built-in themes in `App.axaml` so the controls are styled:
+   Dock requires a view locator to map view models to their corresponding views. Choose one of the following approaches:
 
-   ```xaml
-   <Application.Styles>
-     <FluentTheme Mode="Dark" />
-     <DockFluentTheme />
-   </Application.Styles>
+   **Option A: Static View Locator with Source Generators (Recommended)**
+
+   Add the StaticViewLocator package:
+   ```bash
+   dotnet add package StaticViewLocator
    ```
 
-5. **Add a simple layout**
+   Create a `ViewLocator.cs` file:
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using CommunityToolkit.Mvvm.ComponentModel;
+   using Dock.Model.Core;
+   using StaticViewLocator;
+
+   namespace DockQuickStart;
+
+   [StaticViewLocator]
+   public partial class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var type = data.GetType();
+           if (s_views.TryGetValue(type, out var func))
+               return func.Invoke();
+
+           throw new Exception($"Unable to create view for type: {type}");
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ObservableObject || data is IDockable;
+       }
+   }
+   ```
+
+   **Option B: Convention-Based View Locator (Avalonia Template Style)**
+
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+
+   namespace DockQuickStart;
+
+   public class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var name = data.GetType().FullName!.Replace("ViewModel", "View");
+           var type = Type.GetType(name);
+
+           if (type != null)
+               return (Control)Activator.CreateInstance(type)!;
+
+           return new TextBlock { Text = "Not Found: " + name };
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ViewModelBase || data is IDockable;
+       }
+   }
+   ```
+
+5. **Add Dock styles and View Locator**
+
+   Reference the theme and register the view locator in `App.axaml`:
+
+   ```xaml
+   <Application xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:local="using:DockQuickStart"
+                x:Class="DockQuickStart.App">
+
+     <Application.DataTemplates>
+       <local:ViewLocator />
+     </Application.DataTemplates>
+
+     <Application.Styles>
+       <FluentTheme Mode="Dark" />
+       <DockFluentTheme />
+     </Application.Styles>
+   </Application>
+   ```
+
+6. **Add a simple layout**
 
    **Option A: Traditional MVVM Approach**
 
@@ -201,7 +288,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
    For instructions on mapping documents and tools to views see the [Views guide](dock-views.md).
 
-6. **Run the application**
+7. **Run the application**
 
    ```bash
    dotnet run

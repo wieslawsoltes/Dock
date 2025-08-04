@@ -13,10 +13,22 @@ application created with the .NET SDK. For build instructions and an overview of
 - [Quick start](quick-start.md) – Set up a minimal Dock layout with modern approaches.
 - **[DocumentDock ItemsSource](dock-itemssource.md)** – **Automatic document management using data binding (recommended for most scenarios)**.
 - **[Document and Tool Content Guide](dock-content-guide.md)** – **Comprehensive guide for setting up document and tool content with examples (START HERE for content setup)**.
-- [MVVM guide](dock-mvvm.md) – Build layouts using MVVM view models.
-- [ReactiveUI guide](dock-reactiveui.md) – ReactiveUI equivalent of the MVVM guide.
+
+### Model Implementation Guides
+
+Choose the implementation that matches your MVVM framework:
+
+- [MVVM guide](dock-mvvm.md) – Build layouts using MVVM view models with INotifyPropertyChanged.
+- [ReactiveUI guide](dock-reactiveui.md) – ReactiveUI integration with observables and reactive commands.
+- [ReactiveProperty guide](dock-reactive-property.md) – ReactiveProperty framework integration with reactive properties and validation.
+- [INPC guide](dock-inpc.md) – Basic INotifyPropertyChanged implementation without MVVM commands.
+- [ReactiveUI with Dependency Injection](dock-reactiveui-di.md) – ReactiveUI with dependency injection for complex applications.
+- [ReactiveUI with Routing](dock-reactiveui-routing.md) – ReactiveUI with routing for SPA-like navigation within dockables.
+
+### Other Approaches
+
 - [XAML guide](dock-xaml.md) – Declare layouts purely in XAML with ItemsSource support.
-- [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C#.
+- [Code-only guide](dock-code-only.md) – Build Dock layouts entirely in C# with minimal dependencies.
 - [User view model guide](dock-user-viewmodel.md) – Combine your own view models with Dock.
 - [Views guide](dock-views.md) – Display content for documents and tools.
 

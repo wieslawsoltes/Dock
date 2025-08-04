@@ -41,7 +41,138 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package Dock.Model.Extensions.DependencyInjection
    ```
 
-3. **Create a factory and view models**
+3. **Set up View Locator (Required)**
+
+   ReactiveUI requires a view locator to map view models to their corresponding views. Choose one of the following approaches:
+
+   **Option A: Static View Locator with Source Generators (Recommended)**
+
+   Add the StaticViewLocator package:
+   ```bash
+   dotnet add package StaticViewLocator
+   ```
+
+   Create a `ViewLocator.cs` file:
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+   using ReactiveUI;
+   using StaticViewLocator;
+
+   namespace MyDockApp;
+
+   [StaticViewLocator]
+   public partial class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var type = data.GetType();
+           if (s_views.TryGetValue(type, out var func))
+               return func.Invoke();
+
+           throw new Exception($"Unable to create view for type: {type}");
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ReactiveObject || data is IDockable;
+       }
+   }
+   ```
+
+   **Option B: ReactiveUI ViewLocator (with Dependency Injection)**
+
+   For dependency injection scenarios, create a service-based ViewLocator:
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+   using ReactiveUI;
+   using Microsoft.Extensions.DependencyInjection;
+
+   namespace MyDockApp;
+
+   public class ViewLocator : IDataTemplate, IViewLocator
+   {
+       private readonly IServiceProvider _provider;
+
+       public ViewLocator(IServiceProvider provider)
+       {
+           _provider = provider;
+       }
+
+       private IViewFor? Resolve(object viewModel)
+       {
+           var vmType = viewModel.GetType();
+           var serviceType = typeof(IViewFor<>).MakeGenericType(vmType);
+           
+           if (_provider.GetService(serviceType) is IViewFor view)
+           {
+               view.ViewModel = viewModel;
+               return view;
+           }
+
+           var viewName = vmType.FullName?.Replace("ViewModel", "View");
+           if (viewName is not null)
+           {
+               var viewType = Type.GetType(viewName);
+               if (viewType != null && _provider.GetService(viewType) is IViewFor view2)
+               {
+                   view2.ViewModel = viewModel;
+                   return view2;
+               }
+           }
+
+           return null;
+       }
+
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           if (Resolve(data) is IViewFor view && view is Control control)
+               return control;
+
+           var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
+           return new TextBlock { Text = $"Not Found: {viewName}" };
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ReactiveObject || data is IDockable;
+       }
+
+       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => 
+           viewModel is null ? null : Resolve(viewModel);
+   }
+   ```
+
+   Register the view locator in `App.axaml`:
+   ```xaml
+   <Application xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:local="using:MyDockApp"
+                x:Class="MyDockApp.App">
+
+     <Application.DataTemplates>
+       <local:ViewLocator />
+     </Application.DataTemplates>
+
+     <Application.Styles>
+       <FluentTheme />
+       <DockFluentTheme />
+     </Application.Styles>
+   </Application>
+   ```
+
+4. **Create a factory and view models**
 
    Derive from `Dock.Model.ReactiveUI.Factory` and implement `CreateLayout`. Your documents and tools should inherit from the ReactiveUI versions of `Document` and `Tool`.
 

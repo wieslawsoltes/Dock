@@ -39,7 +39,102 @@ The following steps walk you through creating a very small application that uses
    dotnet add package Dock.Model.Extensions.DependencyInjection
    ```
 
-3. **Create a factory and view models**
+3. **Set up View Locator (Required)**
+
+   Dock requires a view locator to map view models to their corresponding views. Choose one of the following approaches:
+
+   **Option A: Static View Locator with Source Generators (Recommended)**
+
+   Add the StaticViewLocator package:
+   ```bash
+   dotnet add package StaticViewLocator
+   ```
+
+   Create a `ViewLocator.cs` file:
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using CommunityToolkit.Mvvm.ComponentModel;
+   using Dock.Model.Core;
+   using StaticViewLocator;
+
+   namespace MyDockApp;
+
+   [StaticViewLocator]
+   public partial class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var type = data.GetType();
+           if (s_views.TryGetValue(type, out var func))
+               return func.Invoke();
+
+           throw new Exception($"Unable to create view for type: {type}");
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ObservableObject || data is IDockable;
+       }
+   }
+   ```
+
+   **Option B: Convention-Based View Locator**
+
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+
+   namespace MyDockApp;
+
+   public class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var name = data.GetType().FullName!.Replace("ViewModel", "View");
+           var type = Type.GetType(name);
+
+           if (type != null)
+               return (Control)Activator.CreateInstance(type)!;
+
+           return new TextBlock { Text = "Not Found: " + name };
+       }
+
+       public bool Match(object? data)
+       {
+           return data is ViewModelBase || data is IDockable;
+       }
+   }
+   ```
+
+   Register the view locator in `App.axaml`:
+   ```xaml
+   <Application xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:local="using:MyDockApp"
+                x:Class="MyDockApp.App">
+
+     <Application.DataTemplates>
+       <local:ViewLocator />
+     </Application.DataTemplates>
+
+     <Application.Styles>
+       <FluentTheme />
+       <DockFluentTheme />
+     </Application.Styles>
+   </Application>
+   ```
+
+4. **Create a factory and view models**
 
    **Option A: Traditional Factory Approach**
 

@@ -33,7 +33,99 @@ These steps outline how to set up a small Dock application that defines its layo
    dotnet add package Dock.Serializer.Yaml              # YAML
    ```
 
-3. **Declare the layout in XAML**
+3. **Set up View Locator (Required)**
+
+   Even for XAML-only layouts, you need a view locator for document and tool content. Choose one of the following approaches:
+
+   **Option A: Static View Locator with Source Generators (Recommended)**
+
+   Add the StaticViewLocator package:
+   ```bash
+   dotnet add package StaticViewLocator
+   ```
+
+   Create a `ViewLocator.cs` file:
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+   using StaticViewLocator;
+
+   namespace MyDockApp;
+
+   [StaticViewLocator]
+   public partial class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           var type = data.GetType();
+           if (s_views.TryGetValue(type, out var func))
+               return func.Invoke();
+
+           // Fallback for simple content
+           if (data is string text)
+               return new TextBox { Text = text, AcceptsReturn = true };
+
+           return new TextBlock { Text = data.ToString() };
+       }
+
+       public bool Match(object? data)
+       {
+           return data is IDockable || data != null;
+       }
+   }
+   ```
+
+   **Option B: Simple View Locator for Basic Content**
+
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+
+   namespace MyDockApp;
+
+   public class ViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           return data switch
+           {
+               IDockable dockable when !string.IsNullOrEmpty(dockable.Title) => 
+                   new TextBox { Text = $"Content for {dockable.Title}", AcceptsReturn = true },
+               string text => new TextBox { Text = text, AcceptsReturn = true },
+               _ => new TextBlock { Text = data?.ToString() ?? "No Content" }
+           };
+       }
+
+       public bool Match(object? data) => true;
+   }
+   ```
+
+   Register the view locator in `App.axaml`:
+   ```xaml
+   <Application xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:local="using:MyDockApp"
+                x:Class="MyDockApp.App">
+
+     <Application.DataTemplates>
+       <local:ViewLocator />
+     </Application.DataTemplates>
+
+     <Application.Styles>
+       <FluentTheme />
+       <DockFluentTheme />
+     </Application.Styles>
+   </Application>
+   ```
+
+4. **Declare the layout in XAML**
 
    **Option A: Traditional Static Layout**
 

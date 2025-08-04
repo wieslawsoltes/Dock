@@ -24,14 +24,57 @@ This package provides `INotifyPropertyChanged` implementations without the addit
 
 ## Project setup
 
-1. Create a new class library and add a reference to `Dock.Model`.
-2. Implement the interfaces from `Dock.Model.Core` and `Dock.Model.Controls`
+1. **Create a new class library** and add a reference to `Dock.Model`.
+
+2. **Set up View Locator (Required)** - All Dock implementations require a view locator:
+
+   ```csharp
+   using System;
+   using Avalonia.Controls;
+   using Avalonia.Controls.Templates;
+   using Dock.Model.Core;
+
+   public class CustomViewLocator : IDataTemplate
+   {
+       public Control? Build(object? data)
+       {
+           if (data is null)
+               return null;
+
+           // Implement your view resolution logic here
+           var name = data.GetType().FullName!.Replace("ViewModel", "View");
+           var type = Type.GetType(name);
+
+           if (type != null)
+               return (Control)Activator.CreateInstance(type)!;
+
+           return new TextBlock { Text = "Not Found: " + name };
+       }
+
+       public bool Match(object? data)
+       {
+           // Match your framework's base types
+           return data is YourFrameworkBaseType || data is IDockable;
+       }
+   }
+   ```
+
+   Register it in your App.axaml:
+   ```xaml
+   <Application.DataTemplates>
+     <local:CustomViewLocator />
+   </Application.DataTemplates>
+   ```
+
+3. **Implement the interfaces** from `Dock.Model.Core` and `Dock.Model.Controls`
    using the base classes that match your framework.  The existing
    implementations in the repository are good starting points.
-3. Derive a `Factory` from `Dock.Model.FactoryBase` and override the creation
+
+4. **Derive a Factory** from `Dock.Model.FactoryBase` and override the creation
    methods (`CreateRootDock`, `CreateToolDock`, `CreateDocumentDock` and so on)
    to return your custom view models.
-4. Provide command and property change logic that matches your MVVM framework.
+
+5. **Provide command and property change logic** that matches your MVVM framework.
    For example, you might expose `ICommand` objects or ReactiveUI commands.
 
 A minimal dockable using `INotifyPropertyChanged` might look like this:

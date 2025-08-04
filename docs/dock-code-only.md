@@ -18,9 +18,15 @@ This guide shows how to create a minimal Dock layout entirely in C#. It does not
    dotnet add package Dock.Model.Avalonia
    dotnet add package Dock.Avalonia.Themes.Fluent
    # or use Dock.Avalonia.Themes.Simple
-   dotnet add package Dock.Serializer.Newtonsoft
-   # or use the Protobuf variant
-   dotnet add package Dock.Serializer.Protobuf
+   ```
+
+   **Optional packages for serialization (choose one):**
+   ```bash
+   dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+   dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+   dotnet add package Dock.Serializer.Protobuf          # Binary
+   dotnet add package Dock.Serializer.Xml               # XML
+   dotnet add package Dock.Serializer.Yaml              # YAML
    ```
 
 3. **Initialize Dock purely in code**

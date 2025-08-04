@@ -120,18 +120,30 @@ The MVVM sample demonstrates how to subscribe to factory events and update the U
 
 ## Declaring layouts in XAML
 
-The XAML sample shows that a layout can be declared entirely in markup using `DockControl` and the various dock types. The `Dock.Serializer.Newtonsoft` package can persist these layouts to disk. In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` elements inside a `DockControl`, optionally providing a factory for runtime behaviour. A binary implementation named `ProtobufDockSerializer` is available from the `Dock.Serializer.Protobuf` package.
+The XAML sample shows that a layout can be declared entirely in markup using `DockControl` and the various dock types. Multiple serialization packages are available for persisting these layouts:
 
-`DockSerializer` from the same package can save or load layouts as JSON. The
-samples register an instance of this serializer through dependency injection so
-commands can call `SaveAsync` and `LoadAsync` to persist user changes.
+- `Dock.Serializer.Newtonsoft` - JSON using Newtonsoft.Json
+- `Dock.Serializer.SystemTextJson` - JSON using System.Text.Json  
+- `Dock.Serializer.Protobuf` - Binary using protobuf-net
+- `Dock.Serializer.Xml` - XML serialization
+- `Dock.Serializer.Yaml` - YAML serialization
+
+In XAML you place `RootDock`, `ProportionalDock`, `ToolDock` or `DocumentDock` elements inside a `DockControl`, optionally providing a factory for runtime behaviour. The samples register serializer instances through dependency injection so commands can call `SaveAsync` and `LoadAsync` to persist user changes.
 
 ## Further reading
 
-- `samples/DockMvvmSample` – full MVVM example.
-- `samples/DockReactiveUISample` – ReactiveUI variant.
-- `samples/DockReactiveUIRoutingSample` – navigation using `IScreen` and `Router`.
-- `samples/DockXamlSample` – XAML-only layout with serialization.
-- `samples/DockCodeOnlySample` – layout defined fully in C#.
+**Sample applications:**
+- `samples/DockMvvmSample` – Full MVVM example with commands and data binding
+- `samples/DockReactiveUISample` – ReactiveUI variant with observables
+- `samples/DockReactiveUIRoutingSample` – Navigation using `IScreen` and `Router`
+- `samples/DockReactiveUIDiSample` – ReactiveUI with dependency injection
+- `samples/DockReactivePropertySample` – ReactiveProperty framework integration
+- `samples/DockXamlSample` – XAML-only layout with serialization
+- `samples/DockCodeOnlySample` – Layout defined fully in C#
+- `samples/DockInpcSample` – Basic INotifyPropertyChanged implementation
+- `samples/NestedDockSample` – Complex nested layouts
+- `samples/Notepad` – Real-world text editor example
+- `samples/VisualStudioDemo` – Visual Studio-like interface
+- `samples/WebViewSample` – Embedding web content in dockables
 
 For an overview of all guides see the [documentation index](README.md).

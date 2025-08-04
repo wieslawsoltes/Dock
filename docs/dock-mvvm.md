@@ -26,6 +26,17 @@ The following steps walk you through creating a very small application that uses
    ```powershell
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
+   dotnet add package Dock.Avalonia.Themes.Fluent
+   ```
+
+   **Optional packages:**
+   ```powershell
+   # For serialization (choose one):
+   dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+   dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+   
+   # For dependency injection:
+   dotnet add package Dock.Model.Extensions.DependencyInjection
    ```
 
 3. **Create a factory and view models**

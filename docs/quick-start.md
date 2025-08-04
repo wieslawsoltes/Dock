@@ -65,6 +65,8 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    }
    ```
 
+   > **💡 Tip**: For more dynamic document management, consider using the [ItemsSource approach](dock-itemssource.md) which automatically creates and manages documents from collections.
+
    Initialize this layout in `MainWindow.axaml.cs`:
 
    ```csharp

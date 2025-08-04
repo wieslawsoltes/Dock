@@ -19,11 +19,18 @@ These steps outline how to set up a small Dock application that defines its layo
 2. **Install the Dock packages**
 
    ```powershell
-  dotnet add package Dock.Avalonia
-  dotnet add package Dock.Model.Avalonia
-  dotnet add package Dock.Serializer.Newtonsoft
-  # or use the Protobuf variant
-  dotnet add package Dock.Serializer.Protobuf
+   dotnet add package Dock.Avalonia
+   dotnet add package Dock.Model.Avalonia
+   dotnet add package Dock.Avalonia.Themes.Fluent
+   ```
+
+   **Optional packages for serialization (choose one):**
+   ```powershell
+   dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+   dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+   dotnet add package Dock.Serializer.Protobuf          # Binary
+   dotnet add package Dock.Serializer.Xml               # XML
+   dotnet add package Dock.Serializer.Yaml              # YAML
    ```
 
 3. **Declare the layout in XAML**

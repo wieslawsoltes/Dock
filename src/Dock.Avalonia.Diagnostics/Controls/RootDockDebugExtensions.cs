@@ -15,14 +15,15 @@ public static class RootDockDebugExtensions
 {
     /// <summary>
     /// Attaches <see cref="RootDockDebug"/> toggled by <paramref name="gesture"/>.
+    /// The layout is resolved by calling the provided function when the debug window is opened.
     /// </summary>
     /// <param name="topLevel">The top level to attach to.</param>
-    /// <param name="root">The root dock debug context.</param>
+    /// <param name="layoutProvider">Function that returns the current layout.</param>
     /// <param name="gesture">The key gesture used to toggle debug.</param>
     /// <returns>IDisposable instance detaching the debug window.</returns>
     public static IDisposable AttachDockDebug(
         this TopLevel topLevel,
-        object root,
+        Func<object?> layoutProvider,
         KeyGesture? gesture = null)
     {
         var keyGesture = gesture ?? new KeyGesture(Key.F11);
@@ -34,14 +35,20 @@ public static class RootDockDebugExtensions
             {
                 if (debugWindow is null)
                 {
-                    debugWindow = new Window
+                    // Get the current layout from the provided function
+                    object? currentLayout = layoutProvider();
+                    
+                    if (currentLayout is not null)
                     {
-                        Width = 400,
-                        Height = 680,
-                        Content = new RootDockDebug { DataContext = root }
-                    };
-                    debugWindow.Closed += (_, _) => debugWindow = null;
-                    debugWindow.Show();
+                        debugWindow = new Window
+                        {
+                            Width = 400,
+                            Height = 680,
+                            Content = new RootDockDebug { DataContext = currentLayout }
+                        };
+                        debugWindow.Closed += (_, _) => debugWindow = null;
+                        debugWindow.Show();
+                    }
                 }
                 else
                 {
@@ -84,6 +91,8 @@ public static class RootDockDebugExtensions
             }
         });
     }
+
+
 
     private sealed class ActionDisposable : IDisposable
     {

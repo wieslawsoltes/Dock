@@ -40,7 +40,7 @@ public class App : Application
                 };
 #if DEBUG
                 mainWindow.AttachDockDebug(
-                    mainWindowViewModel.Layout!, 
+                    () => mainWindowViewModel.Layout!, 
                     new KeyGesture(Key.F11));
                 mainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif

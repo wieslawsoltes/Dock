@@ -8,9 +8,11 @@ Call `AttachDockDebug` on your main window during application startup. The windo
 
 ```csharp
 mainWindow.AttachDockDebug(
-    viewModel.Layout,
+    () => viewModel.Layout,
     new KeyGesture(Key.F11));
 ```
+
+The first parameter is a function that returns the current layout. This allows the debug window to always show the most up-to-date layout state when opened, rather than capturing a snapshot at the time of attachment.
 
 Pass a custom `KeyGesture` to use another shortcut. The method returns an `IDisposable` that unregisters the hotkey and closes the window when disposed.
 

@@ -28,7 +28,7 @@ git clone https://github.com/wieslawsoltes/Dock.git
 
 Open up a terminal prompt and execute the commands.
 
-Target framework `netstandard2.0`:
+Target frameworks: `netstandard2.0`, `net6.0`, `net8.0` for libraries, `net9.0` for samples:
 ```bash
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
 ```
@@ -53,6 +53,38 @@ Install-Package Dock.Model.Mvvm
 Install-Package Dock.Serializer.Newtonsoft
 Install-Package Dock.Avalonia.Themes.Fluent
 ```
+
+**Available NuGet packages:**
+
+Core packages:
+- `Dock.Avalonia` - Main Avalonia controls and themes
+- `Dock.Model` - Core model interfaces and base classes
+
+Model packages:
+- `Dock.Model.Mvvm` - MVVM implementation with base view models
+- `Dock.Model.ReactiveUI` - ReactiveUI integration
+- `Dock.Model.ReactiveProperty` - ReactiveProperty integration  
+- `Dock.Model.Prism` - Prism framework integration
+- `Dock.Model.Inpc` - INotifyPropertyChanged base implementation
+- `Dock.Model.Avalonia` - Avalonia-specific model extensions
+- `Dock.Model.Extensions.DependencyInjection` - .NET DI container integration
+
+Serialization packages:
+- `Dock.Serializer.Newtonsoft` - JSON serialization using Newtonsoft.Json
+- `Dock.Serializer.SystemTextJson` - JSON serialization using System.Text.Json
+- `Dock.Serializer.Protobuf` - Binary serialization using protobuf-net
+- `Dock.Serializer.Xml` - XML serialization
+- `Dock.Serializer.Yaml` - YAML serialization
+
+UI and control packages:
+- `Dock.Avalonia.Themes.Fluent` - Fluent theme styles
+- `Dock.Avalonia.Themes.Simple` - Simple theme styles
+- `Dock.Avalonia.Diagnostics` - Debugging and diagnostic tools
+- `Dock.Controls.ProportionalStackPanel` - Resizable panel control
+- `Dock.Controls.Recycling` - Control recycling utilities
+- `Dock.Controls.Recycling.Model` - Control recycling model interfaces
+- `Dock.MarkupExtension` - XAML markup extensions
+- `Dock.Settings` - Global docking behavior settings
 
 or by using nightly build feed:
 * Add `https://www.myget.org/F/dock-nightly/api/v2` to your package sources

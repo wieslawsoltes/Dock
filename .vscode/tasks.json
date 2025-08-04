@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/samples/AvaloniaDemo/AvaloniaDemo.csproj"
+                "${workspaceFolder}/samples/DockMvvmSample/DockMvvmSample.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

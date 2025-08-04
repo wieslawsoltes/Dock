@@ -2,7 +2,7 @@
 
 Dock renders `Document` and `Tool` instances using standard Avalonia data templating. This guide shows how to present your own controls for these items.
 
-> **💡 New to Dock content setup?** For a comprehensive guide with step-by-step examples and troubleshooting, see the [Document and Tool Content Guide](dock-content-guide.md).
+> **💡 New to Dock content setup?** For a comprehensive guide with step-by-step examples and troubleshooting, see the [Document and Tool Content Guide](dock-content-guide.md). For modern automatic document management, see [DocumentDock ItemsSource](dock-itemssource.md).
 
 ## Using `DataTemplate`
 

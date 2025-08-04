@@ -48,6 +48,14 @@ hidden and drags are limited to the originating control.
 
 `DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
 
+## Floating dock adorners
+
+`DockSettings.UseFloatingDockAdorner` enables showing drop indicators in a transparent floating window instead of overlays on the target controls. See [Floating Dock Adorners](dock-floating-adorners.md) for details.
+
+## Pinned dock windows
+
+`DockSettings.UsePinnedDockWindow` shows auto-hidden dockables inside a floating window instead of sliding panels. See [Pinned Dock Window](dock-pinned-window.md) for details.
+
 ## Window magnetism
 
 `DockSettings.EnableWindowMagnetism` toggles snapping of floating windows. The snap distance

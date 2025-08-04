@@ -76,6 +76,11 @@ public abstract partial class FactoryBase
 
     /// <summary>
     /// Cleans up orphaned splitters that are no longer needed.
+    /// A splitter is orphaned if:
+    /// 1. It's at the beginning or end of the dockables list
+    /// 2. It's consecutive with another splitter
+    /// 3. It's the only dockable in the list
+    /// A splitter between two non-splitter dockables is NOT orphaned and should be kept.
     /// </summary>
     protected void CleanupOrphanedSplitters(IDock dock)
     {

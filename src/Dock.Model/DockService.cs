@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -58,6 +59,13 @@ public class DockService : IDockService
         var targetDockable = GetDockable(targetDock);
         if (targetDockable is null)
         {
+            // For global docking operations (no specific target dockable), use global validation
+            // This allows non-grouped dockables to dock anywhere globally
+            if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
+            {
+                return false;
+            }
+
             if (bExecute)
             {
                 if (sourceDockableOwner.Factory is { } factory)
@@ -78,6 +86,16 @@ public class DockService : IDockService
         if (!IsValidMove(sourceDockable, sourceDockableOwner, targetDock, targetDockable))
         {
             return false;
+        }
+
+        // For move operations, use global validation (allow non-grouped sources)
+        if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
+        {
+            // If global validation fails (source has group), fall back to strict validation
+            if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+            {
+                return false;
+            }
         }
 
         if (bExecute)
@@ -108,6 +126,16 @@ public class DockService : IDockService
             return false;
         }
 
+        // For swap operations, use global validation (allow non-grouped sources)
+        if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
+        {
+            // If global validation fails (source has group), fall back to strict validation
+            if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+            {
+                return false;
+            }
+        }
+
         if (bExecute)
         {
             if (sourceDockableOwner.Factory is { } factory)
@@ -129,6 +157,13 @@ public class DockService : IDockService
         targetToolDock.Title = nameof(IToolDock);
         targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
+        
+        // For split operations, use global validation (allow non-grouped sources)
+        if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetToolDock))
+        {
+            return;
+        }
+        
         factory.MoveDockable(sourceDockableOwner, targetToolDock, sourceDockable, null);
         factory.SplitToDock(targetDock, targetToolDock, operation);
     }
@@ -155,6 +190,12 @@ public class DockService : IDockService
                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
             }
         }
+        // For split operations, use global validation (allow non-grouped sources)
+        if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDocumentDock))
+        {
+            return;
+        }
+        
         factory.MoveDockable(sourceDockableOwner, targetDocumentDock, sourceDockable, null);
         factory.SplitToDock(targetDock, targetDocumentDock, operation);
     }
@@ -278,6 +319,16 @@ public class DockService : IDockService
             }
             case DragAction.Move:
             {
+                // For move operations, use global validation (allow non-grouped sources)
+                if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, sourceDockableOwner))
+                {
+                    // If global validation fails (source has group), fall back to strict validation
+                    if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+                    {
+                        return false;
+                    }
+                }
+
                 if (bExecute && sourceDockableOwner.Factory is { } factory)
                 {
                     factory.MoveDockable(sourceDockableOwner, sourceDockable, targetDockable);
@@ -287,6 +338,16 @@ public class DockService : IDockService
             }
             case DragAction.Link:
             {
+                // For link operations, use global validation (allow non-grouped sources)
+                if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, sourceDockableOwner))
+                {
+                    // If global validation fails (source has group), fall back to strict validation
+                    if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+                    {
+                        return false;
+                    }
+                }
+
                 if (bExecute && sourceDockableOwner.Factory is { } factory)
                 {
                     factory.SwapDockable(sourceDockableOwner, sourceDockable, targetDockable);
@@ -311,6 +372,16 @@ public class DockService : IDockService
             }
             case DragAction.Move:
             {
+                // For move operations, use global validation (allow non-grouped sources)
+                if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDockableOwner))
+                {
+                    // If global validation fails (source has group), fall back to strict validation
+                    if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+                    {
+                        return false;
+                    }
+                }
+
                 if (bExecute && sourceDockableOwner.Factory is { } factory)
                 {
                     factory.MoveDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);
@@ -320,6 +391,16 @@ public class DockService : IDockService
             }
             case DragAction.Link:
             {
+                // For link operations, use global validation (allow non-grouped sources)
+                if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDockableOwner))
+                {
+                    // If global validation fails (source has group), fall back to strict validation
+                    if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+                    {
+                        return false;
+                    }
+                }
+
                 if (bExecute && sourceDockableOwner.Factory is { } factory)
                 {
                     factory.SwapDockable(sourceDockableOwner, targetDockableOwner, sourceDockable, targetDockable);

@@ -39,6 +39,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _minHeight = double.NaN;
     private double _maxHeight = double.NaN;
     private bool _isModified;
+    private string? _dockGroup;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -255,6 +256,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _isModified;
         set => SetProperty(ref _isModified, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public string? DockGroup
+    {
+        get => _dockGroup;
+        set => SetProperty(ref _dockGroup, value);
     }
 
     /// <inheritdoc/>

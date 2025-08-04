@@ -226,6 +226,25 @@ you.
 Dockables may still be floated programmatically unless their `CanFloat` property
 is set to `false`.
 
+**How can I prevent certain dockables from docking together?**
+
+Use docking groups to control which dockables can dock together. Set the `DockGroup` property on your dockables:
+
+```csharp
+// Documents can only dock locally with other documents
+// Cannot dock globally (grouped sources are blocked from global docking)
+document.DockGroup = "Documents";
+
+// Tools can only dock locally with other tools
+// Cannot dock globally (grouped sources are blocked from global docking)
+tool.DockGroup = "Tools";
+
+// This can dock globally anywhere and locally with other ungrouped dockables
+flexibleTool.DockGroup = null;
+```
+
+Dockables with the same group can dock together locally, while different groups cannot mix. Grouped dockables cannot participate in global docking operations. Non-grouped dockables (null/empty groups) can dock globally anywhere and locally with other non-grouped dockables. See [Docking Groups](dock-docking-groups.md) for details.
+
 **How do I float a dockable from its tab?**
 
 Double-click the tab of a document or tool to detach it into a separate window.

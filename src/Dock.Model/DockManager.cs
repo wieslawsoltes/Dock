@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -45,6 +46,8 @@ public class DockManager : IDockManager
         var heightConflict = IsFixed(a.MinHeight, a.MaxHeight) && IsFixed(b.MinHeight, b.MaxHeight) && a.MinHeight != b.MinHeight;
         return widthConflict || heightConflict;
     }
+
+
 
     private bool DockDockable(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, DockOperation operation, bool bExecute)
     {
@@ -511,4 +514,6 @@ public class DockManager : IDockManager
 
         return true;
     }
+
+
 }

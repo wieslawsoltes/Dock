@@ -1,5 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -45,7 +48,24 @@ internal abstract class DockManagerState : IDockManagerState
         // Global dock target
         if (DockSettings.EnableGlobalDocking && isGlobalValid && DropControl is { } dropControl)
         {
+            // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            
+            // If not found directly, walk up the visual tree manually
+            if (dockControl is null)
+            {
+                var current = dropControl.GetVisualParent();
+                while (current is not null)
+                {
+                    if (current is DockControl dc)
+                    {
+                        dockControl = dc;
+                        break;
+                    }
+                    current = current.GetVisualParent();
+                }
+            }
+            
             if (dockControl is not null)
             {
                 var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
@@ -66,7 +86,24 @@ internal abstract class DockManagerState : IDockManagerState
         // Global dock target
         if (DockSettings.EnableGlobalDocking && DropControl is { } dropControl)
         {
+            // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
+            
+            // If not found directly, walk up the visual tree manually
+            if (dockControl is null)
+            {
+                var current = dropControl.GetVisualParent();
+                while (current is not null)
+                {
+                    if (current is DockControl dc)
+                    {
+                        dockControl = dc;
+                        break;
+                    }
+                    current = current.GetVisualParent();
+                }
+            }
+            
             if (dockControl is not null)
             {
                 GlobalAdornerHelper.RemoveAdorner(dockControl);
@@ -86,6 +123,24 @@ internal abstract class DockManagerState : IDockManagerState
         var relativePoint = DockHelpers.GetScreenPoint(relativeTo, point);
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
 
+        // Validate docking groups before execution
+        if (targetDockable is IDock targetDock)
+        {
+            // For global docking operations (target is a dock), use global validation logic
+            if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
+            {
+                return; // Reject execution if docking groups are incompatible
+            }
+        }
+        else
+        {
+            // For local docking operations (target is a specific dockable), use strict validation
+            if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
+            {
+                return; // Reject execution if docking groups are incompatible
+            }
+        }
+
         _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
     }
 
@@ -96,7 +151,7 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
-        if (!ValidateLocalTarget(targetDockable))
+        if (!ValidateLocalTarget(sourceDockable, targetDockable))
         {
             return false;
         }
@@ -114,14 +169,33 @@ internal abstract class DockManagerState : IDockManagerState
         return _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: false);
     }
 
-    protected bool ValidateLocalTarget(IDockable targetDockable)
+    protected bool ValidateLocalTarget(IDockable sourceDockable, IDockable targetDockable)
     {
-        return targetDockable is ILocalTarget;
+        if (targetDockable is not ILocalTarget)
+        {
+            return false;
+        }
+
+        // Validate docking groups according to business rules
+        return DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable);
     }
 
-    protected bool ValidateGlobalTarget(IDockable targetDockable)
+    protected bool ValidateGlobalTarget(IDockable sourceDockable, IDockable targetDockable)
     {
-        return targetDockable is IGlobalTarget;
+        // Validate both interface and docking groups
+        if (targetDockable is not IGlobalTarget)
+        {
+            return false;
+        }
+
+        // For global targets, use special validation that allows non-grouped dockables
+        if (targetDockable is IDock targetDock)
+        {
+            return DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock);
+        }
+
+        // Fallback to standard validation for non-dock targets
+        return DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable);
     }
 
     protected static void Float(Point point, DockControl inputActiveDockControl, IDockable dockable, IFactory factory)

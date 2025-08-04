@@ -1,12 +1,26 @@
 # Creating a Custom Dock.Model Implementation
 
 Dock ships with a set of factory libraries that adapt the base model to various
-MVVM frameworks. `Dock.Model.Avalonia` provides a plain Avalonia version,
-`Dock.Model.Mvvm` adds `INotifyPropertyChanged` helpers,
-`Dock.Model.ReactiveUI` wraps the same API with ReactiveUI types and
-`Dock.Model.Prism` provides Prism commands and bindings.  You can create
-your own implementation when these do not fit your application or you wish to
-integrate Dock with another framework.
+MVVM frameworks:
+
+- `Dock.Model.Avalonia` - Plain Avalonia version with minimal dependencies
+- `Dock.Model.Mvvm` - MVVM implementation with `INotifyPropertyChanged` helpers
+- `Dock.Model.Inpc` - Basic `INotifyPropertyChanged` implementation without MVVM commands
+- `Dock.Model.ReactiveUI` - ReactiveUI integration with observables and commands
+- `Dock.Model.ReactiveProperty` - ReactiveProperty framework integration  
+- `Dock.Model.Prism` - Prism framework integration with commands and bindings
+
+You can create your own implementation when these do not fit your application or you wish to integrate Dock with another framework.
+
+## Using Dock.Model.Inpc
+
+If you only need basic property change notifications without full MVVM command support, use `Dock.Model.Inpc`:
+
+```powershell
+dotnet add package Dock.Model.Inpc
+```
+
+This package provides `INotifyPropertyChanged` implementations without the additional overhead of command patterns, making it ideal for simpler scenarios or custom MVVM frameworks. The [DockInpcSample](../samples/DockInpcSample) demonstrates this approach.
 
 ## Project setup
 

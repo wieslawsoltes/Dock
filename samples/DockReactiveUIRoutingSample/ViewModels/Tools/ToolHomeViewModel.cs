@@ -11,6 +11,7 @@ public class ToolHomeViewModel : ReactiveObject, IRoutableViewModel
     public string Title { get; }
     public ReactiveCommand<Unit, IDisposable>? GoToDetails { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoToSettings { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoBack { get; private set; }
 
     public ToolHomeViewModel(IScreen host)
     {
@@ -23,5 +24,7 @@ public class ToolHomeViewModel : ReactiveObject, IRoutableViewModel
             
         GoToSettings = ReactiveCommand.Create(() =>
             HostScreen.Router.Navigate.Execute(new ToolSettingsViewModel(host, "Tool Settings")).Subscribe(_ => { }));
+            
+        GoBack = ReactiveCommand.Create(() => HostScreen.Router.NavigateBack.Execute().Subscribe(_ => { }));
     }
 }

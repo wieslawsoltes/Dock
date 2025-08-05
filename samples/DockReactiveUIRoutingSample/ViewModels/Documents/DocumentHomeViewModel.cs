@@ -11,6 +11,7 @@ public class DocumentHomeViewModel : ReactiveObject, IRoutableViewModel
     public string Title { get; }
     public ReactiveCommand<Unit, IDisposable>? GoToDetails { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoToEditor { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoBack { get; private set; }
 
     public DocumentHomeViewModel(IScreen host)
     {
@@ -23,5 +24,7 @@ public class DocumentHomeViewModel : ReactiveObject, IRoutableViewModel
             
         GoToEditor = ReactiveCommand.Create(() =>
             HostScreen.Router.Navigate.Execute(new DocumentEditorViewModel(host, "Document Editor")).Subscribe(_ => { }));
+            
+        GoBack = ReactiveCommand.Create(() => HostScreen.Router.NavigateBack.Execute().Subscribe(_ => { }));
     }
 }

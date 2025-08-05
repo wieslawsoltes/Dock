@@ -115,11 +115,18 @@ public class OptimizedSplitLayoutTests
         Assert.IsType<ProportionalDockSplitter>(mainLayout.VisibleDockables[3]);
         Assert.Same(toolDock2, mainLayout.VisibleDockables[4]);
 
-        // Verify proportions are correctly split (original 0.5 should be split into 0.25 each)
-        Assert.Equal(0.25, toolDock1.Proportion, 3);
-        Assert.Equal(0.25, newToolDock.Proportion, 3);
+        // Verify proportions are correctly split - original dock's proportion should be split in half
+        var originalToolDock1Proportion = 0.5; // Original proportion before split
+        var expectedSplitProportion = originalToolDock1Proportion / 2.0; // Should be 0.25 each
+        
+        Assert.Equal(expectedSplitProportion, toolDock1.Proportion, 3);
+        Assert.Equal(expectedSplitProportion, newToolDock.Proportion, 3);
+        
+        // Verify the split proportions sum to the original proportion
+        var actualSplitSum = toolDock1.Proportion + newToolDock.Proportion;
+        Assert.Equal(originalToolDock1Proportion, actualSplitSum, 3);
 
-        // Verify the second tool dock maintains its proportion
+        // Verify the second tool dock maintains its original proportion unchanged
         Assert.Equal(0.5, toolDock2.Proportion, 3);
 
         // Verify each tool dock still contains its two tools
@@ -188,11 +195,18 @@ public class OptimizedSplitLayoutTests
         Assert.IsType<ProportionalDockSplitter>(mainLayout.VisibleDockables[3]);
         Assert.Same(toolDock2, mainLayout.VisibleDockables[4]);
 
-        // Verify proportions are correctly split (original 0.6 should be split into 0.3 each)
-        Assert.Equal(0.3, toolDock1.Proportion, 3);
-        Assert.Equal(0.3, newToolDock.Proportion, 3);
+        // Verify proportions are correctly split - original dock's proportion should be split in half
+        var originalToolDock1Proportion = 0.6; // Original proportion before split
+        var expectedSplitProportion = originalToolDock1Proportion / 2.0; // Should be 0.3 each
+        
+        Assert.Equal(expectedSplitProportion, toolDock1.Proportion, 3);
+        Assert.Equal(expectedSplitProportion, newToolDock.Proportion, 3);
+        
+        // Verify the split proportions sum to the original proportion
+        var actualSplitSum = toolDock1.Proportion + newToolDock.Proportion;
+        Assert.Equal(originalToolDock1Proportion, actualSplitSum, 3);
 
-        // Verify the second tool dock maintains its proportion
+        // Verify the second tool dock maintains its original proportion unchanged
         Assert.Equal(0.4, toolDock2.Proportion, 3);
     }
 
@@ -232,11 +246,18 @@ public class OptimizedSplitLayoutTests
         Assert.IsType<ProportionalDockSplitter>(mainLayout.VisibleDockables[3]);
         Assert.Same(toolDock2, mainLayout.VisibleDockables[4]);
 
-        // Verify proportions are correctly split (original 0.5 should be split into 0.25 each)
-        Assert.Equal(0.25, newToolDock.Proportion, 3);
-        Assert.Equal(0.25, toolDock2.Proportion, 3);
+        // Verify proportions are correctly split - original dock's proportion should be split in half
+        var originalToolDock2Proportion = 0.5; // Original proportion before split
+        var expectedSplitProportion = originalToolDock2Proportion / 2.0; // Should be 0.25 each
+        
+        Assert.Equal(expectedSplitProportion, newToolDock.Proportion, 3);
+        Assert.Equal(expectedSplitProportion, toolDock2.Proportion, 3);
+        
+        // Verify the split proportions sum to the original proportion
+        var actualSplitSum = newToolDock.Proportion + toolDock2.Proportion;
+        Assert.Equal(originalToolDock2Proportion, actualSplitSum, 3);
 
-        // Verify the first tool dock maintains its proportion
+        // Verify the first tool dock maintains its original proportion unchanged
         Assert.Equal(0.5, toolDock1.Proportion, 3);
     }
 
@@ -371,6 +392,67 @@ public class OptimizedSplitLayoutTests
         foreach (var toolDock in allToolDocks)
         {
             Assert.True(double.IsNaN(toolDock.Proportion) || (toolDock.Proportion > 0 && toolDock.Proportion <= 1));
+        }
+    }
+
+    [AvaloniaFact]
+    public void OptimizedSplitLayout_VariousProportions_ValidatesHalfSplit()
+    {
+        // Arrange
+        var factory = CreateFactory();
+        var rootDock = new RootDock
+        {
+            Id = "Root",
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Factory = factory
+        };
+
+        // Test various starting proportions to ensure half-split works correctly
+        var testProportions = new[] { 0.3, 0.7, 0.8, 0.2, 0.9 };
+
+        foreach (var startingProportion in testProportions)
+        {
+            // Create a fresh layout for each test
+            var layout = new ProportionalDock
+            {
+                Id = $"Layout_{startingProportion}",
+                Title = "Test Layout",
+                Orientation = Orientation.Horizontal,
+                VisibleDockables = factory.CreateList<IDockable>(),
+                Factory = factory
+            };
+
+            var toolDock1 = CreateToolDockWithTwoTools(factory, $"ToolDock1_{startingProportion}", "Tool Dock 1", "Tool1A", "Tool1B", startingProportion);
+            var toolDock2 = CreateToolDockWithTwoTools(factory, $"ToolDock2_{startingProportion}", "Tool Dock 2", "Tool2A", "Tool2B", 1.0 - startingProportion);
+
+            factory.AddDockable(layout, toolDock1);
+            var splitter = factory.CreateProportionalDockSplitter();
+            factory.AddDockable(layout, splitter);
+            factory.AddDockable(layout, toolDock2);
+
+            factory.AddDockable(rootDock, layout);
+
+            var newToolDock = CreateToolDockWithTwoTools(factory, $"NewToolDock_{startingProportion}", "New Tool Dock", "Tool3A", "Tool3B");
+
+            // Act - Split the first tool dock
+            factory.SplitToDock(toolDock1, newToolDock, DockOperation.Right);
+
+            // Assert - Verify the split was exactly half the original proportion
+            var expectedHalfProportion = startingProportion / 2.0;
+            
+            Assert.Equal(expectedHalfProportion, toolDock1.Proportion, 3);
+            Assert.Equal(expectedHalfProportion, newToolDock.Proportion, 3);
+            
+            // Verify the split proportions sum to the original proportion
+            var actualSplitSum = toolDock1.Proportion + newToolDock.Proportion;
+            Assert.Equal(startingProportion, actualSplitSum, 3);
+
+            // Verify the second tool dock maintains its original proportion
+            var expectedToolDock2Proportion = 1.0 - startingProportion;
+            Assert.Equal(expectedToolDock2Proportion, toolDock2.Proportion, 3);
+
+            // Clean up for next iteration
+            factory.RemoveDockable(layout, true);
         }
     }
 

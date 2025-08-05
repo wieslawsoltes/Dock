@@ -1150,20 +1150,6 @@ public abstract partial class FactoryBase
 
         if (dockable.OriginalOwner is IDock owner)
         {
-            // Check if we need to add a splitter before adding the dockable
-            if (owner.VisibleDockables?.Count > 0)
-            {
-                // Add a splitter if the last item is not already a splitter
-                var lastDockable = owner.VisibleDockables[owner.VisibleDockables.Count - 1];
-                if (lastDockable is not IProportionalDockSplitter)
-                {
-                    var splitter = CreateProportionalDockSplitter();
-                    splitter.Title = nameof(IProportionalDockSplitter);
-                    AddVisibleDockable(owner, splitter);
-                    OnDockableAdded(splitter);
-                }
-            }
-
             AddVisibleDockable(owner, dockable);
             OnDockableAdded(dockable);
             dockable.Owner = owner;

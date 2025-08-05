@@ -1,0 +1,187 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolDocumentPreviewView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolDocumentPreviewViewModel">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Main Content Area -->
+        <ScrollViewer Grid.Column="0" Margin="20">
+            <StackPanel Spacing="15">
+                <!-- Header -->
+                <Border Background="#E3F2FD" CornerRadius="8" Padding="15">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="📄 Document Preview (Tool Context)" 
+                                  FontSize="18" FontWeight="Bold" />
+                        <TextBlock Text="{Binding Title}" FontSize="14" FontStyle="Italic" />
+                        <TextBlock Text="Viewing document content within tool navigation context" 
+                                  Foreground="#666" FontSize="12" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Navigation -->
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="← Back" Command="{Binding GoBack}" Classes="accent" />
+                    <Button Content="📝 Open in Document Editor" 
+                           Command="{Binding OpenInDocumentEditor}"
+                           Background="#4CAF50" Foreground="White" />
+                    <Button Content="🔍 Analyze Content" 
+                           Command="{Binding AnalyzeContent}"
+                           Background="#FF9800" Foreground="White" />
+                </StackPanel>
+
+                <!-- Document Sections -->
+                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                       CornerRadius="8" Padding="15">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📋 Document Sections" FontWeight="SemiBold" FontSize="16" />
+                        
+                        <ItemsControl ItemsSource="{Binding DocumentSections}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" BorderBrush="#E0E0E0" 
+                                           BorderThickness="1" CornerRadius="6" 
+                                           Margin="0,5" Padding="12">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Border Grid.Column="0" Background="#2196F3" 
+                                                   CornerRadius="12" Width="24" Height="24" 
+                                                   Margin="0,0,12,0">
+                                                <TextBlock Text="{Binding SectionNumber}" 
+                                                          Foreground="White" FontWeight="Bold" 
+                                                          HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center" FontSize="12" />
+                                            </Border>
+                                            
+                                            <StackPanel Grid.Column="1" Spacing="4">
+                                                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding Description}" 
+                                                          Foreground="#666" FontSize="12" 
+                                                          TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            
+                                            <Button Grid.Column="2" Content="Jump To" 
+                                                   Command="{Binding $parent[UserControl].DataContext.JumpToSection}"
+                                                   CommandParameter="{Binding}"
+                                                   Background="#FF9800" Foreground="White"
+                                                   VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Document Content Preview -->
+                <Border Background="#F8F9FA" BorderBrush="#DEE2E6" BorderThickness="1" 
+                       CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📖 Content Preview" FontWeight="SemiBold" FontSize="16" />
+                        
+                        <Border Background="White" CornerRadius="4" Padding="15">
+                            <TextBlock Text="{Binding DocumentContent}" 
+                                      TextWrapping="Wrap" FontSize="14" 
+                                      LineHeight="1.5" />
+                        </Border>
+                        
+                        <!-- Sample Content -->
+                        <Border Background="White" CornerRadius="4" Padding="15">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Sample Document Content:" FontWeight="SemiBold" />
+                                <TextBlock TextWrapping="Wrap" LineHeight="1.4">
+                                    <Run Text="This document demonstrates cross-context navigation within the Dock ReactiveUI Routing Sample. " />
+                                    <Run Text="The content shown here is being displayed within a tool's navigation context, " />
+                                    <Run Text="showcasing how different types of content can be shared and viewed across " />
+                                    <Run Text="different parts of the application." />
+                                    <LineBreak /><LineBreak />
+                                    <Run Text="Key features demonstrated:" FontWeight="SemiBold" />
+                                    <LineBreak />
+                                    <Run Text="• Cross-router content sharing" />
+                                    <LineBreak />
+                                    <Run Text="• Contextual navigation preservation" />
+                                    <LineBreak />
+                                    <Run Text="• Real-time content analysis" />
+                                    <LineBreak />
+                                    <Run Text="• Seamless tool integration" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Sidebar -->
+        <Border Grid.Column="1" Background="#F5F5F5" Margin="0,20,20,20">
+            <ScrollViewer>
+                <StackPanel Margin="15" Spacing="15">
+                    <!-- Selected Section Info -->
+                    <Border Background="#E8F5E8" CornerRadius="6" Padding="12"
+                           IsVisible="{Binding SelectedSection, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="📍 Current Section" FontWeight="SemiBold" 
+                                      Foreground="#2E7D32" FontSize="12" />
+                            <TextBlock Text="{Binding SelectedSection.Title}" 
+                                      FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding SelectedSection.Description}" 
+                                      TextWrapping="Wrap" FontSize="11" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Analysis Results -->
+                    <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                           CornerRadius="6" Padding="12">
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="🔍 Analysis Results" FontWeight="SemiBold" 
+                                      FontSize="12" />
+                            <ScrollViewer MaxHeight="300">
+                                <TextBlock Text="{Binding AnalysisResult}" 
+                                          TextWrapping="Wrap" FontSize="10" 
+                                          FontFamily="Consolas,Monaco,monospace" />
+                            </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Quick Stats -->
+                    <Border Background="#FFF3E0" CornerRadius="6" Padding="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="📊 Quick Stats" FontWeight="SemiBold" 
+                                      Foreground="#E65100" FontSize="12" />
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="Sections: 6" FontSize="11" />
+                                <TextBlock Text="Context: Tool" FontSize="11" />
+                                <TextBlock Text="Status: Active" FontSize="11" />
+                                <TextBlock Text="Last Updated: Now" FontSize="11" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Navigation Tips -->
+                    <Border Background="#E3F2FD" CornerRadius="6" Padding="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="💡 Navigation Tips" FontWeight="SemiBold" 
+                                      Foreground="#1565C0" FontSize="12" />
+                            <StackPanel Spacing="2">
+                                <TextBlock Text="• Click sections to navigate" FontSize="10" />
+                                <TextBlock Text="• Use 'Analyze' for insights" FontSize="10" />
+                                <TextBlock Text="• 'Open in Editor' switches context" FontSize="10" />
+                                <TextBlock Text="• Back button returns to tool" FontSize="10" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

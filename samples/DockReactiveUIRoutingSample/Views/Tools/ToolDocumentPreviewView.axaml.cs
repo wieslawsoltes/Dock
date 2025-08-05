@@ -4,9 +4,9 @@ using DockReactiveUIRoutingSample.ViewModels.Tools;
 
 namespace DockReactiveUIRoutingSample.Views.Tools;
 
-public partial class ToolView : ReactiveUserControl<ToolViewModel>
+public partial class ToolDocumentPreviewView : ReactiveUserControl<ToolDocumentPreviewViewModel>
 {
-    public ToolView()
+    public ToolDocumentPreviewView()
     {
         AvaloniaXamlLoader.Load(this);
     }

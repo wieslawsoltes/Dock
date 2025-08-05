@@ -1,6 +1,5 @@
 using System;
 using System.Reactive;
-using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUIRoutingSample.ViewModels.Inner;
 using ReactiveUI;
@@ -12,10 +11,22 @@ public class ToolViewModel : RoutableTool
     public ReactiveCommand<Unit, IDisposable>? GoDocument1 { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoDocument2 { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoNextTool { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoToDetails { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoToSettings { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoToCrossNavigation { get; private set; }
 
     public ToolViewModel(IScreen host) : base(host)
     {
-        Router.Navigate.Execute(new InnerViewModel(this, "Tool Home"));
+        Router.Navigate.Execute(new ToolHomeViewModel(this));
+        
+        GoToDetails = ReactiveCommand.Create(() =>
+            Router.Navigate.Execute(new ToolDetailViewModel(this, "Tool Details", "This is a detailed view of the tool with additional information and functionality.")).Subscribe(_ => { }));
+            
+        GoToSettings = ReactiveCommand.Create(() =>
+            Router.Navigate.Execute(new ToolSettingsViewModel(this, "Tool Settings")).Subscribe(_ => { }));
+            
+        GoToCrossNavigation = ReactiveCommand.Create(() =>
+            Router.Navigate.Execute(new ToolCrossNavigationViewModel(this, "Cross-Navigation Example")).Subscribe(_ => { }));
     }
 
     public void InitNavigation(

@@ -1,0 +1,25 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolSettingsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolSettingsViewModel">
+    <StackPanel Margin="10" Spacing="10">
+        <Button Content="← Back" Command="{Binding GoBack}" HorizontalAlignment="Left"/>
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+        <Border Background="LightGreen" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Tool Settings:" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock Text="Enable Feature:" VerticalAlignment="Center"/>
+                    <CheckBox IsChecked="{Binding IsEnabled}"/>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <TextBlock Text="Configuration Value:"/>
+                    <TextBox Text="{Binding ConfigValue}" Width="200" HorizontalAlignment="Left"/>
+                </StackPanel>
+                <TextBlock Text="Configure your tool settings here." FontStyle="Italic"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

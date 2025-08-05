@@ -1,0 +1,31 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Documents.DocumentDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Documents"
+             x:CompileBindings="True"
+             x:DataType="vm:DocumentDetailViewModel">
+    <StackPanel Margin="10" Spacing="10">
+        <Button Content="← Back" Command="{Binding GoBack}" HorizontalAlignment="Left"/>
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
+        <Border Background="LightBlue" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Document Details:" FontWeight="SemiBold"/>
+                <TextBlock Text="Created: January 15, 2024"/>
+                <TextBlock Text="Last Modified: January 20, 2024"/>
+                <TextBlock Text="Size: 2.5 KB"/>
+                <TextBlock Text="Type: Text Document"/>
+                <TextBlock Text="Status: Draft"/>
+            </StackPanel>
+        </Border>
+        <Border Background="LightGreen" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Document Statistics:" FontWeight="SemiBold"/>
+                <TextBlock Text="Word Count: 245"/>
+                <TextBlock Text="Character Count: 1,456"/>
+                <TextBlock Text="Paragraphs: 8"/>
+                <TextBlock Text="Reading Time: ~1 minute"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

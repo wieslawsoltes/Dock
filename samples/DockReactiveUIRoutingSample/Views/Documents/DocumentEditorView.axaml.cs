@@ -4,9 +4,9 @@ using DockReactiveUIRoutingSample.ViewModels.Documents;
 
 namespace DockReactiveUIRoutingSample.Views.Documents;
 
-public partial class DocumentView : ReactiveUserControl<DocumentViewModel>
+public partial class DocumentEditorView : ReactiveUserControl<DocumentEditorViewModel>
 {
-    public DocumentView()
+    public DocumentEditorView()
     {
         AvaloniaXamlLoader.Load(this);
     }

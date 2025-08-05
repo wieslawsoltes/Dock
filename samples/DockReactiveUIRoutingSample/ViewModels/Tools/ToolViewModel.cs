@@ -1,6 +1,5 @@
 using System;
 using System.Reactive;
-using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUIRoutingSample.ViewModels.Inner;
 using ReactiveUI;

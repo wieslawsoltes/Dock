@@ -1,16 +1,12 @@
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using DockReactiveUIRoutingSample.ViewModels.Tools;
 
 namespace DockReactiveUIRoutingSample.Views.Tools;
 
-public partial class ToolView : UserControl
+public partial class ToolView : ReactiveUserControl<ToolViewModel>
 {
     public ToolView()
-    {
-        InitializeComponent();
-    }
-
-    private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }

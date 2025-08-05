@@ -1,16 +1,12 @@
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using DockReactiveUIRoutingSample.ViewModels.Inner;
 
 namespace DockReactiveUIRoutingSample.Views.Inner;
 
-public partial class InnerView : UserControl
+public partial class InnerView : ReactiveUserControl<InnerViewModel>
 {
     public InnerView()
-    {
-        InitializeComponent();
-    }
-
-    private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }

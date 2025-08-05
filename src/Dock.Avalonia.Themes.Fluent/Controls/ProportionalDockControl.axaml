@@ -20,6 +20,7 @@
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
           <ItemsControl ItemsSource="{Binding VisibleDockables}" 
+                        Name="PART_ItemsControl"
                         Classes="ProportionalStackPanel">
             <ItemsControl.Styles>
               <Style Selector="ItemsControl.ProportionalStackPanel > ContentPresenter">

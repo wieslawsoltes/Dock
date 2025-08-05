@@ -1,9 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -17,8 +15,6 @@ namespace Dock.Controls.ProportionalStackPanel;
 /// </summary>
 public class ProportionalStackPanel : Panel
 {
-    private bool isAssigningProportions;
-
     /// <summary>
     /// Defines the <see cref="Orientation"/> property.
     /// </summary>
@@ -76,6 +72,8 @@ public class ProportionalStackPanel : Panel
             "CollapsedProportion", double.NaN, false,
             BindingMode.TwoWay);
 
+    private bool _isAssigningProportions;
+
     /// <summary>
     /// Gets the value of the CollapsedProportion attached property on the specified control.
     /// </summary>
@@ -122,7 +120,7 @@ public class ProportionalStackPanel : Panel
             if (sender.GetVisualParent() is not ProportionalStackPanel parent)
                 return;
 
-            if (parent.isAssigningProportions)
+            if (parent._isAssigningProportions)
                 return;
 
             if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
@@ -139,7 +137,7 @@ public class ProportionalStackPanel : Panel
             if (sender.GetVisualParent() is not ProportionalStackPanel parent)
                 return;
 
-            if (parent.isAssigningProportions)
+            if (parent._isAssigningProportions)
                 return;
 
             parent.InvalidateMeasure();
@@ -160,7 +158,7 @@ public class ProportionalStackPanel : Panel
 
     private void AssignProportions(Size size, double splitterThickness)
     {
-        isAssigningProportions = true;
+        _isAssigningProportions = true;
         try
         {
             var proportionManager = new ProportionManager(Children, size, splitterThickness, Orientation);
@@ -168,58 +166,8 @@ public class ProportionalStackPanel : Panel
         }
         finally
         {
-            isAssigningProportions = false;
+            _isAssigningProportions = false;
         }
-    }
-
-    private double GetTotalSplitterThickness(Avalonia.Controls.Controls children)
-    {
-        var totalThickness = 0.0;
-        var previousWasCollapsed = false;
-
-        for (var i = 0; i < children.Count; i++)
-        {
-            var child = children[i];
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(child, out var splitter);
-
-            if (isSplitter && splitter is not null)
-            {
-                // Skip splitters adjacent to collapsed elements
-                if (ShouldSkipSplitter(i, children, previousWasCollapsed))
-                {
-                    continue;
-                }
-
-                totalThickness += splitter.Thickness;
-            }
-            else
-            {
-                previousWasCollapsed = GetIsCollapsed(child);
-            }
-        }
-
-        return double.IsNaN(totalThickness) ? 0 : totalThickness;
-    }
-
-    private bool ShouldSkipSplitter(int splitterIndex, Avalonia.Controls.Controls children, bool previousWasCollapsed)
-    {
-        // Skip if previous element was collapsed
-        if (previousWasCollapsed)
-        {
-            return true;
-        }
-
-        // Skip if next element is collapsed
-        if (splitterIndex + 1 < children.Count)
-        {
-            var nextChild = children[splitterIndex + 1];
-            if (GetIsCollapsed(nextChild))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /// <inheritdoc/>
@@ -238,7 +186,7 @@ public class ProportionalStackPanel : Panel
         var usedHeight = 0.0;
         var maximumWidth = 0.0;
         var maximumHeight = 0.0;
-        var splitterThickness = GetTotalSplitterThickness(Children);
+        var splitterThickness = SplitterCalculator.GetTotalSplitterThickness(Children, GetIsCollapsed);
 
         AssignProportions(constraint, splitterThickness);
 
@@ -360,7 +308,7 @@ public class ProportionalStackPanel : Panel
         var bottom = 0.0;
 
         // Arrange each of the Children
-        var splitterThickness = GetTotalSplitterThickness(Children);
+        var splitterThickness = SplitterCalculator.GetTotalSplitterThickness(Children, GetIsCollapsed);
         var index = 0;
 
         AssignProportions(arrangeSize, splitterThickness);

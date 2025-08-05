@@ -306,8 +306,6 @@ public class ProportionalStackPanelSplitter : Thumb
         resizer.ApplyResize();
     }
 
-
-
     private void UpdateVisualState()
     {
         if (GetPanel() is { } panel)

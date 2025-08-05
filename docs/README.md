@@ -44,6 +44,7 @@ Choose the implementation that matches your MVVM framework:
 - [Serialization and persistence](dock-serialization.md) – Save and restore layouts.
 - [Serialization state](dock-serialization-state.md) – Capture focus information.
 - [Dock state guide](dock-state.md) – Why and how to use `DockState`.
+- [RestoreDockable behavior](dock-restore-dockable.md) – Understand dockable restoration and splitter management.
 - [Dependency injection](dock-dependency-injection.md) – Register Dock services with `IServiceCollection`.
 - [Context locators](dock-context-locator.md) – Provide `DataContext` objects for dockables.
 - [Docking groups](dock-docking-groups.md) – Control which dockables can be docked together using group identifiers.

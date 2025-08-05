@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Diagnostics;
@@ -12,6 +12,84 @@ using Avalonia.Layout;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
+
+/// <summary>
+/// Helper for navigating and managing panel relationships.
+/// </summary>
+internal static class PanelNavigationHelper
+{
+    /// <summary>
+    /// Gets the parent ProportionalStackPanel for a control.
+    /// </summary>
+    public static ProportionalStackPanel? GetParentPanel(Control control)
+    {
+        if (control.Parent is ContentPresenter presenter)
+        {
+            if (presenter.GetVisualParent() is ProportionalStackPanel panel)
+            {
+                return panel;
+            }
+        }
+        else if (control.GetVisualParent() is ProportionalStackPanel psp)
+        {
+            return psp;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Gets a sibling control in the specified direction, skipping collapsed and splitter controls.
+    /// </summary>
+    public static Control? GetSiblingInDirection(Control control, ProportionalStackPanel panel, int direction)
+    {
+        Debug.Assert(direction == -1 || direction == 1);
+
+        var children = panel.Children;
+        int siblingIndex;
+
+        if (control.Parent is ContentPresenter parentContentPresenter)
+        {
+            siblingIndex = children.IndexOf(parentContentPresenter) + direction;
+        }
+        else
+        {
+            siblingIndex = children.IndexOf(control) + direction;
+        }
+
+        while (siblingIndex >= 0 && siblingIndex < children.Count &&
+               (ProportionalStackPanel.GetIsCollapsed(children[siblingIndex]) || 
+                ProportionalStackPanelSplitter.IsSplitter(children[siblingIndex], out _)))
+        {
+            siblingIndex += direction;
+        }
+
+        return siblingIndex >= 0 && siblingIndex < children.Count ? children[siblingIndex] : null;
+    }
+
+    /// <summary>
+    /// Updates visual state based on panel orientation.
+    /// </summary>
+    public static void UpdateControlVisualState(Control control, ProportionalStackPanel panel, double thickness, bool isResizingEnabled)
+    {
+        if (panel.Orientation == Orientation.Vertical)
+        {
+            control.Height = thickness;
+            control.Width = double.NaN;
+            control.Cursor = isResizingEnabled
+                ? new Cursor(StandardCursorType.SizeNorthSouth)
+                : new Cursor(StandardCursorType.Arrow);
+        }
+        else
+        {
+            control.Width = thickness;
+            control.Height = double.NaN;
+            control.Cursor = isResizingEnabled
+                ? new Cursor(StandardCursorType.SizeWestEast)
+                : new Cursor(StandardCursorType.Arrow);
+        }
+    }
+}
 
 /// <summary>
 /// Represents a control that lets the user change the size of elements in a <see cref="ProportionalStackPanel"/>.
@@ -288,123 +366,144 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private Control? FindNextChild(ProportionalStackPanel panel)
     {
-        return GetSiblingInDirection(panel, 1);
+        return PanelNavigationHelper.GetSiblingInDirection(this, panel, 1);
     }
 
     private void SetTargetProportion(double dragDelta)
     {
         var panel = GetPanel();
-        if (panel == null)
-        {
-            return;
-        }
+        if (panel == null) return;
 
         var target = GetTargetElement(panel);
-        if (target is null)
+        if (target is null) return;
+
+        var neighbor = FindNextChild(panel);
+        if (neighbor is null) return;
+
+        var resizer = new ProportionResizer(panel, target, neighbor, dragDelta, GetValue(MinimumProportionSizeProperty));
+        resizer.ApplyResize();
+    }
+
+    /// <summary>
+    /// Handles proportion resizing logic between two adjacent elements.
+    /// </summary>
+    private class ProportionResizer
+    {
+        private readonly ProportionalStackPanel _panel;
+        private readonly Control _target;
+        private readonly Control _neighbor;
+        private readonly double _dragDelta;
+        private readonly double _minimumProportionSize;
+        private readonly double _availableSize;
+
+        public ProportionResizer(ProportionalStackPanel panel, Control target, Control neighbor, double dragDelta, double minimumProportionSize)
         {
-            return;
+            _panel = panel;
+            _target = target;
+            _neighbor = neighbor;
+            _dragDelta = dragDelta;
+            _minimumProportionSize = minimumProportionSize;
+            _availableSize = panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width;
         }
 
-        var child = FindNextChild(panel);
-
-        var targetElementProportion = ProportionalStackPanel.GetProportion(target);
-        var neighbourProportion = child is not null ? ProportionalStackPanel.GetProportion(child) : double.NaN;
-
-        var availableSize = panel.Orientation == Orientation.Vertical ? panel.Bounds.Height : panel.Bounds.Width;
-        var dProportion = dragDelta / availableSize;
-
-        if (targetElementProportion + dProportion < 0)
+        public void ApplyResize()
         {
-            dProportion = -targetElementProportion;
+            var targetProportion = ProportionalStackPanel.GetProportion(_target);
+            var neighborProportion = ProportionalStackPanel.GetProportion(_neighbor);
+
+            var deltaProportionRaw = ProportionUtils.DimensionToProportion(_dragDelta, _availableSize);
+            var deltaProportionClamped = ClampDeltaProportion(deltaProportionRaw, targetProportion, neighborProportion);
+
+            var newTargetProportion = targetProportion + deltaProportionClamped;
+            var newNeighborProportion = neighborProportion - deltaProportionClamped;
+
+            // Apply constraints and adjust proportions accordingly
+            ApplyConstraints(ref newTargetProportion, ref newNeighborProportion);
+
+            ProportionalStackPanel.SetProportion(_target, Math.Max(0, newTargetProportion));
+            ProportionalStackPanel.SetProportion(_neighbor, Math.Max(0, newNeighborProportion));
         }
 
-        if (neighbourProportion - dProportion < 0)
+        private double ClampDeltaProportion(double delta, double targetProportion, double neighborProportion)
         {
-            dProportion = +neighbourProportion;
+            // Prevent negative proportions
+            if (targetProportion + delta < 0)
+                delta = -targetProportion;
+            if (neighborProportion - delta < 0)
+                delta = neighborProportion;
+            return delta;
         }
 
-        targetElementProportion += dProportion;
-        neighbourProportion -= dProportion;
-
-        // Check MinimumProportionSize first (for backward compatibility)
-        var minProportion = GetValue(MinimumProportionSizeProperty) / availableSize;
-
-        // Check min/max constraints for target element
-        if (target is Control targetControl)
+        private void ApplyConstraints(ref double targetProportion, ref double neighborProportion)
         {
-            var targetMin = panel.Orientation == Orientation.Horizontal ? targetControl.MinWidth : targetControl.MinHeight;
-            var targetMax = panel.Orientation == Orientation.Horizontal ? targetControl.MaxWidth : targetControl.MaxHeight;
+            var constraints = new ConstraintCalculator(_panel.Orientation, _availableSize, _minimumProportionSize);
             
-            if (!double.IsNaN(targetMin) && targetMin > 0)
-            {
-                var targetMinProp = targetMin / availableSize;
-                minProportion = Math.Max(minProportion, targetMinProp);
-            }
-            
-            if (!double.IsNaN(targetMax) && !double.IsPositiveInfinity(targetMax))
-            {
-                var targetMaxProp = targetMax / availableSize;
-                if (targetElementProportion > targetMaxProp)
-                {
-                    var excess = targetElementProportion - targetMaxProp;
-                    targetElementProportion = targetMaxProp;
-                    neighbourProportion += excess;
-                }
-            }
+            var targetConstraints = constraints.GetConstraints(_target);
+            var neighborConstraints = constraints.GetConstraints(_neighbor);
+
+            // Apply constraints in a balanced way
+            ApplyConstraintPair(ref targetProportion, ref neighborProportion, targetConstraints, neighborConstraints);
+            ApplyConstraintPair(ref neighborProportion, ref targetProportion, neighborConstraints, targetConstraints);
         }
 
-        // Check min/max constraints for neighbor element
-        if (child is Control neighbourControl)
+        private static void ApplyConstraintPair(
+            ref double primaryProportion, 
+            ref double secondaryProportion, 
+            (double Min, double Max) primaryConstraints, 
+            (double Min, double Max) secondaryConstraints)
         {
-            var neighbourMin = panel.Orientation == Orientation.Horizontal ? neighbourControl.MinWidth : neighbourControl.MinHeight;
-            var neighbourMax = panel.Orientation == Orientation.Horizontal ? neighbourControl.MaxWidth : neighbourControl.MaxHeight;
-            
-            if (!double.IsNaN(neighbourMin) && neighbourMin > 0)
+            // Apply minimum constraint
+            if (primaryProportion < primaryConstraints.Min)
             {
-                var neighbourMinProp = neighbourMin / availableSize;
-                if (neighbourProportion < neighbourMinProp)
-                {
-                    var deficit = neighbourMinProp - neighbourProportion;
-                    neighbourProportion = neighbourMinProp;
-                    targetElementProportion -= deficit;
-                }
+                var deficit = primaryConstraints.Min - primaryProportion;
+                primaryProportion = primaryConstraints.Min;
+                secondaryProportion = Math.Max(secondaryConstraints.Min, secondaryProportion - deficit);
             }
-            
-            if (!double.IsNaN(neighbourMax) && !double.IsPositiveInfinity(neighbourMax))
+            // Apply maximum constraint
+            else if (primaryProportion > primaryConstraints.Max)
             {
-                var neighbourMaxProp = neighbourMax / availableSize;
-                if (neighbourProportion > neighbourMaxProp)
-                {
-                    var excess = neighbourProportion - neighbourMaxProp;
-                    neighbourProportion = neighbourMaxProp;
-                    targetElementProportion += excess;
-                }
+                var excess = primaryProportion - primaryConstraints.Max;
+                primaryProportion = primaryConstraints.Max;
+                secondaryProportion = Math.Min(secondaryConstraints.Max, secondaryProportion + excess);
             }
         }
+    }
 
-        // Apply MinimumProportionSize constraints (backward compatibility)
-        if (targetElementProportion < minProportion)
+    /// <summary>
+    /// Calculates min/max proportion constraints for a control.
+    /// </summary>
+    private class ConstraintCalculator
+    {
+        private readonly Orientation _orientation;
+        private readonly double _availableSize;
+        private readonly double _minimumProportionSize;
+
+        public ConstraintCalculator(Orientation orientation, double availableSize, double minimumProportionSize)
         {
-            dProportion = targetElementProportion - minProportion;
-            neighbourProportion += dProportion;
-            targetElementProportion -= dProportion;
+            _orientation = orientation;
+            _availableSize = availableSize;
+            _minimumProportionSize = minimumProportionSize;
         }
-        else if (neighbourProportion < minProportion)
+
+        public (double MinProportion, double MaxProportion) GetConstraints(Control control)
         {
-            dProportion = neighbourProportion - minProportion;
-            neighbourProportion -= dProportion;
-            targetElementProportion += dProportion;
-        }
+            var (minSize, maxSize) = ProportionUtils.GetSizeConstraints(control, _orientation);
 
-        // Ensure proportions are non-negative
-        targetElementProportion = Math.Max(0, targetElementProportion);
-        neighbourProportion = Math.Max(0, neighbourProportion);
+            var minProportion = ProportionUtils.DimensionToProportion(_minimumProportionSize, _availableSize);
+            var maxProportion = double.PositiveInfinity;
 
-        ProportionalStackPanel.SetProportion(target, targetElementProportion);
+            if (!double.IsNaN(minSize) && minSize > 0)
+            {
+                var sizeBasedMin = ProportionUtils.DimensionToProportion(minSize, _availableSize);
+                minProportion = Math.Max(minProportion, sizeBasedMin);
+            }
 
-        if (child is not null)
-        {
-            ProportionalStackPanel.SetProportion(child, neighbourProportion);
+            if (!double.IsNaN(maxSize) && !double.IsPositiveInfinity(maxSize))
+            {
+                maxProportion = ProportionUtils.DimensionToProportion(maxSize, _availableSize);
+            }
+
+            return (minProportion, maxProportion);
         }
     }
 
@@ -412,22 +511,15 @@ public class ProportionalStackPanelSplitter : Thumb
     {
         if (GetPanel() is { } panel)
         {
+            PanelNavigationHelper.UpdateControlVisualState(this, panel, Thickness, IsResizingEnabled);
+            
+            // Add pseudo classes for styling
             if (panel.Orientation == Orientation.Vertical)
             {
-                Height = Thickness;
-                Width = double.NaN;
-                Cursor = IsResizingEnabled
-                    ? new Cursor(StandardCursorType.SizeNorthSouth)
-                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":vertical");
             }
             else
             {
-                Width = Thickness;
-                Height = double.NaN;
-                Cursor = IsResizingEnabled
-                    ? new Cursor(StandardCursorType.SizeWestEast)
-                    : new Cursor(StandardCursorType.Arrow);
                 PseudoClasses.Add(":horizontal");
             }
         }
@@ -435,48 +527,11 @@ public class ProportionalStackPanelSplitter : Thumb
 
     private ProportionalStackPanel? GetPanel()
     {
-        if (Parent is ContentPresenter presenter)
-        {
-            if (presenter.GetVisualParent() is ProportionalStackPanel panel)
-            {
-                return panel;
-            }
-        }
-        else if (this.GetVisualParent() is ProportionalStackPanel psp)
-        {
-            return psp;
-        }
-
-        return null;
-    }
-
-    private Control? GetSiblingInDirection(ProportionalStackPanel panel, int direction)
-    {
-        Debug.Assert(direction == -1 || direction == 1);
-
-        var children = panel.Children;
-        int siblingIndex;
-
-        if (Parent is ContentPresenter parentContentPresenter)
-        {
-            siblingIndex = children.IndexOf(parentContentPresenter) + direction;
-        }
-        else
-        {
-            siblingIndex = children.IndexOf(this) + direction;
-        }
-
-        while (siblingIndex >= 0 && siblingIndex < children.Count &&
-               (ProportionalStackPanel.GetIsCollapsed(children[siblingIndex]) || IsSplitter(children[siblingIndex], out _)))
-        {
-            siblingIndex += direction;
-        }
-
-        return siblingIndex >= 0 && siblingIndex < children.Count ? children[siblingIndex] : null;
+        return PanelNavigationHelper.GetParentPanel(this);
     }
 
     private Control? GetTargetElement(ProportionalStackPanel panel)
     {
-        return GetSiblingInDirection(panel, -1);
+        return PanelNavigationHelper.GetSiblingInDirection(this, panel, -1);
     }
 }

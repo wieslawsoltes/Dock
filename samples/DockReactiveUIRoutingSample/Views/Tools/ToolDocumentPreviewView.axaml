@@ -71,7 +71,7 @@
                                             </StackPanel>
                                             
                                             <Button Grid.Column="2" Content="Jump To" 
-                                                   Command="{Binding $parent[UserControl].DataContext.JumpToSection}"
+                                                   Command="{Binding $parent[UserControl].((vm:ToolDocumentPreviewViewModel)DataContext).JumpToSection}"
                                                    CommandParameter="{Binding}"
                                                    Background="#FF9800" Foreground="White"
                                                    VerticalAlignment="Center" />

@@ -16,7 +16,13 @@
                     <Button Content="📋 View Details" Command="{Binding GoToDetails}" Padding="10,5"/>
                     <Button Content="⚙️ Settings" Command="{Binding GoToSettings}" Padding="10,5"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,5,0,0">
+                    <Button Content="🔄 Cross-Navigation Example" Command="{Binding GoToCrossNavigation}" 
+                           Padding="10,5" Background="#FF6B35" Foreground="White"/>
+                </StackPanel>
                 <TextBlock Text="Click the buttons above to navigate to different tool views." FontStyle="Italic" FontSize="12"/>
+                <TextBlock Text="The Cross-Navigation example demonstrates complex routing between tools and documents." 
+                          FontStyle="Italic" FontSize="11" Foreground="#666" TextWrapping="Wrap"/>
             </StackPanel>
         </Border>
         

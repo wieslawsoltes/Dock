@@ -13,6 +13,7 @@ public class ToolViewModel : RoutableTool
     public ReactiveCommand<Unit, IDisposable>? GoNextTool { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoToDetails { get; private set; }
     public ReactiveCommand<Unit, IDisposable>? GoToSettings { get; private set; }
+    public ReactiveCommand<Unit, IDisposable>? GoToCrossNavigation { get; private set; }
 
     public ToolViewModel(IScreen host) : base(host)
     {
@@ -23,6 +24,9 @@ public class ToolViewModel : RoutableTool
             
         GoToSettings = ReactiveCommand.Create(() =>
             Router.Navigate.Execute(new ToolSettingsViewModel(this, "Tool Settings")).Subscribe(_ => { }));
+            
+        GoToCrossNavigation = ReactiveCommand.Create(() =>
+            Router.Navigate.Execute(new ToolCrossNavigationViewModel(this, "Cross-Navigation Example")).Subscribe(_ => { }));
     }
 
     public void InitNavigation(

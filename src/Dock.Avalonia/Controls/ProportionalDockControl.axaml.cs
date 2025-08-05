@@ -18,6 +18,7 @@ public class ProportionalDockControl : TemplatedControl
 {
     private ItemsControl? _itemsControl;
 
+    /// <inheritdoc /> 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         // Unsubscribe from the previous ItemsControl if it exists
@@ -38,7 +39,7 @@ public class ProportionalDockControl : TemplatedControl
         }
     }
 
-    private void ItemsControlOnContainerPrepared(object sender, ContainerPreparedEventArgs e)
+    private void ItemsControlOnContainerPrepared(object? sender, ContainerPreparedEventArgs e)
     {
         if (e.Container.DataContext is IDockable)
         {

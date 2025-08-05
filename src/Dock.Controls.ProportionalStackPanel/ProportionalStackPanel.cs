@@ -126,8 +126,6 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-
-
     private double GetTotalSplitterThickness(Avalonia.Controls.Controls children)
     {
         var totalThickness = 0.0;
@@ -230,7 +228,7 @@ public class ProportionalStackPanel : Panel
                 {
                     case Orientation.Horizontal:
                     {
-                        var width = CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
+                        var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithWidth(width);
                         control.Measure(size);
@@ -238,7 +236,7 @@ public class ProportionalStackPanel : Panel
                     }
                     case Orientation.Vertical:
                     {
-                        var height = CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
+                        var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
                             ref sumOfFractions);
                         var size = constraint.WithHeight(height);
                         control.Measure(size);
@@ -276,7 +274,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedWidth += CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
+                        usedWidth += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, constraint.Width - splitterThickness, proportion,
                             ref sumOfFractions);
                     }
 
@@ -292,7 +290,7 @@ public class ProportionalStackPanel : Panel
                     }
                     else
                     {
-                        usedHeight += CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
+                        usedHeight += DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, constraint.Height - splitterThickness, proportion,
                             ref sumOfFractions);
                     }
 
@@ -377,7 +375,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var width = CalculateDimensionWithConstraints(control, Orientation.Horizontal, arrangeSize.Width - splitterThickness, proportion,
+                            var width = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Horizontal, arrangeSize.Width - splitterThickness, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithWidth(width);
                             left += width;
@@ -395,7 +393,7 @@ public class ProportionalStackPanel : Panel
                         else
                         {
                             Debug.Assert(!double.IsNaN(proportion));
-                            var height = CalculateDimensionWithConstraints(control, Orientation.Vertical, arrangeSize.Height - splitterThickness, proportion,
+                            var height = DimensionCalculator.CalculateDimensionWithConstraints(control, Orientation.Vertical, arrangeSize.Height - splitterThickness, proportion,
                                 ref sumOfFractions);
                             remainingRect = remainingRect.WithHeight(height);
                             top += height;
@@ -413,70 +411,7 @@ public class ProportionalStackPanel : Panel
         return arrangeSize;
     }
 
-    private double CalculateDimension(
-        double dimension,
-        double proportion,
-        ref double sumOfFractions)
-    {
-        var childDimension = dimension * proportion;
-        var flooredChildDimension = Math.Floor(childDimension);
 
-        // sums fractions from the division
-        sumOfFractions += childDimension - flooredChildDimension;
-
-        // if the sum of fractions made up a whole pixel/pixels, add it to the dimension
-        var round = Math.Round(sumOfFractions, 1);
-        
-#if NETSTANDARD2_0
-        var clamp = Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
-#else
-        var clamp = Math.Clamp(Math.Floor(sumOfFractions), 1, double.MaxValue);
-#endif
-        if (round - clamp >= 0)
-        {
-            sumOfFractions -= Math.Round(sumOfFractions);
-            return Math.Max(0, flooredChildDimension + 1);
-        }
-
-        return Math.Max(0, flooredChildDimension);
-
-#if NETSTANDARD2_0
-        static T Clamp<T>(T value, T min, T max) where T : IComparable<T>
-        {
-            if (value.CompareTo(min) < 0)
-                return min;
-            if (value.CompareTo(max) > 0)
-                return max;
-            return value;
-        }
-#endif
-    }
-
-    private double CalculateDimensionWithConstraints(
-        Control control,
-        Orientation orientation,
-        double dimension,
-        double proportion,
-        ref double sumOfFractions)
-    {
-        var calculatedDimension = CalculateDimension(dimension, proportion, ref sumOfFractions);
-        
-        // Apply min/max constraints to the final calculated dimension
-        double min = orientation == Orientation.Horizontal ? control.MinWidth : control.MinHeight;
-        double max = orientation == Orientation.Horizontal ? control.MaxWidth : control.MaxHeight;
-
-        if (!double.IsNaN(min) && calculatedDimension < min)
-        {
-            calculatedDimension = min;
-        }
-        
-        if (!double.IsNaN(max) && !double.IsPositiveInfinity(max) && calculatedDimension > max)
-        {
-            calculatedDimension = max;
-        }
-
-        return calculatedDimension;
-    }
 
     /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

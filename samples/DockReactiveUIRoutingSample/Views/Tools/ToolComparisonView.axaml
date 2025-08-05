@@ -149,7 +149,7 @@
                                             
                                             <!-- Action Button -->
                                             <Button Grid.Column="3" Content="View Details" 
-                                                   Command="{Binding $parent[UserControl].DataContext.ViewDetails}"
+                                                   Command="{Binding $parent[UserControl].((vm:ToolComparisonViewModel)DataContext).ViewDetails}"
                                                    CommandParameter="{Binding}"
                                                    Background="#9C27B0" Foreground="White"
                                                    VerticalAlignment="Center" />

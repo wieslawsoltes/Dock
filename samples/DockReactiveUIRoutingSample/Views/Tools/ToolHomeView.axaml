@@ -1,0 +1,31 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolHomeView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolHomeViewModel">
+    <StackPanel Margin="10" Spacing="10">
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="Welcome to the tool! Navigate to different sections:" TextWrapping="Wrap"/>
+        
+        <Border Background="LightYellow" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Navigation Options:" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="📋 View Details" Command="{Binding GoToDetails}" Padding="10,5"/>
+                    <Button Content="⚙️ Settings" Command="{Binding GoToSettings}" Padding="10,5"/>
+                </StackPanel>
+                <TextBlock Text="Click the buttons above to navigate to different tool views." FontStyle="Italic" FontSize="12"/>
+            </StackPanel>
+        </Border>
+        
+        <Border Background="LightGray" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Tool Information:" FontWeight="SemiBold"/>
+                <TextBlock Text="• This tool demonstrates internal navigation"/>
+                <TextBlock Text="• Each view has a back button to return here"/>
+                <TextBlock Text="• Navigation state is maintained within the tool"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

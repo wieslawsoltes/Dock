@@ -1,0 +1,33 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Documents.DocumentEditorView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Documents"
+             x:CompileBindings="True"
+             x:DataType="vm:DocumentEditorViewModel">
+    <StackPanel Margin="10" Spacing="10">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Content="← Back" Command="{Binding GoBack}"/>
+            <Button Content="💾 Save" Command="{Binding SaveDocument}" Background="LightGreen"/>
+        </StackPanel>
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+        <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+            <StackPanel Spacing="5" Margin="10">
+                <TextBlock Text="Document Editor:" FontWeight="SemiBold"/>
+                <TextBox Text="{Binding DocumentText}" 
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap" 
+                         Height="200" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+        </Border>
+        <Border Background="LightYellow" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Editor Features:" FontWeight="SemiBold"/>
+                <TextBlock Text="• Multi-line text editing"/>
+                <TextBlock Text="• Auto-save functionality"/>
+                <TextBlock Text="• Word wrap enabled"/>
+                <TextBlock Text="• Scroll support for long documents"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

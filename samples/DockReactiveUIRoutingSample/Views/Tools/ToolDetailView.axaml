@@ -1,0 +1,20 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolDetailViewModel">
+    <StackPanel Margin="10" Spacing="10">
+        <Button Content="← Back" Command="{Binding GoBack}" HorizontalAlignment="Left"/>
+        <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+        <Border Background="LightBlue" Padding="10" CornerRadius="5">
+            <StackPanel Spacing="5">
+                <TextBlock Text="Tool Detail Information:" FontWeight="SemiBold"/>
+                <TextBlock Text="This is a detailed view within the tool."/>
+                <TextBlock Text="You can navigate here from the main tool view."/>
+                <TextBlock Text="Use the back button to return to the main tool view."/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

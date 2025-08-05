@@ -12,6 +12,10 @@
             <Button Content="Tool 1" Command="{Binding GoTool1}"/>
             <Button Content="Tool 2" Command="{Binding GoTool2}"/>
         </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="5">
+            <Button Content="📄 Details" Command="{Binding GoToDetails}"/>
+            <Button Content="✏️ Editor" Command="{Binding GoToEditor}"/>
+        </StackPanel>
         <rxui:RoutedViewHost Router="{Binding Router}" />
     </StackPanel>
 </UserControl>

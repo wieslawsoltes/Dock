@@ -112,6 +112,52 @@ public class ProportionalStackPanel : Panel
         control.SetValue(IsCollapsedProperty, value);
     }
 
+    static ProportionalStackPanel()
+    {
+        AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
+        AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
+
+        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
+                return;
+
+            if (parent.isAssigningProportions)
+                return;
+
+            if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
+            {
+                SetCollapsedProportion(sender, value);
+            }
+
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        });
+
+        CollapsedProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
+        {
+            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
+                return;
+
+            if (parent.isAssigningProportions)
+                return;
+
+            parent.InvalidateMeasure();
+            parent.InvalidateArrange();
+        });
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == OrientationProperty)
+        {
+            InvalidateMeasure();
+        }
+    }
+
     private void AssignProportions(Size size, double splitterThickness)
     {
         isAssigningProportions = true;
@@ -409,53 +455,5 @@ public class ProportionalStackPanel : Panel
         }
 
         return arrangeSize;
-    }
-
-
-
-    /// <inheritdoc/>
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-
-        if (change.Property == OrientationProperty)
-        {
-            InvalidateMeasure();
-        }
-    }
-
-    static ProportionalStackPanel()
-    {
-        AffectsParentMeasure<ProportionalStackPanel>(IsCollapsedProperty);
-        AffectsParentArrange<ProportionalStackPanel>(IsCollapsedProperty);
-
-        ProportionProperty.Changed.AddClassHandler<Control>((sender, e) =>
-        {
-            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
-                return;
-
-            if (parent.isAssigningProportions)
-                return;
-
-            if (!GetIsCollapsed(sender) && e.NewValue is double value && !double.IsNaN(value))
-            {
-                SetCollapsedProportion(sender, value);
-            }
-
-            parent.InvalidateMeasure();
-            parent.InvalidateArrange();
-        });
-
-        CollapsedProportionProperty.Changed.AddClassHandler<Control>((sender, _) =>
-        {
-            if (sender.GetVisualParent() is not ProportionalStackPanel parent)
-                return;
-
-            if (parent.isAssigningProportions)
-                return;
-
-            parent.InvalidateMeasure();
-            parent.InvalidateArrange();
-        });
     }
 }

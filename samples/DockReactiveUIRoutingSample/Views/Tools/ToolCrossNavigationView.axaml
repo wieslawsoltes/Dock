@@ -69,7 +69,7 @@
                                         </StackPanel>
                                         
                                         <Button Grid.Column="2" Content="View Details" 
-                                               Command="{Binding $parent[UserControl].DataContext.NavigateToContent}"
+                                               Command="{Binding $parent[UserControl].((vm:ToolCrossNavigationViewModel)DataContext).NavigateToContent}"
                                                CommandParameter="{Binding}"
                                                Background="#FF9800" Foreground="White"
                                                VerticalAlignment="Center" />

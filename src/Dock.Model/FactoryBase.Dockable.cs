@@ -502,16 +502,18 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
+        var rootDock = FindRoot(dockable, _ => true);
+        if (rootDock is null)
+        {
+            return;
+        }
+
+        HidePreviewingDockables(rootDock);
+
         switch (dockable.Owner)
         {
             case IToolDock toolDock:
             {
-                var rootDock = FindRoot(dockable, _ => true);
-                if (rootDock is null)
-                {
-                    return;
-                }
-
                 var isVisible = false;
 
                 if (toolDock.VisibleDockables is not null)
@@ -612,7 +614,6 @@ public abstract partial class FactoryBase
                 else if (isPinned)
                 {
                     // Unpin dockable.
-
                     toolDock.VisibleDockables ??= CreateList<IDockable>();
 
                     switch (alignment)

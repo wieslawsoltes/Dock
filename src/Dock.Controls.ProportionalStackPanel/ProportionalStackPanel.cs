@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia;
@@ -10,6 +11,70 @@ using Avalonia.Layout;
 using Avalonia.VisualTree;
 
 namespace Dock.Controls.ProportionalStackPanel;
+
+/// <summary>
+/// Shared utilities for proportion and control management.
+/// </summary>
+internal static class ProportionUtils
+{
+    /// <summary>
+    /// Safely clamps a value between min and max bounds.
+    /// </summary>
+    public static double Clamp(double value, double min, double max)
+    {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
+    }
+
+    /// <summary>
+    /// Checks if a proportion value is valid (not NaN and non-negative).
+    /// </summary>
+    public static bool IsValidProportion(double proportion)
+    {
+        return !double.IsNaN(proportion) && proportion >= 0;
+    }
+
+    /// <summary>
+    /// Safely converts a dimension to proportion based on available size.
+    /// </summary>
+    public static double DimensionToProportion(double dimension, double availableSize)
+    {
+        return availableSize > 0 ? dimension / availableSize : 0;
+    }
+
+    /// <summary>
+    /// Gets the relevant dimension (width or height) based on orientation.
+    /// </summary>
+    public static double GetRelevantDimension(Size size, Orientation orientation)
+    {
+        return orientation == Orientation.Horizontal ? size.Width : size.Height;
+    }
+
+    /// <summary>
+    /// Gets the relevant min/max size constraint for a control based on orientation.
+    /// </summary>
+    public static (double Min, double Max) GetSizeConstraints(Control control, Orientation orientation)
+    {
+        if (orientation == Orientation.Horizontal)
+        {
+            return (control.MinWidth, control.MaxWidth);
+        }
+        else
+        {
+            return (control.MinHeight, control.MaxHeight);
+        }
+    }
+
+    /// <summary>
+    /// Filters children to get only non-splitter controls.
+    /// </summary>
+    public static IEnumerable<Control> GetNonSplitterChildren(Avalonia.Controls.Controls children)
+    {
+        return children.OfType<Control>()
+            .Where(control => !ProportionalStackPanelSplitter.IsSplitter(control, out _));
+    }
+}
 
 /// <summary>
 /// A Panel that stacks controls either horizontally or vertically, with proportional resizing.
@@ -116,7 +181,8 @@ public class ProportionalStackPanel : Panel
         isAssigningProportions = true;
         try
         {
-            AssignProportionsInternal(Children, size, splitterThickness, Orientation);
+            var proportionManager = new ProportionManager(Children, size, splitterThickness, Orientation);
+            proportionManager.AssignProportions();
         }
         finally
         {
@@ -124,188 +190,213 @@ public class ProportionalStackPanel : Panel
         }
     }
 
-    private static double ClampProportion(
-        Control control,
-        Orientation orientation,
-        double available,
-        double proportion)
+    /// <summary>
+    /// Manages proportion assignment logic for ProportionalStackPanel children.
+    /// </summary>
+    private class ProportionManager
     {
-        double min = orientation == Orientation.Horizontal ? control.MinWidth : control.MinHeight;
-        double max = orientation == Orientation.Horizontal ? control.MaxWidth : control.MaxHeight;
+        private readonly Avalonia.Controls.Controls _children;
+        private readonly double _availableDimension;
+        private readonly Orientation _orientation;
+        private readonly List<ChildInfo> _childInfos;
+        private readonly ProportionConstraintHandler _constraintHandler;
 
-        var minProp = !double.IsNaN(min) && min > 0 ? min / available : 0.0;
-        var maxProp = !double.IsNaN(max) && !double.IsPositiveInfinity(max) ? max / available : double.PositiveInfinity;
-
-#if NETSTANDARD2_0
-        var clamped = Clamp(proportion, minProp, maxProp);
-#else
-        var clamped = Math.Clamp(proportion, minProp, maxProp);
-#endif
-        return clamped;
-
-#if NETSTANDARD2_0
-        static double Clamp(double value, double min, double max)
+        public ProportionManager(Avalonia.Controls.Controls children, Size size, double splitterThickness, Orientation orientation)
         {
-            if (value < min) return min;
-            if (value > max) return max;
-            return value;
+            _children = children;
+            _orientation = orientation;
+            _availableDimension = Math.Max(1.0, ProportionUtils.GetRelevantDimension(size, orientation) - splitterThickness);
+            _childInfos = CollectChildInfo();
+            _constraintHandler = new ProportionConstraintHandler(_orientation, _availableDimension);
         }
-#endif
+
+        public void AssignProportions()
+        {
+            HandleCollapsedChildren();
+            AssignUnassignedProportions();
+            NormalizeProportions();
+            ApplyProportions();
+        }
+
+        private List<ChildInfo> CollectChildInfo()
+        {
+            var infos = new List<ChildInfo>();
+            foreach (var control in ProportionUtils.GetNonSplitterChildren(_children))
+            {
+                infos.Add(new ChildInfo(control));
+            }
+            return infos;
+        }
+
+        private void HandleCollapsedChildren()
+        {
+            foreach (var info in _childInfos)
+            {
+                if (info.IsCollapsed)
+                {
+                    // Store current proportion before collapsing
+                    if (ProportionUtils.IsValidProportion(info.CurrentProportion) && info.CurrentProportion > 0)
+                    {
+                        SetCollapsedProportion(info.Control, info.CurrentProportion);
+                    }
+                    info.TargetProportion = 0.0;
+                }
+                else
+                {
+                    // Restore from collapsed state if available
+                    var stored = GetCollapsedProportion(info.Control);
+                    info.TargetProportion = ProportionUtils.IsValidProportion(stored) ? stored : info.CurrentProportion;
+                }
+            }
+        }
+
+        private void AssignUnassignedProportions()
+        {
+            var unassignedChildren = _childInfos
+                .Where(info => !info.IsCollapsed && !ProportionUtils.IsValidProportion(info.TargetProportion))
+                .ToList();
+                
+            if (unassignedChildren.Count == 0) return;
+
+            var assignedTotal = _childInfos
+                .Where(info => ProportionUtils.IsValidProportion(info.TargetProportion))
+                .Sum(info => info.TargetProportion);
+                
+            var remainingProportion = Math.Max(0, 1.0 - assignedTotal);
+            var proportionPerChild = remainingProportion / unassignedChildren.Count;
+
+            foreach (var info in unassignedChildren)
+            {
+                info.TargetProportion = proportionPerChild;
+            }
+        }
+
+        private void NormalizeProportions()
+        {
+            var activeChildren = _childInfos.Where(info => !info.IsCollapsed).ToList();
+            if (activeChildren.Count == 0) return;
+
+            var totalProportion = activeChildren.Sum(info => info.TargetProportion);
+            const double tolerance = 1e-10;
+            
+            if (Math.Abs(totalProportion - 1.0) < tolerance) return; // Already normalized
+            if (totalProportion <= 0) return; // Avoid division by zero
+
+            var scaleFactor = 1.0 / totalProportion;
+            foreach (var info in activeChildren)
+            {
+                info.TargetProportion *= scaleFactor;
+            }
+        }
+
+        private void ApplyProportions()
+        {
+            foreach (var info in _childInfos)
+            {
+                var clampedProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion);
+                SetProportion(info.Control, clampedProportion);
+                
+                if (!info.IsCollapsed)
+                {
+                    SetCollapsedProportion(info.Control, clampedProportion);
+                }
+            }
+        }
+
+        private class ChildInfo
+        {
+            public Control Control { get; }
+            public bool IsCollapsed { get; }
+            public double CurrentProportion { get; }
+            public double TargetProportion { get; set; }
+
+            public ChildInfo(Control control)
+            {
+                Control = control;
+                IsCollapsed = GetIsCollapsed(control);
+                CurrentProportion = GetProportion(control);
+                TargetProportion = double.NaN;
+            }
+        }
     }
 
-    private static void AssignProportionsInternal(
-        Avalonia.Controls.Controls children,
-        Size size,
-        double splitterThickness,
-        Orientation orientation)
+    /// <summary>
+    /// Handles proportion constraints for controls.
+    /// </summary>
+    private class ProportionConstraintHandler
     {
-        var dimension = orientation == Orientation.Horizontal ? size.Width : size.Height;
-        var dimensionWithoutSplitters = Math.Max(1.0, dimension - splitterThickness);
+        private readonly Orientation _orientation;
+        private readonly double _availableDimension;
 
-        var assignedProportion = 0.0;
-        var unassignedProportions = 0;
-
-        foreach (var control in children.OfType<Control>())
+        public ProportionConstraintHandler(Orientation orientation, double availableDimension)
         {
-            var isCollapsed = GetIsCollapsed(control);
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(control, out _);
-
-            if (!isSplitter)
-            {
-                var proportion = GetProportion(control);
-
-                if (isCollapsed)
-                {
-                    // always remember the current size before collapsing so repeated
-                    // pin/unpin cycles restore the latest proportion
-                    if (!double.IsNaN(proportion) && proportion > 0)
-                    {
-                        SetCollapsedProportion(control, proportion);
-                    }
-
-                    proportion = 0.0;
-                }
-                else
-                {
-                    var stored = GetCollapsedProportion(control);
-                    if (!double.IsNaN(stored))
-                    {
-                        proportion = stored;
-                    }
-                }
-
-                if (double.IsNaN(proportion))
-                {
-                    unassignedProportions++;
-                }
-                else
-                {
-                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
-                    SetProportion(control, proportion);
-                    if (!isCollapsed)
-                    {
-                        SetCollapsedProportion(control, proportion);
-                    }
-                    assignedProportion += proportion;
-                }
-            }
+            _orientation = orientation;
+            _availableDimension = availableDimension;
         }
 
-        if (unassignedProportions > 0)
+        public double ClampProportion(Control control, double proportion)
         {
-            var toAssign = assignedProportion;
-            foreach (var control in children.Where(c =>
-                     {
-                         var isCollapsed = GetIsCollapsed(c);
-                         return !isCollapsed && double.IsNaN(GetProportion(c));
-                     }))
-            {
-                if (!ProportionalStackPanelSplitter.IsSplitter(control, out _))
-                {
-                    var proportion = (1.0 - toAssign) / unassignedProportions;
-                    proportion = ClampProportion(control, orientation, dimensionWithoutSplitters, proportion);
-                    SetProportion(control, proportion);
-                    assignedProportion += proportion;
-                }
-            }
-        }
+            var (min, max) = ProportionUtils.GetSizeConstraints(control, _orientation);
+            
+            var minProp = !double.IsNaN(min) && min > 0 ? min / _availableDimension : 0.0;
+            var maxProp = !double.IsNaN(max) && !double.IsPositiveInfinity(max) ? max / _availableDimension : double.PositiveInfinity;
 
-        if (assignedProportion < 1)
-        {
-            var numChildren = (double)children.Count(c =>
-            {
-                var isCollapsed = GetIsCollapsed(c);
-                return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
-            });
-            var toAdd = (1.0 - assignedProportion) / numChildren;
-            foreach (var child in children.Where(c =>
-                     {
-                         var isCollapsed = GetIsCollapsed(c);
-                         return !isCollapsed && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
-                     }))
-            {
-                var proportion = GetProportion(child) + toAdd;
-                SetProportion(child, proportion);
-            }
-        }
-        else if (assignedProportion > 1)
-        {
-            var numChildren = (double)children.Count(c =>
-            {
-                var isCollapsed = GetIsCollapsed(c);
-                return !ProportionalStackPanelSplitter.IsSplitter(c, out _) && !isCollapsed;
-            });
-            var toRemove = (assignedProportion - 1.0) / numChildren;
-            foreach (var child in children.Where(c =>
-                     {
-                         var isCollapsed = GetIsCollapsed(c);
-                         return !isCollapsed && !ProportionalStackPanelSplitter.IsSplitter(c, out _);
-                     }))
-            {
-                var proportion = GetProportion(child) - toRemove;
-                SetProportion(child, proportion);
-            }
+#if NETSTANDARD2_0
+            return ProportionUtils.Clamp(proportion, minProp, maxProp);
+#else
+            return Math.Clamp(proportion, minProp, maxProp);
+#endif
         }
     }
 
     private double GetTotalSplitterThickness(Avalonia.Controls.Controls children)
     {
-        var previousisCollapsed = false;
         var totalThickness = 0.0;
+        var previousWasCollapsed = false;
 
         for (var i = 0; i < children.Count; i++)
         {
-            var c = children[i];
-            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(c, out var proportionalStackPanelSplitter);
+            var child = children[i];
+            var isSplitter = ProportionalStackPanelSplitter.IsSplitter(child, out var splitter);
 
-            if (isSplitter && proportionalStackPanelSplitter is not null)
+            if (isSplitter && splitter is not null)
             {
-                if (previousisCollapsed)
+                // Skip splitters adjacent to collapsed elements
+                if (ShouldSkipSplitter(i, children, previousWasCollapsed))
                 {
-                    previousisCollapsed = false;
                     continue;
                 }
 
-                if (i + 1 < Children.Count)
-                {
-                    var nextControl = Children[i + 1];
-                    var nextIsCollapsed = GetIsCollapsed(nextControl);
-                    if (nextIsCollapsed)
-                    {
-                        continue;
-                    }
-                }
-
-                var thickness = proportionalStackPanelSplitter.Thickness;
-                totalThickness += thickness;
+                totalThickness += splitter.Thickness;
             }
             else
             {
-                previousisCollapsed = GetIsCollapsed(c);
+                previousWasCollapsed = GetIsCollapsed(child);
             }
         }
 
         return double.IsNaN(totalThickness) ? 0 : totalThickness;
+    }
+
+    private bool ShouldSkipSplitter(int splitterIndex, Avalonia.Controls.Controls children, bool previousWasCollapsed)
+    {
+        // Skip if previous element was collapsed
+        if (previousWasCollapsed)
+        {
+            return true;
+        }
+
+        // Skip if next element is collapsed
+        if (splitterIndex + 1 < children.Count)
+        {
+            var nextChild = children[splitterIndex + 1];
+            if (GetIsCollapsed(nextChild))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <inheritdoc/>

@@ -37,6 +37,24 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void RemoveDockable(IDockable dockable, bool collapse)
     {
+        // If dockable is being previewed (has OriginalOwner), restore owner but keep OriginalOwner for floating operations
+        if (dockable.OriginalOwner is not null)
+        {
+            var rootDock = FindRoot(dockable, _ => true);
+            if (rootDock is not null)
+            {
+                // Restore the owner so UnpinDockable works correctly
+                dockable.Owner = dockable.OriginalOwner;
+                
+                // Clean up the preview dock manually, but preserve OriginalOwner for floating
+                if (rootDock.PinnedDock?.VisibleDockables is not null)
+                {
+                    RemoveAllVisibleDockables(rootDock.PinnedDock);
+                    rootDock.PinnedDock = null;
+                }
+            }
+        }
+
         // to correctly remove a pinned dockable, it needs to be unpinned
         UnpinDockable(dockable);
 

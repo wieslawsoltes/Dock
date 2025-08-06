@@ -561,4 +561,47 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to split.</param>
     void NewVerticalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Copies properties from source dockable to target dockable during move operations.
+    /// </summary>
+    /// <param name="source">The source dockable.</param>
+    /// <param name="target">The target dockable.</param>
+    /// <param name="operation">The dock operation being performed.</param>
+    void CopyDockableProperties(IDockable source, IDockable target, DockOperation operation);
+
+    /// <summary>
+    /// Copies properties from source dock to target dock during split operations.
+    /// </summary>
+    /// <param name="source">The source dock.</param>
+    /// <param name="target">The target dock.</param>
+    /// <param name="operation">The dock operation being performed.</param>
+    void CopyDockProperties(IDock source, IDock target, DockOperation operation);
+
+    /// <summary>
+    /// Copies properties when creating a new dock during split operations.
+    /// </summary>
+    /// <param name="source">The source dock being split.</param>
+    /// <param name="newDock">The newly created dock.</param>
+    /// <param name="operation">The split operation being performed.</param>
+    void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation);
+
+    /// <summary>
+    /// Copies properties when creating a floating window from a dockable.
+    /// </summary>
+    /// <param name="source">The source dockable.</param>
+    /// <param name="window">The new dock window.</param>
+    /// <param name="targetDock">The dock that will contain the dockable in the window.</param>
+    void CopyPropertiesForFloatingWindow(IDockable source, IDockWindow window, IDock targetDock);
+
+    /// <summary>
+    /// Copies dimension properties (width, height, position) for window operations.
+    /// </summary>
+    /// <param name="source">The source dockable or dock.</param>
+    /// <param name="target">The target window or dock.</param>
+    /// <param name="x">The target X position.</param>
+    /// <param name="y">The target Y position.</param>
+    /// <param name="width">The target width.</param>
+    /// <param name="height">The target height.</param>
+    void CopyDimensionProperties(IDockable source, object target, double x, double y, double width, double height);
 }

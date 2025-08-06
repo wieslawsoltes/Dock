@@ -158,6 +158,9 @@ public class DockService : IDockService
         targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
         
+        // Allow customization of property copying for new tool dock
+        factory.CopyPropertiesForSplitDock(targetDock, targetToolDock, operation);
+        
         // For split operations, use global validation (allow non-grouped sources)
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetToolDock))
         {
@@ -178,8 +181,13 @@ public class DockService : IDockService
         var targetDocumentDock = factory.CreateDocumentDock();
         targetDocumentDock.Title = nameof(IDocumentDock);
         targetDocumentDock.VisibleDockables = factory.CreateList<IDockable>();
+        
+        // Use the new overridable method for copying properties
+        factory.CopyPropertiesForSplitDock(sourceDockableOwner, targetDocumentDock, operation);
+        
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
         {
+            // Additional specific copying that was in the original implementation
             targetDocumentDock.Id = sourceDocumentDock.Id;
             targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
             targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;

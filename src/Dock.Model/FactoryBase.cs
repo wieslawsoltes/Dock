@@ -133,13 +133,12 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
-        var containerProportion = dock.Proportion;
-        dock.Proportion = double.NaN;
-
         var layout = CreateProportionalDock();
         layout.Title = nameof(IProportionalDock);
         layout.VisibleDockables = CreateList<IDockable>();
-        layout.Proportion = containerProportion;
+        
+        // Use the new overridable method for copying properties
+        CopyPropertiesForSplitDock(dock, layout, operation);
 
         var splitter = CreateProportionalDockSplitter();
         splitter.Title = nameof(IProportionalDockSplitter);
@@ -272,11 +271,8 @@ public abstract partial class FactoryBase : IFactory
                                 var splitter = CreateProportionalDockSplitter();
                                 splitter.Title = nameof(IProportionalDockSplitter);
 
-                                // Store the original dock's proportion and split it equally
-                                var originalProportion = dock.Proportion;
-                                var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
-                                dock.Proportion = halfProportion;
-                                split.Proportion = halfProportion;
+                                // Use the new overridable method for copying properties
+                                CopyPropertiesForSplitDock(dock, split, operation);
 
                                 switch (operation)
                                 {
@@ -366,16 +362,8 @@ public abstract partial class FactoryBase : IFactory
                     {
                         if (target is IDocumentDock targetDocumentDock)
                         {
-                            targetDocumentDock.Id = sourceDocumentDock.Id;
-                            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
-                            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
-
-                            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
-                                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
-                            {
-                                
-                                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
-                            }
+                            // Note: Window creation and property copying is handled later in CreateWindowFrom
+                            // This section preserves the target dock for later use
                         }
                     }
                     if (dock.VisibleDockables is not null)
@@ -439,6 +427,12 @@ public abstract partial class FactoryBase : IFactory
 
         root.Window = window;
 
+        // Allow customization of property copying for floating windows
+        if (target is IDock targetDock)
+        {
+            CopyPropertiesForFloatingWindow(dockable, window, targetDock);
+        }
+
         return window;
     }
 
@@ -458,10 +452,9 @@ public abstract partial class FactoryBase : IFactory
         if (window is not null)
         {
             AddWindow(rootDock, window);
-            window.X = x;
-            window.Y = y;
-            window.Width = width;
-            window.Height = height;
+            
+            // Use the new overridable method for copying dimension properties
+            CopyDimensionProperties(dockable, window, x, y, width, height);
             window.Present(false);
 
             OnDockableDocked(dockable, DockOperation.Window);
@@ -470,6 +463,73 @@ public abstract partial class FactoryBase : IFactory
             {
                 SetFocusedDockable(window.Layout, dockable);
             }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void CopyDockableProperties(IDockable source, IDockable target, DockOperation operation)
+    {
+        // Default implementation - no properties copied
+        // Override in derived factories to customize property copying behavior
+    }
+
+    /// <inheritdoc/>
+    public virtual void CopyDockProperties(IDock source, IDock target, DockOperation operation)
+    {
+        // Default implementation - no properties copied
+        // Override in derived factories to customize property copying behavior
+    }
+
+    /// <inheritdoc/>
+    public virtual void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation)
+    {
+        // Default implementation - only copy basic properties that are currently copied
+        // This maintains backward compatibility while allowing customization
+        
+        // Copy the proportion as currently done in CreateSplitLayout
+        if (operation == DockOperation.Left || operation == DockOperation.Right ||
+            operation == DockOperation.Top || operation == DockOperation.Bottom)
+        {
+            var originalProportion = source.Proportion;
+            var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
+            source.Proportion = halfProportion;
+            newDock.Proportion = halfProportion;
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void CopyPropertiesForFloatingWindow(IDockable source, IDockWindow window, IDock targetDock)
+    {
+        // Default implementation - copy basic window properties
+        // Override to customize window property copying
+        
+        if (source.Owner is IDocumentDock sourceDocumentDock && targetDock is IDocumentDock targetDocumentDock)
+        {
+            // Copy document dock specific properties as currently done in CreateWindowFrom
+            targetDocumentDock.Id = sourceDocumentDock.Id;
+            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
+
+            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
+            {
+                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void CopyDimensionProperties(IDockable source, object target, double x, double y, double width, double height)
+    {
+        // Default implementation - copy dimension properties for window operations
+        // Override to customize dimension copying behavior
+        
+        if (target is IDockWindow window)
+        {
+            window.X = x;
+            window.Y = y;
+            window.Width = width;
+            window.Height = height;
         }
     }
 }

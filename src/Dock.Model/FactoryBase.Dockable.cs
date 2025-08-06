@@ -172,6 +172,13 @@ public abstract partial class FactoryBase
             OnDockableUndocked(sourceDockable, DockOperation.Fill);
             InsertVisibleDockable(dock, targetIndex, sourceDockable);
             OnDockableAdded(sourceDockable);
+            
+            // Allow customization of property copying during move
+            if (targetDockable != null)
+            {
+                CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
+            }
+            
             OnDockableMoved(sourceDockable);
             OnDockableDocked(sourceDockable, DockOperation.Fill);
             dock.ActiveDockable = sourceDockable;
@@ -304,6 +311,13 @@ public abstract partial class FactoryBase
                     RemoveVisibleDockableAt(targetDock, sourceIndex);
                     OnDockableRemoved(sourceDockable);
                     OnDockableUndocked(sourceDockable, DockOperation.Fill);
+                    
+                    // Allow customization of property copying during move
+                    if (targetDockable != null)
+                    {
+                        CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
+                    }
+                    
                     OnDockableMoved(sourceDockable);
                     OnDockableDocked(sourceDockable, DockOperation.Fill);
                 }
@@ -317,6 +331,13 @@ public abstract partial class FactoryBase
                         RemoveVisibleDockableAt(targetDock, removeIndex);
                         OnDockableRemoved(sourceDockable);
                         OnDockableUndocked(sourceDockable, DockOperation.Fill);
+                        
+                        // Allow customization of property copying during move
+                        if (targetDockable != null)
+                        {
+                            CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
+                        }
+                        
                         OnDockableMoved(sourceDockable);
                         OnDockableDocked(sourceDockable, DockOperation.Fill);
                     }
@@ -331,6 +352,15 @@ public abstract partial class FactoryBase
                 OnDockableUndocked(sourceDockable, DockOperation.Fill);
                 InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
                 OnDockableAdded(sourceDockable);
+                
+                // Allow customization of property copying during move between docks
+                if (targetDockable != null)
+                {
+                    CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
+                }
+                // Also allow copying dock properties when moving to a different dock
+                CopyDockProperties(sourceDock, targetDock, DockOperation.Fill);
+                
                 OnDockableMoved(sourceDockable);
                 OnDockableDocked(sourceDockable, DockOperation.Fill);
                 InitDockable(sourceDockable, targetDock);
@@ -364,6 +394,11 @@ public abstract partial class FactoryBase
             OnDockableAdded(originalSourceDockable);
             dock.VisibleDockables[sourceIndex] = originalTargetDockable;
             OnDockableAdded(originalTargetDockable);
+            
+            // Allow customization of property copying during swap
+            CopyDockableProperties(originalSourceDockable, originalTargetDockable, DockOperation.Fill);
+            CopyDockableProperties(originalTargetDockable, originalSourceDockable, DockOperation.Fill);
+            
             OnDockableSwapped(originalSourceDockable);
             OnDockableSwapped(originalTargetDockable);
             dock.ActiveDockable = originalTargetDockable;
@@ -393,6 +428,12 @@ public abstract partial class FactoryBase
 
             InitDockable(originalSourceDockable, targetDock);
             InitDockable(originalTargetDockable, sourceDock);
+
+            // Allow customization of property copying during swap between docks
+            CopyDockableProperties(originalSourceDockable, originalTargetDockable, DockOperation.Fill);
+            CopyDockableProperties(originalTargetDockable, originalSourceDockable, DockOperation.Fill);
+            CopyDockProperties(sourceDock, targetDock, DockOperation.Fill);
+            CopyDockProperties(targetDock, sourceDock, DockOperation.Fill);
 
             OnDockableSwapped(originalTargetDockable);
             OnDockableSwapped(originalSourceDockable);

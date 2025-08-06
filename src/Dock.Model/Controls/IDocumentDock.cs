@@ -8,6 +8,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Document dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IDocumentDock : IDock, ILocalTarget
 {
     /// <summary>

@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Uniform grid dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IUniformGridDock : IDock
 {
     /// <summary>

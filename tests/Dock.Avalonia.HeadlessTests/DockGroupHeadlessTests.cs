@@ -62,8 +62,8 @@ public class DockGroupHeadlessTests
         
         // Create tool dock with GroupA
         var toolDockA = CreateToolDock("ToolDockA", "Tools A", "GroupA");
-        toolDockA.VisibleDockables.Add(toolA1);
-        toolDockA.VisibleDockables.Add(toolA2);
+        toolDockA.VisibleDockables?.Add(toolA1);
+        toolDockA.VisibleDockables?.Add(toolA2);
         
         // Set proper ownership hierarchy
         toolA1.Owner = toolDockA;
@@ -98,8 +98,8 @@ public class DockGroupHeadlessTests
         
         // Create tool dock with GroupA
         var toolDockA = CreateToolDock("ToolDockA", "Tools A", "GroupA");
-        toolDockA.VisibleDockables.Add(toolA1);
-        toolDockA.VisibleDockables.Add(toolA2);
+        toolDockA.VisibleDockables?.Add(toolA1);
+        toolDockA.VisibleDockables?.Add(toolA2);
         
         // Set proper ownership hierarchy
         toolA1.Owner = toolDockA;
@@ -107,7 +107,7 @@ public class DockGroupHeadlessTests
         
         // Create a source dock for toolA3 that we're trying to drag
         var sourceDockForA3 = CreateToolDock("SourceDockA3", "Source for A3", "GroupA");
-        sourceDockForA3.VisibleDockables.Add(toolA3);
+        sourceDockForA3.VisibleDockables?.Add(toolA3);
         toolA3.Owner = sourceDockForA3;
         
         var rootDock = factory.CreateRootDock();

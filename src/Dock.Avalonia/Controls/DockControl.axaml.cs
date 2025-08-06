@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -14,6 +16,7 @@ using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
 using Dock.Model;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -21,11 +24,13 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DockControl"/> xaml.
 /// </summary>
+[TemplatePart("PART_ContentControl", typeof(ContentControl))]
 public class DockControl : TemplatedControl, IDockControl
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
+    private ContentControl? _contentControl;
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -62,6 +67,12 @@ public class DockControl : TemplatedControl, IDockControl
     /// </summary>
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
+
+    /// <summary>
+    /// Defines the <see cref="AutoCreateDataTemplates"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> AutoCreateDataTemplatesProperty =
+        AvaloniaProperty.Register<DockControl, bool>(nameof(AutoCreateDataTemplates), true);
 
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
@@ -114,6 +125,17 @@ public class DockControl : TemplatedControl, IDockControl
         set => SetValue(IsDraggingDockProperty, value);
     }
 
+    /// <summary>
+    /// Gets or sets whether to automatically create default DataTemplates in code-behind.
+    /// When true (default), the control will add default DataTemplates for all dock types.
+    /// When false, no DataTemplates are added, allowing complete user control via XAML.
+    /// </summary>
+    public bool AutoCreateDataTemplates
+    {
+        get => GetValue(AutoCreateDataTemplatesProperty);
+        set => SetValue(AutoCreateDataTemplatesProperty, value);
+    }
+
     private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();
 
     /// <summary>
@@ -146,6 +168,39 @@ public class DockControl : TemplatedControl, IDockControl
         AddHandler(PointerExitedEvent, ExitedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerCaptureLostEvent, CaptureLostHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+    }
+
+    /// <inheritdoc />
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
+        
+        if (_contentControl is not null)
+        {
+            InitializeDefaultDataTemplates();
+        }
+    }
+
+    private void InitializeDefaultDataTemplates()
+    {
+        if (_contentControl?.DataTemplates is null)
+        {
+            return;
+        }
+
+        // Check if auto-creation of DataTemplates is enabled
+        if (!AutoCreateDataTemplates)
+        {
+            return;
+        }
+
+        // Create and add default DataTemplates using helper class
+        foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
+        {
+            _contentControl.DataTemplates.Add(template);
+        }
     }
 
     /// <inheritdoc />
@@ -336,9 +391,10 @@ public class DockControl : TemplatedControl, IDockControl
         if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
         {
             var pos = e.GetPosition(this);
-            if (this.InputHitTest(pos) is Control control)
+            if (this.InputHitTest(pos) is Control initialControl)
             {
                 IDockable? dockable = null;
+                Control? control = initialControl;
                 while (control is { } && dockable is null)
                 {
                     dockable = control.DataContext as IDockable;

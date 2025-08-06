@@ -58,7 +58,7 @@ public abstract partial class FactoryBase
         if (dock.VisibleDockables.Count > 0)
         {
             var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-            dock.ActiveDockable = nextActiveDockable is not IProportionalDockSplitter ? nextActiveDockable : null;
+            dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
         }
         else
         {
@@ -98,21 +98,21 @@ public abstract partial class FactoryBase
             var dockables = dock.VisibleDockables.ToList();
 
             // If we only have splitters, remove all of them
-            if (dockables.Count > 0 && dockables.All(d => d is IProportionalDockSplitter))
+            if (dockables.Count > 0 && dockables.All(d => d is ISplitter))
             {
                 toRemove.AddRange(dockables);
             }
             else
             {
                 // Remove splitters that are at the beginning
-                while (dockables.Count > 0 && dockables[0] is IProportionalDockSplitter)
+                while (dockables.Count > 0 && dockables[0] is ISplitter)
                 {
                     toRemove.Add(dockables[0]);
                     dockables.RemoveAt(0);
                 }
 
                 // Remove splitters that are at the end
-                while (dockables.Count > 0 && dockables[dockables.Count - 1] is IProportionalDockSplitter)
+                while (dockables.Count > 0 && dockables[dockables.Count - 1] is ISplitter)
                 {
                     toRemove.Add(dockables[dockables.Count - 1]);
                     dockables.RemoveAt(dockables.Count - 1);
@@ -121,11 +121,11 @@ public abstract partial class FactoryBase
                 // Remove consecutive splitters - keep only the first one in each sequence
                 for (int i = 0; i < dockables.Count - 1; i++)
                 {
-                    if (dockables[i] is IProportionalDockSplitter)
+                    if (dockables[i] is ISplitter)
                     {
                         // Remove all consecutive splitters after this one
                         int j = i + 1;
-                        while (j < dockables.Count && dockables[j] is IProportionalDockSplitter)
+                        while (j < dockables.Count && dockables[j] is ISplitter)
                         {
                             toRemove.Add(dockables[j]);
                             j++;
@@ -147,10 +147,10 @@ public abstract partial class FactoryBase
         }
 
         // Update active dockable if it was a splitter that got removed
-        if (dock.ActiveDockable is IProportionalDockSplitter || 
+        if (dock.ActiveDockable is ISplitter || 
             (dock.ActiveDockable is not null && !dock.VisibleDockables.Contains(dock.ActiveDockable)))
         {
-            dock.ActiveDockable = dock.VisibleDockables?.FirstOrDefault(d => d is not IProportionalDockSplitter);
+            dock.ActiveDockable = dock.VisibleDockables?.FirstOrDefault(d => d is not ISplitter);
         }
     }
 
@@ -1254,7 +1254,7 @@ public abstract partial class FactoryBase
 
         var newIsEmpty = dock.VisibleDockables == null
                          || dock.VisibleDockables?.Count == 0
-                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true, IsCollapsable: true } or IProportionalDockSplitter);
+                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true, IsCollapsable: true } or ISplitter);
 
         if (oldIsEmpty != newIsEmpty)
         {

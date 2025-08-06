@@ -8,7 +8,7 @@ namespace Dock.Model.Controls;
 /// Grid splitter dock contract.
 /// </summary>
 [RequiresDataTemplate]
-public interface IGridDockSplitter : IDockable
+public interface IGridDockSplitter : ISplitter
 {
     /// <summary>
     /// Gets or sets resize direction.

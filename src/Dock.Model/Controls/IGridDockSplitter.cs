@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Grid splitter dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IGridDockSplitter : IDockable
 {
     /// <summary>

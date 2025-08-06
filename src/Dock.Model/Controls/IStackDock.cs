@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Stack dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IStackDock : IDock
 {
     /// <summary>

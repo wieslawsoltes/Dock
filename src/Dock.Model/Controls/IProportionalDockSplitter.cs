@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Proportional dock splitter contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IProportionalDockSplitter : IDockable
 {
     /// <summary>

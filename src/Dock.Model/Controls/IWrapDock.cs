@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Wrap dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IWrapDock : IDock
 {
     /// <summary>

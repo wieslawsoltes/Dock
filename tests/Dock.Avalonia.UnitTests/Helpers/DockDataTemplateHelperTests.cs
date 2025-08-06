@@ -7,7 +7,7 @@ using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Helpers;
+using Dock.Avalonia.Internal;
 using Dock.Controls.ProportionalStackPanel;
 using Dock.Model.Controls;
 using Dock.Model.Core;

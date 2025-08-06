@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Dock.Avalonia.Controls;
-using Dock.Avalonia.Helpers;
+using Dock.Avalonia.Internal;
 using Dock.Controls.ProportionalStackPanel;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;

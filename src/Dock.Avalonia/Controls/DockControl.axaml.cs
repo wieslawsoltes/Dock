@@ -14,7 +14,6 @@ using Avalonia.Metadata;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
-using Dock.Avalonia.Helpers;
 using Dock.Avalonia.Internal;
 using Dock.Model;
 using Dock.Model.Controls;

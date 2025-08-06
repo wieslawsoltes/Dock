@@ -323,7 +323,7 @@ public class OptimizedSplitLayoutUITests
         
         // Verify the layout structure
         Assert.Single(rootDock.VisibleDockables!);
-        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables[0]);
+        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables![0]);
         Assert.Equal(DockOrientation.Horizontal, mainLayout.Orientation);
 
         // Should have 5 items when splitting with same orientation: [toolDock1], [splitter], [newToolDock], [splitter], [toolDock2]
@@ -383,7 +383,7 @@ public class OptimizedSplitLayoutUITests
         
         // Verify the layout structure
         Assert.Single(rootDock.VisibleDockables!);
-        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables[0]);
+        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables![0]);
         Assert.Equal(DockOrientation.Horizontal, mainLayout.Orientation);
 
         // Should have 3 items: [toolDock1], [splitter], [nested vertical layout]
@@ -449,12 +449,12 @@ public class OptimizedSplitLayoutUITests
 
         // Verify the layout structure
         Assert.Single(rootDock.VisibleDockables!);
-        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables[0]);
+        var mainLayout = Assert.IsType<ProportionalDock>(rootDock.VisibleDockables![0]);
         
         // The source tool should now be in the new tool dock
         Assert.Single(toolDock1.VisibleDockables!); // Only one tool remains in original dock
         Assert.Single(newToolDock.VisibleDockables!); // The moved tool is in the new dock
-        Assert.Same(sourceTool, newToolDock.VisibleDockables[0]);
+        Assert.Same(sourceTool, newToolDock.VisibleDockables![0]);
         Assert.Same(newToolDock, sourceTool.Owner);
 
         window.Close();

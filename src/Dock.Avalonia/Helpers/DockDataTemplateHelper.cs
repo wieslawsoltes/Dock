@@ -14,7 +14,7 @@ namespace Dock.Avalonia.Helpers;
 /// <summary>
 /// Helper class for creating default DataTemplates for dock controls.
 /// </summary>
-public static class DockDataTemplateHelper
+internal static class DockDataTemplateHelper
 {
     /// <summary>
     /// Creates a collection of default DataTemplates for all dock control types.

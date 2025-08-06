@@ -561,4 +561,31 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to split.</param>
     void NewVerticalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Gets a value indicating whether the factory has been initialized.
+    /// </summary>
+    bool IsInitialized { get; }
+
+    /// <summary>
+    /// Safely initializes the factory with the specified context and locator.
+    /// This method ensures thread-safe initialization and prevents multiple initializations.
+    /// </summary>
+    /// <param name="context">The dock context.</param>
+    /// <param name="locator">The dockable locator.</param>
+    /// <returns>True if initialization was successful or already completed; false otherwise.</returns>
+    bool SafeInitialize(object? context, IDictionary<string, Func<IDockable?>>? locator);
+
+    /// <summary>
+    /// Safely removes/deinitializes the factory.
+    /// This method ensures thread-safe deinitialization.
+    /// </summary>
+    /// <returns>True if deinitialization was successful; false otherwise.</returns>
+    bool SafeRemove();
+
+    /// <summary>
+    /// Resets the initialization state of the factory.
+    /// This method allows the factory to be reinitialized after being deinitialized.
+    /// </summary>
+    void ResetInitialization();
 }

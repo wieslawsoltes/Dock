@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,91 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
+    private readonly object _initializationLock = new object();
+    private volatile bool _isInitialized = false;
+    private object? _context;
+    private IDictionary<string, Func<IDockable?>>? _locator;
+
+    /// <inheritdoc/>
+    public bool IsInitialized => _isInitialized;
+
+    /// <inheritdoc/>
+    public bool SafeInitialize(object? context, IDictionary<string, Func<IDockable?>>? locator)
+    {
+        lock (_initializationLock)
+        {
+            if (_isInitialized)
+            {
+                return true; // Already initialized
+            }
+
+            try
+            {
+                _context = context;
+                _locator = locator;
+                
+                // Perform initialization logic
+                if (context is not null)
+                {
+                    ContextLocator ??= new Dictionary<string, Func<object?>>();
+                }
+                
+                if (locator is not null)
+                {
+                    DockableLocator ??= new Dictionary<string, Func<IDockable?>>();
+                }
+                
+                _isInitialized = true;
+                return true;
+            }
+            catch
+            {
+                // Reset state on failure
+                _context = null;
+                _locator = null;
+                _isInitialized = false;
+                return false;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public bool SafeRemove()
+    {
+        lock (_initializationLock)
+        {
+            if (!_isInitialized)
+            {
+                return true; // Already deinitialized
+            }
+
+            try
+            {
+                // Perform cleanup logic
+                _context = null;
+                _locator = null;
+                
+                _isInitialized = false;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public void ResetInitialization()
+    {
+        lock (_initializationLock)
+        {
+            _isInitialized = false;
+            _context = null;
+            _locator = null;
+        }
+    }
+
     private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
     {
         if (pinnedDockables is not null && pinnedDockables.Count != 0)

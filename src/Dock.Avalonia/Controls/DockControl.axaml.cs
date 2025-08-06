@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
@@ -187,18 +187,23 @@ public class DockControl : TemplatedControl, IDockControl
 
         if (InitializeFactory)
         {
-            layout.Factory.ContextLocator = new Dictionary<string, Func<object?>>();
-            layout.Factory.HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+            // Use the new SafeInitialize method for thread-safe initialization
+            var success = layout.Factory.SafeInitialize(DefaultContext, layout.Factory.DockableLocator);
+            
+            if (success)
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
-            };
-            layout.Factory.DockableLocator = new Dictionary<string, Func<IDockable?>>();
-            layout.Factory.DefaultContextLocator = GetContext;
-            layout.Factory.DefaultHostWindowLocator = GetHostWindow;
+                // Set up specific locators after safe initialization
+                layout.Factory.HostWindowLocator ??= new Dictionary<string, Func<IHostWindow?>>
+                {
+                    [nameof(IDockWindow)] = () => new HostWindow()
+                };
+                layout.Factory.DefaultContextLocator = GetContext;
+                layout.Factory.DefaultHostWindowLocator = GetHostWindow;
 
-            IHostWindow GetHostWindow() => new HostWindow();
+                IHostWindow GetHostWindow() => new HostWindow();
 
-            object? GetContext() => DefaultContext;
+                object? GetContext() => DefaultContext;
+            }
         }
 
         if (InitializeLayout)
@@ -224,6 +229,12 @@ public class DockControl : TemplatedControl, IDockControl
             {
                 layout.Close.Execute(null);
             }
+        }
+
+        // Use the new SafeRemove method for enhanced factory de-initialization
+        if (InitializeFactory)
+        {
+            layout.Factory.SafeRemove();
         }
 
         _isInitialized = false;

@@ -52,6 +52,7 @@ Choose the implementation that matches your MVVM framework:
 - [Deep dive](dock-deep-dive.md) – Internals of `DockControl`.
 - [DockManager guide](dock-manager-guide.md) – When and how to customize `DockManager`.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
+- [DataTemplates and custom dock types](dock-datatemplates.md) – Create custom dock types with their own visual representation.
 - [Custom themes](dock-custom-theme.md) – Build and apply your own theme.
 - [Context menus](dock-context-menus.md) – Localize or replace built in menus.
 - [Control recycling](dock-control-recycling.md) – Reuse visuals when dockables return.

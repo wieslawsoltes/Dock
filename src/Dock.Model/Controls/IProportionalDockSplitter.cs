@@ -7,7 +7,8 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Proportional dock splitter contract.
 /// </summary>
-public interface IProportionalDockSplitter : IDockable
+[RequiresDataTemplate]
+public interface IProportionalDockSplitter : ISplitter
 {
     /// <summary>
     /// Gets or sets whether the splitter allows resizing.

@@ -9,6 +9,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Root dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IRootDock : IDock
 {
     /// <summary>

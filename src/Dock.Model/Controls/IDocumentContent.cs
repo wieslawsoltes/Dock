@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Document content contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IDocumentContent : IDockable
 {
     /// <summary>

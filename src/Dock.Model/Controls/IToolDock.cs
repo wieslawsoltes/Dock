@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Tool dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IToolDock : IDock, ILocalTarget
 {
     /// <summary>

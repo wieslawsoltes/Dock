@@ -5,13 +5,8 @@ using Dock.Model.Core;
 namespace Dock.Model.Controls;
 
 /// <summary>
-/// Wrap dock contract.
+/// Splitter contract.
 /// </summary>
-[RequiresDataTemplate]
-public interface IWrapDock : IDock
+public interface ISplitter : IDockable
 {
-    /// <summary>
-    /// Gets or sets layout orientation.
-    /// </summary>
-    Orientation Orientation { get; set; }
 }

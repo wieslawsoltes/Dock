@@ -1,0 +1,13 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:DockControlPanelsSample"
+        x:Class="DockControlPanelsSample.MainWindow"
+        Title="Dock Control Panels Sample"
+        Width="1200"
+        Height="800"
+        MinWidth="800"
+        MinHeight="600">
+
+  <local:MainView />
+
+</Window>

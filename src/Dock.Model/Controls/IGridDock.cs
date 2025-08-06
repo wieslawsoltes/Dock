@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Grid dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IGridDock : IDock
 {
     /// <summary>

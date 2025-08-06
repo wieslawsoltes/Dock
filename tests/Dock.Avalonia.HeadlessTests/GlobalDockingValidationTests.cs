@@ -181,7 +181,7 @@ public class GlobalDockingValidationTests
 
     #region Comprehensive Rule Testing
 
-    [Theory]
+    [AvaloniaTheory]
     [InlineData(null, null, true)]      // Rule 1: Non-grouped can dock globally anywhere
     [InlineData(null, "GroupA", true)]  // Rule 1: Non-grouped can dock globally anywhere
     [InlineData("GroupA", "GroupA", false)]  // Rule 2: Grouped sources blocked from global docking

@@ -14,8 +14,8 @@ using Avalonia.Metadata;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
+using Dock.Avalonia.Helpers;
 using Dock.Avalonia.Internal;
-using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -204,46 +204,11 @@ public class DockControl : TemplatedControl, IDockControl
             return;
         }
 
-        // Create and add default DataTemplates
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IDocumentContent>(() => new DocumentContentControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IToolContent>(() => new ToolContentControl()));
-        _contentControl.DataTemplates.Add(CreateProportionalSplitterDataTemplate());
-        _contentControl.DataTemplates.Add(CreateGridSplitterDataTemplate());
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IDocumentDock>(() => new DocumentDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IToolDock>(() => new ToolDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IProportionalDock>(() => new ProportionalDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IStackDock>(() => new StackDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IGridDock>(() => new GridDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IWrapDock>(() => new WrapDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IUniformGridDock>(() => new UniformGridDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IDockDock>(() => new DockDockControl()));
-        _contentControl.DataTemplates.Add(CreateDataTemplate<IRootDock>(() => new RootDockControl()));
-    }
-
-    private static FuncDataTemplate<T> CreateDataTemplate<T>(Func<Control> factory) where T : class
-    {
-        return new FuncDataTemplate<T>((_, _) => factory());
-    }
-
-    private static FuncDataTemplate<IProportionalDockSplitter> CreateProportionalSplitterDataTemplate()
-    {
-        return new FuncDataTemplate<IProportionalDockSplitter>((_, _) =>
+        // Create and add default DataTemplates using helper class
+        foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
         {
-            var splitter = new ProportionalStackPanelSplitter();
-            splitter.Bind(ProportionalStackPanelSplitter.IsResizingEnabledProperty, new Binding("CanResize"));
-            splitter.Bind(ProportionalStackPanelSplitter.PreviewResizeProperty, new Binding("ResizePreview"));
-            return splitter;
-        });
-    }
-
-    private static FuncDataTemplate<IGridDockSplitter> CreateGridSplitterDataTemplate()
-    {
-        return new FuncDataTemplate<IGridDockSplitter>((_, _) =>
-        {
-            var splitter = new GridSplitter();
-            splitter.Bind(GridSplitter.ResizeDirectionProperty, new Binding("ResizeDirection"));
-            return splitter;
-        });
+            _contentControl.DataTemplates.Add(template);
+        }
     }
 
     /// <inheritdoc />

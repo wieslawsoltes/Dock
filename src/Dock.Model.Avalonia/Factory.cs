@@ -1,5 +1,6 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
@@ -16,6 +17,8 @@ namespace Dock.Model.Avalonia;
 /// </summary>
 public class Factory : FactoryBase
 {
+    private readonly Func<IRootDock>? _createLayoutFunc;
+
     /// <summary>
     /// Initializes the new instance of <see cref="Factory"/> class.
     /// </summary>
@@ -31,6 +34,15 @@ public class Factory : FactoryBase
         DocumentControls = new Dictionary<IDockable, object>();
         DockControls = new ObservableCollection<IDockControl>();
         HostWindows = new ObservableCollection<IHostWindow>();
+    }
+
+    /// <summary>
+    /// Initializes the new instance of <see cref="Factory"/> class with a layout creation function.
+    /// </summary>
+    /// <param name="createLayoutFunc">Function to create the root dock layout.</param>
+    public Factory(Func<IRootDock> createLayoutFunc) : this()
+    {
+        _createLayoutFunc = createLayoutFunc ?? throw new ArgumentNullException(nameof(createLayoutFunc));
     }
 
     /// <inheritdoc/>
@@ -119,5 +131,5 @@ public class Factory : FactoryBase
     public override IDockWindow CreateDockWindow() => new DockWindow();
 
     /// <inheritdoc/>
-    public override IRootDock CreateLayout() => CreateRootDock();
+    public override IRootDock CreateLayout() => _createLayoutFunc?.Invoke() ?? CreateRootDock();
 }

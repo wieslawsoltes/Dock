@@ -1,0 +1,315 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:Class="DockControlPanelsSample.MainView">
+
+  <Grid RowDefinitions="Auto,*">
+
+    <TextBlock Grid.Row="0"
+               Text="Dock Control Panels Showcase"
+               FontSize="24"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               Margin="10" />
+
+    <TabControl Grid.Row="1" Margin="10">
+
+      <!-- ProportionalDockControl Tab -->
+      <TabItem Header="ProportionalDock + Splitters">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="ProportionalRoot" IsCollapsable="False">
+            <ProportionalDock x:Name="ProportionalMain" Id="ProportionalMain" Orientation="Horizontal">
+
+              <!-- Left Tool -->
+              <ToolDock Id="LeftTool" Proportion="0.3" Alignment="Left">
+                <Tool Id="Tool1" Title="Solution Explorer">
+                  <TextBlock Classes="ToolContent" Text="Solution Explorer Content" />
+                </Tool>
+              </ToolDock>
+
+              <ProportionalDockSplitter Id="Splitter1" />
+
+              <!-- Center Documents Area -->
+              <ProportionalDock Id="CenterArea" Proportion="0.4" Orientation="Vertical">
+                <DocumentDock Id="Documents1" CanCreateDocument="True">
+                  <Document Id="Doc1" Title="Program.cs">
+                    <TextBlock Classes="SampleContent" Text="Main program code goes here..." />
+                  </Document>
+                  <Document Id="Doc2" Title="MainWindow.axaml">
+                    <TextBlock Classes="SampleContent" Text="XAML markup for main window..." />
+                  </Document>
+                </DocumentDock>
+              </ProportionalDock>
+
+              <ProportionalDockSplitter Id="Splitter2" />
+
+              <!-- Right Tool -->
+              <ToolDock Id="RightTool" Proportion="0.3" Alignment="Right">
+                <Tool Id="Tool2" Title="Properties">
+                  <TextBlock Classes="ToolContent" Text="Properties Panel Content" />
+                </Tool>
+              </ToolDock>
+
+            </ProportionalDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+      <!-- StackDockControl Tab -->
+      <TabItem Header="StackDock">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="StackRoot" IsCollapsable="False">
+            <StackDock x:Name="StackMain" Id="StackMain" Orientation="Horizontal" Spacing="5">
+
+              <ToolDock Id="StackTool1" Alignment="Unset">
+                <Tool Id="StackToolItem1" Title="Toolbar 1">
+                  <TextBlock Classes="ToolContent" Text="Button Set 1" />
+                </Tool>
+              </ToolDock>
+
+              <ToolDock Id="StackTool2" Alignment="Unset">
+                <Tool Id="StackToolItem2" Title="Toolbar 2">
+                  <TextBlock Classes="ToolContent" Text="Button Set 2" />
+                </Tool>
+              </ToolDock>
+
+              <DocumentDock Id="StackDocuments" CanCreateDocument="True">
+                <Document Id="StackDoc1" Title="Document">
+                  <TextBlock Classes="SampleContent" Text="Main content area in stack layout" />
+                </Document>
+              </DocumentDock>
+
+              <ToolDock Id="StackTool3" Alignment="Unset">
+                <Tool Id="StackToolItem3" Title="Sidebar">
+                  <TextBlock Classes="ToolContent" Text="Side Panel" />
+                </Tool>
+              </ToolDock>
+
+            </StackDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+      <!-- GridDockControl Tab -->
+      <TabItem Header="GridDock + Splitters">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="GridRoot" IsCollapsable="False">
+            <GridDock x:Name="GridMain" Id="GridMain" ColumnDefinitions="*,Auto,2*,Auto,*" RowDefinitions="Auto,*">
+
+              <!-- Top row toolbar -->
+              <ToolDock Id="GridToolbar" Column="0" Row="0" ColumnSpan="5" Alignment="Unset">
+                <Tool Id="GridToolbarItem" Title="Main Toolbar">
+                  <TextBlock Classes="ToolContent" Text="File | Edit | View | Tools | Help" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Left panel -->
+              <ToolDock Id="GridLeft" Column="0" Row="1" Alignment="Left">
+                <Tool Id="GridLeftTool" Title="Explorer">
+                  <TextBlock Classes="ToolContent" Text="File Explorer" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Vertical splitter -->
+              <GridDockSplitter Id="GridSplitter1" Column="1" Row="1" ResizeDirection="Columns" />
+
+              <!-- Center documents -->
+              <DocumentDock Id="GridDocuments" Column="2" Row="1" CanCreateDocument="True">
+                <Document Id="GridDoc1" Title="main.cpp">
+                  <TextBlock Classes="SampleContent" Text="C++ source code with syntax highlighting..." />
+                </Document>
+                <Document Id="GridDoc2" Title="header.h">
+                  <TextBlock Classes="SampleContent" Text="Header file definitions..." />
+                </Document>
+              </DocumentDock>
+
+              <!-- Vertical splitter 2 -->
+              <GridDockSplitter Id="GridSplitter2" Column="3" Row="1" ResizeDirection="Columns" />
+
+              <!-- Right panel -->
+              <ToolDock Id="GridRight" Column="4" Row="1" Alignment="Right">
+                <Tool Id="GridRightTool" Title="Inspector">
+                  <TextBlock Classes="ToolContent" Text="Object Inspector" />
+                </Tool>
+              </ToolDock>
+
+            </GridDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+      <!-- WrapDockControl Tab -->
+      <TabItem Header="WrapDock">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="WrapRoot" IsCollapsable="False">
+            <WrapDock x:Name="WrapMain" Id="WrapMain" Orientation="Horizontal">
+
+              <ToolDock Id="WrapTool1" Alignment="Unset">
+                <Tool Id="WrapToolItem1" Title="Tool A" MinWidth="120">
+                  <TextBlock Classes="ToolContent" Text="Tool Panel A" />
+                </Tool>
+              </ToolDock>
+
+              <ToolDock Id="WrapTool2" Alignment="Unset">
+                <Tool Id="WrapToolItem2" Title="Tool B" MinWidth="120">
+                  <TextBlock Classes="ToolContent" Text="Tool Panel B" />
+                </Tool>
+              </ToolDock>
+
+              <ToolDock Id="WrapTool3" Alignment="Unset">
+                <Tool Id="WrapToolItem3" Title="Tool C" MinWidth="120">
+                  <TextBlock Classes="ToolContent" Text="Tool Panel C" />
+                </Tool>
+              </ToolDock>
+
+              <DocumentDock Id="WrapDocuments" CanCreateDocument="True" MinWidth="300">
+                <Document Id="WrapDoc1" Title="Document 1">
+                  <TextBlock Classes="SampleContent" Text="This document will wrap to new line when space runs out..." />
+                </Document>
+              </DocumentDock>
+
+              <ToolDock Id="WrapTool4" Alignment="Unset">
+                <Tool Id="WrapToolItem4" Title="Tool D" MinWidth="120">
+                  <TextBlock Classes="ToolContent" Text="Tool Panel D" />
+                </Tool>
+              </ToolDock>
+
+              <ToolDock Id="WrapTool5" Alignment="Unset">
+                <Tool Id="WrapToolItem5" Title="Tool E" MinWidth="120">
+                  <TextBlock Classes="ToolContent" Text="Tool Panel E" />
+                </Tool>
+              </ToolDock>
+
+            </WrapDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+      <!-- UniformGridDockControl Tab -->
+      <TabItem Header="UniformGridDock">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="UniformRoot" IsCollapsable="False">
+            <UniformGridDock x:Name="UniformMain" Id="UniformMain" Rows="2" Columns="3">
+
+              <ToolDock Id="UniformTool1" Alignment="Unset">
+                <Tool Id="UniformToolItem1" Title="Cell 1">
+                  <TextBlock Classes="ToolContent" Text="Grid Cell 1&#x0a;(0,0)" />
+                </Tool>
+              </ToolDock>
+
+              <DocumentDock Id="UniformDoc1" CanCreateDocument="True">
+                <Document Id="UniformDocument1" Title="Cell 2">
+                  <TextBlock Classes="SampleContent" Text="Grid Cell 2&#x0a;(0,1)" />
+                </Document>
+              </DocumentDock>
+
+              <ToolDock Id="UniformTool2" Alignment="Unset">
+                <Tool Id="UniformToolItem2" Title="Cell 3">
+                  <TextBlock Classes="ToolContent" Text="Grid Cell 3&#x0a;(0,2)" />
+                </Tool>
+              </ToolDock>
+
+              <DocumentDock Id="UniformDoc2" CanCreateDocument="True">
+                <Document Id="UniformDocument2" Title="Cell 4">
+                  <TextBlock Classes="SampleContent" Text="Grid Cell 4&#x0a;(1,0)" />
+                </Document>
+              </DocumentDock>
+
+              <ToolDock Id="UniformTool3" Alignment="Unset">
+                <Tool Id="UniformToolItem3" Title="Cell 5">
+                  <TextBlock Classes="ToolContent" Text="Grid Cell 5&#x0a;(1,1)" />
+                </Tool>
+              </ToolDock>
+
+              <DocumentDock Id="UniformDoc3" CanCreateDocument="True">
+                <Document Id="UniformDocument3" Title="Cell 6">
+                  <TextBlock Classes="SampleContent" Text="Grid Cell 6&#x0a;(1,2)" />
+                </Document>
+              </DocumentDock>
+
+            </UniformGridDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+      <!-- DockDockControl Tab -->
+      <TabItem Header="DockDock">
+        <DockControl InitializeLayout="True" InitializeFactory="True">
+          <DockControl.Factory>
+            <Factory />
+          </DockControl.Factory>
+
+          <RootDock Id="DockRoot" IsCollapsable="False">
+            <DockDock x:Name="DockMain" Id="DockMain" LastChildFill="True">
+
+              <!-- Top toolbar -->
+              <ToolDock Id="DockTopTool" Dock="Top" Alignment="Unset">
+                <Tool Id="DockTopToolItem" Title="Main Menu">
+                  <TextBlock Classes="ToolContent" Text="File | Edit | View | Project | Debug | Tools | Window | Help" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Bottom status bar -->
+              <ToolDock Id="DockBottomTool" Dock="Bottom" Alignment="Unset">
+                <Tool Id="DockBottomToolItem" Title="Status Bar">
+                  <TextBlock Classes="ToolContent" Text="Ready | Line 1, Column 1 | 100% | UTF-8" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Left sidebar -->
+              <ToolDock Id="DockLeftTool" Dock="Left" Alignment="Left">
+                <Tool Id="DockLeftToolItem" Title="Toolbox">
+                  <TextBlock Classes="ToolContent" Text="Toolbox&#x0a;Components" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Right sidebar -->
+              <ToolDock Id="DockRightTool" Dock="Right" Alignment="Right">
+                <Tool Id="DockRightToolItem" Title="Properties">
+                  <TextBlock Classes="ToolContent" Text="Properties&#x0a;Window" />
+                </Tool>
+              </ToolDock>
+
+              <!-- Center fills remaining space -->
+              <DocumentDock Id="DockDocuments" CanCreateDocument="True">
+                <Document Id="DockDoc1" Title="MainForm.cs">
+                  <TextBlock Classes="SampleContent"
+                             Text="This document dock fills the remaining space&#x0a;after all other panels are docked to their edges.&#x0a;&#x0a;This is the classic docking behavior where:&#x0a;- Top and Bottom panels span the full width&#x0a;- Left and Right panels fit between them&#x0a;- The center area fills whatever space remains" />
+                </Document>
+                <Document Id="DockDoc2" Title="Form1.Designer.cs">
+                  <TextBlock Classes="SampleContent" Text="Designer generated code for the form..." />
+                </Document>
+              </DocumentDock>
+
+            </DockDock>
+          </RootDock>
+        </DockControl>
+      </TabItem>
+
+    </TabControl>
+
+  </Grid>
+
+</UserControl>

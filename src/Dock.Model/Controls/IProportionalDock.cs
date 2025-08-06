@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Proportional dock contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IProportionalDock : IDock, IGlobalTarget
 {
     /// <summary>

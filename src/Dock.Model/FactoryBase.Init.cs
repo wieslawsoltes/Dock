@@ -35,8 +35,19 @@ public abstract partial class FactoryBase
             }
         }
 
+        // Auto-set ActiveDockable for RootDock if not already set
         if (layout is IRootDock rootDock)
         {
+            if (rootDock.ActiveDockable is null && rootDock.VisibleDockables is not null)
+            {
+                // Find first visible dockable that is not a splitter
+                var firstVisible = FindFirstVisibleDockable(rootDock);
+                if (firstVisible is not null)
+                {
+                    rootDock.ActiveDockable = firstVisible;
+                }
+            }
+
             if (rootDock.ShowWindows.CanExecute(null))
             {
                 rootDock.ShowWindows.Execute(null);
@@ -106,6 +117,43 @@ public abstract partial class FactoryBase
         }
 
         OnDockableInit(dockable);
+    }
+
+    /// <summary>
+    /// Finds the first visible dockable in the hierarchy that is not a splitter.
+    /// </summary>
+    /// <param name="dock">The dock to search in.</param>
+    /// <returns>The first visible dockable or null if none found.</returns>
+    private IDockable? FindFirstVisibleDockable(IDock dock)
+    {
+        if (dock.VisibleDockables is null)
+        {
+            return null;
+        }
+
+        // First look for direct visible dockables that are not splitters
+        foreach (var dockable in dock.VisibleDockables)
+        {
+            if (dockable is not ISplitter)
+            {
+                return dockable;
+            }
+        }
+
+        // If no direct dockables found, recursively search in child docks
+        foreach (var dockable in dock.VisibleDockables)
+        {
+            if (dockable is IDock childDock)
+            {
+                var result = FindFirstVisibleDockable(childDock);
+                if (result is not null)
+                {
+                    return result;
+                }
+            }
+        }
+
+        return null;
     }
 
     private void InitDockables(IDockable dockable, IList<IDockable> dockables)

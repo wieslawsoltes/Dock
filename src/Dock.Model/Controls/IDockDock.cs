@@ -7,6 +7,7 @@ namespace Dock.Model.Controls;
 /// <summary>
 /// Docking panel contract.
 /// </summary>
+[RequiresDataTemplate]
 public interface IDockDock : IDock
 {
     /// <summary>

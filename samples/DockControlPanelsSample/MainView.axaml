@@ -23,7 +23,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="ProportionalRoot" IsCollapsable="False" ActiveDockable="ProportionalMain">
+          <RootDock Id="ProportionalRoot" IsCollapsable="False">
             <ProportionalDock x:Name="ProportionalMain" Id="ProportionalMain" Orientation="Horizontal">
 
               <!-- Left Tool -->
@@ -68,7 +68,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="StackRoot" IsCollapsable="False" ActiveDockable="StackMain">
+          <RootDock Id="StackRoot" IsCollapsable="False">
             <StackDock x:Name="StackMain" Id="StackMain" Orientation="Horizontal" Spacing="5">
 
               <ToolDock Id="StackTool1" Alignment="Unset">
@@ -107,7 +107,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="GridRoot" IsCollapsable="False" ActiveDockable="GridMain">
+          <RootDock Id="GridRoot" IsCollapsable="False">
             <GridDock x:Name="GridMain" Id="GridMain" ColumnDefinitions="*,Auto,2*,Auto,*" RowDefinitions="Auto,*">
 
               <!-- Top row toolbar -->
@@ -159,7 +159,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="WrapRoot" IsCollapsable="False" ActiveDockable="WrapMain">
+          <RootDock Id="WrapRoot" IsCollapsable="False">
             <WrapDock x:Name="WrapMain" Id="WrapMain" Orientation="Horizontal">
 
               <ToolDock Id="WrapTool1" Alignment="Unset">
@@ -210,7 +210,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="UniformRoot" IsCollapsable="False" ActiveDockable="UniformMain">
+          <RootDock Id="UniformRoot" IsCollapsable="False">
             <UniformGridDock x:Name="UniformMain" Id="UniformMain" Rows="2" Columns="3">
 
               <ToolDock Id="UniformTool1" Alignment="Unset">
@@ -261,7 +261,7 @@
             <Factory />
           </DockControl.Factory>
 
-          <RootDock Id="DockRoot" IsCollapsable="False" ActiveDockable="DockMain">
+          <RootDock Id="DockRoot" IsCollapsable="False">
             <DockDock x:Name="DockMain" Id="DockMain" LastChildFill="True">
 
               <!-- Top toolbar -->

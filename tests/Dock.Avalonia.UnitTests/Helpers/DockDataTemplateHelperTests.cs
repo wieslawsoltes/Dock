@@ -221,43 +221,13 @@ public class DockDataTemplateHelperTests
     }
 
     /// <summary>
-    /// Determines if an interface type should have a corresponding DataTemplate.
+    /// Determines if an interface type should have a corresponding DataTemplate
+    /// by checking for the RequiresDataTemplateAttribute.
     /// </summary>
     /// <param name="interfaceType">The interface type to check.</param>
     /// <returns>True if the type should have a DataTemplate, false otherwise.</returns>
     private static bool ShouldHaveDataTemplate(Type interfaceType)
     {
-        // Content types that need DataTemplates
-        if (interfaceType == typeof(IDocumentContent) || 
-            interfaceType == typeof(IToolContent))
-        {
-            return true;
-        }
-
-        // Splitter types that need DataTemplates
-        if (interfaceType == typeof(IProportionalDockSplitter) || 
-            interfaceType == typeof(IGridDockSplitter))
-        {
-            return true;
-        }
-
-        // Dock container types that need DataTemplates
-        // These are concrete dock types that inherit from IDock but are not base interfaces
-        if (typeof(IDock).IsAssignableFrom(interfaceType) && 
-            interfaceType != typeof(IDock) && 
-            interfaceType != typeof(IDockable))
-        {
-            // Exclude abstract base interfaces and include only concrete dock types
-            var isDockContainerType = interfaceType.Name.EndsWith("Dock") && 
-                                    !interfaceType.Name.Contains("Content") &&
-                                    interfaceType.Namespace == "Dock.Model.Controls";
-            
-            if (isDockContainerType)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return interfaceType.GetCustomAttribute<RequiresDataTemplateAttribute>() != null;
     }
 }

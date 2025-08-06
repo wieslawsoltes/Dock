@@ -197,13 +197,6 @@ public class DockControl : TemplatedControl, IDockControl
             return;
         }
 
-        // Only add default templates if there are no existing DataTemplates
-        // This allows users to override them in XAML
-        if (_contentControl.DataTemplates.Count > 0)
-        {
-            return;
-        }
-
         // Create and add default DataTemplates using helper class
         foreach (var template in DockDataTemplateHelper.CreateDefaultDataTemplates())
         {

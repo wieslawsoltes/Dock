@@ -57,8 +57,8 @@ public static class DockDataTemplateHelper
         return new FuncDataTemplate<IProportionalDockSplitter>((_, _) =>
         {
             var splitter = new ProportionalStackPanelSplitter();
-            splitter.Bind(ProportionalStackPanelSplitter.IsResizingEnabledProperty, new Binding("CanResize"));
-            splitter.Bind(ProportionalStackPanelSplitter.PreviewResizeProperty, new Binding("ResizePreview"));
+            splitter.Bind(ProportionalStackPanelSplitter.IsResizingEnabledProperty, new Binding(nameof(IProportionalDockSplitter.CanResize)));
+            splitter.Bind(ProportionalStackPanelSplitter.PreviewResizeProperty, new Binding(nameof(IProportionalDockSplitter.ResizePreview)));
             return splitter;
         });
     }
@@ -72,7 +72,7 @@ public static class DockDataTemplateHelper
         return new FuncDataTemplate<IGridDockSplitter>((_, _) =>
         {
             var splitter = new GridSplitter();
-            splitter.Bind(GridSplitter.ResizeDirectionProperty, new Binding("ResizeDirection"));
+            splitter.Bind(GridSplitter.ResizeDirectionProperty, new Binding(nameof(IGridDockSplitter.ResizeDirection)));
             return splitter;
         });
     }

@@ -20,49 +20,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <ContentControl x:Name="PART_ContentControl"
-                        Content="{TemplateBinding Layout}">
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="dmc:IDocumentContent">
-              <DocumentContentControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IToolContent">
-              <ToolContentControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IProportionalDockSplitter">
-              <ProportionalStackPanelSplitter IsResizingEnabled="{Binding CanResize}" PreviewResize="{Binding ResizePreview}" />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IGridDockSplitter">
-              <GridSplitter ResizeDirection="{Binding ResizeDirection}" />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IDocumentDock">
-              <DocumentDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IToolDock">
-              <ToolDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IProportionalDock">
-              <ProportionalDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IStackDock">
-              <StackDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IGridDock">
-              <GridDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IWrapDock">
-              <WrapDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IUniformGridDock">
-              <UniformGridDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IDockDock">
-              <DockDockControl />
-            </DataTemplate>
-            <DataTemplate DataType="dmc:IRootDock">
-              <RootDockControl />
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
+                        Content="{TemplateBinding Layout}" />
       </ControlTemplate>
     </Setter>
 

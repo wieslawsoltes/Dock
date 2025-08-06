@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -13,7 +15,9 @@ using Avalonia.VisualTree;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
+using Dock.Controls.ProportionalStackPanel;
 using Dock.Model;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 
 namespace Dock.Avalonia.Controls;
@@ -21,11 +25,13 @@ namespace Dock.Avalonia.Controls;
 /// <summary>
 /// Interaction logic for <see cref="DockControl"/> xaml.
 /// </summary>
+[TemplatePart("PART_ContentControl", typeof(ContentControl))]
 public class DockControl : TemplatedControl, IDockControl
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
+    private ContentControl? _contentControl;
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -146,6 +152,75 @@ public class DockControl : TemplatedControl, IDockControl
         AddHandler(PointerExitedEvent, ExitedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerCaptureLostEvent, CaptureLostHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+    }
+
+    /// <inheritdoc />
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
+        
+        if (_contentControl is not null)
+        {
+            InitializeDefaultDataTemplates();
+        }
+    }
+
+    private void InitializeDefaultDataTemplates()
+    {
+        if (_contentControl?.DataTemplates is null)
+        {
+            return;
+        }
+
+        // Only add default templates if there are no existing DataTemplates
+        // This allows users to override them in XAML
+        if (_contentControl.DataTemplates.Count > 0)
+        {
+            return;
+        }
+
+        // Create and add default DataTemplates
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IDocumentContent>(() => new DocumentContentControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IToolContent>(() => new ToolContentControl()));
+        _contentControl.DataTemplates.Add(CreateProportionalSplitterDataTemplate());
+        _contentControl.DataTemplates.Add(CreateGridSplitterDataTemplate());
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IDocumentDock>(() => new DocumentDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IToolDock>(() => new ToolDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IProportionalDock>(() => new ProportionalDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IStackDock>(() => new StackDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IGridDock>(() => new GridDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IWrapDock>(() => new WrapDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IUniformGridDock>(() => new UniformGridDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IDockDock>(() => new DockDockControl()));
+        _contentControl.DataTemplates.Add(CreateDataTemplate<IRootDock>(() => new RootDockControl()));
+    }
+
+    private static FuncDataTemplate<T> CreateDataTemplate<T>(Func<Control> factory) where T : class
+    {
+        return new FuncDataTemplate<T>((_, _) => factory());
+    }
+
+    private static FuncDataTemplate<IProportionalDockSplitter> CreateProportionalSplitterDataTemplate()
+    {
+        return new FuncDataTemplate<IProportionalDockSplitter>((_, _) =>
+        {
+            var splitter = new ProportionalStackPanelSplitter();
+            splitter.Bind(ProportionalStackPanelSplitter.IsResizingEnabledProperty, new Binding("CanResize"));
+            splitter.Bind(ProportionalStackPanelSplitter.PreviewResizeProperty, new Binding("ResizePreview"));
+            return splitter;
+        });
+    }
+
+    private static FuncDataTemplate<IGridDockSplitter> CreateGridSplitterDataTemplate()
+    {
+        return new FuncDataTemplate<IGridDockSplitter>((_, _) =>
+        {
+            var splitter = new GridSplitter();
+            splitter.Bind(GridSplitter.ResizeDirectionProperty, new Binding("ResizeDirection"));
+            return splitter;
+        });
     }
 
     /// <inheritdoc />
@@ -336,9 +411,10 @@ public class DockControl : TemplatedControl, IDockControl
         if (e.KeyModifiers.HasFlag(KeyModifiers.Control) && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
         {
             var pos = e.GetPosition(this);
-            if (this.InputHitTest(pos) is Control control)
+            if (this.InputHitTest(pos) is Control initialControl)
             {
                 IDockable? dockable = null;
+                Control? control = initialControl;
                 while (control is { } && dockable is null)
                 {
                     dockable = control.DataContext as IDockable;

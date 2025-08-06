@@ -69,6 +69,12 @@ public class DockControl : TemplatedControl, IDockControl
     public static readonly StyledProperty<bool> IsDraggingDockProperty =
         AvaloniaProperty.Register<DockControl, bool>(nameof(IsDraggingDock));
 
+    /// <summary>
+    /// Defines the <see cref="AutoCreateDataTemplates"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> AutoCreateDataTemplatesProperty =
+        AvaloniaProperty.Register<DockControl, bool>(nameof(AutoCreateDataTemplates), true);
+
     /// <inheritdoc/>
     public IDockManager DockManager => _dockManager;
 
@@ -118,6 +124,17 @@ public class DockControl : TemplatedControl, IDockControl
     {
         get => GetValue(IsDraggingDockProperty);
         set => SetValue(IsDraggingDockProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether to automatically create default DataTemplates in code-behind.
+    /// When true (default), the control will add default DataTemplates for all dock types.
+    /// When false, no DataTemplates are added, allowing complete user control via XAML.
+    /// </summary>
+    public bool AutoCreateDataTemplates
+    {
+        get => GetValue(AutoCreateDataTemplatesProperty);
+        set => SetValue(AutoCreateDataTemplatesProperty, value);
     }
 
     private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();
@@ -170,6 +187,12 @@ public class DockControl : TemplatedControl, IDockControl
     private void InitializeDefaultDataTemplates()
     {
         if (_contentControl?.DataTemplates is null)
+        {
+            return;
+        }
+
+        // Check if auto-creation of DataTemplates is enabled
+        if (!AutoCreateDataTemplates)
         {
             return;
         }

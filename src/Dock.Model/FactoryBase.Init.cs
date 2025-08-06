@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
+using System;
 using System.Collections.Generic;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -15,6 +16,15 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public virtual void InitLayout(IDockable layout)
     {
+        // Set up default HostWindowLocator if not already defined
+        if (HostWindowLocator is null && DefaultHostWindowLocator is not null)
+        {
+            HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+            {
+                [nameof(IDockWindow)] = DefaultHostWindowLocator
+            };
+        }
+
         InitDockable(layout, null);
 
         if (layout is IDock dock)

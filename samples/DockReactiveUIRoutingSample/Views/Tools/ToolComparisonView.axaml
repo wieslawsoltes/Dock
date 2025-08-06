@@ -1,0 +1,257 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolComparisonView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolComparisonViewModel">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <!-- Header Section -->
+        <Border Grid.Row="0" Background="#F3E5F5" Padding="20" Margin="20,20,20,0">
+            <StackPanel Spacing="10">
+                <TextBlock Text="⚖️ Cross-Tool Analysis &amp; Comparison" 
+                          FontSize="20" FontWeight="Bold" />
+                <TextBlock Text="{Binding Title}" FontSize="14" FontStyle="Italic" />
+                <TextBlock Text="Compare and analyze different tools within the same navigation context" 
+                          Foreground="#666" FontSize="12" />
+                
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+                    <Button Content="← Back" Command="{Binding GoBack}" Classes="accent" />
+                    <Button Content="🔄 Refresh Analysis" 
+                           Command="{Binding RefreshAnalysis}"
+                           Background="#2196F3" Foreground="White" />
+                    <Button Content="📊 Export Report" 
+                           Command="{Binding ExportData}"
+                           Background="#4CAF50" Foreground="White" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" Margin="20">
+            <StackPanel Spacing="20">
+                <!-- Tool Metrics Grid -->
+                <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                       CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="📈 Tool Performance Metrics" 
+                                  FontWeight="SemiBold" FontSize="16" />
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Tool A Metrics -->
+                            <Border Grid.Column="0" Background="#E3F2FD" CornerRadius="6" 
+                                   Padding="15" Margin="0,0,10,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="🔧 Tool A" FontWeight="SemiBold" 
+                                              HorizontalAlignment="Center" />
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Performance: 85%" FontSize="12" />
+                                        <TextBlock Text="Usage: 1,234 ops" FontSize="12" />
+                                        <TextBlock Text="Efficiency: High" FontSize="12" />
+                                        <TextBlock Text="Status: Active" FontSize="12" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Tool B Metrics -->
+                            <Border Grid.Column="1" Background="#E8F5E8" CornerRadius="6" 
+                                   Padding="15" Margin="5,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="🛠️ Tool B" FontWeight="SemiBold" 
+                                              HorizontalAlignment="Center" />
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Performance: 92%" FontSize="12" />
+                                        <TextBlock Text="Usage: 987 ops" FontSize="12" />
+                                        <TextBlock Text="Efficiency: Very High" FontSize="12" />
+                                        <TextBlock Text="Status: Active" FontSize="12" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            
+                            <!-- Tool C Metrics -->
+                            <Border Grid.Column="2" Background="#FFF3E0" CornerRadius="6" 
+                                   Padding="15" Margin="10,0,0,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="⚙️ Tool C" FontWeight="SemiBold" 
+                                              HorizontalAlignment="Center" />
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Performance: 78%" FontSize="12" />
+                                        <TextBlock Text="Usage: 1,567 ops" FontSize="12" />
+                                        <TextBlock Text="Efficiency: Medium" FontSize="12" />
+                                        <TextBlock Text="Status: Maintenance" FontSize="12" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Comparison Results -->
+                <Border Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="1" 
+                       CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="🔍 Detailed Comparison Results" 
+                                  FontWeight="SemiBold" FontSize="16" />
+                        
+                        <ItemsControl ItemsSource="{Binding ComparisonResults}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White" BorderBrush="#E0E0E0" 
+                                           BorderThickness="1" CornerRadius="6" 
+                                           Margin="0,5" Padding="15">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <!-- Category Icon -->
+                                            <Border Grid.Column="0" Background="{Binding CategoryColor}" 
+                                                   CornerRadius="20" Width="40" Height="40" 
+                                                   Margin="0,0,15,0">
+                                                <TextBlock Text="{Binding CategoryIcon}" 
+                                                          Foreground="White" FontWeight="Bold" 
+                                                          HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center" FontSize="16" />
+                                            </Border>
+                                            
+                                            <!-- Content -->
+                                            <StackPanel Grid.Column="1" Spacing="4">
+                                                <TextBlock Text="{Binding Category}" FontWeight="SemiBold" />
+                                                <TextBlock Text="{Binding Description}" 
+                                                          Foreground="#666" FontSize="12" 
+                                                          TextWrapping="Wrap" />
+                                                <TextBlock Text="{Binding Result}" 
+                                                          FontSize="11" FontStyle="Italic" />
+                                            </StackPanel>
+                                            
+                                            <!-- Score -->
+                                            <Border Grid.Column="2" Background="{Binding ScoreColor}" 
+                                                   CornerRadius="12" Padding="8,4" 
+                                                   Margin="10,0">
+                                                <TextBlock Text="{Binding Score}" 
+                                                          Foreground="White" FontWeight="Bold" 
+                                                          FontSize="12" />
+                                            </Border>
+                                            
+                                            <!-- Action Button -->
+                                            <Button Grid.Column="3" Content="View Details" 
+                                                   Command="{Binding $parent[UserControl].((vm:ToolComparisonViewModel)DataContext).ViewDetails}"
+                                                   CommandParameter="{Binding}"
+                                                   Background="#9C27B0" Foreground="White"
+                                                   VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Analysis Summary -->
+                <Border Background="#E8EAF6" BorderBrush="#C5CAE9" BorderThickness="1" 
+                       CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="📋 Analysis Summary" 
+                                  FontWeight="SemiBold" FontSize="16" />
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Key Findings -->
+                            <StackPanel Grid.Column="0" Spacing="8" Margin="0,0,20,0">
+                                <TextBlock Text="🎯 Key Findings:" FontWeight="SemiBold" FontSize="14" />
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="• Tool B shows highest performance (92%)" FontSize="12" />
+                                    <TextBlock Text="• Tool C requires maintenance attention" FontSize="12" />
+                                    <TextBlock Text="• Overall system efficiency: 85%" FontSize="12" />
+                                    <TextBlock Text="• Cross-tool integration working well" FontSize="12" />
+                                </StackPanel>
+                            </StackPanel>
+                            
+                            <!-- Recommendations -->
+                            <StackPanel Grid.Column="1" Spacing="8">
+                                <TextBlock Text="💡 Recommendations:" FontWeight="SemiBold" FontSize="14" />
+                                <StackPanel Spacing="4">
+                                    <TextBlock Text="• Optimize Tool A for better performance" FontSize="12" />
+                                    <TextBlock Text="• Schedule maintenance for Tool C" FontSize="12" />
+                                    <TextBlock Text="• Consider Tool B as primary option" FontSize="12" />
+                                    <TextBlock Text="• Monitor usage patterns regularly" FontSize="12" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                        
+                        <!-- Status Message -->
+                        <Border Background="White" CornerRadius="4" Padding="12" 
+                               Margin="0,10,0,0">
+                            <TextBlock Text="{Binding StatusMessage}" 
+                                      FontStyle="Italic" FontSize="12" 
+                                      HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Interactive Tools Section -->
+                <Border Background="#F1F8E9" BorderBrush="#C8E6C9" BorderThickness="1" 
+                       CornerRadius="8" Padding="20">
+                    <StackPanel Spacing="15">
+                        <TextBlock Text="🔧 Interactive Analysis Tools" 
+                                  FontWeight="SemiBold" FontSize="16" />
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button Grid.Column="0" Content="📊 Generate Chart" 
+                                   Background="#3F51B5" Foreground="White" 
+                                   Margin="0,0,5,0" Padding="10" />
+                            
+                            <Button Grid.Column="1" Content="📈 Trend Analysis" 
+                                   Background="#009688" Foreground="White" 
+                                   Margin="5,0" Padding="10" />
+                            
+                            <Button Grid.Column="2" Content="🔄 Compare All" 
+                                   Background="#FF5722" Foreground="White" 
+                                   Margin="5,0" Padding="10" />
+                            
+                            <Button Grid.Column="3" Content="💾 Save Results" 
+                                   Background="#795548" Foreground="White" 
+                                   Margin="5,0,0,0" Padding="10" />
+                        </Grid>
+                        
+                        <!-- Real-time Updates -->
+                        <Border Background="White" CornerRadius="4" Padding="12">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="⚡ Real-time Updates" FontWeight="SemiBold" FontSize="12" />
+                                <TextBlock Text="Last refresh: Just now | Next update: 30 seconds" 
+                                          FontSize="10" Foreground="#666" />
+                                <ProgressBar Value="75" Maximum="100" Height="4" 
+                                           Background="#E0E0E0" Foreground="#4CAF50" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

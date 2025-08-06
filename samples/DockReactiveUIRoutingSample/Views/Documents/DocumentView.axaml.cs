@@ -1,16 +1,12 @@
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using DockReactiveUIRoutingSample.ViewModels.Documents;
 
 namespace DockReactiveUIRoutingSample.Views.Documents;
 
-public partial class DocumentView : UserControl
+public partial class DocumentView : ReactiveUserControl<DocumentViewModel>
 {
     public DocumentView()
-    {
-        InitializeComponent();
-    }
-
-    private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
     }

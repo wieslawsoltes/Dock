@@ -1,0 +1,143 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolCrossNavigationDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolCrossNavigationDetailViewModel">
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="15">
+            <!-- Header -->
+            <Border Background="#E8F5E8" CornerRadius="8" Padding="15">
+                <StackPanel Spacing="8">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="📄" FontSize="24" 
+                                  VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold" 
+                                  VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding ContentItem.Description}" 
+                              FontStyle="Italic" Foreground="#666" />
+                </StackPanel>
+            </Border>
+
+            <!-- Navigation and Actions -->
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Button Content="← Back" Command="{Binding GoBack}" Classes="accent" />
+                <Button Content="🔄 Refresh Data" Command="{Binding RefreshData}" 
+                       Background="#2196F3" Foreground="White" />
+                <Button Content="📤 Export Data" Command="{Binding ExportData}" 
+                       Background="#4CAF50" Foreground="White" />
+            </StackPanel>
+
+            <!-- Status Message -->
+            <Border Background="#F0F8FF" BorderBrush="#2196F3" BorderThickness="1" 
+                   CornerRadius="6" Padding="12">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="ℹ️" FontSize="16" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding StatusMessage}" FontWeight="SemiBold" 
+                              VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+
+            <!-- Content Type Badge -->
+            <Border Background="{Binding ContentItem.ContentType, Converter={StaticResource TypeToBrushConverter}}" 
+                   CornerRadius="15" Padding="10,5" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding ContentItem.ContentType, StringFormat='Type: {0}'}" 
+                          Foreground="White" FontWeight="SemiBold" FontSize="12" />
+            </Border>
+
+            <!-- Detailed Information -->
+            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                   CornerRadius="8" Padding="15">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="📊 Detailed Analysis" FontWeight="SemiBold" FontSize="16" />
+                    
+                    <ItemsControl ItemsSource="{Binding DetailedInfo}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FAFAFA" CornerRadius="4" 
+                                       Padding="10" Margin="0,2">
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" 
+                                              FontFamily="Consolas,Monaco,monospace" 
+                                              FontSize="12" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Interactive Section -->
+            <Border Background="#FFF8E1" BorderBrush="#FFC107" BorderThickness="1" 
+                   CornerRadius="8" Padding="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="🔧 Interactive Tools" FontWeight="SemiBold" 
+                              Foreground="#F57C00" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Spacing="8" Margin="0,0,10,0">
+                            <TextBlock Text="📈 Real-time Metrics" FontWeight="SemiBold" />
+                            <TextBlock Text="• Data updates every 5 seconds" FontSize="12" />
+                            <TextBlock Text="• Live synchronization enabled" FontSize="12" />
+                            <TextBlock Text="• Cross-tool communication active" FontSize="12" />
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Column="1" Spacing="8">
+                            <TextBlock Text="🔗 Related Actions" FontWeight="SemiBold" />
+                            <TextBlock Text="• Navigate to source context" FontSize="12" />
+                            <TextBlock Text="• Share data with other tools" FontSize="12" />
+                            <TextBlock Text="• Create cross-references" FontSize="12" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Technical Details -->
+            <Expander Header="🔍 Technical Details" IsExpanded="False">
+                <Border Background="#F5F5F5" CornerRadius="6" Padding="15" Margin="0,10,0,0">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Content Item Properties:" FontWeight="SemiBold" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title:" 
+                                      FontWeight="SemiBold" Margin="0,0,10,5" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                      Text="{Binding ContentItem.Title}" Margin="0,0,0,5" />
+                            
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Type:" 
+                                      FontWeight="SemiBold" Margin="0,0,10,5" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                      Text="{Binding ContentItem.ContentType}" Margin="0,0,0,5" />
+                            
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Category:" 
+                                      FontWeight="SemiBold" Margin="0,0,10,5" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" 
+                                      Text="{Binding ContentItem.Category}" Margin="0,0,0,5" />
+                            
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Description:" 
+                                      FontWeight="SemiBold" Margin="0,0,10,5" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" 
+                                      Text="{Binding ContentItem.Description}" 
+                                      TextWrapping="Wrap" Margin="0,0,0,5" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

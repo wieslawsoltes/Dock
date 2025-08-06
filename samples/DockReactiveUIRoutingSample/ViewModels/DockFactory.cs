@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Dock.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -70,5 +72,15 @@ public class DockFactory : Factory
         root.PinnedDock = null;
 
         return root;
+    }
+
+    public override void InitLayout(IDockable layout)
+    {
+        HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
+        {
+            [nameof(IDockWindow)] = () => new HostWindow()
+        };
+
+        base.InitLayout(layout);
     }
 }

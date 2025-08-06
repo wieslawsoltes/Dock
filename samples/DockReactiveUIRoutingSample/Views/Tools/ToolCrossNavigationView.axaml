@@ -1,0 +1,118 @@
+<UserControl x:Class="DockReactiveUIRoutingSample.Views.Tools.ToolCrossNavigationView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels.Tools"
+             x:CompileBindings="True"
+             x:DataType="vm:ToolCrossNavigationViewModel">
+    <ScrollViewer>
+        <StackPanel Margin="20" Spacing="15">
+            <!-- Header -->
+            <Border Background="#E3F2FD" CornerRadius="8" Padding="15">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="🔄 Cross-Tool Navigation" FontSize="18" FontWeight="Bold" />
+                    <TextBlock Text="Explore content and data from other tools and documents" 
+                              FontStyle="Italic" Foreground="#666" />
+                </StackPanel>
+            </Border>
+
+            <!-- Back Button -->
+            <Button Content="← Back" Command="{Binding GoBack}" 
+                   HorizontalAlignment="Left" Classes="accent" />
+
+            <!-- Quick Actions -->
+            <Border Background="#F5F5F5" CornerRadius="8" Padding="15">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="🚀 Quick Actions" FontWeight="SemiBold" FontSize="14" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Button Content="📄 Open Document Preview" 
+                               Command="{Binding OpenDocumentPreview}"
+                               Background="#4CAF50" Foreground="White" />
+                        <Button Content="📊 Show Tool Comparison" 
+                               Command="{Binding ShowToolComparison}"
+                               Background="#2196F3" Foreground="White" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Available Content -->
+            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="1" 
+                   CornerRadius="8" Padding="15">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="📋 Available Cross-Navigation Content" 
+                              FontWeight="SemiBold" FontSize="16" />
+                    
+                    <ItemsControl ItemsSource="{Binding AvailableContent}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FAFAFA" BorderBrush="#E0E0E0" 
+                                       BorderThickness="1" CornerRadius="6" 
+                                       Margin="0,5" Padding="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Grid.Column="0" Text="📄" 
+                                                  FontSize="20" VerticalAlignment="Center" 
+                                                  Margin="0,0,12,0" />
+                                        
+                                        <StackPanel Grid.Column="1" Spacing="4">
+                                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding Description}" 
+                                                      Foreground="#666" FontSize="12" 
+                                                      TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding ContentType, StringFormat='Type: {0}'}" 
+                                                      Foreground="#999" FontSize="10" 
+                                                      FontStyle="Italic" />
+                                        </StackPanel>
+                                        
+                                        <Button Grid.Column="2" Content="View Details" 
+                                               Command="{Binding $parent[UserControl].((vm:ToolCrossNavigationViewModel)DataContext).NavigateToContent}"
+                                               CommandParameter="{Binding}"
+                                               Background="#FF9800" Foreground="White"
+                                               VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Selected Content Info -->
+            <Border Background="#E8F5E8" BorderBrush="#4CAF50" BorderThickness="2" 
+                   CornerRadius="8" Padding="15"
+                   IsVisible="{Binding SelectedContent, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="✅ Selected Content" FontWeight="SemiBold" 
+                              Foreground="#2E7D32" />
+                    <TextBlock Text="{Binding SelectedContent.Title, StringFormat='Title: {0}'}" />
+                    <TextBlock Text="{Binding SelectedContent.Description, StringFormat='Description: {0}'}" 
+                              TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding SelectedContent.ContentType, StringFormat='Type: {0}'}" 
+                              FontStyle="Italic" />
+                </StackPanel>
+            </Border>
+
+            <!-- Instructions -->
+            <Border Background="#FFF3E0" BorderBrush="#FF9800" BorderThickness="1" 
+                   CornerRadius="8" Padding="15">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="💡 How to Use Cross-Navigation" FontWeight="SemiBold" 
+                              Foreground="#E65100" />
+                    <TextBlock TextWrapping="Wrap">
+                        <Run Text="• Click 'View Details' on any content item to explore it in depth" />
+                        <LineBreak />
+                        <Run Text="• Use 'Open Document Preview' to see document content within tool context" />
+                        <LineBreak />
+                        <Run Text="• 'Show Tool Comparison' displays metrics from all active tools" />
+                        <LineBreak />
+                        <Run Text="• Navigation maintains context while allowing cross-tool data access" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

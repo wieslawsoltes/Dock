@@ -43,7 +43,7 @@ internal static class DockDataTemplateHelper
     /// <typeparam name="T">The data type for the template.</typeparam>
     /// <param name="factory">Factory function to create the control.</param>
     /// <returns>A DataTemplate for the specified type.</returns>
-    public static FuncDataTemplate<T> CreateDataTemplate<T>(Func<Control> factory) where T : class
+    private static FuncDataTemplate<T> CreateDataTemplate<T>(Func<Control> factory) where T : class
     {
         return new FuncDataTemplate<T>((_, _) => factory());
     }
@@ -52,7 +52,7 @@ internal static class DockDataTemplateHelper
     /// Creates a DataTemplate for IProportionalDockSplitter with proper bindings.
     /// </summary>
     /// <returns>A DataTemplate for IProportionalDockSplitter.</returns>
-    public static FuncDataTemplate<IProportionalDockSplitter> CreateProportionalSplitterDataTemplate()
+    private static FuncDataTemplate<IProportionalDockSplitter> CreateProportionalSplitterDataTemplate()
     {
         return new FuncDataTemplate<IProportionalDockSplitter>((_, _) =>
         {
@@ -67,7 +67,7 @@ internal static class DockDataTemplateHelper
     /// Creates a DataTemplate for IGridDockSplitter with proper bindings.
     /// </summary>
     /// <returns>A DataTemplate for IGridDockSplitter.</returns>
-    public static FuncDataTemplate<IGridDockSplitter> CreateGridSplitterDataTemplate()
+    private static FuncDataTemplate<IGridDockSplitter> CreateGridSplitterDataTemplate()
     {
         return new FuncDataTemplate<IGridDockSplitter>((_, _) =>
         {

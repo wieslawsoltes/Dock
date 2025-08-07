@@ -12,9 +12,9 @@ internal class DefaultDragOffsetCalculator : IDragOffsetCalculator
     {
         var screenPoint = dockControl.PointToScreen(pointerPosition);
 
-        if (dragControl is TabStripItem tabStripItem)
+        if (dragControl is not Control{ Name: "PART_Grip"})
         {
-            var corner = tabStripItem.PointToScreen(new Point());
+            var corner = dragControl.PointToScreen(new Point());
             return corner - screenPoint;
         }
 

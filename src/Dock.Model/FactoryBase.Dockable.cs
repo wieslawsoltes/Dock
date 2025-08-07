@@ -330,11 +330,13 @@ public abstract partial class FactoryBase
                 RemoveDockable(sourceDockable, true);
                 OnDockableUndocked(sourceDockable, DockOperation.Fill);
                 InsertVisibleDockable(targetDock, targetIndex, sourceDockable);
+                
+                InitDockable(sourceDockable, targetDock);
+                targetDock.ActiveDockable = sourceDockable;
+                
                 OnDockableAdded(sourceDockable);
                 OnDockableMoved(sourceDockable);
                 OnDockableDocked(sourceDockable, DockOperation.Fill);
-                InitDockable(sourceDockable, targetDock);
-                targetDock.ActiveDockable = sourceDockable;
 
                 // Clean up orphaned splitters in both source and target docks
                 // Note: sourceDock cleanup is already handled by RemoveDockable call above

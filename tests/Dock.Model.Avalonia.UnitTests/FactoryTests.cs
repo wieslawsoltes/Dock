@@ -293,6 +293,185 @@ public class FactoryTests
         Assert.True(eventRaised);
         Assert.Same(window, raisedWindow);
     }
+
+    // Integration tests for property copying functionality
+    
+    [AvaloniaFact]
+    public void CopyPropertiesForSplitDock_RootSplit_SetsProportion_NaN_To_Original()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDock = new ProportionalDock { Proportion = 0.6 };
+        var targetDock = new ProportionalDock { Proportion = 0.2 };
+
+        // Act - Root split (isNestedLayout = false)
+        factory.CopyPropertiesForSplitDock(sourceDock, targetDock, DockOperation.Right, isNestedLayout: false);
+
+        // Assert
+        Assert.True(double.IsNaN(sourceDock.Proportion), "Source dock proportion should become NaN for root split");
+        Assert.Equal(0.6, targetDock.Proportion, 3); // Target dock should get original source proportion
+    }
+
+    [AvaloniaFact]
+    public void CopyPropertiesForSplitDock_NestedSplit_HalvesProportions()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDock = new ProportionalDock { Proportion = 0.8 };
+        var targetDock = new ProportionalDock { Proportion = 0.1 };
+
+        // Act - Nested split (isNestedLayout = true)
+        factory.CopyPropertiesForSplitDock(sourceDock, targetDock, DockOperation.Left, isNestedLayout: true);
+
+        // Assert
+        Assert.Equal(0.4, sourceDock.Proportion, 3); // Source dock should get half proportion for nested split
+        Assert.Equal(0.4, targetDock.Proportion, 3); // Target dock should get half proportion for nested split
+    }
+
+    [AvaloniaFact]
+    public void CopyPropertiesForSplitDock_NaNProportion_PreservesNaN()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDock = new ProportionalDock { Proportion = double.NaN };
+        var targetDock = new ProportionalDock { Proportion = 0.5 };
+
+        // Act
+        factory.CopyPropertiesForSplitDock(sourceDock, targetDock, DockOperation.Top, isNestedLayout: true);
+
+        // Assert
+        Assert.True(double.IsNaN(sourceDock.Proportion), "NaN proportion should remain NaN");
+        Assert.True(double.IsNaN(targetDock.Proportion), "NaN proportion should result in NaN for target");
+    }
+
+    [AvaloniaFact]
+    public void CopyDockProperties_DocumentDocks_CopiesAllProperties()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var template = new DocumentTemplate { Content = "TestTemplate" };
+        var sourceDock = new DocumentDock
+        {
+            Id = "SourceId",
+            CanCreateDocument = true,
+            EnableWindowDrag = true,
+            DocumentTemplate = template
+        };
+        var targetDock = new DocumentDock
+        {
+            Id = "TargetId",
+            CanCreateDocument = false,
+            EnableWindowDrag = false,
+            DocumentTemplate = null
+        };
+
+        // Act
+        factory.CopyDockProperties(sourceDock, targetDock, DockOperation.Window);
+
+        // Assert
+        Assert.Equal("SourceId", targetDock.Id);
+        Assert.True(targetDock.CanCreateDocument);
+        Assert.True(targetDock.EnableWindowDrag);
+        Assert.Same(template, targetDock.DocumentTemplate);
+    }
+
+    [AvaloniaFact]
+    public void CopyDockProperties_NonDocumentDocks_DoesNotModifyProperties()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDock = new ToolDock { Id = "SourceId" };
+        var targetDock = new ToolDock { Id = "TargetId" };
+
+        // Act
+        factory.CopyDockProperties(sourceDock, targetDock, DockOperation.Window);
+
+        // Assert - Should not change target properties for non-document docks
+        Assert.Equal("TargetId", targetDock.Id);
+    }
+
+    [AvaloniaFact]
+    public void CopyPropertiesForFloatingWindow_WithDocumentDockOwner_CopiesProperties()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var template = new DocumentTemplate { Content = "OwnerTemplate" };
+        var sourceOwner = new DocumentDock
+        {
+            Id = "OwnerSourceId",
+            CanCreateDocument = true,
+            EnableWindowDrag = true,
+            DocumentTemplate = template
+        };
+        var sourceDockable = new Document { Owner = sourceOwner };
+        var window = new DockWindow();
+        var targetDock = new DocumentDock
+        {
+            Id = "TargetId",
+            CanCreateDocument = false,
+            EnableWindowDrag = false,
+            DocumentTemplate = null
+        };
+
+        // Act
+        factory.CopyPropertiesForFloatingWindow(sourceDockable, window, targetDock);
+
+        // Assert
+        Assert.Equal("OwnerSourceId", targetDock.Id);
+        Assert.True(targetDock.CanCreateDocument);
+        Assert.True(targetDock.EnableWindowDrag);
+        Assert.Same(template, targetDock.DocumentTemplate);
+    }
+
+    [AvaloniaFact]
+    public void CopyDimensionProperties_Window_SetsAllDimensions()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDockable = new Document();
+        var window = new DockWindow
+        {
+            X = 0,
+            Y = 0,
+            Width = 100,
+            Height = 100
+        };
+
+        // Act
+        factory.CopyDimensionProperties(sourceDockable, window, 200.0, 300.0, 800.0, 600.0);
+
+        // Assert
+        Assert.Equal(200.0, window.X);
+        Assert.Equal(300.0, window.Y);
+        Assert.Equal(800.0, window.Width);
+        Assert.Equal(600.0, window.Height);
+    }
+
+    [AvaloniaFact]
+    public void CopyDimensionProperties_NonWindow_DoesNotThrow()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDockable = new Document();
+        var nonWindow = new Document();
+
+        // Act & Assert - Should not throw exception
+        factory.CopyDimensionProperties(sourceDockable, nonWindow, 100.0, 200.0, 800.0, 600.0);
+        // No assertion needed - the test passes if no exception is thrown
+    }
+
+    [AvaloniaFact]
+    public void CopyDockableProperties_CallsSuccessfully()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDockable = new Document { Id = "Source" };
+        var targetDockable = new Document { Id = "Target" };
+
+        // Act & Assert - Should not throw exception (default implementation is empty)
+        factory.CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
+        // No assertion needed - the test passes if no exception is thrown
+    }
 }
 
 public class TestFactory : Factory

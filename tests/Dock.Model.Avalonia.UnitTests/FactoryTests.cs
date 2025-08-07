@@ -376,18 +376,19 @@ public class FactoryTests
     }
 
     [AvaloniaFact]
-    public void CopyDockProperties_NonDocumentDocks_DoesNotModifyProperties()
+    public void CopyDockProperties_ToolDocks_CopiesProperties()
     {
         // Arrange
         var factory = new TestFactory();
-        var sourceDock = new ToolDock { Id = "SourceId" };
-        var targetDock = new ToolDock { Id = "TargetId" };
+        var sourceDock = new ToolDock { Id = "SourceId", Alignment = Alignment.Left };
+        var targetDock = new ToolDock { Id = "TargetId", Alignment = Alignment.Right };
 
         // Act
         factory.CopyDockProperties(sourceDock, targetDock, DockOperation.Window);
 
-        // Assert - Should not change target properties for non-document docks
-        Assert.Equal("TargetId", targetDock.Id);
+        // Assert - Should copy tool dock properties
+        Assert.Equal("SourceId", targetDock.Id);
+        Assert.Equal(Alignment.Left, targetDock.Alignment);
     }
 
     [AvaloniaFact]
@@ -471,6 +472,61 @@ public class FactoryTests
         // Act & Assert - Should not throw exception (default implementation is empty)
         factory.CopyDockableProperties(sourceDockable, targetDockable, DockOperation.Fill);
         // No assertion needed - the test passes if no exception is thrown
+    }
+
+    [AvaloniaFact]
+    public void CopyDockProperties_ToolDock_CopiesAllProperties()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceToolDock = new ToolDock
+        {
+            Id = "SourceToolId",
+            Alignment = Alignment.Left,
+            GripMode = GripMode.Visible,
+            IsExpanded = true,
+            AutoHide = false
+        };
+        var targetToolDock = new ToolDock
+        {
+            Id = "TargetToolId",
+            Alignment = Alignment.Right,
+            GripMode = GripMode.Hidden,
+            IsExpanded = false,
+            AutoHide = true
+        };
+
+        // Act
+        factory.CopyDockProperties(sourceToolDock, targetToolDock, DockOperation.Window);
+
+        // Assert
+        Assert.Equal("SourceToolId", targetToolDock.Id);
+        Assert.Equal(Alignment.Left, targetToolDock.Alignment);
+        Assert.Equal(GripMode.Visible, targetToolDock.GripMode);
+        Assert.True(targetToolDock.IsExpanded);
+        Assert.False(targetToolDock.AutoHide);
+    }
+
+    [AvaloniaFact]
+    public void CopyDockProperties_NonToolDock_DoesNotCopyToolProperties()
+    {
+        // Arrange
+        var factory = new TestFactory();
+        var sourceDocumentDock = new DocumentDock { Id = "SourceDoc" };
+        var targetToolDock = new ToolDock
+        {
+            Id = "TargetTool",
+            Alignment = Alignment.Right,
+            GripMode = GripMode.Hidden
+        };
+
+        // Act
+        factory.CopyDockProperties(sourceDocumentDock, targetToolDock, DockOperation.Window);
+
+        // Assert - Tool dock properties should remain unchanged
+        Assert.Equal("TargetTool", targetToolDock.Id);
+        Assert.Equal(Alignment.Right, targetToolDock.Alignment);
+        Assert.Equal(GripMode.Hidden, targetToolDock.GripMode);
     }
 }
 

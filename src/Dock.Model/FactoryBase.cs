@@ -489,6 +489,14 @@ public abstract partial class FactoryBase : IFactory
                 targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
             }
         }
+        else if (source is IToolDock sourceToolDock && target is IToolDock targetToolDock)
+        {
+            targetToolDock.Id = sourceToolDock.Id;
+            targetToolDock.Alignment = sourceToolDock.Alignment;
+            targetToolDock.GripMode = sourceToolDock.GripMode;
+            targetToolDock.IsExpanded = sourceToolDock.IsExpanded;
+            targetToolDock.AutoHide = sourceToolDock.AutoHide;
+        }
         
         // Override in derived factories to customize property copying behavior
     }

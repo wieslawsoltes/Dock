@@ -272,7 +272,7 @@ public abstract partial class FactoryBase : IFactory
                                 splitter.Title = nameof(IProportionalDockSplitter);
 
                                 // Use the new overridable method for copying properties
-                                CopyPropertiesForSplitDock(dock, split, operation);
+                                CopyPropertiesForSplitDock(dock, split, operation, isNestedLayout: true);
 
                                 switch (operation)
                                 {
@@ -481,19 +481,30 @@ public abstract partial class FactoryBase : IFactory
     }
 
     /// <inheritdoc/>
-    public virtual void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation)
+    public virtual void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation, bool isNestedLayout = false)
     {
         // Default implementation - only copy basic properties that are currently copied
         // This maintains backward compatibility while allowing customization
         
-        // Copy the proportion as currently done in CreateSplitLayout
+        // Copy the proportion as currently done in the original code
         if (operation == DockOperation.Left || operation == DockOperation.Right ||
             operation == DockOperation.Top || operation == DockOperation.Bottom)
         {
             var originalProportion = source.Proportion;
-            var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
-            source.Proportion = halfProportion;
-            newDock.Proportion = halfProportion;
+            
+            if (isNestedLayout)
+            {
+                // For nested layouts: both source and target get half the proportion
+                var halfProportion = double.IsNaN(originalProportion) ? double.NaN : originalProportion / 2.0;
+                source.Proportion = halfProportion;
+                newDock.Proportion = halfProportion;
+            }
+            else
+            {
+                // For root split layout: source becomes NaN, newDock gets original
+                source.Proportion = double.NaN;
+                newDock.Proportion = originalProportion;
+            }
         }
     }
 

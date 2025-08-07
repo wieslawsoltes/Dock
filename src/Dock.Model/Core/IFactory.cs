@@ -584,7 +584,8 @@ public partial interface IFactory
     /// <param name="source">The source dock being split.</param>
     /// <param name="newDock">The newly created dock.</param>
     /// <param name="operation">The split operation being performed.</param>
-    void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation);
+    /// <param name="isNestedLayout">True if this is for a nested layout split (proportions are halved), false for root layout split (source becomes NaN).</param>
+    void CopyPropertiesForSplitDock(IDock source, IDock newDock, DockOperation operation, bool isNestedLayout = false);
 
     /// <summary>
     /// Copies properties when creating a floating window from a dockable.

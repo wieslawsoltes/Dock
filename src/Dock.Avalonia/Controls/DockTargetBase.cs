@@ -102,7 +102,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         var operation = DockProperties.GetIndicatorDockOperation(indicator);
 
-        IndicatorOperations.Add(operation, indicator);
+        IndicatorOperations[operation] = indicator;
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         var operation = DockProperties.GetIndicatorDockOperation(selector);
 
-        SelectorsOperations.Add(operation, selector);
+        SelectorsOperations[operation] = selector;
     }
 
     /// <summary>

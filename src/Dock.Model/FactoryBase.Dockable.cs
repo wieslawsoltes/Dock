@@ -860,15 +860,10 @@ public abstract partial class FactoryBase
         targetDock.Id = dock.Id;
         targetDock.VisibleDockables = CreateList<IDockable>();
 
-        if (dock is IDocumentDock sourceDoc && targetDock is IDocumentDock targetDoc)
+        // Use factory method for copying dock properties
+        if (dock is IDocumentDock && targetDock is IDocumentDock)
         {
-            targetDoc.CanCreateDocument = sourceDoc.CanCreateDocument;
-            targetDoc.EnableWindowDrag = sourceDoc.EnableWindowDrag;
-
-            if (sourceDoc is IDocumentDockContent sourceContent && targetDoc is IDocumentDockContent targetContent)
-            {
-                targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
-            }
+            CopyDockProperties(dock, targetDock, DockOperation.Window);
         }
 
         if (dock is IToolDock sourceTool && targetDock is IToolDock targetTool)
@@ -894,10 +889,8 @@ public abstract partial class FactoryBase
         if (window is not null)
         {
             AddWindow(rootDock, window);
-            window.X = pointerX;
-            window.Y = pointerY;
-            window.Width = width;
-            window.Height = height;
+            // Use factory method for copying dimension properties
+            CopyDimensionProperties(dockable, window, pointerX, pointerY, width, height);
             window.Present(false);
 
             if (window.Layout is { })
@@ -1074,16 +1067,10 @@ public abstract partial class FactoryBase
         newDock.Title = nameof(IDocumentDock);
         newDock.VisibleDockables = CreateList<IDockable>();
 
-        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        // Use factory method for copying dock properties
+        if (dock is IDocumentDock && newDock is IDocumentDock)
         {
-            targetDock.Id = sourceDock.Id;
-            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
-            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
-
-            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
-            {
-                tdc.DocumentTemplate = sdc.DocumentTemplate;
-            }
+            CopyDockProperties(dock, newDock, DockOperation.Right);
         }
 
         MoveDockable(dock, newDock, dockable, null);
@@ -1120,16 +1107,10 @@ public abstract partial class FactoryBase
         newDock.Title = nameof(IDocumentDock);
         newDock.VisibleDockables = CreateList<IDockable>();
 
-        if (dock is IDocumentDock sourceDock && newDock is IDocumentDock targetDock)
+        // Use factory method for copying dock properties
+        if (dock is IDocumentDock && newDock is IDocumentDock)
         {
-            targetDock.Id = sourceDock.Id;
-            targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
-            targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
-
-            if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
-            {
-                tdc.DocumentTemplate = sdc.DocumentTemplate;
-            }
+            CopyDockProperties(dock, newDock, DockOperation.Bottom);
         }
 
         MoveDockable(dock, newDock, dockable, null);

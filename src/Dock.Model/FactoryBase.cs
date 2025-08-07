@@ -476,7 +476,20 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void CopyDockProperties(IDock source, IDock target, DockOperation operation)
     {
-        // Default implementation - no properties copied
+        // Default implementation - copy common document dock properties
+        if (source is IDocumentDock sourceDocumentDock && target is IDocumentDock targetDocumentDock)
+        {
+            targetDocumentDock.Id = sourceDocumentDock.Id;
+            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
+
+            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
+            {
+                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+            }
+        }
+        
         // Override in derived factories to customize property copying behavior
     }
 
@@ -516,16 +529,8 @@ public abstract partial class FactoryBase : IFactory
         
         if (source.Owner is IDocumentDock sourceDocumentDock && targetDock is IDocumentDock targetDocumentDock)
         {
-            // Copy document dock specific properties as currently done in CreateWindowFrom
-            targetDocumentDock.Id = sourceDocumentDock.Id;
-            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
-            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
-
-            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
-                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
-            {
-                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
-            }
+            // Use the CopyDockProperties method for consistency
+            CopyDockProperties(sourceDocumentDock, targetDocumentDock, DockOperation.Window);
         }
     }
 

@@ -185,19 +185,7 @@ public class DockService : IDockService
         // Use the new overridable method for copying properties
         factory.CopyPropertiesForSplitDock(sourceDockableOwner, targetDocumentDock, operation);
         
-        if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
-        {
-            // Additional specific copying that was in the original implementation
-            targetDocumentDock.Id = sourceDocumentDock.Id;
-            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
-            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
 
-            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
-                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
-            {
-                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
-            }
-        }
         // For split operations, use global validation (allow non-grouped sources)
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDocumentDock))
         {

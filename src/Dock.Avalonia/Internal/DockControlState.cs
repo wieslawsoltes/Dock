@@ -328,7 +328,6 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                     _context.Start(dragControl, point);
                     DropControl = null;
-                    activeDockControl.IsDraggingDock = true;
                 }
                 break;
             }
@@ -387,6 +386,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
                         }
                         _context.DoDragDrop = true;
+                        activeDockControl.IsDraggingDock = true;
                     }
                 }
 

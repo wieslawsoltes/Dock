@@ -69,6 +69,7 @@ Choose the implementation that matches your MVVM framework:
 - [RootDockDebug window](dock-root-dock-debug.md) – Toggle a runtime inspector for Dock layouts.
 - [Debug views](dock-debug-views.md) – Reusable controls used by RootDockDebug.
 - [Advanced guide](dock-advanced.md) – Custom factories and runtime features.
+- [Property copying API](dock-property-copying.md) – Customize how properties are copied during dock operations.
 - [Advanced Content Wrapper Pattern](dock-content-wrapper-pattern.md) – Separate domain models from docking infrastructure.
 - [Custom Dock.Model implementations](dock-custom-model.md) – Integrate Dock with other MVVM frameworks.
 

@@ -36,6 +36,33 @@ public override void InitLayout(IDockable layout)
 }
 ```
 
+## Property copying customization
+
+The factory also provides methods to customize how properties are copied during dock operations. These methods allow fine-grained control over property transfer during splits, floating, and other operations:
+
+- `CopyDockableProperties` - Copy properties between dockables during moves
+- `CopyDockProperties` - Copy properties between docks during splits
+- `CopyPropertiesForSplitDock` - Copy properties when creating new docks during splits
+- `CopyPropertiesForFloatingWindow` - Copy properties when creating floating windows
+- `CopyDimensionProperties` - Copy dimension properties for window operations
+
+```csharp
+public override void CopyDockProperties(IDock source, IDock target, DockOperation operation)
+{
+    // Call base implementation for standard properties
+    base.CopyDockProperties(source, target, operation);
+    
+    // Copy custom properties
+    if (source is ICustomDock customSource && target is ICustomDock customTarget)
+    {
+        customTarget.Theme = customSource.Theme;
+        customTarget.CustomSettings = customSource.CustomSettings;
+    }
+}
+```
+
+For comprehensive details and examples, see the [Property Copying API guide](dock-property-copying.md).
+
 ## Handling events
 
 `FactoryBase` exposes events for virtually every docking action. The samples subscribe to them to trace runtime changes:

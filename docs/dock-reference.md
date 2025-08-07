@@ -111,6 +111,7 @@ The `IFactory` interface (implemented by `Factory` in `Dock.Model.Mvvm` and `Doc
 - `InitLayout`, `InitDockable` and `InitDockWindow` for wiring up newly created objects.
 - Runtime operations like `AddDockable`, `InsertDockable`, `MoveDockable`, `SwapDockable`, `PinDockable`, `FloatDockable` and the various `Close*` methods.
 - Helpers on `DocumentDock` like `AddDocument` and on `ToolDock` like `AddTool` to insert and activate dockables programmatically.
+- Property copying methods like `CopyDockableProperties`, `CopyDockProperties`, `CopyPropertiesForSplitDock`, `CopyPropertiesForFloatingWindow`, and `CopyDimensionProperties` for customizing how properties are transferred during dock operations.
 - Events (found in `IFactory.Events`) that signal changes to the layout such as `DockableAdded`, `DockableRemoved`, `WindowOpened` and many more.
 
 A minimal example of creating a layout manually:

@@ -157,6 +157,8 @@ public class DockService : IDockService
         targetToolDock.Title = nameof(IToolDock);
         targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
+        // Note: proportions and layout adjustments are handled inside SplitToDock
+        // No additional property copying is required for a newly created tool dock here
         
         // For split operations, use global validation (allow non-grouped sources)
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetToolDock))
@@ -178,18 +180,14 @@ public class DockService : IDockService
         var targetDocumentDock = factory.CreateDocumentDock();
         targetDocumentDock.Title = nameof(IDocumentDock);
         targetDocumentDock.VisibleDockables = factory.CreateList<IDockable>();
+        
+        // Copy document dock properties from the source owner to the new dock
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
         {
-            targetDocumentDock.Id = sourceDocumentDock.Id;
-            targetDocumentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
-            targetDocumentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
-
-            if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
-                && targetDocumentDock is IDocumentDockContent targetDocumentDockContent)
-            {
-                targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
-            }
+            factory.CopyDockProperties(sourceDocumentDock, targetDocumentDock, operation);
         }
+        
+
         // For split operations, use global validation (allow non-grouped sources)
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDocumentDock))
         {

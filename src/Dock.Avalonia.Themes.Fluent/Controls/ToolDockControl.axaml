@@ -15,6 +15,7 @@
     <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
     <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
     <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="Background" Value="Transparent" />
     <Setter Property="MinWidth" Value="{Binding MinWidth}" />
     <Setter Property="MaxWidth" Value="{Binding MaxWidth}" />
     <Setter Property="MinHeight" Value="{Binding MinHeight}" />
@@ -24,7 +25,9 @@
       <ControlTemplate>
         <DockableControl Name="PART_DockableControl"
                          TrackingMode="Visible"
-                         Background="{TemplateBinding Background}">
+                         Background="{TemplateBinding Background}"
+                         DockProperties.IsDropArea="True"
+                         DockProperties.IsDockTarget="True">
           <ToolChromeControl IsActive="{Binding IsActive}"
                              IsVisible="{Binding !!VisibleDockables.Count}">
             <ToolControl />

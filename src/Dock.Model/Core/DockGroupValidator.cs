@@ -128,5 +128,4 @@ public static class DockGroupValidator
         return null;
     }
 
-    // Removed: GetEffectiveEnableGlobalDocking; moved to DockInheritanceHelper.
 }

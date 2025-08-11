@@ -1,30 +1,24 @@
-﻿using System;
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
-using Dock.Model.Avalonia;
-using Dock.Settings;
-using WebViewControl;
+using System;
 
 namespace WebViewSample;
 
-internal class Program
+internal static class Program
 {
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
     [STAThread]
-    private static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        WebView.Settings.OsrEnabled = false;
-
-        DockSettings.UseFloatingDockAdorner = true;
-        DockSettings.EnableGlobalDocking = true;
-
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 
+    // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-    {
-        GC.KeepAlive(typeof(Factory).Assembly);
-
-        return AppBuilder.Configure<App>()
+        => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace();
-    }
 }

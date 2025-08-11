@@ -1,8 +1,9 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Dock.Settings;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DockReactiveUISample;
 
@@ -13,9 +14,6 @@ internal class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        // DockSettings.UseFloatingDockAdorner = true;
-        // DockSettings.EnableGlobalDocking = true;
-
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

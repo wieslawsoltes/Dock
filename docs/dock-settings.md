@@ -40,9 +40,40 @@ Increase these values if small pointer movements should not initiate dragging.
 
 ## Global docking
 
-`DockSettings.EnableGlobalDocking` controls whether dockables can be dropped
-onto other `DockControl` instances. If set to `false` the global dock target is
-hidden and drags are limited to the originating control.
+`IDock.EnableGlobalDocking` controls whether dockables can be dropped
+onto a specific dock from outside its current dock control. This is useful for creating
+multi-window applications where you can drag dockables between windows. Each dock
+can individually control whether it accepts global docking operations, with the
+default being enabled (true).
+
+### Inheritance
+
+The `EnableGlobalDocking` property is inherited down the dock hierarchy. When evaluating 
+whether global docking should be allowed for a target dock, the system walks up the 
+ownership chain checking all ancestor docks. If any ancestor dock has 
+`EnableGlobalDocking = false`, global docking is disabled for the entire subtree.
+
+This allows you to disable global docking for a large section of your docking layout 
+by setting it to `false` on a parent dock. For example:
+
+```csharp
+// Disable global docking for an entire window/section
+var parentDock = new ProportionalDock 
+{ 
+    EnableGlobalDocking = false 
+};
+
+// All child docks inherit the disabled setting
+var childDock = new ToolDock 
+{ 
+    Owner = parentDock,
+    EnableGlobalDocking = true  // This is overridden by parent's false
+};
+```
+
+Note: the previous global setting and AppBuilder extension for enabling/disabling
+global docking have been removed. Use the per-dock `IDock.EnableGlobalDocking`
+property instead.
 
 ## Floating window owner
 
@@ -78,7 +109,6 @@ AppBuilder.Configure<App>()
     .UsePlatformDetect()
     .UseFloatingDockAdorner()
     .UseOwnerForFloatingWindows()
-    .EnableGlobalDocking(false)
     .EnableWindowMagnetism()
     .SetWindowMagnetDistance(16)
     .BringWindowsToFrontOnDrag()

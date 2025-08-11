@@ -4,7 +4,7 @@ using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using Xunit;
 
-namespace Dock.Model.Avalonia.UnitTests;
+namespace Dock.Avalonia.HeadlessTests;
 
 /// <summary>
 /// Tests for global docking property inheritance through the dock hierarchy.

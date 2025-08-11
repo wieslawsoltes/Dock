@@ -680,4 +680,368 @@ public class FactorySplitTests
         var newDocContainer = (ProportionalDock)proportionalDock.VisibleDockables![2];
         Assert.True(double.IsNaN(newDocContainer.Proportion));
     }
+
+    [AvaloniaFact]
+    public void CollapseDock_WithSingleDockable_CleansUpProportionalDockTree()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        // Create nested proportional docks: root -> outerDock -> innerDock -> toolDock
+        var outerDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.5
+        };
+
+        var innerDock = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.8
+        };
+
+        var toolDock = new ToolDock
+        {
+            IsCollapsable = true,
+            Alignment = Alignment.Left,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        factory.AddDockable(root, outerDock);
+        factory.AddDockable(outerDock, innerDock);
+        factory.AddDockable(innerDock, toolDock);
+
+        // Collapse the tool dock - this should trigger tree cleanup
+        factory.CollapseDock(toolDock);
+
+        // After cleanup, the root should be empty because the nested structure collapsed
+        Assert.Empty(root.VisibleDockables!);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_WithSingleDockable_MovesUpToOwner()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        // Create: root -> proportionalDock -> documentDock
+        var proportionalDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.7
+        };
+
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(proportionalDock, documentDock);
+
+        // Add an empty tool dock that will be collapsed
+        var emptyToolDock = new ToolDock
+        {
+            IsCollapsable = true,
+            Alignment = Alignment.Right,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        factory.AddDockable(proportionalDock, emptyToolDock);
+
+        // Remove the empty tool dock, leaving only documentDock in proportionalDock
+        factory.RemoveDockable(emptyToolDock, false);
+
+        // Collapse the now-empty tool dock to trigger cleanup
+        factory.CollapseDock(emptyToolDock);
+
+        // The documentDock should now be directly under root, replacing proportionalDock
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(documentDock, root.VisibleDockables[0]);
+        Assert.Same(root, documentDock.Owner);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_PreservesProportionFromCollapsedDock()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var proportionalDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = 0.6 // This should be preserved
+        };
+
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Proportion = double.NaN
+        };
+
+        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(proportionalDock, documentDock);
+
+        // Create and remove another dock to leave proportionalDock with single child
+        var tempDock = new ToolDock { VisibleDockables = factory.CreateList<IDockable>() };
+        factory.AddDockable(proportionalDock, tempDock);
+        factory.RemoveDockable(tempDock, false);
+
+        // Trigger cleanup by collapsing an empty dock
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = proportionalDock
+        };
+        factory.CollapseDock(emptyDock);
+
+        // documentDock should inherit the proportion from proportionalDock
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(documentDock, root.VisibleDockables[0]);
+        Assert.Equal(0.6, documentDock.Proportion, 3);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_CleansUpMultipleLevels()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        // Create deep nesting: root -> level1 -> level2 -> level3 -> document
+        var level1 = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var level2 = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var level3 = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document();
+
+        factory.AddDockable(root, level1);
+        factory.AddDockable(level1, level2);
+        factory.AddDockable(level2, level3);
+        factory.AddDockable(level3, document);
+
+        // Collapse an empty dock to trigger recursive cleanup
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = level3
+        };
+        factory.CollapseDock(emptyDock);
+
+        // The document should bubble up directly to root, eliminating all intermediate levels
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(document, root.VisibleDockables[0]);
+        Assert.Same(root, document.Owner);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_DoesNotCleanUpWithMultipleDockables()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var proportionalDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var dock1 = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
+        var dock2 = new ToolDock { VisibleDockables = factory.CreateList<IDockable>() };
+
+        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(proportionalDock, dock1);
+        factory.AddDockable(proportionalDock, dock2);
+
+        // Collapse an empty dock - should not trigger cleanup since proportionalDock has 2 children
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = proportionalDock
+        };
+        factory.CollapseDock(emptyDock);
+
+        // Structure should remain unchanged
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(proportionalDock, root.VisibleDockables[0]);
+        Assert.Equal(2, proportionalDock.VisibleDockables!.Count);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_DoesNotCleanUpNonProportionalDockOwner()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var documentDock = new DocumentDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var document = new Document();
+
+        factory.AddDockable(root, documentDock);
+        factory.AddDockable(documentDock, document);
+
+        // Collapse an empty dock - should not affect DocumentDock structure
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = documentDock
+        };
+        factory.CollapseDock(emptyDock);
+
+        // Structure should remain: root -> documentDock -> document
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(documentDock, root.VisibleDockables[0]);
+        Assert.Single(documentDock.VisibleDockables!);
+        Assert.Same(document, documentDock.VisibleDockables[0]);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_CleansUpAfterRemovingDockableFromProportionalDock()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var proportionalDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var dock1 = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
+        var dock2 = new ToolDock { VisibleDockables = factory.CreateList<IDockable>() };
+
+        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(proportionalDock, dock1);
+        factory.AddDockable(proportionalDock, dock2);
+
+        // Remove one dock, leaving only one child in proportionalDock
+        factory.RemoveDockable(dock2, false);
+
+        // Now collapse an empty dock to trigger cleanup
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = proportionalDock
+        };
+        factory.CollapseDock(emptyDock);
+
+        // dock1 should now be directly under root
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(dock1, root.VisibleDockables[0]);
+        Assert.Same(root, dock1.Owner);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_HandlesNullOwner()
+    {
+        var factory = new Factory();
+        var orphanedDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = null // No owner
+        };
+
+        var document = new Document();
+        factory.AddDockable(orphanedDock, document);
+
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = orphanedDock
+        };
+
+        // Should not throw when owner is null
+        factory.CollapseDock(emptyDock);
+
+        // Structure should remain unchanged
+        Assert.Single(orphanedDock.VisibleDockables!);
+        Assert.Same(document, orphanedDock.VisibleDockables[0]);
+    }
+
+    [AvaloniaFact]
+    public void CollapseDock_HandlesEmptyVisibleDockables()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+
+        var proportionalDock = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            VisibleDockables = null // Null collection
+        };
+
+        factory.AddDockable(root, proportionalDock);
+
+        var emptyDock = new ToolDock 
+        { 
+            IsCollapsable = true,
+            VisibleDockables = factory.CreateList<IDockable>(),
+            Owner = proportionalDock
+        };
+
+        // Should not throw when VisibleDockables is null
+        factory.CollapseDock(emptyDock);
+
+        // Structure should remain unchanged
+        Assert.Single(root.VisibleDockables!);
+        Assert.Same(proportionalDock, root.VisibleDockables[0]);
+    }
 }

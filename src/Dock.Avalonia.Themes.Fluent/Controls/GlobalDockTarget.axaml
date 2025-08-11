@@ -41,16 +41,16 @@
                  DockProperties.IndicatorDockOperation="Right" />
           <Panel x:Name="PART_SelectorPanel" 
                  Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
-            <Image x:Name="PART_TopSelector" 
+            <Image x:Name="PART_TopSelector" Classes="selector"
                    HorizontalAlignment="Center" VerticalAlignment="Top" 
                    DockProperties.IndicatorDockOperation="Top" />
-            <Image x:Name="PART_BottomSelector" 
+            <Image x:Name="PART_BottomSelector" Classes="selector"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom" 
                    DockProperties.IndicatorDockOperation="Bottom" />
-            <Image x:Name="PART_LeftSelector" 
+            <Image x:Name="PART_LeftSelector" Classes="selector"
                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                    DockProperties.IndicatorDockOperation="Left" />
-            <Image x:Name="PART_RightSelector"  
+            <Image x:Name="PART_RightSelector"  Classes="selector"
                    HorizontalAlignment="Right" VerticalAlignment="Center" 
                    DockProperties.IndicatorDockOperation="Right" />
           </Panel>
@@ -113,6 +113,28 @@
     </Style>
     <Style Selector="^[ShowIndicatorsOnly=True] /template/ Panel#PART_SelectorPanel">
       <Setter Property="IsVisible" Value="False" />
+    </Style>
+    
+    <Style Selector="^/template/ Image.selector">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    
+    <Style Selector="^:vertical /template/ Image">
+      <Style Selector="^#PART_TopSelector.selector">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+      <Style Selector="^#PART_BottomSelector.selector">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+    </Style>
+    
+    <Style Selector="^:horizontal /template/ Image">
+      <Style Selector="^#PART_LeftSelector.selector">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
+      <Style Selector="^#PART_RightSelector.selector">
+        <Setter Property="IsVisible" Value="True" />
+      </Style>
     </Style>
 
   </ControlTheme>

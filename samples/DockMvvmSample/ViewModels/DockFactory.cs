@@ -135,6 +135,7 @@ public class DockFactory : Factory
             Id = "Home",
             Title = "Home",
             ActiveDockable = mainLayout,
+            EnableGlobalDocking = false,
             VisibleDockables = CreateList<IDockable>(mainLayout)
         };
 

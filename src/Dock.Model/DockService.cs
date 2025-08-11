@@ -264,6 +264,11 @@ public class DockService : IDockService
             return false;
         }
 
+        if (factory.FindRoot(sourceDockable) == factory.FindRoot(targetDockable))
+        {
+            return false;
+        }
+
         if (factory.FindRoot(sourceDockable, _ => true) is { ActiveDockable: IDock targetWindowOwner })
         {
             if (bExecute)

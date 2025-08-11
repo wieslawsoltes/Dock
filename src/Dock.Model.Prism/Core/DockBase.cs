@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -23,6 +23,7 @@ public abstract class DockBase : DockableBase, IDock
     private int _openedDockablesCount = 0;
     private bool _isActive;
     private bool _canCloseLastDockable = true;
+    private bool _enableGlobalDocking = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -125,4 +126,12 @@ public abstract class DockBase : DockableBase, IDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand Close { get; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableGlobalDocking
+    {
+        get => _enableGlobalDocking;
+        set => SetProperty(ref _enableGlobalDocking, value);
+    }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Avalonia.Controls;
@@ -185,11 +185,6 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (!DockSettings.EnableGlobalDocking)
-        {
-            return false;
-        }
-
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
@@ -209,6 +204,12 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         // Use the same target dock as execution for consistency
         var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
+
+        // Check if the target dock (or any ancestor) has global docking enabled
+        if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
+        {
+            return false;
+        }
 
         DockManager.Position = DockHelpers.ToDockPoint(point);
 

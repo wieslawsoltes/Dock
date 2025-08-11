@@ -1,7 +1,8 @@
-﻿using System;
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
 using Avalonia;
 using Dock.Model.Avalonia;
-using Dock.Settings;
+using System;
 
 namespace DockXamlSample;
 
@@ -10,9 +11,6 @@ internal class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        // DockSettings.UseFloatingDockAdorner = true;
-        // DockSettings.EnableGlobalDocking = true;
-
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

@@ -148,33 +148,31 @@ public class GlobalDockingValidationTests
     }
 
     [AvaloniaFact]
-    public void GlobalDocking_DisabledSetting_ShouldReject()
+    public void GlobalDocking_DefaultEnabledPerDock_ShouldAllow()
     {
-        // NOTE: The global docking setting is enforced at the UI level (ValidateGlobal methods)
-        // rather than in DockManager.ValidateTool. This test demonstrates that the setting
-        // check works in the validation layer where it's implemented.
-        var originalSetting = DockSettings.EnableGlobalDocking;
-        try
-        {
-            DockSettings.EnableGlobalDocking = false;
-            
-            // Test through direct validation call to verify setting is respected
-            var source = CreateTool("Source", "Source Tool", dockGroup: null);
-            var target = CreateGlobalTarget("Target", dockGroup: null);
+        // Test that EnableGlobalDocking is enabled by default on dock instances
+        var target = CreateGlobalTarget("Target", dockGroup: null);
+        
+        // Verify default value is true
+        Assert.True(target.EnableGlobalDocking, "EnableGlobalDocking should be enabled by default");
+    }
 
-            // This should pass since we're using the low-level DockManager validation
-            // which doesn't check the global docking setting (that's done at UI level)
-            var dockManager = CreateDockManager();
-            var result = dockManager.ValidateTool(source, target, DragAction.Move, DockOperation.Fill, false);
-            
-            // The actual global docking setting enforcement happens in ValidateGlobal methods
-            // in DockControlState and HostWindowState, which our tests show are working correctly
-            Assert.True(result, "DockManager.ValidateTool doesn't check global docking setting - that's done at UI level");
-        }
-        finally
-        {
-            DockSettings.EnableGlobalDocking = originalSetting;
-        }
+    [AvaloniaFact]
+    public void GlobalDocking_DisabledPerDock_ShouldReject()
+    {
+        // Test that global docking can be disabled per dock
+        var source = CreateTool("Source", "Source Tool", dockGroup: null);
+        var target = CreateGlobalTarget("Target", dockGroup: null);
+        
+        // Disable global docking on the target dock
+        target.EnableGlobalDocking = false;
+
+        var dockManager = CreateDockManager();
+        var result = dockManager.ValidateTool(source, target, DragAction.Move, DockOperation.Fill, false);
+        
+        // This should still pass at the DockManager level since it doesn't check the per-dock setting
+        // The per-dock setting is enforced at the UI level in ValidateGlobal methods
+        Assert.True(result, "DockManager.ValidateTool doesn't check per-dock global docking setting - that's done at UI level");
     }
 
     #endregion

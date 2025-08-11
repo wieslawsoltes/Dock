@@ -21,7 +21,6 @@ public class AppBuilderExtensionsTests
             MinimumVerticalDragDistance = 12,
             UseFloatingDockAdorner = true,
             UsePinnedDockWindow = true,
-            EnableGlobalDocking = false,
             UseOwnerForFloatingWindows = false
         };
 
@@ -32,7 +31,6 @@ public class AppBuilderExtensionsTests
         Assert.Equal(12, DockSettings.MinimumVerticalDragDistance);
         Assert.True(DockSettings.UseFloatingDockAdorner);
         Assert.True(DockSettings.UsePinnedDockWindow);
-        Assert.False(DockSettings.EnableGlobalDocking);
         Assert.False(DockSettings.UseOwnerForFloatingWindows);
     }
 
@@ -63,12 +61,10 @@ public class AppBuilderExtensionsTests
 
         builder.UseFloatingDockAdorner(true)
                .UsePinnedDockWindow(true)
-               .EnableGlobalDocking(false)
                .UseOwnerForFloatingWindows(false);
 
         Assert.True(DockSettings.UseFloatingDockAdorner);
         Assert.True(DockSettings.UsePinnedDockWindow);
-        Assert.False(DockSettings.EnableGlobalDocking);
         Assert.False(DockSettings.UseOwnerForFloatingWindows);
     }
 }

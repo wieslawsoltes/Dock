@@ -28,50 +28,6 @@ public abstract partial class FactoryBase : IFactory
         return false;
     }
 
-    private void CleanupProportionalDockTree(IProportionalDock dock)
-    {
-        if (dock?.VisibleDockables == null || dock.Owner is not IDock owner)
-            return;
-
-        // Check if this dock has only one visible dockable
-        if (dock.VisibleDockables.Count == 1)
-        {
-            var singleDockable = dock.VisibleDockables[0];
-
-            // Get the index where the current dock is in the owner's collection
-            if (owner.VisibleDockables != null)
-            {
-                var dockIndex = owner.VisibleDockables.IndexOf(dock);
-                if (dockIndex >= 0)
-                {
-                    // Preserve the proportion from the dock being collapsed
-                    if (singleDockable is IDock singleDock && !double.IsNaN(dock.Proportion))
-                    {
-                        singleDock.Proportion = dock.Proportion;
-                    }
-
-                    // Remove the current dock from owner
-                    owner.VisibleDockables.RemoveAt(dockIndex);
-
-                    // Insert the single dockable at the same position
-                    owner.VisibleDockables.Insert(dockIndex, singleDockable);
-
-                    // Update the parent reference
-                    singleDockable.Owner = owner;
-
-                    // Initialize the dockable in its new owner
-                    InitDockable(singleDockable, owner);
-
-                    // Continue cleanup up the tree if the owner is also a proportional dock
-                    if (owner is IProportionalDock proportionalOwner)
-                    {
-                        CleanupProportionalDockTree(proportionalOwner);
-                    }
-                }
-            }
-        }
-    }
-
     /// <inheritdoc/>
     public virtual void CollapseDock(IDock dock)
     {
@@ -152,12 +108,6 @@ public abstract partial class FactoryBase : IFactory
         else
         {
             RemoveDockable(dock, true);
-        }
-
-        // After collapsing, check if the owner dock needs cleanup
-        if (dock.Owner is IProportionalDock proportionalOwner)
-        {
-            CleanupProportionalDockTree(proportionalOwner);
         }
     }
 

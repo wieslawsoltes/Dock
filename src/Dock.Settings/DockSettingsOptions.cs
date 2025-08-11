@@ -29,11 +29,6 @@ public class DockSettingsOptions
     public bool? UsePinnedDockWindow { get; set; }
 
     /// <summary>
-    /// Optional global docking flag.
-    /// </summary>
-    public bool? EnableGlobalDocking { get; set; }
-
-    /// <summary>
     /// Optional floating window owner flag.
     /// </summary>
     public bool? UseOwnerForFloatingWindows { get; set; }

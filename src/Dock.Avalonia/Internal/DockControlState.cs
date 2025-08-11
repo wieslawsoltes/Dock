@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using Avalonia;
@@ -212,11 +212,6 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (!DockSettings.EnableGlobalDocking)
-        {
-            return false;
-        }
-
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             return false;
@@ -235,6 +230,12 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         // Use the same target dock as execution for consistency
         var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
+
+        // Check if the target dock (or any ancestor) has global docking enabled
+        if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
+        {
+            return false;
+        }
 
         DockManager.Position = DockHelpers.ToDockPoint(point);
 

@@ -74,4 +74,11 @@ public interface IDock : IDockable
     /// Close layout.
     /// </summary>
     ICommand Close { get; }
+
+    /// <summary>
+    /// Gets or sets whether global docking is enabled for this dock.
+    /// When true, dockables can be dropped onto other dock controls.
+    /// Enabled by default.
+    /// </summary>
+    bool EnableGlobalDocking { get; set; }
 }

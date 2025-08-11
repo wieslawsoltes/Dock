@@ -46,7 +46,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (DockSettings.EnableGlobalDocking && isGlobalValid && DropControl is { } dropControl)
+        if (isGlobalValid && DropControl is { } dropControl)
         {
             bool horizontalGlobalDocking = false;
             bool verticalGlobalDocking = false;
@@ -79,11 +79,15 @@ internal abstract class DockManagerState : IDockManagerState
                 }
             }
             
-            if (dockControl is not null)
+            if (dockControl?.Layout?.ActiveDockable is IDock activeDock)
             {
-                var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
-                
-                GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly, horizontalGlobalDocking, verticalGlobalDocking);
+                var targetDock = DockHelpers.FindProportionalDock(activeDock) ?? activeDock;
+                // Only show global adorners if the target dock (or any ancestor) has global docking enabled
+                if (DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
+                {
+                    var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
+                    GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly, horizontalGlobalDocking, verticalGlobalDocking);
+                }
             }
         }
     }
@@ -98,7 +102,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (DockSettings.EnableGlobalDocking && DropControl is { } dropControl)
+        if (DropControl is { } dropControl)
         {
             // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();

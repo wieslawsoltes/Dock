@@ -113,6 +113,7 @@ public class DockFactory : Factory
 
         var mainLayout = new ProportionalDock
         {
+            // EnableGlobalDocking = false,
             Orientation = Orientation.Horizontal,
             VisibleDockables = CreateList<IDockable>
             (

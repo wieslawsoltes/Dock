@@ -348,6 +348,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     }
 
                     if (!executed && _context.DragControl?.DataContext is IDockable dockable &&
+                        dockable.CanFloat &&
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
                         Float(point, inputActiveDockControl, dockable, factory);
@@ -486,7 +487,6 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.TargetPoint = default;
                                 _context.TargetDockControl = null;
                             }
-                            preview = "Float";
                         }
                     }
                     else
@@ -495,7 +495,8 @@ internal class DockControlState : DockManagerState, IDockControlState
                         DropControl = null;
                         _context.TargetPoint = default;
                         _context.TargetDockControl = null;
-                        preview = "Float";
+                        var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && sourceDockable.CanFloat;
+                        preview = canFloat ? "Float" : "None";
                     }
 
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);

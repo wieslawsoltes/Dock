@@ -25,6 +25,7 @@ public class RootDock : DockBase, IRootDock
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
     private IToolDock? _pinnedDock;
+    private bool _enableGlobalDocking = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -114,4 +115,12 @@ public class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ExitWindows { get; }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableGlobalDocking
+    {
+        get => _enableGlobalDocking;
+        set => SetProperty(ref _enableGlobalDocking, value);
+    }
 }

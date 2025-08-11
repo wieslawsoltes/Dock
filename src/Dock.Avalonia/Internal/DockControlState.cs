@@ -212,11 +212,6 @@ internal class DockControlState : DockManagerState, IDockControlState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (!DockSettings.EnableGlobalDocking)
-        {
-            return false;
-        }
-
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
             return false;
@@ -476,6 +471,18 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 preview = valid
                                     ? localOperation == DockOperation.Window ? "Float" : "Dock"
                                     : "None";
+
+                                if (localOperation == DockOperation.Window)
+                                {
+                                    var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && sourceDockable.CanFloat;
+
+                                    if (!canFloat)
+                                    {
+                                        preview = "None";
+                                        valid = false;
+                                        localOperation = DockOperation.None;
+                                    }   
+                                }
                             }
                         }
                         else

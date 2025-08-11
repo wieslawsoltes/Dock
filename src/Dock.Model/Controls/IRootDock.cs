@@ -66,4 +66,9 @@ public interface IRootDock : IDock
     /// Exit windows.
     /// </summary>
     ICommand ExitWindows { get; }
+    
+    /// <summary>
+    /// Gets or sets whether docking is allowed between different dock control instances.
+    /// </summary>
+    bool EnableGlobalDocking { get; set; }
 }

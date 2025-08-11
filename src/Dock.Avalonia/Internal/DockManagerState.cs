@@ -46,8 +46,17 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (DockSettings.EnableGlobalDocking && isGlobalValid && DropControl is { } dropControl)
+        if (isGlobalValid && DropControl is { } dropControl)
         {
+            if (DropControl.DataContext is IDockable { Factory: { } factory } dockable)
+            {
+                var root = factory.FindRoot(dockable);
+
+                if (root is { EnableGlobalDocking: false })
+                {
+                    return;
+                }
+            }
             // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             
@@ -84,7 +93,7 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         // Global dock target
-        if (DockSettings.EnableGlobalDocking && DropControl is { } dropControl)
+        if (DropControl is { } dropControl)
         {
             // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();

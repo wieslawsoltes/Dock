@@ -32,11 +32,6 @@ public static class DockSettings
     public static bool UsePinnedDockWindow = false;
 
     /// <summary>
-    /// Allow docking between different dock control instances.
-    /// </summary>
-    public static bool EnableGlobalDocking = true;
-    
-    /// <summary>
     /// Floating windows use the main window as their owner so they stay in front.
     /// </summary>
     public static bool UseOwnerForFloatingWindows = true;

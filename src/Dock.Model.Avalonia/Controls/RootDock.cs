@@ -97,6 +97,9 @@ public class RootDock : DockBase, IRootDock
             o => o.Windows, 
             (o, v) => o.Windows = v);
 
+    public static readonly DirectProperty<RootDock, bool> EnableGlobalDockingProperty = AvaloniaProperty.RegisterDirect<RootDock, bool>(
+        nameof(EnableGlobalDocking), o => o.EnableGlobalDocking, (o, v) => o.EnableGlobalDocking = v);
+
     private bool _isFocusableRoot;
     private IList<IDockable>? _hiddenDockables;
     private IList<IDockable>? _leftPinnedDockables;
@@ -106,6 +109,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private bool _enableGlobalDocking = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -203,6 +207,14 @@ public class RootDock : DockBase, IRootDock
     {
         get => _windows;
         set => SetAndRaise(WindowsProperty, ref _windows, value);
+    }
+    
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("EnableGobalDocking")]
+    public bool EnableGlobalDocking
+    {
+        get => _enableGlobalDocking;
+        set => SetAndRaise(EnableGlobalDockingProperty, ref _enableGlobalDocking, value);
     }
 
     /// <inheritdoc/>

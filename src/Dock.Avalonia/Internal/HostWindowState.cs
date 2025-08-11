@@ -185,11 +185,6 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
-        if (!DockSettings.EnableGlobalDocking)
-        {
-            return false;
-        }
-
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {

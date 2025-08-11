@@ -3,6 +3,7 @@
 using Avalonia;
 using Dock.Model.Avalonia;
 using System;
+using WebViewControl;
 
 namespace WebViewSample;
 
@@ -14,6 +15,8 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        WebView.Settings.OsrEnabled = false;
+
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

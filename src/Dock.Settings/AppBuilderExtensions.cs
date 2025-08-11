@@ -45,11 +45,6 @@ public static class AppBuilderExtensions
             DockSettings.UsePinnedDockWindow = options.UsePinnedDockWindow.Value;
         }
 
-        if (options.EnableGlobalDocking != null)
-        {
-            DockSettings.EnableGlobalDocking = options.EnableGlobalDocking.Value;
-        }
-
         if (options.UseOwnerForFloatingWindows != null)
         {
             DockSettings.UseOwnerForFloatingWindows = options.UseOwnerForFloatingWindows.Value;
@@ -98,20 +93,6 @@ public static class AppBuilderExtensions
         bool enable = true)
     {
         DockSettings.UsePinnedDockWindow = enable;
-        return builder;
-    }
-
-    /// <summary>
-    /// Sets <see cref="DockSettings.EnableGlobalDocking"/> to the given value.
-    /// </summary>
-    /// <param name="builder">The app builder.</param>
-    /// <param name="enable">Whether to allow docking between controls.</param>
-    /// <returns>The app builder instance.</returns>
-    public static AppBuilder EnableGlobalDocking(
-        this AppBuilder builder,
-        bool enable = true)
-    {
-        DockSettings.EnableGlobalDocking = enable;
         return builder;
     }
 

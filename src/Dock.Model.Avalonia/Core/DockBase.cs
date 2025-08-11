@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -92,6 +92,7 @@ public abstract class DockBase : DockableBase, IDock
     private bool _canGoForward;
     private int _openedDockablesCount = 0;
     private bool _canCloseLastDockable = true;
+    private bool _enableGlobalDocking = true;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockBase"/> class.
@@ -220,4 +221,19 @@ public abstract class DockBase : DockableBase, IDock
     [IgnoreDataMember]
     [JsonIgnore]
     public ICommand Close { get; }
+
+    /// <summary>
+    /// Defines the <see cref="EnableGlobalDocking"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockBase, bool> EnableGlobalDockingProperty =
+        AvaloniaProperty.RegisterDirect<DockBase, bool>(nameof(EnableGlobalDocking), o => o.EnableGlobalDocking, (o, v) => o.EnableGlobalDocking = v, true);
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("EnableGlobalDocking")]
+    public bool EnableGlobalDocking
+    {
+        get => _enableGlobalDocking;
+        set => SetAndRaise(EnableGlobalDockingProperty, ref _enableGlobalDocking, value);
+    }
 }

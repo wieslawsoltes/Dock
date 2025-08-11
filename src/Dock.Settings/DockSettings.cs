@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using System;
@@ -30,11 +30,6 @@ public static class DockSettings
     /// Show auto-hidden dockables inside a floating window.
     /// </summary>
     public static bool UsePinnedDockWindow = false;
-
-    /// <summary>
-    /// Allow docking between different dock control instances.
-    /// </summary>
-    public static bool EnableGlobalDocking = true;
     
     /// <summary>
     /// Floating windows use the main window as their owner so they stay in front.

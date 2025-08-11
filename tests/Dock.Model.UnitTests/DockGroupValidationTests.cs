@@ -93,6 +93,7 @@ public class DockGroupValidationTests
         public ICommand GoForward { get; }
         public ICommand Navigate { get; }
         public ICommand Close { get; }
+        public bool EnableGlobalDocking { get; set; } = true;
 
         public SimpleDock(string? dockGroup = null) : base(dockGroup) 
         { 

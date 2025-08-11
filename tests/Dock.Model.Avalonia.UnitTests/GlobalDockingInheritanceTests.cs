@@ -1,12 +1,10 @@
-using System;
-using Dock.Model;
-using Dock.Model.Avalonia;
+using Avalonia.Collections;
+using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Core;
 using Xunit;
-using Avalonia.Collections;
 
-namespace Dock.Model.UnitTests;
+namespace Dock.Model.Avalonia.UnitTests;
 
 /// <summary>
 /// Tests for global docking property inheritance through the dock hierarchy.
@@ -49,7 +47,7 @@ public class GlobalDockingInheritanceTests
         };
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_NoAncestors_ShouldReturnTrue()
     {
         var dock = CreateParentDock(enableGlobalDocking: true);
@@ -59,7 +57,7 @@ public class GlobalDockingInheritanceTests
         Assert.True(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_SelfDisabled_ShouldReturnFalse()
     {
         var dock = CreateParentDock(enableGlobalDocking: false);
@@ -69,7 +67,7 @@ public class GlobalDockingInheritanceTests
         Assert.False(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_ParentDisabled_ShouldReturnFalse()
     {
         var parent = CreateParentDock(enableGlobalDocking: false);
@@ -80,7 +78,7 @@ public class GlobalDockingInheritanceTests
         Assert.False(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_ChildDisabled_ShouldReturnFalse()
     {
         var parent = CreateParentDock(enableGlobalDocking: true);
@@ -91,7 +89,7 @@ public class GlobalDockingInheritanceTests
         Assert.False(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_BothEnabled_ShouldReturnTrue()
     {
         var parent = CreateParentDock(enableGlobalDocking: true);
@@ -102,7 +100,7 @@ public class GlobalDockingInheritanceTests
         Assert.True(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_ThreeLevel_MiddleDisabled_ShouldReturnFalse()
     {
         var grandparent = CreateParentDock(enableGlobalDocking: true);
@@ -114,7 +112,7 @@ public class GlobalDockingInheritanceTests
         Assert.False(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_NonDockAncestor_ShouldSkip()
     {
         var parentDock = CreateParentDock(enableGlobalDocking: false);
@@ -127,7 +125,7 @@ public class GlobalDockingInheritanceTests
         Assert.False(result);
     }
 
-    [Fact]
+    [AvaloniaFact]
     public void GetEffectiveEnableGlobalDocking_NonDockTarget_ShouldWalkUpToFindDock()
     {
         var parentDock = CreateParentDock(enableGlobalDocking: false);

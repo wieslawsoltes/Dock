@@ -97,6 +97,11 @@ public class RootDock : DockBase, IRootDock
             o => o.Windows, 
             (o, v) => o.Windows = v);
 
+    public static readonly DirectProperty<RootDock, bool> EnableAdaptiveGlobalDockTargetsProperty =
+        AvaloniaProperty.RegisterDirect<RootDock, bool>(
+            nameof(EnableAdaptiveGlobalDockTargets), o => o.EnableAdaptiveGlobalDockTargets,
+            (o, v) => o.EnableAdaptiveGlobalDockTargets = v);
+
     private bool _isFocusableRoot;
     private IList<IDockable>? _hiddenDockables;
     private IList<IDockable>? _leftPinnedDockables;
@@ -106,6 +111,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -214,4 +220,13 @@ public class RootDock : DockBase, IRootDock
     [IgnoreDataMember]
     [JsonIgnore]
     public ICommand ExitWindows { get; }
+    
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("EnableAdaptiveGlobalDockTargets")]
+    public bool EnableAdaptiveGlobalDockTargets
+    {
+        get => _enableAdaptiveGlobalDockTargets;
+        set => SetAndRaise(EnableAdaptiveGlobalDockTargetsProperty, ref _enableAdaptiveGlobalDockTargets, value);
+    }
 }

@@ -141,24 +141,6 @@ internal abstract class DockManagerState : IDockManagerState
         var relativePoint = DockHelpers.GetScreenPoint(relativeTo, point);
         _dockManager.ScreenPosition = DockHelpers.ToDockPoint(relativePoint);
 
-        // Validate docking groups before execution
-        if (targetDockable is IDock targetDock)
-        {
-            // For global docking operations (target is a dock), use global validation logic
-            if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
-            {
-                return; // Reject execution if docking groups are incompatible
-            }
-        }
-        else
-        {
-            // For local docking operations (target is a specific dockable), use strict validation
-            if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable))
-            {
-                return; // Reject execution if docking groups are incompatible
-            }
-        }
-
         _dockManager.ValidateDockable(sourceDockable, targetDockable, dragAction, operation, bExecute: true);
     }
 

@@ -26,35 +26,45 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
-          <Panel x:Name="PART_TopIndicator" 
-                 Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" 
-                 DockProperties.IndicatorDockOperation="Top" />
-          <Panel x:Name="PART_BottomIndicator" 
-                 Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" 
-                 DockProperties.IndicatorDockOperation="Bottom" />
-          <Panel x:Name="PART_LeftIndicator" 
-                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
-                 DockProperties.IndicatorDockOperation="Left" />
-          <Panel x:Name="PART_RightIndicator" 
-                 Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
-                 DockProperties.IndicatorDockOperation="Right" />
-          <Panel x:Name="PART_SelectorPanel" 
-                 Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
-            <Image x:Name="PART_TopSelector" 
-                   HorizontalAlignment="Center" VerticalAlignment="Top" 
-                   DockProperties.IndicatorDockOperation="Top" />
-            <Image x:Name="PART_BottomSelector" 
-                   HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-                   DockProperties.IndicatorDockOperation="Bottom" />
-            <Image x:Name="PART_LeftSelector" 
-                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+        <Panel>
+          <ProportionalStackPanel Orientation="Horizontal">
+            <Panel x:Name="PART_LeftIndicator"
+                   ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
                    DockProperties.IndicatorDockOperation="Left" />
-            <Image x:Name="PART_RightSelector"  
-                   HorizontalAlignment="Right" VerticalAlignment="Center" 
+            <Border />
+            <Panel x:Name="PART_RightIndicator"
+                   ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
                    DockProperties.IndicatorDockOperation="Right" />
-          </Panel>
-        </Grid>
+          </ProportionalStackPanel>
+          <ProportionalStackPanel Orientation="Vertical">
+            <Panel x:Name="PART_TopIndicator"
+                   ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                   DockProperties.IndicatorDockOperation="Top" />
+            <Border />
+            <Panel x:Name="PART_BottomIndicator"
+                   ProportionalStackPanel.Proportion="{x:Static DockSettings.GlobalDockingProportion}"
+                   DockProperties.IndicatorDockOperation="Bottom" />
+          </ProportionalStackPanel>
+          
+          <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
+            <Panel x:Name="PART_SelectorPanel" 
+                   Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
+              <Image x:Name="PART_TopSelector" Classes="selector"
+                     HorizontalAlignment="Center" VerticalAlignment="Top" 
+                     DockProperties.IndicatorDockOperation="Top" />
+              <Image x:Name="PART_BottomSelector" Classes="selector"
+                     HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                     DockProperties.IndicatorDockOperation="Bottom" />
+              <Image x:Name="PART_LeftSelector" Classes="selector"
+                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                     DockProperties.IndicatorDockOperation="Left" />
+              <Image x:Name="PART_RightSelector"  Classes="selector"
+                     HorizontalAlignment="Right" VerticalAlignment="Center" 
+                     DockProperties.IndicatorDockOperation="Right" />
+            </Panel>
+          </Grid>
+        </Panel>
+        
       </ControlTemplate>
     </Setter>
 

@@ -30,7 +30,7 @@ public abstract partial class FactoryBase : IFactory
 
     private void CleanupProportionalDockTree(IProportionalDock dock)
     {
-        if (dock?.VisibleDockables == null || dock.Owner is not IDock owner)
+        if (dock.VisibleDockables == null || dock.Owner is not IDock owner || dock.Owner is IRootDock)
             return;
 
         // Check if this dock has only one visible dockable

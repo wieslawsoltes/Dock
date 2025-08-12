@@ -48,14 +48,14 @@ internal abstract class DockManagerState : IDockManagerState
         // Global dock target
         if (isGlobalValid && DropControl is { } dropControl)
         {
-            bool horizontalGlobalDocking = false;
-            bool verticalGlobalDocking = false;
+            bool horizontalGlobalDocking = true;
+            bool verticalGlobalDocking = true;
 
             if (DropControl.DataContext is IDockable { Factory: { } factory } dockable)
             {
                 var root = factory.FindRoot(dockable);
 
-                if (root is { })
+                if (root is { EnableAdaptiveGlobalDockTargets: true })
                 {
                     (horizontalGlobalDocking, verticalGlobalDocking) = GlobalDockingHelper.CanGlobalDock(root);
                 }

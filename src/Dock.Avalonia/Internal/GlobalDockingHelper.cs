@@ -15,7 +15,7 @@ internal static class GlobalDockingHelper
     /// </summary>
     /// <param name="targetDock">The target dock to evaluate</param>
     /// <returns>A tuple indicating whether global docking makes sense horizontally and vertically</returns>
-    public static (bool horizontalValid, bool verticalValid) CanGlobalDock(IDock targetDock)
+    public static (bool horizontalValid, bool verticalValid) CanGlobalDock(IRootDock targetDock)
     {
         int horizontalCount = 0;
         int verticalCount = 0;
@@ -45,7 +45,7 @@ internal static class GlobalDockingHelper
             int nonProportionalChildren = 0;
             foreach (var dockable in proportionalDock.VisibleDockables)
             {
-                if (dockable is not IProportionalDock)
+                if (dockable is not IProportionalDock { VisibleDockables: { Count: 1} } && dockable is not ISplitter)
                 {
                     nonProportionalChildren++;
                 }

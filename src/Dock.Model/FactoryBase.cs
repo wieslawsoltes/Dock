@@ -468,7 +468,15 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
+        var currentRoot = FindRoot(dockable);
         var root = CreateRootDock();
+
+        if (currentRoot != null)
+        {
+            root.EnableAdaptiveGlobalDockTargets = currentRoot.EnableAdaptiveGlobalDockTargets;
+        }
+        
+        
         root.Title = nameof(IRootDock);
         root.VisibleDockables = CreateList<IDockable>();
         if (root.VisibleDockables is not null && target is not null)

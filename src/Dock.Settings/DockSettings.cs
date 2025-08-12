@@ -1,4 +1,4 @@
-// Copyright (c) Wiesław Šoltés. All rights reserved.
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 using System;
@@ -50,6 +50,11 @@ public static class DockSettings
     /// Bring all windows to the front when a window starts being dragged.
     /// </summary>
     public static bool BringWindowsToFrontOnDrag = true;
+    
+    /// <summary>
+    /// Configures the proportion used for global docking split operations.
+    /// </summary>
+    public static double GlobalDockingProportion = 0.25;
 
 
     /// <summary>

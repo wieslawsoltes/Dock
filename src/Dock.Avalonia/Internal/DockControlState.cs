@@ -170,6 +170,9 @@ internal class DockControlState : DockManagerState, IDockControlState
                 // }
 
                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
+
+                if (sourceDockable.Owner != null) 
+                    sourceDockable.Owner.Proportion = DockSettings.GlobalDockingProportion;
             }
         }
         else

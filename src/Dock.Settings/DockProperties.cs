@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -16,31 +17,36 @@ public class DockProperties : AvaloniaObject
     /// Defines the IsDockTarget attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDockTargetProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDockTarget", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDockTarget", false, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDragArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDragAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragArea", false, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IsDropArea attached property.
     /// </summary>
     public static readonly AttachedProperty<bool> IsDropAreaProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropArea", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropArea", false, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDragEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDragEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDragEnabled", true, true,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Define IsDropEnabled attached property.
     /// </summary>
     public static readonly StyledProperty<bool> IsDropEnabledProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("IsDropEnabled", true, true,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the ShowDockIndicatorOnly attached property.
@@ -48,7 +54,8 @@ public class DockProperties : AvaloniaObject
     /// drop indicators and hides the dock target visuals.
     /// </summary>
     public static readonly AttachedProperty<bool> ShowDockIndicatorOnlyProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("ShowDockIndicatorOnly", false, false, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool>("ShowDockIndicatorOnly", false, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the IndicatorDockOperation attached property.
@@ -65,7 +72,8 @@ public class DockProperties : AvaloniaObject
     /// the dock target adorner instead of the adorned control itself.
     /// </summary>
     public static readonly AttachedProperty<Control?> DockAdornerHostProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true, BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, Control?>("DockAdornerHost", null, true,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Defines the DockGroup attached property.
@@ -75,20 +83,41 @@ public class DockProperties : AvaloniaObject
     /// to set a group that automatically applies to all child dockables.
     /// </summary>
     public static readonly AttachedProperty<string?> DockGroupProperty =
-        AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DockGroup", null, inherits: true, defaultBindingMode: BindingMode.TwoWay);
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DockGroup", null, inherits: true,
+            defaultBindingMode: BindingMode.TwoWay);
 
-        // Debug-only attached properties used by diagnostics overlay during drag & drop
-        public static readonly AttachedProperty<bool?> DebugIsValidDropProperty =
-            AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsValidDrop", null, false, BindingMode.TwoWay);
+    /// <summary>
+    /// Debug-only: Indicates whether dropping is valid for the current drag-over state on this control.
+    /// Used by diagnostics overlay during drag and drop to visualize valid/invalid zones.
+    /// </summary>
+    public static readonly AttachedProperty<bool?> DebugIsValidDropProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsValidDrop", null, false,
+            BindingMode.TwoWay);
 
-        public static readonly AttachedProperty<string?> DebugDropReasonProperty =
-            AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DebugDropReason", null, false, BindingMode.TwoWay);
+    /// <summary>
+    /// Debug-only: Contains a short human-readable reason why the drop is invalid
+    /// (e.g. "DockGroup mismatch", "Global docking not allowed for grouped source").
+    /// Used by diagnostics overlay during drag and drop.
+    /// </summary>
+    public static readonly AttachedProperty<string?> DebugDropReasonProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DebugDropReason", null, false,
+            BindingMode.TwoWay);
 
-        public static readonly AttachedProperty<DockOperation> DebugDropOperationProperty =
-            AvaloniaProperty.RegisterAttached<DockProperties, Control, DockOperation>("DebugDropOperation", DockOperation.None, false, BindingMode.TwoWay);
+    /// <summary>
+    /// Debug-only: Holds the computed dock operation for the current drag-over state
+    /// (e.g. Left/Right/Top/Bottom/Fill/Window). Used by diagnostics overlay.
+    /// </summary>
+    public static readonly AttachedProperty<DockOperation> DebugDropOperationProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, DockOperation>("DebugDropOperation",
+            DockOperation.None, false, BindingMode.TwoWay);
 
-        public static readonly AttachedProperty<bool?> DebugIsGlobalDropProperty =
-            AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsGlobalDrop", null, false, BindingMode.TwoWay);
+    /// <summary>
+    /// Debug-only: True if the current drop context refers to a global target, false for local,
+    /// and null when undetermined. Used by diagnostics overlay.
+    /// </summary>
+    public static readonly AttachedProperty<bool?> DebugIsGlobalDropProperty =
+        AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsGlobalDrop", null, false,
+            BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
@@ -270,16 +299,48 @@ public class DockProperties : AvaloniaObject
         control.SetValue(DockGroupProperty, value);
     }
 
-        // Debug helpers
-        public static bool? GetDebugIsValidDrop(AvaloniaObject control) => control.GetValue(DebugIsValidDropProperty);
-        public static void SetDebugIsValidDrop(AvaloniaObject control, bool? value) => control.SetValue(DebugIsValidDropProperty, value);
+    /// <summary>
+    /// Debug-only: Gets whether dropping is valid for the current drag-over state on this control.
+    /// </summary>
+    public static bool? GetDebugIsValidDrop(AvaloniaObject control) => control.GetValue(DebugIsValidDropProperty);
 
-        public static string? GetDebugDropReason(AvaloniaObject control) => control.GetValue(DebugDropReasonProperty);
-        public static void SetDebugDropReason(AvaloniaObject control, string? value) => control.SetValue(DebugDropReasonProperty, value);
+    /// <summary>
+    /// Debug-only: Sets whether dropping is valid for the current drag-over state on this control.
+    /// </summary>
+    public static void SetDebugIsValidDrop(AvaloniaObject control, bool? value) =>
+        control.SetValue(DebugIsValidDropProperty, value);
 
-        public static DockOperation GetDebugDropOperation(AvaloniaObject control) => control.GetValue(DebugDropOperationProperty);
-        public static void SetDebugDropOperation(AvaloniaObject control, DockOperation value) => control.SetValue(DebugDropOperationProperty, value);
+    /// <summary>
+    /// Debug-only: Gets the reason why drop is invalid for this control, if any.
+    /// </summary>
+    public static string? GetDebugDropReason(AvaloniaObject control) => control.GetValue(DebugDropReasonProperty);
 
-        public static bool? GetDebugIsGlobalDrop(AvaloniaObject control) => control.GetValue(DebugIsGlobalDropProperty);
-        public static void SetDebugIsGlobalDrop(AvaloniaObject control, bool? value) => control.SetValue(DebugIsGlobalDropProperty, value);
+    /// <summary>
+    /// Debug-only: Sets the reason why drop is invalid for this control, if any.
+    /// </summary>
+    public static void SetDebugDropReason(AvaloniaObject control, string? value) =>
+        control.SetValue(DebugDropReasonProperty, value);
+
+    /// <summary>
+    /// Debug-only: Gets the computed dock operation for the current drag-over state.
+    /// </summary>
+    public static DockOperation GetDebugDropOperation(AvaloniaObject control) =>
+        control.GetValue(DebugDropOperationProperty);
+
+    /// <summary>
+    /// Debug-only: Sets the computed dock operation for the current drag-over state.
+    /// </summary>
+    public static void SetDebugDropOperation(AvaloniaObject control, DockOperation value) =>
+        control.SetValue(DebugDropOperationProperty, value);
+
+    /// <summary>
+    /// Debug-only: Gets whether the current drop context is global (true), local (false) or undetermined (null).
+    /// </summary>
+    public static bool? GetDebugIsGlobalDrop(AvaloniaObject control) => control.GetValue(DebugIsGlobalDropProperty);
+
+    /// <summary>
+    /// Debug-only: Sets whether the current drop context is global (true), local (false) or undetermined (null).
+    /// </summary>
+    public static void SetDebugIsGlobalDrop(AvaloniaObject control, bool? value) =>
+        control.SetValue(DebugIsGlobalDropProperty, value);
 }

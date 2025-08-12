@@ -75,5 +75,11 @@ public abstract partial class FactoryBase
     public abstract IDockWindow CreateDockWindow();
 
     /// <inheritdoc/>
+    public abstract IDocument CreateDocument();
+
+    /// <inheritdoc/>
+    public abstract ITool CreateTool();
+
+    /// <inheritdoc/>
     public abstract IRootDock? CreateLayout();
 }

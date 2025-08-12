@@ -725,7 +725,7 @@ public class FactorySplitTests
     }
 
     [AvaloniaFact]
-    public void CollapseDock_WithSingleDockable_MovesUpToOwner()
+    public void CollapseDock_WithSingleDockable_StopsCleanupAtRootDock()
     {
         var factory = new Factory();
         var root = new RootDock
@@ -765,21 +765,23 @@ public class FactorySplitTests
         // Collapse the now-empty tool dock to trigger cleanup
         factory.CollapseDock(emptyToolDock);
 
-        // The documentDock should now be directly under root, replacing proportionalDock
+        // The proportionalDock should remain under root (cleanup stops at root boundary)
         Assert.Single(root.VisibleDockables!);
-        Assert.Same(documentDock, root.VisibleDockables[0]);
-        Assert.Same(root, documentDock.Owner);
+        Assert.Same(proportionalDock, root.VisibleDockables[0]);
+        Assert.Same(root, proportionalDock.Owner);
     }
 
     [AvaloniaFact]
     public void CollapseDock_PreservesProportionFromCollapsedDock()
     {
         var factory = new Factory();
-        var root = new RootDock
+
+        // Create a non-root dock as owner to allow cleanup
+        var containerDock = new ProportionalDock
         {
+            Orientation = Orientation.Vertical,
             VisibleDockables = factory.CreateList<IDockable>()
         };
-        root.Factory = factory;
 
         var proportionalDock = new ProportionalDock
         {
@@ -794,7 +796,7 @@ public class FactorySplitTests
             Proportion = double.NaN
         };
 
-        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(containerDock, proportionalDock);
         factory.AddDockable(proportionalDock, documentDock);
 
         // Create and remove another dock to leave proportionalDock with single child
@@ -812,13 +814,13 @@ public class FactorySplitTests
         factory.CollapseDock(emptyDock);
 
         // documentDock should inherit the proportion from proportionalDock
-        Assert.Single(root.VisibleDockables!);
-        Assert.Same(documentDock, root.VisibleDockables[0]);
+        Assert.Single(containerDock.VisibleDockables!);
+        Assert.Same(documentDock, containerDock.VisibleDockables[0]);
         Assert.Equal(0.6, documentDock.Proportion, 3);
     }
 
     [AvaloniaFact]
-    public void CollapseDock_CleansUpMultipleLevels()
+    public void CollapseDock_CleansUpMultipleLevelsButStopsAtRootDock()
     {
         var factory = new Factory();
         var root = new RootDock
@@ -862,10 +864,10 @@ public class FactorySplitTests
         };
         factory.CollapseDock(emptyDock);
 
-        // The document should bubble up directly to root, eliminating all intermediate levels
+        // Cleanup should stop at root boundary - level1 should remain under root
         Assert.Single(root.VisibleDockables!);
-        Assert.Same(document, root.VisibleDockables[0]);
-        Assert.Same(root, document.Owner);
+        Assert.Same(level1, root.VisibleDockables[0]);
+        Assert.Same(root, level1.Owner);
     }
 
     [AvaloniaFact]
@@ -946,11 +948,13 @@ public class FactorySplitTests
     public void CollapseDock_CleansUpAfterRemovingDockableFromProportionalDock()
     {
         var factory = new Factory();
-        var root = new RootDock
+
+        // Use a non-root container to allow cleanup
+        var containerDock = new ProportionalDock
         {
+            Orientation = Orientation.Vertical,
             VisibleDockables = factory.CreateList<IDockable>()
         };
-        root.Factory = factory;
 
         var proportionalDock = new ProportionalDock
         {
@@ -961,7 +965,7 @@ public class FactorySplitTests
         var dock1 = new DocumentDock { VisibleDockables = factory.CreateList<IDockable>() };
         var dock2 = new ToolDock { VisibleDockables = factory.CreateList<IDockable>() };
 
-        factory.AddDockable(root, proportionalDock);
+        factory.AddDockable(containerDock, proportionalDock);
         factory.AddDockable(proportionalDock, dock1);
         factory.AddDockable(proportionalDock, dock2);
 
@@ -977,10 +981,10 @@ public class FactorySplitTests
         };
         factory.CollapseDock(emptyDock);
 
-        // dock1 should now be directly under root
-        Assert.Single(root.VisibleDockables!);
-        Assert.Same(dock1, root.VisibleDockables[0]);
-        Assert.Same(root, dock1.Owner);
+        // dock1 should now be directly under containerDock
+        Assert.Single(containerDock.VisibleDockables!);
+        Assert.Same(dock1, containerDock.VisibleDockables[0]);
+        Assert.Same(containerDock, dock1.Owner);
     }
 
     [AvaloniaFact]

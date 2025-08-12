@@ -3,6 +3,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Dock.Model.Core;
 
 namespace Dock.Settings;
 
@@ -75,6 +76,19 @@ public class DockProperties : AvaloniaObject
     /// </summary>
     public static readonly AttachedProperty<string?> DockGroupProperty =
         AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DockGroup", null, inherits: true, defaultBindingMode: BindingMode.TwoWay);
+
+        // Debug-only attached properties used by diagnostics overlay during drag & drop
+        public static readonly AttachedProperty<bool?> DebugIsValidDropProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsValidDrop", null, false, BindingMode.TwoWay);
+
+        public static readonly AttachedProperty<string?> DebugDropReasonProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, Control, string?>("DebugDropReason", null, false, BindingMode.TwoWay);
+
+        public static readonly AttachedProperty<DockOperation> DebugDropOperationProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, Control, DockOperation>("DebugDropOperation", DockOperation.None, false, BindingMode.TwoWay);
+
+        public static readonly AttachedProperty<bool?> DebugIsGlobalDropProperty =
+            AvaloniaProperty.RegisterAttached<DockProperties, Control, bool?>("DebugIsGlobalDrop", null, false, BindingMode.TwoWay);
 
     /// <summary>
     /// Gets the value of the IsDockTarget attached property on the specified control.
@@ -255,4 +269,17 @@ public class DockProperties : AvaloniaObject
     {
         control.SetValue(DockGroupProperty, value);
     }
+
+        // Debug helpers
+        public static bool? GetDebugIsValidDrop(AvaloniaObject control) => control.GetValue(DebugIsValidDropProperty);
+        public static void SetDebugIsValidDrop(AvaloniaObject control, bool? value) => control.SetValue(DebugIsValidDropProperty, value);
+
+        public static string? GetDebugDropReason(AvaloniaObject control) => control.GetValue(DebugDropReasonProperty);
+        public static void SetDebugDropReason(AvaloniaObject control, string? value) => control.SetValue(DebugDropReasonProperty, value);
+
+        public static DockOperation GetDebugDropOperation(AvaloniaObject control) => control.GetValue(DebugDropOperationProperty);
+        public static void SetDebugDropOperation(AvaloniaObject control, DockOperation value) => control.SetValue(DebugDropOperationProperty, value);
+
+        public static bool? GetDebugIsGlobalDrop(AvaloniaObject control) => control.GetValue(DebugIsGlobalDropProperty);
+        public static void SetDebugIsGlobalDrop(AvaloniaObject control, bool? value) => control.SetValue(DebugIsGlobalDropProperty, value);
 }

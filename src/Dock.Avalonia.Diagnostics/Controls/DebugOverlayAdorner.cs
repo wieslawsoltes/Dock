@@ -100,16 +100,22 @@ internal class DebugOverlayAdorner : Control
             {
                 var brush = control == _pointerOver ? s_dropAreaFill : null;
                 context.DrawRectangle(brush, s_dropAreaPen, rect);
-            }
 
-            // While dragging, show a red cross over areas that are not valid drop targets
-            if (isDragging && control == _pointerOver)
-            {
-                var isDropArea = DockProperties.GetIsDropArea(control);
-                var isDropEnabled = control.GetValue(DockProperties.IsDropEnabledProperty);
-                if (!(isDropArea && isDropEnabled))
+                // While dragging, show a red cross over areas that are not valid drop targets
+                if (isDragging && control == _pointerOver)
                 {
-                    DrawCross(context, rect, s_invalidDropPen);
+                    var isDropArea = DockProperties.GetIsDropArea(control);
+                    var isDropEnabled = control.GetValue(DockProperties.IsDropEnabledProperty);
+                    var debugValid = DockProperties.GetDebugIsValidDrop(control);
+                    if (!(isDropArea && isDropEnabled) || (debugValid.HasValue && debugValid.Value == false))
+                    {
+                        DrawCross(context, rect, s_invalidDropPen);
+                        var reason = DockProperties.GetDebugDropReason(control);
+                        if (!string.IsNullOrEmpty(reason))
+                        {
+                            DrawGroupLabel(context, rect, reason!, Colors.Red);
+                        }
+                    }
                 }
             }
 

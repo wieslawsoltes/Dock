@@ -107,7 +107,9 @@ public class DockGroupValidationTests
 
     private class TestCommand : ICommand
     {
-        public event EventHandler? CanExecuteChanged;
+    #pragma warning disable CS0067 // Event never used in tests
+    public event EventHandler? CanExecuteChanged;
+    #pragma warning restore CS0067
         public bool CanExecute(object? parameter) => true;
         public void Execute(object? parameter) { }
     }
@@ -468,11 +470,11 @@ public class DockGroupValidationTests
     }
 
     [Theory]
-    [InlineData(null, null, null, true)]   // Child null, parent null, grandparent null
-    [InlineData(null, "GroupA", null, true)]   // Child inherits from parent
-    [InlineData("GroupB", "GroupA", null, false)]  // Child group different from parent
-    [InlineData(null, null, "GroupC", true)]   // Child inherits from grandparent
-    public void DockGroupValidator_GetEffectiveDockGroup_Inheritance_WorksCorrectly(string? childGroup, string? parentGroup, string? grandparentGroup, bool shouldMatch)
+    [InlineData(null, null, null)]   // Child null, parent null, grandparent null
+    [InlineData(null, "GroupA", null)]   // Child inherits from parent
+    [InlineData("GroupB", "GroupA", null)]  // Child group different from parent
+    [InlineData(null, null, "GroupC")]   // Child inherits from grandparent
+    public void DockGroupValidator_GetEffectiveDockGroup_Inheritance_WorksCorrectly(string? childGroup, string? parentGroup, string? grandparentGroup)
     {
         var grandparent = new SimpleDock { Id = "Grandparent", DockGroup = grandparentGroup };
         var parent = new SimpleDock { Id = "Parent", DockGroup = parentGroup, Owner = grandparent };

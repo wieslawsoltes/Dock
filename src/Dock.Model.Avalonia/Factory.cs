@@ -132,4 +132,10 @@ public class Factory : FactoryBase
 
     /// <inheritdoc/>
     public override IRootDock CreateLayout() => _createLayoutFunc?.Invoke() ?? CreateRootDock();
+
+    /// <inheritdoc/>
+    public override IDocument CreateDocument() => new Document();
+
+    /// <inheritdoc/>
+    public override ITool CreateTool() => new Tool();
 }

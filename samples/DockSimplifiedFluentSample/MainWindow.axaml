@@ -1,0 +1,11 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DockSimplifiedFluentSample.MainWindow"
+        Title="Dock Simplified Fluent Sample"
+        Width="800"
+        Height="600">
+  <DockControl Name="DockControl" />
+  
+</Window>
+
+

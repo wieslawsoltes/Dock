@@ -18,11 +18,11 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
 
-    public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking, bool allowVerticalDocking)
+    public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
         if (useFloatingDockAdorner)
         {
-            AddFloatingAdorner(visual, indicatorsOnly);
+            AddFloatingAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
         }
         else
         {
@@ -30,7 +30,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         }
     }
 
-    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly)
+    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
         if (_window is not null)
         {
@@ -54,6 +54,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
                 globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                globalDockTarget.ShowHorizontalTargets = horizontalDocking;
+                globalDockTarget.ShowVerticalTargets = verticalDocking;
             }
         }
 

@@ -66,4 +66,11 @@ public interface IRootDock : IDock
     /// Exit windows.
     /// </summary>
     ICommand ExitWindows { get; }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether adaptive global dock targets are enabled.
+    /// When enabled the global dock targets are reduced to only show options where the layout would change.
+    /// This is typically used for dashboards and widget areas.
+    /// </summary>
+    bool EnableAdaptiveGlobalDockTargets { get; set; }
 }

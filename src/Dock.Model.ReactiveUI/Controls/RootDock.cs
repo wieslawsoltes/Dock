@@ -16,6 +16,8 @@ namespace Dock.Model.ReactiveUI.Controls;
 [DataContract(IsReference = true)]
 public partial class RootDock : DockBase, IRootDock
 {
+    private bool _enableAdaptiveGlobalDockTargets;
+    
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
     /// </summary>
@@ -69,4 +71,12 @@ public partial class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ExitWindows { get; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableAdaptiveGlobalDockTargets
+    {
+        get => _enableAdaptiveGlobalDockTargets;
+        set => this.RaiseAndSetIfChanged(ref _enableAdaptiveGlobalDockTargets, value);
+    }
 }

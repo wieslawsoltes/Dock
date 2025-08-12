@@ -42,12 +42,25 @@ internal abstract class DockManagerState : IDockManagerState
         {
             var host = DockProperties.GetDockAdornerHost(control) ?? control;
             var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(control);
-            LocalAdornerHelper.AddAdorner(host, indicatorsOnly);
+            LocalAdornerHelper.AddAdorner(host, indicatorsOnly, true, true);
         }
 
         // Global dock target
         if (isGlobalValid && DropControl is { } dropControl)
         {
+            bool horizontalGlobalDocking = true;
+            bool verticalGlobalDocking = true;
+
+            if (DropControl.DataContext is IDockable { Factory: { } factory } dockable)
+            {
+                var root = factory.FindRoot(dockable);
+
+                if (root is { EnableAdaptiveGlobalDockTargets: true })
+                {
+                    (horizontalGlobalDocking, verticalGlobalDocking) = GlobalDockingHelper.CanGlobalDock(root);
+                }
+            }
+            
             // Try to find DockControl ancestor - look through the visual tree more thoroughly
             var dockControl = dropControl.FindAncestorOfType<DockControl>();
             
@@ -73,7 +86,7 @@ internal abstract class DockManagerState : IDockManagerState
                 if (DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
                 {
                     var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(dropControl);
-                    GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly);
+                    GlobalAdornerHelper.AddAdorner(dockControl, indicatorsOnly, horizontalGlobalDocking, verticalGlobalDocking);
                 }
             }
         }

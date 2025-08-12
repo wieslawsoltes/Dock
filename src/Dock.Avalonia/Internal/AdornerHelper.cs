@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -16,19 +18,19 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
     private DockAdornerWindow? _window;
     private AdornerLayer? _layer;
 
-    public void AddAdorner(Visual visual, bool indicatorsOnly)
+    public void AddAdorner(Visual visual, bool indicatorsOnly, bool allowHorizontalDocking = true, bool allowVerticalDocking = true)
     {
         if (useFloatingDockAdorner)
         {
-            AddFloatingAdorner(visual, indicatorsOnly);
+            AddFloatingAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
         }
         else
         {
-            AddRegularAdorner(visual, indicatorsOnly);
+            AddRegularAdorner(visual, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
         }
     }
 
-    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly)
+    private void AddFloatingAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
         if (_window is not null)
         {
@@ -52,6 +54,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
                 globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                globalDockTarget.ShowHorizontalTargets = horizontalDocking;
+                globalDockTarget.ShowVerticalTargets = verticalDocking;
             }
         }
 
@@ -83,7 +87,7 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         _window.Show(root);
     }
 
-    private void AddRegularAdorner(Visual visual, bool indicatorsOnly)
+    private void AddRegularAdorner(Visual visual, bool indicatorsOnly, bool horizontalDocking, bool verticalDocking)
     {
         if (_window is not null)
         {
@@ -108,6 +112,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
                     break;
                 case GlobalDockTarget globalDockTarget:
                     globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    globalDockTarget.ShowHorizontalTargets = horizontalDocking;
+                    globalDockTarget.ShowVerticalTargets = verticalDocking;
                     break;
             }
         }

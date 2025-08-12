@@ -51,6 +51,25 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// </summary>
     public static readonly StyledProperty<bool> ShowIndicatorsOnlyProperty =
         AvaloniaProperty.Register<DockTargetBase, bool>(nameof(ShowIndicatorsOnly));
+    
+    /// <summary>
+    /// Defines the <see cref="ShowHorizontalTargets"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowHorizontalTargetsProperty = AvaloniaProperty.Register<DockTargetBase, bool>(
+        nameof(ShowHorizontalTargets), defaultValue: true);
+
+
+    /// <summary>
+    /// Defines the <see cref="ShowVerticalTargets"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowVerticalTargetsProperty = AvaloniaProperty.Register<DockTargetBase, bool>(
+        nameof(ShowVerticalTargets), defaultValue: true);
+
+    public DockTargetBase()
+    {
+        PseudoClasses.Set(":horizontal", this.GetObservable(ShowHorizontalTargetsProperty));
+        PseudoClasses.Set(":vertical", this.GetObservable(ShowVerticalTargetsProperty));
+    }
 
     /// <summary>
     /// Gets or sets whether only drop indicators should be shown.
@@ -59,6 +78,24 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         get => GetValue(ShowIndicatorsOnlyProperty);
         set => SetValue(ShowIndicatorsOnlyProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether horizontal docking targets should be displayed.
+    /// </summary>
+    public bool ShowHorizontalTargets
+    {
+        get => GetValue(ShowHorizontalTargetsProperty);
+        set => SetValue(ShowHorizontalTargetsProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether vertical docking targets should be displayed.
+    /// </summary>s
+    public bool ShowVerticalTargets
+    {
+        get => GetValue(ShowVerticalTargetsProperty);
+        set => SetValue(ShowVerticalTargetsProperty, value);
     }
 
     /// <summary>
@@ -346,5 +383,8 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         {
             control.Opacity = 0;
         }
+
+        ShowHorizontalTargets = true;
+        ShowVerticalTargets = true;
     }
 }

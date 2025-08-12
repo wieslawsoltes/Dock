@@ -177,6 +177,18 @@ public partial interface IFactory
     IDockWindow CreateDockWindow();
 
     /// <summary>
+    /// Creates <see cref="IDocument"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IDocument"/> class.</returns>
+    IDocument CreateDocument();
+
+    /// <summary>
+    /// Creates <see cref="ITool"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="ITool"/> class.</returns>
+    ITool CreateTool();
+
+    /// <summary>
     /// Creates layout.
     /// </summary>
     /// <returns>The new instance of the <see cref="IRootDock"/> class.</returns>

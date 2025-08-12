@@ -17,6 +17,48 @@ public static class FluentExtensions
     // Creation helpers wrapping IFactory.Create* methods
 
     /// <summary>
+    /// Creates a new <see cref="IDocument"/> and optionally configures it.
+    /// </summary>
+    public static IDocument Document(this IFactory factory, Action<IDocument>? configure = null)
+    {
+        var doc = factory.CreateDocument();
+        configure?.Invoke(doc);
+        return doc;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="IDocument"/>, assigns it to <paramref name="document"/>, and returns the same factory for chaining.
+    /// </summary>
+    public static IFactory Document(this IFactory factory, out IDocument document, Action<IDocument>? configure = null)
+    {
+        var doc = factory.CreateDocument();
+        configure?.Invoke(doc);
+        document = doc;
+        return factory;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ITool"/> and optionally configures it.
+    /// </summary>
+    public static ITool Tool(this IFactory factory, Action<ITool>? configure = null)
+    {
+        var tool = factory.CreateTool();
+        configure?.Invoke(tool);
+        return tool;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ITool"/>, assigns it to <paramref name="tool"/>, and returns the same factory for chaining.
+    /// </summary>
+    public static IFactory Tool(this IFactory factory, out ITool tool, Action<ITool>? configure = null)
+    {
+        var t = factory.CreateTool();
+        configure?.Invoke(t);
+        tool = t;
+        return factory;
+    }
+
+    /// <summary>
     /// Creates a new <see cref="IRootDock"/> and optionally configures it.
     /// </summary>
     /// <param name="factory">The factory used to create the dock.</param>

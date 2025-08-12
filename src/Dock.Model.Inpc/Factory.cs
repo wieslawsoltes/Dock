@@ -108,4 +108,10 @@ public class Factory : FactoryBase
 
     /// <inheritdoc/>
     public override IRootDock CreateLayout() => CreateRootDock();
+
+    /// <inheritdoc/>
+    public override IDocument CreateDocument() => new Document();
+
+    /// <inheritdoc/>
+    public override ITool CreateTool() => new Tool();
 }

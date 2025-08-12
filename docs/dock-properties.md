@@ -20,6 +20,16 @@ The available properties are:
 | `DockAdornerHost` | `Control` | Specifies the element that should display the dock target adorner. |
 | `DockGroup` | `string` | Group identifier for restriction-based docking. See [Docking Groups](dock-docking-groups.md). |
 
+## Root Dock Settings
+
+In addition to the properties above, `IRootDock` provides settings that control global docking behavior:
+
+| Property | Type | Default | Purpose |
+| -------- | ---- | ------- | ------- |
+| `EnableAdaptiveGlobalDockTargets` | `bool` | `false` | When enabled, reduces global dock targets to only show options where the layout would change. Recommended for dashboards and widget areas to simplify the user experience by reducing the number of drop options presented. |
+
+This setting must be configured on your root dock instance and is particularly useful in scenarios where you want to minimize visual clutter and provide a more focused docking experience.
+
 ## Using the properties in control themes
 
 Every control template that participates in docking should set the appropriate `DockProperties`. The default themes include them on tab strips, pinned panels and window chrome. When creating a custom template copy these setters so dragging continues to work:

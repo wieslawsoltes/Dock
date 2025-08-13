@@ -39,7 +39,10 @@
                      Height="10"
                      HorizontalAlignment="Right"
                      VerticalAlignment="Bottom"
-                     Margin="0"/>
+                     Margin="0"
+                     ZIndex="1"
+                     Cursor="SizeAll"
+                     Background="{DynamicResource DockApplicationAccentBrush}"/>
             </Grid>
           </DockPanel>
         </Border>

@@ -115,42 +115,44 @@
           </DocumentTabStrip>
           <Grid x:Name="PART_Grid"
                 IsVisible="{Binding #PART_TabStrip.IsVisible}" />
-          <Border x:Name="PART_Border"
-                  IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Tabs}">
-            <DockableControl DataContext="{Binding ActiveDockable}"
-                             TrackingMode="Visible">
-              <ContentControl x:Name="PART_ContentPresenter"
-                              Content="{Binding}"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Stretch">
-                <ContentControl.ContentTemplate>
-                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                </ContentControl.ContentTemplate>
-              </ContentControl>
-            </DockableControl>
-          </Border>
-          <ItemsControl x:Name="PART_MdiItems"
-                        DockProperties.IsDropArea="True"
-                        Background="Transparent"
-                        IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Mdi}"
-                        ItemsSource="{Binding VisibleDockables}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <controls:MdiDocumentItem Content="{Binding}" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <Canvas />
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.Styles>
-              <Style Selector="ItemsControl /template/ ContentPresenter">
-                <Setter Property="HorizontalAlignment" Value="Left" />
-                <Setter Property="VerticalAlignment" Value="Top" />
-              </Style>
-            </ItemsControl.Styles>
-          </ItemsControl>
+          <Grid x:Name="PART_ContentHost">
+            <Border x:Name="PART_Border"
+                    IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Tabs}">
+              <DockableControl DataContext="{Binding ActiveDockable}"
+                               TrackingMode="Visible">
+                <ContentControl x:Name="PART_ContentPresenter"
+                                Content="{Binding}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                  <ContentControl.ContentTemplate>
+                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  </ContentControl.ContentTemplate>
+                </ContentControl>
+              </DockableControl>
+            </Border>
+            <ItemsControl x:Name="PART_MdiItems"
+                          DockProperties.IsDropArea="True"
+                          Background="Transparent"
+                          IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Mdi}"
+                          ItemsSource="{Binding VisibleDockables}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <controls:MdiDocumentItem Content="{Binding}" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <Canvas />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.Styles>
+                <Style Selector="ItemsControl /template/ ContentPresenter">
+                  <Setter Property="HorizontalAlignment" Value="Left" />
+                  <Setter Property="VerticalAlignment" Value="Top" />
+                </Style>
+              </ItemsControl.Styles>
+            </ItemsControl>
+          </Grid>
         </DockPanel>
       </ControlTemplate>
     </Setter>

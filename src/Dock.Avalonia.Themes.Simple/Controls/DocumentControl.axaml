@@ -1,0 +1,81 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
+                    x:CompileBindings="True"
+                    x:DataType="dmc:IDocumentDock">
+
+  <ControlTheme x:Key="{x:Type DocumentControl}" TargetType="DocumentControl">
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="TabsLayout" Value="{Binding TabsLayout, Mode=TwoWay}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel x:Name="PART_DockPanel"
+                   DockProperties.IsDropArea="True"
+                   DockProperties.IsDockTarget="True"
+                   Background="Transparent"
+                   ZIndex="1">
+          <DocumentTabStrip x:Name="PART_TabStrip"
+                            IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Tabs}"
+                            ItemsSource="{Binding VisibleDockables}"
+                            SelectedItem="{Binding ActiveDockable, Mode=TwoWay}"
+                            CanCreateItem="{Binding CanCreateDocument}"
+                            IsActive="{TemplateBinding IsActive}"
+                            Orientation="{Binding TabsLayout, Converter={x:Static DocumentTabOrientationConverter.Instance}}"
+                            DockPanel.Dock="{Binding TabsLayout, Converter={x:Static DocumentTabDockConverter.Instance}}"
+                            DockProperties.IsDropArea="True"
+                            DockProperties.DockAdornerHost="{Binding #PART_DockPanel}"
+                            />
+          <Grid x:Name="PART_Grid"
+                IsVisible="{Binding #PART_TabStrip.IsVisible}" />
+          <Border x:Name="PART_Border"
+                  IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Tabs}">
+            <DockableControl DataContext="{Binding ActiveDockable}"
+                             TrackingMode="Visible">
+              <ContentControl x:Name="PART_ContentPresenter"
+                              Content="{Binding}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                <ContentControl.ContentTemplate>
+                  <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                </ContentControl.ContentTemplate>
+              </ContentControl>
+            </DockableControl>
+          </Border>
+          <ItemsControl x:Name="PART_MdiItems"
+                        DockProperties.IsDropArea="True"
+                        Background="Transparent"
+                        IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Mdi}"
+                        ItemsSource="{Binding VisibleDockables}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <controls:MdiDocumentItem Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <Canvas />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Styles>
+              <Style Selector="ItemsControl /template/ ContentPresenter">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+              </Style>
+            </ItemsControl.Styles>
+          </ItemsControl>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>
+
+

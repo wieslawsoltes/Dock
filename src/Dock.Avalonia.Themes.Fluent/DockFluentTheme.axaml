@@ -13,6 +13,8 @@
         <ResourceInclude Source="/Controls/DockTarget.axaml" />
         <ResourceInclude Source="/Controls/GlobalDockTarget.axaml" />
         <ResourceInclude Source="/Controls/DocumentControl.axaml" />
+        <ResourceInclude Source="/Controls/DocumentChromeControl.axaml" />
+        <ResourceInclude Source="/Controls/MdiDocumentItem.axaml" />
         <ResourceInclude Source="/Controls/ToolChromeControl.axaml" />
         <ResourceInclude Source="/Controls/ToolControl.axaml" />
         <ResourceInclude Source="/Controls/ToolPinItemControl.axaml" />

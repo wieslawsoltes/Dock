@@ -1,0 +1,141 @@
+// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for details.
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Primitives;
+using Avalonia.Styling;
+using Avalonia.VisualTree;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Dock.Model.Core;
+
+namespace Dock.Avalonia.Controls;
+
+/// <summary>
+/// Chrome for MDI document window: header with title and close button.
+/// Also activates and brings the document to front on click.
+/// </summary>
+[TemplatePart("PART_CloseButton", typeof(Button))]
+[TemplatePart("PART_MaximizeRestoreButton", typeof(Button))]
+public class DocumentChromeControl : ContentControl
+{
+    private static int s_nextZIndex;
+    private Button? _closeButton;
+    private Button? _maximizeRestoreButton;
+
+    /// <summary>
+    /// Define the <see cref="CloseButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> CloseButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentChromeControl, ControlTheme?>(nameof(CloseButtonTheme));
+
+    /// <summary>
+    /// Define the <see cref="MaximizeButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> MaximizeButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentChromeControl, ControlTheme?>(nameof(MaximizeButtonTheme));
+
+    public ControlTheme? CloseButtonTheme
+    {
+        get => GetValue(CloseButtonThemeProperty);
+        set => SetValue(CloseButtonThemeProperty, value);
+    }
+
+    public ControlTheme? MaximizeButtonTheme
+    {
+        get => GetValue(MaximizeButtonThemeProperty);
+        set => SetValue(MaximizeButtonThemeProperty, value);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        AddHandler(PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+        _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
+        _maximizeRestoreButton = e.NameScope.Find<Button>("PART_MaximizeRestoreButton");
+
+        if (_closeButton is not null)
+        {
+            _closeButton.Click += OnCloseClicked;
+        }
+        if (_maximizeRestoreButton is not null)
+        {
+            _maximizeRestoreButton.Click += OnMaximizeRestoreClicked;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_closeButton is not null)
+        {
+            _closeButton.Click -= OnCloseClicked;
+        }
+        if (_maximizeRestoreButton is not null)
+        {
+            _maximizeRestoreButton.Click -= OnMaximizeRestoreClicked;
+        }
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is IDockable dockable && dockable.Owner is IDock owner && dockable.Factory is { } factory)
+        {
+            factory.SetActiveDockable(dockable);
+            factory.SetFocusedDockable(owner, dockable);
+        }
+
+        // Bring the entire MDI window (item container) to front
+        Control? container = this.Parent as Control;
+        while (container is not null && container is not MdiDocumentItem)
+        {
+            container = container.Parent as Control;
+        }
+        if (container is not null)
+        {
+            container.ZIndex = ++s_nextZIndex;
+        }
+
+        // Do NOT mark handled here; allow underlying controls (e.g., buttons) to receive their clicks
+    }
+
+    private void OnCloseClicked(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is IDockable dockable && dockable.Factory is { } factory)
+        {
+            factory.CloseDockable(dockable);
+        }
+        e.Handled = true;
+    }
+
+    private void OnMaximizeRestoreClicked(object? sender, RoutedEventArgs e)
+    {
+        MdiDocumentItem? mdiItem = null;
+        Control? current = this.Parent as Control;
+        while (current is not null)
+        {
+            if (current is MdiDocumentItem found)
+            {
+                mdiItem = found;
+                break;
+            }
+            current = current.Parent as Control;
+        }
+        if (mdiItem is not null)
+        {
+            mdiItem.IsMaximized = !mdiItem.IsMaximized;
+        }
+        e.Handled = true;
+    }
+}
+
+

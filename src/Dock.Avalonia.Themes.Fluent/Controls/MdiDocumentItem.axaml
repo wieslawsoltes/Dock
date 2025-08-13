@@ -1,0 +1,51 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:dock="using:Dock.Avalonia.Controls">
+
+  <!-- Visual for window-like MDI document item -->
+  <ControlTheme x:Key="{x:Type controls:MdiDocumentItem}" TargetType="controls:MdiDocumentItem">
+    <Setter Property="Width" Value="400" />
+    <Setter Property="Height" Value="300" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                BorderThickness="1"
+                Background="{DynamicResource DockThemeBackgroundBrush}">
+          <DockPanel DataContext="{TemplateBinding Content}">
+            <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                    Height="24"
+                    DockPanel.Dock="Top"
+                    IsHitTestVisible="True">
+              <dock:DocumentChromeControl>
+                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" />
+              </dock:DocumentChromeControl>
+            </Border>
+            <Grid>
+              <DockableControl TrackingMode="Visible">
+                <ContentPresenter x:Name="PART_ContentPresenter"
+                                   Content="{Binding}"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch">
+                  <ContentPresenter.ContentTemplate>
+                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                  </ContentPresenter.ContentTemplate>
+                </ContentPresenter>
+              </DockableControl>
+              <!-- Resize grip overlay in bottom-right corner -->
+              <Thumb x:Name="PART_ResizeThumb"
+                     Width="10"
+                     Height="10"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom"
+                     Margin="0"/>
+            </Grid>
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>
+
+

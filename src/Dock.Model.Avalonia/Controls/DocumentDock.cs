@@ -15,6 +15,7 @@ using Avalonia.Reactive;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Avalonia.Internal;
 using Dock.Model.Controls;
+using Dock.Model;
 using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Controls;
@@ -54,6 +55,12 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     /// </summary>
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
         AvaloniaProperty.Register<DocumentDock, IEnumerable?>(nameof(ItemsSource));
+
+    /// <summary>
+    /// Defines the <see cref="Presentation"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DocumentPresentation> PresentationProperty =
+        AvaloniaProperty.Register<DocumentDock, DocumentPresentation>(nameof(Presentation), DocumentPresentation.Tabs);
 
     private bool _canCreateDocument;
     private readonly HashSet<IDockable> _generatedDocuments = new();
@@ -156,6 +163,24 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         get => GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
     }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("Presentation")]
+    public DocumentPresentation Presentation
+    {
+        get => GetValue(PresentationProperty);
+        set => SetValue(PresentationProperty, value);
+    }
+
+    /// <inheritdoc/>
+    public void CascadeDocuments() => Factory?.CascadeDocuments(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsHorizontally() => Factory?.TileDocumentsHorizontally(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsVertically() => Factory?.TileDocumentsVertically(this);
 
     /// <summary>
     /// Creates new document from template.

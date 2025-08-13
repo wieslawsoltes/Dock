@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Windows.Input;
 using Dock.Model.Core;
+using Dock.Model;
 
 namespace Dock.Model.Controls;
 
@@ -30,6 +31,26 @@ public interface IDocumentDock : IDock, ILocalTarget
     /// Gets or sets document tabs layout.
     /// </summary>
     DocumentTabLayout TabsLayout { get; set; }
+
+    /// <summary>
+    /// Gets or sets document presentation mode.
+    /// </summary>
+    DocumentPresentation Presentation { get; set; }
+
+    /// <summary>
+    /// Arranges document windows in a cascading layout (MDI only).
+    /// </summary>
+    void CascadeDocuments();
+
+    /// <summary>
+    /// Tiles document windows horizontally (MDI only).
+    /// </summary>
+    void TileDocumentsHorizontally();
+
+    /// <summary>
+    /// Tiles document windows vertically (MDI only).
+    /// </summary>
+    void TileDocumentsVertically();
 
     /// <summary>
     /// Adds the specified document to this dock and activates it.

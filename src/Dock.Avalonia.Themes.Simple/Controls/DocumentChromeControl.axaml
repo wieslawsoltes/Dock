@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dock="using:Dock.Avalonia.Controls">
+
+  <ControlTheme x:Key="ChromeButtonSmall" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="Margin" Value="2 0 0 0" />
+    <Setter Property="Padding" Value="2" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Width" Value="16" />
+    <Setter Property="Height" Value="16" />
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type dock:DocumentChromeControl}" TargetType="dock:DocumentChromeControl">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="CloseButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
+    <Setter Property="MaximizeButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel LastChildFill="True">
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Button x:Name="PART_MaximizeRestoreButton" Theme="{TemplateBinding MaximizeButtonTheme}">
+              <Viewbox>
+                <Path x:Name="PART_MaximizeRestorePath" Data="{DynamicResource DockIconMaximizeGeometry}" />
+              </Viewbox>
+            </Button>
+            <Button x:Name="PART_CloseButton" Theme="{TemplateBinding CloseButtonTheme}">
+              <Viewbox>
+                <Path x:Name="PART_ClosePath" Data="{DynamicResource DockIconCloseGeometry}" />
+              </Viewbox>
+            </Button>
+          </StackPanel>
+          <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center" />
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^/template/ Path">
+      <Setter Property="Stretch" Value="UniformToFill" />
+      <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+    </Style>
+  </ControlTheme>
+
+</ResourceDictionary>
+
+

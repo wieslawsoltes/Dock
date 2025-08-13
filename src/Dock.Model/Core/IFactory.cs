@@ -470,6 +470,43 @@ public partial interface IFactory
     void SetDocumentDockTabsLayoutRight(IDockable dockable);
 
     /// <summary>
+    /// Sets document presentation mode for a document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    /// <param name="presentation">The presentation mode.</param>
+    void SetDocumentDockPresentation(IDockable dockable, DocumentPresentation presentation);
+
+    /// <summary>
+    /// Sets document presentation mode to MDI for a document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockPresentationMdi(IDockable dockable);
+
+    /// <summary>
+    /// Sets document presentation mode to Tabs for a document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockPresentationTabs(IDockable dockable);
+
+    /// <summary>
+    /// Arranges document windows in a cascading layout (MDI only).
+    /// </summary>
+    /// <param name="documentDock">The document dock.</param>
+    void CascadeDocuments(IDocumentDock documentDock);
+
+    /// <summary>
+    /// Tiles document windows horizontally (MDI only).
+    /// </summary>
+    /// <param name="documentDock">The document dock.</param>
+    void TileDocumentsHorizontally(IDocumentDock documentDock);
+
+    /// <summary>
+    /// Tiles document windows vertically (MDI only).
+    /// </summary>
+    /// <param name="documentDock">The document dock.</param>
+    void TileDocumentsVertically(IDocumentDock documentDock);
+
+    /// <summary>
     /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.
     /// </summary>
     /// <param name="dockable">The dockable to hide.</param>

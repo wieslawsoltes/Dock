@@ -25,6 +25,10 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\**\*.axaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dock.Avalonia\Dock.Avalonia.csproj" />

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="using:Dock.Model.Core"
+                    xmlns:controls="using:Dock.Model.Controls"
                     xmlns:converters="using:Dock.Avalonia.Converters"
                     x:DataType="core:IDockable"
                     x:CompileBindings="True">
@@ -159,6 +160,36 @@
       <MenuItem Header="{DynamicResource DocumentTabStripItemTabLayoutRightString}"
                 Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutRight}"
                 CommandParameter="{Binding Owner}" />
+    </MenuItem>
+    <Separator />
+    <MenuItem Header="Toggle MDI/Tabs"
+              Command="{Binding Owner.Factory.SetDocumentDockPresentationMdi}"
+              CommandParameter="{Binding Owner}">
+      <MenuItem.IsVisible>
+        <Binding Path="((controls:IDocumentDock)Owner).Presentation" Converter="{x:Static converters:EnumEqualsConverter.Instance}" ConverterParameter="Tabs" />
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="Toggle MDI/Tabs"
+              Command="{Binding Owner.Factory.SetDocumentDockPresentationTabs}"
+              CommandParameter="{Binding Owner}">
+      <MenuItem.IsVisible>
+        <Binding Path="((controls:IDocumentDock)Owner).Presentation" Converter="{x:Static converters:EnumEqualsConverter.Instance}" ConverterParameter="Mdi" />
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="Cascade" Command="{Binding Owner.Factory.CascadeDocuments}" CommandParameter="{Binding Owner}">
+      <MenuItem.IsVisible>
+        <Binding Path="((controls:IDocumentDock)Owner).Presentation" Converter="{x:Static converters:EnumEqualsConverter.Instance}" ConverterParameter="Mdi" />
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="Tile Horizontally" Command="{Binding Owner.Factory.TileDocumentsHorizontally}" CommandParameter="{Binding Owner}">
+      <MenuItem.IsVisible>
+        <Binding Path="((controls:IDocumentDock)Owner).Presentation" Converter="{x:Static converters:EnumEqualsConverter.Instance}" ConverterParameter="Mdi" />
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="Tile Vertically" Command="{Binding Owner.Factory.TileDocumentsVertically}" CommandParameter="{Binding Owner}">
+      <MenuItem.IsVisible>
+        <Binding Path="((controls:IDocumentDock)Owner).Presentation" Converter="{x:Static converters:EnumEqualsConverter.Instance}" ConverterParameter="Mdi" />
+      </MenuItem.IsVisible>
     </MenuItem>
   </ContextMenu>
   

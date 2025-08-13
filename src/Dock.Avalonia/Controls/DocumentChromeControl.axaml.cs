@@ -9,6 +9,8 @@ using Avalonia.VisualTree;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Dock.Model.Core;
+using System;
+using Avalonia.Reactive;
 
 namespace Dock.Avalonia.Controls;
 
@@ -23,6 +25,8 @@ public class DocumentChromeControl : ContentControl
     private static int s_nextZIndex;
     private Button? _closeButton;
     private Button? _maximizeRestoreButton;
+        private MdiDocumentItem? _mdiItem;
+        private IDisposable? _maximizedSubscription;
 
     /// <summary>
     /// Define the <see cref="CloseButtonTheme"/> property.
@@ -53,6 +57,16 @@ public class DocumentChromeControl : ContentControl
     {
         base.OnAttachedToVisualTree(e);
         AddHandler(PointerPressedEvent, OnPointerPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
+
+        // Track ancestor MDI item to reflect its maximized state via pseudo-class
+        _mdiItem = this.FindAncestorOfType<MdiDocumentItem>();
+        if (_mdiItem is not null)
+        {
+            PseudoClasses.Set(":maximized", _mdiItem.IsMaximized);
+            _maximizedSubscription = _mdiItem
+                .GetObservable(MdiDocumentItem.IsMaximizedProperty)
+                .Subscribe(new AnonymousObserver<bool>(v => PseudoClasses.Set(":maximized", v)));
+        }
     }
 
     /// <inheritdoc/>
@@ -75,6 +89,9 @@ public class DocumentChromeControl : ContentControl
     /// <inheritdoc/>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        _maximizedSubscription?.Dispose();
+        _maximizedSubscription = null;
+        _mdiItem = null;
         if (_closeButton is not null)
         {
             _closeButton.Click -= OnCloseClicked;
@@ -88,6 +105,21 @@ public class DocumentChromeControl : ContentControl
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        // Double-click toggles maximize/restore when clicking on chrome background (not on buttons)
+        if (e.ClickCount >= 2)
+        {
+            if (e.Source is Visual visual && visual.FindAncestorOfType<Button>() is null)
+            {
+                var mdi = _mdiItem ?? this.FindAncestorOfType<MdiDocumentItem>();
+                if (mdi is not null)
+                {
+                    mdi.IsMaximized = !mdi.IsMaximized;
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+
         if (DataContext is IDockable dockable && dockable.Owner is IDock owner && dockable.Factory is { } factory)
         {
             factory.SetActiveDockable(dockable);

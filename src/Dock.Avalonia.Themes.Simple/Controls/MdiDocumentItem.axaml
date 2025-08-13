@@ -12,9 +12,9 @@
                 BorderThickness="1"
                 Background="{DynamicResource DockThemeBackgroundBrush}">
           <DockPanel DataContext="{TemplateBinding Content}">
-            <Border Background="{DynamicResource DockThemeBorderLowBrush}" Height="24" DockPanel.Dock="Top">
+            <Border Background="{DynamicResource DockThemeBorderLowBrush}" Height="24" DockPanel.Dock="Top" ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
               <dock:DocumentChromeControl>
-                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" />
+                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" IsHitTestVisible="False" />
               </dock:DocumentChromeControl>
             </Border>
             <Grid>

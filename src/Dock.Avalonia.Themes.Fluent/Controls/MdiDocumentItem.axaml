@@ -16,9 +16,10 @@
             <Border Background="{DynamicResource DockThemeBorderLowBrush}"
                     Height="24"
                     DockPanel.Dock="Top"
-                    IsHitTestVisible="True">
+                    IsHitTestVisible="True"
+                    ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
               <dock:DocumentChromeControl>
-                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" />
+                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" IsHitTestVisible="False" />
               </dock:DocumentChromeControl>
             </Border>
             <Grid>

@@ -120,7 +120,7 @@ public class DocumentChromeControl : ContentControl
             }
         }
 
-        if (DataContext is IDockable dockable && dockable.Owner is IDock owner && dockable.Factory is { } factory)
+        if (DataContext is IDockable dockable && dockable.Owner is IDock owner && owner.Factory is { } factory)
         {
             factory.SetActiveDockable(dockable);
             factory.SetFocusedDockable(owner, dockable);
@@ -142,7 +142,7 @@ public class DocumentChromeControl : ContentControl
 
     private void OnCloseClicked(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is IDockable dockable && dockable.Factory is { } factory)
+        if (DataContext is IDockable dockable && dockable.Owner is IDock { Factory: { } factory })
         {
             factory.CloseDockable(dockable);
         }

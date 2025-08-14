@@ -7,6 +7,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Avalonia.Input;
 using Dock.Model.Core;
+using Avalonia.Reactive;
 
 namespace Dock.Avalonia.Controls;
 
@@ -30,6 +31,7 @@ namespace Dock.Avalonia.Controls;
     private bool _isDragging;
     private Thumb? _resizeThumb;
     private Rect? _restoreBounds;
+    private IDisposable? _boundsSubscription;
 
     static MdiDocumentItem()
     {
@@ -44,6 +46,12 @@ namespace Dock.Avalonia.Controls;
         AddHandler(PointerMovedEvent, OnPointerMoved, handledEventsToo: true);
 
         UpdateBoundsFromDockable();
+
+        // Ensure maximized item tracks parent size changes when window resizes
+        if (IsMaximized)
+        {
+            SubscribeToParentBounds();
+        }
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -65,6 +73,8 @@ namespace Dock.Avalonia.Controls;
             _resizeThumb.DragCompleted -= OnResizeThumbDragCompleted;
             _resizeThumb = null;
         }
+        _boundsSubscription?.Dispose();
+        _boundsSubscription = null;
         base.OnDetachedFromVisualTree(e);
     }
 
@@ -107,9 +117,16 @@ namespace Dock.Avalonia.Controls;
                 Width = size.Width;
                 Height = size.Height;
             }
+
+            // Track parent bounds to keep maximized document resized with window
+            SubscribeToParentBounds();
         }
         else if (_restoreBounds is Rect restore && container is not null)
         {
+            // Stop tracking bounds when not maximized
+            _boundsSubscription?.Dispose();
+            _boundsSubscription = null;
+
             Canvas.SetLeft(container, restore.X);
             Canvas.SetTop(container, restore.Y);
             Width = restore.Width;
@@ -215,6 +232,41 @@ namespace Dock.Avalonia.Controls;
             var w = Bounds.Width;
             var h = Bounds.Height;
             dockable.SetVisibleBounds(left, top, w, h);
+        }
+    }
+
+    private void SubscribeToParentBounds()
+    {
+        _boundsSubscription?.Dispose();
+        var container = this.Parent as Control;
+        var canvas = container?.Parent as Control;
+        var target = canvas ?? container;
+        if (target is not null)
+        {
+            // Initialize to current size
+            UpdateMaximizedSize();
+
+            _boundsSubscription = target
+                .GetObservable(BoundsProperty)
+                .Subscribe(new AnonymousObserver<Rect>(_ =>
+                {
+                    if (IsMaximized)
+                    {
+                        UpdateMaximizedSize();
+                    }
+                }));
+        }
+    }
+
+    private void UpdateMaximizedSize()
+    {
+        var container = this.Parent as Control;
+        var canvas = container?.Parent as Control;
+        var size = canvas?.Bounds.Size ?? (container?.Bounds.Size ?? default);
+        if (size != default)
+        {
+            Width = size.Width;
+            Height = size.Height;
         }
     }
 }

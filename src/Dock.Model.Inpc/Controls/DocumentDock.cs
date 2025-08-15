@@ -4,6 +4,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Controls;
+using Dock.Model;
 using Dock.Model.Core;
 using Dock.Model.Inpc.Core;
 
@@ -45,6 +46,7 @@ public class DocumentDock : DockBase, IDocumentDock
     public Func<IDockable>? DocumentFactory { get; set; }
 
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+    private DocumentPresentation _presentation = DocumentPresentation.Tabs;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -61,6 +63,23 @@ public class DocumentDock : DockBase, IDocumentDock
         get => _tabsLayout;
         set => SetProperty(ref _tabsLayout, value);
     }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentPresentation Presentation
+    {
+        get => _presentation;
+        set => SetProperty(ref _presentation, value);
+    }
+
+    /// <inheritdoc/>
+    public void CascadeDocuments() => Factory?.CascadeDocuments(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsHorizontally() => Factory?.TileDocumentsHorizontally(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsVertically() => Factory?.TileDocumentsVertically(this);
 
     private void CreateNewDocument()
     {

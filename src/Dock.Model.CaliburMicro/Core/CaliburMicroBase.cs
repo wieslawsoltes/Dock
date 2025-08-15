@@ -7,6 +7,4 @@ namespace Dock.Model.CaliburMicro.Core;
 /// <summary>
 /// Caliburn.Micro base class.
 /// </summary>
-public abstract class CaliburMicroBase : PropertyChangedBase
-{
-}
+public abstract class CaliburMicroBase : PropertyChangedBase;

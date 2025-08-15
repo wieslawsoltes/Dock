@@ -10,6 +10,4 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// Tool.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Tool : DockableBase, ITool
-{
-}
+public class Tool : DockableBase, ITool;

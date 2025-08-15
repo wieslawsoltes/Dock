@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
-using Caliburn.Micro;
 
 namespace Dock.Model.CaliburMicro.Core;
 
@@ -139,50 +138,4 @@ public abstract class DockBase : DockableBase, IDock
         get => _enableGlobalDocking;
         set => Set(ref _enableGlobalDocking, value);
     }
-}
-
-/// <summary>
-/// Simple relay command implementation for Caliburn.Micro.
-/// </summary>
-public class RelayCommand : ICommand
-{
-    private readonly System.Action _execute;
-    private readonly System.Func<bool>? _canExecute;
-
-    public RelayCommand(System.Action execute, System.Func<bool>? canExecute = null)
-    {
-        _execute = execute ?? throw new System.ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
-    }
-
-    public event System.EventHandler? CanExecuteChanged;
-
-    public bool CanExecute(object? parameter) => _canExecute?.Invoke() ?? true;
-
-    public void Execute(object? parameter) => _execute();
-
-    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, System.EventArgs.Empty);
-}
-
-/// <summary>
-/// Generic relay command implementation for Caliburn.Micro.
-/// </summary>
-public class RelayCommand<T> : ICommand
-{
-    private readonly System.Action<T?> _execute;
-    private readonly System.Func<T?, bool>? _canExecute;
-
-    public RelayCommand(System.Action<T?> execute, System.Func<T?, bool>? canExecute = null)
-    {
-        _execute = execute ?? throw new System.ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
-    }
-
-    public event System.EventHandler? CanExecuteChanged;
-
-    public bool CanExecute(object? parameter) => _canExecute?.Invoke((T?)parameter) ?? true;
-
-    public void Execute(object? parameter) => _execute((T?)parameter);
-
-    public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, System.EventArgs.Empty);
 }

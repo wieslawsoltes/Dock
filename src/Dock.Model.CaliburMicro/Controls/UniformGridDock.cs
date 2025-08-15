@@ -14,7 +14,6 @@ public class UniformGridDock : DockBase, IUniformGridDock
 {
     private int _columns;
     private int _rows;
-    private int _firstColumn;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -30,13 +29,5 @@ public class UniformGridDock : DockBase, IUniformGridDock
     {
         get => _rows;
         set => Set(ref _rows, value);
-    }
-
-    /// <inheritdoc/>
-    [DataMember(IsRequired = false, EmitDefaultValue = true)]
-    public int FirstColumn
-    {
-        get => _firstColumn;
-        set => Set(ref _firstColumn, value);
     }
 }

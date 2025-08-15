@@ -10,6 +10,4 @@ namespace Dock.Model.CaliburMicro.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Document : DockableBase, IDocument
-{
-}
+public class Document : DockableBase, IDocument;

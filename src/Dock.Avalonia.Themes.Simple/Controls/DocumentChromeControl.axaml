@@ -12,34 +12,58 @@
   </ControlTheme>
 
   <ControlTheme x:Key="{x:Type dock:DocumentChromeControl}" TargetType="dock:DocumentChromeControl">
-    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Background" Value="{DynamicResource DockDocumentChromeBackgroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="CloseButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
     <Setter Property="MaximizeButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
+    <Setter Property="IsActive" Value="{Binding IsActive}" />
+    <!-- DocumentFlyout removed; using ContextMenu instead to reference ContextMenu resource. -->
     <Setter Property="Template">
       <ControlTemplate>
-        <DockPanel LastChildFill="True">
-          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-            <Button x:Name="PART_MaximizeRestoreButton" Theme="{TemplateBinding MaximizeButtonTheme}">
-              <Viewbox>
-                <Path x:Name="PART_MaximizeRestorePath" Data="{DynamicResource DockIconMaximizeGeometry}" />
-              </Viewbox>
-            </Button>
-            <Button x:Name="PART_CloseButton" Theme="{TemplateBinding CloseButtonTheme}">
-              <Viewbox>
-                <Path x:Name="PART_ClosePath" Data="{DynamicResource DockIconCloseGeometry}" />
-              </Viewbox>
-            </Button>
-          </StackPanel>
-          <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center" />
-        </DockPanel>
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+          <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" IsHitTestVisible="True">
+              <Button x:Name="PART_MaximizeRestoreButton" Theme="{TemplateBinding MaximizeButtonTheme}">
+                <Viewbox>
+                  <Path x:Name="PART_MaximizeRestorePath" />
+                </Viewbox>
+              </Button>
+              <Button x:Name="PART_CloseButton" Theme="{TemplateBinding CloseButtonTheme}">
+                <Viewbox>
+                  <Path x:Name="PART_ClosePath" Data="{DynamicResource DockIconCloseGeometry}" />
+                </Viewbox>
+              </Button>
+            </StackPanel>
+            <ContentPresenter Content="{TemplateBinding Content}" VerticalAlignment="Center" Margin="6,0,6,0" />
+          </DockPanel>
+        </Border>
       </ControlTemplate>
     </Setter>
+    
+    <!-- Ensure icons are visible and sized consistently -->
     <Style Selector="^/template/ Path">
       <Setter Property="Stretch" Value="UniformToFill" />
       <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+    </Style>
+    
+    <!-- Context menu from DocumentTabStripItem -->
+    <Setter Property="ContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
+    
+    <!-- Active text styling -->
+    <Style Selector="^:active /template/ ContentPresenter">
+      <Setter Property="TextElement.Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+    
+    <!-- Maximize/Restore button icon styling based on state -->
+    <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" />
+    </Style>
+    <Style Selector="^:not(:maximized) /template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" />
     </Style>
   </ControlTheme>
 

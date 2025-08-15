@@ -13,7 +13,7 @@
                 Background="{DynamicResource DockThemeBackgroundBrush}">
           <DockPanel DataContext="{TemplateBinding Content}">
             <Border Background="{DynamicResource DockThemeBorderLowBrush}" Height="24" DockPanel.Dock="Top" ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
-              <dock:DocumentChromeControl>
+              <dock:DocumentChromeControl IsActive="{Binding IsActive}">
                 <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" IsHitTestVisible="False" />
               </dock:DocumentChromeControl>
             </Border>

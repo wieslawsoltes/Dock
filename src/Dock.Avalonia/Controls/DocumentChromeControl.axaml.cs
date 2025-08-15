@@ -18,6 +18,7 @@ namespace Dock.Avalonia.Controls;
 /// Chrome for MDI document window: header with title and close button.
 /// Also activates and brings the document to front on click.
 /// </summary>
+[PseudoClasses(":active", ":maximized")]
 [TemplatePart("PART_CloseButton", typeof(Button))]
 [TemplatePart("PART_MaximizeRestoreButton", typeof(Button))]
 public class DocumentChromeControl : ContentControl
@@ -25,8 +26,20 @@ public class DocumentChromeControl : ContentControl
     private static int s_nextZIndex;
     private Button? _closeButton;
     private Button? _maximizeRestoreButton;
-        private MdiDocumentItem? _mdiItem;
-        private IDisposable? _maximizedSubscription;
+    private MdiDocumentItem? _mdiItem;
+    private IDisposable? _maximizedSubscription;
+
+    /// <summary>
+    /// Define the <see cref="IsActive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsActiveProperty =
+        AvaloniaProperty.Register<DocumentChromeControl, bool>(nameof(IsActive));
+
+    /// <summary>
+    /// Define the <see cref="DocumentFlyout"/> property.
+    /// </summary>
+    public static readonly StyledProperty<FlyoutBase?> DocumentFlyoutProperty =
+        AvaloniaProperty.Register<DocumentChromeControl, FlyoutBase?>(nameof(DocumentFlyout));
 
     /// <summary>
     /// Define the <see cref="CloseButtonTheme"/> property.
@@ -40,6 +53,24 @@ public class DocumentChromeControl : ContentControl
     public static readonly StyledProperty<ControlTheme?> MaximizeButtonThemeProperty =
         AvaloniaProperty.Register<DocumentChromeControl, ControlTheme?>(nameof(MaximizeButtonTheme));
 
+    /// <summary>
+    /// Gets or sets if this is the currently active document.
+    /// </summary>
+    public bool IsActive
+    {
+        get => GetValue(IsActiveProperty);
+        set => SetValue(IsActiveProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets the document context flyout.
+    /// </summary>
+    public FlyoutBase? DocumentFlyout
+    {
+        get => GetValue(DocumentFlyoutProperty);
+        set => SetValue(DocumentFlyoutProperty, value);
+    }
+
     public ControlTheme? CloseButtonTheme
     {
         get => GetValue(CloseButtonThemeProperty);
@@ -50,6 +81,14 @@ public class DocumentChromeControl : ContentControl
     {
         get => GetValue(MaximizeButtonThemeProperty);
         set => SetValue(MaximizeButtonThemeProperty, value);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DocumentChromeControl"/> class.
+    /// </summary>
+    public DocumentChromeControl()
+    {
+        UpdatePseudoClasses();
     }
 
     /// <inheritdoc/>
@@ -101,6 +140,22 @@ public class DocumentChromeControl : ContentControl
             _maximizeRestoreButton.Click -= OnMaximizeRestoreClicked;
         }
         base.OnDetachedFromVisualTree(e);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsActiveProperty)
+        {
+            UpdatePseudoClasses();
+        }
+    }
+
+    private void UpdatePseudoClasses()
+    {
+        PseudoClasses.Set(":active", IsActive);
     }
 
     private void OnPointerPressed(object? sender, PointerPressedEventArgs e)

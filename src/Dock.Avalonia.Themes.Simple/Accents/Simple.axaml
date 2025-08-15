@@ -10,6 +10,7 @@
 
     <SolidColorBrush x:Key="DockThemeBorderLowBrush" Color="{DynamicResource ThemeBorderLowColor}" />
     <SolidColorBrush x:Key="DockThemeBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}" />
+    <SolidColorBrush x:Key="DockDocumentChromeBackgroundBrush" Color="{DynamicResource ThemeControlMidColor}" />
     <SolidColorBrush x:Key="DockThemeAccentBrush" Color="{DynamicResource ThemeAccentColor}" />
     <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="{DynamicResource ThemeForegroundColor}" />
     <SolidColorBrush x:Key="DockThemeControlBackgroundBrush" Color="{DynamicResource ThemeBackgroundColor}" />

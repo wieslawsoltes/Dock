@@ -24,6 +24,7 @@ public class RootDock : DockBase, IRootDock
     private IToolDock? _pinnedDock;
     private IDockWindow? _window;
     private IList<IDockWindow>? _windows;
+    private bool _enableAdaptiveGlobalDockTargets;
 
     /// <summary>
     /// Initializes new instance of the <see cref="RootDock"/> class.
@@ -113,4 +114,12 @@ public class RootDock : DockBase, IRootDock
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand ExitWindows { get; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool EnableAdaptiveGlobalDockTargets
+    {
+        get => _enableAdaptiveGlobalDockTargets;
+        set => Set(ref _enableAdaptiveGlobalDockTargets, value);
+    }
 }

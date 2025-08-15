@@ -18,6 +18,7 @@
     <Setter Property="Padding" Value="0" />
     <Setter Property="CloseButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
     <Setter Property="MaximizeButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
+    <Setter Property="MinimizeButtonTheme" Value="{StaticResource ChromeButtonSmall}" />
     <Setter Property="IsActive" Value="{Binding IsActive}" />
     <Setter Property="ContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
     <Setter Property="Template">
@@ -27,6 +28,11 @@
                 BorderThickness="{TemplateBinding BorderThickness}">
           <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" IsHitTestVisible="True">
+              <Button x:Name="PART_MinimizeButton" Theme="{TemplateBinding MinimizeButtonTheme}">
+                <Viewbox>
+                  <Path x:Name="PART_MinimizePath" Data="{DynamicResource DockIconMinimizeGeometry}" />
+                </Viewbox>
+              </Button>
               <Button x:Name="PART_MaximizeRestoreButton" Theme="{TemplateBinding MaximizeButtonTheme}">
                 <Viewbox>
                   <Path x:Name="PART_MaximizeRestorePath" />

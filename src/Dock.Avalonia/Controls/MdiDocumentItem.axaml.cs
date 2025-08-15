@@ -1,13 +1,17 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Linq;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Avalonia.Input;
 using Dock.Model.Core;
 using Avalonia.Reactive;
+using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace Dock.Avalonia.Controls;
 
@@ -21,10 +25,28 @@ namespace Dock.Avalonia.Controls;
     public static readonly StyledProperty<bool> IsMaximizedProperty =
         AvaloniaProperty.Register<MdiDocumentItem, bool>(nameof(IsMaximized));
 
+    public static readonly StyledProperty<bool> IsMinimizedProperty =
+        AvaloniaProperty.Register<MdiDocumentItem, bool>(nameof(IsMinimized));
+
+    public static readonly StyledProperty<WindowState> WindowStateProperty =
+        AvaloniaProperty.Register<MdiDocumentItem, WindowState>(nameof(WindowState), WindowState.Normal);
+
     public bool IsMaximized
     {
         get => GetValue(IsMaximizedProperty);
         set => SetValue(IsMaximizedProperty, value);
+    }
+
+    public bool IsMinimized
+    {
+        get => GetValue(IsMinimizedProperty);
+        set => SetValue(IsMinimizedProperty, value);
+    }
+
+    public WindowState WindowState
+    {
+        get => GetValue(WindowStateProperty);
+        set => SetValue(WindowStateProperty, value);
     }
 
     private Point _dragOffset;
@@ -32,10 +54,16 @@ namespace Dock.Avalonia.Controls;
     private Thumb? _resizeThumb;
     private Rect? _restoreBounds;
     private IDisposable? _boundsSubscription;
+    private Rect? _minimizedBounds;
+    private const double SnapThreshold = 20.0;
+    private const double IconSize = 64.0;
+    private const double IconMargin = 8.0;
 
     static MdiDocumentItem()
     {
         IsMaximizedProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnIsMaximizedChanged());
+        IsMinimizedProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnIsMinimizedChanged());
+        WindowStateProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnWindowStateChanged());
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -218,6 +246,37 @@ namespace Dock.Avalonia.Controls;
         var p = e.GetPosition(canvas ?? container);
         var left = p.X - _dragOffset.X;
         var top = p.Y - _dragOffset.Y;
+        
+        // Apply window snapping
+        if (canvas is not null)
+        {
+            var canvasBounds = canvas.Bounds;
+            var windowWidth = Bounds.Width;
+            var windowHeight = Bounds.Height;
+            
+            // Snap to left edge
+            if (left <= SnapThreshold)
+            {
+                left = 0;
+            }
+            // Snap to right edge
+            else if (left + windowWidth >= canvasBounds.Width - SnapThreshold)
+            {
+                left = canvasBounds.Width - windowWidth;
+            }
+            
+            // Snap to top edge
+            if (top <= SnapThreshold)
+            {
+                top = 0;
+            }
+            // Snap to bottom edge
+            else if (top + windowHeight >= canvasBounds.Height - SnapThreshold)
+            {
+                top = canvasBounds.Height - windowHeight;
+            }
+        }
+        
         Canvas.SetLeft(container, left);
         Canvas.SetTop(container, top);
     }
@@ -268,6 +327,184 @@ namespace Dock.Avalonia.Controls;
             Width = size.Width;
             Height = size.Height;
         }
+    }
+
+    private async void OnIsMinimizedChanged()
+    {
+        var container = this.Parent as Control;
+        var canvas = container?.Parent as Control;
+        
+        if (IsMinimized)
+        {
+            // Save current bounds for restore
+            var left = container is null ? Canvas.GetLeft(this) : Canvas.GetLeft(container);
+            var top = container is null ? Canvas.GetTop(this) : Canvas.GetTop(container);
+            _minimizedBounds = new Rect(left, top, Bounds.Width, Bounds.Height);
+            
+            // Position as icon at bottom of canvas
+            var iconPosition = GetNextIconPosition();
+            
+            // Animate to minimized state
+            var animation = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(300),
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter(Canvas.LeftProperty, left),
+                            new Setter(Canvas.TopProperty, top),
+                            new Setter(WidthProperty, Bounds.Width),
+                            new Setter(HeightProperty, Bounds.Height),
+                            new Setter(OpacityProperty, 1.0)
+                        },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter(Canvas.LeftProperty, iconPosition.X),
+                            new Setter(Canvas.TopProperty, iconPosition.Y),
+                            new Setter(WidthProperty, IconSize),
+                            new Setter(HeightProperty, IconSize),
+                            new Setter(OpacityProperty, 0.8)
+                        },
+                        Cue = new Cue(1d)
+                    }
+                }
+            };
+            
+            if (container is not null)
+            {
+                await animation.RunAsync(container);
+                Canvas.SetLeft(container, iconPosition.X);
+                Canvas.SetTop(container, iconPosition.Y);
+            }
+            
+            Width = IconSize;
+            Height = IconSize;
+            WindowState = WindowState.Minimized;
+        }
+        else if (_minimizedBounds is Rect restore && container is not null)
+        {
+            // Animate restore from minimized state
+            var animation = new Animation
+            {
+                Duration = TimeSpan.FromMilliseconds(300),
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter(Canvas.LeftProperty, Canvas.GetLeft(container)),
+                            new Setter(Canvas.TopProperty, Canvas.GetTop(container)),
+                            new Setter(WidthProperty, Width),
+                            new Setter(HeightProperty, Height),
+                            new Setter(OpacityProperty, 0.8)
+                        },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter(Canvas.LeftProperty, restore.X),
+                            new Setter(Canvas.TopProperty, restore.Y),
+                            new Setter(WidthProperty, restore.Width),
+                            new Setter(HeightProperty, restore.Height),
+                            new Setter(OpacityProperty, 1.0)
+                        },
+                        Cue = new Cue(1d)
+                    }
+                }
+            };
+            
+            await animation.RunAsync(container);
+            Canvas.SetLeft(container, restore.X);
+            Canvas.SetTop(container, restore.Y);
+            Width = restore.Width;
+            Height = restore.Height;
+            WindowState = WindowState.Normal;
+        }
+    }
+
+    private void OnWindowStateChanged()
+    {
+        switch (WindowState)
+        {
+            case WindowState.Normal:
+                IsMaximized = false;
+                IsMinimized = false;
+                break;
+            case WindowState.Minimized:
+                IsMaximized = false;
+                IsMinimized = true;
+                break;
+            case WindowState.Maximized:
+                IsMaximized = true;
+                IsMinimized = false;
+                break;
+        }
+    }
+
+    private Point GetNextIconPosition()
+    {
+        var container = this.Parent as Control;
+        var canvas = container?.Parent as Control;
+        if (canvas is null) return new Point(0, 0);
+        
+        var canvasBounds = canvas.Bounds;
+        var bottomY = canvasBounds.Height - IconSize - IconMargin;
+        
+        // Find next available position from left to right
+        var currentX = IconMargin;
+        var siblings = canvas.GetVisualChildren().OfType<Control>();
+        
+        foreach (var sibling in siblings)
+        {
+            if (sibling != container && sibling.DataContext is IDockable siblingDockable)
+            {
+                var siblingItem = sibling.GetVisualChildren().OfType<MdiDocumentItem>().FirstOrDefault();
+                if (siblingItem?.IsMinimized == true)
+                {
+                    var siblingLeft = Canvas.GetLeft(sibling);
+                    if (Math.Abs(siblingLeft - currentX) < IconSize + IconMargin)
+                    {
+                        currentX = siblingLeft + IconSize + IconMargin;
+                    }
+                }
+            }
+        }
+        
+        return new Point(currentX, bottomY);
+    }
+
+    /// <summary>
+    /// Minimizes the window to an icon.
+    /// </summary>
+    public void Minimize()
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    /// <summary>
+    /// Restores the window from minimized or maximized state.
+    /// </summary>
+    public void Restore()
+    {
+        WindowState = WindowState.Normal;
+    }
+
+    /// <summary>
+    /// Maximizes the window to fill the canvas.
+    /// </summary>
+    public void Maximize()
+    {
+        WindowState = WindowState.Maximized;
     }
 }
 

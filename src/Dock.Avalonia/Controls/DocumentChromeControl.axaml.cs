@@ -21,11 +21,13 @@ namespace Dock.Avalonia.Controls;
 [PseudoClasses(":active", ":maximized")]
 [TemplatePart("PART_CloseButton", typeof(Button))]
 [TemplatePart("PART_MaximizeRestoreButton", typeof(Button))]
+[TemplatePart("PART_MinimizeButton", typeof(Button))]
 public class DocumentChromeControl : ContentControl
 {
     private static int s_nextZIndex;
     private Button? _closeButton;
     private Button? _maximizeRestoreButton;
+    private Button? _minimizeButton;
     private MdiDocumentItem? _mdiItem;
     private IDisposable? _maximizedSubscription;
 
@@ -52,6 +54,12 @@ public class DocumentChromeControl : ContentControl
     /// </summary>
     public static readonly StyledProperty<ControlTheme?> MaximizeButtonThemeProperty =
         AvaloniaProperty.Register<DocumentChromeControl, ControlTheme?>(nameof(MaximizeButtonTheme));
+
+    /// <summary>
+    /// Define the <see cref="MinimizeButtonTheme"/> property.
+    /// </summary>
+    public static readonly StyledProperty<ControlTheme?> MinimizeButtonThemeProperty =
+        AvaloniaProperty.Register<DocumentChromeControl, ControlTheme?>(nameof(MinimizeButtonTheme));
 
     /// <summary>
     /// Gets or sets if this is the currently active document.
@@ -81,6 +89,12 @@ public class DocumentChromeControl : ContentControl
     {
         get => GetValue(MaximizeButtonThemeProperty);
         set => SetValue(MaximizeButtonThemeProperty, value);
+    }
+
+    public ControlTheme? MinimizeButtonTheme
+    {
+        get => GetValue(MinimizeButtonThemeProperty);
+        set => SetValue(MinimizeButtonThemeProperty, value);
     }
 
     /// <summary>
@@ -114,6 +128,7 @@ public class DocumentChromeControl : ContentControl
         base.OnApplyTemplate(e);
         _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
         _maximizeRestoreButton = e.NameScope.Find<Button>("PART_MaximizeRestoreButton");
+        _minimizeButton = e.NameScope.Find<Button>("PART_MinimizeButton");
 
         if (_closeButton is not null)
         {
@@ -122,6 +137,10 @@ public class DocumentChromeControl : ContentControl
         if (_maximizeRestoreButton is not null)
         {
             _maximizeRestoreButton.Click += OnMaximizeRestoreClicked;
+        }
+        if (_minimizeButton is not null)
+        {
+            _minimizeButton.Click += OnMinimizeClicked;
         }
     }
 
@@ -138,6 +157,10 @@ public class DocumentChromeControl : ContentControl
         if (_maximizeRestoreButton is not null)
         {
             _maximizeRestoreButton.Click -= OnMaximizeRestoreClicked;
+        }
+        if (_minimizeButton is not null)
+        {
+            _minimizeButton.Click -= OnMinimizeClicked;
         }
         base.OnDetachedFromVisualTree(e);
     }
@@ -220,6 +243,26 @@ public class DocumentChromeControl : ContentControl
         if (mdiItem is not null)
         {
             mdiItem.IsMaximized = !mdiItem.IsMaximized;
+        }
+        e.Handled = true;
+    }
+
+    private void OnMinimizeClicked(object? sender, RoutedEventArgs e)
+    {
+        MdiDocumentItem? mdiItem = null;
+        Control? current = this.Parent as Control;
+        while (current is not null)
+        {
+            if (current is MdiDocumentItem found)
+            {
+                mdiItem = found;
+                break;
+            }
+            current = current.Parent as Control;
+        }
+        if (mdiItem is not null)
+        {
+            mdiItem.Minimize();
         }
         e.Handled = true;
     }

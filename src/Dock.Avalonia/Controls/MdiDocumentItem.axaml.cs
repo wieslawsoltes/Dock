@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.VisualTree;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Dock.Model.Core;
 using Avalonia.Reactive;
 using Avalonia.Media;
@@ -79,11 +80,15 @@ namespace Dock.Avalonia.Controls;
     private Point _dragOffset;
     private bool _isDragging;
     private Thumb? _resizeThumb;
+    private Border? _minimizedBorder;
+    private Button? _restoreButton;
+    private Button? _closeButton;
     private Rect? _restoreBounds;
     private IDisposable? _boundsSubscription;
     private Rect? _minimizedBounds;
     private const double SnapThreshold = 20.0;
-    private const double IconSize = 64.0;
+    private const double MinimizedWidth = 120.0;
+    private const double MinimizedHeight = 32.0;
     private const double IconMargin = 8.0;
 
     static MdiDocumentItem()
@@ -138,6 +143,24 @@ namespace Dock.Avalonia.Controls;
             _resizeThumb.DragDelta += OnResizeThumbDragDelta;
             _resizeThumb.DragCompleted += OnResizeThumbDragCompleted;
         }
+
+        _minimizedBorder = e.NameScope.Find<Border>("PART_MinimizedBorder");
+        if (_minimizedBorder is not null)
+        {
+            _minimizedBorder.PointerPressed += OnMinimizedBorderPressed;
+        }
+
+        _restoreButton = e.NameScope.Find<Button>("PART_RestoreButton");
+        if (_restoreButton is not null)
+        {
+            _restoreButton.Click += OnRestoreClicked;
+        }
+
+        _closeButton = e.NameScope.Find<Button>("PART_CloseButton");
+        if (_closeButton is not null)
+        {
+            _closeButton.Click += OnCloseClicked;
+        }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -147,6 +170,21 @@ namespace Dock.Avalonia.Controls;
             _resizeThumb.DragDelta -= OnResizeThumbDragDelta;
             _resizeThumb.DragCompleted -= OnResizeThumbDragCompleted;
             _resizeThumb = null;
+        }
+        if (_minimizedBorder is not null)
+        {
+            _minimizedBorder.PointerPressed -= OnMinimizedBorderPressed;
+            _minimizedBorder = null;
+        }
+        if (_restoreButton is not null)
+        {
+            _restoreButton.Click -= OnRestoreClicked;
+            _restoreButton = null;
+        }
+        if (_closeButton is not null)
+        {
+            _closeButton.Click -= OnCloseClicked;
+            _closeButton = null;
         }
         _boundsSubscription?.Dispose();
         _boundsSubscription = null;
@@ -167,6 +205,43 @@ namespace Dock.Avalonia.Controls;
     private void OnResizeThumbDragCompleted(object? sender, VectorEventArgs e)
     {
         SaveBoundsToDockable();
+    }
+
+    private void OnMinimizedBorderPressed(object? sender, PointerPressedEventArgs e)
+    {
+        // Don't handle if the click is on a button
+        if (e.Source is Control sourceControl)
+        {
+            if (sourceControl is Button || sourceControl.FindAncestorOfType<Button>() is not null)
+            {
+                return;
+            }
+        }
+
+        // When clicking on minimized border, restore the document
+        if (IsMinimized)
+        {
+            Restore();
+            e.Handled = true;
+        }
+    }
+
+    private void OnRestoreClicked(object? sender, RoutedEventArgs e)
+    {
+        if (IsMinimized)
+        {
+            Restore();
+        }
+        e.Handled = true;
+    }
+
+    private void OnCloseClicked(object? sender, RoutedEventArgs e)
+    {
+        if (DataContext is IDockable dockable && dockable.Owner is IDock { Factory: { } factory })
+        {
+            factory.CloseDockable(dockable);
+        }
+        e.Handled = true;
     }
 
     private void OnIsMaximizedChanged()
@@ -529,8 +604,8 @@ namespace Dock.Avalonia.Controls;
                         {
                             new Setter(Canvas.LeftProperty, iconPosition.X),
                             new Setter(Canvas.TopProperty, iconPosition.Y),
-                            new Setter(WidthProperty, IconSize),
-                            new Setter(HeightProperty, IconSize),
+                            new Setter(WidthProperty, MinimizedWidth),
+                            new Setter(HeightProperty, MinimizedHeight),
                             new Setter(OpacityProperty, 0.8)
                         },
                         Cue = new Cue(1d)
@@ -545,8 +620,8 @@ namespace Dock.Avalonia.Controls;
                 Canvas.SetTop(container, iconPosition.Y);
             }
             
-            Width = IconSize;
-            Height = IconSize;
+            Width = MinimizedWidth;
+            Height = MinimizedHeight;
             WindowState = WindowState.Minimized;
         }
         else if (_minimizedBounds is Rect restore)
@@ -647,7 +722,7 @@ namespace Dock.Avalonia.Controls;
         if (canvas is null) return new Point(0, 0);
         
         var canvasBounds = canvas.Bounds;
-        var bottomY = canvasBounds.Height - IconSize - IconMargin;
+        var bottomY = canvasBounds.Height - MinimizedHeight - IconMargin;
         
         // Find next available position from left to right
         var currentX = IconMargin;
@@ -661,9 +736,9 @@ namespace Dock.Avalonia.Controls;
                 if (siblingItem?.IsMinimized == true)
                 {
                     var siblingLeft = Canvas.GetLeft(sibling);
-                    if (Math.Abs(siblingLeft - currentX) < IconSize + IconMargin)
+                    if (Math.Abs(siblingLeft - currentX) < MinimizedWidth + IconMargin)
                     {
-                        currentX = siblingLeft + IconSize + IconMargin;
+                        currentX = siblingLeft + MinimizedWidth + IconMargin;
                     }
                 }
             }

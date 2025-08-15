@@ -9,43 +9,111 @@
     <Setter Property="Height" Value="300" />
     <Setter Property="Template">
       <ControlTemplate>
-        <Border BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
-                BorderThickness="1"
-                Background="{DynamicResource DockThemeBackgroundBrush}">
-          <DockPanel DataContext="{TemplateBinding Content}">
-            <Border Background="{DynamicResource DockThemeBorderLowBrush}"
-                    Height="24"
-                    DockPanel.Dock="Top"
-                    IsHitTestVisible="True"
-                    ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
-              <dock:DocumentChromeControl IsActive="{Binding IsActive}">
-                <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" IsHitTestVisible="False" />
-              </dock:DocumentChromeControl>
-            </Border>
-            <Grid>
-              <DockableControl TrackingMode="Visible">
-                <ContentPresenter x:Name="PART_ContentPresenter"
-                                   Content="{Binding}"
-                                   HorizontalAlignment="Stretch"
-                                   VerticalAlignment="Stretch">
-                  <ContentPresenter.ContentTemplate>
-                    <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
-                  </ContentPresenter.ContentTemplate>
-                </ContentPresenter>
-              </DockableControl>
-              <!-- Resize grip overlay in bottom-right corner -->
-              <Thumb x:Name="PART_ResizeThumb"
-                     Width="10"
-                     Height="10"
-                     HorizontalAlignment="Right"
-                     VerticalAlignment="Bottom"
-                     Margin="0"
-                     ZIndex="1"
-                     Cursor="SizeAll"
-                     Background="{DynamicResource DockApplicationAccentBrush}"/>
-            </Grid>
-          </DockPanel>
-        </Border>
+        <Grid>
+          <!-- Normal state template -->
+          <Border x:Name="PART_NormalBorder"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  Background="{DynamicResource DockThemeBackgroundBrush}"
+                  IsVisible="{TemplateBinding IsMinimized, Converter={x:Static BoolConverters.Not}}">
+            <DockPanel DataContext="{TemplateBinding Content}">
+              <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                      Height="24"
+                      DockPanel.Dock="Top"
+                      IsHitTestVisible="True"
+                      ContextMenu="{DynamicResource DocumentTabStripItemContextMenu}">
+                <dock:DocumentChromeControl IsActive="{Binding IsActive}">
+                  <TextBlock Margin="6,0,6,0" VerticalAlignment="Center" Text="{Binding Title}" IsHitTestVisible="False" />
+                </dock:DocumentChromeControl>
+              </Border>
+              <Grid>
+                <DockableControl TrackingMode="Visible">
+                  <ContentPresenter x:Name="PART_ContentPresenter"
+                                     Content="{Binding}"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch">
+                    <ContentPresenter.ContentTemplate>
+                      <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                    </ContentPresenter.ContentTemplate>
+                  </ContentPresenter>
+                </DockableControl>
+                <!-- Resize grip overlay in bottom-right corner -->
+                <Thumb x:Name="PART_ResizeThumb"
+                       Width="10"
+                       Height="10"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Margin="0"
+                       ZIndex="1"
+                       Cursor="SizeAll"
+                       Background="{DynamicResource DockApplicationAccentBrush}"/>
+              </Grid>
+            </DockPanel>
+          </Border>
+          
+          <!-- Minimized state template - similar to pinned dockable -->
+          <Border x:Name="PART_MinimizedBorder"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  Background="{DynamicResource DockThemeBackgroundBrush}"
+                  CornerRadius="3"
+                  IsVisible="{TemplateBinding IsMinimized}"
+                  MinWidth="120"
+                  Height="32"
+                  Cursor="Hand">
+            <DockPanel Margin="4,2" DataContext="{TemplateBinding Content}">
+              <!-- Document icon -->
+              <Border Width="16" Height="16" 
+                      Background="{DynamicResource DockThemeAccentBrush}"
+                      CornerRadius="2"
+                      Margin="0,0,6,0">
+                <Path Width="10" Height="10"
+                      Data="{DynamicResource DockIconMinimizeGeometry}"
+                      Fill="White"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center" />
+              </Border>
+              
+              <!-- Control buttons -->
+              <StackPanel Orientation="Horizontal" 
+                          DockPanel.Dock="Right"
+                          Margin="4,0,0,0">
+                <Button x:Name="PART_RestoreButton"
+                        Width="16" Height="16"
+                        Padding="0"
+                        Margin="1,0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="Restore">
+                  <Path Width="8" Height="8"
+                        Data="{DynamicResource DockIconRestoreGeometry}"
+                        Fill="{DynamicResource DockThemeForegroundBrush}"
+                        Stretch="Uniform" />
+                </Button>
+                <Button x:Name="PART_CloseButton"
+                        Width="16" Height="16"
+                        Padding="0"
+                        Margin="1,0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="Close">
+                  <Path Width="8" Height="8"
+                        Data="{DynamicResource DockIconCloseGeometry}"
+                        Fill="{DynamicResource DockThemeForegroundBrush}"
+                        Stretch="Uniform" />
+                </Button>
+              </StackPanel>
+              
+              <!-- Document title (truncated) -->
+              <TextBlock Text="{Binding Title}" 
+                         FontSize="11"
+                         VerticalAlignment="Center"
+                         TextTrimming="CharacterEllipsis"
+                         ToolTip.Tip="{Binding Title}" />
+            </DockPanel>
+          </Border>
+        </Grid>
       </ControlTemplate>
     </Setter>
   </ControlTheme>

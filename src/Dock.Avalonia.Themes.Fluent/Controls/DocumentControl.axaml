@@ -130,28 +130,41 @@
                 </ContentControl>
               </DockableControl>
             </Border>
-            <ItemsControl x:Name="PART_MdiItems"
-                          DockProperties.IsDropArea="True"
-                          Background="Transparent"
-                          IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Mdi}"
-                          ItemsSource="{Binding VisibleDockables}">
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <controls:MdiDocumentItem Content="{Binding}" />
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-              <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <Canvas />
-                </ItemsPanelTemplate>
-              </ItemsControl.ItemsPanel>
-              <ItemsControl.Styles>
-                <Style Selector="ItemsControl /template/ ContentPresenter">
-                  <Setter Property="HorizontalAlignment" Value="Left" />
-                  <Setter Property="VerticalAlignment" Value="Top" />
-                </Style>
-              </ItemsControl.Styles>
-            </ItemsControl>
+            <Grid IsVisible="{Binding Presentation, Converter={x:Static converters:EnumEqualsConverter.Instance}, ConverterParameter=Mdi}">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              
+              <!-- MDI Canvas for normal windows -->
+              <ItemsControl x:Name="PART_MdiItems"
+                            Grid.Row="0"
+                            DockProperties.IsDropArea="True"
+                            Background="Transparent"
+                            ItemsSource="{Binding VisibleDockables}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <controls:MdiDocumentItem Content="{Binding}" />
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Canvas />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Styles>
+                  <Style Selector="ItemsControl /template/ ContentPresenter">
+                    <Setter Property="HorizontalAlignment" Value="Left" />
+                    <Setter Property="VerticalAlignment" Value="Top" />
+                  </Style>
+                </ItemsControl.Styles>
+              </ItemsControl>
+              
+              <!-- Minimized documents container -->
+              <controls:MdiMinimizedContainer x:Name="PART_MinimizedContainer"
+                                              Grid.Row="1"
+                                              DockPanel.Dock="Bottom" />
+            </Grid>
           </Grid>
         </DockPanel>
       </ControlTemplate>

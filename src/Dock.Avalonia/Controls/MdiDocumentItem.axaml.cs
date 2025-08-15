@@ -31,6 +31,15 @@ namespace Dock.Avalonia.Controls;
     public static readonly StyledProperty<WindowState> WindowStateProperty =
         AvaloniaProperty.Register<MdiDocumentItem, WindowState>(nameof(WindowState), WindowState.Normal);
 
+    public static readonly StyledProperty<bool> IsActiveProperty =
+        AvaloniaProperty.Register<MdiDocumentItem, bool>(nameof(IsActive));
+
+    public static readonly StyledProperty<string?> TitleProperty =
+        AvaloniaProperty.Register<MdiDocumentItem, string?>(nameof(Title));
+
+    public static readonly StyledProperty<bool> CanCloseProperty =
+        AvaloniaProperty.Register<MdiDocumentItem, bool>(nameof(CanClose), true);
+
     public bool IsMaximized
     {
         get => GetValue(IsMaximizedProperty);
@@ -49,6 +58,24 @@ namespace Dock.Avalonia.Controls;
         set => SetValue(WindowStateProperty, value);
     }
 
+    public bool IsActive
+    {
+        get => GetValue(IsActiveProperty);
+        set => SetValue(IsActiveProperty, value);
+    }
+
+    public string? Title
+    {
+        get => GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
+
+    public bool CanClose
+    {
+        get => GetValue(CanCloseProperty);
+        set => SetValue(CanCloseProperty, value);
+    }
+
     private Point _dragOffset;
     private bool _isDragging;
     private Thumb? _resizeThumb;
@@ -62,8 +89,22 @@ namespace Dock.Avalonia.Controls;
     static MdiDocumentItem()
     {
         IsMaximizedProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnIsMaximizedChanged());
-        IsMinimizedProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnIsMinimizedChanged());
-        WindowStateProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => x.OnWindowStateChanged());
+        IsMinimizedProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => 
+        {
+            Console.WriteLine($"IsMinimized changed: Old={e.OldValue}, New={e.NewValue}");
+            // Save bounds synchronously when minimizing to prevent timing issues
+            if ((bool)e.NewValue! && !(bool)e.OldValue!)
+            {
+                Console.WriteLine("Calling SaveMinimizedBoundsSync");
+                x.SaveMinimizedBoundsSync();
+            }
+            x.OnIsMinimizedChanged();
+        });
+        WindowStateProperty.Changed.AddClassHandler<MdiDocumentItem>((x, e) => 
+        {
+            Console.WriteLine($"WindowState changed: Old={e.OldValue}, New={e.NewValue}");
+            x.OnWindowStateChanged();
+        });
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -72,6 +113,12 @@ namespace Dock.Avalonia.Controls;
         AddHandler(PointerPressedEvent, OnPointerPressed, handledEventsToo: true);
         AddHandler(PointerReleasedEvent, OnPointerReleased, handledEventsToo: true);
         AddHandler(PointerMovedEvent, OnPointerMoved, handledEventsToo: true);
+
+        // Auto-increment Z-index when attached to visual tree
+        if (GetValue(Visual.ZIndexProperty) == 0) // Only set if not already set
+        {
+            SetValue(Visual.ZIndexProperty, ++s_nextZIndex);
+        }
 
         UpdateBoundsFromDockable();
 
@@ -131,7 +178,7 @@ namespace Dock.Avalonia.Controls;
             // Save current bounds for restore
             var left = container is null ? Canvas.GetLeft(this) : Canvas.GetLeft(container);
             var top = container is null ? Canvas.GetTop(this) : Canvas.GetTop(container);
-            _restoreBounds = new Rect(left, top, Bounds.Width, Bounds.Height);
+            _restoreBounds = new Rect(left, top, Width, Height);
 
             if (container is not null)
             {
@@ -149,14 +196,22 @@ namespace Dock.Avalonia.Controls;
             // Track parent bounds to keep maximized document resized with window
             SubscribeToParentBounds();
         }
-        else if (_restoreBounds is Rect restore && container is not null)
+        else if (_restoreBounds is Rect restore)
         {
             // Stop tracking bounds when not maximized
             _boundsSubscription?.Dispose();
             _boundsSubscription = null;
 
-            Canvas.SetLeft(container, restore.X);
-            Canvas.SetTop(container, restore.Y);
+            if (container is not null)
+            {
+                Canvas.SetLeft(container, restore.X);
+                Canvas.SetTop(container, restore.Y);
+            }
+            else
+            {
+                Canvas.SetLeft(this, restore.X);
+                Canvas.SetTop(this, restore.Y);
+            }
             Width = restore.Width;
             Height = restore.Height;
         }
@@ -279,10 +334,19 @@ namespace Dock.Avalonia.Controls;
         
         Canvas.SetLeft(container, left);
         Canvas.SetTop(container, top);
+        
+        // Update IDockable visible bounds when Canvas position changes
+        if (DataContext is IDockable dockable)
+        {
+            dockable.SetVisibleBounds(left, top, Width, Height);
+        }
     }
 
     private void SaveBoundsToDockable()
     {
+        // Don't save bounds when minimized to preserve original bounds for restoration
+        if (IsMinimized) return;
+        
         if (DataContext is IDockable dockable)
         {
             var container = this.Parent as Control;
@@ -329,6 +393,106 @@ namespace Dock.Avalonia.Controls;
         }
     }
 
+    private void SaveMinimizedBoundsSync()
+    {
+        var container = this.Parent as Control;
+        
+        // Save current visual bounds for restore - prefer IDockable bounds as they are more reliable
+        var left = 0.0;
+        var top = 0.0;
+        var width = Width;
+        var height = Height;
+        
+        // Try to get bounds from IDockable first, but only if they are valid
+        if (DataContext is IDockable dockable)
+        {
+            dockable.GetVisibleBounds(out var dockableLeft, out var dockableTop, out var dockableWidth, out var dockableHeight);
+            
+            // Use IDockable bounds only if they are valid (not NaN)
+            if (!double.IsNaN(dockableLeft) && !double.IsNaN(dockableTop))
+            {
+                left = dockableLeft;
+                top = dockableTop;
+                if (!double.IsNaN(dockableWidth)) width = dockableWidth;
+                if (!double.IsNaN(dockableHeight)) height = dockableHeight;
+            }
+            else
+            {
+                // Fallback to Canvas position if IDockable bounds are invalid
+                var canvasLeft = container is null ? Canvas.GetLeft(this) : Canvas.GetLeft(container);
+                var canvasTop = container is null ? Canvas.GetTop(this) : Canvas.GetTop(container);
+                
+                // If Canvas.GetLeft/GetTop returns NaN, try to use the Bounds position as fallback
+                if (!double.IsNaN(canvasLeft)) 
+                {
+                    left = canvasLeft;
+                }
+                else if (container is null)
+                {
+                    // Canvas.GetLeft returned NaN, use Bounds.X as fallback
+                    left = Bounds.X;
+                }
+                
+                if (!double.IsNaN(canvasTop)) 
+                {
+                    top = canvasTop;
+                }
+                else if (container is null)
+                {
+                    // Canvas.GetTop returned NaN, use Bounds.Y as fallback
+                    top = Bounds.Y;
+                }
+            }
+        }
+        else
+        {
+            // Fallback to Canvas position if no IDockable
+            var canvasLeft = container is null ? Canvas.GetLeft(this) : Canvas.GetLeft(container);
+            var canvasTop = container is null ? Canvas.GetTop(this) : Canvas.GetTop(container);
+            
+            // Handle Canvas position with proper fallbacks
+            if (!double.IsNaN(canvasLeft)) 
+            {
+                left = canvasLeft;
+            }
+            else if (container is null)
+            {
+                // Canvas.GetLeft returned NaN, try alternative approaches
+                // First try to get the actual rendered position
+                if (Bounds.X != 0 || Bounds.Y != 0)
+                {
+                    left = Bounds.X;
+                }
+                else
+                {
+                    // Last resort: check if we have a valid transform or use 0
+                    left = 0;
+                }
+            }
+            
+            if (!double.IsNaN(canvasTop)) 
+            {
+                top = canvasTop;
+            }
+            else if (container is null)
+            {
+                // Canvas.GetTop returned NaN, try alternative approaches
+                if (Bounds.X != 0 || Bounds.Y != 0)
+                {
+                    top = Bounds.Y;
+                }
+                else
+                {
+                    // Last resort: use 0
+                    top = 0;
+                }
+            }
+        }
+        
+        _minimizedBounds = new Rect(left, top, width, height);
+        Console.WriteLine($"SaveMinimizedBoundsSync: Saved bounds ({left}, {top}, {width}, {height})");
+    }
+
     private async void OnIsMinimizedChanged()
     {
         var container = this.Parent as Control;
@@ -336,10 +500,7 @@ namespace Dock.Avalonia.Controls;
         
         if (IsMinimized)
         {
-            // Save current bounds for restore
-            var left = container is null ? Canvas.GetLeft(this) : Canvas.GetLeft(container);
-            var top = container is null ? Canvas.GetTop(this) : Canvas.GetTop(container);
-            _minimizedBounds = new Rect(left, top, Bounds.Width, Bounds.Height);
+            // Bounds are now saved synchronously in SaveMinimizedBoundsSync()
             
             // Position as icon at bottom of canvas
             var iconPosition = GetNextIconPosition();
@@ -354,8 +515,8 @@ namespace Dock.Avalonia.Controls;
                     {
                         Setters =
                         {
-                            new Setter(Canvas.LeftProperty, left),
-                            new Setter(Canvas.TopProperty, top),
+                            new Setter(Canvas.LeftProperty, _minimizedBounds?.Left ?? 0),
+                            new Setter(Canvas.TopProperty, _minimizedBounds?.Top ?? 0),
                             new Setter(WidthProperty, Bounds.Width),
                             new Setter(HeightProperty, Bounds.Height),
                             new Setter(OpacityProperty, 1.0)
@@ -388,47 +549,75 @@ namespace Dock.Avalonia.Controls;
             Height = IconSize;
             WindowState = WindowState.Minimized;
         }
-        else if (_minimizedBounds is Rect restore && container is not null)
+        else if (_minimizedBounds is Rect restore)
         {
-            // Animate restore from minimized state
-            var animation = new Animation
+            if (container is not null)
             {
-                Duration = TimeSpan.FromMilliseconds(300),
-                Children =
+                // Animate restore from minimized state
+                var animation = new Animation
                 {
-                    new KeyFrame
+                    Duration = TimeSpan.FromMilliseconds(300),
+                    Children =
                     {
-                        Setters =
+                        new KeyFrame
                         {
-                            new Setter(Canvas.LeftProperty, Canvas.GetLeft(container)),
-                            new Setter(Canvas.TopProperty, Canvas.GetTop(container)),
-                            new Setter(WidthProperty, Width),
-                            new Setter(HeightProperty, Height),
-                            new Setter(OpacityProperty, 0.8)
+                            Setters =
+                            {
+                                new Setter(Canvas.LeftProperty, Canvas.GetLeft(container)),
+                                new Setter(Canvas.TopProperty, Canvas.GetTop(container)),
+                                new Setter(WidthProperty, Width),
+                                new Setter(HeightProperty, Height),
+                                new Setter(OpacityProperty, 0.8)
+                            },
+                            Cue = new Cue(0d)
                         },
-                        Cue = new Cue(0d)
-                    },
-                    new KeyFrame
-                    {
-                        Setters =
+                        new KeyFrame
                         {
-                            new Setter(Canvas.LeftProperty, restore.X),
-                            new Setter(Canvas.TopProperty, restore.Y),
-                            new Setter(WidthProperty, restore.Width),
-                            new Setter(HeightProperty, restore.Height),
-                            new Setter(OpacityProperty, 1.0)
-                        },
-                        Cue = new Cue(1d)
+                            Setters =
+                            {
+                                new Setter(Canvas.LeftProperty, restore.X),
+                                new Setter(Canvas.TopProperty, restore.Y),
+                                new Setter(WidthProperty, restore.Width),
+                                new Setter(HeightProperty, restore.Height),
+                                new Setter(OpacityProperty, 1.0)
+                            },
+                            Cue = new Cue(1d)
+                        }
                     }
-                }
-            };
+                };
+                
+                await animation.RunAsync(container);
+                Canvas.SetLeft(container, restore.X);
+                Canvas.SetTop(container, restore.Y);
+            }
+            else
+            {
+                // Always restore to saved position, ignoring any moves during minimized state
+                Canvas.SetLeft(this, restore.X);
+                Canvas.SetTop(this, restore.Y);
+            }
             
-            await animation.RunAsync(container);
-            Canvas.SetLeft(container, restore.X);
-            Canvas.SetTop(container, restore.Y);
+            // Ensure the item position is always set correctly, regardless of container
+            Canvas.SetLeft(this, restore.X);
+            Canvas.SetTop(this, restore.Y);
+            
             Width = restore.Width;
             Height = restore.Height;
-            WindowState = WindowState.Normal;
+            // Only set to Normal if we're not transitioning to another state
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+        }
+        else
+        {
+            // Fallback: restore to default size if no minimized bounds were saved
+            Width = 300;
+            Height = 200;
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
         }
     }
 

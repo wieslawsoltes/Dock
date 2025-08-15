@@ -54,12 +54,16 @@ public class DocumentDock : DockBase, IDocumentDock
     /// <inheritdoc/>
     public void AddDocument(IDockable document)
     {
-        // Implementation would be provided by the factory or dock manager
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
     }
 
     /// <inheritdoc/>
     public void AddTool(IDockable tool)
     {
-        // Implementation would be provided by the factory or dock manager
+        Factory?.AddDockable(this, tool);
+        Factory?.SetActiveDockable(tool);
+        Factory?.SetFocusedDockable(this, tool);
     }
 }

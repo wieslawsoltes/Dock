@@ -59,6 +59,11 @@
     <!-- Context menu from DocumentTabStripItem -->
     <Setter Property="ContextMenu" Value="{DynamicResource DocumentTabStripItemContextMenu}" />
     
+    <!-- Active background styling (match ToolChromeControl behavior) -->
+    <Style Selector="^:active">
+      <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+    </Style>
+    
     <!-- Active text styling -->
     <Style Selector="^:active /template/ ContentPresenter">
       <Setter Property="TextElement.Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />

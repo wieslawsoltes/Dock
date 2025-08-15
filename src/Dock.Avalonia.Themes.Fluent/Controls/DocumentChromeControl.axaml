@@ -56,6 +56,11 @@
       <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
     </Style>
     
+    <!-- Active background styling (match ToolChromeControl behavior) -->
+    <Style Selector="^:active">
+      <Setter Property="Background" Value="{DynamicResource DockThemeAccentBrush}" />
+    </Style>
+    
     <!-- Active text styling (match ToolChromeControl behavior) -->
     <Style Selector="^:active /template/ ContentPresenter">
       <Setter Property="TextElement.Foreground" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />

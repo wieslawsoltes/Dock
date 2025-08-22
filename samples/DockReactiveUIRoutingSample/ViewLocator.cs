@@ -26,6 +26,17 @@ public partial class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is ReactiveObject || data is IDockable;
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        var viewLocator = Locator.Current.GetService<IViewLocator>();
+        return viewLocator?.ResolveView(data) is not null;
     }
 }

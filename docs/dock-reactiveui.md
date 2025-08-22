@@ -80,7 +80,13 @@ Follow these instructions to create a minimal ReactiveUI based application using
 
        public bool Match(object? data)
        {
-           return data is ReactiveObject || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           var type = data.GetType();
+           return data is IDockable || s_views.ContainsKey(type);
        }
    }
    ```
@@ -140,16 +146,26 @@ Follow these instructions to create a minimal ReactiveUI based application using
            if (Resolve(data) is IViewFor view && view is Control control)
                return control;
 
-           var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
-           return new TextBlock { Text = $"Not Found: {viewName}" };
-       }
+       var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
+       return new TextBlock { Text = $"Not Found: {viewName}" };
+   }
 
        public bool Match(object? data)
        {
-           return data is ReactiveObject || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           return Resolve(data) is not null;
        }
 
-       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => 
+       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default =>
            viewModel is null ? null : Resolve(viewModel);
    }
    ```

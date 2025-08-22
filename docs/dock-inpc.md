@@ -74,7 +74,13 @@ Follow these instructions to create a minimal INPC-based application using Dock.
 
        public bool Match(object? data)
        {
-           return data is INotifyPropertyChanged || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           var type = data.GetType();
+           return data is IDockable || s_views.ContainsKey(type);
        }
    }
    ```
@@ -108,7 +114,18 @@ Follow these instructions to create a minimal INPC-based application using Dock.
 
        public bool Match(object? data)
        {
-           return data is INotifyPropertyChanged || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           var name = data.GetType().FullName?.Replace("ViewModel", "View");
+           return Type.GetType(name) is not null;
        }
    }
    ```

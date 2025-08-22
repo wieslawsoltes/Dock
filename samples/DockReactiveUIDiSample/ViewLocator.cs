@@ -55,7 +55,12 @@ public class ViewLocator : IDataTemplate, IViewLocator
 
     public bool Match(object? data)
     {
-        return data is ReactiveObject || data is IDockable;
+        if (data is null)
+        {
+            return false;
+        }
+
+        return data is IDockable || Resolve(data) is not null;
     }
 
     IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => viewModel is null ? null : Resolve(viewModel);

@@ -81,7 +81,13 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
        public bool Match(object? data)
        {
-           return data is ObservableObject || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           var type = data.GetType();
+           return data is IDockable || s_views.ContainsKey(type);
        }
    }
    ```
@@ -114,7 +120,18 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
        public bool Match(object? data)
        {
-           return data is ViewModelBase || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           var name = data.GetType().FullName?.Replace("ViewModel", "View");
+           return Type.GetType(name) is not null;
        }
    }
    ```

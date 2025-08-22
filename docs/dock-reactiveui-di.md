@@ -99,10 +99,20 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
        public bool Match(object? data)
        {
-           return data is ReactiveObject || data is IDockable;
-       }
+           if (data is null)
+           {
+               return false;
+           }
 
-       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default => 
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           return Resolve(data) is not null;
+       }
+       
+       IViewFor? IViewLocator.ResolveView<T>(T? viewModel, string? contract) where T : default =>
            viewModel is null ? null : Resolve(viewModel);
    }
    ```

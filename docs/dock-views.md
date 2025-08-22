@@ -48,7 +48,13 @@ public partial class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is ObservableObject || data is IDockable;
+        if (data is null)
+        {
+            return false;
+        }
+
+        var type = data.GetType();
+        return data is IDockable || s_views.ContainsKey(type);
     }
 }
 ```

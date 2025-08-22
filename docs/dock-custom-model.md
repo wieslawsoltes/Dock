@@ -53,8 +53,18 @@ This package provides `INotifyPropertyChanged` implementations without the addit
 
        public bool Match(object? data)
        {
-           // Match your framework's base types
-           return data is YourFrameworkBaseType || data is IDockable;
+           if (data is null)
+           {
+               return false;
+           }
+
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           var name = data.GetType().FullName!.Replace("ViewModel", "View");
+           return Type.GetType(name) is not null;
        }
    }
    ```

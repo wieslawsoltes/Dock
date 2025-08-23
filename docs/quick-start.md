@@ -5,6 +5,12 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 ## Step-by-step tutorial
 
 1. **Create a new Avalonia project**
+  
+
+   *If you have not created an Avalonia project before, install the template package*
+   ```bash
+   dotnet new install Avalonia.Templates
+   ```
 
    ```bash
    dotnet new avalonia.app -o DockQuickStart
@@ -252,12 +258,13 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    <Window x:Class="DockQuickStart.MainWindow"
            xmlns="https://github.com/avaloniaui"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:dock="https://github.com/avaloniaui">
+           xmlns:dock="https://github.com/avaloniaui"
+           x:DataType="MainWindowViewModel">
        <DockControl>
            <DocumentDock ItemsSource="{Binding Documents}">
-               <DocumentDock.DocumentTemplate>
+               <DocumentDock.DocumentTemplate x:DataType="Document">
                    <DocumentTemplate>
-                       <TextBox Text="{Binding Content}" AcceptsReturn="True" />
+                       <TextBox Text="(FileDocument)Context).Content" AcceptsReturn="True" />
                    </DocumentTemplate>
                </DocumentDock.DocumentTemplate>
            </DocumentDock>

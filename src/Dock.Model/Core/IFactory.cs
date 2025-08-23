@@ -573,4 +573,18 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The dockable to split.</param>
     void NewVerticalDocumentDock(IDockable dockable);
+
+    /// <summary>
+    /// Allows the DockFactory to add items to a bound collection 
+    /// </summary>
+    /// <remarks>
+    /// When the + button is pressed in the DocumentDock, CreateNewDocument is called
+    /// If the control is bound to an ObservableCollection managed by the client, this
+    /// method can be overridden to allow a new item to be added
+    /// </remarks>
+    /// <returns>
+    /// false (default) if the DocumentDock will use the standard flow for CreateNewDocument
+    /// true if the client DockManager wishes to manage the bound collection
+    /// </returns>
+    public bool AddDocumentToBoundCollection();
 }

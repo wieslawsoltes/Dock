@@ -5,10 +5,7 @@ namespace DockPrismSample.Views.Documents;
 
 public partial class DocumentView : UserControl
 {
-    public DocumentView()
-    {
-        InitializeComponent();
-    }
+    public DocumentView() => InitializeComponent();
 
     private void InitializeComponent()
     {

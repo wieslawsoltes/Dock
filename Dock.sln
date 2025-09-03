@@ -156,6 +156,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentat
 		docs\dock-model-controls.md = docs\dock-model-controls.md
 		docs\dock-mvvm.md = docs\dock-mvvm.md
 		docs\dock-pinned-window.md = docs\dock-pinned-window.md
+		docs\dock-prism.md = docs\dock-prism.md
 		docs\dock-properties.md = docs\dock-properties.md
 		docs\dock-proportional-stackpanel.md = docs\dock-proportional-stackpanel.md
 		docs\dock-reactiveui.md = docs\dock-reactiveui.md

@@ -12,6 +12,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using DockPrismSample.Models;
 
 namespace DockPrismSample.ViewModels;
 
@@ -23,10 +24,15 @@ public class DockFactory : Factory
     private IRootDock? _rootDock;
     private IDocumentDock? _documentDock;
 
-    public DockFactory(object context)
+    public DockFactory()
     {
-        _context = context;
+        _context = new DemoData();
     }
+
+    ////public DockFactory(object context)
+    ////{
+    ////    _context = context;
+    ////}
 
     public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 

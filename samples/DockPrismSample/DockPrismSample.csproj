@@ -22,7 +22,11 @@
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
   <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
   <Import Project="..\..\build\Prism.props" />
-  <Import Project="..\..\build\Prism.Avalonia.props" />
+  
+  <ItemGroup>
+    <PackageReference Include="Prism.Avalonia" />
+    <PackageReference Include="Prism.DryIoc.Avalonia" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="StaticViewLocator">

@@ -16,7 +16,8 @@
         Foreground="{DynamicResource DockThemeForegroundBrush}"
         BorderThickness="1" BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
         FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
-        Title="Dock Avalonia Demo" Height="680" Width="1200"
+        Title="{Binding Title}"
+        Height="680" Width="1200"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="PreferSystemChrome">
   <Window.Resources>
@@ -25,7 +26,7 @@
                                  TintOpacity="1"
                                  FallbackColor="{DynamicResource AcrylicFallbackColor}"
                                  MaterialOpacity="0.55"
-                                 x:Key="AcrylicMaterial"/>
+                                 x:Key="AcrylicMaterial" />
   </Window.Resources>
   <Design.DataContext>
     <vm:MainWindowViewModel />
@@ -33,6 +34,15 @@
   <Panel>
     <ExperimentalAcrylicBorder IsHitTestVisible="False" Material="{StaticResource AcrylicMaterial}" />
     <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">
+      <Panel Height="30" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <!-- Note, this label overlaps the actual window title -->
+        <Label Content="{Binding Title}"
+               Margin="4,0,4,0"
+               FontSize="14"
+               FontWeight="Normal"
+               VerticalAlignment="Center"
+               VerticalContentAlignment="Center" />
+      </Panel>
       <Panel Margin="{Binding #MainWindowView.WindowDecorationMargin}">
         <views:MainView>
           <views:MainView.Styles>

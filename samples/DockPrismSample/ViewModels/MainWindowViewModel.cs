@@ -1,31 +1,25 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
-using DockPrismSample.Models;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using ReactiveUI;
+using Prism.Commands;
+using Prism.Mvvm;
+////using ReactiveUI;
 
 namespace DockPrismSample.ViewModels;
 
 [RequiresUnreferencedCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
 [RequiresDynamicCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
-public class MainWindowViewModel : ReactiveObject
+public class MainWindowViewModel : BindableBase // ReactiveObject
 {
     private readonly IFactory? _factory;
     private IRootDock? _layout;
+    private string _title;
 
-    public IRootDock? Layout
+    public MainWindowViewModel(IFactory dockFactory)
     {
-        get => _layout;
-        set => this.RaiseAndSetIfChanged(ref _layout, value);
-    }
-
-    public ICommand NewLayout { get; }
-
-    public MainWindowViewModel()
-    {
-        _factory = new DockFactory(new DemoData());
+        _factory = dockFactory;        //// _factory = new DockFactory(new DemoData());
 
         DebugFactoryEvents(_factory);
 
@@ -35,10 +29,16 @@ public class MainWindowViewModel : ReactiveObject
             _factory?.InitLayout(layout);
             layout.Navigate.Execute("Home");
         }
-        Layout = layout;
 
-        NewLayout = ReactiveCommand.Create(ResetLayout);
+        Title = "Prism.Avalonia Sample";
+        Layout = layout;
     }
+
+    public IRootDock? Layout { get => _layout; set => SetProperty(ref _layout, value); }
+
+    public DelegateCommand NewLayout => new(ResetLayout);
+
+    public string Title { get => _title; set => SetProperty(ref _title, value); }
 
     private void DebugFactoryEvents(IFactory factory)
     {

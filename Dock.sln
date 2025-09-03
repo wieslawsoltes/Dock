@@ -44,7 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E
 		build\Avalonia.Web.props = build\Avalonia.Web.props
 		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
 		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
-		build\Prism.Avalonia.props = build\Prism.Avalonia.props
 		build\Prism.props = build\Prism.props
 		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
 		build\ReactiveUI.props = build\ReactiveUI.props

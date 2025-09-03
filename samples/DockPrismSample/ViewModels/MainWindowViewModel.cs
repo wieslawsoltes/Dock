@@ -1,21 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Prism.Commands;
 using Prism.Mvvm;
-////using ReactiveUI;
 
 namespace DockPrismSample.ViewModels;
 
 [RequiresUnreferencedCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
 [RequiresDynamicCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
-public class MainWindowViewModel : BindableBase // ReactiveObject
+public class MainWindowViewModel : BindableBase
 {
     private readonly IFactory? _factory;
     private IRootDock? _layout;
-    private string _title;
+    private string _title = string.Empty;
 
     public MainWindowViewModel(IFactory dockFactory)
     {

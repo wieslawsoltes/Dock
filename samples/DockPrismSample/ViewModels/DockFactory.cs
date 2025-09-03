@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.Prism;
+using Dock.Model.Prism.Controls;
+using DockPrismSample.Models;
 using DockPrismSample.Models.Documents;
 using DockPrismSample.Models.Tools;
 using DockPrismSample.ViewModels.Docks;
 using DockPrismSample.ViewModels.Documents;
 using DockPrismSample.ViewModels.Tools;
 using DockPrismSample.ViewModels.Views;
-using Dock.Avalonia.Controls;
-using Dock.Model.Controls;
-using Dock.Model.Core;
-using Dock.Model.ReactiveUI;
-using Dock.Model.ReactiveUI.Controls;
-using DockPrismSample.Models;
 
 namespace DockPrismSample.ViewModels;
 
@@ -20,6 +20,10 @@ namespace DockPrismSample.ViewModels;
 [RequiresDynamicCode("Requires unreferenced code for CustomDocumentDock.")]
 public class DockFactory : Factory
 {
+    public const string DashboardId = "Dashboard";
+    public const string HomeId = "Home";
+    public const string RootId = "Root";
+
     private readonly object _context;
     private IRootDock? _rootDock;
     private IDocumentDock? _documentDock;
@@ -29,26 +33,21 @@ public class DockFactory : Factory
         _context = new DemoData();
     }
 
-    ////public DockFactory(object context)
-    ////{
-    ////    _context = context;
-    ////}
-
     public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 
     public override IRootDock CreateLayout()
     {
-        var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
-        var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
-        var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
-        var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
-        var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
-        var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3", CanDrag = false };
-        var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4", CanDrag = false };
-        var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5" };
-        var tool6 = new Tool6ViewModel {Id = "Tool6", Title = "Tool6", CanClose = true, CanPin = true};
-        var tool7 = new Tool7ViewModel {Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false};
-        var tool8 = new Tool8ViewModel {Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true};
+        var document1 = new DocumentViewModel { Id = "Document1", Title = "Document1" };
+        var document2 = new DocumentViewModel { Id = "Document2", Title = "Document2" };
+        var document3 = new DocumentViewModel { Id = "Document3", Title = "Document3", CanClose = true };
+        var tool1 = new Tool1ViewModel { Id = "Tool1", Title = "Tool1" };
+        var tool2 = new Tool2ViewModel { Id = "Tool2", Title = "Tool2" };
+        var tool3 = new Tool3ViewModel { Id = "Tool3", Title = "Tool3", CanDrag = false };
+        var tool4 = new Tool4ViewModel { Id = "Tool4", Title = "Tool4", CanDrag = false };
+        var tool5 = new Tool5ViewModel { Id = "Tool5", Title = "Tool5" };
+        var tool6 = new Tool6ViewModel { Id = "Tool6", Title = "Tool6", CanClose = true, CanPin = true };
+        var tool7 = new Tool7ViewModel { Id = "Tool7", Title = "Tool7", CanClose = false, CanPin = false };
+        var tool8 = new Tool8ViewModel { Id = "Tool8", Title = "Tool8", CanClose = false, CanPin = true };
 
         var leftDock = new ProportionalDock
         {
@@ -62,7 +61,7 @@ public class DockFactory : Factory
                     ActiveDockable = tool1,
                     VisibleDockables = CreateList<IDockable>(tool1, tool2),
                     Alignment = Alignment.Left,
-                    // CanDrop = false
+                    // CanDrop = false,
                 },
                 new ProportionalDockSplitter { CanResize = true },
                 new ToolDock
@@ -71,7 +70,7 @@ public class DockFactory : Factory
                     VisibleDockables = CreateList<IDockable>(tool3, tool4),
                     Alignment = Alignment.Bottom,
                     CanDrag = false,
-                    CanDrop = false
+                    CanDrop = false,
                 }
             ),
             // CanDrop = false
@@ -89,7 +88,7 @@ public class DockFactory : Factory
                     ActiveDockable = tool5,
                     VisibleDockables = CreateList<IDockable>(tool5, tool6),
                     Alignment = Alignment.Top,
-                    GripMode = GripMode.Hidden
+                    GripMode = GripMode.Hidden,
                 },
                 new ProportionalDockSplitter(),
                 new ToolDock
@@ -97,7 +96,7 @@ public class DockFactory : Factory
                     ActiveDockable = tool7,
                     VisibleDockables = CreateList<IDockable>(tool7, tool8),
                     Alignment = Alignment.Right,
-                    GripMode = GripMode.AutoHide
+                    GripMode = GripMode.AutoHide,
                 }
             ),
             // CanDrop = false
@@ -130,7 +129,7 @@ public class DockFactory : Factory
         var dashboardView = new DashboardViewModel
         {
             Id = "Dashboard",
-            Title = "Dashboard"
+            Title = "Dashboard",
         };
 
         var homeView = new HomeViewModel
@@ -138,7 +137,7 @@ public class DockFactory : Factory
             Id = "Home",
             Title = "Home",
             ActiveDockable = mainLayout,
-            VisibleDockables = CreateList<IDockable>(mainLayout)
+            VisibleDockables = CreateList<IDockable>(mainLayout),
         };
 
         var rootDock = CreateRootDock();
@@ -157,7 +156,7 @@ public class DockFactory : Factory
 
         _documentDock = documentDock;
         _rootDock = rootDock;
-            
+
         return rootDock;
     }
 
@@ -166,9 +165,8 @@ public class DockFactory : Factory
         var window = base.CreateWindowFrom(dockable);
 
         if (window != null)
-        {
             window.Title = "Dock Avalonia Demo";
-        }
+
         return window;
     }
 
@@ -188,7 +186,7 @@ public class DockFactory : Factory
             ["Tool7"] = () => new Tool7(),
             ["Tool8"] = () => new Tool8(),
             ["Dashboard"] = () => layout,
-            ["Home"] = () => _context
+            ["Home"] = () => _context,
         };
 
         DockableLocator = new Dictionary<string, Func<IDockable?>>()
@@ -199,7 +197,7 @@ public class DockFactory : Factory
 
         HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
         {
-            [nameof(IDockWindow)] = () => new HostWindow()
+            [nameof(IDockWindow)] = () => new HostWindow(),
         };
 
         base.InitLayout(layout);

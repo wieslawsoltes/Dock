@@ -1,4 +1,4 @@
-﻿using Dock.Model.ReactiveUI.Core;
+﻿using Dock.Model.Prism.Core;
 
 namespace DockPrismSample.ViewModels.Views;
 

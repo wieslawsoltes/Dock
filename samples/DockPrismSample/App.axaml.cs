@@ -1,11 +1,6 @@
-﻿using System.ComponentModel.Design;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using Dock.Avalonia.Diagnostics;
-using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
 using DockPrismSample.Themes;
@@ -13,7 +8,6 @@ using DockPrismSample.ViewModels;
 using DockPrismSample.Views;
 using Prism.DryIoc;
 using Prism.Ioc;
-using Prism.Navigation.Regions;
 
 namespace DockPrismSample;
 
@@ -27,7 +21,7 @@ public partial class App : PrismApplication
     {
         ThemeManager = new FluentThemeManager();
         AvaloniaXamlLoader.Load(this);
-        
+
         // Required by Prism.Avalonia when overriding Initialize()
         base.Initialize();
     }
@@ -70,7 +64,7 @@ public partial class App : PrismApplication
                 };
 #if DEBUG
                 mainWindow.AttachDockDebug(
-                    () => mainWindowViewModel.Layout!, 
+                    () => mainWindowViewModel.Layout!,
                     new KeyGesture(Key.F11));
                 mainWindow.AttachDockDebugOverlay(new KeyGesture(Key.F9));
 #endif
@@ -85,7 +79,7 @@ public partial class App : PrismApplication
                 {
                     mainWindowViewModel.CloseLayout();
                 };
-                    
+
                 break;
             }
             case ISingleViewApplicationLifetime singleViewLifetime:
@@ -101,7 +95,6 @@ public partial class App : PrismApplication
             }
         }
 
-        
 #if DEBUG
         this.AttachDevTools();
 #endif

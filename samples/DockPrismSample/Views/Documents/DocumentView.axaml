@@ -1,18 +1,20 @@
 ﻿<UserControl x:Class="DockPrismSample.Views.Documents.DocumentView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="using:DockPrismSample.ViewModels.Documents"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="using:DockPrismSample.Views"
-             mc:Ignorable="d"
-             d:DesignWidth="300" d:DesignHeight="400"
-             x:DataType="vm:DocumentViewModel" x:CompileBindings="True">
+             xmlns:vm="using:DockPrismSample.ViewModels.Documents"
+             d:DesignHeight="400"
+             d:DesignWidth="300"
+             x:CompileBindings="True"
+             x:DataType="vm:DocumentViewModel"
+             mc:Ignorable="d">
   <Grid Focusable="True">
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-      <TextBlock Text="{Binding Id}" Padding="2" />
-      <TextBlock Text="{Binding Title}" Padding="2" />
-      <TextBlock Text="{Binding Context}" Padding="2" />
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Padding="2" Text="{Binding Id}" />
+      <TextBlock Padding="2" Text="{Binding Title}" />
+      <TextBlock Padding="2" Text="{Binding Context}" />
       <views:DockableOptionsView />
       <TextBox Text="Document" />
     </StackPanel>

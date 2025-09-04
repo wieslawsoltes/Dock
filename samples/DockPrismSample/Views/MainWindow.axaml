@@ -28,9 +28,6 @@
                                  MaterialOpacity="0.55"
                                  x:Key="AcrylicMaterial" />
   </Window.Resources>
-  <Design.DataContext>
-    <vm:MainWindowViewModel />
-  </Design.DataContext>
   <Panel>
     <ExperimentalAcrylicBorder IsHitTestVisible="False" Material="{StaticResource AcrylicMaterial}" />
     <Panel Margin="{Binding #MainWindowView.OffScreenMargin}">

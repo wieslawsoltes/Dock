@@ -64,4 +64,44 @@ public class FactoryDockableLifecycleTests
 
         Assert.Empty(dock.VisibleDockables!);
     }
+
+    [AvaloniaFact]
+    public void CloseDockable_NonActive_Does_Not_Change_ActiveDockable()
+    {
+        var factory = new Factory();
+        var dock = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
+        dock.Factory = factory;
+
+        var doc1 = new Document();
+        var doc2 = new Document();
+        factory.AddDockable(dock, doc1);
+        factory.AddDockable(dock, doc2);
+
+        dock.ActiveDockable = doc1;
+
+        factory.CloseDockable(doc2);
+
+        Assert.Same(doc1, dock.ActiveDockable);
+        Assert.Single(dock.VisibleDockables!);
+    }
+
+    [AvaloniaFact]
+    public void CloseDockable_Active_Selects_Neighbour()
+    {
+        var factory = new Factory();
+        var dock = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
+        dock.Factory = factory;
+
+        var doc1 = new Document();
+        var doc2 = new Document();
+        factory.AddDockable(dock, doc1);
+        factory.AddDockable(dock, doc2);
+
+        dock.ActiveDockable = doc1;
+
+        factory.CloseDockable(doc1);
+
+        Assert.Same(doc2, dock.ActiveDockable);
+        Assert.Single(dock.VisibleDockables!);
+    }
 }

@@ -408,6 +408,7 @@ public class HostWindow : Window, IHostWindow
 
         if (Window is { })
         {
+            Window.Factory?.CloseWindow(Window);
             Window.Factory?.OnWindowClosed(Window);
 
             if (IsTracked)

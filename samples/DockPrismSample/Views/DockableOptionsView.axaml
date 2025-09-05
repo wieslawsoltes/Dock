@@ -1,0 +1,15 @@
+<UserControl x:Class="DockPrismSample.Views.DockableOptionsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dm="using:Dock.Model.Core"
+             x:DataType="dm:IDockable" x:CompileBindings="True">
+  <StackPanel Orientation="Horizontal" Spacing="2">
+    <Label Content="Options: " VerticalAlignment="Center" />
+    <CheckBox IsChecked="{Binding CanClose}" ToolTip.Tip="CanClose" Content="Close" />
+    <CheckBox IsChecked="{Binding CanFloat}" ToolTip.Tip="CanFloat" Content="Float" />
+    <CheckBox IsChecked="{Binding CanPin}" ToolTip.Tip="CanPin" Content="Pin" />
+    <CheckBox IsChecked="{Binding CanDrag}" ToolTip.Tip="CanDrag" Content="Drag" />
+    <CheckBox IsChecked="{Binding CanDrop}" ToolTip.Tip="CanDrop" Content="Drop" />
+    <CheckBox IsChecked="{Binding IsModified}" ToolTip.Tip="IsModified" Content="IsModified" />
+  </StackPanel>
+</UserControl>

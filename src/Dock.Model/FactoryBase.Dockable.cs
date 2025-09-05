@@ -505,7 +505,10 @@ public abstract partial class FactoryBase
 
         RemoveAllVisibleDockables(rootDock.PinnedDock);
 
-        dockable.OriginalOwner = owner;
+        // Only set OriginalOwner if the dockable comes from a tool dock.
+        // For dockables that are pinned as part of the initial layout (owner is typically the root),
+        // keep OriginalOwner null so that unpin actions are correctly gated/disabled by the UI.
+        dockable.OriginalOwner = owner is IToolDock ? owner : null;
         AddVisibleDockable(rootDock.PinnedDock!, dockable);
  
         InitDockable(rootDock.PinnedDock, rootDock);
@@ -699,17 +702,73 @@ public abstract partial class FactoryBase
 
                     if (!isVisible)
                     {
+                        // Not currently visible in the preview tool dock; add back to it.
                         AddVisibleDockable(toolDock, dockable);
+                        OnDockableAdded(dockable);
+                        InitDockable(dockable, toolDock);
+                        toolDock.ActiveDockable = dockable;
                     }
                     else
                     {
-                        Debug.Assert(dockable.OriginalOwner is IDock);
-                        var originalOwner = (IDock)dockable.OriginalOwner!;
-                        HidePreviewingDockables(rootDock);
-                        AddVisibleDockable(originalOwner, dockable);
-                    }
+                        // Visible in preview dock; close preview and restore into appropriate owner.
+                        // Prefer explicit original owner if available; otherwise, find or create a suitable
+                        // tool dock matching the alignment and insert it into the layout.
 
-                    OnDockableAdded(dockable);
+                        var targetOwner = dockable.OriginalOwner as IDock;
+
+                        // Close preview and reset Owner/OriginalOwner for all previewed items.
+                        HidePreviewingDockables(rootDock);
+
+                        if (targetOwner is null)
+                        {
+                            // Try to find an existing tool dock with the same alignment.
+                            var targetToolDock = FindToolDockByAlignment(rootDock, alignment);
+                            if (targetToolDock is null)
+                            {
+                                // Create and insert a new tool dock on the requested side.
+                                targetToolDock = CreateToolDock();
+                                targetToolDock.Title = nameof(IToolDock);
+                                targetToolDock.Alignment = alignment;
+                                targetToolDock.VisibleDockables = CreateList<IDockable>();
+
+                                // Choose an anchor dock to split next to.
+                                var anchorDock = GetPreferredAnchorDock(rootDock) ?? rootDock.ActiveDockable as IDock;
+                                if (anchorDock is not null)
+                                {
+                                    var op = alignment switch
+                                    {
+                                        Alignment.Left => DockOperation.Left,
+                                        Alignment.Right => DockOperation.Right,
+                                        Alignment.Top => DockOperation.Top,
+                                        Alignment.Bottom => DockOperation.Bottom,
+                                        _ => DockOperation.Left
+                                    };
+                                    SplitToDock(anchorDock, targetToolDock, op);
+                                }
+                                else
+                                {
+                                    // As a last resort, attach directly to root if empty structure.
+                                    if (rootDock.VisibleDockables is null)
+                                    {
+                                        rootDock.VisibleDockables = CreateList<IDockable>();
+                                    }
+                                    AddVisibleDockable(rootDock, targetToolDock);
+                                    OnDockableAdded(targetToolDock);
+                                    InitDockable(targetToolDock, rootDock);
+                                }
+                            }
+
+                            targetOwner = targetToolDock;
+                        }
+
+                        AddVisibleDockable(targetOwner, dockable);
+                        OnDockableAdded(dockable);
+                        InitDockable(dockable, targetOwner);
+                        if (targetOwner is IDock targetDock)
+                        {
+                            targetDock.ActiveDockable = dockable;
+                        }
+                    }
 
                     // TODO: Handle ActiveDockable state.
                     // TODO: Handle IsExpanded property of IToolDock.
@@ -723,6 +782,27 @@ public abstract partial class FactoryBase
                 break;
             }
         }
+    }
+
+    private IToolDock? FindToolDockByAlignment(IRootDock root, Alignment alignment)
+    {
+        foreach (var d in Find(root, x => x is IToolDock td && td.Alignment == alignment))
+        {
+            if (d is IToolDock td)
+                return td;
+        }
+        return null;
+    }
+
+    private IDock? GetPreferredAnchorDock(IRootDock root)
+    {
+        // Prefer the first visible dockable that is a dock and not the PinnedDock
+        var result = Find(root, x => x is IDock && x != root.PinnedDock);
+        foreach (var item in result)
+        {
+            return (IDock)item;
+        }
+        return null;
     }
 
     /// <inheritdoc/>

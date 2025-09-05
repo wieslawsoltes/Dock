@@ -1,18 +1,18 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28315.86
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{C4E2763D-8CA1-4332-808F-E32E9F4DDA94}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		.nuke = .nuke
+		azure-pipelines.yml = azure-pipelines.yml
 		build.ps1 = build.ps1
 		build.sh = build.sh
-		global.json = global.json
-		build\dock.public.snk = build\dock.public.snk
-		azure-pipelines.yml = azure-pipelines.yml
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
+		build\dock.public.snk = build\dock.public.snk
+		global.json = global.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D16F65F7-7F44-40DB-B82A-1344A05D121D}"
@@ -34,24 +34,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{9F77EE50
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "props", "props", "{A2F3E41E-D53C-49A1-9089-2FE2C3F0FE73}"
 	ProjectSection(SolutionItems) = preProject
+		build\AOT.props = build\AOT.props
 		build\Avalonia.Desktop.props = build\Avalonia.Desktop.props
 		build\Avalonia.Diagnostics.props = build\Avalonia.Diagnostics.props
-		build\Avalonia.props = build\Avalonia.props
-		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
-		build\XUnit.props = build\XUnit.props
-		build\SourceLink.props = build\SourceLink.props
-		build\SignAssembly.props = build\SignAssembly.props
-		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
-		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
-		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
-		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
-		build\Avalonia.Web.props = build\Avalonia.Web.props
-		build\System.Text.Json.props = build\System.Text.Json.props
-		build\ReactiveUI.props = build\ReactiveUI.props
-		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
 		build\Avalonia.Headless.props = build\Avalonia.Headless.props
+		build\Avalonia.props = build\Avalonia.props
+		build\Avalonia.ReactiveUI.props = build\Avalonia.ReactiveUI.props
+		build\Avalonia.Themes.Fluent.props = build\Avalonia.Themes.Fluent.props
+		build\Avalonia.Web.props = build\Avalonia.Web.props
+		build\CommunityToolkit.Mvvm.props = build\CommunityToolkit.Mvvm.props
+		build\Newtonsoft.Json.props = build\Newtonsoft.Json.props
 		build\Prism.props = build\Prism.props
-		build\AOT.props = build\AOT.props
+		build\ReactiveMarbles.PropertyChanged.props = build\ReactiveMarbles.PropertyChanged.props
+		build\ReactiveUI.props = build\ReactiveUI.props
+		build\ReferenceAssemblies.props = build\ReferenceAssemblies.props
+		build\SignAssembly.props = build\SignAssembly.props
+		build\SourceLink.props = build\SourceLink.props
+		build\System.Text.Json.props = build\System.Text.Json.props
+		build\XUnit.props = build\XUnit.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}"
@@ -59,16 +59,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockMvvmSample", "samples\DockMvvmSample\DockMvvmSample.csproj", "{CFA60BDB-A297-44F6-8CEA-6D0B0B753367}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}"
-	ProjectSection(SolutionItems) = preProject
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "src\Dock.Model\Dock.Model.csproj", "{4B46A85D-102E-46F5-9B74-F1616E850605}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "src\Dock.Avalonia\Dock.Avalonia.csproj", "{CD220CCF-CF02-4BC3-A5DE-EC02D26F6477}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{71FD12F4-0BCB-422A-9FB0-4137E898E991}"
-	ProjectSection(SolutionItems) = preProject
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia.UnitTests", "tests\Dock.Avalonia.UnitTests\Dock.Avalonia.UnitTests.csproj", "{2A9959DB-769C-4524-A817-507C554615EA}"
 EndProject
@@ -125,62 +121,62 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Controls.Recycling.Uni
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{B6494977-A4A3-4492-8344-2D093694D49E}"
 	ProjectSection(SolutionItems) = preProject
-		docs\quick-start.md = docs\quick-start.md
-		docs\dock-reference.md = docs\dock-reference.md
-		docs\dock-xaml.md = docs\dock-xaml.md
-		docs\dock-styling.md = docs\dock-styling.md
-		docs\dock-serialization.md = docs\dock-serialization.md
-		docs\dock-serialization-state.md = docs\dock-serialization-state.md
-		docs\dock-reactiveui.md = docs\dock-reactiveui.md
-		docs\dock-mvvm.md = docs\dock-mvvm.md
-		docs\dock-glossary.md = docs\dock-glossary.md
-		docs\dock-faq.md = docs\dock-faq.md
-		docs\dock-events.md = docs\dock-events.md
-		docs\dock-dockable-properties.md = docs\dock-dockable-properties.md
-		docs\dock-deep-dive.md = docs\dock-deep-dive.md
-		docs\dock-control-recycling.md = docs\dock-control-recycling.md
-		docs\dock-complex-layouts.md = docs\dock-complex-layouts.md
-		docs\dock-code-only.md = docs\dock-code-only.md
-		docs\dock-architecture.md = docs\dock-architecture.md
-		docs\dock-api-scenarios.md = docs\dock-api-scenarios.md
-		docs\dock-advanced.md = docs\dock-advanced.md
 		docs\dock-active-document.md = docs\dock-active-document.md
-		docs\README.md = docs\README.md
-		docs\dock-markup-extensions.md = docs\dock-markup-extensions.md
-		docs\dock-proportional-stackpanel.md = docs\dock-proportional-stackpanel.md
-		docs\dock-sizing.md = docs\dock-sizing.md
-		docs\dock-enums.md = docs\dock-enums.md
 		docs\dock-adapters.md = docs\dock-adapters.md
-		docs\dock-windows.md = docs\dock-windows.md
-		docs\dock-settings.md = docs\dock-settings.md
-		docs\dock-custom-model.md = docs\dock-custom-model.md
-		docs\dock-context-locator.md = docs\dock-context-locator.md
-		docs\dock-context-menus.md = docs\dock-context-menus.md
-		docs\dock-dockablelocator.md = docs\dock-dockablelocator.md
-		docs\dock-drag-offset-calculator.md = docs\dock-drag-offset-calculator.md
-		docs\dock-host-window-locator.md = docs\dock-host-window-locator.md
-		docs\dock-manager-guide.md = docs\dock-manager-guide.md
-		docs\dock-model-controls.md = docs\dock-model-controls.md
-		docs\dock-properties.md = docs\dock-properties.md
-		docs\dock-settings-controls.md = docs\dock-settings-controls.md
-		docs\dock-state.md = docs\dock-state.md
-		docs\dock-tracking-controls.md = docs\dock-tracking-controls.md
-		docs\dock-user-viewmodel.md = docs\dock-user-viewmodel.md
-		docs\dock-floating-adorners.md = docs\dock-floating-adorners.md
-		docs\dock-custom-theme.md = docs\dock-custom-theme.md
-		docs\dock-layout-panels.md = docs\dock-layout-panels.md
-		docs\dock-window-drag.md = docs\dock-window-drag.md
-		docs\dock-debug-overlay.md = docs\dock-debug-overlay.md
-		docs\dock-dependency-injection.md = docs\dock-dependency-injection.md
-		docs\dock-pinned-window.md = docs\dock-pinned-window.md
-		docs\dock-root-dock-debug.md = docs\dock-root-dock-debug.md
-		docs\dock-window-owner.md = docs\dock-window-owner.md
-		docs\dock-debug-views.md = docs\dock-debug-views.md
-		docs\dock-views.md = docs\dock-views.md
+		docs\dock-advanced.md = docs\dock-advanced.md
+		docs\dock-api-scenarios.md = docs\dock-api-scenarios.md
+		docs\dock-architecture.md = docs\dock-architecture.md
+		docs\dock-code-only.md = docs\dock-code-only.md
+		docs\dock-complex-layouts.md = docs\dock-complex-layouts.md
 		docs\dock-content-guide.md = docs\dock-content-guide.md
 		docs\dock-content-wrapper-pattern.md = docs\dock-content-wrapper-pattern.md
+		docs\dock-context-locator.md = docs\dock-context-locator.md
+		docs\dock-context-menus.md = docs\dock-context-menus.md
+		docs\dock-control-recycling.md = docs\dock-control-recycling.md
+		docs\dock-custom-model.md = docs\dock-custom-model.md
+		docs\dock-custom-theme.md = docs\dock-custom-theme.md
+		docs\dock-debug-overlay.md = docs\dock-debug-overlay.md
+		docs\dock-debug-views.md = docs\dock-debug-views.md
+		docs\dock-deep-dive.md = docs\dock-deep-dive.md
+		docs\dock-dependency-injection.md = docs\dock-dependency-injection.md
+		docs\dock-dockable-properties.md = docs\dock-dockable-properties.md
+		docs\dock-dockablelocator.md = docs\dock-dockablelocator.md
 		docs\dock-docking-groups.md = docs\dock-docking-groups.md
+		docs\dock-drag-offset-calculator.md = docs\dock-drag-offset-calculator.md
+		docs\dock-enums.md = docs\dock-enums.md
+		docs\dock-events.md = docs\dock-events.md
+		docs\dock-faq.md = docs\dock-faq.md
+		docs\dock-floating-adorners.md = docs\dock-floating-adorners.md
+		docs\dock-glossary.md = docs\dock-glossary.md
+		docs\dock-host-window-locator.md = docs\dock-host-window-locator.md
 		docs\dock-itemssource.md = docs\dock-itemssource.md
+		docs\dock-layout-panels.md = docs\dock-layout-panels.md
+		docs\dock-manager-guide.md = docs\dock-manager-guide.md
+		docs\dock-markup-extensions.md = docs\dock-markup-extensions.md
+		docs\dock-model-controls.md = docs\dock-model-controls.md
+		docs\dock-mvvm.md = docs\dock-mvvm.md
+		docs\dock-pinned-window.md = docs\dock-pinned-window.md
+		docs\dock-properties.md = docs\dock-properties.md
+		docs\dock-proportional-stackpanel.md = docs\dock-proportional-stackpanel.md
+		docs\dock-reactiveui.md = docs\dock-reactiveui.md
+		docs\dock-reference.md = docs\dock-reference.md
+		docs\dock-root-dock-debug.md = docs\dock-root-dock-debug.md
+		docs\dock-serialization-state.md = docs\dock-serialization-state.md
+		docs\dock-serialization.md = docs\dock-serialization.md
+		docs\dock-settings-controls.md = docs\dock-settings-controls.md
+		docs\dock-settings.md = docs\dock-settings.md
+		docs\dock-sizing.md = docs\dock-sizing.md
+		docs\dock-state.md = docs\dock-state.md
+		docs\dock-styling.md = docs\dock-styling.md
+		docs\dock-tracking-controls.md = docs\dock-tracking-controls.md
+		docs\dock-user-viewmodel.md = docs\dock-user-viewmodel.md
+		docs\dock-views.md = docs\dock-views.md
+		docs\dock-window-drag.md = docs\dock-window-drag.md
+		docs\dock-window-owner.md = docs\dock-window-owner.md
+		docs\dock-windows.md = docs\dock-windows.md
+		docs\dock-xaml.md = docs\dock-xaml.md
+		docs\quick-start.md = docs\quick-start.md
+		docs\README.md = docs\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.Protobuf", "src\Dock.Serializer.Protobuf\Dock.Serializer.Protobuf.csproj", "{12A0D873-2FF5-4AA0-9F66-56161DDE2D4E}"
@@ -238,6 +234,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Serializer.UnitTests", "tests\Dock.Serializer.UnitTests\Dock.Serializer.UnitTests.csproj", "{4A62BFDE-E8D2-44CD-BCC1-ADA972E97480}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dock.Settings.UnitTests", "tests\Dock.Settings.UnitTests\Dock.Settings.UnitTests.csproj", "{83A500F5-8FAC-4237-B9ED-CD07DDF4C64E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickStartItemCollectionMvvm", "samples\QuickStartItemCollectionMvvm\QuickStartItemCollectionMvvm.csproj", "{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -809,10 +807,10 @@ Global
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Debug|x86.Build.0 = Debug|Any CPU
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|Any CPU.Build.0 = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.ActiveCfg = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.Build.0 = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.ActiveCfg = Release|Any CPU
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.Build.0 = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.ActiveCfg = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x64.Build.0 = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1}.Release|x86.Build.0 = Release|Any CPU
 		{6B925483-BDCF-4F3F-8EA5-BF56BF19D444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B925483-BDCF-4F3F-8EA5-BF56BF19D444}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B925483-BDCF-4F3F-8EA5-BF56BF19D444}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -909,6 +907,18 @@ Global
 		{83A500F5-8FAC-4237-B9ED-CD07DDF4C64E}.Release|x64.Build.0 = Release|Any CPU
 		{83A500F5-8FAC-4237-B9ED-CD07DDF4C64E}.Release|x86.ActiveCfg = Release|Any CPU
 		{83A500F5-8FAC-4237-B9ED-CD07DDF4C64E}.Release|x86.Build.0 = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|x64.Build.0 = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -963,8 +973,8 @@ Global
 		{DFDBEF19-CF38-4909-BE19-D088BEDAB0D0} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{4A0AE4CC-ABF2-4830-A199-1AE18B706C85} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{2172794F-EF5A-4737-89E6-0670A7122FC8} = {FC61A082-2335-4C45-A38C-1EBEEA7BBE0A}
-																{C4F9DDFA-309B-4819-896D-E423EDF16598} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
-																{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{C4F9DDFA-309B-4819-896D-E423EDF16598} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
+		{7251F4ED-850F-42CB-B14C-B0EF53AA6BC1} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{6B925483-BDCF-4F3F-8EA5-BF56BF19D444} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{AED4AF49-E796-4D3E-B52E-50265D2DF73F} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 		{5D2FB4DD-8E99-4A28-BB18-38264AB818E4} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
@@ -973,6 +983,7 @@ Global
 		{ABFF8666-FE89-4547-BF91-24ABC9086368} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{4A62BFDE-E8D2-44CD-BCC1-ADA972E97480} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
 		{83A500F5-8FAC-4237-B9ED-CD07DDF4C64E} = {71FD12F4-0BCB-422A-9FB0-4137E898E991}
+		{2C7BCAE8-FEBA-7471-A3A8-7501FC041395} = {2B045CC0-AA4B-44B1-9D92-459B71EC7AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5617659E-FC7E-40D7-9D62-258513329CA1}

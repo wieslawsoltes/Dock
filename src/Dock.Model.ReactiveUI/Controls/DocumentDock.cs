@@ -54,6 +54,10 @@ public partial class DocumentDock : DockBase, IDocumentDock
 
     private void CreateNewDocument()
     {
+        //give the chance to the user's DockFactory to add a document
+        //to a bound ObservableCollection
+        if (Factory?.AddDocumentToBoundCollection() ?? false)
+            return;
         if (DocumentFactory is { } factory)
         {
             var document = factory();

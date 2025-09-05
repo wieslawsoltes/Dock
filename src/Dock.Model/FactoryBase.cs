@@ -111,36 +111,40 @@ public abstract partial class FactoryBase : IFactory
             }
         }
 
+        // Adjust adjacent splitters prior to removing dock so that exactly one splitter remains between neighbors.
         if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
         {
-            var toRemove = new List<IDockable>();
             var dockIndex = ownerDock.VisibleDockables.IndexOf(dock);
-
             if (dockIndex >= 0)
             {
-                var indexSplitterPrevious = dockIndex - 1;
-                if (dockIndex > 0 && indexSplitterPrevious >= 0)
+                IProportionalDockSplitter? previousSplitter = null;
+                IProportionalDockSplitter? nextSplitter = null;
+
+                var prevIndex = dockIndex - 1;
+                if (prevIndex >= 0 && ownerDock.VisibleDockables[prevIndex] is IProportionalDockSplitter ps)
                 {
-                    var previousVisible = ownerDock.VisibleDockables[indexSplitterPrevious];
-                    if (previousVisible is IProportionalDockSplitter splitterPrevious)
-                    {
-                        toRemove.Add(splitterPrevious);
-                    }
+                    previousSplitter = ps;
+                }
+                var nextIndex = dockIndex + 1;
+                if (nextIndex < ownerDock.VisibleDockables.Count && ownerDock.VisibleDockables[nextIndex] is IProportionalDockSplitter ns)
+                {
+                    nextSplitter = ns;
                 }
 
-                var indexSplitterNext = dockIndex + 1;
-                if (dockIndex < ownerDock.VisibleDockables.Count - 1 && indexSplitterNext >= 0)
+                // If both sides have splitters remove only one (deterministically remove the previous one)
+                if (previousSplitter is not null && nextSplitter is not null)
                 {
-                    var nextVisible = ownerDock.VisibleDockables[indexSplitterNext];
-                    if (nextVisible is IProportionalDockSplitter splitterNext)
-                    {
-                        toRemove.Add(splitterNext);
-                    }
+                    RemoveDockable(previousSplitter, true);
                 }
-
-                foreach (var removeVisible in toRemove)
+                else if (previousSplitter is not null)
                 {
-                    RemoveDockable(removeVisible, true);
+                    // Edge (first after a splitter) – remove lone previous splitter
+                    RemoveDockable(previousSplitter, true);
+                }
+                else if (nextSplitter is not null)
+                {
+                    // Edge (last before a splitter) – remove lone next splitter
+                    RemoveDockable(nextSplitter, true);
                 }
             }
         }
@@ -158,6 +162,66 @@ public abstract partial class FactoryBase : IFactory
         if (dock.Owner is IProportionalDock proportionalOwner)
         {
             CleanupProportionalDockTree(proportionalOwner);
+            // Ensure splitter pattern correctness after structural change.
+            CleanupOrphanedSplitters(proportionalOwner);
+        }
+    }
+
+    // Ensures there are no duplicate or orphaned splitters and that a splitter exists between two adjacent non-splitter dockables inside a proportional dock.
+    private void CleanupOrphanedSplitters(IProportionalDock dock)
+    {
+        var list = dock.VisibleDockables;
+        if (list is null || list.Count == 0)
+            return;
+
+        int i = 0;
+        while (i < list.Count)
+        {
+            if (i >= list.Count) break; // safety
+            var current = list[i];
+
+            if (current is IProportionalDockSplitter)
+            {
+                bool remove = false;
+                if (i == 0 || i == list.Count - 1)
+                {
+                    // Leading or trailing splitter is invalid.
+                    remove = true;
+                }
+                else
+                {
+                    var prev = list[i - 1];
+                    var next = list[i + 1];
+                    if (prev is IProportionalDockSplitter || next is IProportionalDockSplitter)
+                    {
+                        // Duplicate or consecutive splitters.
+                        remove = true;
+                    }
+                }
+
+                if (remove)
+                {
+                    RemoveDockable(current, true);
+                    continue; // Stay at same index after removal.
+                }
+
+                i++; // Keep valid splitter
+            }
+            else
+            {
+                // If next exists and is not a splitter, insert one between.
+                if (i < list.Count - 1 && list[i + 1] is not IProportionalDockSplitter)
+                {
+                    var splitter = CreateProportionalDockSplitter();
+                    splitter.Title = nameof(IProportionalDockSplitter);
+                    InsertVisibleDockable(dock, i + 1, splitter);
+                    OnDockableAdded(splitter);
+                    InitDockable(splitter, dock);
+                    i += 2; // Skip over inserted splitter and next item.
+                    continue;
+                }
+                i++;
+            }
         }
     }
 

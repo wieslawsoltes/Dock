@@ -90,72 +90,45 @@ public abstract partial class FactoryBase
     protected void CleanupOrphanedSplitters(IDock dock)
     {
         if (dock.VisibleDockables is null || dock.VisibleDockables.Count == 0)
-            return;
-
-        bool needsCleanup = true;
-        
-        // Repeat cleanup until no more orphaned splitters are found
-        // This handles cases where removing splitters creates new orphaned splitters
-        while (needsCleanup)
         {
-            needsCleanup = false;
-            var toRemove = new List<IDockable>();
-            var dockables = dock.VisibleDockables.ToList();
+            return;
+        }
 
-            // If we only have splitters, remove all of them
-            if (dockables.Count > 0 && dockables.All(d => d is ISplitter))
+        var dockables = dock.VisibleDockables;
+        bool changed;
+
+        do
+        {
+            changed = false;
+
+            for (int i = 0; i < dockables.Count; i++)
             {
-                toRemove.AddRange(dockables);
-            }
-            else
-            {
-                // Remove splitters that are at the beginning
-                while (dockables.Count > 0 && dockables[0] is ISplitter)
+                if (dockables[i] is ISplitter)
                 {
-                    toRemove.Add(dockables[0]);
-                    dockables.RemoveAt(0);
-                }
+                    bool remove = i == 0 || i == dockables.Count - 1;
 
-                // Remove splitters that are at the end
-                while (dockables.Count > 0 && dockables[dockables.Count - 1] is ISplitter)
-                {
-                    toRemove.Add(dockables[dockables.Count - 1]);
-                    dockables.RemoveAt(dockables.Count - 1);
-                }
-
-                // Remove consecutive splitters - keep only the first one in each sequence
-                for (int i = 0; i < dockables.Count - 1; i++)
-                {
-                    if (dockables[i] is ISplitter)
+                    if (!remove)
                     {
-                        // Remove all consecutive splitters after this one
-                        int j = i + 1;
-                        while (j < dockables.Count && dockables[j] is ISplitter)
-                        {
-                            toRemove.Add(dockables[j]);
-                            j++;
-                        }
+                        remove = dockables[i - 1] is ISplitter;
+                    }
+
+                    if (remove)
+                    {
+                        var splitter = dockables[i];
+                        RemoveVisibleDockableAt(dock, i);
+                        OnDockableRemoved(splitter);
+                        changed = true;
+                        break;
                     }
                 }
             }
-
-            // Remove the identified splitters using direct removal to avoid recursion
-            foreach (var splitter in toRemove)
-            {
-                if (dock.VisibleDockables.Contains(splitter))
-                {
-                    RemoveVisibleDockable(dock, splitter);
-                    OnDockableRemoved(splitter);
-                    needsCleanup = true; // Check again after removal
-                }
-            }
         }
+        while (changed);
 
-        // Update active dockable if it was a splitter that got removed
-        if (dock.ActiveDockable is ISplitter || 
-            (dock.ActiveDockable is not null && !dock.VisibleDockables.Contains(dock.ActiveDockable)))
+        if (dock.ActiveDockable is ISplitter ||
+            (dock.ActiveDockable is not null && !dockables.Contains(dock.ActiveDockable)))
         {
-            dock.ActiveDockable = dock.VisibleDockables?.FirstOrDefault(d => d is not ISplitter);
+            dock.ActiveDockable = dockables.FirstOrDefault(d => d is not ISplitter);
         }
     }
 

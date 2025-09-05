@@ -1,6 +1,7 @@
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Xunit;
 using System.Linq;
@@ -123,6 +124,33 @@ public class FactorySplitterCleanupTests
         // Should preserve the valid splitter layout
         Assert.Single(dock.VisibleDockables!);
         Assert.Equal(doc2, dock.VisibleDockables[0]);
+    }
+
+    [AvaloniaFact]
+    public void RemoveDockable_Middle_Dockable_Preserves_Splitter()
+    {
+        var factory = new Factory();
+        var dock = new ProportionalDock { VisibleDockables = factory.CreateList<IDockable>() };
+        dock.Factory = factory;
+
+        var doc0 = new Document { Title = "Doc0" };
+        var splitter1 = factory.CreateProportionalDockSplitter();
+        var doc1 = new Document { Title = "Doc1" };
+        var splitter2 = factory.CreateProportionalDockSplitter();
+        var doc2 = new Document { Title = "Doc2" };
+
+        factory.AddDockable(dock, doc0);
+        factory.AddDockable(dock, splitter1);
+        factory.AddDockable(dock, doc1);
+        factory.AddDockable(dock, splitter2);
+        factory.AddDockable(dock, doc2);
+
+        factory.RemoveDockable(doc1, false);
+
+        Assert.Equal(3, dock.VisibleDockables!.Count);
+        Assert.Equal(doc0, dock.VisibleDockables[0]);
+        Assert.IsAssignableFrom<ISplitter>(dock.VisibleDockables[1]);
+        Assert.Equal(doc2, dock.VisibleDockables[2]);
     }
 
     [AvaloniaFact]

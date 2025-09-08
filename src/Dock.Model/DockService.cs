@@ -61,7 +61,7 @@ public class DockService : IDockService
         {
             // For global docking operations (no specific target dockable), use global validation
             // This allows non-grouped dockables to dock anywhere globally
-            if (!DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDock))
+            if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
             {
                 return false;
             }

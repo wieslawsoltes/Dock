@@ -75,152 +75,108 @@ public abstract partial class FactoryBase : IFactory
     /// <inheritdoc/>
     public virtual void CollapseDock(IDock dock)
     {
-        if (!dock.IsCollapsable || dock.VisibleDockables is null || dock.VisibleDockables.Count != 0)
-        {
-            return;
-        }
+        // Preconditions: must be collapsable and currently empty.
+        if (dock is null) return;
+        if (!dock.IsCollapsable) return;
+        if (dock.VisibleDockables is null) return; // nothing to evaluate
+        if (dock.VisibleDockables.Count != 0) return; // only collapse when empty
 
+        // Prevent collapsing pinned tool docks.
         var rootDock = FindRoot(dock, _ => true);
-        if (rootDock is { })
+        if (rootDock is IRootDock root && dock is IToolDock toolDock)
         {
-            if (dock is IToolDock toolDock)
+            switch (toolDock.Alignment)
             {
-                if (toolDock.Alignment == Alignment.Left 
-                    && IsDockPinned(rootDock.LeftPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Right 
-                    && IsDockPinned(rootDock.RightPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Top 
-                    && IsDockPinned(rootDock.TopPinnedDockables, dock))
-                {
-                    return;
-                }
-
-                if (toolDock.Alignment == Alignment.Bottom 
-                    && IsDockPinned(rootDock.BottomPinnedDockables, dock))
-                {
-                    return;
-                }
+                case Alignment.Left:
+                    if (IsDockPinned(root.LeftPinnedDockables, dock)) return;
+                    break;
+                case Alignment.Right:
+                    if (IsDockPinned(root.RightPinnedDockables, dock)) return;
+                    break;
+                case Alignment.Top:
+                    if (IsDockPinned(root.TopPinnedDockables, dock)) return;
+                    break;
+                case Alignment.Bottom:
+                    if (IsDockPinned(root.BottomPinnedDockables, dock)) return;
+                    break;
             }
         }
 
-        // Adjust adjacent splitters prior to removing dock so that exactly one splitter remains between neighbors.
-        if (dock.Owner is IDock ownerDock && ownerDock.VisibleDockables is { })
+        var ownerDock = dock.Owner as IDock;
+        var ownerProportional = dock.Owner as IProportionalDock;
+        bool wasChildOfOwner = ownerDock?.VisibleDockables?.Contains(dock) == true;
+
+        // If the dock is actually present in its owner list, adjust neighboring splitters.
+        if (wasChildOfOwner && ownerDock?.VisibleDockables is { })
         {
-            var dockIndex = ownerDock.VisibleDockables.IndexOf(dock);
+            var list = ownerDock.VisibleDockables;
+            int dockIndex = list.IndexOf(dock);
             if (dockIndex >= 0)
             {
                 IProportionalDockSplitter? previousSplitter = null;
                 IProportionalDockSplitter? nextSplitter = null;
 
-                var prevIndex = dockIndex - 1;
-                if (prevIndex >= 0 && ownerDock.VisibleDockables[prevIndex] is IProportionalDockSplitter ps)
+                int prevIndex = dockIndex - 1;
+                if (prevIndex >= 0 && list[prevIndex] is IProportionalDockSplitter ps)
                 {
                     previousSplitter = ps;
                 }
-                var nextIndex = dockIndex + 1;
-                if (nextIndex < ownerDock.VisibleDockables.Count && ownerDock.VisibleDockables[nextIndex] is IProportionalDockSplitter ns)
+                int nextIndex = dockIndex + 1;
+                if (nextIndex < list.Count && list[nextIndex] is IProportionalDockSplitter ns)
                 {
                     nextSplitter = ns;
                 }
 
-                // If both sides have splitters remove only one (deterministically remove the previous one)
+                // Remove at most one splitter if two flank the collapsing dock; prefer removing the previous one.
                 if (previousSplitter is not null && nextSplitter is not null)
                 {
                     RemoveDockable(previousSplitter, true);
                 }
                 else if (previousSplitter is not null)
                 {
-                    // Edge (first after a splitter) – remove lone previous splitter
                     RemoveDockable(previousSplitter, true);
                 }
                 else if (nextSplitter is not null)
                 {
-                    // Edge (last before a splitter) – remove lone next splitter
                     RemoveDockable(nextSplitter, true);
                 }
             }
         }
 
-        if (dock is IRootDock rootDockDock && rootDockDock.Window is { })
+        // If this is a root dock with a window, remove its window and stop.
+        if (dock is IRootDock rootWithWindow && rootWithWindow.Window is { })
         {
-            RemoveWindow(rootDockDock.Window);
+            RemoveWindow(rootWithWindow.Window);
+            return;
         }
-        else
+
+        // Remove the dock itself only if it was actually attached to its owner.
+        if (wasChildOfOwner)
         {
             RemoveDockable(dock, true);
         }
 
-        // After collapsing, check if the owner dock needs cleanup
-        if (dock.Owner is IProportionalDock proportionalOwner)
+        // Decide if proportional cleanup should occur: only when <=1 non-splitter remains.
+        if (ownerProportional is not null)
         {
-            CleanupProportionalDockTree(proportionalOwner);
-            // Ensure splitter pattern correctness after structural change.
-            CleanupOrphanedSplitters(proportionalOwner);
-        }
-    }
-
-    // Ensures there are no duplicate or orphaned splitters and that a splitter exists between two adjacent non-splitter dockables inside a proportional dock.
-    private void CleanupOrphanedSplitters(IProportionalDock dock)
-    {
-        var list = dock.VisibleDockables;
-        if (list is null || list.Count == 0)
-            return;
-
-        int i = 0;
-        while (i < list.Count)
-        {
-            if (i >= list.Count) break; // safety
-            var current = list[i];
-
-            if (current is IProportionalDockSplitter)
+            var list = ownerProportional.VisibleDockables;
+            if (list is not null)
             {
-                bool remove = false;
-                if (i == 0 || i == list.Count - 1)
+                int nonSplitterCount = 0;
+                foreach (var d in list)
                 {
-                    // Leading or trailing splitter is invalid.
-                    remove = true;
-                }
-                else
-                {
-                    var prev = list[i - 1];
-                    var next = list[i + 1];
-                    if (prev is IProportionalDockSplitter || next is IProportionalDockSplitter)
+                    if (d is not IProportionalDockSplitter)
                     {
-                        // Duplicate or consecutive splitters.
-                        remove = true;
+                        nonSplitterCount++;
+                        if (nonSplitterCount > 1) break;
                     }
                 }
 
-                if (remove)
+                if (nonSplitterCount <= 1)
                 {
-                    RemoveDockable(current, true);
-                    continue; // Stay at same index after removal.
+                    CleanupProportionalDockTree(ownerProportional);
+                    CleanupOrphanedSplitters(ownerProportional);
                 }
-
-                i++; // Keep valid splitter
-            }
-            else
-            {
-                // If next exists and is not a splitter, insert one between.
-                if (i < list.Count - 1 && list[i + 1] is not IProportionalDockSplitter)
-                {
-                    var splitter = CreateProportionalDockSplitter();
-                    splitter.Title = nameof(IProportionalDockSplitter);
-                    InsertVisibleDockable(dock, i + 1, splitter);
-                    OnDockableAdded(splitter);
-                    InitDockable(splitter, dock);
-                    i += 2; // Skip over inserted splitter and next item.
-                    continue;
-                }
-                i++;
             }
         }
     }

@@ -10,10 +10,10 @@
   </Application.DataTemplates>
 
   <Application.Resources>
-    
+
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        
+
         <ResourceDictionary>
           <ControlRecycling x:Key="ControlRecyclingKey" />
         </ResourceDictionary>
@@ -44,16 +44,13 @@
             </ResourceDictionary>
           </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
-        </ResourceDictionary.MergedDictionaries>
-      
+      </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
-
   </Application.Resources>
 
   <Application.Styles>
 
     <FluentTheme />
-
     <DockFluentTheme />
 
     <Style Selector="DockControl">
@@ -88,7 +85,5 @@
     <Style Selector="ToolChromeControl">
       <Setter Property="Background" Value="Transparent" />
     </Style>
-
   </Application.Styles>
-
 </Application>

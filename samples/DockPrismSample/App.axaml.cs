@@ -8,6 +8,7 @@ using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Diagnostics.Controls;
 using Dock.Model.Core;
 using Dock.Serializer;
+using DockPrismSample.Services;
 using DockPrismSample.Themes;
 using DockPrismSample.ViewModels;
 using DockPrismSample.Views;
@@ -18,7 +19,7 @@ namespace DockPrismSample;
 
 [RequiresUnreferencedCode("Requires unreferenced code for MainWindowViewModel.")]
 [RequiresDynamicCode("Requires unreferenced code for MainWindowViewModel.")]
-public partial class App : PrismApplication
+public class App : PrismApplication
 {
     public static IThemeManager? ThemeManager;
 

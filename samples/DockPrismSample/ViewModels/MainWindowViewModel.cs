@@ -11,20 +11,20 @@ namespace DockPrismSample.ViewModels;
 [RequiresDynamicCode("Requires unreferenced code for RaiseAndSetIfChanged.")]
 public class MainWindowViewModel : BindableBase
 {
-    private readonly IFactory? _factory;
+    private readonly IFactory _factory;
     private IRootDock? _layout;
     private string _title = string.Empty;
 
-    public MainWindowViewModel(IFactory dockFactory)
+    public MainWindowViewModel(IFactory dockFactoryService)
     {
-        _factory = dockFactory;        //// _factory = new DockFactory(new DemoData());
+        _factory = dockFactoryService;
 
-        DebugFactoryEvents(_factory);
+        DebugFactoryEvents();
 
-        var layout = _factory?.CreateLayout();
+        var layout = _factory.CreateLayout();
         if (layout is not null)
         {
-            _factory?.InitLayout(layout);
+            _factory.InitLayout(layout);
             layout.Navigate.Execute("Home");
         }
 
@@ -38,48 +38,48 @@ public class MainWindowViewModel : BindableBase
 
     public string Title { get => _title; set => SetProperty(ref _title, value); }
 
-    private void DebugFactoryEvents(IFactory factory)
+    private void DebugFactoryEvents()
     {
-        factory.ActiveDockableChanged += (_, args)
+        _factory.ActiveDockableChanged += (_, args)
             => Debug.WriteLine($"[ActiveDockableChanged] Title='{args.Dockable?.Title}'");
 
-        factory.FocusedDockableChanged += (_, args)
+        _factory.FocusedDockableChanged += (_, args)
             => Debug.WriteLine($"[FocusedDockableChanged] Title='{args.Dockable?.Title}'");
 
-        factory.DockableAdded += (_, args)
+        _factory.DockableAdded += (_, args)
             => Debug.WriteLine($"[DockableAdded] Title='{args.Dockable?.Title}'");
 
-        factory.DockableRemoved += (_, args)
+        _factory.DockableRemoved += (_, args)
             => Debug.WriteLine($"[DockableRemoved] Title='{args.Dockable?.Title}'");
 
-        factory.DockableClosed += (_, args)
+        _factory.DockableClosed += (_, args)
             => Debug.WriteLine($"[DockableClosed] Title='{args.Dockable?.Title}'");
 
-        factory.DockableMoved += (_, args)
+        _factory.DockableMoved += (_, args)
             => Debug.WriteLine($"[DockableMoved] Title='{args.Dockable?.Title}'");
 
-        factory.DockableDocked += (_, args)
+        _factory.DockableDocked += (_, args)
             => Debug.WriteLine($"[DockableDocked] Title='{args.Dockable?.Title}', Operation='{args.Operation}'");
 
-        factory.DockableUndocked += (_, args)
+        _factory.DockableUndocked += (_, args)
             => Debug.WriteLine($"[DockableUndocked] Title='{args.Dockable?.Title}', Operation='{args.Operation}'");
 
-        factory.DockableSwapped += (_, args)
+        _factory.DockableSwapped += (_, args)
             => Debug.WriteLine($"[DockableSwapped] Title='{args.Dockable?.Title}'");
 
-        factory.DockablePinned += (_, args)
+        _factory.DockablePinned += (_, args)
             => Debug.WriteLine($"[DockablePinned] Title='{args.Dockable?.Title}'");
 
-        factory.DockableUnpinned += (_, args)
+        _factory.DockableUnpinned += (_, args)
             => Debug.WriteLine($"[DockableUnpinned] Title='{args.Dockable?.Title}'");
 
-        factory.WindowOpened += (_, args)
+        _factory.WindowOpened += (_, args)
             => Debug.WriteLine($"[WindowOpened] Title='{args.Window?.Title}'");
 
-        factory.WindowClosed += (_, args)
+        _factory.WindowClosed += (_, args)
             => Debug.WriteLine($"[WindowClosed] Title='{args.Window?.Title}'");
 
-        factory.WindowClosing += (_, args) =>
+        _factory.WindowClosing += (_, args) =>
         {
             // NOTE: Set to True to cancel window closing.
 #if false
@@ -88,13 +88,13 @@ public class MainWindowViewModel : BindableBase
             Debug.WriteLine($"[WindowClosing] Title='{args.Window?.Title}', Cancel={args.Cancel}");
         };
 
-        factory.WindowAdded += (_, args)
+        _factory.WindowAdded += (_, args)
             => Debug.WriteLine($"[WindowAdded] Title='{args.Window?.Title}'");
 
-        factory.WindowRemoved += (_, args)
+        _factory.WindowRemoved += (_, args)
             => Debug.WriteLine($"[WindowRemoved] Title='{args.Window?.Title}'");
 
-        factory.WindowMoveDragBegin += (_, args) =>
+        _factory.WindowMoveDragBegin += (_, args) =>
         {
             // NOTE: Set to True to cancel window dragging.
 #if false
@@ -103,22 +103,22 @@ public class MainWindowViewModel : BindableBase
             Debug.WriteLine($"[WindowMoveDragBegin] Title='{args.Window?.Title}', Cancel={args.Cancel}, X='{args.Window?.X}', Y='{args.Window?.Y}'");
         };
 
-        factory.WindowMoveDrag += (_, args)
+        _factory.WindowMoveDrag += (_, args)
             => Debug.WriteLine($"[WindowMoveDrag] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
 
-        factory.WindowMoveDragEnd += (_, args)
+        _factory.WindowMoveDragEnd += (_, args)
             => Debug.WriteLine($"[WindowMoveDragEnd] Title='{args.Window?.Title}', X='{args.Window?.X}', Y='{args.Window?.Y}");
 
-        factory.WindowActivated += (_, args)
+        _factory.WindowActivated += (_, args)
             => Debug.WriteLine($"[WindowActivated] Title='{args.Window?.Title}'");
 
-        factory.DockableActivated += (_, args)
+        _factory.DockableActivated += (_, args)
             => Debug.WriteLine($"[DockableActivated] Title='{args.Dockable?.Title}'");
 
-        factory.WindowDeactivated += (_, args)
+        _factory.WindowDeactivated += (_, args)
             => Debug.WriteLine($"[WindowDeactivated] Title='{args.Window?.Title}'");
 
-        factory.DockableDeactivated += (_, args)
+        _factory.DockableDeactivated += (_, args)
             => Debug.WriteLine($"[DockableDeactivated] Title='{args.Dockable?.Title}'");
     }
 
@@ -133,9 +133,9 @@ public class MainWindowViewModel : BindableBase
         if (Layout is not null && Layout.Close.CanExecute(null))
             Layout.Close.Execute(null);
 
-        var layout = _factory?.CreateLayout();
+        var layout = _factory.CreateLayout();
         if (layout is not null)
-            _factory?.InitLayout(layout);
+            _factory.InitLayout(layout);
 
         Layout = layout;
     }

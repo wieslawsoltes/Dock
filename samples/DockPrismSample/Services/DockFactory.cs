@@ -14,7 +14,7 @@ using DockPrismSample.ViewModels.Documents;
 using DockPrismSample.ViewModels.Tools;
 using DockPrismSample.ViewModels.Views;
 
-namespace DockPrismSample.ViewModels;
+namespace DockPrismSample.Services;
 
 [RequiresUnreferencedCode("Requires unreferenced code for CustomDocumentDock.")]
 [RequiresDynamicCode("Requires unreferenced code for CustomDocumentDock.")]

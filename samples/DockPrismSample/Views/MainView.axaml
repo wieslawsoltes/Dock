@@ -51,17 +51,16 @@
         <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
         <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1" />
         <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
-        <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}"
-                Grid.Column="3" />
+        <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}" Grid.Column="3" />
         <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
         <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" />
         <Button x:Name="ThemeButton" Grid.Column="6" Background="Transparent">
-          <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
+          <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}" />
         </Button>
       </Grid>
     </Panel>
     <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
-                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
     <Panel DataContext="{Binding Layout.ActiveDockable}"
            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
       <TextBlock Text="{Binding FocusedDockable, FallbackValue={}}"

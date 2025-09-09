@@ -88,8 +88,10 @@ public static class DockGroupValidator
 
     /// <summary>
     /// Validates if a dockable can be docked globally based on docking groups.
-    /// For global docking, we only prevent it if the source dockable has a docking group set.
-    /// Non-grouped dockables should always be allowed to dock globally, regardless of target content.
+    /// Global docking rules:
+    /// - Non-grouped sources can dock globally anywhere (target group may be null or any group)
+    /// - Grouped sources can dock globally only into a target that has the same group
+    /// - Grouped sources cannot dock globally into a non-grouped target or a different group
     /// </summary>
     /// <param name="sourceDockable">The source dockable being dragged.</param>
     /// <param name="targetDock">The target dock for global docking.</param>
@@ -97,10 +99,33 @@ public static class DockGroupValidator
     public static bool ValidateGlobalDocking(IDockable sourceDockable, IDock targetDock)
     {
         var sourceGroup = GetEffectiveDockGroup(sourceDockable);
+        var targetGroup = GetEffectiveDockGroup(targetDock);
+
+        // Correct docking group compatibility rules:
+        // 1. Non-grouped can dock anywhere EXCEPT grouped dockables
+        // 2. Grouped can dock into same group only (can't dock into global targets)
+        // 3. Different groups are incompatible
         
-        // For global docking, only restrict if source has a docking group set
-        // Always allow global docking for non-grouped dockables
-        return string.IsNullOrEmpty(sourceGroup);
+        var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+        var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+        if (!sourceHasGroup && !targetHasGroup)
+        {
+            return true; // Both non-grouped - always compatible
+        }
+
+        if (!sourceHasGroup && targetHasGroup)
+        {
+            return true; // Non-grouped can't dock into grouped dockables
+        }
+
+        if (sourceHasGroup && !targetHasGroup)
+        {
+            return false; // Grouped can't dock into global targets
+        }
+
+        // Both are grouped - they must have the same group
+        return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
     }
 
     /// <summary>

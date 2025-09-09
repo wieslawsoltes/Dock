@@ -11,9 +11,10 @@ namespace Dock.Avalonia.HeadlessTests;
 
 /// <summary>
 /// Tests for global docking validation focusing on docking group rules.
-/// Tests the simplified global docking rules:
+/// Updated global docking rules:
 /// 1) Non-grouped dockables can dock globally anywhere (regardless of target content)
-/// 2) Grouped dockables cannot dock globally at all (blocked entirely for global operations)
+/// 2) Grouped dockables can dock globally only into a target dock with the same group
+/// 3) Group mismatch (different groups, or grouped -> non-grouped) is rejected
 /// </summary>
 public class GlobalDockingValidationTests
 {
@@ -109,22 +110,22 @@ public class GlobalDockingValidationTests
     }
 
     [AvaloniaFact]
-    public void GlobalDocking_Rule2_GroupedSource_SameGroupTarget_ShouldReject()
+    public void GlobalDocking_Rule2_GroupedSource_SameGroupTarget_ShouldAllow()
     {
-        // Rule 2: Grouped dockables cannot dock globally at all (blocked entirely)
+        // Rule 2: Grouped dockables can dock globally only into same-group targets
         var dockManager = CreateDockManager();
         var source = CreateTool("Source", "Source Tool", dockGroup: "GroupA");
         var target = CreateGlobalTarget("Target", dockGroup: "GroupA");
 
         var result = dockManager.ValidateTool(source, target, DragAction.Move, DockOperation.Fill, false);
 
-        Assert.False(result, "Grouped source should NOT be able to dock globally (blocked entirely)");
+        Assert.True(result, "Grouped source with same group should be able to dock globally");
     }
 
     [AvaloniaFact]
     public void GlobalDocking_Rule3_GroupedSource_DifferentGroupTarget_ShouldReject()
     {
-        // Rule 3: Different groups are incompatible
+        // Rule 3: Different groups are incompatible for global docking
         var dockManager = CreateDockManager();
         var source = CreateTool("Source", "Source Tool", dockGroup: "GroupA");
         var target = CreateGlobalTarget("Target", dockGroup: "GroupB");
@@ -137,7 +138,7 @@ public class GlobalDockingValidationTests
     [AvaloniaFact]
     public void GlobalDocking_Rule2_GroupedSource_NonGroupedTarget_ShouldReject()
     {
-        // Rule 2: Grouped dockables can't dock into global targets (can't break out)
+        // Rule 2/3: Grouped dockables cannot dock into non-grouped global targets
         var dockManager = CreateDockManager();
         var source = CreateTool("Source", "Source Tool", dockGroup: "GroupA");
         var target = CreateGlobalTarget("Target", dockGroup: null);
@@ -180,11 +181,11 @@ public class GlobalDockingValidationTests
     #region Comprehensive Rule Testing
 
     [AvaloniaTheory]
-    [InlineData(null, null, true)]      // Rule 1: Non-grouped can dock globally anywhere
-    [InlineData(null, "GroupA", true)]  // Rule 1: Non-grouped can dock globally anywhere
-    [InlineData("GroupA", "GroupA", false)]  // Rule 2: Grouped sources blocked from global docking
-    [InlineData("GroupA", "GroupB", false)] // Rule 2: Grouped sources blocked from global docking
-    [InlineData("GroupA", null, false)]     // Rule 2: Grouped sources blocked from global docking
+    [InlineData(null, null, true)]          // Rule 1: Non-grouped can dock globally anywhere
+    [InlineData(null, "GroupA", true)]      // Rule 1: Non-grouped can dock globally anywhere
+    [InlineData("GroupA", "GroupA", true)]  // Rule 2: Grouped source can dock globally into same group
+    [InlineData("GroupA", "GroupB", false)] // Rule 3: Different groups are incompatible
+    [InlineData("GroupA", null, false)]     // Rule 3: Grouped -> non-grouped is rejected
     public void GlobalDocking_AllRuleScenarios_ThroughDockManager(string? sourceGroup, string? targetGroup, bool expected)
     {
         var dockManager = CreateDockManager();
@@ -218,18 +219,18 @@ public class GlobalDockingValidationTests
         var result2 = dockManager.ValidateTool(nonGroupedTool, groupedGlobalTarget, DragAction.Move, DockOperation.Fill, false);
         Assert.True(result2, "Non-grouped tool should be able to dock globally anywhere");
 
-        // Test Rule 2: Grouped CANNOT dock globally (blocked entirely)
+        // Test Rule 2: Grouped CAN dock globally into same-group target
         var groupedTool = CreateTool("Grouped", "Grouped Tool", "GroupA");
         var sameGroupGlobalTarget = CreateGlobalTarget("SameGroupGlobal", "GroupA");
         
         var result3 = dockManager.ValidateTool(groupedTool, sameGroupGlobalTarget, DragAction.Move, DockOperation.Fill, false);
-        Assert.False(result3, "Grouped tool should NOT be able to dock globally (blocked entirely)");
+        Assert.True(result3, "Grouped tool should be able to dock globally into same-group target");
 
-        // Test Rule 2: Grouped sources are blocked from global docking (regardless of target group)
+        // Test Rule 3: Grouped sources are blocked from docking into different-group global targets
         var differentGroupGlobalTarget = CreateGlobalTarget("DifferentGroupGlobal", "GroupB");
         
         var result4 = dockManager.ValidateTool(groupedTool, differentGroupGlobalTarget, DragAction.Move, DockOperation.Fill, false);
-        Assert.False(result4, "Grouped tool should NOT be able to dock globally (blocked entirely)");
+        Assert.False(result4, "Grouped tool should NOT be able to dock globally into different-group target");
     }
 
     [AvaloniaFact]
@@ -249,19 +250,19 @@ public class GlobalDockingValidationTests
             CreateGlobalTarget("Target", "GroupA"));
         Assert.True(result2);
 
-        // Rule 2: Grouped sources cannot dock globally (blocked entirely)
+        // Rule 2: Grouped sources can dock globally only into same-group targets
         var result3 = DockGroupValidator.ValidateGlobalDocking(
             CreateTool("Source", "Tool", "GroupA"),
             CreateGlobalTarget("Target", "GroupA"));
-        Assert.False(result3);
+        Assert.True(result3);
 
-        // Rule 2: Grouped sources cannot dock globally (blocked entirely)
+        // Rule 3: Grouped sources cannot dock globally into different-group targets
         var result4 = DockGroupValidator.ValidateGlobalDocking(
             CreateTool("Source", "Tool", "GroupA"),
             CreateGlobalTarget("Target", "GroupB"));
         Assert.False(result4);
 
-        // Rule 2: Grouped sources cannot dock globally (blocked entirely)
+        // Rule 3: Grouped sources cannot dock globally into non-grouped targets
         var result5 = DockGroupValidator.ValidateGlobalDocking(
             CreateTool("Source", "Tool", "GroupA"),
             CreateGlobalTarget("Target", null));

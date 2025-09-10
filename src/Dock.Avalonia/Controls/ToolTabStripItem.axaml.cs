@@ -113,9 +113,10 @@ public class ToolTabStripItem : TabStripItem
 
     private void DoubleTappedHandler(object? sender, TappedEventArgs e)
     {
-        if (DataContext is IDockable { Owner: IDock { Factory: { } factory }, CanFloat: true } dockable)
+        if (DataContext is IDockable { Owner: IDock { Factory: { } factory } owner, CanFloat: true } dockable)
         {
-            factory.FloatDockable(dockable);
+            if(owner.CanCloseLastDockable || (owner.VisibleDockables?.Count ?? 0) > 1)
+                factory.FloatDockable(dockable);
         }
     }
 }

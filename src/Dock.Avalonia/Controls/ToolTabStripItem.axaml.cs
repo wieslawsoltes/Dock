@@ -115,8 +115,11 @@ public class ToolTabStripItem : TabStripItem
     {
         if (DataContext is IDockable { Owner: IDock { Factory: { } factory } owner, CanFloat: true } dockable)
         {
-            if(owner.CanCloseLastDockable || (owner.VisibleDockables?.Count ?? 0) > 1)
+            if (owner.CanCloseLastDockable || (owner.VisibleDockables?.Count ?? 0) > 1)
+            {
                 factory.FloatDockable(dockable);
+                factory.ActivateWindow(dockable);
+            }
         }
     }
 }

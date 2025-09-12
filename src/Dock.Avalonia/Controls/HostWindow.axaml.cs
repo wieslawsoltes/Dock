@@ -557,6 +557,9 @@ public class HostWindow : Window, IHostWindow
 
     void IHostWindow.SetActive()
     {
-        this.Activate();
+        if(WindowState == WindowState.Minimized)
+            WindowState = WindowState.Normal;
+        
+        Activate();
     }
 }

@@ -42,6 +42,8 @@
     <PackageVersion Include="protobuf-net" Version="3.2.52" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
     <PackageVersion Include="Prism.Core" Version="9.0.537" />
+    <PackageVersion Include="Prism.Avalonia" Version="9.0.537.11130" />
+    <PackageVersion Include="Prism.DryIoc.Avalonia" Version="9.0.537.11130" />
     <PackageVersion Include="ReactiveProperty" Version="9.7.0" />
     <PackageVersion Include="Caliburn.Micro.Core" Version="5.0.181-beta" />
     <PackageVersion Include="Caliburn.Micro.Avalonia" Version="5.0.181-beta" />

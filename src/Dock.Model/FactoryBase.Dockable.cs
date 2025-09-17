@@ -51,18 +51,23 @@ public abstract partial class FactoryBase
             return;
         }
 
+        var wasActive = dock.ActiveDockable == dockable;
+
         RemoveVisibleDockable(dock, dockable);
         OnDockableRemoved(dockable);
 
-        var indexActiveDockable = index > 0 ? index - 1 : 0;
-        if (dock.VisibleDockables.Count > 0)
+        if (wasActive)
         {
-            var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-            dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
-        }
-        else
-        {
-            dock.ActiveDockable = null;
+            var indexActiveDockable = index > 0 ? index - 1 : 0;
+            if (dock.VisibleDockables.Count > 0)
+            {
+                var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
+                dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
+            }
+            else
+            {
+                dock.ActiveDockable = null;
+            }
         }
 
         // Clean up orphaned splitters

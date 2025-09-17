@@ -408,6 +408,7 @@ public class HostWindow : Window, IHostWindow
 
         if (Window is { })
         {
+            Window.Factory?.CloseWindow(Window);
             Window.Factory?.OnWindowClosed(Window);
 
             if (IsTracked)
@@ -556,6 +557,9 @@ public class HostWindow : Window, IHostWindow
 
     void IHostWindow.SetActive()
     {
-        this.Activate();
+        if(WindowState == WindowState.Minimized)
+            WindowState = WindowState.Normal;
+        
+        Activate();
     }
 }

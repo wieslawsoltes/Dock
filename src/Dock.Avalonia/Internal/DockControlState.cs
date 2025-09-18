@@ -469,10 +469,25 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 ? dockTarget.GetDockOperation(targetPoint, dropControl, targetDockControl, dragAction, ValidateLocal, IsDockTargetVisible)
                                 : DockOperation.Fill;
 
+                            bool? debugIsValid = null;
+                            string? debugReason = null;
+                            var debugOperation = DockOperation.None;
+                            bool? debugIsGlobal = null;
+
                             if (globalOperation != DockOperation.None)
                             {
                                 var valid = ValidateGlobal(targetPoint, localOperation, dragAction, targetDockControl);
                                 preview = valid ? "Dock" : "None";
+                                debugIsValid = valid;
+                                debugOperation = globalOperation;
+                                debugIsGlobal = true;
+                                if (!valid && _context.DragControl?.DataContext is IDockable s1 && dropControl.DataContext is IDockable t1)
+                                {
+                                    if (!DockGroupValidator.ValidateGlobalDocking(s1, t1 as IDock ?? s1.Owner as IDock ?? t1.Owner as IDock ?? s1.Owner as IDock))
+                                    {
+                                        debugReason = "Global docking not allowed for grouped source";
+                                    }
+                                }
                             }
                             else
                             {
@@ -480,7 +495,23 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 preview = valid
                                     ? localOperation == DockOperation.Window ? "Float" : "Dock"
                                     : "None";
+                                debugIsValid = valid;
+                                debugOperation = localOperation;
+                                debugIsGlobal = false;
+                                if (!valid && _context.DragControl?.DataContext is IDockable s2 && dropControl.DataContext is IDockable t2)
+                                {
+                                    if (!DockGroupValidator.ValidateDockingGroups(s2, t2))
+                                    {
+                                        debugReason = "DockGroup mismatch";
+                                    }
+                                }
                             }
+
+                            // Write debug state for overlay
+                            DockProperties.SetDebugIsValidDrop(dropControl, debugIsValid);
+                            DockProperties.SetDebugDropReason(dropControl, debugReason);
+                            DockProperties.SetDebugDropOperation(dropControl, debugOperation);
+                            DockProperties.SetDebugIsGlobalDrop(dropControl, debugIsGlobal);
                         }
                         else
                         {
@@ -500,7 +531,28 @@ internal class DockControlState : DockManagerState, IDockControlState
                         _context.TargetPoint = default;
                         _context.TargetDockControl = null;
                         var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && sourceDockable.CanFloat;
+                        // For debug overlay, clear previous target debug state
+                        if (DropControl is { })
+                        {
+                            DockProperties.SetDebugIsValidDrop(DropControl, null);
+                            DockProperties.SetDebugDropReason(DropControl, null);
+                            DockProperties.SetDebugDropOperation(DropControl, DockOperation.None);
+                            DockProperties.SetDebugIsGlobalDrop(DropControl, null);
+                        }
                         preview = canFloat ? "Float" : "None";
+                    }
+
+                    // Fallback: if no valid dock target, prefer Float preview only for non-grouped dockables
+                    if (preview == "None")
+                    {
+                        if (_context.DragControl?.DataContext is IDockable sDockable)
+                        {
+                            var hasGroup = !string.IsNullOrEmpty(DockGroupValidator.GetEffectiveDockGroup(sDockable));
+                            if (sDockable.CanFloat && !hasGroup)
+                            {
+                                preview = "Float";
+                            }
+                        }
                     }
 
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);

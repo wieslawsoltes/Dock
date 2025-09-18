@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:quickStartMultiDocumentMvvm="clr-namespace:QuickStartMultiDocumentMvvm"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DockTest.MainWindow"
+        Title="DockTest"
+        x:DataType="quickStartMultiDocumentMvvm:MainWindowViewModel">
+  <StackPanel>
+    <DockControl>
+      <DocumentDock
+        ItemsSource="{Binding Documents}"
+        CanCreateDocument="True"
+        Factory="{Binding DockFactory}">
+        <DocumentDock.DocumentTemplate>
+          <DocumentTemplate x:DataType="Document">
+            <StackPanel Margin="10">
+              <TextBlock Text="Document Properties" FontWeight="Bold" Margin="0,0,0,10" />
+
+              <TextBlock Text="Title:" FontWeight="SemiBold" />
+              <TextBox Text="{Binding ((quickStartMultiDocumentMvvm:FileDocument)Context).Title}" Margin="0,0,0,10" />
+
+              <TextBlock Text="Content:" FontWeight="SemiBold" />
+              <TextBox Text="{Binding ((quickStartMultiDocumentMvvm:FileDocument)Context).Content}"
+                       AcceptsReturn="True"
+                       TextWrapping="Wrap"
+                       Height="200" />
+            </StackPanel>
+          </DocumentTemplate>
+        </DocumentDock.DocumentTemplate>
+      </DocumentDock>
+    </DockControl>
+    <StackPanel Orientation="Horizontal">
+      <Label>Number of documents:</Label>
+      <Label Content="{Binding Documents.Count}" />
+      <Button Command="{Binding ClearAllCommand}">Clear all</Button>
+    </StackPanel>
+  </StackPanel>
+
+</Window>

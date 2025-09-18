@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>11.3.2</AvaloniaVersion>
+    <AvaloniaVersion>11.3.6</AvaloniaVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
@@ -14,13 +14,13 @@
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="StaticViewLocator" Version="0.0.1" />
-    <PackageVersion Include="reactiveui" Version="20.4.1" />
+    <PackageVersion Include="reactiveui" Version="21.0.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveGenerator" Version="0.12.0" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="YamlDotNet" Version="16.3.0" />
     <PackageVersion Include="ReactiveMarbles.PropertyChanged" Version="2.0.27" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.7" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.9" />
     <PackageVersion Include="WebViewControl-Avalonia" Version="3.120.10" />
     <PackageVersion Include="WebViewControl-Avalonia-ARM64" Version="3.120.10" />
     <PackageVersion Include="xunit" Version="2.9.3" />
@@ -30,7 +30,7 @@
     <PackageVersion Include="xunit.extensibility.core" Version="2.9.3" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.console" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.3">
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageVersion>
@@ -38,9 +38,9 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Nuke.Common" Version="9.0.4" />
-    <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="9.0.7" />
-    <PackageVersion Include="protobuf-net" Version="3.2.52" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+    <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="9.0.9" />
+    <PackageVersion Include="protobuf-net" Version="3.2.56" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
     <PackageVersion Include="Prism.Core" Version="9.0.537" />
     <PackageVersion Include="ReactiveProperty" Version="9.7.0" />
     <PackageVersion Include="Caliburn.Micro.Core" Version="5.0.181-beta" />

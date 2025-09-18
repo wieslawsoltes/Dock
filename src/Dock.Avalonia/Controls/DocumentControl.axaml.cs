@@ -1,5 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -69,6 +71,9 @@ public class DocumentControl : TemplatedControl
     public static readonly StyledProperty<DocumentTabLayout> TabsLayoutProperty =
         AvaloniaProperty.Register<DocumentControl, DocumentTabLayout>(nameof(TabsLayout));
 
+    private MdiMinimizedContainer? _minimizedContainer;
+    private ObservableCollection<IDockable> _minimizedItems = new();
+
     /// <summary>
     /// Gets or sets tab icon template.
     /// </summary>
@@ -129,6 +134,18 @@ public class DocumentControl : TemplatedControl
     public DocumentControl()
     {
         UpdatePseudoClasses(IsActive);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _minimizedContainer = e.NameScope.Find<MdiMinimizedContainer>("PART_MinimizedContainer");
+        if (_minimizedContainer is not null)
+        {
+            _minimizedContainer.MinimizedItems = _minimizedItems;
+        }
     }
 
     /// <inheritdoc/>

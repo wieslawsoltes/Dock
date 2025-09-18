@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:dmc="using:Dock.Model.Core"
+                    x:DataType="controls:MdiMinimizedContainer"
+                    x:CompileBindings="True">
+
+  <ControlTheme x:Key="{x:Type controls:MdiMinimizedContainer}" TargetType="controls:MdiMinimizedContainer">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="IsVisible" Value="{Binding HasItems, RelativeSource={RelativeSource Self}}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="6">
+          <ItemsControl x:Name="PART_MinimizedItems"
+                        ItemsSource="{TemplateBinding MinimizedItems}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="dmc:IDockable">
+                <controls:MdiDocumentItem Content="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="6" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

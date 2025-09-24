@@ -14,7 +14,7 @@
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="StaticViewLocator" Version="0.0.1" />
-    <PackageVersion Include="reactiveui" Version="21.0.1" />
+    <PackageVersion Include="reactiveui" Version="20.4.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="ReactiveGenerator" Version="0.12.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />

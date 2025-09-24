@@ -13,6 +13,8 @@
   <x:String x:Key="DocumentTabStripItemCloseAllTabsString">Close all tabs</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsLeftString">_Close tabs to the left</x:String>
   <x:String x:Key="DocumentTabStripItemCloseTabsRightString">_Close tabs to the right</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseTabsAboveString">_Close all tabs above</x:String>
+  <x:String x:Key="DocumentTabStripItemCloseTabsBelowString">_Close all tabs below</x:String>
   <x:String x:Key="DocumentTabStripItemNewHorizontalDockString">New Horizontal Document Dock</x:String>
   <x:String x:Key="DocumentTabStripItemNewVerticalDockString">New Vertical Document Dock</x:String>
   <x:String x:Key="DocumentTabStripItemTabLayoutString">Tab Layout</x:String>

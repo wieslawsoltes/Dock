@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Controls;
 using Xunit;
@@ -27,6 +28,16 @@ public class DocumentDockActionsTests
         public override void SetFocusedDockable(IDock dock, IDockable? dockable)
         {
             Focused = (dock, dockable);
+        }
+    }
+
+    private class BoundCollectionFactory : Factory
+    {
+        public ObservableCollection<string> Items = new ObservableCollection<string>();
+        public override bool AddDocumentToBoundCollection()
+        {
+            Items.Add("new");
+            return true;
         }
     }
 
@@ -62,5 +73,16 @@ public class DocumentDockActionsTests
         Assert.NotNull(factory.Focused);
         Assert.Same(dock, factory.Focused?.dock);
         Assert.Same(tool, factory.Focused?.dockable);
+    }
+
+    [Fact]
+    public void AddDocumentCallsBound()
+    {
+        var factory = new BoundCollectionFactory();
+        var dock = new DocumentDock { Factory = factory };
+        Assert.Equal(0, factory.Items.Count);
+        dock.CreateDocument!.Execute(null);
+        Assert.Equal(1, factory.Items.Count);
+        var document = new Document();
     }
 }

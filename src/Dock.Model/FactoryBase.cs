@@ -550,4 +550,7 @@ public abstract partial class FactoryBase : IFactory
             }
         }
     }
+
+    public virtual bool AddDocumentToBoundCollection()
+        => false;
 }

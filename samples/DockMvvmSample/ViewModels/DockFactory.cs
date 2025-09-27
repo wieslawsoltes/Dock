@@ -70,7 +70,7 @@ public class DockFactory : Factory
 
         var rightDock = new ProportionalDock
         {
-            // DockGroup = "RightDock",
+            DockGroup = "RightDock",
             Proportion = 0.25,
             // MinWidth = 200,
             // MaxWidth = 400,
@@ -101,7 +101,7 @@ public class DockFactory : Factory
 
         var documentDock = new CustomDocumentDock
         {
-            // DockGroup = "CustomDocumentDock",
+            DockGroup = "CustomDocumentDock",
             IsCollapsable = false,
             ActiveDockable = document1,
             VisibleDockables = CreateList<IDockable>(document1, document2, document3),

@@ -190,25 +190,17 @@ public class DockManager : IDockManager
             return false;
         }
 
-        // Set up the wrapper dock - AddDockable will set the ownership
-        factory.AddDockable(wrapperDock, sourceDockable);
+        // Add wrapper to root dock first so MoveDockable can attach the dockable into it
+        factory.AddDockable(targetRootDock, wrapperDock);
+
+        // Move the source dockable into the wrapper using factory logic to ensure proper cleanup/events
+        factory.MoveDockable(sourceOwner, wrapperDock, sourceDockable, targetDockable: null);
+
         wrapperDock.ActiveDockable = sourceDockable;
 
-        // Remove from source owner
-        sourceOwner.VisibleDockables?.Remove(sourceDockable);
-        
-        // Add wrapper to root dock - this sets wrapperDock.Owner = targetRootDock
-        factory.AddDockable(targetRootDock, wrapperDock);
-        
         if (targetRootDock.ActiveDockable is null)
         {
             targetRootDock.ActiveDockable = wrapperDock;
-        }
-
-        // Update the source owner's active dockable if needed
-        if (sourceOwner.ActiveDockable == sourceDockable)
-        {
-            sourceOwner.ActiveDockable = sourceOwner.VisibleDockables?.FirstOrDefault();
         }
 
         return true;

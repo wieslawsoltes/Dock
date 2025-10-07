@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>11.3.6.1</VersionPrefix>
+    <VersionPrefix>11.3.6.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>Wiesław Šoltés</Authors>
     <Company>Wiesław Šoltés</Company>

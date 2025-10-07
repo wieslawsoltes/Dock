@@ -6,7 +6,6 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
-using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -163,6 +162,21 @@ internal class DockControlState : DockManagerState, IDockControlState
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
     
+                // Validate before executing global docking; if validation fails, fall back to floating when possible.
+                if (!ValidateGlobal(point, localOperation, dragAction, relativeTo))
+                {
+                    if (sourceDockable.CanFloat)
+                    {
+                        var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
+                        var factory = activeDockControl?.Layout?.Factory ?? dockControl.Layout?.Factory;
+                        if (activeDockControl is { } active && factory is { })
+                        {
+                            Float(point, active, sourceDockable, factory);
+                        }
+                    }
+                    return;
+                }
+
                 // TODO: The validation fails in floating window as ActiveDockable is a tool dock.
                 // if (!ValidateGlobalTarget(sourceDockable, targetDock))
                 // {
@@ -177,18 +191,33 @@ internal class DockControlState : DockManagerState, IDockControlState
         }
         else
         {
-            if (_context.DragControl.DataContext is IDockable sourceDockable &&
-                DropControl.DataContext is IDockable targetDockable)
+            if (_context.DragControl.DataContext is IDockable sourceDockable)
             {
-                if (!ValidateLocalTarget(sourceDockable, targetDockable))
+                var target = DropControl.DataContext as IDockable;
+                if (target is null)
                 {
                     return;
                 }
 
-                Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
-            }
-        }
-    }
+                if (!ValidateLocalTarget(sourceDockable, target))
+                {
+                    // If local docking target is invalid, fallback to floating if allowed
+                    if (sourceDockable.CanFloat)
+                    {
+                        var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
+                        var factory = activeDockControl?.Layout?.Factory ?? DropControl.FindAncestorOfType<DockControl>()?.Layout?.Factory;
+                        if (activeDockControl is { } active && factory is { })
+                        {
+                            Float(point, active, sourceDockable, factory);
+                        }
+                    }
+                    return;
+                }
+
+                Execute(point, localOperation, dragAction, relativeTo, sourceDockable, target);
+             }
+         }
+     }
 
     private void Leave()
     {
@@ -204,7 +233,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         // For local validation during Enter, we just check if source can do local docking
         // Detailed target validation happens later in ValidateDockable when DropControl is set
-        if (DropControl?.DataContext is IDockable targetDockable)
+        if (DropControl?.DataContext is IDockable)
         {
             return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
         }
@@ -501,6 +530,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                         _context.TargetDockControl = null;
                         var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && sourceDockable.CanFloat;
                         preview = canFloat ? "Float" : "None";
+                    }
+
+                    // If validation produced "None" but the dragged source supports floating, show Float preview.
+                    if (preview == "None" && _context.DragControl?.DataContext is IDockable src && src.CanFloat)
+                    {
+                        preview = "Float";
                     }
 
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);

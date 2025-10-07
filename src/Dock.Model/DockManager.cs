@@ -149,6 +149,71 @@ public class DockManager : IDockManager
         };
     }
 
+    private bool DockDockableIntoRoot(IDockable sourceDockable, IRootDock targetRootDock, DragAction action, DockOperation operation, bool bExecute)
+    {
+        // Only allow fill operation
+        if (operation != DockOperation.Fill)
+        {
+            return false;
+        }
+
+        if (!bExecute)
+        {
+            return true;
+        }
+
+        // Get the factory
+        var factory = targetRootDock.Factory;
+        if (factory is null)
+        {
+            return false;
+        }
+
+        // Get the source owner
+        if (sourceDockable.Owner is not IDock sourceOwner)
+        {
+            return false;
+        }
+
+        // Create wrapper dock based on source type
+        IDock wrapperDock;
+        if (sourceDockable is ITool)
+        {
+            wrapperDock = factory.CreateToolDock();
+        }
+        else if (sourceDockable is IDocument)
+        {
+            wrapperDock = factory.CreateDocumentDock();
+        }
+        else
+        {
+            return false;
+        }
+
+        // Set up the wrapper dock - AddDockable will set the ownership
+        factory.AddDockable(wrapperDock, sourceDockable);
+        wrapperDock.ActiveDockable = sourceDockable;
+
+        // Remove from source owner
+        sourceOwner.VisibleDockables?.Remove(sourceDockable);
+        
+        // Add wrapper to root dock - this sets wrapperDock.Owner = targetRootDock
+        factory.AddDockable(targetRootDock, wrapperDock);
+        
+        if (targetRootDock.ActiveDockable is null)
+        {
+            targetRootDock.ActiveDockable = wrapperDock;
+        }
+
+        // Update the source owner's active dockable if needed
+        if (sourceOwner.ActiveDockable == sourceDockable)
+        {
+            sourceOwner.ActiveDockable = sourceOwner.VisibleDockables?.FirstOrDefault();
+        }
+
+        return true;
+    }
+
     /// <inheritdoc/>
     public bool ValidateTool(ITool sourceTool, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
@@ -159,7 +224,7 @@ public class DockManager : IDockManager
 
         return targetDockable switch
         {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceTool, targetDockable, ScreenPosition, bExecute),
+            IRootDock rootDock => DockDockableIntoRoot(sourceTool, rootDock, action, operation, bExecute),
             IToolDock toolDock =>
                 (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
                 && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
@@ -338,7 +403,7 @@ public class DockManager : IDockManager
 
         return targetDockable switch
         {
-            IRootDock _ => _dockService.DockDockableIntoWindow(sourceDocument, targetDockable, ScreenPosition, bExecute),
+            IRootDock rootDock => DockDockableIntoRoot(sourceDocument, rootDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
             IDocument document => _dockService.DockDockableIntoDockable(sourceDocument, document, action, bExecute),
             IProportionalDock proportionalDock => DockDockableIntoDock(sourceDocument, proportionalDock, action, operation, bExecute),

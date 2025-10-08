@@ -84,7 +84,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (globalOperation != DockOperation.None)
         {
-            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
         }
         else
         {

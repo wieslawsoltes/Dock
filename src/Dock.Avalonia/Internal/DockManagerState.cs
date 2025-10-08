@@ -53,6 +53,13 @@ internal abstract class DockManagerState : IDockManagerState
             }
 
             LocalAdornerHelper.AddAdorner(host, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
+            LocalAdornerHelper.SetGlobalDockAvailability(isGlobalValid);
+            LocalAdornerHelper.SetGlobalDockActive(false);
+        }
+        else
+        {
+            LocalAdornerHelper.SetGlobalDockAvailability(false);
+            LocalAdornerHelper.SetGlobalDockActive(false);
         }
 
         // Global dock target
@@ -110,6 +117,8 @@ internal abstract class DockManagerState : IDockManagerState
             var host = DockProperties.GetDockAdornerHost(control) ?? control;
             LocalAdornerHelper.RemoveAdorner(host);
         }
+        LocalAdornerHelper.SetGlobalDockAvailability(false);
+        LocalAdornerHelper.SetGlobalDockActive(false);
 
         // Global dock target
         if (DropControl is { } dropControl)

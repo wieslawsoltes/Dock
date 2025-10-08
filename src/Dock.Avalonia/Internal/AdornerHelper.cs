@@ -127,6 +127,32 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
         _layer = layer;
     }
 
+    public void SetGlobalDockAvailability(bool isAvailable)
+    {
+        if (_adorner is DockTargetBase dockTarget)
+        {
+            dockTarget.IsGlobalDockAvailable = isAvailable;
+        }
+
+        if (Adorner is DockTargetBase adorner)
+        {
+            adorner.IsGlobalDockAvailable = isAvailable;
+        }
+    }
+
+    public void SetGlobalDockActive(bool isActive)
+    {
+        if (_adorner is DockTargetBase dockTarget)
+        {
+            dockTarget.IsGlobalDockActive = isActive;
+        }
+
+        if (Adorner is DockTargetBase adorner)
+        {
+            adorner.IsGlobalDockActive = isActive;
+        }
+    }
+
     public void RemoveAdorner(Visual visual)
     {
         if (useFloatingDockAdorner)

@@ -120,6 +120,8 @@ internal class DockControlState : DockManagerState, IDockControlState
         {
             ValidateLocal(point, localOperation, dragAction, relativeTo);
         }
+
+        LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
     private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)

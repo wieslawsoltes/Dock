@@ -65,10 +65,24 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     public static readonly StyledProperty<bool> ShowVerticalTargetsProperty = AvaloniaProperty.Register<DockTargetBase, bool>(
         nameof(ShowVerticalTargets), defaultValue: true);
 
+    /// <summary>
+    /// Defines the <see cref="IsGlobalDockAvailable"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsGlobalDockAvailableProperty =
+        AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockAvailable));
+
+    /// <summary>
+    /// Defines the <see cref="IsGlobalDockActive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsGlobalDockActiveProperty =
+        AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockActive));
+
     public DockTargetBase()
     {
         PseudoClasses.Set(":horizontal", this.GetObservable(ShowHorizontalTargetsProperty));
         PseudoClasses.Set(":vertical", this.GetObservable(ShowVerticalTargetsProperty));
+        PseudoClasses.Set(":global-available", this.GetObservable(IsGlobalDockAvailableProperty));
+        PseudoClasses.Set(":global-active", this.GetObservable(IsGlobalDockActiveProperty));
     }
 
     /// <summary>
@@ -96,6 +110,24 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     {
         get => GetValue(ShowVerticalTargetsProperty);
         set => SetValue(ShowVerticalTargetsProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether any global docking options are currently available.
+    /// </summary>
+    public bool IsGlobalDockAvailable
+    {
+        get => GetValue(IsGlobalDockAvailableProperty);
+        set => SetValue(IsGlobalDockAvailableProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a global docking operation is active.
+    /// </summary>
+    public bool IsGlobalDockActive
+    {
+        get => GetValue(IsGlobalDockActiveProperty);
+        set => SetValue(IsGlobalDockActiveProperty, value);
     }
 
     /// <summary>
@@ -427,5 +459,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         ShowHorizontalTargets = true;
         ShowVerticalTargets = true;
+        IsGlobalDockAvailable = false;
+        IsGlobalDockActive = false;
     }
 }

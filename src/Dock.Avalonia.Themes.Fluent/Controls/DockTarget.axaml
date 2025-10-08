@@ -31,16 +31,20 @@
       <ControlTemplate>
         <Grid x:Name="PART_IndicatorGrid" RowDefinitions="*,*" ColumnDefinitions="*,*">
           <Panel x:Name="PART_TopIndicator" 
-                 Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" 
+                 Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0"
+                 IsVisible="{TemplateBinding ShowVerticalTargets}"
                  DockProperties.IndicatorDockOperation="Top" />
           <Panel x:Name="PART_BottomIndicator" 
-                 Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" 
+                 Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
+                 IsVisible="{TemplateBinding ShowVerticalTargets}"
                  DockProperties.IndicatorDockOperation="Bottom" />
           <Panel x:Name="PART_LeftIndicator" 
-                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                 IsVisible="{TemplateBinding ShowHorizontalTargets}"
                  DockProperties.IndicatorDockOperation="Left" />
           <Panel x:Name="PART_RightIndicator" 
-                 Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" 
+                 Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                 IsVisible="{TemplateBinding ShowHorizontalTargets}"
                  DockProperties.IndicatorDockOperation="Right" />
           <Panel x:Name="PART_CenterIndicator" 
                  Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
@@ -49,16 +53,20 @@
                  Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="0">
             <Grid x:Name="PART_SelectorGrid" RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
               <Image x:Name="PART_TopSelector" 
-                     Grid.Row="0" Grid.Column="1" 
+                     Grid.Row="0" Grid.Column="1"
+                     IsVisible="{TemplateBinding ShowVerticalTargets}"
                      DockProperties.IndicatorDockOperation="Top" />
               <Image x:Name="PART_BottomSelector" 
-                     Grid.Row="2" Grid.Column="1" 
+                     Grid.Row="2" Grid.Column="1"
+                     IsVisible="{TemplateBinding ShowVerticalTargets}"
                      DockProperties.IndicatorDockOperation="Bottom" />
               <Image x:Name="PART_LeftSelector" 
-                     Grid.Row="1" Grid.Column="0" 
+                     Grid.Row="1" Grid.Column="0"
+                     IsVisible="{TemplateBinding ShowHorizontalTargets}"
                      DockProperties.IndicatorDockOperation="Left" />
               <Image x:Name="PART_RightSelector" 
-                     Grid.Row="1" Grid.Column="2" 
+                     Grid.Row="1" Grid.Column="2"
+                     IsVisible="{TemplateBinding ShowHorizontalTargets}"
                      DockProperties.IndicatorDockOperation="Right" />
               <Image x:Name="PART_CenterSelector" 
                      Grid.Row="1" Grid.Column="1" 

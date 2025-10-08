@@ -84,7 +84,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (globalOperation != DockOperation.None)
         {
-            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
         }
         else
         {
@@ -93,6 +93,8 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 ValidateLocal(point, localOperation, dragAction, relativeTo);
             } 
         }
+
+        LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
     private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)

@@ -7,8 +7,9 @@ namespace Dock.Avalonia.Internal;
 
 internal class DragPreviewHelper
 {
-    private DragPreviewWindow? _window;
-    private DragPreviewControl? _control;
+    private static readonly object s_sync = new();
+    private static DragPreviewWindow? s_window;
+    private static DragPreviewControl? s_control;
 
     private static PixelPoint GetPositionWithinWindow(Window window, PixelPoint position, PixelPoint offset)
     {
@@ -26,44 +27,58 @@ internal class DragPreviewHelper
 
     public void Show(IDockable dockable, PixelPoint position, PixelPoint offset)
     {
-        Hide();
-
-        _control = new DragPreviewControl
+        lock (s_sync)
         {
-            Status = string.Empty
-        };
+            if (s_window is null || s_control is null)
+            {
+                s_control = new DragPreviewControl
+                {
+                    Status = string.Empty
+                };
 
-        _window = new DragPreviewWindow
-        {
-            Content = _control,
-            DataContext = dockable
-        };
+                s_window = new DragPreviewWindow
+                {
+                    Content = s_control
+                };
+            }
 
-        _window.Position = GetPositionWithinWindow(_window, position, offset);
+            s_window.DataContext = dockable;
+            s_control.Status = string.Empty;
+            s_window.Position = GetPositionWithinWindow(s_window, position, offset);
 
-        _window.Show();
+            if (!s_window.IsVisible)
+            {
+                s_window.Show();
+            }
+        }
     }
 
     public void Move(PixelPoint position, PixelPoint offset, string status)
     {
-        if (_window is null || _control is null)
+        lock (s_sync)
         {
-            return;
-        }
+            if (s_window is null || s_control is null)
+            {
+                return;
+            }
 
-        _control.Status = status;
-        _window.Position = GetPositionWithinWindow(_window, position, offset);
+            s_control.Status = status;
+            s_window.Position = GetPositionWithinWindow(s_window, position, offset);
+        }
     }
 
     public void Hide()
     {
-        if (_window is null)
+        lock (s_sync)
         {
-            return;
+            if (s_window is null)
+            {
+                return;
+            }
+
+            s_window.Close();
+            s_window = null;
+            s_control = null;
         }
- 
-        _window.Close();
-        _window = null;
-        _control = null;
     }
 }

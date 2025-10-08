@@ -50,6 +50,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             if (adorner is DockTarget dockTarget)
             {
                 dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                dockTarget.ShowHorizontalTargets = horizontalDocking;
+                dockTarget.ShowVerticalTargets = verticalDocking;
             }
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
@@ -109,6 +111,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             {
                 case DockTarget dockTarget:
                     dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    dockTarget.ShowHorizontalTargets = horizontalDocking;
+                    dockTarget.ShowVerticalTargets = verticalDocking;
                     break;
                 case GlobalDockTarget globalDockTarget:
                     globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;
@@ -121,6 +125,32 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
 
         layer.Children.Add(Adorner);
         _layer = layer;
+    }
+
+    public void SetGlobalDockAvailability(bool isAvailable)
+    {
+        if (_adorner is DockTargetBase dockTarget)
+        {
+            dockTarget.IsGlobalDockAvailable = isAvailable;
+        }
+
+        if (Adorner is DockTargetBase adorner)
+        {
+            adorner.IsGlobalDockAvailable = isAvailable;
+        }
+    }
+
+    public void SetGlobalDockActive(bool isActive)
+    {
+        if (_adorner is DockTargetBase dockTarget)
+        {
+            dockTarget.IsGlobalDockActive = isActive;
+        }
+
+        if (Adorner is DockTargetBase adorner)
+        {
+            adorner.IsGlobalDockActive = isActive;
+        }
     }
 
     public void RemoveAdorner(Visual visual)

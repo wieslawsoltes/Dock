@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
+using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -42,7 +43,23 @@ internal abstract class DockManagerState : IDockManagerState
         {
             var host = DockProperties.GetDockAdornerHost(control) ?? control;
             var indicatorsOnly = DockProperties.GetShowDockIndicatorOnly(control);
-            LocalAdornerHelper.AddAdorner(host, indicatorsOnly, true, true);
+            var allowHorizontalDocking = true;
+            var allowVerticalDocking = true;
+
+            if (control.DataContext is IRootDock { OpenedDockablesCount: 0 })
+            {
+                allowHorizontalDocking = false;
+                allowVerticalDocking = false;
+            }
+
+            LocalAdornerHelper.AddAdorner(host, indicatorsOnly, allowHorizontalDocking, allowVerticalDocking);
+            LocalAdornerHelper.SetGlobalDockAvailability(isGlobalValid);
+            LocalAdornerHelper.SetGlobalDockActive(false);
+        }
+        else
+        {
+            LocalAdornerHelper.SetGlobalDockAvailability(false);
+            LocalAdornerHelper.SetGlobalDockActive(false);
         }
 
         // Global dock target
@@ -100,6 +117,8 @@ internal abstract class DockManagerState : IDockManagerState
             var host = DockProperties.GetDockAdornerHost(control) ?? control;
             LocalAdornerHelper.RemoveAdorner(host);
         }
+        LocalAdornerHelper.SetGlobalDockAvailability(false);
+        LocalAdornerHelper.SetGlobalDockActive(false);
 
         // Global dock target
         if (DropControl is { } dropControl)

@@ -219,7 +219,8 @@ public class NavigateAdapter : INavigateAdapter
     {
         if (_dock is IRootDock rootDock && rootDock.Windows is { })
         {
-            foreach (var window in rootDock.Windows)
+            var windows = rootDock.Windows.ToList();
+            foreach (var window in windows)
             {
                 window.Save();
                 window.Exit();

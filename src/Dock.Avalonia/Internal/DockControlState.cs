@@ -164,7 +164,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
     
                 // Validate before executing global docking; if validation fails, fall back to floating when possible.
-                if (!ValidateGlobal(point, localOperation, dragAction, relativeTo))
+                if (!ValidateGlobal(point, globalOperation, dragAction, relativeTo))
                 {
                     if (sourceDockable.CanFloat)
                     {

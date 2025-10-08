@@ -114,7 +114,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (globalOperation != DockOperation.None)
         {
-            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
         }
         else
         {
@@ -507,7 +507,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
                             if (globalOperation != DockOperation.None)
                             {
-                                var valid = ValidateGlobal(targetPoint, localOperation, dragAction, targetDockControl);
+                                var valid = ValidateGlobal(targetPoint, globalOperation, dragAction, targetDockControl);
                                 preview = valid ? "Dock" : "None";
                             }
                             else

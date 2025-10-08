@@ -50,6 +50,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             if (adorner is DockTarget dockTarget)
             {
                 dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                dockTarget.ShowHorizontalTargets = horizontalDocking;
+                dockTarget.ShowVerticalTargets = verticalDocking;
             }
             else if (adorner is GlobalDockTarget globalDockTarget)
             {
@@ -109,6 +111,8 @@ internal class AdornerHelper<T>(bool useFloatingDockAdorner)
             {
                 case DockTarget dockTarget:
                     dockTarget.ShowIndicatorsOnly = indicatorsOnly;
+                    dockTarget.ShowHorizontalTargets = horizontalDocking;
+                    dockTarget.ShowVerticalTargets = verticalDocking;
                     break;
                 case GlobalDockTarget globalDockTarget:
                     globalDockTarget.ShowIndicatorsOnly = indicatorsOnly;

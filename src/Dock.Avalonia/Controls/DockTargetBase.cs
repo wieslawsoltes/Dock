@@ -108,6 +108,16 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// </summary>
     protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
 
+    private bool IsOperationEnabled(DockOperation operation)
+    {
+        return operation switch
+        {
+            DockOperation.Left or DockOperation.Right => ShowHorizontalTargets,
+            DockOperation.Top or DockOperation.Bottom => ShowVerticalTargets,
+            _ => true
+        };
+    }
+
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -198,6 +208,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         var operation = DockProperties.GetIndicatorDockOperation(dropControl);
 
         IndicatorOperations.TryGetValue(operation, out var indicator);
+        SelectorsOperations.TryGetValue(operation, out var selector);
 
         foreach (var kvp in IndicatorOperations)
         {
@@ -205,6 +216,21 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             {
                 kvp.Value.Opacity = 0;
             }
+        }
+
+        if (!IsOperationEnabled(operation))
+        {
+            if (indicator is not null)
+            {
+                indicator.Opacity = 0;
+            }
+
+            if (selector is not null)
+            {
+                selector.Opacity = 0;
+            }
+
+            return DefaultDockOperation;
         }
 
         return InvalidateIndicatorOnly(dropControl, indicator, point, relativeTo, operation, dragAction, visible)
@@ -225,6 +251,21 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         {
             var operation = kvp.Key;
             SelectorsOperations.TryGetValue(operation, out var selector);
+
+            if (!IsOperationEnabled(operation))
+            {
+                if (selector is not null)
+                {
+                    selector.Opacity = 0;
+                }
+
+                if (kvp.Value is not null)
+                {
+                    kvp.Value.Opacity = 0;
+                }
+
+                continue;
+            }
 
             if (InvalidateIndicator(selector, kvp.Value, point, relativeTo, operation, dragAction,
                     validate, visible))

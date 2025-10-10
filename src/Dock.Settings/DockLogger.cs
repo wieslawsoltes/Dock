@@ -26,7 +26,10 @@ public static class DockLogger
     /// </summary>
     /// <param name="category">A short category name describing the log source.</param>
     /// <param name="message">The log message.</param>
-    [Conditional("DEBUG")]
+    /// <summary>
+    /// Logs the specified message when diagnostics logging is enabled.
+    /// This method is not DEBUG-only so diagnostics can be enabled in release builds via DockSettings.
+    /// </summary>
     public static void LogDebug(string category, string message)
     {
         LogInternal(category, message);

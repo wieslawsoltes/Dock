@@ -204,7 +204,6 @@ public abstract partial class FactoryBase : IFactory
             split = CreateProportionalDock();
             split.Title = nameof(IProportionalDock);
             split.VisibleDockables = CreateList<IDockable>();
-                                CopyDockGroup(dockable, split);
             CopyDockGroup(dockable, split);
             if (split.VisibleDockables is not null)
             {

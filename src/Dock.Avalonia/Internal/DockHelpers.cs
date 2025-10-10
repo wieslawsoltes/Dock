@@ -41,12 +41,17 @@ internal static class DockHelpers
     [Conditional("DEBUG")]
     private static void LogDropSearch(string message)
     {
-    DockLogger.LogDebug("DropSearch", message);
+        DockLogger.LogDebug("DropSearch", message);
     }
 
-    [Conditional("DEBUG")]
     public static void LogDropAreas(Visual? root, string context)
     {
+        // Avoid walking the visual tree unless diagnostics are explicitly enabled
+        if (!DockSettings.EnableDiagnosticsLogging)
+        {
+            return;
+        }
+
         if (root is null)
         {
             LogDropSearch($"[{context}] Root visual is null.");
@@ -67,7 +72,6 @@ internal static class DockHelpers
         foreach (var control in dropAreas)
         {
             var value = control.GetValue(DockProperties.IsDropAreaProperty);
-            //var background = control is Control ctrl ? ctrl.Background : null;
             LogDropSearch($"  DropArea {control.GetType().Name}: Value={value}, Bounds={control.Bounds}, IsVisible={control.IsVisible}, IsHitTestVisible={control.IsHitTestVisible}, IsEffectivelyEnabled={control.IsEffectivelyEnabled}");
         }
     }
@@ -137,8 +141,9 @@ internal static class DockHelpers
 
     private static void Print(Exception ex)
     {
-    DockLogger.Log("Exception", ex.Message);
-    DockLogger.Log("Exception", ex.StackTrace ?? string.Empty);
+        // Exception logging should always emit to help diagnose hit-test/runtime failures
+        DockLogger.Log("Exception", ex.Message);
+        DockLogger.Log("Exception", ex.StackTrace ?? string.Empty);
         if (ex.InnerException is { })
         {
             Print(ex.InnerException);

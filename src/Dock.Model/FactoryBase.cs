@@ -12,6 +12,15 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
+    private static void CopyDockGroup(IDockable source, IDockable target)
+    {
+        var group = DockGroupValidator.GetEffectiveDockGroup(source);
+        if (!string.IsNullOrEmpty(group))
+        {
+            target.DockGroup = group;
+        }
+    }
+
     private bool IsDockPinned(IList<IDockable>? pinnedDockables, IDock dock)
     {
         if (pinnedDockables is not null && pinnedDockables.Count != 0)
@@ -195,6 +204,7 @@ public abstract partial class FactoryBase : IFactory
             split = CreateProportionalDock();
             split.Title = nameof(IProportionalDock);
             split.VisibleDockables = CreateList<IDockable>();
+            CopyDockGroup(dockable, split);
             if (split.VisibleDockables is not null)
             {
                 AddVisibleDockable(split, dockable);
@@ -210,6 +220,7 @@ public abstract partial class FactoryBase : IFactory
         layout.Title = nameof(IProportionalDock);
         layout.VisibleDockables = CreateList<IDockable>();
         layout.Proportion = containerProportion;
+    CopyDockGroup(dock, layout);
 
         var splitter = CreateProportionalDockSplitter();
         splitter.Title = nameof(IProportionalDockSplitter);
@@ -390,8 +401,8 @@ public abstract partial class FactoryBase : IFactory
                         OnDockableUndocked(dockable, operation);
                         InsertVisibleDockable(ownerDock, index, layout);
                         OnDockableAdded(dockable);
-                        InitDockable(layout, ownerDock);
                         ownerDock.ActiveDockable = layout;
+                        InitDockable(layout, ownerDock);
                         OnDockableDocked(dockable, operation);
                     }
                 }
@@ -413,6 +424,7 @@ public abstract partial class FactoryBase : IFactory
             {
                 target = CreateToolDock();
                 target.Title = nameof(IToolDock);
+                CopyDockGroup(dockable, target);
                 if (target is IDock dock)
                 {
                     dock.VisibleDockables = CreateList<IDockable>();
@@ -429,6 +441,7 @@ public abstract partial class FactoryBase : IFactory
             {
                 target = CreateDocumentDock();
                 target.Title = nameof(IDocumentDock);
+                CopyDockGroup(dockable, target);
                 if (target is IDock dock)
                 {
                     dock.VisibleDockables = CreateList<IDockable>();

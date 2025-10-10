@@ -56,6 +56,16 @@ public static class DockSettings
     /// </summary>
     public static double GlobalDockingProportion = 0.25;
 
+    /// <summary>
+    /// Enables verbose diagnostics logging for docking workflows.
+    /// </summary>
+    public static bool EnableDiagnosticsLogging = false;
+
+    /// <summary>
+    /// Optional handler that is invoked when diagnostics logging emits a message.
+    /// </summary>
+    public static Action<string>? DiagnosticsLogHandler = null;
+
 
     /// <summary>
     /// Checks if the drag distance is greater than the minimum required distance to initiate a drag operation.

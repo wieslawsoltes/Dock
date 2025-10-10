@@ -8,6 +8,15 @@ namespace Dock.Model;
 /// <inheritdoc />
 public class DockService : IDockService
 {
+    private static void CopyDockGroup(IDockable source, IDockable target)
+    {
+        var group = DockGroupValidator.GetEffectiveDockGroup(source);
+        if (!string.IsNullOrEmpty(group))
+        {
+            target.DockGroup = group;
+        }
+    }
+
     private static bool IsValidMove(IDockable sourceDockable, IDock sourceDockableOwner, IDock targetDock, IDockable targetDockable)
     {
         if (targetDockable is IDock)
@@ -149,6 +158,7 @@ public class DockService : IDockService
         targetToolDock.Title = nameof(IToolDock);
         targetToolDock.Alignment = operation.ToAlignment();
         targetToolDock.VisibleDockables = factory.CreateList<IDockable>();
+        CopyDockGroup(sourceDockable, targetToolDock);
         
         // Local split into a new (empty) dock: allow per Empty Dock Rule
         if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetToolDock))
@@ -170,6 +180,7 @@ public class DockService : IDockService
         var targetDocumentDock = factory.CreateDocumentDock();
         targetDocumentDock.Title = nameof(IDocumentDock);
         targetDocumentDock.VisibleDockables = factory.CreateList<IDockable>();
+        CopyDockGroup(sourceDockable, targetDocumentDock);
         if (sourceDockableOwner is IDocumentDock sourceDocumentDock)
         {
             targetDocumentDock.Id = sourceDocumentDock.Id;

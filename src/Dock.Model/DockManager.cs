@@ -14,6 +14,15 @@ public class DockManager : IDockManager
 {
     private readonly IDockService _dockService;
 
+    private static void CopyDockGroup(IDockable source, IDockable target)
+    {
+        var group = DockGroupValidator.GetEffectiveDockGroup(source);
+        if (!string.IsNullOrEmpty(group))
+        {
+            target.DockGroup = group;
+        }
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManager"/> class.
     /// </summary>
@@ -189,6 +198,8 @@ public class DockManager : IDockManager
         {
             return false;
         }
+
+    CopyDockGroup(sourceDockable, wrapperDock);
 
         // Add wrapper to root dock first so MoveDockable can attach the dockable into it
         factory.AddDockable(targetRootDock, wrapperDock);

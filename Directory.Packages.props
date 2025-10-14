@@ -13,6 +13,7 @@
     <PackageVersion Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Headless.XUnit" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Microsoft.Build.Tasks.Core" Version="17.12.35" />
     <PackageVersion Include="StaticViewLocator" Version="0.0.1" />
     <PackageVersion Include="reactiveui" Version="20.4.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />

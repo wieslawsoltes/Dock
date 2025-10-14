@@ -104,16 +104,16 @@ Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate
 
 ```xml
 <DocumentDock ItemsSource="{Binding Documents}">
-  <DocumentDock.DocumentTemplate>
-    <DocumentTemplate>
-      <StackPanel Margin="10" x:DataType="Document">
+  <DocumentDock.DocumentTemplate >
+    <DocumentTemplate x:DataType="Document">
+      <StackPanel Margin="10">
         <TextBlock Text="Document Properties" FontWeight="Bold" Margin="0,0,0,10"/>
         
         <TextBlock Text="Title:" FontWeight="SemiBold"/>
-        <TextBox Text="{Binding Context.Title}" Margin="0,0,0,10"/>
+        <TextBox Text="{Binding ((FileDocument)Context).Title}" Margin="0,0,0,10"/>
         
         <TextBlock Text="Content:" FontWeight="SemiBold"/>
-        <TextBox Text="{Binding Context.Content}" 
+        <TextBox Text="{Binding ((FileDocument)Context))Content}" 
                  AcceptsReturn="True" 
                  TextWrapping="Wrap"
                  Height="200"/>
@@ -122,6 +122,59 @@ Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
 ```
+
+### 4.  Allowing addition of documents from the DocumentDock 
+
+The code above works well if you bind Add/Remove buttons in your UI to allow the collection to be modified.  However, it does not automatically add a document when you press the '+' button in the Tab-strip.  To accomplish this you need to provide DockFactory and override the default behaviour.
+
+```CSharp
+public class DockFactory(Action createDocument) : Factory
+{
+    /// <summary>
+    /// You could use this to do any last-minute work or change your mind
+    /// - the framework will remove the FileDocument from the collection
+    /// </summary>
+    public override bool OnDockableClosing(IDockable? dockable) => true;
+
+
+    /// <summary>
+    /// Called when the + button is pressed. Return true to indicate that the DockFactory is managing its own collection
+    /// </summary>
+    public override bool AddDocumentToBoundCollection()
+    {
+        createDocument();
+        return true;
+    }
+}
+```
+
+Add the DockFactory to the ViewModel
+
+``` CSharp
+
+    /// <summary>
+    ///     Factory used to provide AddDocument when + pressed on tab bar
+    /// </summary>
+    [ObservableProperty] private DockFactory _dockFactory;
+```
+Add a line the constructor
+```Csharp
+    //in ViewModel constructor...
+    DockFactory = new DockFactory(()=>Documents.Add(new FileDocument));
+```
+
+Finally, bind in the xaml
+```xml
+  <DocumentDock
+    ItemsSource="{Binding Documents}"
+    CanCreateDocument="True"
+    Factory="{Binding DockFactory}">
+    <DocumentDock.DocumentTemplate>
+...
+```
+
+See the QuickStartItemCollectionMvvm project in the samples folder for a working example.
+
 
 ## Property Mapping
 

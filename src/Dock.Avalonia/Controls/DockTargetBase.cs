@@ -306,6 +306,14 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             }
         }
 
+        foreach (var kvp in IndicatorOperations)
+        {
+            if (kvp.Key != result)
+            {
+                kvp.Value.Opacity = 0;
+            }
+        }
+
         return result;
     }
 

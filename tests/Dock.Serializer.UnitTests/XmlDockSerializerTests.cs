@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Mvvm.Controls;
 using Dock.Serializer.Xml;
 using Xunit;
 
@@ -78,13 +79,13 @@ public class XmlDockSerializerTests
     }
 
     [Fact]
-    public void SerializeDeserialize_AvaloniaDocument_Succeeds()
+    public void SerializeDeserialize_MvvmDocument_Succeeds()
     {
         var serializer = new DockXmlSerializer();
-        var document = new Document { Id = "Doc1", Title = "Test Document" };
+        var document = new Dock.Model.Mvvm.Controls.Document { Id = "Doc1", Title = "Test Document" };
 
         var xml = serializer.Serialize(document);
-        var result = serializer.Deserialize<Document>(xml);
+        var result = serializer.Deserialize<Dock.Model.Mvvm.Controls.Document>(xml);
 
         Assert.NotNull(result);
         Assert.Equal(document.Id, result!.Id);
@@ -92,17 +93,17 @@ public class XmlDockSerializerTests
     }
 
     [Fact]
-    public void SaveLoad_AvaloniaDocument_Succeeds()
+    public void SaveLoad_MvvmDocument_Succeeds()
     {
         var serializer = new DockXmlSerializer();
-        var document = new Document { Id = "Doc1", Title = "Test Document" };
+        var document = new Dock.Model.Mvvm.Controls.Document { Id = "Doc1", Title = "Test Document" };
         using var stream = new NonClosingMemoryStream();
 
         serializer.Save(stream, document);
         Assert.True(stream.Length > 0);
 
         stream.Position = 0;
-        var loaded = serializer.Load<Document>(stream);
+        var loaded = serializer.Load<Dock.Model.Mvvm.Controls.Document>(stream);
 
         Assert.NotNull(loaded);
         Assert.Equal(document.Id, loaded!.Id);

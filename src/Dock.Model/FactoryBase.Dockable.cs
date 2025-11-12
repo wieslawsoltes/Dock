@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -833,6 +834,8 @@ public abstract partial class FactoryBase
             {
                 targetContent.DocumentTemplate = sourceContent.DocumentTemplate;
             }
+
+            CopyDocumentFactory(sourceDoc, targetDoc);
         }
 
         if (dock is IToolDock sourceTool && targetDock is IToolDock targetTool)
@@ -1048,6 +1051,8 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            CopyDocumentFactory(sourceDock, targetDock);
         }
 
         MoveDockable(dock, newDock, dockable, null);
@@ -1094,6 +1099,8 @@ public abstract partial class FactoryBase
             {
                 tdc.DocumentTemplate = sdc.DocumentTemplate;
             }
+
+            CopyDocumentFactory(sourceDock, targetDock);
         }
 
         MoveDockable(dock, newDock, dockable, null);
@@ -1295,6 +1302,28 @@ public abstract partial class FactoryBase
         if (dockable.Owner != null)
         {
             UpdateOpenedDockablesCount(dockable.Owner);
+        }
+    }
+
+    /// <summary>
+    /// Copies the DocumentFactory from source to target DocumentDock if both have the property.
+    /// Uses reflection since DocumentFactory is not on the IDocumentDock interface.
+    /// </summary>
+    private void CopyDocumentFactory(IDocumentDock source, IDocumentDock target)
+    {
+        var sourceType = source.GetType();
+        var targetType = target.GetType();
+        
+        var sourceProperty = sourceType.GetProperty("DocumentFactory");
+        var targetProperty = targetType.GetProperty("DocumentFactory");
+        
+        if (sourceProperty != null && targetProperty != null && targetProperty.CanWrite)
+        {
+            var documentFactory = sourceProperty.GetValue(source);
+            if (documentFactory != null)
+            {
+                targetProperty.SetValue(target, documentFactory);
+            }
         }
     }
 }

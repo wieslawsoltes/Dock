@@ -1050,8 +1050,18 @@ public abstract partial class FactoryBase
             }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
+        // Prevent the source dock from collapsing when it becomes empty
+        var originalIsCollapsable = dock.IsCollapsable;
+        dock.IsCollapsable = false;
+
+        // Split first (while dock still has content) to create the layout
         SplitToDock(dock, newDock, DockOperation.Right);
+        
+        // Then move the dockable to the new dock
+        MoveDockable(dock, newDock, dockable, null);
+
+        // Restore the original IsCollapsable value
+        dock.IsCollapsable = originalIsCollapsable;
     }
 
     /// <inheritdoc/>
@@ -1096,8 +1106,18 @@ public abstract partial class FactoryBase
             }
         }
 
-        MoveDockable(dock, newDock, dockable, null);
+        // Prevent the source dock from collapsing when it becomes empty
+        var originalIsCollapsable = dock.IsCollapsable;
+        dock.IsCollapsable = false;
+
+        // Split first (while dock still has content) to create the layout
         SplitToDock(dock, newDock, DockOperation.Bottom);
+        
+        // Then move the dockable to the new dock
+        MoveDockable(dock, newDock, dockable, null);
+
+        // Restore the original IsCollapsable value
+        dock.IsCollapsable = originalIsCollapsable;
     }
 
     /// <inheritdoc/>

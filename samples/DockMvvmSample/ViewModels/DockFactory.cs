@@ -23,7 +23,30 @@ public class DockFactory : Factory
     public DockFactory(object context)
     {
         _context = context;
+        
+        // Example: Subscribe to DockableClosingAsync event to show async confirmation dialogs
+        // DockableClosingAsync += OnDockableClosingAsync;
     }
+
+    // Example: Async closing confirmation handler
+    // private void OnDockableClosingAsync(object? sender, Dock.Model.Core.Events.DockableClosingAsyncEventArgs e)
+    // {
+    //     // Only show confirmation for documents with unsaved changes
+    //     if (e.Dockable?.IsModified == true)
+    //     {
+    //         e.SetAsyncCancelHandler(async () =>
+    //         {
+    //             // Show a confirmation dialog using your preferred UI framework
+    //             // For example, using Avalonia's MessageBox or a custom dialog
+    //             // var result = await ShowConfirmationDialogAsync($"Save changes to '{e.Dockable.Title}'?");
+    //             
+    //             // Return true to CANCEL the close operation, false to ALLOW it
+    //             // return result == DialogResult.Cancel;
+    //             
+    //             return false; // Allow close (no confirmation for this example)
+    //         });
+    //     }
+    // }
 
     public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
 

@@ -9,17 +9,57 @@ using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
-internal class WindowDragContext
+/// <summary>
+/// Context for tracking window drag operations.
+/// </summary>
+public class WindowDragContext
 {
+    /// <summary>
+    /// Gets or sets the initial pointer position when drag started.
+    /// </summary>
     public PixelPoint DragStartPoint { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the window position when drag started.
+    /// </summary>
     public PixelPoint WindowStartPosition { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the offset between pointer and window position.
+    /// </summary>
     public PixelPoint WindowOffset { get; set; }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether the pointer is currently pressed.
+    /// </summary>
     public bool PointerPressed { get; set; }
+    
+    /// <summary>
+    /// Gets or sets a value indicating whether a drag and drop operation is in progress.
+    /// </summary>
     public bool DoDragDrop { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the target dock control for the drag operation.
+    /// </summary>
     public DockControl? TargetDockControl { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the target point within the target dock control.
+    /// </summary>
     public Point TargetPoint { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the drag action type.
+    /// </summary>
     public DragAction DragAction { get; set; }
 
+    /// <summary>
+    /// Starts a drag operation.
+    /// </summary>
+    /// <param name="point">The pointer position.</param>
+    /// <param name="windowPosition">The window position.</param>
+    /// <param name="windowOffset">The offset between pointer and window.</param>
     public void Start(PixelPoint point, PixelPoint windowPosition, PixelPoint windowOffset)
     {
         DragStartPoint = point;
@@ -32,6 +72,9 @@ internal class WindowDragContext
         DragAction = DragAction.Move;
     }
 
+    /// <summary>
+    /// Ends the drag operation.
+    /// </summary>
     public void End()
     {
         DragStartPoint = default;
@@ -46,13 +89,18 @@ internal class WindowDragContext
 }
     
 /// <summary>
-/// Host window state.
+/// Host window state implementation for managing drag and drop operations in host windows.
 /// </summary>
-internal class HostWindowState : DockManagerState, IHostWindowState
+public class HostWindowState : DockManagerState, IHostWindowState
 {
     private readonly HostWindow _hostWindow;
     private readonly WindowDragContext _context = new();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HostWindowState"/> class.
+    /// </summary>
+    /// <param name="dockManager">The dock manager.</param>
+    /// <param name="hostWindow">The host window.</param>
     public HostWindowState(IDockManager dockManager, HostWindow hostWindow) 
         : base(dockManager)
     {
@@ -275,10 +323,10 @@ internal class HostWindowState : DockManagerState, IHostWindowState
     }
 
     /// <summary>
-    /// Process pointer event.
+    /// Processes pointer events for window drag and drop operations.
     /// </summary>
-    /// <param name="point">The pointer position.</param>
-    /// <param name="eventType">The pointer event type.</param>
+    /// <param name="point">The pointer position in screen coordinates.</param>
+    /// <param name="eventType">The type of pointer event to process.</param>
     public void Process(PixelPoint point, EventType eventType)
     {
         switch (eventType)

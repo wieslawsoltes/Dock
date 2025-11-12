@@ -100,6 +100,20 @@ public class HostWindow : Window, IHostWindow
         UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
     }
 
+    /// <summary>
+    /// Initializes new instance of the <see cref="HostWindow"/> class with a custom state handler.
+    /// </summary>
+    /// <param name="hostWindowState">The custom host window state handler.</param>
+    protected HostWindow(IHostWindowState hostWindowState)
+    {
+        PositionChanged += HostWindow_PositionChanged;
+        LayoutUpdated += HostWindow_LayoutUpdated;
+        Activated += HostWindow_Activated;
+        Deactivated += HostWindow_Deactivated;
+        _hostWindowState = hostWindowState as HostWindowState ?? new HostWindowState(new DockManager(new DockService()), this);
+        UpdatePseudoClasses(IsToolWindow, ToolChromeControlsWholeWindow, DocumentChromeControlsWholeWindow);
+    }
+
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {

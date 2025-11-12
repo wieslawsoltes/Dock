@@ -6,7 +6,7 @@ namespace Dock.Avalonia.Internal;
 /// <summary>
 /// Pointer event type.
 /// </summary>
-internal enum EventType
+public enum EventType
 {
     /// <summary>
     /// Pointer pressed.

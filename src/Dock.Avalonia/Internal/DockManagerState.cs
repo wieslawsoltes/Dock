@@ -14,7 +14,10 @@ using Dock.Settings;
 
 namespace Dock.Avalonia.Internal;
 
-internal abstract class DockManagerState : IDockManagerState
+/// <summary>
+/// Base class for dock manager state implementations.
+/// </summary>
+public abstract class DockManagerState : IDockManagerState
 {
     private readonly IDockManager _dockManager;
     private Control? _globalAdornerHost;

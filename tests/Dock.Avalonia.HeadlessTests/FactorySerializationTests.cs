@@ -57,9 +57,6 @@ public class FactorySerializationTests
         var serializer = new AvaloniaDockSerializer();
         var json = serializer.Serialize(root);
         
-        // Debug: Print JSON to see what's being serialized
-        // System.Console.WriteLine(json);
-        
         var deserializedRoot = serializer.Deserialize<RootDock>(json);
         
         // Assert - Verify the structure is preserved

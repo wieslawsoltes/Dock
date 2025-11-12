@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Threading.Tasks;
 using Dock.Model.Core;
 using Dock.Model.Core.Events;
 
@@ -28,6 +29,9 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc />
     public event EventHandler<DockableClosingEventArgs>? DockableClosing;
+
+    /// <inheritdoc />
+    public event EventHandler<DockableClosingAsyncEventArgs>? DockableClosingAsync;
 
     /// <inheritdoc />
     public event EventHandler<DockableClosedEventArgs>? DockableClosed;
@@ -61,6 +65,9 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc />
     public event EventHandler<WindowClosingEventArgs>? WindowClosing;
+
+    /// <inheritdoc />
+    public event EventHandler<WindowClosingAsyncEventArgs>? WindowClosingAsync;
 
     /// <inheritdoc />
     public event EventHandler<WindowClosedEventArgs>? WindowClosed;
@@ -119,8 +126,40 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual bool OnDockableClosing(IDockable? dockable)
     {
+        // Call async version and wait for result synchronously
+        // This is to maintain backward compatibility with existing synchronous code paths
+        var canCloseAsync = OnDockableClosingAsync(dockable).GetAwaiter().GetResult();
+        
+        return canCloseAsync;
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<bool> OnDockableClosingAsync(IDockable? dockable)
+    {
+        // First, raise the async event to allow async operations like confirmation dialogs
+        var asyncEventArgs = new DockableClosingAsyncEventArgs(dockable);
+        DockableClosingAsync?.Invoke(this, asyncEventArgs);
+
+        // If an async handler was set, execute it
+        if (asyncEventArgs.HasAsyncCancelHandler)
+        {
+            var shouldCancel = await asyncEventArgs.ExecuteAsyncCancelHandlerAsync();
+            if (shouldCancel)
+            {
+                asyncEventArgs.Cancel = true;
+            }
+        }
+
+        // If async event canceled, return early
+        if (asyncEventArgs.Cancel)
+        {
+            return false;
+        }
+
+        // Then call the synchronous OnClose method for backward compatibility
         var canClose = dockable?.OnClose() ?? true;
 
+        // Finally, raise the synchronous closing event
         var eventArgs = new DockableClosingEventArgs(dockable)
         {
             Cancel = !canClose
@@ -222,8 +261,40 @@ public abstract partial class FactoryBase
     /// <inheritdoc />
     public virtual bool OnWindowClosing(IDockWindow? window)
     {
+        // Call async version and wait for result synchronously
+        // This is to maintain backward compatibility with existing synchronous code paths
+        var canCloseAsync = OnWindowClosingAsync(window).GetAwaiter().GetResult();
+        
+        return canCloseAsync;
+    }
+
+    /// <inheritdoc />
+    public virtual async Task<bool> OnWindowClosingAsync(IDockWindow? window)
+    {
+        // First, raise the async event to allow async operations like confirmation dialogs
+        var asyncEventArgs = new WindowClosingAsyncEventArgs(window);
+        WindowClosingAsync?.Invoke(this, asyncEventArgs);
+
+        // If an async handler was set, execute it
+        if (asyncEventArgs.HasAsyncCancelHandler)
+        {
+            var shouldCancel = await asyncEventArgs.ExecuteAsyncCancelHandlerAsync();
+            if (shouldCancel)
+            {
+                asyncEventArgs.Cancel = true;
+            }
+        }
+
+        // If async event canceled, return early
+        if (asyncEventArgs.Cancel)
+        {
+            return false;
+        }
+
+        // Then call the synchronous OnClose method for backward compatibility
         var canClose = window?.OnClose() ?? true;
 
+        // Finally, raise the synchronous closing event
         var eventArgs = new WindowClosingEventArgs(window)
         {
             Cancel = !canClose

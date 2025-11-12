@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Threading.Tasks;
 using Dock.Model.Core.Events;
 
 namespace Dock.Model.Core;
@@ -39,6 +40,12 @@ public partial interface IFactory
     /// Dockable closing event handler.
     /// </summary>
     event EventHandler<DockableClosingEventArgs>? DockableClosing;
+
+    /// <summary>
+    /// Dockable closing async event handler. This event is raised before DockableClosing
+    /// and allows async operations (like confirmation dialogs) to determine if closing should be canceled.
+    /// </summary>
+    event EventHandler<DockableClosingAsyncEventArgs>? DockableClosingAsync;
 
     /// <summary>
     /// Dockable closed event handler.
@@ -94,6 +101,12 @@ public partial interface IFactory
     /// Window closing event handler.
     /// </summary>
     event EventHandler<WindowClosingEventArgs>? WindowClosing;
+
+    /// <summary>
+    /// Window closing async event handler. This event is raised before WindowClosing
+    /// and allows async operations (like confirmation dialogs) to determine if closing should be canceled.
+    /// </summary>
+    event EventHandler<WindowClosingAsyncEventArgs>? WindowClosingAsync;
 
     /// <summary>
     /// Window closed event handler.
@@ -183,6 +196,14 @@ public partial interface IFactory
     bool OnDockableClosing(IDockable? dockable);
 
     /// <summary>
+    /// Called when the dockable is closing with async support.
+    /// This method is called before OnDockableClosing to allow async confirmation dialogs.
+    /// </summary>
+    /// <param name="dockable">The closing dockable.</param>
+    /// <returns>A task that returns false if closing canceled, otherwise true.</returns>
+    Task<bool> OnDockableClosingAsync(IDockable? dockable);
+
+    /// <summary>
     /// Called when the dockable has been closed.
     /// </summary>
     /// <param name="dockable">The closed dockable.</param>
@@ -250,6 +271,14 @@ public partial interface IFactory
     /// <param name="window">The closing window.</param>
     /// <returns>False if closing canceled, otherwise true.</returns>
     bool OnWindowClosing(IDockWindow? window);
+
+    /// <summary>
+    /// Called when the window is closing with async support.
+    /// This method is called before OnWindowClosing to allow async confirmation dialogs.
+    /// </summary>
+    /// <param name="window">The closing window.</param>
+    /// <returns>A task that returns false if closing canceled, otherwise true.</returns>
+    Task<bool> OnWindowClosingAsync(IDockWindow? window);
 
     /// <summary>
     /// Called when the window has been closed.

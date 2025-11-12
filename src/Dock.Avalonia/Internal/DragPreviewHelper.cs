@@ -33,7 +33,8 @@ internal class DragPreviewHelper
             {
                 s_control = new DragPreviewControl
                 {
-                    Status = string.Empty
+                    Status = string.Empty,
+                    ShowContent = true
                 };
 
                 s_window = new DragPreviewWindow

@@ -26,6 +26,12 @@ public class DragPreviewControl : TemplatedControl
         AvaloniaProperty.Register<DragPreviewControl, string>(nameof(Status));
     
     /// <summary>
+    /// Defines <see cref="ShowContent"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> ShowContentProperty =
+        AvaloniaProperty.Register<DragPreviewControl, bool>(nameof(ShowContent), defaultValue: true);
+
+    /// <summary>
     /// Gets or sets tab header template.
     /// </summary>
     public IDataTemplate ContentTemplate
@@ -41,6 +47,15 @@ public class DragPreviewControl : TemplatedControl
     {
         get => GetValue(StatusProperty);
         set => SetValue(StatusProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets whether to show the actual content of the dockable during drag.
+    /// </summary>
+    public bool ShowContent
+    {
+        get => GetValue(ShowContentProperty);
+        set => SetValue(ShowContentProperty, value);
     }
 }
 

@@ -5,20 +5,62 @@
   <ControlTheme x:Key="{x:Type DragPreviewControl}" TargetType="DragPreviewControl">
     <Setter Property="Template">
       <ControlTemplate>
-        <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
-                Padding="4" CornerRadius="4">
-          <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
-            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Content="{TemplateBinding DataContext}" VerticalAlignment="Center" VerticalContentAlignment="Center" />
-            <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
-              <Path x:Name="PART_StatusIcon" />
-              <TextBlock x:Name="PART_StatusText"
-                         Text="{TemplateBinding Status}"
-                         FontSize="{DynamicResource DockDragPreviewFontSize}"
-                         VerticalAlignment="Center"/>
+        <Panel>
+          <!-- Full content preview when ShowContent is true -->
+          <Border x:Name="PART_ContentBorder"
+                  Background="{DynamicResource DockThemeBackgroundBrush}"
+                  BorderBrush="{DynamicResource DockApplicationAccentBrushLow}"
+                  BorderThickness="2"
+                  CornerRadius="4"
+                  MaxWidth="400"
+                  MaxHeight="300"
+                  IsVisible="{TemplateBinding ShowContent}">
+            <Panel>
+              <ContentControl Content="{TemplateBinding DataContext}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Opacity="0.8">
+                <ContentControl.ContentTemplate>
+                  <ControlRecyclingDataTemplate />
+                </ContentControl.ContentTemplate>
+              </ContentControl>
+              <!-- Status indicator overlay at bottom -->
+              <Border Background="{DynamicResource DockApplicationAccentBrushLow}"
+                      Padding="4,2"
+                      CornerRadius="0,0,4,4"
+                      VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal" Spacing="2">
+                  <Path x:Name="PART_StatusIcon" />
+                  <TextBlock x:Name="PART_StatusText"
+                             Text="{TemplateBinding Status}"
+                             FontSize="{DynamicResource DockDragPreviewFontSize}"
+                             VerticalAlignment="Center"/>
+                </StackPanel>
+              </Border>
+            </Panel>
+          </Border>
+          
+          <!-- Simple title preview when ShowContent is false (legacy behavior) -->
+          <Border x:Name="PART_TitleBorder"
+                  Background="{DynamicResource DockApplicationAccentBrushLow}"
+                  Padding="4" 
+                  CornerRadius="4"
+                  IsVisible="{Binding !$parent[DragPreviewControl].ShowContent}">
+            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+              <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding DataContext}" 
+                                VerticalAlignment="Center" 
+                                VerticalContentAlignment="Center" />
+              <StackPanel Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+                <Path x:Name="PART_StatusIcon2" />
+                <TextBlock x:Name="PART_StatusText2"
+                           Text="{TemplateBinding Status}"
+                           FontSize="{DynamicResource DockDragPreviewFontSize}"
+                           VerticalAlignment="Center"/>
+              </StackPanel>
             </StackPanel>
-          </StackPanel>
-        </Border>
+          </Border>
+        </Panel>
       </ControlTemplate>
     </Setter>
     
@@ -29,6 +71,7 @@
       </DataTemplate>
     </Setter>
 
+    <!-- Status icon styles for content view -->
     <Style Selector="^/template/ Path#PART_StatusIcon">
       <Setter Property="Width" Value="10" />
       <Setter Property="Height" Value="10" />
@@ -54,6 +97,35 @@
       <Setter Property="IsVisible" Value="False" />
     </Style>
     <Style Selector="^[Status=None]/template/ TextBlock#PART_StatusText">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlNoneString}" />
+    </Style>
+
+    <!-- Status icon styles for title view (legacy) -->
+    <Style Selector="^/template/ Path#PART_StatusIcon2">
+      <Setter Property="Width" Value="10" />
+      <Setter Property="Height" Value="10" />
+      <Setter Property="Stretch" Value="Uniform" />
+      <Setter Property="Fill" Value="{DynamicResource DockThemeForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^[Status=Dock]/template/ Path#PART_StatusIcon2">
+      <Setter Property="Data" Value="{DynamicResource DockIconStatusDockGeometry}" />
+    </Style>
+    <Style Selector="^[Status=Dock]/template/ TextBlock#PART_StatusText2">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlDockString}" />
+    </Style>
+
+    <Style Selector="^[Status=Float]/template/ Path#PART_StatusIcon2">
+      <Setter Property="Data" Value="{DynamicResource DockIconStatusFloatGeometry}" />
+    </Style>
+    <Style Selector="^[Status=Float]/template/ TextBlock#PART_StatusText2">
+      <Setter Property="Text" Value="{DynamicResource DragPreviewControlFloatString}" />
+    </Style>
+
+    <Style Selector="^[Status=None]/template/ Path#PART_StatusIcon2">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+    <Style Selector="^[Status=None]/template/ TextBlock#PART_StatusText2">
       <Setter Property="Text" Value="{DynamicResource DragPreviewControlNoneString}" />
     </Style>
   </ControlTheme>

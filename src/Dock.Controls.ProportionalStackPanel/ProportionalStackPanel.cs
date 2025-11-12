@@ -242,7 +242,25 @@ public class ProportionalStackPanel : Panel
             }
             else
             {
-                if (!needsNextSplitter)
+                // Check if there's a valid (non-collapsed, non-splitter) element after this splitter
+                bool hasValidNextElement = false;
+                for (int j = i + 1; j < Children.Count; j++)
+                {
+                    var nextControl = Children[j];
+                    var nextIsSplitter = ProportionalStackPanelSplitter.IsSplitter(nextControl, out _);
+                    if (nextIsSplitter)
+                        continue;
+                    
+                    var nextIsCollapsed = GetIsCollapsed(nextControl);
+                    if (!nextIsCollapsed)
+                    {
+                        hasValidNextElement = true;
+                        break;
+                    }
+                }
+
+                // Only show the splitter if there's an element before it AND after it
+                if (!needsNextSplitter || !hasValidNextElement)
                 {
                     var size = new Size();
                     control.Measure(size);
@@ -333,13 +351,35 @@ public class ProportionalStackPanel : Panel
 
             if (!isSplitter)
                 needsNextSplitter = true;
-            else if (isSplitter && !needsNextSplitter)
+            else if (isSplitter)
             {
-                var rect = new Rect();
-                control.Arrange(rect);
-                index++;
+                // Check if there's a valid (non-collapsed, non-splitter) element after this splitter
+                bool hasValidNextElement = false;
+                for (int j = i + 1; j < Children.Count; j++)
+                {
+                    var nextControl = Children[j];
+                    var nextIsSplitter = ProportionalStackPanelSplitter.IsSplitter(nextControl, out _);
+                    if (nextIsSplitter)
+                        continue;
+                    
+                    var nextIsCollapsed = GetIsCollapsed(nextControl);
+                    if (!nextIsCollapsed)
+                    {
+                        hasValidNextElement = true;
+                        break;
+                    }
+                }
+
+                // Only show the splitter if there's an element before it AND after it
+                if (!needsNextSplitter || !hasValidNextElement)
+                {
+                    var rect = new Rect();
+                    control.Arrange(rect);
+                    index++;
+                    continue;
+                }
+                
                 needsNextSplitter = false;
-                continue;
             }
 
             // Determine the remaining space left to arrange the element

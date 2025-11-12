@@ -340,4 +340,132 @@ public class ProportionalStackPanelTests
 
         Assert.True(target.Children[0].Bounds.Height >= 200);
     }
+
+    [AvaloniaFact]
+    public void Splitter_At_End_Should_Be_Hidden()
+    {
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = 
+            { 
+                new Border(), 
+                new ProportionalStackPanelSplitter() 
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        // The border should take full width, splitter should have no space
+        Assert.Equal(new Rect(0, 0, 300, 100), target.Children[0].Bounds);
+        Assert.Equal(new Rect(0, 0, 0, 0), target.Children[1].Bounds);
+    }
+
+    [AvaloniaFact]
+    public void Splitter_At_Start_Should_Be_Hidden()
+    {
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = 
+            { 
+                new ProportionalStackPanelSplitter(),
+                new Border() 
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        // The splitter should have no space, border should take full width
+        Assert.Equal(new Rect(0, 0, 0, 0), target.Children[0].Bounds);
+        Assert.Equal(new Rect(0, 0, 300, 100), target.Children[1].Bounds);
+    }
+
+    [AvaloniaFact]
+    public void Consecutive_Splitters_Should_Be_Hidden()
+    {
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = 
+            { 
+                new Border(), 
+                new ProportionalStackPanelSplitter(),
+                new ProportionalStackPanelSplitter(),
+                new Border() 
+            }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        // First border should be at start
+        Assert.Equal(0, target.Children[0].Bounds.Left);
+        // First splitter should have space
+        Assert.True(target.Children[1].Bounds.Width > 0);
+        // Second splitter should have no space
+        Assert.Equal(0, target.Children[2].Bounds.Width);
+        // Second border should come right after first splitter
+        Assert.True(target.Children[3].Bounds.Width > 0);
+    }
+
+    [AvaloniaFact]
+    public void Splitter_Between_Collapsed_Elements_Should_Be_Hidden()
+    {
+        var border1 = new Border { [ProportionalStackPanel.IsCollapsedProperty] = true };
+        var splitter = new ProportionalStackPanelSplitter();
+        var border2 = new Border { [ProportionalStackPanel.IsCollapsedProperty] = false };
+        
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = { border1, splitter, border2 }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        // First border is collapsed, should have no space
+        Assert.Equal(new Rect(0, 0, 0, 0), border1.Bounds);
+        // Splitter should be hidden because previous element is collapsed
+        Assert.Equal(new Rect(0, 0, 0, 0), splitter.Bounds);
+        // Second border should take full width
+        Assert.Equal(new Rect(0, 0, 300, 100), border2.Bounds);
+    }
+
+    [AvaloniaFact]
+    public void Splitter_Before_Collapsed_Element_Should_Be_Hidden()
+    {
+        var border1 = new Border { [ProportionalStackPanel.IsCollapsedProperty] = false };
+        var splitter = new ProportionalStackPanelSplitter();
+        var border2 = new Border { [ProportionalStackPanel.IsCollapsedProperty] = true };
+        
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal,
+            Children = { border1, splitter, border2 }
+        };
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        // First border should take full width
+        Assert.Equal(new Rect(0, 0, 300, 100), border1.Bounds);
+        // Splitter should be hidden because next element is collapsed
+        Assert.Equal(new Rect(0, 0, 0, 0), splitter.Bounds);
+        // Second border is collapsed, should have no space
+        Assert.Equal(new Rect(0, 0, 0, 0), border2.Bounds);
+    }
 }

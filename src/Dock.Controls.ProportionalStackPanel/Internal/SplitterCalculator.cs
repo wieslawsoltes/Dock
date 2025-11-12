@@ -18,7 +18,7 @@ internal static class SplitterCalculator
     public static double GetTotalSplitterThickness(Avalonia.Controls.Controls children, System.Func<Control, bool> getIsCollapsed)
     {
         var totalThickness = 0.0;
-        var previousWasCollapsed = false;
+        var needsNextSplitter = false;
 
         for (var i = 0; i < children.Count; i++)
         {
@@ -27,17 +27,38 @@ internal static class SplitterCalculator
 
             if (isSplitter && splitter is not null)
             {
-                // Skip splitters adjacent to collapsed elements
-                if (ShouldSkipSplitter(i, children, previousWasCollapsed, getIsCollapsed))
+                // Check if there's a valid (non-collapsed, non-splitter) element after this splitter
+                bool hasValidNextElement = false;
+                for (int j = i + 1; j < children.Count; j++)
                 {
-                    continue;
+                    var nextChild = children[j];
+                    var nextIsSplitter = ProportionalStackPanelSplitter.IsSplitter(nextChild, out _);
+                    if (nextIsSplitter)
+                        continue;
+                    
+                    var nextIsCollapsed = getIsCollapsed(nextChild);
+                    if (!nextIsCollapsed)
+                    {
+                        hasValidNextElement = true;
+                        break;
+                    }
                 }
 
-                totalThickness += splitter.Thickness;
+                // Only count the splitter thickness if there's an element before it AND after it
+                if (needsNextSplitter && hasValidNextElement)
+                {
+                    totalThickness += splitter.Thickness;
+                }
+                
+                needsNextSplitter = false;
             }
             else
             {
-                previousWasCollapsed = getIsCollapsed(child);
+                var isCollapsed = getIsCollapsed(child);
+                if (!isCollapsed)
+                {
+                    needsNextSplitter = true;
+                }
             }
         }
 

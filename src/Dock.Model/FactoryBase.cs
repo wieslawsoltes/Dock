@@ -42,6 +42,10 @@ public abstract partial class FactoryBase : IFactory
         if (dock.VisibleDockables == null || dock.Owner is not IDock owner || dock.Owner is IRootDock)
             return;
 
+        // If the dock is not collapsable, do not simplify/remove it
+        if (!dock.IsCollapsable)
+            return;
+
         // Check if this dock has only one visible dockable
         if (dock.VisibleDockables.Count == 1)
         {

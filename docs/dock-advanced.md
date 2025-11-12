@@ -142,6 +142,68 @@ public override IHostWindow CreateWindowFrom(IDockWindow source)
 
 If `EnableWindowDrag` on a `DocumentDock` is set to `true`, the tab strip doubles as a drag handle for the entire window. This lets users reposition floating windows by dragging the tabs themselves.
 
+## Nested docks
+
+You can create independent nested dock layouts within documents or tools by placing a `DockControl` inside the content of a dockable. This allows for complex scenarios where each document or tool has its own internal docking layout.
+
+### Basic nested dock setup
+
+In XAML, embed a `DockControl` inside a `Document`:
+
+```xml
+<Document x:Name="Doc1" Title="Document with Nested Dock">
+    <DockControl InitializeLayout="True" InitializeFactory="True">
+        <DockControl.Factory>
+            <Factory />
+        </DockControl.Factory>
+        <RootDock IsCollapsable="False">
+            <DocumentDock ActiveDockable="InnerDoc1">
+                <Document x:Name="InnerDoc1" Title="Inner Document 1">
+                    <TextBlock Text="Content" />
+                </Document>
+            </DocumentDock>
+        </RootDock>
+    </DockControl>
+</Document>
+```
+
+### Shared factory pattern
+
+For better resource management, you can share a factory across multiple nested docks:
+
+```xml
+<UserControl.Resources>
+    <Factory x:Key="SharedFactory" />
+</UserControl.Resources>
+
+<!-- Parent dock -->
+<DockControl Factory="{StaticResource SharedFactory}">
+    <RootDock>
+        <DocumentDock>
+            <Document Title="Doc1">
+                <!-- Nested dock using the same factory -->
+                <DockControl Factory="{StaticResource SharedFactory}">
+                    <RootDock>
+                        <!-- Inner layout -->
+                    </RootDock>
+                </DockControl>
+            </Document>
+        </DocumentDock>
+    </RootDock>
+</DockControl>
+```
+
+### How nested docks work
+
+The dock system automatically isolates event handling for nested docks:
+
+- Drag-and-drop operations in a nested dock only affect that nested dock's layout
+- Parent and nested docks operate independently without interference
+- Each nested dock maintains its own active dockable and focus state
+- Multiple nested docks can exist at the same level without conflict
+
+See the `NestedDockSample` project for a complete working example.
+
 ## Tracking bounds
 
 `DockableBase` keeps track of several coordinate sets used while dragging or

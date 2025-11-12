@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Dock.Model.Avalonia.Controls;
 using Dock.Serializer.Xml;
 using Xunit;
 
@@ -74,5 +75,37 @@ public class XmlDockSerializerTests
         Assert.Equal(sample.Name, loaded!.Name);
         Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
         Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
+    }
+
+    [Fact]
+    public void SerializeDeserialize_AvaloniaDocument_Succeeds()
+    {
+        var serializer = new DockXmlSerializer();
+        var document = new Document { Id = "Doc1", Title = "Test Document" };
+
+        var xml = serializer.Serialize(document);
+        var result = serializer.Deserialize<Document>(xml);
+
+        Assert.NotNull(result);
+        Assert.Equal(document.Id, result!.Id);
+        Assert.Equal(document.Title, result.Title);
+    }
+
+    [Fact]
+    public void SaveLoad_AvaloniaDocument_Succeeds()
+    {
+        var serializer = new DockXmlSerializer();
+        var document = new Document { Id = "Doc1", Title = "Test Document" };
+        using var stream = new NonClosingMemoryStream();
+
+        serializer.Save(stream, document);
+        Assert.True(stream.Length > 0);
+
+        stream.Position = 0;
+        var loaded = serializer.Load<Document>(stream);
+
+        Assert.NotNull(loaded);
+        Assert.Equal(document.Id, loaded!.Id);
+        Assert.Equal(document.Title, loaded.Title);
     }
 }

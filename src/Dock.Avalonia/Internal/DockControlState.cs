@@ -492,7 +492,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                     var screenPoint = inputActiveDockControl.PointToScreen(point);
                     var preview = "None";
 
-                    foreach (var inputDockControl in DockHelpers.GetZOrderedDockControls(dockControls))
+                    foreach (var inputDockControl in DockHelpers.GetZOrderedDockControls(dockControls, inputActiveDockControl))
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {

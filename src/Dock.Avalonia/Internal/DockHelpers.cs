@@ -197,6 +197,74 @@ internal static class DockHelpers
         return -1;
     }
 
+    /// <summary>
+    /// Checks if a DockControl is nested within another DockControl's visual tree.
+    /// </summary>
+    /// <param name="potentialChild">The DockControl that might be nested.</param>
+    /// <param name="potentialParent">The DockControl that might be the parent.</param>
+    /// <returns>True if potentialChild is nested within potentialParent, false otherwise.</returns>
+    public static bool IsNestedWithin(DockControl potentialChild, DockControl potentialParent)
+    {
+        if (potentialChild == potentialParent)
+        {
+            return false;
+        }
+
+        // Walk up the visual tree from potentialChild to see if we find potentialParent
+        Visual? current = potentialChild.GetVisualParent();
+        while (current != null)
+        {
+            if (ReferenceEquals(current, potentialParent))
+            {
+                return true;
+            }
+            current = current.GetVisualParent();
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Filters DockControls to only include those relevant for the active DockControl.
+    /// This excludes DockControls that are:
+    /// - Nested within the active DockControl (children)
+    /// - Parents/ancestors of the active DockControl
+    /// </summary>
+    /// <param name="dockControls">All available DockControls.</param>
+    /// <param name="activeDockControl">The DockControl initiating the event.</param>
+    /// <returns>Filtered list of DockControls in the same scope.</returns>
+    public static IEnumerable<DockControl> GetRelevantDockControls(IList<IDockControl> dockControls, DockControl activeDockControl)
+    {
+        var allDocks = dockControls.OfType<DockControl>().ToList();
+        
+        // Filter out nested dock controls and parent dock controls
+        var relevantDocks = allDocks.Where(dock =>
+        {
+            // Include the active dock itself
+            if (ReferenceEquals(dock, activeDockControl))
+            {
+                return true;
+            }
+
+            // Exclude if dock is nested within active dock (it's a child)
+            if (IsNestedWithin(dock, activeDockControl))
+            {
+                return false;
+            }
+
+            // Exclude if active dock is nested within this dock (it's a parent)
+            if (IsNestedWithin(activeDockControl, dock))
+            {
+                return false;
+            }
+
+            // Include docks in the same scope (siblings at the same level)
+            return true;
+        }).ToList();
+
+        return relevantDocks;
+    }
+
     public static IEnumerable<DockControl> GetZOrderedDockControls(IList<IDockControl> dockControls)
     {
         var windows = dockControls
@@ -210,6 +278,27 @@ internal static class DockHelpers
 
         return dockControls
             .OfType<DockControl>()
+            .Select(dock => (dock, order: IndexOf(windows, dock.GetVisualRoot() as Window)))
+            .OrderByDescending(x => x.order)
+            .Select(pair => pair.dock);
+    }
+
+    /// <summary>
+    /// Gets DockControls ordered by Z-order, filtered to only include those relevant for the active DockControl.
+    /// </summary>
+    public static IEnumerable<DockControl> GetZOrderedDockControls(IList<IDockControl> dockControls, DockControl activeDockControl)
+    {
+        var relevantDocks = GetRelevantDockControls(dockControls, activeDockControl).ToList();
+        
+        var windows = relevantDocks
+            .Select(dock => dock.GetVisualRoot() as Window)
+            .OfType<Window>()
+            .Distinct()
+            .ToArray();
+
+        Window.SortWindowsByZOrder(windows);
+
+        return relevantDocks
             .Select(dock => (dock, order: IndexOf(windows, dock.GetVisualRoot() as Window)))
             .OrderByDescending(x => x.order)
             .Select(pair => pair.dock);

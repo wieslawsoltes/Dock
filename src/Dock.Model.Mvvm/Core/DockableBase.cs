@@ -34,6 +34,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
+    private bool _canDockAsDocument = true;
     private double _minWidth = double.NaN;
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
@@ -248,6 +249,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canDrop;
         set => SetProperty(ref _canDrop, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool CanDockAsDocument
+    {
+        get => _canDockAsDocument;
+        set => SetProperty(ref _canDockAsDocument, value);
     }
 
     /// <inheritdoc/>

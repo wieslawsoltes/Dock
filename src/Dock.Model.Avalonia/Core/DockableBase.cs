@@ -153,6 +153,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDrop), o => o.CanDrop, (o, v) => o.CanDrop = v);
 
     /// <summary>
+    /// Defines the <see cref="CanDockAsDocument"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> CanDockAsDocumentProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanDockAsDocument), o => o.CanDockAsDocument, (o, v) => o.CanDockAsDocument = v, true);
+
+    /// <summary>
     /// Defines the <see cref="IsModified"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, bool> IsModifiedProperty =
@@ -210,6 +216,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
+    private bool _canDockAsDocument = true;
     private double _minWidth = double.NaN;
     private double _maxWidth = double.NaN;
     private double _minHeight = double.NaN;
@@ -450,6 +457,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canDrop;
         set => SetAndRaise(CanDropProperty, ref _canDrop, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CanDockAsDocument")]
+    public bool CanDockAsDocument
+    {
+        get => _canDockAsDocument;
+        set => SetAndRaise(CanDockAsDocumentProperty, ref _canDockAsDocument, value);
     }
 
     /// <inheritdoc/>

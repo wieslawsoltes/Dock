@@ -1048,4 +1048,44 @@ public class FactorySplitTests
         Assert.Single(root.VisibleDockables!);
         Assert.Same(proportionalDock, root.VisibleDockables[0]);
     }
+
+    [AvaloniaFact]
+    public void SplitToDock_Updates_RootDock_DefaultDockable_When_Dock_Is_Replaced()
+    {
+        var factory = new Factory();
+        var root = new RootDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        root.Factory = factory;
+        
+        var mainLayout = new ProportionalDock
+        {
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+        
+        factory.AddDockable(root, mainLayout);
+        
+        // Set mainLayout as the DefaultDockable
+        root.DefaultDockable = mainLayout;
+        
+        var newDoc = new Document();
+        
+        // Split mainLayout - this should replace it with a new layout
+        factory.SplitToDock(mainLayout, newDoc, DockOperation.Right);
+        
+        // Verify that the mainLayout was replaced by a new ProportionalDock
+        Assert.Single(root.VisibleDockables!);
+        var newLayout = Assert.IsType<ProportionalDock>(root.VisibleDockables[0]);
+        Assert.NotSame(mainLayout, newLayout);
+        
+        // Verify that DefaultDockable was updated to point to the new layout
+        Assert.Same(newLayout, root.DefaultDockable);
+        
+        // Verify the new layout contains the original mainLayout and the new document
+        Assert.Equal(3, newLayout.VisibleDockables!.Count);
+        Assert.Same(mainLayout, newLayout.VisibleDockables[0]);
+        Assert.IsType<ProportionalDockSplitter>(newLayout.VisibleDockables[1]);
+        Assert.IsType<ProportionalDock>(newLayout.VisibleDockables[2]); // newDoc container
+    }
 }

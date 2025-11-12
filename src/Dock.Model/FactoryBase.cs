@@ -396,6 +396,14 @@ public abstract partial class FactoryBase : IFactory
 
                         // Fallback to the original behavior when optimization is not applicable
                         var layout = CreateSplitLayout(dock, dockable, operation);
+                        
+                        // Check if the dock being replaced is the DefaultDockable of any ancestor RootDock
+                        var rootDock = FindRoot(dock, _ => true);
+                        if (rootDock is not null && rootDock.DefaultDockable == dock)
+                        {
+                            rootDock.DefaultDockable = layout;
+                        }
+                        
                         RemoveVisibleDockableAt(ownerDock, index);
                         OnDockableRemoved(dockable);
                         OnDockableUndocked(dockable, operation);

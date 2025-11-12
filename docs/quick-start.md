@@ -251,8 +251,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```xaml
    <Window x:Class="DockQuickStart.MainWindow"
            xmlns="https://github.com/avaloniaui"
-           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-           xmlns:dock="https://github.com/avaloniaui">
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
        <DockControl>
            <DocumentDock ItemsSource="{Binding Documents}">
                <DocumentDock.DocumentTemplate>

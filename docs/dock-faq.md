@@ -250,4 +250,20 @@ Dockables with the same group can dock together locally, while different groups 
 Double-click the tab of a document or tool to detach it into a separate window.
 The dockable must have `CanFloat` enabled.
 
+**How do I programmatically create a floating window with custom content?**
+
+Use `FloatDockable` with a Tool or Document that has its Content set using a function:
+
+```csharp
+var tool = new Tool
+{
+    Id = "MyTool",
+    Title = "My Tool",
+    Content = new Func<IServiceProvider, object>(_ => new MyUserControl())
+};
+factory.FloatDockable(tool);
+```
+
+The floated window will be dockable back into the main window. See [Floating Windows](dock-windows.md) for more details and patterns.
+
 For a general overview of Dock see the [documentation index](README.md).

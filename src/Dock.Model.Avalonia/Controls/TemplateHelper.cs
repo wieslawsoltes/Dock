@@ -57,7 +57,22 @@ internal static class TemplateHelper
 
         if (templateContent is Func<IServiceProvider, object> direct)
         {
-            return (TemplateResult<Control>)direct(null!);
+            var result = direct(null!);
+            
+            // If the function returns a Control directly, wrap it in a TemplateResult
+            if (result is Control resultControl)
+            {
+                return new TemplateResult<Control>(resultControl, null!);
+            }
+            
+            // If the function returns a TemplateResult, cast and return it
+            if (result is TemplateResult<Control> templateResult)
+            {
+                return templateResult;
+            }
+            
+            // Otherwise try to cast (might throw if not compatible)
+            return (TemplateResult<Control>)result;
         }
 
         return TemplateContent.Load(templateContent);

@@ -189,6 +189,15 @@ public class DockManager : IDockManager
         if (sourceDockable is ITool)
         {
             wrapperDock = factory.CreateToolDock();
+            
+            // Copy ToolDock properties from source owner if it's also a ToolDock
+            if (sourceOwner is IToolDock sourceToolDock && wrapperDock is IToolDock targetToolDock)
+            {
+                targetToolDock.Alignment = sourceToolDock.Alignment;
+                targetToolDock.IsExpanded = sourceToolDock.IsExpanded;
+                targetToolDock.AutoHide = sourceToolDock.AutoHide;
+                targetToolDock.GripMode = sourceToolDock.GripMode;
+            }
         }
         else if (sourceDockable is IDocument)
         {

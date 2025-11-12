@@ -505,6 +505,14 @@ public abstract partial class FactoryBase
         rootDock.PinnedDock ??= CreateToolDock();
         rootDock.PinnedDock.Alignment = alignment;
         
+        // Copy ToolDock properties from source owner if it's a ToolDock
+        if (owner is IToolDock sourceToolDock && rootDock.PinnedDock is IToolDock targetToolDock)
+        {
+            targetToolDock.IsExpanded = sourceToolDock.IsExpanded;
+            targetToolDock.AutoHide = sourceToolDock.AutoHide;
+            targetToolDock.GripMode = sourceToolDock.GripMode;
+        }
+        
         // Disable dropping into the preview dock since it's only for preview purposes
         rootDock.PinnedDock.CanDrop = false;
 

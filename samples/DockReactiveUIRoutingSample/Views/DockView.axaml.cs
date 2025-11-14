@@ -1,5 +1,5 @@
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using DockReactiveUIRoutingSample.ViewModels;
 
 namespace DockReactiveUIRoutingSample.Views;

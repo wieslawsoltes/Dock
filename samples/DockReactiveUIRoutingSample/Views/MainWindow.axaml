@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
+        xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
         xmlns:vm="using:DockReactiveUIRoutingSample.ViewModels"
         x:Class="DockReactiveUIRoutingSample.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"

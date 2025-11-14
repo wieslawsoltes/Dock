@@ -17,9 +17,14 @@
   <Import Project="..\..\build\Avalonia.props" />
   
   <ItemGroup>
-    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Controls\**\*.axaml">
+    <AvaloniaResource Include="..\Dock.Avalonia.Themes.Fluent\Controls\**\*.axaml"
+                      Exclude="..\Dock.Avalonia.Themes.Fluent\Controls\DocumentControl.axaml">
       <Link>Controls\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </AvaloniaResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Controls\**\*.axaml" />
   </ItemGroup>
   
   <ItemGroup>

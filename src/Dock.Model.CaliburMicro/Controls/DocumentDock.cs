@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Runtime.Serialization;
 using System.Windows.Input;
+using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.CaliburMicro.Core;
@@ -18,6 +19,7 @@ public class DocumentDock : DockBase, IDocumentDock
     private ICommand? _createDocument;
     private bool _enableWindowDrag = true;
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+    private DocumentPresentation _presentation = DocumentPresentation.Tabs;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -50,6 +52,23 @@ public class DocumentDock : DockBase, IDocumentDock
         get => _tabsLayout;
         set => Set(ref _tabsLayout, value);
     }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentPresentation Presentation
+    {
+        get => _presentation;
+        set => Set(ref _presentation, value);
+    }
+
+    /// <inheritdoc/>
+    public void CascadeDocuments() => Factory?.CascadeDocuments(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsHorizontally() => Factory?.TileDocumentsHorizontally(this);
+
+    /// <inheritdoc/>
+    public void TileDocumentsVertically() => Factory?.TileDocumentsVertically(this);
 
     /// <inheritdoc/>
     public void AddDocument(IDockable document)

@@ -13,6 +13,9 @@
   <ItemGroup>
     <PackageReference Include="Nuke.Common" />
     <PackageReference Include="System.Runtime.Serialization.Formatters"  />
+    <PackageReference Include="Microsoft.Build" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Headless.XUnit;
 using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Model.Avalonia.UnitTests.Controls;
@@ -67,6 +69,9 @@ public class DocumentDockItemsSourceSampleTests
         }
     }
 
+    private static System.Collections.Generic.IList<IDockable> RequireVisibleDockables(DocumentDock dock) =>
+        dock.VisibleDockables ?? throw new InvalidOperationException("VisibleDockables should not be null.");
+
     [AvaloniaFact]
     public void Sample_ScenarioTest_WorksCorrectly()
     {
@@ -103,11 +108,11 @@ public class DocumentDockItemsSourceSampleTests
         dock.ItemsSource = documents;
 
         // Assert - Verify documents are created correctly
-        Assert.NotNull(dock.VisibleDockables);
-        Assert.Equal(2, dock.VisibleDockables.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
         
-        var doc1 = dock.VisibleDockables[0] as Document;
-        var doc2 = dock.VisibleDockables[1] as Document;
+        var doc1 = visibleDockables[0] as Document;
+        var doc2 = visibleDockables[1] as Document;
         
         Assert.NotNull(doc1);
         Assert.NotNull(doc2);
@@ -147,7 +152,7 @@ public class DocumentDockItemsSourceSampleTests
         var documents = new ObservableCollection<MyDocumentModel>();
         dock.ItemsSource = documents;
         
-        Assert.Empty(dock.VisibleDockables!);
+        Assert.Empty(RequireVisibleDockables(dock));
 
         // Act - Simulate adding a document like in the sample
         var newDoc = new MyDocumentModel
@@ -162,9 +167,10 @@ public class DocumentDockItemsSourceSampleTests
         documents.Add(newDoc);
 
         // Assert
-        Assert.Single(dock.VisibleDockables);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
         
-        var document = dock.VisibleDockables[0] as Document;
+        var document = visibleDockables[0] as Document;
         Assert.NotNull(document);
         Assert.Equal("Document 1", document.Title);
         Assert.Equal(newDoc, document.Context);
@@ -188,15 +194,17 @@ public class DocumentDockItemsSourceSampleTests
         var documents = new ObservableCollection<MyDocumentModel> { doc1, doc2 };
         dock.ItemsSource = documents;
         
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
 
         // Act - Remove a document like in the sample
         documents.Remove(doc1);
 
         // Assert
-        Assert.Single(dock.VisibleDockables);
+        visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
         
-        var remainingDocument = dock.VisibleDockables[0] as Document;
+        var remainingDocument = visibleDockables[0] as Document;
         Assert.NotNull(remainingDocument);
         Assert.Equal("Doc2", remainingDocument.Title);
         Assert.Equal(doc2, remainingDocument.Context);
@@ -218,13 +226,14 @@ public class DocumentDockItemsSourceSampleTests
         };
         
         dock.ItemsSource = documents;
-        Assert.Equal(3, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(3, visibleDockables.Count);
 
         // Act - Clear all like in the sample
         documents.Clear();
 
         // Assert
-        Assert.Empty(dock.VisibleDockables);
+        Assert.Empty(RequireVisibleDockables(dock));
     }
 
     [AvaloniaFact]
@@ -244,11 +253,12 @@ public class DocumentDockItemsSourceSampleTests
         dock.ItemsSource = documents;
         
         // Verify initial state
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
         Assert.Equal(2, documents.Count);
         
-        var document1 = dock.VisibleDockables[0] as Document;
-        var document2 = dock.VisibleDockables[1] as Document;
+        var document1 = visibleDockables[0] as Document;
+        var document2 = visibleDockables[1] as Document;
         
         Assert.NotNull(document1);
         Assert.NotNull(document2);
@@ -259,11 +269,12 @@ public class DocumentDockItemsSourceSampleTests
         factory.CloseDockable(document1);
 
         // Assert - Document should be removed from UI AND from source collection
-        Assert.Single(dock.VisibleDockables);
+        visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
         Assert.Single(documents);
         
         // Verify the correct document remains
-        var remainingDocument = dock.VisibleDockables[0] as Document;
+        var remainingDocument = visibleDockables[0] as Document;
         Assert.NotNull(remainingDocument);
         Assert.Equal(doc2, remainingDocument.Context);
         Assert.Equal("Doc2", remainingDocument.Title);
@@ -300,17 +311,19 @@ public class DocumentDockItemsSourceSampleTests
         factory.AddDockable(dock, manualDocument);
         
         // Verify initial state
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
         Assert.Single(documents); // ItemsSource collection should still have 1 item
         
         // Act - Close the manual document
         factory.CloseDockable(manualDocument);
         
         // Assert - Only UI document should be removed, ItemsSource should be unchanged
-        Assert.Single(dock.VisibleDockables);
+        visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
         Assert.Single(documents); // ItemsSource collection should still have 1 item
         
-        var remainingDocument = dock.VisibleDockables[0] as Document;
+        var remainingDocument = visibleDockables[0] as Document;
         Assert.NotNull(remainingDocument);
         Assert.Equal("ItemsSource Doc", remainingDocument.Title);
     }

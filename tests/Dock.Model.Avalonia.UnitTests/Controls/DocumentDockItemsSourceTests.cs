@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -51,6 +52,9 @@ public class DocumentDockItemsSourceTests
         }
     }
 
+    private static IList<IDockable> RequireVisibleDockables(DocumentDock dock) =>
+        dock.VisibleDockables ?? throw new InvalidOperationException("VisibleDockables should not be null.");
+
     [AvaloniaFact]
     public void ItemsSource_WhenSet_CreatesDocumentsFromItems()
     {
@@ -69,11 +73,11 @@ public class DocumentDockItemsSourceTests
         dock.ItemsSource = items;
 
         // Assert
-        Assert.NotNull(dock.VisibleDockables);
-        Assert.Equal(2, dock.VisibleDockables.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
         
-        var doc1 = dock.VisibleDockables[0] as Document;
-        var doc2 = dock.VisibleDockables[1] as Document;
+        var doc1 = visibleDockables[0] as Document;
+        var doc2 = visibleDockables[1] as Document;
         
         Assert.NotNull(doc1);
         Assert.NotNull(doc2);
@@ -97,14 +101,15 @@ public class DocumentDockItemsSourceTests
         };
 
         dock.ItemsSource = items;
-        Assert.Single(dock.VisibleDockables!);
+        Assert.Single(RequireVisibleDockables(dock));
 
         // Act
         items.Add(new TestDocumentModel { Title = "Doc2", Content = "Content2" });
 
         // Assert
-        Assert.Equal(2, dock.VisibleDockables.Count);
-        var newDoc = dock.VisibleDockables[1] as Document;
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
+        var newDoc = visibleDockables[1] as Document;
         Assert.NotNull(newDoc);
         Assert.Equal("Doc2", newDoc.Title);
     }
@@ -122,14 +127,16 @@ public class DocumentDockItemsSourceTests
         var items = new ObservableCollection<TestDocumentModel> { item1, item2 };
 
         dock.ItemsSource = items;
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
 
         // Act
         items.Remove(item1);
 
         // Assert
-        Assert.Single(dock.VisibleDockables);
-        var remainingDoc = dock.VisibleDockables[0] as Document;
+        visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
+        var remainingDoc = visibleDockables[0] as Document;
         Assert.NotNull(remainingDoc);
         Assert.Equal("Doc2", remainingDoc.Title);
         Assert.Equal(item2, remainingDoc.Context);
@@ -150,13 +157,14 @@ public class DocumentDockItemsSourceTests
         };
 
         dock.ItemsSource = items;
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
 
         // Act
         items.Clear();
 
         // Assert
-        Assert.Empty(dock.VisibleDockables);
+        Assert.Empty(RequireVisibleDockables(dock));
     }
 
     [AvaloniaFact]
@@ -174,13 +182,14 @@ public class DocumentDockItemsSourceTests
         };
 
         dock.ItemsSource = items;
-        Assert.Equal(2, dock.VisibleDockables!.Count);
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Equal(2, visibleDockables.Count);
 
         // Act
         dock.ItemsSource = null;
 
         // Assert
-        Assert.Empty(dock.VisibleDockables);
+        Assert.Empty(RequireVisibleDockables(dock));
     }
 
     [AvaloniaFact]
@@ -220,8 +229,9 @@ public class DocumentDockItemsSourceTests
         dock.ItemsSource = items;
 
         // Assert
-        Assert.Single(dock.VisibleDockables!);
-        var doc = dock.VisibleDockables[0] as Document;
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
+        var doc = visibleDockables[0] as Document;
         Assert.NotNull(doc);
         Assert.Equal("Test Document", doc.Title);
         Assert.False(doc.CanClose);
@@ -242,8 +252,9 @@ public class DocumentDockItemsSourceTests
         dock.ItemsSource = new[] { itemWithName };
 
         // Assert
-        Assert.Single(dock.VisibleDockables!);
-        var doc = dock.VisibleDockables[0] as Document;
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
+        var doc = visibleDockables[0] as Document;
         Assert.NotNull(doc);
         Assert.Equal("Document Name", doc.Title);
     }
@@ -262,8 +273,9 @@ public class DocumentDockItemsSourceTests
         dock.ItemsSource = new[] { itemWithDisplayName };
 
         // Assert
-        Assert.Single(dock.VisibleDockables!);
-        var doc = dock.VisibleDockables[0] as Document;
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
+        var doc = visibleDockables[0] as Document;
         Assert.NotNull(doc);
         Assert.Equal("Display Name", doc.Title);
     }
@@ -282,8 +294,9 @@ public class DocumentDockItemsSourceTests
         dock.ItemsSource = new[] { itemWithoutTitle };
 
         // Assert
-        Assert.Single(dock.VisibleDockables!);
-        var doc = dock.VisibleDockables[0] as Document;
+        var visibleDockables = RequireVisibleDockables(dock);
+        Assert.Single(visibleDockables);
+        var doc = visibleDockables[0] as Document;
         Assert.NotNull(doc);
         // Should use ToString() as fallback
         Assert.NotNull(doc.Title);

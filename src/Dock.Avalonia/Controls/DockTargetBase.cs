@@ -77,6 +77,9 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     public static readonly StyledProperty<bool> IsGlobalDockActiveProperty =
         AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockActive));
 
+    /// <summary>
+    /// Initializes a new instance while wiring pseudo-classes to the target visibility and availability observables.
+    /// </summary>
     public DockTargetBase()
     {
         PseudoClasses.Set(":horizontal", this.GetObservable(ShowHorizontalTargetsProperty));

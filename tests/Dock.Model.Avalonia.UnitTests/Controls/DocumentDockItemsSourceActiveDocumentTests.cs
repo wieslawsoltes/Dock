@@ -54,6 +54,11 @@ public class DocumentDockItemsSourceActiveDocumentTests
         public override void SetActiveDockable(IDockable? dockable)
         {
             _lastActiveDockable = dockable;
+            if (dockable is null)
+            {
+                return;
+            }
+
             base.SetActiveDockable(dockable);
         }
 
@@ -61,6 +66,11 @@ public class DocumentDockItemsSourceActiveDocumentTests
         {
             _lastFocusedDock = dock;
             _lastFocusedDockable = dockable;
+            if (dock is null)
+            {
+                return;
+            }
+
             base.SetFocusedDockable(dock, dockable);
         }
     }

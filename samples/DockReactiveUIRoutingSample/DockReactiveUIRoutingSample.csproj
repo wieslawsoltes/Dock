@@ -13,7 +13,7 @@
   <Import Project="..\..\build\Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Themes.Fluent.props" />
   <Import Project="..\..\build\Avalonia.Desktop.props" />
-  <Import Project="..\..\build\Avalonia.ReactiveUI.props" />
+  <Import Project="..\..\build\ReactiveUI.Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Navigation\Dock.Model.ReactiveUI.Navigation.csproj" />

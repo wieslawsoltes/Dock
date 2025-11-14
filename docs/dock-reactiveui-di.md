@@ -26,7 +26,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    dotnet add package Dock.Avalonia.Themes.Fluent
    dotnet add package Microsoft.Extensions.DependencyInjection
    dotnet add package Microsoft.Extensions.Hosting
-   dotnet add package Avalonia.ReactiveUI
+   dotnet add package ReactiveUI.Avalonia
    ```
 
    **Optional packages:**
@@ -319,7 +319,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
    **DocumentView.axaml.cs:**
    ```csharp
-   using Avalonia.ReactiveUI;
+   using ReactiveUI.Avalonia;
    using MyDockApp.ViewModels.Documents;
 
    namespace MyDockApp.Views.Documents;
@@ -347,7 +347,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
 
    **ToolView.axaml.cs:**
    ```csharp
-   using Avalonia.ReactiveUI;
+   using ReactiveUI.Avalonia;
    using MyDockApp.ViewModels.Tools;
 
    namespace MyDockApp.Views.Tools;
@@ -366,7 +366,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    ```csharp
    using System;
    using Avalonia;
-   using Avalonia.ReactiveUI;
+   using ReactiveUI.Avalonia;
    using Dock.Model.Extensions.DependencyInjection;
    using Dock.Serializer;
    using MyDockApp.Models;

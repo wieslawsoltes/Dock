@@ -24,7 +24,7 @@ Follow these instructions to create a ReactiveUI application with routing using 
    dotnet add package Dock.Model.ReactiveUI
    dotnet add package Dock.Model.ReactiveUI.Navigation
    dotnet add package Dock.Avalonia.Themes.Fluent
-   dotnet add package Avalonia.ReactiveUI
+   dotnet add package ReactiveUI.Avalonia
    ```
 
    **Optional packages:**

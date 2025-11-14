@@ -10,6 +10,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Input.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -300,7 +301,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
         {
             if (GetWindow()?.Clipboard is { } clipboard)
             {
-                var text = await clipboard.GetTextAsync();
+                var text = await ClipboardExtensions.TryGetTextAsync(clipboard);
                 if (!string.IsNullOrEmpty(text))
                 {
                     var start = file.SelectionStart;
@@ -411,7 +412,7 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     public void DragOver(object? sender, DragEventArgs e)
     {
-        if (!e.Data.Contains(DataFormats.Files))
+        if (e.DataTransfer is null || !e.DataTransfer.Contains(DataFormat.File))
         {
             e.DragEffects = DragDropEffects.None;
             e.Handled = true;
@@ -420,19 +421,16 @@ public class MainWindowViewModel : ObservableObject, IDropTarget
 
     public void Drop(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.Files))
+        var storageItems = e.DataTransfer?.TryGetFiles();
+        if (storageItems is not null)
         {
-            var storageItems = e.Data.GetFiles();
-            if (storageItems is not null)
+            foreach (var file in storageItems)
             {
-                foreach (var file in storageItems)
+                var path = file.TryGetLocalPath();
+                if (path is not null)
                 {
-                    var path = file.TryGetLocalPath();
-                    if (path is not null)
-                    {
-                        var untitledFileViewModel = OpenFileViewModel(path);
-                        AddFileViewModel(untitledFileViewModel);
-                    }
+                    var untitledFileViewModel = OpenFileViewModel(path);
+                    AddFileViewModel(untitledFileViewModel);
                 }
             }
             e.Handled = true;

@@ -91,11 +91,20 @@ jobs:
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     steps:
-    - name: Download NuGet packages
+    - name: Download release bundle
       uses: actions/download-artifact@v4
       with:
-        name: nuget-packages
-        path: nuget
+        name: release-bundle
+        path: bundle
+    - name: Extract release bundle
+      run: |
+        mkdir -p nuget
+        zip_path=$(find bundle -name 'dock-packages.zip' -print -quit)
+        if [ -z "$zip_path" ]; then
+          echo "release bundle archive not found" >&2
+          exit 1
+        fi
+        unzip -o "$zip_path" -d nuget
     - name: Push packages to NuGet
       if: env.NUGET_API_KEY != ''
       run: dotnet nuget push nuget/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate

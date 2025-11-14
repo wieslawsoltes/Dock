@@ -5,8 +5,6 @@ using Dock.Model.Avalonia;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
-using Dock.Model.Avalonia.Controls;
-using Dock.Model.Core;
 using Xunit;
 
 namespace Dock.Avalonia.HeadlessTests;
@@ -140,4 +138,3 @@ public class DockGroupExecutionTests
         Assert.Same(targetDock, sourceTool.Owner);
     }
 }
-

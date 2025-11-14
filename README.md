@@ -37,7 +37,7 @@ git clone https://github.com/wieslawsoltes/Dock.git
 
 Open up a terminal prompt and execute the commands.
 
-Target frameworks: `netstandard2.0`, `net6.0`, `net8.0` for libraries, `net9.0` for samples:
+Target frameworks: `netstandard2.0`, `net6.0`, `net8.0`, `net10.0` for libraries and samples:
 ```bash
 dotnet build src/Dock.Avalonia/Dock.Avalonia.csproj -c Release -f netstandard2.0
 ```

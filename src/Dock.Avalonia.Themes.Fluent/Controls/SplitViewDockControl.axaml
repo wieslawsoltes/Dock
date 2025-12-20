@@ -1,0 +1,48 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:DataType="dmc:ISplitViewDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <SplitViewDockControl Width="400" Height="300" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type SplitViewDockControl}" TargetType="SplitViewDockControl">
+
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockableControl TrackingMode="Visible">
+          <SplitView x:Name="PART_SplitView"
+                     CompactPaneLength="{Binding CompactPaneLength}"
+                     DisplayMode="{Binding DisplayMode, Converter={x:Static SplitViewDisplayModeConverter.Instance}}"
+                     IsPaneOpen="{Binding IsPaneOpen, Mode=OneWay}"
+                     OpenPaneLength="{Binding OpenPaneLength}"
+                     PanePlacement="{Binding PanePlacement, Converter={x:Static SplitViewPanePlacementConverter.Instance}}"
+                     UseLightDismissOverlayMode="{Binding UseLightDismissOverlayMode}">
+            <SplitView.Pane>
+              <ContentControl Content="{Binding PaneDockable}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              HorizontalContentAlignment="Stretch"
+                              VerticalContentAlignment="Stretch" />
+            </SplitView.Pane>
+            <ContentControl Content="{Binding ContentDockable}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch" />
+          </SplitView>
+        </DockableControl>
+      </ControlTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>

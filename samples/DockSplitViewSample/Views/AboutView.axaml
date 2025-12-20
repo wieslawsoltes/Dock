@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DockSplitViewSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="400"
+             x:Class="DockSplitViewSample.Views.AboutView"
+             x:DataType="vm:AboutViewModel" x:CompileBindings="True">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24" Spacing="16" MaxWidth="500">
+      <TextBlock Text="About" FontSize="24" FontWeight="SemiBold" />
+      
+      <TextBlock Text="SplitView Dock Sample" FontSize="18" FontWeight="SemiBold" Margin="0,8,0,0" />
+      <TextBlock Text="Version 1.0.0" />
+      
+      <TextBlock Text="Description" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <TextBlock TextWrapping="Wrap">
+        This sample demonstrates the SplitView dock mode in the Dock library for Avalonia. 
+        It provides a navigation-style layout with a collapsible pane, similar to Windows 11 apps.
+      </TextBlock>
+      
+      <TextBlock Text="Features" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <StackPanel Spacing="4">
+        <TextBlock Text="• Multiple display modes (Inline, CompactInline, Overlay, CompactOverlay)" />
+        <TextBlock Text="• Configurable pane placement (left or right)" />
+        <TextBlock Text="• Light dismiss overlay support" />
+        <TextBlock Text="• Full MVVM support" />
+        <TextBlock Text="• Cross-platform (Windows, macOS, Linux)" />
+      </StackPanel>
+      
+      <TextBlock Text="License" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <TextBlock Text="MIT License" />
+      
+      <TextBlock Text="Built with Avalonia UI" Margin="0,16,0,0" />
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

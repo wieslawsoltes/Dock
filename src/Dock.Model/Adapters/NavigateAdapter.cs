@@ -174,24 +174,74 @@ public class NavigateAdapter : INavigateAdapter
 
     private void NavigateToUseAllVisible(string id, bool bSnapshot)
     {
-        if (_dock.VisibleDockables is null)
+        var rootDockables = GetNavigateRootDockables();
+        if (rootDockables.Count == 0)
         {
             return;
         }
 
-        var visible = _dock.VisibleDockables.Flatten(v =>
+        var visible = rootDockables.Flatten(v =>
         {
-            if (v is IDock n)
+            return v switch
             {
-                return n.VisibleDockables;
-            }
-            return null;
+                ISplitViewDock splitViewDock => GetSplitViewDockables(splitViewDock),
+                IDock dock => dock.VisibleDockables,
+                _ => null
+            };
         });
 
         var result = visible.FirstOrDefault(v => v.Id == id);
         if (result is not null)
         {
             Navigate(result, bSnapshot);
+        }
+    }
+
+    private List<IDockable> GetNavigateRootDockables()
+    {
+        var dockables = new List<IDockable>();
+
+        if (_dock.VisibleDockables is { } visibleDockables)
+        {
+            dockables.AddRange(visibleDockables);
+        }
+
+        if (_dock is ISplitViewDock splitViewDock)
+        {
+            AddSplitViewDockables(dockables, splitViewDock);
+        }
+
+        return dockables;
+    }
+
+    private static IEnumerable<IDockable>? GetSplitViewDockables(ISplitViewDock splitViewDock)
+    {
+        var dockables = new List<IDockable>();
+
+        if (splitViewDock.VisibleDockables is { } visibleDockables)
+        {
+            dockables.AddRange(visibleDockables);
+        }
+
+        AddSplitViewDockables(dockables, splitViewDock);
+
+        return dockables.Count == 0 ? null : dockables;
+    }
+
+    private static void AddSplitViewDockables(List<IDockable> dockables, ISplitViewDock splitViewDock)
+    {
+        var paneDockable = splitViewDock.PaneDockable;
+        if (paneDockable is not null && !dockables.Contains(paneDockable))
+        {
+            dockables.Add(paneDockable);
+        }
+
+        var contentDockable = splitViewDock.ContentDockable;
+        if (contentDockable is not null &&
+            !ReferenceEquals(contentDockable, paneDockable) &&
+            !dockables.Contains(contentDockable))
+        {
+            dockables.Add(contentDockable);
         }
     }
 

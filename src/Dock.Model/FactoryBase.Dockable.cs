@@ -1255,13 +1255,43 @@ public abstract partial class FactoryBase
         UpdateIsEmpty(dock);
     }
 
+    private static bool IsDockableEmpty(IDockable? dockable)
+    {
+        return dockable is null
+               || dockable is ISplitter
+               || dockable is IDock { IsEmpty: true, IsCollapsable: true };
+    }
+
+    private static bool IsSplitViewDockEmpty(ISplitViewDock splitViewDock)
+    {
+        var visibleDockables = splitViewDock.VisibleDockables;
+        if (visibleDockables is { Count: > 0 } &&
+            visibleDockables.Any(dockable => !IsDockableEmpty(dockable)))
+        {
+            return false;
+        }
+
+        return IsSplitViewDockContentEmpty(splitViewDock);
+    }
+
+    private static bool IsSplitViewDockContentEmpty(ISplitViewDock splitViewDock)
+    {
+        return IsDockableEmpty(splitViewDock.PaneDockable)
+               && IsDockableEmpty(splitViewDock.ContentDockable);
+    }
+
     private void UpdateIsEmpty(IDock dock)
     {
         bool oldIsEmpty = dock.IsEmpty;
+        var visibleDockables = dock.VisibleDockables;
 
-        var newIsEmpty = dock.VisibleDockables == null
-                         || dock.VisibleDockables?.Count == 0
-                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true, IsCollapsable: true } or ISplitter);
+        var newIsEmpty = dock switch
+        {
+            ISplitViewDock splitViewDock => IsSplitViewDockEmpty(splitViewDock),
+            _ => visibleDockables == null
+                 || visibleDockables.Count == 0
+                 || visibleDockables.All(IsDockableEmpty)
+        };
 
         if (oldIsEmpty != newIsEmpty)
         {

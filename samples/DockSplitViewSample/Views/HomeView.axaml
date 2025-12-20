@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DockSplitViewSample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="400"
+             x:Class="DockSplitViewSample.Views.HomeView"
+             x:DataType="vm:HomeViewModel" x:CompileBindings="True">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24" Spacing="16" MaxWidth="600">
+      <TextBlock Text="Home" FontSize="24" FontWeight="SemiBold" />
+      <TextBlock Text="Welcome to the SplitView Dock sample application." 
+                 TextWrapping="Wrap" />
+      
+      <TextBlock Text="Getting Started" FontSize="18" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <TextBlock TextWrapping="Wrap">
+        This sample demonstrates how to use the SplitViewDock control from the Dock library. 
+        The navigation pane on the left can be toggled open or closed, and supports different display modes.
+      </TextBlock>
+      
+      <TextBlock Text="Features" FontSize="18" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <StackPanel Spacing="4">
+        <TextBlock Text="• Collapsible navigation pane" />
+        <TextBlock Text="• Four display modes: Inline, CompactInline, Overlay, CompactOverlay" />
+        <TextBlock Text="• Configurable pane placement (left or right)" />
+        <TextBlock Text="• Adjustable pane widths" />
+        <TextBlock Text="• Light dismiss overlay support" />
+      </StackPanel>
+      
+      <TextBlock Text="Try It" FontSize="18" FontWeight="SemiBold" Margin="0,16,0,0" />
+      <TextBlock TextWrapping="Wrap">
+        Go to the Settings page to experiment with all the SplitViewDock options.
+      </TextBlock>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

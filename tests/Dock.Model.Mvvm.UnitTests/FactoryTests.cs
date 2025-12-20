@@ -245,6 +245,30 @@ public class FactoryTests
         Assert.True(eventRaised);
         Assert.Same(window, raisedWindow);
     }
+
+    [Fact]
+    public void CreateSplitViewDock_Creates_SplitViewDock()
+    {
+        var factory = new TestFactory();
+        var actual = factory.CreateSplitViewDock();
+        Assert.NotNull(actual);
+        Assert.IsType<SplitViewDock>(actual);
+    }
+
+    [Fact]
+    public void CreateSplitViewDock_Default_Values()
+    {
+        var factory = new TestFactory();
+        var actual = factory.CreateSplitViewDock();
+        Assert.Equal(48.0, actual.CompactPaneLength);
+        Assert.Equal(320.0, actual.OpenPaneLength);
+        Assert.Equal(SplitViewDisplayMode.Overlay, actual.DisplayMode);
+        Assert.False(actual.IsPaneOpen);
+        Assert.Equal(SplitViewPanePlacement.Left, actual.PanePlacement);
+        Assert.False(actual.UseLightDismissOverlayMode);
+        Assert.Null(actual.PaneDockable);
+        Assert.Null(actual.ContentDockable);
+    }
 }
 
 public class TestFactory : Factory

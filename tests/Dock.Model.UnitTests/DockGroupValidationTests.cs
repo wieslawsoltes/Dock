@@ -31,6 +31,7 @@ public class DockGroupValidationTests
         public bool IsActive { get; set; }
         public bool CanClose { get; set; } = true;
         public bool CanPin { get; set; } = true;
+        public bool KeepPinnedDockableVisible { get; set; }
         public bool CanFloat { get; set; } = true;
         public bool CanDrag { get; set; } = true;
         public bool CanDrop { get; set; } = true;

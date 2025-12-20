@@ -561,6 +561,14 @@ public static class FluentExtensions
     /// <returns>The same instance for chaining.</returns>
     public static T WithCanPin<T>(this T dockable, bool value) where T : IDockable { dockable.CanPin = value; return dockable; }
     /// <summary>
+    /// Sets the <see cref="IDockable.KeepPinnedDockableVisible"/> flag.
+    /// </summary>
+    /// <typeparam name="T">Dockable type.</typeparam>
+    /// <param name="dockable">The instance to configure.</param>
+    /// <param name="value">Whether pinned previews stay visible.</param>
+    /// <returns>The same instance for chaining.</returns>
+    public static T WithKeepPinnedDockableVisible<T>(this T dockable, bool value) where T : IDockable { dockable.KeepPinnedDockableVisible = value; return dockable; }
+    /// <summary>
     /// Sets the <see cref="IDockable.CanFloat"/> flag.
     /// </summary>
     /// <typeparam name="T">Dockable type.</typeparam>

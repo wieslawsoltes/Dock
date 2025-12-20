@@ -35,6 +35,7 @@ public abstract class DockableBase : CaliburMicroBase, IDockable
     private double _maxHeight = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
+    private bool _keepPinnedDockableVisible;
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
@@ -223,6 +224,14 @@ public abstract class DockableBase : CaliburMicroBase, IDockable
     {
         get => _canPin;
         set => Set(ref _canPin, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool KeepPinnedDockableVisible
+    {
+        get => _keepPinnedDockableVisible;
+        set => Set(ref _keepPinnedDockableVisible, value);
     }
 
     /// <inheritdoc/>

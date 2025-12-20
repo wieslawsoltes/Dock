@@ -32,8 +32,8 @@ public class DockFactory : Factory
         var document1 = new DocumentViewModel {Id = "Document1", Title = "Document1"};
         var document2 = new DocumentViewModel {Id = "Document2", Title = "Document2"};
         var document3 = new DocumentViewModel {Id = "Document3", Title = "Document3", CanClose = true};
-        var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1"};
-        var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2"};
+        var tool1 = new Tool1ViewModel {Id = "Tool1", Title = "Tool1", KeepPinnedDockableVisible = true};
+        var tool2 = new Tool2ViewModel {Id = "Tool2", Title = "Tool2", KeepPinnedDockableVisible = true};
         var tool3 = new Tool3ViewModel {Id = "Tool3", Title = "Tool3", CanDrag = false };
         var tool4 = new Tool4ViewModel {Id = "Tool4", Title = "Tool4", CanDrag = false };
         var tool5 = new Tool5ViewModel {Id = "Tool5", Title = "Tool5" };

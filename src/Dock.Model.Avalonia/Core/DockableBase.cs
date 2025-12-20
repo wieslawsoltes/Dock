@@ -135,6 +135,12 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(CanPin), o => o.CanPin, (o, v) => o.CanPin = v);
 
     /// <summary>
+    /// Defines the <see cref="KeepPinnedDockableVisible"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> KeepPinnedDockableVisibleProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(KeepPinnedDockableVisible), o => o.KeepPinnedDockableVisible, (o, v) => o.KeepPinnedDockableVisible = v);
+
+    /// <summary>
     /// Defines the <see cref="CanFloat"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, bool> CanFloatProperty =
@@ -207,6 +213,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _collapsedProportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
+    private bool _keepPinnedDockableVisible;
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
@@ -423,6 +430,15 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _canPin;
         set => SetAndRaise(CanPinProperty, ref _canPin, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("KeepPinnedDockableVisible")]
+    public bool KeepPinnedDockableVisible
+    {
+        get => _keepPinnedDockableVisible;
+        set => SetAndRaise(KeepPinnedDockableVisibleProperty, ref _keepPinnedDockableVisible, value);
     }
 
     /// <inheritdoc/>

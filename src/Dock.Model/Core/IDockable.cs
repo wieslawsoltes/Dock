@@ -121,6 +121,11 @@ public interface IDockable : IControlRecyclingIdProvider
     bool CanPin { get; set; }
 
     /// <summary>
+    /// Gets or sets whether a pinned dockable stays visible when previewed.
+    /// </summary>
+    bool KeepPinnedDockableVisible { get; set; }
+
+    /// <summary>
     /// Gets or sets if the dockable can be floated.
     /// </summary>
     bool CanFloat { get; set; }

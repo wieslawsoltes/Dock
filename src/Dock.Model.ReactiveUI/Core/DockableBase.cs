@@ -31,6 +31,7 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _collapsedProportion = double.NaN;
         _canClose = true;
         _canPin = true;
+        _keepPinnedDockableVisible = false;
         _canFloat = true;
         _canDrag = true;
         _canDrop = true;
@@ -130,6 +131,10 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial bool CanPin { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool KeepPinnedDockableVisible { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]

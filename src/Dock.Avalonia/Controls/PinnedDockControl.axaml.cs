@@ -249,8 +249,36 @@ public class PinnedDockControl : TemplatedControl
                point.Y <= _pinnedDockGrid.Bounds.Height;
     }
 
+    private bool ShouldKeepPinnedDockableVisible()
+    {
+        if (DataContext is not IRootDock rootDock)
+        {
+            return false;
+        }
+
+        if (rootDock.PinnedDock?.VisibleDockables is null)
+        {
+            return false;
+        }
+
+        foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+        {
+            if (dockable.KeepPinnedDockableVisible)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void OwnerWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        if (ShouldKeepPinnedDockableVisible())
+        {
+            return;
+        }
+
         if (!IsPointerInsidePinnedDock(e))
         {
             CloseWindow();
@@ -259,7 +287,11 @@ public class PinnedDockControl : TemplatedControl
 
     private void OwnerWindow_Deactivated(object? sender, EventArgs e)
     {
+        if (ShouldKeepPinnedDockableVisible())
+        {
+            return;
+        }
+
         CloseWindow();
     }
 }
-

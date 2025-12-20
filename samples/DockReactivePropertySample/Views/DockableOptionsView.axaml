@@ -7,6 +7,7 @@
     <CheckBox IsChecked="{Binding CanClose}" ToolTip.Tip="CanClose" />
     <CheckBox IsChecked="{Binding CanFloat}" ToolTip.Tip="CanFloat" />
     <CheckBox IsChecked="{Binding CanPin}" ToolTip.Tip="CanPin" />
+    <CheckBox IsChecked="{Binding KeepPinnedDockableVisible}" ToolTip.Tip="KeepPinnedDockableVisible" />
     <CheckBox IsChecked="{Binding CanDrag}" ToolTip.Tip="CanDrag" />
     <CheckBox IsChecked="{Binding CanDrop}" ToolTip.Tip="CanDrop" />
     <CheckBox IsChecked="{Binding IsModified}" ToolTip.Tip="IsModified" />

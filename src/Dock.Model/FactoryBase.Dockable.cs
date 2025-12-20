@@ -464,20 +464,33 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public void HidePreviewingDockables(IRootDock rootDock)
     {
+        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: true);
+    }
+
+    private void HidePreviewingDockablesInternal(IRootDock rootDock, bool respectKeepVisible)
+    {
         if (rootDock.PinnedDock?.VisibleDockables is null)
         {
             return;
         }
 
-        foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+        var dockables = rootDock.PinnedDock.VisibleDockables.ToList();
+        foreach (var dockable in dockables)
         {
+            if (respectKeepVisible && dockable.KeepPinnedDockableVisible)
+            {
+                continue;
+            }
+
             dockable.Owner = dockable.OriginalOwner;
             dockable.OriginalOwner = null;
+            RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
 
-        RemoveAllVisibleDockables(rootDock.PinnedDock);
-
-        rootDock.PinnedDock = null;
+        if (rootDock.PinnedDock.VisibleDockables?.Count == 0)
+        {
+            rootDock.PinnedDock = null;
+        }
     }
 
     /// <inheritdoc/>
@@ -489,7 +502,7 @@ public abstract partial class FactoryBase
             return;
         }
 
-        HidePreviewingDockables(rootDock);
+        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
 
         var owner = dockable.Owner;
         
@@ -510,8 +523,14 @@ public abstract partial class FactoryBase
 
         RemoveAllVisibleDockables(rootDock.PinnedDock);
 
-        dockable.OriginalOwner = owner;
-        AddVisibleDockable(rootDock.PinnedDock!, dockable);
+        if (rootDock.PinnedDock.VisibleDockables?.Contains(dockable) != true)
+        {
+            if (dockable.OriginalOwner is null)
+            {
+                dockable.OriginalOwner = owner;
+            }
+            AddVisibleDockable(rootDock.PinnedDock!, dockable);
+        }
  
         InitDockable(rootDock.PinnedDock, rootDock);
     }
@@ -710,7 +729,7 @@ public abstract partial class FactoryBase
                     {
                         Debug.Assert(dockable.OriginalOwner is IDock);
                         var originalOwner = (IDock)dockable.OriginalOwner!;
-                        HidePreviewingDockables(rootDock);
+                        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
                         AddVisibleDockable(originalOwner, dockable);
                     }
 

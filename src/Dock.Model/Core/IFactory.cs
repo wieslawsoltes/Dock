@@ -171,6 +171,12 @@ public partial interface IFactory
     IDocumentDock CreateDocumentDock();
 
     /// <summary>
+    /// Creates <see cref="ISplitViewDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="ISplitViewDock"/> class.</returns>
+    ISplitViewDock CreateSplitViewDock();
+
+    /// <summary>
     /// Creates <see cref="IDockWindow"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>

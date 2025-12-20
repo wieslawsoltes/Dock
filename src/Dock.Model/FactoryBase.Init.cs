@@ -80,6 +80,11 @@ public abstract partial class FactoryBase
             UpdateIsEmpty(dock);
         }
 
+        if (dockable is ISplitViewDock splitViewDock)
+        {
+            InitSplitViewDockables(splitViewDock);
+        }
+
         if (dockable is IRootDock rootDock)
         {
             if (rootDock.HiddenDockables is not null)
@@ -161,6 +166,24 @@ public abstract partial class FactoryBase
         foreach (var child in dockables)
         {
             InitDockable(child, dockable);
+        }
+    }
+
+    private void InitSplitViewDockables(ISplitViewDock splitViewDock)
+    {
+        var dock = (IDock)splitViewDock;
+        var paneDockable = splitViewDock.PaneDockable;
+        if (paneDockable is not null && dock.VisibleDockables?.Contains(paneDockable) != true)
+        {
+            InitDockable(paneDockable, splitViewDock);
+        }
+
+        var contentDockable = splitViewDock.ContentDockable;
+        if (contentDockable is not null &&
+            !ReferenceEquals(contentDockable, paneDockable) &&
+            dock.VisibleDockables?.Contains(contentDockable) != true)
+        {
+            InitDockable(contentDockable, splitViewDock);
         }
     }
 

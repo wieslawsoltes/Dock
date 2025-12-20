@@ -87,8 +87,16 @@ public abstract partial class FactoryBase : IFactory
         // Preconditions: must be collapsable and currently empty.
         if (dock is null) return;
         if (!dock.IsCollapsable) return;
-        if (dock.VisibleDockables is null) return; // nothing to evaluate
-        if (dock.VisibleDockables.Count != 0) return; // only collapse when empty
+        if (dock is ISplitViewDock splitViewDock)
+        {
+            if (dock.VisibleDockables is not null && dock.VisibleDockables.Count != 0) return;
+            if (!IsSplitViewDockContentEmpty(splitViewDock)) return;
+        }
+        else
+        {
+            if (dock.VisibleDockables is null) return; // nothing to evaluate
+            if (dock.VisibleDockables.Count != 0) return; // only collapse when empty
+        }
 
         // Prevent collapsing pinned tool docks.
         var rootDock = FindRoot(dock, _ => true);

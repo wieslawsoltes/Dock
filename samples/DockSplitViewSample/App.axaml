@@ -1,0 +1,17 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:DockSplitViewSample"
+             x:Class="DockSplitViewSample.App"
+             RequestedThemeVariant="Default">
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+    <!-- Fix: Hide close button on non-selected/non-hovered document tabs -->
+    <Style Selector="DocumentTabStripItem:not(:selected):not(:pointerover) Path#PART_ClosePath">
+      <Setter Property="Fill" Value="Transparent" />
+    </Style>
+  </Application.Styles>
+</Application>

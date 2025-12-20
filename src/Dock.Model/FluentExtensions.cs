@@ -1043,4 +1043,99 @@ public static class FluentExtensions
     /// <param name="host">Host adapter.</param>
     /// <returns>The same window.</returns>
     public static IDockWindow WithHost(this IDockWindow window, IHostWindow? host) { window.Host = host; return window; }
+
+    // ISplitViewDock creation helpers
+
+    /// <summary>
+    /// Creates a new <see cref="ISplitViewDock"/> and optionally configures it.
+    /// </summary>
+    /// <param name="factory">The factory used to create the dock.</param>
+    /// <param name="configure">Optional configuration action.</param>
+    /// <returns>The created <see cref="ISplitViewDock"/>.</returns>
+    public static ISplitViewDock SplitViewDock(this IFactory factory, Action<ISplitViewDock>? configure = null)
+    {
+        var dock = factory.CreateSplitViewDock();
+        configure?.Invoke(dock);
+        return dock;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="ISplitViewDock"/>, assigns it to <paramref name="dock"/>, and returns the same factory for chaining.
+    /// </summary>
+    /// <param name="factory">The factory used to create the dock.</param>
+    /// <param name="dock">Outputs the created <see cref="ISplitViewDock"/>.</param>
+    /// <param name="configure">Optional configuration action.</param>
+    /// <returns>The same <see cref="IFactory"/> instance.</returns>
+    public static IFactory SplitViewDock(this IFactory factory, out ISplitViewDock dock, Action<ISplitViewDock>? configure = null)
+    {
+        dock = factory.CreateSplitViewDock();
+        configure?.Invoke(dock);
+        return factory;
+    }
+
+    // ISplitViewDock configuration helpers
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.CompactPaneLength"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="length">The compact pane length.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithCompactPaneLength(this ISplitViewDock dock, double length) { dock.CompactPaneLength = length; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.DisplayMode"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="mode">The display mode.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithDisplayMode(this ISplitViewDock dock, SplitViewDisplayMode mode) { dock.DisplayMode = mode; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.IsPaneOpen"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="isOpen">Whether the pane is open.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithIsPaneOpen(this ISplitViewDock dock, bool isOpen) { dock.IsPaneOpen = isOpen; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.OpenPaneLength"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="length">The open pane length.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithOpenPaneLength(this ISplitViewDock dock, double length) { dock.OpenPaneLength = length; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.PanePlacement"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="placement">The pane placement.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithPanePlacement(this ISplitViewDock dock, SplitViewPanePlacement placement) { dock.PanePlacement = placement; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.UseLightDismissOverlayMode"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="useLightDismiss">Whether to use light dismiss overlay mode.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithUseLightDismissOverlayMode(this ISplitViewDock dock, bool useLightDismiss) { dock.UseLightDismissOverlayMode = useLightDismiss; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.PaneDockable"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="paneDockable">The pane dockable.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithPaneDockable(this ISplitViewDock dock, IDockable? paneDockable) { dock.PaneDockable = paneDockable; return dock; }
+
+    /// <summary>
+    /// Sets the <see cref="ISplitViewDock.ContentDockable"/>.
+    /// </summary>
+    /// <param name="dock">The SplitViewDock to configure.</param>
+    /// <param name="contentDockable">The content dockable.</param>
+    /// <returns>The same dock for chaining.</returns>
+    public static ISplitViewDock WithContentDockable(this ISplitViewDock dock, IDockable? contentDockable) { dock.ContentDockable = contentDockable; return dock; }
 }

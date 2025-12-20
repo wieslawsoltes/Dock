@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Dock.Model\Dock.Model.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.Avalonia\Dock.Model.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Controls.Recycling.Model\Dock.Controls.Recycling.Model.csproj" />
   </ItemGroup>
 

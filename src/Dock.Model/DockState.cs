@@ -61,6 +61,11 @@ public class DockState : IDockState
             }
         }
 
+        if (dock is ISplitViewDock splitViewDock)
+        {
+            SaveSplitViewDockables(splitViewDock);
+        }
+
         if (dock.VisibleDockables is { })
         {
             SaveDockables(dock.VisibleDockables);
@@ -101,6 +106,11 @@ public class DockState : IDockState
             {
                 RestoreWindows(rootDock.Windows);
             }
+        }
+
+        if (dock is ISplitViewDock splitViewDock)
+        {
+            RestoreSplitViewDockables(splitViewDock);
         }
 
         if (dock.VisibleDockables is { })
@@ -144,6 +154,36 @@ public class DockState : IDockState
         }
     }
 
+    private void SaveSplitViewDockables(ISplitViewDock splitViewDock)
+    {
+        var dock = (IDock)splitViewDock;
+        SaveSplitViewDockable(dock, splitViewDock.PaneDockable);
+        if (!ReferenceEquals(splitViewDock.ContentDockable, splitViewDock.PaneDockable))
+        {
+            SaveSplitViewDockable(dock, splitViewDock.ContentDockable);
+        }
+    }
+
+    private void SaveSplitViewDockable(IDock ownerDock, IDockable? dockable)
+    {
+        if (dockable is null)
+        {
+            return;
+        }
+
+        if (ownerDock.VisibleDockables?.Contains(dockable) == true)
+        {
+            return;
+        }
+
+        SaveDockable(dockable);
+
+        if (dockable is IDock childDock)
+        {
+            Save(childDock);
+        }
+    }
+
     private void RestoreDockables(IList<IDockable> dockables)
     {
         foreach (var dockable in dockables)
@@ -154,6 +194,36 @@ public class DockState : IDockState
             {
                 Restore(childDock);
             }
+        }
+    }
+
+    private void RestoreSplitViewDockables(ISplitViewDock splitViewDock)
+    {
+        var dock = (IDock)splitViewDock;
+        RestoreSplitViewDockable(dock, splitViewDock.PaneDockable);
+        if (!ReferenceEquals(splitViewDock.ContentDockable, splitViewDock.PaneDockable))
+        {
+            RestoreSplitViewDockable(dock, splitViewDock.ContentDockable);
+        }
+    }
+
+    private void RestoreSplitViewDockable(IDock ownerDock, IDockable? dockable)
+    {
+        if (dockable is null)
+        {
+            return;
+        }
+
+        if (ownerDock.VisibleDockables?.Contains(dockable) == true)
+        {
+            return;
+        }
+
+        RestoreDockable(dockable);
+
+        if (dockable is IDock childDock)
+        {
+            Restore(childDock);
         }
     }
 

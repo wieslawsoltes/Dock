@@ -36,6 +36,7 @@ internal static class DockDataTemplateHelper
         });
         yield return CreateDataTemplate<IDocumentDock>(() => new DocumentDockControl());
         yield return CreateDataTemplate<IToolDock>(() => new ToolDockControl());
+        yield return CreateDataTemplate<ISplitViewDock>(() => new SplitViewDockControl());
         yield return CreateDataTemplate<IProportionalDock>(() => new ProportionalDockControl());
         yield return CreateDataTemplate<IStackDock>(() => new StackDockControl());
         yield return CreateDataTemplate<IGridDock>(() => new GridDockControl());

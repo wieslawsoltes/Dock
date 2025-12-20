@@ -323,7 +323,8 @@ public class DockControlDataTemplateTests
             typeof(IWrapDock),
             typeof(IUniformGridDock),
             typeof(IDockDock),
-            typeof(IRootDock)
+            typeof(IRootDock),
+            typeof(ISplitViewDock)
         };
     }
 

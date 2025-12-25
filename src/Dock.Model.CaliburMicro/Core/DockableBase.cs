@@ -10,7 +10,7 @@ namespace Dock.Model.CaliburMicro.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : CaliburMicroBase, IDockable
+public abstract class DockableBase : CaliburMicroBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
@@ -41,6 +41,8 @@ public abstract class DockableBase : CaliburMicroBase, IDockable
     private bool _canDrop = true;
     private bool _isModified;
     private string? _dockGroup;
+    private bool _showInSelector = true;
+    private string? _selectorTitle;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -272,6 +274,22 @@ public abstract class DockableBase : CaliburMicroBase, IDockable
     {
         get => _dockGroup;
         set => Set(ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool ShowInSelector
+    {
+        get => _showInSelector;
+        set => Set(ref _showInSelector, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public string? SelectorTitle
+    {
+        get => _selectorTitle;
+        set => Set(ref _selectorTitle, value);
     }
 
     /// <inheritdoc/>

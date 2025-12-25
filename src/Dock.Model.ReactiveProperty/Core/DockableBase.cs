@@ -10,7 +10,7 @@ namespace Dock.Model.ReactiveProperty.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
@@ -41,6 +41,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxHeight = double.NaN;
     private bool _isModified;
     private string? _dockGroup;
+    private bool _showInSelector = true;
+    private string? _selectorTitle;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -272,6 +274,22 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _dockGroup;
         set => SetProperty(ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool ShowInSelector
+    {
+        get => _showInSelector;
+        set => SetProperty(ref _showInSelector, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public string? SelectorTitle
+    {
+        get => _selectorTitle;
+        set => SetProperty(ref _selectorTitle, value);
     }
 
     /// <inheritdoc/>

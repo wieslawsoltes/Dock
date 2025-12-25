@@ -50,6 +50,18 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         AvaloniaProperty.Register<DocumentDock, DocumentTabLayout>(nameof(TabsLayout), DocumentTabLayout.Top);
 
     /// <summary>
+    /// Defines the <see cref="LayoutMode"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DocumentLayoutMode> LayoutModeProperty =
+        AvaloniaProperty.Register<DocumentDock, DocumentLayoutMode>(nameof(LayoutMode), DocumentLayoutMode.Tabbed);
+
+    /// <summary>
+    /// Defines the <see cref="CloseButtonShowMode"/> property.
+    /// </summary>
+    public static readonly StyledProperty<DocumentCloseButtonShowMode> CloseButtonShowModeProperty =
+        AvaloniaProperty.Register<DocumentDock, DocumentCloseButtonShowMode>(nameof(CloseButtonShowMode), DocumentCloseButtonShowMode.Always);
+
+    /// <summary>
     /// Defines the <see cref="ItemsSource"/> property.
     /// </summary>
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
@@ -65,6 +77,10 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     public DocumentDock()
     {
         CreateDocument = new Command(CreateNewDocument);
+        CascadeDocuments = new Command(CascadeDocumentsExecute);
+        TileDocumentsHorizontal = new Command(TileDocumentsHorizontalExecute);
+        TileDocumentsVertical = new Command(TileDocumentsVerticalExecute);
+        RestoreDocuments = new Command(RestoreDocumentsExecute);
         
         // Subscribe to ItemsSource property changes
         _itemsSourceSubscription = this.GetObservable(ItemsSourceProperty).Subscribe(new AnonymousObserver<IEnumerable?>(OnItemsSourceChanged));
@@ -114,6 +130,26 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     [JsonIgnore]
     public ICommand? CreateDocument { get; set; }
 
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? CascadeDocuments { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? TileDocumentsHorizontal { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? TileDocumentsVertical { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    [JsonIgnore]
+    public ICommand? RestoreDocuments { get; set; }
+
     /// <summary>
     /// Gets or sets document template.
     /// </summary>
@@ -132,6 +168,24 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
     {
         get => GetValue(TabsLayoutProperty);
         set => SetValue(TabsLayoutProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("CloseButtonShowMode")]
+    public DocumentCloseButtonShowMode CloseButtonShowMode
+    {
+        get => GetValue(CloseButtonShowModeProperty);
+        set => SetValue(CloseButtonShowModeProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("LayoutMode")]
+    public DocumentLayoutMode LayoutMode
+    {
+        get => GetValue(LayoutModeProperty);
+        set => SetValue(LayoutModeProperty, value);
     }
 
     /// <summary>
@@ -191,6 +245,46 @@ public class DocumentDock : DockBase, IDocumentDock, IDocumentDockContent, IItem
         {
             CreateDocumentFromTemplate();
         }
+    }
+
+    private void CascadeDocumentsExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.CascadeDocuments(this);
+    }
+
+    private void TileDocumentsHorizontalExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.TileDocumentsHorizontal(this);
+    }
+
+    private void TileDocumentsVerticalExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.TileDocumentsVertical(this);
+    }
+
+    private void RestoreDocumentsExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.RestoreDocuments(this);
     }
 
     /// <summary>

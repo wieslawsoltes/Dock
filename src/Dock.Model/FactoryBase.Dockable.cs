@@ -1062,6 +1062,7 @@ public abstract partial class FactoryBase
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
             targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+            targetDock.LayoutMode = sourceDock.LayoutMode;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {
@@ -1090,6 +1091,21 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc/>
     public void SetDocumentDockTabsLayoutRight(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Right);
+
+    /// <inheritdoc/>
+    public virtual void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode)
+    {
+        if (dockable is IDocumentDock documentDock)
+        {
+            documentDock.LayoutMode = layoutMode;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SetDocumentDockLayoutModeTabbed(IDockable dockable) => SetDocumentDockLayoutMode(dockable, DocumentLayoutMode.Tabbed);
+
+    /// <inheritdoc/>
+    public void SetDocumentDockLayoutModeMdi(IDockable dockable) => SetDocumentDockLayoutMode(dockable, DocumentLayoutMode.Mdi);
     
     /// <inheritdoc/>
     public virtual void NewVerticalDocumentDock(IDockable dockable)
@@ -1108,6 +1124,7 @@ public abstract partial class FactoryBase
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
             targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+            targetDock.LayoutMode = sourceDock.LayoutMode;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {

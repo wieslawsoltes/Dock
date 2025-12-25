@@ -10,7 +10,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract partial class DockableBase : ReactiveBase, IDockable
+public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
 
@@ -41,6 +41,8 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _maxHeight = double.NaN;
         _isModified = false;
         _dockGroup = null;
+        _showInSelector = true;
+        _selectorTitle = null;
         _trackingAdapter = new TrackingAdapter();
     }
 
@@ -155,6 +157,14 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public partial string? DockGroup { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial bool ShowInSelector { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public partial string? SelectorTitle { get; set; }
 
     /// <inheritdoc/>
     public string? GetControlRecyclingId() => _id;

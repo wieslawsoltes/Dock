@@ -1,7 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
-using Avalonia;
 using System;
+using Avalonia;
+using Dock.Settings;
 
 namespace DockMvvmSample;
 
@@ -17,5 +18,10 @@ internal class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
+            .WithDockSettings(new DockSettingsOptions
+            {
+                CommandBarMergingEnabled = true,
+                CommandBarMergingScope = DockCommandBarMergingScope.ActiveDocument
+            })
             .LogToTrace();
 }

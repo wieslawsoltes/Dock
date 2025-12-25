@@ -199,6 +199,14 @@
                 Command="{Binding Owner.Factory.SetDocumentDockTabsLayoutRight}"
                 CommandParameter="{Binding Owner}" />
     </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeString}">
+      <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeTabbedString}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeTabbed}"
+                CommandParameter="{Binding Owner}" />
+      <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeMdiString}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeMdi}"
+                CommandParameter="{Binding Owner}" />
+    </MenuItem>
   </ContextMenu>
   
   <ControlTheme x:Key="{x:Type DocumentTabStripItem}" TargetType="DocumentTabStripItem">

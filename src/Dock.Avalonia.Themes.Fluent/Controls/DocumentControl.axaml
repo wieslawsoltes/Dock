@@ -63,6 +63,10 @@
                 <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
                 <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
               </MultiBinding>
+              <MultiBinding Converter="{x:Static converters:DocumentCloseButtonVisibilityConverter.Instance}">
+                <Binding Path="((dmc:IDocumentDock)Owner).CloseButtonShowMode" FallbackValue="Always" />
+                <Binding Path="$parent[DocumentTabStripItem].IsSelected" />
+              </MultiBinding>
             </MultiBinding>
           </Button.IsVisible>
 

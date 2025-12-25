@@ -1,0 +1,89 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:selectors="using:Dock.Avalonia.Selectors">
+  <ControlTheme x:Key="{x:Type controls:DockSelectorOverlay}" TargetType="controls:DockSelectorOverlay">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="#40000000"
+                IsVisible="{TemplateBinding IsOpen}"
+                IsHitTestVisible="{TemplateBinding IsOpen}">
+          <Border HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Background="{DynamicResource DockThemeBackgroundBrush}"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  CornerRadius="6"
+                  Padding="12"
+                  MinWidth="280"
+                  MaxWidth="520">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{TemplateBinding Mode}"
+                         FontWeight="SemiBold" />
+              <ListBox ItemsSource="{TemplateBinding Items}"
+                       SelectedItem="{TemplateBinding SelectedItem}"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       MinHeight="120"
+                       MaxHeight="320">
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="selectors:DockSelectorItem">
+                    <Border Background="Transparent"
+                            Padding="6"
+                            CornerRadius="4">
+                      <DockPanel LastChildFill="True">
+                        <StackPanel DockPanel.Dock="Right"
+                                    Orientation="Horizontal"
+                                    Spacing="4"
+                                    Margin="8,0,0,0">
+                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                                  CornerRadius="3"
+                                  Padding="4,1"
+                                  IsVisible="{Binding IsDocument}">
+                            <TextBlock Text="DOC"
+                                       FontSize="10" />
+                          </Border>
+                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                                  CornerRadius="3"
+                                  Padding="4,1"
+                                  IsVisible="{Binding IsTool}">
+                            <TextBlock Text="TOOL"
+                                       FontSize="10" />
+                          </Border>
+                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                                  CornerRadius="3"
+                                  Padding="4,1"
+                                  IsVisible="{Binding IsPinned}">
+                            <TextBlock Text="PIN"
+                                       FontSize="10" />
+                          </Border>
+                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                                  CornerRadius="3"
+                                  Padding="4,1"
+                                  IsVisible="{Binding IsFloating}">
+                            <TextBlock Text="FLOAT"
+                                       FontSize="10" />
+                          </Border>
+                          <Border Background="{DynamicResource DockThemeBorderLowBrush}"
+                                  CornerRadius="3"
+                                  Padding="4,1"
+                                  IsVisible="{Binding IsHidden}">
+                            <TextBlock Text="HIDDEN"
+                                       FontSize="10" />
+                          </Border>
+                        </StackPanel>
+                        <TextBlock Text="{Binding Title}"
+                                   TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Center" />
+                      </DockPanel>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

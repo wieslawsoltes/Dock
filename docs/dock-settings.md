@@ -98,6 +98,34 @@ is controlled by `DockSettings.WindowMagnetDistance`.
 and any main window hosting a `DockControl` are activated when dragging begins.
 Enabled by default.
 
+## Selector hotkeys
+
+Dock exposes a document and panel selector that can be toggled with keyboard gestures:
+
+```csharp
+DockSettings.SelectorEnabled = true;
+DockSettings.DocumentSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control);
+DockSettings.ToolSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control | KeyModifiers.Alt);
+```
+
+Disable `SelectorEnabled` to turn off the overlay entirely.
+
+Dockables can also opt out or provide a custom label for the selector:
+
+```csharp
+document.ShowInSelector = false;
+document.SelectorTitle = "Runtime Config";
+```
+
+## Command bar merging
+
+Command bar merging is disabled by default. Enable it and choose a scope:
+
+```csharp
+DockSettings.CommandBarMergingEnabled = true;
+DockSettings.CommandBarMergingScope = DockCommandBarMergingScope.ActiveDocument;
+```
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:

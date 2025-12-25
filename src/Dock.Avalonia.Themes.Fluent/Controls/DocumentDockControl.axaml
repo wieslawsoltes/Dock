@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
                     xmlns:dmc="using:Dock.Model.Controls"
                     x:DataType="dmc:IDocumentDock"
                     x:CompileBindings="True">
@@ -19,7 +21,12 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DockableControl TrackingMode="Visible">
-          <DocumentControl IsActive="{Binding IsActive}" />
+          <Panel>
+            <DocumentControl IsActive="{Binding IsActive}"
+                             IsVisible="{Binding LayoutMode, Converter={x:Static converters:DocumentLayoutModeMatchConverter.Instance}, ConverterParameter=Tabbed}" />
+            <controls:MdiDocumentControl IsActive="{Binding IsActive}"
+                                          IsVisible="{Binding LayoutMode, Converter={x:Static converters:DocumentLayoutModeMatchConverter.Instance}, ConverterParameter=Mdi}" />
+          </Panel>
         </DockableControl>
       </ControlTemplate>
     </Setter>

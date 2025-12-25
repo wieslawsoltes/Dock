@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -12,12 +13,16 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Avalonia.VisualTree;
+using Dock.Avalonia.CommandBars;
 using Dock.Avalonia.Contract;
 using Dock.Avalonia.Diagnostics;
 using Dock.Avalonia.Internal;
+using Dock.Avalonia.Selectors;
 using Dock.Model;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.Core.Events;
+using Dock.Settings;
 
 namespace Dock.Avalonia.Controls;
 
@@ -25,12 +30,22 @@ namespace Dock.Avalonia.Controls;
 /// Interaction logic for <see cref="DockControl"/> xaml.
 /// </summary>
 [TemplatePart("PART_ContentControl", typeof(ContentControl))]
-public class DockControl : TemplatedControl, IDockControl
+[TemplatePart("PART_CommandBarHost", typeof(DockCommandBarHost))]
+[TemplatePart("PART_SelectorOverlay", typeof(DockSelectorOverlay))]
+public class DockControl : TemplatedControl, IDockControl, IDockSelectorService
 {
     private readonly DockManager _dockManager;
     private readonly DockControlState _dockControlState;
     private bool _isInitialized;
     private ContentControl? _contentControl;
+    private DockCommandBarHost? _commandBarHost;
+    private DockCommandBarManager? _commandBarManager;
+    private DockSelectorOverlay? _selectorOverlay;
+    private DockSelectorMode _selectorMode;
+    private KeyGesture? _selectorGesture;
+    private readonly Dictionary<IDockable, long> _activationOrder = new();
+    private long _activationCounter;
+    private IFactory? _subscribedFactory;
 
     /// <summary>
     /// Defines the <see cref="Layout"/> property.
@@ -136,6 +151,9 @@ public class DockControl : TemplatedControl, IDockControl
         set => SetValue(AutoCreateDataTemplatesProperty, value);
     }
 
+    /// <inheritdoc/>
+    public bool IsOpen => _selectorOverlay?.IsOpen == true;
+
     private IDragOffsetCalculator _dragOffsetCalculator = new DefaultDragOffsetCalculator();
 
     /// <summary>
@@ -168,6 +186,8 @@ public class DockControl : TemplatedControl, IDockControl
         AddHandler(PointerExitedEvent, ExitedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerCaptureLostEvent, CaptureLostHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
         AddHandler(PointerWheelChangedEvent, WheelChangedHandler, RoutingStrategies.Direct | RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        AddHandler(KeyDownEvent, KeyDownHandler, RoutingStrategies.Tunnel);
+        AddHandler(KeyUpEvent, KeyUpHandler, RoutingStrategies.Tunnel);
     }
 
     /// <inheritdoc />
@@ -176,11 +196,15 @@ public class DockControl : TemplatedControl, IDockControl
         base.OnApplyTemplate(e);
 
         _contentControl = e.NameScope.Find<ContentControl>("PART_ContentControl");
+        _commandBarHost = e.NameScope.Find<DockCommandBarHost>("PART_CommandBarHost");
+        _selectorOverlay = e.NameScope.Find<DockSelectorOverlay>("PART_SelectorOverlay");
         
         if (_contentControl is not null)
         {
             InitializeDefaultDataTemplates();
         }
+
+        InitializeCommandBars();
     }
 
     private void InitializeDefaultDataTemplates()
@@ -261,6 +285,13 @@ public class DockControl : TemplatedControl, IDockControl
             layout.Factory.InitLayout(layout);
         }
 
+        AttachFactoryEvents(layout.Factory);
+        if (layout.ActiveDockable is { } activeDockable)
+        {
+            _activationOrder[activeDockable] = ++_activationCounter;
+        }
+        _commandBarManager?.Attach(layout);
+
         _isInitialized = true;
     }
 
@@ -281,7 +312,503 @@ public class DockControl : TemplatedControl, IDockControl
             }
         }
 
+        DetachFactoryEvents();
+        _commandBarManager?.Detach();
+
         _isInitialized = false;
+    }
+
+    private void InitializeCommandBars()
+    {
+        _commandBarManager?.Detach();
+        _commandBarManager = null;
+
+        if (_commandBarHost is null)
+        {
+            return;
+        }
+
+        _commandBarManager = new DockCommandBarManager(_commandBarHost);
+        if (Layout is { })
+        {
+            _commandBarManager.Attach(Layout);
+        }
+    }
+
+    private void AttachFactoryEvents(IFactory? factory)
+    {
+        if (ReferenceEquals(_subscribedFactory, factory))
+        {
+            return;
+        }
+
+        DetachFactoryEvents();
+
+        if (factory is null)
+        {
+            return;
+        }
+
+        _subscribedFactory = factory;
+        _subscribedFactory.ActiveDockableChanged += FactoryActiveDockableChanged;
+    }
+
+    private void DetachFactoryEvents()
+    {
+        if (_subscribedFactory is null)
+        {
+            return;
+        }
+
+        _subscribedFactory.ActiveDockableChanged -= FactoryActiveDockableChanged;
+        _subscribedFactory = null;
+    }
+
+    private void FactoryActiveDockableChanged(object? sender, ActiveDockableChangedEventArgs e)
+    {
+        if (e.Dockable is null || Layout?.Factory is null)
+        {
+            return;
+        }
+
+        var layoutRoot = Layout.Factory.FindRoot(Layout, _ => true);
+        var dockableRoot = Layout.Factory.FindRoot(e.Dockable, _ => true);
+        if (layoutRoot is not null && dockableRoot is not null && !ReferenceEquals(layoutRoot, dockableRoot))
+        {
+            return;
+        }
+
+        _activationOrder[e.Dockable] = ++_activationCounter;
+    }
+
+    /// <inheritdoc/>
+    public void ShowSelector(DockSelectorMode mode)
+    {
+        if (!DockSettings.SelectorEnabled)
+        {
+            return;
+        }
+
+        OpenSelector(mode, null);
+    }
+
+    /// <inheritdoc/>
+    public void HideSelector()
+    {
+        if (_selectorOverlay is null)
+        {
+            return;
+        }
+
+        _selectorOverlay.IsOpen = false;
+        _selectorOverlay.Items = null;
+        _selectorOverlay.SelectedItem = null;
+        _selectorGesture = null;
+    }
+
+    private void KeyDownHandler(object? sender, KeyEventArgs e)
+    {
+        if (!DockSettings.SelectorEnabled)
+        {
+            return;
+        }
+
+        if (IsOpen && HandleSelectorNavigation(e))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        if (TryStartSelector(e))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private void KeyUpHandler(object? sender, KeyEventArgs e)
+    {
+        if (!IsOpen || _selectorGesture is null)
+        {
+            return;
+        }
+
+        var required = _selectorGesture.KeyModifiers;
+        if ((e.KeyModifiers & required) == required)
+        {
+            return;
+        }
+
+        CommitSelectorSelection();
+        e.Handled = true;
+    }
+
+    private bool TryStartSelector(KeyEventArgs e)
+    {
+        if (_selectorOverlay is null)
+        {
+            return false;
+        }
+
+        if (MatchesSelectorGesture(e, DockSettings.DocumentSelectorKeyGesture, out var reverse))
+        {
+            OpenSelector(DockSelectorMode.Documents, DockSettings.DocumentSelectorKeyGesture);
+            MoveSelectorSelection(reverse ? -1 : 1);
+            return true;
+        }
+
+        if (MatchesSelectorGesture(e, DockSettings.ToolSelectorKeyGesture, out var toolReverse))
+        {
+            OpenSelector(DockSelectorMode.Tools, DockSettings.ToolSelectorKeyGesture);
+            MoveSelectorSelection(toolReverse ? -1 : 1);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleSelectorNavigation(KeyEventArgs e)
+    {
+        if (!IsOpen)
+        {
+            return false;
+        }
+
+        if (e.Key == Key.Escape)
+        {
+            HideSelector();
+            return true;
+        }
+
+        if (e.Key == Key.Enter)
+        {
+            CommitSelectorSelection();
+            return true;
+        }
+
+        if (e.Key == Key.Tab)
+        {
+            var reverse = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+            MoveSelectorSelection(reverse ? -1 : 1);
+            return true;
+        }
+
+        if (e.Key == Key.Left || e.Key == Key.Up)
+        {
+            MoveSelectorSelection(-1);
+            return true;
+        }
+
+        if (e.Key == Key.Right || e.Key == Key.Down)
+        {
+            MoveSelectorSelection(1);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void OpenSelector(DockSelectorMode mode, KeyGesture? gesture)
+    {
+        if (_selectorOverlay is null)
+        {
+            return;
+        }
+
+        _selectorMode = mode;
+        _selectorGesture = gesture;
+        var items = BuildSelectorItems(mode);
+        _selectorOverlay.Items = items;
+        _selectorOverlay.Mode = mode;
+        _selectorOverlay.IsOpen = true;
+
+        var activeDockable = ResolveActiveDockable(mode);
+        _selectorOverlay.SelectedItem = items.FirstOrDefault(item => ReferenceEquals(item.Dockable, activeDockable))
+                                        ?? items.FirstOrDefault();
+    }
+
+    private void CommitSelectorSelection()
+    {
+        if (_selectorOverlay?.SelectedItem is { } selected)
+        {
+            ActivateSelectorItem(selected);
+        }
+
+        HideSelector();
+    }
+
+    private void MoveSelectorSelection(int delta)
+    {
+        if (_selectorOverlay?.Items is not { } items || items.Count == 0)
+        {
+            return;
+        }
+
+        var current = _selectorOverlay.SelectedItem;
+        var index = -1;
+        for (var i = 0; i < items.Count; i++)
+        {
+            if (ReferenceEquals(items[i], current))
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index < 0)
+        {
+            index = 0;
+        }
+
+        var nextIndex = index + delta;
+        if (nextIndex < 0)
+        {
+            nextIndex = items.Count - 1;
+        }
+        else if (nextIndex >= items.Count)
+        {
+            nextIndex = 0;
+        }
+
+        _selectorOverlay.SelectedItem = items[nextIndex];
+    }
+
+    private static bool MatchesSelectorGesture(KeyEventArgs e, KeyGesture gesture, out bool reverse)
+    {
+        reverse = false;
+
+        if (e.Key != gesture.Key)
+        {
+            return false;
+        }
+
+        var required = gesture.KeyModifiers;
+        if ((e.KeyModifiers & required) != required)
+        {
+            return false;
+        }
+
+        var extras = e.KeyModifiers & ~required;
+        if (extras != KeyModifiers.None && extras != KeyModifiers.Shift)
+        {
+            return false;
+        }
+
+        reverse = extras.HasFlag(KeyModifiers.Shift);
+        return true;
+    }
+
+    private IReadOnlyList<DockSelectorItem> BuildSelectorItems(DockSelectorMode mode)
+    {
+        if (Layout?.Factory is null)
+        {
+            return Array.Empty<DockSelectorItem>();
+        }
+
+        var factory = Layout.Factory;
+        var root = factory.FindRoot(Layout, _ => true) as IRootDock;
+        if (root is null)
+        {
+            return Array.Empty<DockSelectorItem>();
+        }
+
+        var dockables = new List<IDockable>();
+        var visited = new HashSet<IDockable>();
+        CollectDockables(root, dockables, visited);
+        PruneActivationOrder(dockables);
+
+        var items = new List<DockSelectorItem>();
+        foreach (var dockable in dockables)
+        {
+            if (dockable is IDockSelectorInfo selectorInfo && !selectorInfo.ShowInSelector)
+            {
+                continue;
+            }
+
+            var isDocument = dockable is IDocument;
+            var isTool = dockable is ITool;
+
+            if (mode == DockSelectorMode.Documents && !isDocument)
+            {
+                continue;
+            }
+
+            if (mode == DockSelectorMode.Tools && !isTool)
+            {
+                continue;
+            }
+
+            _activationOrder.TryGetValue(dockable, out var activationOrder);
+            var dockableRoot = factory.FindRoot(dockable, _ => true) as IRootDock;
+            var isFloating = dockableRoot is not null && !ReferenceEquals(dockableRoot, root);
+            var isHidden = root.HiddenDockables?.Contains(dockable) == true;
+            var isPinned = factory.IsDockablePinned(dockable, root);
+
+            items.Add(new DockSelectorItem(dockable, activationOrder, isDocument, isTool, isPinned, isHidden, isFloating));
+        }
+
+        return items
+            .OrderByDescending(item => item.ActivationOrder)
+            .ThenBy(item => item.Title, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+    }
+
+    private static void CollectDockables(IDockable dockable, IList<IDockable> dockables, HashSet<IDockable> visited)
+    {
+        if (!visited.Add(dockable))
+        {
+            return;
+        }
+
+        if (dockable is IDocument or ITool)
+        {
+            dockables.Add(dockable);
+        }
+
+        if (dockable is IRootDock root)
+        {
+            AddDockables(root.HiddenDockables, dockables, visited);
+            AddDockables(root.LeftPinnedDockables, dockables, visited);
+            AddDockables(root.RightPinnedDockables, dockables, visited);
+            AddDockables(root.TopPinnedDockables, dockables, visited);
+            AddDockables(root.BottomPinnedDockables, dockables, visited);
+
+            if (root.Windows is { })
+            {
+                foreach (var window in root.Windows)
+                {
+                    if (window.Layout is { })
+                    {
+                        CollectDockables(window.Layout, dockables, visited);
+                    }
+                }
+            }
+        }
+
+        if (dockable is IDock dock && dock.VisibleDockables is { })
+        {
+            foreach (var child in dock.VisibleDockables)
+            {
+                CollectDockables(child, dockables, visited);
+            }
+        }
+
+        if (dockable is ISplitViewDock splitViewDock)
+        {
+            if (splitViewDock.PaneDockable is { })
+            {
+                CollectDockables(splitViewDock.PaneDockable, dockables, visited);
+            }
+
+            if (splitViewDock.ContentDockable is { } contentDockable
+                && !ReferenceEquals(contentDockable, splitViewDock.PaneDockable))
+            {
+                CollectDockables(contentDockable, dockables, visited);
+            }
+        }
+    }
+
+    private static void AddDockables(IList<IDockable>? source, IList<IDockable> dockables, HashSet<IDockable> visited)
+    {
+        if (source is null)
+        {
+            return;
+        }
+
+        foreach (var dockable in source)
+        {
+            CollectDockables(dockable, dockables, visited);
+        }
+    }
+
+    private void PruneActivationOrder(IReadOnlyCollection<IDockable> dockables)
+    {
+        if (_activationOrder.Count == 0)
+        {
+            return;
+        }
+
+        var current = new HashSet<IDockable>(dockables);
+        var stale = _activationOrder.Keys.Where(key => !current.Contains(key)).ToList();
+        foreach (var key in stale)
+        {
+            _activationOrder.Remove(key);
+        }
+    }
+
+    private IDockable? ResolveActiveDockable(DockSelectorMode mode)
+    {
+        if (Layout is null)
+        {
+            return null;
+        }
+
+        var active = Layout.ActiveDockable;
+        if (active is IDock activeDock && activeDock.ActiveDockable is { })
+        {
+            active = activeDock.ActiveDockable;
+        }
+
+        return mode switch
+        {
+            DockSelectorMode.Documents => active is IDocument ? active : null,
+            DockSelectorMode.Tools => active is ITool ? active : null,
+            _ => active
+        };
+    }
+
+    private void ActivateSelectorItem(DockSelectorItem item)
+    {
+        var dockable = item.Dockable;
+        var factory = dockable.Factory;
+        if (factory is null)
+        {
+            return;
+        }
+
+        var dockableRoot = factory.FindRoot(dockable, _ => true) as IRootDock;
+        if (dockableRoot is { HiddenDockables: { } hidden } && hidden.Contains(dockable))
+        {
+            factory.RestoreDockable(dockable);
+        }
+
+        if (dockableRoot is { } root && factory.IsDockablePinned(dockable, root))
+        {
+            factory.PreviewPinnedDockable(dockable);
+        }
+
+        factory.SetActiveDockable(dockable);
+
+        var focusRoot = factory.FindRoot(dockable, d => d is IRootDock { IsFocusableRoot: true }) as IRootDock
+                        ?? dockableRoot;
+        if (focusRoot is { })
+        {
+            factory.SetFocusedDockable(focusRoot, dockable);
+        }
+
+        BringDockableWindowToFront(dockableRoot);
+    }
+
+    private void BringDockableWindowToFront(IRootDock? dockableRoot)
+    {
+        if (dockableRoot is null || Layout?.Factory is null)
+        {
+            return;
+        }
+
+        var layoutRoot = Layout.Factory.FindRoot(Layout, _ => true) as IRootDock;
+        if (layoutRoot is null || ReferenceEquals(layoutRoot, dockableRoot))
+        {
+            return;
+        }
+
+        var window = layoutRoot.Windows?.FirstOrDefault(candidate => ReferenceEquals(candidate.Layout, dockableRoot));
+        if (window is null)
+        {
+            return;
+        }
+
+        window.SetActive();
+        window.Present(false);
     }
 
     /// <inheritdoc/>

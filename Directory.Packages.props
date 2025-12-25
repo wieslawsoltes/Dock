@@ -40,7 +40,7 @@
     <PackageVersion Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
     <PackageVersion Include="Microsoft.Build.Utilities.Core" Version="18.0.2" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="Nuke.Common" Version="9.0.4" />
+    <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="System.Runtime.Serialization.Formatters" Version="10.0.0" />
     <PackageVersion Include="protobuf-net" Version="3.2.56" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />

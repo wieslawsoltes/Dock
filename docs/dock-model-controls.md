@@ -14,6 +14,7 @@ when creating your own docks and documents.
 | --- | --- |
 | `IDockDock` | Basic dock panel that can optionally fill the remaining space with the last child. |
 | `IDocument` | Represents a document item. Used for files or editor tabs. |
+| `IMdiDocument` | Stores MDI window bounds, state, and stacking order for classic MDI layouts. |
 | `IDocumentContent` | Document containing arbitrary `Content`. |
 | `IDocumentDock` | Dock that hosts documents and exposes commands to create them. |
 | `IDocumentDockContent` | Dock that creates documents from a `DocumentTemplate`. |
@@ -49,6 +50,13 @@ provide the object through its `Content` property. The MVVM and ReactiveUI
 libraries include base classes that implement these interfaces and also
 raise change notifications.
 
+## IMdiDocument
+
+`IMdiDocument` stores classic MDI window state for documents when an
+`IDocumentDock` is configured to use an MDI layout. It exposes window bounds,
+minimized or maximized state, and a Z-order index so documents can be arranged
+and restored consistently.
+
 ## IDocumentDock and IDocumentDockContent
 
 `IDocumentDock` is a specialized dock that maintains a tab strip of
@@ -56,6 +64,10 @@ documents. It contains optional commands for creating new documents
 and allows dragging the host window via the tab area when
 `EnableWindowDrag` is `true`. `TabsLayout` determines where the tabs
 are placed.
+
+`IDocumentDock.LayoutMode` switches between tabbed documents and classic MDI
+windows. When MDI mode is enabled the dock exposes commands for cascade and
+tile operations, and documents implement `IMdiDocument` to store window state.
 
 `DocumentDock` also exposes a `DocumentFactory` delegate that is used by
 the `CreateDocument` command. When assigned, this factory is invoked to
@@ -122,4 +134,3 @@ Factory classes found in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`
 create these objects and wire them together. Understanding the
 contracts listed on this page will help you customize the layout and
 extend Dock with your own view models.
-

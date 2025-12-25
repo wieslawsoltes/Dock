@@ -67,6 +67,25 @@ Controls where document tabs are placed around a document dock. Setting this aff
 | `Left` | Tabs are arranged vertically to the left. |
 | `Right` | Tabs are arranged vertically to the right. |
 
+## DocumentLayoutMode
+
+Controls whether a document dock renders documents as tabs or classic MDI windows.
+
+| Value | Description |
+| ----- | ----------- |
+| `Tabbed` | Documents are shown as tabs (default). |
+| `Mdi` | Documents are shown as internal MDI windows. |
+
+## MdiWindowState
+
+Indicates the current state of an MDI document window.
+
+| Value | Description |
+| ----- | ----------- |
+| `Normal` | Window is in its normal size and position. |
+| `Minimized` | Window is minimized. |
+| `Maximized` | Window fills the document area. |
+
 ## GripMode
 
 Determines how the grip element of a splitter behaves.

@@ -24,7 +24,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(Tool), typeDiscriminator: "Tool")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 [JsonDerivedType(typeof(DockBase), typeDiscriminator: "DockBase")]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     /// <summary>
     /// Defines the <see cref="Id"/> property.
@@ -171,6 +171,18 @@ public abstract class DockableBase : ReactiveBase, IDockable
         AvaloniaProperty.RegisterDirect<DockableBase, string?>(nameof(DockGroup), o => o.DockGroup, (o, v) => o.DockGroup = v);
 
     /// <summary>
+    /// Defines the <see cref="ShowInSelector"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, bool> ShowInSelectorProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, bool>(nameof(ShowInSelector), o => o.ShowInSelector, (o, v) => o.ShowInSelector = v, true);
+
+    /// <summary>
+    /// Defines the <see cref="SelectorTitle"/> property.
+    /// </summary>
+    public static readonly DirectProperty<DockableBase, string?> SelectorTitleProperty =
+        AvaloniaProperty.RegisterDirect<DockableBase, string?>(nameof(SelectorTitle), o => o.SelectorTitle, (o, v) => o.SelectorTitle = v);
+
+    /// <summary>
     /// Defines the <see cref="MinWidth"/> property.
     /// </summary>
     public static readonly DirectProperty<DockableBase, double> MinWidthProperty =
@@ -223,6 +235,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxHeight = double.NaN;
     private bool _isModified;
     private string? _dockGroup;
+    private bool _showInSelector = true;
+    private string? _selectorTitle;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -484,6 +498,24 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _dockGroup;
         set => SetAndRaise(DockGroupProperty, ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("ShowInSelector")]
+    public bool ShowInSelector
+    {
+        get => _showInSelector;
+        set => SetAndRaise(ShowInSelectorProperty, ref _showInSelector, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("SelectorTitle")]
+    public string? SelectorTitle
+    {
+        get => _selectorTitle;
+        set => SetAndRaise(SelectorTitleProperty, ref _selectorTitle, value);
     }
 
     /// <inheritdoc/>

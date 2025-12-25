@@ -476,6 +476,25 @@ public partial interface IFactory
     void SetDocumentDockTabsLayoutRight(IDockable dockable);
 
     /// <summary>
+    /// Sets the layout mode for the specified document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    /// <param name="layoutMode">The layout mode to set.</param>
+    void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode);
+
+    /// <summary>
+    /// Sets the layout mode to tabbed.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockLayoutModeTabbed(IDockable dockable);
+
+    /// <summary>
+    /// Sets the layout mode to MDI.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockLayoutModeMdi(IDockable dockable);
+
+    /// <summary>
     /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.
     /// </summary>
     /// <param name="dockable">The dockable to hide.</param>

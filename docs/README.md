@@ -38,6 +38,7 @@ Choose the implementation that matches your MVVM framework:
 ## Concepts
 
 - [Active document](dock-active-document.md) – Retrieve the currently focused document.
+- [MDI document layout](dock-mdi.md) – Use classic MDI windows inside document docks.
 - [Events guide](dock-events.md) – Subscribe to dock and window events.
 - [API scenarios](dock-api-scenarios.md) – Common coding patterns.
 - [DockableLocator usage](dock-dockablelocator.md) – Register and resolve dockables.

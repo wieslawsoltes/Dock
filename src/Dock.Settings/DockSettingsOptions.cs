@@ -1,6 +1,8 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
+using Avalonia.Input;
+
 namespace Dock.Settings;
 
 /// <summary>
@@ -47,6 +49,30 @@ public class DockSettingsOptions
     /// Optional bring windows to front on drag flag.
     /// </summary>
     public bool? BringWindowsToFrontOnDrag { get; set; }
-}
 
+    /// <summary>
+    /// Optional selector enabled flag.
+    /// </summary>
+    public bool? SelectorEnabled { get; set; }
+
+    /// <summary>
+    /// Optional document selector key gesture.
+    /// </summary>
+    public KeyGesture? DocumentSelectorKeyGesture { get; set; }
+
+    /// <summary>
+    /// Optional tool selector key gesture.
+    /// </summary>
+    public KeyGesture? ToolSelectorKeyGesture { get; set; }
+
+    /// <summary>
+    /// Optional command bar merging enabled flag.
+    /// </summary>
+    public bool? CommandBarMergingEnabled { get; set; }
+
+    /// <summary>
+    /// Optional command bar merging scope.
+    /// </summary>
+    public DockCommandBarMergingScope? CommandBarMergingScope { get; set; }
+}
 

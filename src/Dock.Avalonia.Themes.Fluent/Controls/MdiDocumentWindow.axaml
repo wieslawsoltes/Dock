@@ -1,0 +1,352 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:converters="using:Dock.Avalonia.Converters"
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:DataType="core:IDockable"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <controls:MdiDocumentWindow Width="280" Height="200" />
+  </Design.PreviewWith>
+
+  <ContextMenu x:Key="MdiDocumentWindowContextMenu">
+    <MenuItem Header="{DynamicResource DocumentTabStripItemFloatString}"
+              Command="{Binding Owner.Factory.FloatDockable}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemFloatAllString}"
+              Command="{Binding Owner.Factory.FloatAllDockables}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <Separator>
+      <Separator.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanFloat" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </Separator.IsVisible>
+    </Separator>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseString}"
+              Command="{Binding Owner.Factory.CloseDockable}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseOtherTabsString}"
+              Command="{Binding Owner.Factory.CloseOtherDockables}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemCloseAllTabsString}"
+              Command="{Binding Owner.Factory.CloseAllDockables}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanClose" />
+          <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+            <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+            <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+          </MultiBinding>
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <Separator />
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewHorizontalDockString}"
+              Command="{Binding Owner.Factory.NewHorizontalDocumentDock}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanDrag" />
+          <Binding Path="CanDrop" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <MenuItem Header="{DynamicResource DocumentTabStripItemNewVerticalDockString}"
+              Command="{Binding Owner.Factory.NewVerticalDocumentDock}"
+              CommandParameter="{Binding}">
+      <MenuItem.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.And}">
+          <Binding Path="CanDrag" />
+          <Binding Path="CanDrop" />
+        </MultiBinding>
+      </MenuItem.IsVisible>
+    </MenuItem>
+    <Separator />
+    <MenuItem Header="Cascade"
+              x:CompileBindings="False"
+              Command="{Binding Owner.CascadeDocuments}" />
+    <MenuItem Header="Tile Horizontal"
+              x:CompileBindings="False"
+              Command="{Binding Owner.TileDocumentsHorizontal}" />
+    <MenuItem Header="Tile Vertical"
+              x:CompileBindings="False"
+              Command="{Binding Owner.TileDocumentsVertical}" />
+    <MenuItem Header="Restore"
+              x:CompileBindings="False"
+              Command="{Binding Owner.RestoreDocuments}" />
+    <Separator />
+    <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeString}">
+      <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeTabbedString}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeTabbed}"
+                CommandParameter="{Binding Owner}" />
+      <MenuItem Header="{DynamicResource DocumentTabStripItemLayoutModeMdiString}"
+                Command="{Binding Owner.Factory.SetDocumentDockLayoutModeMdi}"
+                CommandParameter="{Binding Owner}" />
+    </MenuItem>
+  </ContextMenu>
+
+  <ControlTheme x:Key="{x:Type controls:MdiDocumentWindow}" TargetType="controls:MdiDocumentWindow">
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="Background" Value="{DynamicResource DockThemeBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockableControl TrackingMode="Visible">
+          <Border x:Name="PART_OuterBorder"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <DockPanel>
+                <Border x:Name="PART_Header"
+                        DockPanel.Dock="Top"
+                        Background="{DynamicResource DockThemeBorderLowBrush}"
+                        ContextMenu="{TemplateBinding DocumentContextMenu}">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <DockPanel Grid.Column="0" LastChildFill="True">
+                      <Border x:Name="PART_DragHandle"
+                              DockPanel.Dock="Left"
+                              DockProperties.IsDragArea="True"
+                              Padding="6,4"
+                              Background="Transparent">
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              ColumnSpacing="4">
+                          <ContentPresenter Grid.Column="0"
+                                            ContentTemplate="{TemplateBinding IconTemplate}"
+                                            Content="{Binding}" />
+                          <ContentPresenter Grid.Column="1"
+                                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                            Content="{Binding}"
+                                            HorizontalAlignment="Stretch"
+                                            MinWidth="0" />
+                          <ContentPresenter Grid.Column="2"
+                                            ContentTemplate="{TemplateBinding ModifiedTemplate}"
+                                            Content="{Binding}"
+                                            IsVisible="{Binding IsModified}" />
+                        </Grid>
+                      </Border>
+                      <Grid x:Name="PART_Grid" />
+                    </DockPanel>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                Spacing="2"
+                                Margin="2,0">
+                      <Button x:Name="PART_MinimizeButton"
+                              Theme="{TemplateBinding CloseButtonTheme}">
+                        <Viewbox Width="12" Height="12">
+                          <Path x:Name="PART_MinimizePath" />
+                        </Viewbox>
+                      </Button>
+                      <Button x:Name="PART_MaximizeRestoreButton"
+                              Theme="{TemplateBinding CloseButtonTheme}">
+                        <Viewbox Width="12" Height="12">
+                          <Path x:Name="PART_MaximizeRestorePath" />
+                        </Viewbox>
+                      </Button>
+                      <Button x:Name="PART_CloseButton"
+                              Command="{Binding Owner.Factory.CloseDockable}"
+                              CommandParameter="{Binding}"
+                              Theme="{TemplateBinding CloseButtonTheme}">
+                        <Button.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="CanClose" />
+                            <MultiBinding Converter="{x:Static converters:CanRemoveDockableConverter.Instance}">
+                              <Binding Path="((core:IDock)Owner).CanCloseLastDockable" FallbackValue="{x:True}" />
+                              <Binding Path="((core:IDock)Owner).VisibleDockables.Count" FallbackValue="0" />
+                            </MultiBinding>
+                            <MultiBinding Converter="{x:Static converters:DocumentCloseButtonVisibilityConverter.Instance}">
+                              <Binding Path="((dmc:IDocumentDock)Owner).CloseButtonShowMode" FallbackValue="Always" />
+                              <Binding Path="$parent[controls:MdiDocumentWindow].IsActive" />
+                            </MultiBinding>
+                          </MultiBinding>
+                        </Button.IsVisible>
+                        <ContentPresenter ContentTemplate="{TemplateBinding CloseTemplate}"
+                                          Content="{Binding}" />
+                      </Button>
+                    </StackPanel>
+                  </Grid>
+                </Border>
+                <Border x:Name="PART_ContentBorder"
+                        Background="{TemplateBinding Background}">
+                  <ContentControl x:Name="PART_ContentPresenter"
+                                  Content="{Binding}"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch">
+                    <ContentControl.ContentTemplate>
+                      <ControlRecyclingDataTemplate Parent="{Binding #PART_ContentPresenter}" />
+                    </ContentControl.ContentTemplate>
+                  </ContentControl>
+                </Border>
+              </DockPanel>
+              <Panel>
+                <Border x:Name="PART_ResizeTop"
+                        Height="4"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        Cursor="SizeNorthSouth" />
+                <Border x:Name="PART_ResizeBottom"
+                        Height="4"
+                        VerticalAlignment="Bottom"
+                        Background="Transparent"
+                        Cursor="SizeNorthSouth" />
+                <Border x:Name="PART_ResizeLeft"
+                        Width="4"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        Cursor="SizeWestEast" />
+                <Border x:Name="PART_ResizeRight"
+                        Width="4"
+                        HorizontalAlignment="Right"
+                        Background="Transparent"
+                        Cursor="SizeWestEast" />
+                <Border x:Name="PART_ResizeTopLeft"
+                        Width="6"
+                        Height="6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        Cursor="TopLeftCorner" />
+                <Border x:Name="PART_ResizeTopRight"
+                        Width="6"
+                        Height="6"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        Cursor="TopRightCorner" />
+                <Border x:Name="PART_ResizeBottomLeft"
+                        Width="6"
+                        Height="6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Background="Transparent"
+                        Cursor="BottomLeftCorner" />
+                <Border x:Name="PART_ResizeBottomRight"
+                        Width="6"
+                        Height="6"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Background="Transparent"
+                        Cursor="BottomRightCorner" />
+              </Panel>
+            </Grid>
+          </Border>
+        </DockableControl>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^/template/ Border#PART_Header">
+      <Setter Property="BorderBrush" Value="{DynamicResource DockThemeBorderLowBrush}" />
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+
+    <Style Selector="^/template/ Grid#PART_Grid">
+      <Setter Property="Height" Value="5" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="0 0 2 0" />
+      <Setter Property="Background">
+        <VisualBrush SourceRect="0,0,4,5"
+                     DestinationRect="0,0,4,5"
+                     TileMode="Tile"
+                     Stretch="UniformToFill">
+          <VisualBrush.Visual>
+            <Canvas Width="4" Height="5" Background="Transparent">
+              <Rectangle Height="1" Width="1" Fill="#474747" />
+              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="2" Canvas.Left="2" />
+              <Rectangle Height="1" Width="1" Fill="#474747" Canvas.Top="4" />
+            </Canvas>
+          </VisualBrush.Visual>
+        </VisualBrush>
+      </Setter>
+    </Style>
+
+    <Style Selector="^:active /template/ Border#PART_Header">
+      <Setter Property="Background" Value="{DynamicResource DockApplicationAccentBrushLow}" />
+    </Style>
+
+    <Style Selector="^/template/ Path">
+      <Setter Property="Stretch" Value="UniformToFill" />
+      <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_MinimizePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconMinimizeGeometry}" />
+    </Style>
+
+    <Style Selector="^/template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconMaximizeGeometry}" />
+    </Style>
+
+    <Style Selector="^:maximized /template/ Path#PART_MaximizeRestorePath">
+      <Setter Property="Data" Value="{DynamicResource DockIconRestoreGeometry}" />
+    </Style>
+
+    <Style Selector="^:active /template/ Path">
+      <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+    </Style>
+
+    <Style Selector="^:minimized /template/ Border#PART_ContentBorder">
+      <Setter Property="IsVisible" Value="False" />
+    </Style>
+
+    <Style Selector="^:minimized /template/ Border#PART_OuterBorder">
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="^:maximized /template/ Border#PART_OuterBorder">
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+  </ControlTheme>
+
+</ResourceDictionary>

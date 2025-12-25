@@ -898,6 +898,20 @@ public static class FluentExtensions
     /// <param name="layout">Tabs layout.</param>
     /// <returns>The same document dock.</returns>
     public static IDocumentDock WithTabsLayout(this IDocumentDock dock, DocumentTabLayout layout) { dock.TabsLayout = layout; return dock; }
+    /// <summary>
+    /// Sets the layout mode for the document dock.
+    /// </summary>
+    /// <param name="dock">The document dock.</param>
+    /// <param name="layoutMode">Layout mode.</param>
+    /// <returns>The same document dock.</returns>
+    public static IDocumentDock WithLayoutMode(this IDocumentDock dock, DocumentLayoutMode layoutMode) { dock.LayoutMode = layoutMode; return dock; }
+    /// <summary>
+    /// Sets when document close buttons are displayed.
+    /// </summary>
+    /// <param name="dock">The document dock.</param>
+    /// <param name="mode">Close button display mode.</param>
+    /// <returns>The same document dock.</returns>
+    public static IDocumentDock WithCloseButtonShowMode(this IDocumentDock dock, DocumentCloseButtonShowMode mode) { dock.CloseButtonShowMode = mode; return dock; }
     // Avoid shadowing instance methods; provide chainable variants with distinct names
     /// <summary>
     /// Appends a document to the document dock in a chainable way.

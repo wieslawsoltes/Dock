@@ -4,7 +4,16 @@ The `DocumentDock.ItemsSource` property enables automatic document management by
 
 ## Overview
 
-`DocumentDock.ItemsSource` works similarly to `ListBox.ItemsSource` in Avalonia, automatically creating and managing documents from a bound collection. When you add or remove items from the collection, the corresponding documents are automatically created or removed from the dock.
+`DocumentDock.ItemsSource` works similarly to `ListBox.ItemsSource` in Avalonia, automatically creating and managing documents from a bound collection. When you add or remove items from an `INotifyCollectionChanged` collection (such as `ObservableCollection<T>`), the corresponding documents are created or removed in the dock.
+
+`ItemsSource` is implemented by `Dock.Model.Avalonia.Controls.DocumentDock`, so it is available in XAML layouts and in the Avalonia model layer. It requires a `DocumentTemplate` to be set; if no template is supplied, no documents are generated.
+
+## Behavior details
+
+- `DocumentDock` creates a `Document` for each item and stores the item in `Document.Context`.
+- The tab title is derived from `Title`, `Name`, or `DisplayName` properties on the item (in that order), falling back to `ToString()`.
+- `CanClose` is copied from the item if present; otherwise it defaults to `true`.
+- When a generated document is closed, the factory attempts to remove the source item from `ItemsSource` if it implements `IList`.
 
 ## Key Benefits
 
@@ -61,6 +70,8 @@ public class FileDocument : INotifyPropertyChanged
 
 Create a ViewModel with an `ObservableCollection` of your document models:
 
+The example below uses `RelayCommand` from `CommunityToolkit.Mvvm.Input`. Replace it with any `ICommand` implementation you prefer.
+
 ```csharp
 public class MainViewModel : INotifyPropertyChanged
 {
@@ -71,8 +82,8 @@ public class MainViewModel : INotifyPropertyChanged
     
     public MainViewModel()
     {
-        AddDocumentCommand = new Command(AddDocument);
-        RemoveDocumentCommand = new Command<FileDocument>(RemoveDocument);
+        AddDocumentCommand = new RelayCommand(AddDocument);
+        RemoveDocumentCommand = new RelayCommand<FileDocument>(RemoveDocument);
         
         // Add some initial documents
         Documents.Add(new FileDocument 
@@ -102,7 +113,7 @@ public class MainViewModel : INotifyPropertyChanged
 
 Bind the collection to `DocumentDock.ItemsSource` and define a `DocumentTemplate`:
 
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
@@ -151,9 +162,9 @@ public class DocumentModel
 
 ## Document Template Context
 
-In `DocumentTemplate`, your model is accessed through the `Context` property:
+`DocumentTemplate` is built with the generated `Document` as its data context, so bind to document properties directly and use `Context` to reach the source model:
 
-```xml
+```xaml
 <DocumentTemplate>
   <Grid x:DataType="Document">
     <!-- Access your model properties via Context -->
@@ -238,7 +249,7 @@ public enum DocumentType
 }
 ```
 
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
@@ -268,13 +279,13 @@ public class CommandDocument : INotifyPropertyChanged
     
     public CommandDocument()
     {
-        CloseCommand = new Command(() => {
+        CloseCommand = new RelayCommand(() => {
             // Custom close logic
             var parent = GetParentCollection();
             parent?.Remove(this);
         });
         
-        SaveCommand = new Command(Save);
+        SaveCommand = new RelayCommand(Save);
     }
     
     private void Save()

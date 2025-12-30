@@ -193,13 +193,15 @@ Follow these instructions to create a ReactiveProperty-based application using D
    // Example document view model using ReactiveProperty
    public class DocumentViewModel : Document
    {
+       private readonly CompositeDisposable _disposables = new();
+
        public ReactivePropertySlim<string> Content { get; }
        public ReactiveCommand SaveCommand { get; }
 
        public DocumentViewModel()
        {
            Content = new ReactivePropertySlim<string>("Document content here...")
-               .AddTo(Disposables);
+               .AddTo(_disposables);
 
            SaveCommand = new ReactiveCommand()
                .WithSubscribe(() => 
@@ -207,27 +209,29 @@ Follow these instructions to create a ReactiveProperty-based application using D
                    // Save logic here
                    System.Diagnostics.Debug.WriteLine($"Saving document: {Title}");
                })
-               .AddTo(Disposables);
+               .AddTo(_disposables);
        }
    }
 
    // Example tool view model using ReactiveProperty
    public class ToolViewModel : Tool
    {
+       private readonly CompositeDisposable _disposables = new();
+
        public ReactivePropertySlim<string> Status { get; }
        public ReactiveCommand RefreshCommand { get; }
 
        public ToolViewModel()
        {
            Status = new ReactivePropertySlim<string>("Ready")
-               .AddTo(Disposables);
+               .AddTo(_disposables);
 
            RefreshCommand = new ReactiveCommand()
                .WithSubscribe(() => 
                {
                    Status.Value = "Refreshed at " + System.DateTime.Now.ToString("HH:mm:ss");
                })
-               .AddTo(Disposables);
+               .AddTo(_disposables);
        }
    }
    ```
@@ -329,7 +333,7 @@ When using `Dock.Model.ReactiveProperty`, you need to:
 
 5. **Factory Setup**: Use `Dock.Model.ReactiveProperty.Factory` as your base factory class.
 
-6. **Context and Dockable Locators**: For serialization support, populate the locator dictionaries:
+6. **Context and Dockable Locators**: To reattach contexts after loading layouts (and to enable id-based lookups), populate the locator dictionaries:
 
    ```csharp
    public override void InitLayout(IDockable layout)
@@ -366,6 +370,8 @@ Example of validation:
 ```csharp
 public class DocumentViewModel : Document
 {
+    private readonly CompositeDisposable _disposables = new();
+
     public ReactiveProperty<string> Title { get; }
     public ReactiveProperty<string> Content { get; }
     public ReactiveCommand SaveCommand { get; }
@@ -374,15 +380,15 @@ public class DocumentViewModel : Document
     {
         Title = new ReactiveProperty<string>()
             .SetValidateAttribute(() => Title)  // Use data annotations
-            .AddTo(Disposables);
+            .AddTo(_disposables);
 
         Content = new ReactiveProperty<string>("Document content...")
-            .AddTo(Disposables);
+            .AddTo(_disposables);
 
         SaveCommand = new ReactiveCommand(
             Title.ObserveHasErrors.Select(x => !x))  // Enable when no validation errors
             .WithSubscribe(() => Save())
-            .AddTo(Disposables);
+            .AddTo(_disposables);
     }
 
     private void Save()

@@ -18,14 +18,14 @@ These steps outline how to set up a small Dock application that defines its layo
 
 2. **Install the Dock packages**
 
-   ```powershell
+   ```bash
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Avalonia
    dotnet add package Dock.Avalonia.Themes.Fluent
    ```
 
    **Optional packages for serialization (choose one):**
-   ```powershell
+   ```bash
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    dotnet add package Dock.Serializer.Protobuf          # Binary

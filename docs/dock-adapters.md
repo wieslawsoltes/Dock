@@ -10,7 +10,6 @@ Typical usage looks like the following:
 
 ```csharp
 var hostAdapter = new HostAdapter(dockWindow);
-window.Host = hostAdapter;
 hostAdapter.Present(isDialog: false);
 ```
 
@@ -33,10 +32,10 @@ The adapter cooperates with the factory to activate dockables and can also show 
 
 `TrackingAdapter` stores bounds and pointer positions used when tools are pinned, visible or displayed as tabs. The docking logic reads these values when calculating drop targets or restoring the layout after a drag operation.
 
-A new adapter contains `NaN` values for all coordinates until you call the various `Set*` methods. Most applications interact with `TrackingAdapter` indirectly through the built in docking controls.
+A new adapter contains `NaN` values for all coordinates until you call the various `Set*` methods. Most applications interact with `TrackingAdapter` indirectly through the built-in docking controls.
 
 ## When to use adapters
 
-The provided adapters give you a ready made implementation for common behaviours such as window hosting and dock navigation. You can derive from them or implement the corresponding interfaces yourself if your application has special requirements.
+The provided adapters give you a ready-made implementation for common behaviors such as window hosting and dock navigation. You can derive from them or implement the corresponding interfaces yourself if your application has special requirements.
 
 For an overview of other Dock concepts see the [documentation index](README.md).

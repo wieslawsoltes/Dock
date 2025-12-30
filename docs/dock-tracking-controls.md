@@ -23,7 +23,11 @@ The following properties on `IFactory` keep track of runtime controls.  Each dic
 | `DockControls` | List of `DockControl` instances displaying layouts. |
 | `HostWindows` | List of floating windows created by the factory. |
 
-These collections are populated automatically by `FactoryBase` when layouts are initialised.  They can be inspected or modified at runtime if you create custom host controls or windows.
+These collections are populated by Dock.Avalonia controls as they attach and detach from the visual tree (for example, `DockControl` registers itself in `DockControls`, while `DockableControl`, `DocumentContentControl`, and `ToolContentControl` update the dockable mappings). They can be inspected or modified at runtime if you create custom host controls or windows.
+
+`DockableControl` drives most of this tracking and uses its `TrackingMode` property
+to decide which dictionary to update. When replacing templates, keep it in place.
+See [DockableControl tracking](dock-dockable-control.md) for details.
 
 ## Typical usage
 

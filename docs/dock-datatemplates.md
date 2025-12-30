@@ -64,6 +64,7 @@ The library provides DataTemplates for all built-in dock types:
 **Container Types:**
 - `IDocumentDock` → `DocumentDockControl`
 - `IToolDock` → `ToolDockControl`
+- `ISplitViewDock` → `SplitViewDockControl`
 - `IProportionalDock` → `ProportionalDockControl`
 - `IStackDock` → `StackDockControl`
 - `IGridDock` → `GridDockControl`
@@ -134,7 +135,7 @@ dockControl.DataTemplates.Add(customTemplate);
 
 **Option B: In XAML**
 
-```xml
+```xaml
 <DockControl>
     <DockControl.DataTemplates>
         <!-- Your custom template is added alongside the default ones -->

@@ -10,7 +10,7 @@ Include the `Dock.Controls.Recycling` NuGet package alongside your existing Dock
 
 Define a `ControlRecycling` resource and assign it to `DockControl` using the `ControlRecyclingDataTemplate.ControlRecycling` attached property.
 
-```xml
+```xaml
 <Application.Resources>
   <ControlRecycling x:Key="ControlRecyclingKey" />
 </Application.Resources>
@@ -29,7 +29,7 @@ With this in place the controls generated for each dockable are kept in an inter
 
 `ControlRecycling` can store controls by arbitrary keys. Dockables implement `IControlRecyclingIdProvider` which exposes `GetControlRecyclingId` returning their `Id`. Setting `TryToUseIdAsKey="True"` uses this identifier for the cache key.
 
-```xml
+```xaml
 <ControlRecycling x:Key="ControlRecyclingKey" TryToUseIdAsKey="True" />
 ```
 
@@ -50,8 +50,10 @@ public class DocumentViewModel : Dock.Model.Mvvm.Controls.DockableBase
 }
 ```
 
-```xml
-<DockControl Items="{Binding Documents}" />
+```xaml
+<DockControl Layout="{Binding Layout}"
+             InitializeLayout="True"
+             InitializeFactory="True" />
 ```
 
 As documents are opened and closed the same `DocumentControl` is reused for a given `DocumentViewModel`. If needed the cache can be cleared manually:
@@ -81,6 +83,6 @@ Control recycling also applies when the layout is declared purely in XAML. Docka
 </DockControl>
 ```
 
-With recycling enabled the `Document` and `Tool` above keep their content each time they are reopened or toggled. Even without bindings the `TextBox` and `Slider` values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML‑only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples.
+With recycling enabled the `Document` and `Tool` above keep their content each time they are reopened or toggled. Even without bindings the `TextBox` and `Slider` values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML-only approach. Inspect the `App.axaml` files under the `samples` directory for complete working examples.
 
 For an overview of all guides see the [documentation index](README.md).

@@ -12,7 +12,7 @@ surround a central document area.
 
 ```xaml
 <dock:DockDock LastChildFill="True">
-    <ToolDock dock:Dock="Left" />
+    <ToolDock Dock="Left" />
     <DocumentDock />
 </dock:DockDock>
 ```
@@ -43,7 +43,7 @@ var grid = new GridDock
 };
 ```
 
-```xaml
+```xml
 <GridDockSplitter ResizeDirection="Columns" />
 ```
 
@@ -57,6 +57,21 @@ var grid = new GridDock
 
 ```csharp
 var uniform = new UniformGridDock { Rows = 2, Columns = 3 };
+```
+
+## SplitViewDock
+
+`ISplitViewDock` hosts a collapsible pane and a main content area, similar to Avalonia's `SplitView`. Use `PaneDockable` and `ContentDockable` to assign the two regions and configure behavior with `DisplayMode`, `PanePlacement`, `IsPaneOpen`, `OpenPaneLength`, and `CompactPaneLength`.
+
+```csharp
+var splitView = new SplitViewDock
+{
+    PaneDockable = new ToolDock(),
+    ContentDockable = new DocumentDock(),
+    DisplayMode = SplitViewDisplayMode.CompactInline,
+    PanePlacement = SplitViewPanePlacement.Left,
+    IsPaneOpen = true
+};
 ```
 
 ## When to use these panels

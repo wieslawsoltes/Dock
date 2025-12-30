@@ -4,7 +4,7 @@
 
 ## Why are DockProperties required?
 
-When a user drags a document or tool the `DockControl` walks up the visual tree to locate elements marked as drop areas or drag handles. Without these markers the engine cannot determine valid targets and dragging will not behave correctly. The built‑in styles set these properties on specific elements (for example tab headers or layout panels) but custom templates must do the same.
+When a user drags a document or tool the `DockControl` walks up the visual tree to locate elements marked as drop areas or drag handles. Without these markers the engine cannot determine valid targets and dragging will not behave correctly. The built-in styles set these properties on specific elements (for example tab headers or layout panels) but custom templates must do the same.
 
 The available properties are:
 
@@ -63,6 +63,6 @@ DockProperties.SetIsDropEnabled(myControl, false);
 bool isDragArea = DockProperties.GetIsDragArea(myBorder);
 ```
 
-These helpers are useful when toggling behaviour dynamically, for example to disable drag operations while a modal dialog is shown.
+These helpers are useful when toggling behavior dynamically, for example to disable drag operations while a modal dialog is shown.
 
-For global drag and drop settings see the [Dock settings](dock-settings.md) guide which demonstrates how the same properties can be attached at the window level.
+For global drag and drop settings see the [Dock settings](dock-settings.md) guide which demonstrates how the same properties can be attached at the window level. For details on the target visuals and selector icons see [Dock targets and indicators](dock-targets.md).

@@ -13,9 +13,9 @@ The `DockGroup` property is available on all dockables (`IDockable`) and allows 
 
 **Key Behavior:**
 - **Local docking**: Strict validation - both source and target must be in the same "group state"
-- **Global docking**: Simplified validation - only source group matters
+- **Global docking**: Looser validation - ungrouped sources can dock anywhere, grouped sources must match the target group
   - **Non-grouped sources**: Can dock globally anywhere (regardless of target content)
-  - **Grouped sources**: Cannot dock globally at all (blocked entirely for global operations)
+  - **Grouped sources**: Can dock globally only into targets with the same group
 - **Ungrouped local docking**: Both source and target have `null`/empty groups (maximum flexibility)
 - **Grouped local docking**: Both source and target have the same non-null group identifier (restricted within group)
 - **Mixed local states are rejected**: One grouped + one ungrouped = local docking denied
@@ -74,7 +74,7 @@ var unrestrictedTool = new Tool
 
 ### Setting DockGroup in XAML
 
-```xml
+```xaml
 <RootDock>
   <DocumentDock DockGroup="Documents">
     <Document Id="Doc1" Title="Document 1" DockGroup="Documents" />
@@ -148,9 +148,9 @@ Understanding the difference between global and local docking is crucial for wor
 - Moving content between different major sections of the workspace
 - Cross-window or cross-container docking operations
 
-**Validation**: Uses simplified rules based only on the source dockable's group:
+**Validation**: Uses rules that allow ungrouped sources anywhere but require grouped sources to match the target:
 - **Non-grouped sources** (DockGroup = null/empty): Can dock globally anywhere
-- **Grouped sources** (DockGroup = "SomeGroup"): Cannot dock globally at all
+- **Grouped sources** (DockGroup = "SomeGroup"): Can dock globally only into targets with the same group
 
 The system automatically determines which validation mode to use based on the operation context. This design allows maximum flexibility for workspace organization (global docking) while maintaining strict isolation where needed (local docking).
 
@@ -160,7 +160,7 @@ The docking system enforces different rules depending on whether the operation i
 
 ### Global Docking Rules
 
-Global docking uses simplified validation that only considers the source dockable's group:
+Global docking uses validation that allows ungrouped sources anywhere and grouped sources only into matching targets:
 
 #### 1. Non-Grouped Source Rule (Global)
 Dockables with `null` or empty groups can dock globally anywhere, regardless of target content:
@@ -184,13 +184,13 @@ var targetWithGroupedContent = new ProportionalDock
 ```
 
 #### 2. Grouped Source Rule (Global)
-Dockables with non-null groups cannot dock globally at all (blocked entirely):
+Dockables with non-null groups can dock globally only into targets with the same group:
 
 ```csharp
-// These CANNOT dock globally anywhere
+// These CANNOT dock globally into ungrouped or different-group targets
 var groupedTool = new Tool { DockGroup = "SomeGroup" };
 
-// Blocked from global docking regardless of target
+// Blocked from global docking when target is ungrouped
 var emptyTarget = new ProportionalDock { VisibleDockables = new List<IDockable>() };
 var groupedTarget = new ProportionalDock 
 { 
@@ -199,7 +199,8 @@ var groupedTarget = new ProportionalDock
         new Tool { DockGroup = "SomeGroup" }
     }
 };
-// groupedTool cannot dock globally into either target
+// groupedTool can dock globally into groupedTarget (same group)
+// groupedTool cannot dock globally into emptyTarget or different-group targets
 ```
 
 ### Local Docking Rules
@@ -404,7 +405,7 @@ var searchResults = new Tool
 
 The `DockGroup` is also available as an attached property through `DockProperties.DockGroup`. This provides additional flexibility for setting groups in XAML templates and enables inheritance down the visual tree:
 
-```xml
+```xaml
 <Window xmlns:dock="clr-namespace:Dock.Settings;assembly=Dock.Settings"
         dock:DockProperties.DockGroup="WindowGroup">
   <!-- All child dockables inherit "WindowGroup" -->
@@ -437,16 +438,34 @@ The `DockGroupValidator` class contains the core validation logic for docking gr
 ```csharp
 /// <summary>
 /// Validates if a dockable can be docked globally based on docking groups.
-/// For global docking, we only prevent it if the source dockable has a docking group set.
-/// Non-grouped dockables should always be allowed to dock globally, regardless of target content.
+/// Global docking rules:
+/// - Non-grouped sources can dock globally anywhere.
+/// - Grouped sources can dock globally only into a target with the same group.
 /// </summary>
 public static bool ValidateGlobalDocking(IDockable sourceDockable, IDock targetDock)
 {
     var sourceGroup = GetEffectiveDockGroup(sourceDockable);
-    
-    // For global docking, only restrict if source has a docking group set
-    // Always allow global docking for non-grouped dockables
-    return string.IsNullOrEmpty(sourceGroup);
+    var targetGroup = GetEffectiveDockGroup(targetDock);
+
+    var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+    var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+    if (!sourceHasGroup && !targetHasGroup)
+    {
+        return true;
+    }
+
+    if (!sourceHasGroup && targetHasGroup)
+    {
+        return true;
+    }
+
+    if (sourceHasGroup && !targetHasGroup)
+    {
+        return false;
+    }
+
+    return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
 }
 ```
 
@@ -622,15 +641,15 @@ Assert.True(canDock); // or Assert.False for restricted cases
 ### Preventing Document/Tool Mixing
 ```csharp
 // Documents can only dock locally with other documents
-// But CANNOT dock globally at all (grouped sources are blocked from global docking)
+// Globally they can dock only into targets with the same group
 var doc = new Document { DockGroup = "Documents" };
 
 // Tools can only dock locally with other tools
-// But CANNOT dock globally at all (grouped sources are blocked from global docking)
+// Globally they can dock only into targets with the same group
 var tool = new Tool { DockGroup = "Tools" };
 
 // They cannot be mixed locally due to different groups
-// And cannot participate in global docking at all due to having groups
+// And cannot participate in global docking unless the target group matches
 ```
 
 ### Creating Workspace Modes
@@ -645,7 +664,7 @@ var debugMode = "Debug";
 foreach (var dockable in allDockables)
 {
     dockable.DockGroup = isDesignMode ? designMode : debugMode;
-    // Note: Setting groups blocks global docking for these dockables
+    // Note: Setting groups restricts global docking to same-group targets
     // They can only dock locally with others in the same mode
 }
 

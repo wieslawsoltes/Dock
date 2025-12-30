@@ -53,6 +53,7 @@ Use Prism types in place of the CommunityToolkit equivalents that the MVVM sampl
 // MainWindowViewModel.cs
 public class MainWindowViewModel : BindableBase
 {
+    private readonly IEventAggregator _eventAggregator;
     private readonly IFactory? _factory;
     private IRootDock? _layout;
 
@@ -66,16 +67,20 @@ public class MainWindowViewModel : BindableBase
 
     public MainWindowViewModel()
     {
-        _factory = new DockFactory(new DemoData());
+        _eventAggregator = new EventAggregator();
+        _factory = new DockFactory(new DemoData(), _eventAggregator);
 
         var layout = _factory?.CreateLayout();
         if (layout is not null)
         {
-            _factory.InitLayout(layout);
+            _factory?.InitLayout(layout);
         }
 
         Layout = layout;
-        Layout?.Navigate.Execute("Home");
+        if (Layout is { } root)
+        {
+            root.Navigate.Execute("Home");
+        }
 
         NewLayout = new DelegateCommand(ResetLayout);
     }
@@ -103,13 +108,22 @@ The Dock factory continues to derive from `Dock.Model.Prism.Factory`, which supp
 // DockFactory.cs
 public class DockFactory : Factory
 {
-    public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock();
+    private readonly object _context;
+    private readonly IEventAggregator _eventAggregator;
+
+    public DockFactory(object context, IEventAggregator eventAggregator)
+    {
+        _context = context;
+        _eventAggregator = eventAggregator;
+    }
+
+    public override IDocumentDock CreateDocumentDock() => new CustomDocumentDock(_eventAggregator);
 
     public override IRootDock CreateLayout()
     {
-        var document = new DocumentViewModel { Id = "Document1", Title = "Document1" };
+        var document = new DocumentViewModel(_eventAggregator) { Id = "Document1", Title = "Document1" };
 
-        var documentDock = new CustomDocumentDock
+        var documentDock = new CustomDocumentDock(_eventAggregator)
         {
             ActiveDockable = document,
             VisibleDockables = CreateList<IDockable>(document),
@@ -132,8 +146,11 @@ Prism's command infrastructure makes it straightforward to wire Dock actions:
 // CustomDocumentDock.cs
 public class CustomDocumentDock : DocumentDock
 {
-    public CustomDocumentDock()
+    private readonly IEventAggregator _eventAggregator;
+
+    public CustomDocumentDock(IEventAggregator eventAggregator)
     {
+        _eventAggregator = eventAggregator;
         CreateDocument = new DelegateCommand(CreateNewDocument);
     }
 
@@ -145,7 +162,7 @@ public class CustomDocumentDock : DocumentDock
         }
 
         var index = VisibleDockables?.Count + 1 ?? 1;
-        var document = new DocumentViewModel
+        var document = new DocumentViewModel(_eventAggregator)
         {
             Id = $"Document{index}",
             Title = $"Document{index}"
@@ -244,6 +261,7 @@ Adapt Dock controls into Prism regions so navigation requests populate docked pa
 ```csharp
 using System.Linq;
 using Dock.Avalonia.Controls;
+using Dock.Model.Core;
 
 public class DockRegionAdapter : RegionAdapterBase<DockControl>
 {
@@ -255,11 +273,26 @@ public class DockRegionAdapter : RegionAdapterBase<DockControl>
     {
         region.Views.CollectionChanged += (_, _) =>
         {
-            foreach (var view in region.Views.OfType<IDockable>())
+            if (regionTarget.Layout is not IDock targetDock)
             {
-                if (!regionTarget.VisibleDockables.Contains(view))
+                return;
+            }
+
+            foreach (var dockable in region.Views.OfType<IDockable>())
+            {
+                if (targetDock.VisibleDockables?.Contains(dockable) == true)
                 {
-                    regionTarget.VisibleDockables.Add(view);
+                    continue;
+                }
+
+                if (targetDock.Factory is { } factory)
+                {
+                    factory.AddDockable(targetDock, dockable);
+                    factory.SetActiveDockable(dockable);
+                }
+                else if (targetDock.VisibleDockables is { })
+                {
+                    targetDock.VisibleDockables.Add(dockable);
                 }
             }
         };
@@ -275,7 +308,7 @@ protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings map
 }
 ```
 
-With the adapter registered, calls such as `regionManager.RequestNavigate("MainDock", "DashboardView")` render views inside the dock while preserving drag-and-drop behavior.
+With the adapter registered, add `IDockable` view models to the region (or resolve them from the container) and the adapter inserts them into the dock. Use Dock data templates to render those dockables in the UI.
 
 ### Loading Dockables from Prism Modules
 

@@ -10,7 +10,7 @@ This guide covers an advanced pattern for wrapping your own domain models with D
 
 Before implementing the wrapper pattern below, consider using `ItemsSource` which provides automatic domain model binding:
 
-```xml
+```xaml
 <!-- Modern approach with ItemsSource -->
 <DocumentDock ItemsSource="{Binding SceneDocuments}">
   <DocumentDock.DocumentTemplate>
@@ -72,7 +72,7 @@ public class SceneDocument : AppDocument
 
 ### Step 2: Create the View
 
-```xml
+```xaml
 <!-- Views/SceneView.axaml -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -98,7 +98,7 @@ public class SceneDocument : AppDocument
 
 ### Step 3: Set Up Document Template
 
-```xml
+```xaml
 <!-- In your MainView.axaml or wherever you define the DocumentDock -->
 <dock:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane">
   
@@ -116,7 +116,7 @@ public class SceneDocument : AppDocument
 
 ### Step 4: Register DataTemplate for Your Domain Model
 
-```xml
+```xaml
 <!-- In App.axaml -->
 <Application.DataTemplates>
   <DataTemplate DataType="{x:Type models:SceneDocument}">

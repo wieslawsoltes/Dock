@@ -22,14 +22,14 @@ Follow these instructions to create a minimal ReactiveUI based application using
 
 2. **Install the Dock packages**
 
-   ```powershell
+   ```bash
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.ReactiveUI
    dotnet add package Dock.Avalonia.Themes.Fluent
    ```
 
    **Optional packages:**
-   ```powershell
+   ```bash
    # For serialization (choose one):
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
@@ -146,9 +146,9 @@ Follow these instructions to create a minimal ReactiveUI based application using
            if (Resolve(data) is IViewFor view && view is Control control)
                return control;
 
-       var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
-       return new TextBlock { Text = $"Not Found: {viewName}" };
-   }
+           var viewName = data.GetType().FullName?.Replace("ViewModel", "View");
+           return new TextBlock { Text = $"Not Found: {viewName}" };
+       }
 
        public bool Match(object? data)
        {

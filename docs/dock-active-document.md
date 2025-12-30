@@ -7,19 +7,26 @@ Only one document or tool can have focus at a time, even when multiple
 `IFactory.FocusedDockableChanged` event or query the property directly.
 
 ```csharp
+using System.Linq;
+
 factory.FocusedDockableChanged += (_, e) =>
     Console.WriteLine($"Current document: {e.Dockable?.Title}");
 
-var current = factory.GetCurrentDocument();
-```
+var activeRoot = factory
+    .Find(d => d is IRootDock root && root.IsActive)
+    .OfType<IRootDock>()
+    .FirstOrDefault();
 
-The helper `GetCurrentDocument` extension returns the focused document
-for the active root dock or `null` if no document is selected.
+var current = activeRoot?.FocusedDockable as IDocument;
+```
 
 ```csharp
 // Close whichever dockable currently has focus
-factory.CloseFocusedDockable();
+if (activeRoot?.FocusedDockable is { } dockable)
+{
+    factory.CloseDockable(dockable);
+}
 ```
 
-The `CloseFocusedDockable` helper can be used to close the active document or tool
-without manually looking it up.
+The focused dockable comes from the active root dock. When no document is focused,
+`FocusedDockable` will be `null`.

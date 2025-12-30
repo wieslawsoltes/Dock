@@ -1,6 +1,6 @@
 # Dock Sizing Guide
 
-This guide explains how to control the size of dockable items beyond the default proportional layout. Dock positions are normally calculated from each dockable's `Proportion` value, but you can override this behaviour with pixel based limits and by disabling splitters.
+This guide explains how to control the size of dockable items beyond the default proportional layout. Dock positions are normally calculated from each dockable's `Proportion` value, but you can override this behavior with pixel based limits and by disabling splitters.
 
 ## Proportions vs fixed sizes
 

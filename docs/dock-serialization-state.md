@@ -2,7 +2,7 @@
 
 This guide explains how to persist and restore dock state using `DockState`. The [DockXamlSample](../samples/DockXamlSample) shows these steps in a working application.
 
-`DockState` stores the active and focused dockables so that documents and tools regain focus after a layout is loaded.
+`DockState` stores tool and document content (and document templates for document docks) so that those values can be restored after a layout is loaded. Active and focused dockables are part of the layout model and are serialized with the layout itself.
 
 ## Saving the state
 

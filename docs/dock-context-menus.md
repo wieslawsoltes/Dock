@@ -1,8 +1,8 @@
 # Context menus and flyouts
 
-Dock defines several built in context menus and flyouts that are attached to its controls. The menu text is stored in the same resource dictionaries as `MenuFlyout` or `ContextMenu` definitions. This document lists the available menus and describes how to localize or replace them.
+Dock defines several built-in context menus and flyouts that are attached to its controls. The menu definitions live in the control theme dictionaries, while the menu text is stored in `Controls/ControlStrings.axaml`. This document lists the available menus and describes how to localize or replace them.
 
-## List of built in menus
+## List of built-in menus
 
 | File | Resource key | Purpose | Control Property |
 | ---- | ------------ | ------- | ---------------- |
@@ -10,8 +10,9 @@ Dock defines several built in context menus and flyouts that are attached to its
 | `ToolPinItemControl.axaml` | `ToolPinItemControlContextMenu` | Menu for pinned tool tabs. | `PinContextMenu` |
 | `DocumentTabStripItem.axaml` | `DocumentTabStripItemContextMenu` | Menu for document tab items. | `DocumentContextMenu` |
 | `ToolTabStripItem.axaml` | `ToolTabStripItemContextMenu` | Menu for tool tab items. | `TabContextMenu` |
+| `MdiDocumentWindow.axaml` | `MdiDocumentWindowContextMenu` | Menu for MDI document windows. | `DocumentContextMenu` |
 
-Each dictionary also declares `x:String` resources used for menu item headers. For example `ToolTabStripItem.axaml` exposes keys such as `ToolTabStripItemFloatString`, `ToolTabStripItemDockString` and others.
+The string resources used for menu item headers are defined in `Controls/ControlStrings.axaml`. For example it exposes keys such as `ToolTabStripItemFloatString`, `ToolTabStripItemDockString` and others.
 
 When a dock's `CanCloseLastDockable` property is set to `false` the built-in menus automatically disable commands like **Close** or **Float** if executing them would remove the final item from that dock.
 
@@ -68,6 +69,18 @@ myToolTabStripItem.TabContextMenu = new ContextMenu
 myDocumentTabStripItem.DocumentContextMenu = new ContextMenu
 {
     Items = 
+    {
+        new MenuItem { Header = "Custom Action", Command = myCommand }
+    }
+};
+```
+
+### MdiDocumentWindow
+```csharp
+// Set a custom context menu for a specific MDI document window
+myMdiDocumentWindow.DocumentContextMenu = new ContextMenu
+{
+    Items =
     {
         new MenuItem { Header = "Custom Action", Command = myCommand }
     }
@@ -173,4 +186,3 @@ If you need to add items to the default menus rather than replacing them entirel
 1. Create a custom menu that includes the default items plus your additions
 2. Use the control properties to set this custom menu on specific instances
 3. Or override the resource globally if you want the same additions everywhere
-

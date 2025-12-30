@@ -18,7 +18,7 @@ var documents = new DocumentDock
 
 The same property is available on the Avalonia control `DocumentDock` and can also be set in XAML:
 
-```xaml
+```xml
 <avaloniaDock:DocumentDock EnableWindowDrag="True" />
 ```
 

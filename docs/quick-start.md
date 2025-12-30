@@ -13,7 +13,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
 2. **Install the Dock packages**
 
-   ```powershell
+   ```bash
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
    dotnet add package Dock.Avalonia.Themes.Fluent
@@ -21,7 +21,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    ```
 
    **Optional packages for specific scenarios:**
-   ```powershell
+   ```bash
    # For serialization (choose one):
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json) 
@@ -38,7 +38,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
    **Note**: If you plan to use AXAML Controls `RootDock`, `ProportionalDock`, etc. also add:
 
-   ```powershell
+   ```bash
    dotnet add package Dock.Model.Avalonia
    ```
 

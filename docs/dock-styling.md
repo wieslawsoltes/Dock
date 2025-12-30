@@ -1,6 +1,6 @@
 # Styling and Theming
 
-This guide demonstrates how to customize the appearance of Dock controls using Avalonia styles. It shows how to apply built‑in themes, override style resources and tweak control templates.
+This guide demonstrates how to customize the appearance of Dock controls using Avalonia styles. It shows how to apply built-in themes, override style resources and tweak control templates.
 
 ## Applying a theme
 
@@ -30,7 +30,7 @@ You can override brushes and other resources to match your application colors:
 
 Any `SolidColorBrush` referenced by the theme can be replaced this way. Controls automatically pick up the new values.
 
-`ToolChromeControl` defines two extra brushes for its icons and drag grip:
+`ToolChromeControl` defines an extra brush for its icons and drag grip:
 
 ```xaml
 <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
@@ -67,7 +67,7 @@ Specific Dock controls can also be styled by selector. The sample applications s
 
 Create additional styles for `ToolControl`, `ToolChromeControl` or any other Dock control to adjust fonts, padding and colors.
 
-```
+```text
 -----------------------------------------------
 | Tool |     Document      |      Tool       |
 -----------------------------------------------
@@ -80,6 +80,29 @@ Create additional styles for `ToolControl`, `ToolChromeControl` or any other Doc
 The ASCII representation above shows a dark themed layout with custom colors applied.
 
 For a deeper look at Dock internals see the [Deep Dive](dock-deep-dive.md) guide.
+
+## Tab and window templates
+
+Dock exposes template properties so you can control tab headers, icons, and modified indicators:
+
+| Control | Properties | Notes |
+| --- | --- | --- |
+| `DocumentControl` | `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate` | Used for document tabs in tabbed mode. |
+| `ToolControl` | `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate` | Used for tool tabs. |
+| `MdiDocumentControl` | `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate` | Forwarded to `MdiDocumentWindow` in MDI mode. |
+| `MdiDocumentWindow` | `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate` | Used in MDI window chrome. |
+
+Example overriding the modified indicator:
+
+```xaml
+<Style Selector="DocumentControl">
+  <Setter Property="ModifiedTemplate">
+    <DataTemplate>
+      <TextBlock Text="*" Foreground="{DynamicResource DockThemeAccentBrush}" />
+    </DataTemplate>
+  </Setter>
+</Style>
+```
 
 ## Template parts and pseudo classes
 
@@ -101,7 +124,33 @@ targeted in selectors to customize the appearance:
 - `ProportionalStackPanelSplitter` uses `:horizontal` or `:vertical` depending on
   orientation.
 
+These pseudo classes are driven by properties such as `IsActive` and
+`CanCreateItem` on the respective controls.
+
+`DockControl` also exposes `IsDraggingDock`, which is toggled during drag
+operations. Theme styles can bind to it to disable hit testing or adjust
+appearance while dragging.
+
 Refer to the source code for the complete list of parts and classes.
+
+## Drag preview control
+
+`DragPreviewControl` renders the floating preview during a drag. It exposes:
+
+- `ContentTemplate` to render the dragged dockable.
+- `Status` set to `Dock`, `Float`, or `None`, which the default theme uses to show status icons and strings.
+
+You can swap the content template in a theme:
+
+```xaml
+<Style Selector="DragPreviewControl">
+  <Setter Property="ContentTemplate">
+    <DataTemplate>
+      <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+    </DataTemplate>
+  </Setter>
+</Style>
+```
 
 ## Creating a custom theme
 

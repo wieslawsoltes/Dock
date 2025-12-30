@@ -77,4 +77,3 @@ If you're experiencing problems with content setup such as:
 - Missing dock types in XAML
 
 See the [Document and Tool Content Guide](dock-content-guide.md) for detailed troubleshooting and multiple setup approaches.
-

@@ -2,7 +2,7 @@
 
 `IDragOffsetCalculator` defines how the drag preview window is positioned relative to the pointer. Dock uses the interface during drag operations to keep the preview aligned with the item being moved.
 
-## Default behaviour
+## Default behavior
 
 `DockControl` creates a `DefaultDragOffsetCalculator` when no custom instance is provided. The default implementation keeps the preview locked to the tab being dragged so the window appears in the same place when released.
 

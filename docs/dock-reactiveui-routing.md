@@ -114,6 +114,7 @@ Follow these instructions to create a ReactiveUI application with routing using 
    {
        public ReactiveCommand<Unit, IRoutableViewModel> GoToPage1 { get; }
        public ReactiveCommand<Unit, IRoutableViewModel> GoToPage2 { get; }
+       private readonly CompositeDisposable _disposables = new();
 
        public DocumentViewModel(IScreen host) : base(host)
        {
@@ -127,8 +128,8 @@ Follow these instructions to create a ReactiveUI application with routing using 
            GoToPage2 = ReactiveCommand.CreateFromObservable(() =>
                Router.Navigate.Execute(new Page2ViewModel(this, "Page 2 Content")));
 
-           GoToPage1.DisposeWith(Disposables);
-           GoToPage2.DisposeWith(Disposables);
+           GoToPage1.DisposeWith(_disposables);
+           GoToPage2.DisposeWith(_disposables);
        }
 
        public void InitNavigation(

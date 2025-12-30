@@ -1,12 +1,12 @@
 # Using DockableLocator
 
-`DockableLocator` is a dictionary available on the `IFactory` interface. It maps the identifiers stored in a layout to the functions that create your view models. Whenever the framework needs to instantiate a dockable – for example during serialization or when `GetDockable` is called – it queries this dictionary.
+`DockableLocator` is a dictionary available on the `IFactory` interface. It maps dockable identifiers to factory methods that create dockable instances. The `GetDockable` helper looks up this dictionary when you need to resolve a dockable by id.
 
 ## Why registration is required
 
-Layouts persist only the `Id` of a dockable. During deserialization `DockSerializer` looks up this identifier in `DockableLocator` to obtain a factory method that returns a new instance. If an identifier is missing the serializer returns `null` which usually results in an incomplete layout. By populating `DockableLocator` up‑front you ensure that all custom documents and tools can be reconstructed.
+Layouts persist the full dockable graph, so `DockSerializer` restores dockable instances directly from the serialized data. `DockableLocator` is for cases where you want to resolve dockables by id at runtime, such as navigation, tool activation, or custom lookup helpers.
 
-`FactoryBase` also uses `DockableLocator` for operations that need to materialise dockables lazily. The `GetDockable` helper is a thin wrapper around the dictionary and returns the object typed as `IDockable`.
+`FactoryBase` exposes `GetDockable` as a thin wrapper around the dictionary and returns the object typed as `IDockable`.
 
 ## Typical setup
 
@@ -40,8 +40,8 @@ This method simply forwards the call to `DockableLocator` and casts the result. 
 ## Best practices
 
 - Populate `DockableLocator` early in application startup, typically inside `InitLayout`.
-- Ensure every dockable type that appears in a serialized layout has an entry.
-- Keep id strings short but descriptive. They do not need to be unique at runtime but they must match the ids stored in the layout.
+- Register entries for dockables you intend to resolve by id at runtime.
+- Keep id strings short but descriptive. They must match the ids you pass to `GetDockable`.
 - If you use dependency injection, the factory methods can resolve services before creating the dockable.
 
 Following these guidelines guarantees that serialization and dynamic creation work reliably.

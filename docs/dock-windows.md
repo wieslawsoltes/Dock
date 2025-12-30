@@ -4,18 +4,66 @@ Dock can detach dockables into separate floating windows. These windows are repr
 
 ## Creating windows
 
-`FactoryBase` exposes a `CreateWindowFrom` method which returns an `IHostWindow`. Override this method on your factory to customize the platform window used for floating docks:
+`FactoryBase` exposes a `CreateWindowFrom` method which returns an `IDockWindow`. Override this method on your factory to customize the dock window that represents a floating layout:
 
 ```csharp
-public override IHostWindow CreateWindowFrom(IDockWindow source)
+public override IDockWindow? CreateWindowFrom(IDockable dockable)
 {
-    var window = base.CreateWindowFrom(source);
-    window.Title = $"Dock - {source.Id}";
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Title = $"Dock - {dockable.Title}";
     return window;
 }
 ```
 
-Calling `FloatDockable` on the factory opens a dockable in a new window. The returned `IDockWindow` stores its bounds and title and can be serialized together with the layout.
+Calling `FloatDockable` on the factory opens a dockable in a new window. The new `IDockWindow` is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.
+
+To customize the platform window (`IHostWindow`) used by floating docks, use `HostWindowLocator` or `DefaultHostWindowLocator`. See [Host window locators](dock-host-window-locator.md) for details.
+
+## IDockWindow model members
+
+`IDockWindow` represents the floating window model and includes:
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `Id` | `string` | Window identifier. |
+| `X`, `Y` | `double` | Window position. |
+| `Width`, `Height` | `double` | Window size. |
+| `Topmost` | `bool` | Keeps the window on top when `true`. |
+| `Title` | `string` | Window title. |
+| `Owner` | `IDockable?` | Dockable that owns the window. |
+| `Factory` | `IFactory?` | Factory used by the window. |
+| `Layout` | `IRootDock?` | Root layout hosted in the window. |
+| `Host` | `IHostWindow?` | Platform host window. |
+| `OnClose()` | `bool` | Close callback (return `false` to cancel). |
+| `OnMoveDragBegin()` | `bool` | Drag begin callback (return `false` to cancel). |
+| `OnMoveDrag()` | `void` | Drag in progress callback. |
+| `OnMoveDragEnd()` | `void` | Drag end callback. |
+| `Save()` | `void` | Persist size/position into the model. |
+| `Present(bool)` | `void` | Show the window. |
+| `Exit()` | `void` | Close the window. |
+| `SetActive()` | `void` | Activate the window. |
+
+## IHostWindow members
+
+`IHostWindow` is the platform-facing host. It provides:
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `HostWindowState` | `IHostWindowState?` | Docking state for the host. |
+| `IsTracked` | `bool` | Whether size/position is tracked. |
+| `Window` | `IDockWindow?` | Backing dock window model. |
+| `Present(bool)` | `void` | Show the host window. |
+| `Exit()` | `void` | Close the host window. |
+| `SetPosition/GetPosition` | `void` | Read/write the host position. |
+| `SetSize/GetSize` | `void` | Read/write the host size. |
+| `SetTitle` | `void` | Update the host title. |
+| `SetLayout` | `void` | Assign the hosted layout. |
+| `SetActive` | `void` | Activate the host window. |
 
 ## Window chrome options
 
@@ -43,7 +91,7 @@ factory.WindowClosed += (_, e) =>
 ## Window magnetism
 
 Floating windows can optionally snap to the edges of other floating windows while being dragged.
-This behaviour is controlled by two settings on `DockSettings`:
+This behavior is controlled by two settings on `DockSettings`:
 
 - `EnableWindowMagnetism` enables or disables the feature.
 - `WindowMagnetDistance` specifies how close windows must be before they snap together.

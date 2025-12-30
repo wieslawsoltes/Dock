@@ -32,6 +32,15 @@ HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
 When different window styles are required, add additional keys and choose which
 one to pass to `GetHostWindow`.
 
+## DockControl defaults
+
+When `DockControl.InitializeFactory` is `true`, the control assigns
+`HostWindowLocator` with a default `IDockWindow` mapping and sets
+`DefaultHostWindowLocator` to create a new `HostWindow`. This makes floating
+windows work without extra setup, but it also overwrites any locators you
+configured earlier. Disable `InitializeFactory` if you want to provide your own
+locators up front.
+
 ## Fallback locator
 
 If no entry matches the provided key, `GetHostWindow` calls
@@ -53,6 +62,6 @@ The fallback ensures floating windows still open even if a key is missing.
    invokes it automatically when presenting windows.
 
 Using locators in this way keeps window creation centralized in the factory and
-makes it easy to customize the hosting behaviour.
+makes it easy to customize the hosting behavior.
 
 For further details on floating windows see the [Floating windows guide](dock-windows.md).

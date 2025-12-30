@@ -24,19 +24,20 @@ when creating your own docks and documents.
 | `IGridDock` | Dock that uses `Grid` layout defined by `ColumnDefinitions` and `RowDefinitions`. |
 | `IWrapDock` | Dock built on `WrapPanel` exposing `Orientation`. |
 | `IUniformGridDock` | Dock with equally sized cells configured by `Rows` and `Columns`. |
+| `ISplitViewDock` | Dock that hosts a collapsible pane and a main content area. |
 | `IProportionalDockSplitter` | Splitter element between proportional dock children. |
 | `IGridDockSplitter` | Splitter used inside a grid dock to resize rows or columns. |
 | `IRootDock` | Top level container responsible for pinned docks and windows. |
 | `ITool` | Basic interface for tool panes such as explorers or output views. |
 | `IToolContent` | Tool containing arbitrary `Content`. |
-| `IToolDock` | Dock that hosts tools and supports auto hide behaviour. |
+| `IToolDock` | Dock that hosts tools and supports auto-hide behavior. |
 
 The following sections provide guidelines on applying these contracts in your projects.
 
 ## IDockDock
 
 Use `IDockDock` for dock panels that hold a collection of child dockables.
-The `LastChildFill` property mirrors the behaviour of Avalonia's `DockPanel`.
+The `LastChildFill` property mirrors the behavior of Avalonia's `DockPanel`.
 Set it to `true` when the final child should consume all remaining space.
 Typically this is combined with one or more `ProportionalDock` instances
 that split the available area.
@@ -99,6 +100,10 @@ which can disable dragging for fixed layouts. When `ResizePreview` is
 true the splitter previews the drag and applies the size changes once
 the pointer is released. The splitter is highlighted while dragging.
 
+## ISplitViewDock
+
+`ISplitViewDock` models a dock with two regions: a collapsible pane and a main content area. It mirrors Avalonia's `SplitView` behavior and exposes properties such as `DisplayMode`, `PanePlacement`, `IsPaneOpen`, `OpenPaneLength`, and `CompactPaneLength`. Use `PaneDockable` for the pane content and `ContentDockable` for the main content area.
+
 ## IRootDock
 
 The root dock owns the entire layout including pinned tools and
@@ -118,7 +123,7 @@ and can be pinned to the sides of the layout.
 ## IToolDock
 
 `IToolDock` represents a panel that manages tool dockables. It can
-auto hide its content and exposes an `Alignment` property for
+auto-hide its content and exposes an `Alignment` property for
 positioning. When `AutoHide` is enabled the dock collapses once the
 pointer leaves the area. `GripMode` controls if the user can resize
 the dock by dragging its border.

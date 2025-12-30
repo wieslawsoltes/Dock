@@ -43,6 +43,23 @@ Documents implement `IMdiDocument` and store their window bounds and state:
 
 These values are serialized with the layout so windows restore to their previous positions.
 
+## MDI control customization
+
+The Avalonia controls expose additional properties for theming:
+
+- `MdiDocumentControl` forwards `IconTemplate`, `HeaderTemplate`, `ModifiedTemplate`, `CloseTemplate`, and `CloseButtonTheme` to each window.
+- `MdiDocumentWindow` exposes `DocumentContextMenu`, `MdiState`, and `IsActive` for styling or interaction.
+
+To customize the layout algorithm, provide an `IMdiLayoutManager` implementation. It can be assigned on `MdiDocumentControl.LayoutManager` (which the default template forwards to `MdiLayoutPanel`):
+
+```csharp
+var mdiLayoutManager = new MyMdiLayoutManager();
+mdiDocumentControl.LayoutManager = mdiLayoutManager;
+```
+
+For details on the built-in layout helpers and defaults see
+[MDI layout helpers](dock-mdi-layout-helpers.md).
+
 ## Notes
 
 - The document header contains a drag handle that starts docking operations when you drag it outside the MDI surface.

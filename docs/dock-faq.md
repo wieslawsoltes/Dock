@@ -8,7 +8,7 @@ This page answers common questions that come up when using Dock.
 
 Use the new `ItemsSource` property on `DocumentDock` for automatic document management:
 
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding Documents}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
@@ -68,7 +68,7 @@ public ObservableCollection<FileModel> OpenFiles { get; } = new();
 ```
 
 Then bind in XAML:
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
@@ -81,64 +81,43 @@ Then bind in XAML:
 **Missing dock types in XAML (e.g., "Unable to resolve type RootDock")**
 
 Add the `Dock.Model.Avalonia` package and namespace:
-```xml
+```xaml
 xmlns:dock="using:Dock.Model.Avalonia.Controls"
 ```
 
 ## Focus management
 
-**Why does the active document lose focus when I load a saved layout?**
+**Why does the active document change when I load a saved layout?**
 
-After deserializing a layout you need to restore the last active and focused dockables. Call `DockState.Restore` with the root dock once the layout has been assigned to `DockControl`:
+Active and focused dockables are serialized with the layout itself, so you do not need `DockState` to restore focus. If the active document is not what you expect after loading, make sure you:
 
-```csharp
-var layout = _serializer.Load<IDock?>(stream);
-if (layout is { })
-{
-    dock.Layout = layout;
-    _dockState.Restore(layout); // restores active and focused dockables
-}
-```
+1. Assign the layout to `DockControl.Layout` before calling `InitLayout`.
+2. Do not overwrite `ActiveDockable` or `DefaultDockable` after loading.
 
-`DockState` tracks focus changes at runtime and can reapply them after a layout is loaded.
+`DockState` is used for restoring document/tool content and document templates, not focus.
 
 ## Serialization pitfalls
 
 **Deserialization fails with unknown types**
 
-`DockSerializer` relies on `DockableLocator` to map identifiers to your view models. Register all custom dockables before loading:
-
-```csharp
-ContextLocator = new Dictionary<string, Func<object?>>
-{
-    ["Document1"] = () => new MyDocument(),
-    ["Tool1"] = () => new MyTool(),
-};
-DockableLocator = new Dictionary<string, Func<IDockable?>>
-{
-    ["Document1"] = () => new MyDocument(),
-    ["Tool1"] = () => new MyTool(),
-};
-```
-
-If a dockable cannot be resolved the serializer will return `null`.
+`DockSerializer` uses type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an `IServiceProvider` so it can resolve types from the container.
 
 **What is `DockableLocator` and `ContextLocator`?**
 
-`DockableLocator` is a dictionary of functions that create view models. The
-serializer and factory query it using the identifiers stored in a layout to
-recreate dockables at runtime. `ContextLocator` works the same way but returns
-objects that become the `DataContext` of the views. Populate both dictionaries
-when initializing your factory so that Dock can resolve your custom documents
-and tools.
+`DockableLocator` is a dictionary of functions that create dockables when you
+need to resolve them by id at runtime (for example via `GetDockable`). 
+`ContextLocator` returns objects that become `dockable.Context` during
+initialization when a dockable does not already have a context. Populate
+these dictionaries in `InitLayout` if your app relies on id-based lookup or
+needs to recreate contexts for serialized layouts.
 
 **Are dock `Id`s unique?**
 
-No. The `Id` string on a dockable acts as a lookup key for `DockSerializer`.
-When a document dock is split or cloned the factory copies the source `Id` so
-that both docks resolve to the same view model type when a layout is
-deserialized. If you need to distinguish individual document docks, store a
-separate unique identifier on your view models.
+No. The `Id` string is an app-defined identifier stored in the layout and used
+by helpers such as `ContextLocator` or `GetDockable`. When a document dock is
+split or cloned the factory copies the source `Id`, so multiple docks can share
+the same id. If you need to distinguish individual docks, store a separate
+unique identifier on your view models.
 
 ## Other questions
 
@@ -147,12 +126,18 @@ separate unique identifier on your view models.
 Override `CreateWindowFrom` in your factory to configure new windows when a dockable is floated. This allows you to center windows or set their dimensions.
 
 ```csharp
-public override IHostWindow CreateWindowFrom(IDockWindow source)
+public override IDockWindow? CreateWindowFrom(IDockable dockable)
 {
-    var window = base.CreateWindowFrom(source);
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
     window.Width = 800;
     window.Height = 600;
-    window.Position = new PixelPoint(100, 100);
+    window.X = 100;
+    window.Y = 100;
     return window;
 }
 ```
@@ -180,10 +165,23 @@ new ToolDock
 **Can I cancel switching the active dockable or closing a dock?**
 
 Dock currently raises `ActiveDockableChanged` only *after* the active dockable
-has been updated, so the change cannot be cancelled. Likewise there is no
-pre-close event for dockables. The only cancellable closing hook is
-`WindowClosing`, which is fired when a host window is about to close. Set the
-`Cancel` property on the event arguments to keep the window open:
+has been updated, so the change cannot be cancelled. Closing dockables is
+cancellable via `DockableClosing`, which runs before the dockable is closed.
+Set `Cancel` to keep the dockable open:
+
+```csharp
+factory.DockableClosing += (_, args) =>
+{
+    if (!CanCloseDockable(args.Dockable))
+    {
+        args.Cancel = true;
+    }
+};
+```
+
+You can also cancel window closure with `WindowClosing`, which is fired when a
+host window is about to close. Set the `Cancel` property on the event arguments
+to keep the window open:
 
 ```csharp
 factory.WindowClosing += (_, args) =>
@@ -195,7 +193,7 @@ factory.WindowClosing += (_, args) =>
 };
 ```
 
-Cancelling individual dockables is not supported.
+Dock does not provide a pre-change hook for active dockable switching.
 
 **How do I disable undocking or drag-and-drop?**
 
@@ -210,7 +208,7 @@ tool.CanDrop = false;
 You can still toggle drag or drop globally using the attached `DockProperties`
 from [`Dock.Settings`](dock-settings.md):
 
-```xml
+```xaml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
         dockSettings:DockProperties.IsDragEnabled="False"
         dockSettings:DockProperties.IsDropEnabled="False">
@@ -231,19 +229,19 @@ is set to `false`.
 Use docking groups to control which dockables can dock together. Set the `DockGroup` property on your dockables:
 
 ```csharp
-// Documents can only dock locally with other documents
-// Cannot dock globally (grouped sources are blocked from global docking)
+// Documents can dock locally with other documents
+// Can dock globally only into targets with the same group
 document.DockGroup = "Documents";
 
-// Tools can only dock locally with other tools
-// Cannot dock globally (grouped sources are blocked from global docking)
+// Tools can dock locally with other tools
+// Can dock globally only into targets with the same group
 tool.DockGroup = "Tools";
 
 // This can dock globally anywhere and locally with other ungrouped dockables
 flexibleTool.DockGroup = null;
 ```
 
-Dockables with the same group can dock together locally, while different groups cannot mix. Grouped dockables cannot participate in global docking operations. Non-grouped dockables (null/empty groups) can dock globally anywhere and locally with other non-grouped dockables. See [Docking Groups](dock-docking-groups.md) for details.
+Dockables with the same group can dock together locally, while different groups cannot mix. Grouped dockables can dock globally only into targets with the same group and cannot dock globally into ungrouped or different-group targets. Non-grouped dockables (null/empty groups) can dock globally anywhere and locally with other non-grouped dockables. See [Docking Groups](dock-docking-groups.md) for details.
 
 **How do I float a dockable from its tab?**
 

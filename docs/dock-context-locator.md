@@ -1,6 +1,6 @@
 # Context locators
 
-Dock assigns a `DataContext` to every dockable when a layout is initialized or loaded. The objects are resolved through two properties on `IFactory`:
+Dock assigns `dockable.Context` when a layout is initialized or loaded if the dockable does not already have a context. The objects are resolved through two properties on `IFactory`:
 `ContextLocator` and `DefaultContextLocator`.
 
 ## `ContextLocator` dictionary
@@ -25,7 +25,9 @@ public override void InitLayout(IDockable layout)
 ```
 
 During `InitDockable` the factory looks up the dockable `Id` in
-`ContextLocator` and assigns the returned object to `dockable.Context`.
+`ContextLocator` and assigns the returned object to `dockable.Context` when it
+is still `null`. If the id is not found, it falls back to
+`DefaultContextLocator`.
 
 ## `DefaultContextLocator` fallback
 
@@ -39,6 +41,24 @@ DefaultContextLocator = () => _services.GetService<MainViewModel>();
 
 When `GetContext` cannot resolve a specific id it will call this delegate. If it
 returns `null`, the dockable keeps its existing `Context` (often `null`).
+
+## DockControl default context
+
+When `DockControl.InitializeFactory` is `true`, the control assigns
+`DefaultContextLocator` for you and returns the value of
+`DockControl.DefaultContext`. This is a convenient way to supply a shared
+fallback without touching the factory:
+
+```csharp
+var dockControl = new DockControl
+{
+    DefaultContext = new MainViewModel(),
+    InitializeFactory = true
+};
+```
+
+If you want to configure `DefaultContextLocator` yourself, disable
+`InitializeFactory` or assign your locator after the control initializes.
 
 ## Why it matters
 

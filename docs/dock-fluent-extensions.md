@@ -4,7 +4,7 @@ This guide shows how to build layouts using the fluent extension methods added t
 - Create objects and keep them in variables (no `out var` overloads)
 - Or use `out var` overloads to capture created instances while continuing a single fluent chain
 
-The MVVM leaf creators (`Document`, `Tool`) are provided by `Dock.Model.Mvvm` in `FluentMvvmExtensions`.
+The `Document` and `Tool` fluent creators live in `Dock.Model.FluentExtensions` and call `IFactory.CreateDocument` and `IFactory.CreateTool`. When you use `Dock.Model.Mvvm.Factory`, those methods return the MVVM `Document` and `Tool` types.
 
 ### Step-by-step introduction (single document and tool)
 
@@ -240,5 +240,4 @@ var dockControl = new DockControl { Factory = factory, Layout = root };
 - The fluent API is additive; existing `IFactory.Create*` APIs remain available.
 - Prefer the configuration lambda over post-creation property sets when possible for readability.
 - For Avalonia hosting, assign the `Factory` and the created `IRootDock` to `DockControl`. Set `InitializeFactory`/`InitializeLayout` if you want automatic initialization.
-
 

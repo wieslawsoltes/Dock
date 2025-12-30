@@ -163,6 +163,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    public class DocumentViewModel : Document
    {
        private readonly IDataService _dataService;
+       private readonly CompositeDisposable _disposables = new();
 
        public DocumentViewModel(IDataService dataService)
        {
@@ -178,7 +179,7 @@ Follow these instructions to create a ReactiveUI application with dependency inj
                    var updatedData = new DemoData { Message = content };
                    _dataService.UpdateData(updatedData);
                })
-               .DisposeWith(Disposables);
+               .DisposeWith(_disposables);
        }
 
        private string _content = string.Empty;

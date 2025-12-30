@@ -77,7 +77,7 @@ if (layout is { })
 }
 ```
 
-`DockState` tracks the active and focused dockables so the state can be restored after loading.
+`DockState` tracks document/tool content (and document templates) so that state can be restored after loading.
 
 ## Dynamic documents and tools
 
@@ -110,7 +110,7 @@ OpenFiles.Remove(fileToClose);
 ```
 
 With XAML binding:
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding OpenFiles}">
     <DocumentDock.DocumentTemplate>
         <DocumentTemplate>
@@ -126,18 +126,22 @@ Drag-and-drop handlers and file dialogs are used to open and save documents on t
 
 ## Floating windows
 
-Calling `FloatDockable` opens a dockable in a separate window. You can override `CreateWindowFrom` to tweak the new window:
+Calling `FloatDockable` opens a dockable in a separate window. You can override `CreateWindowFrom` to tweak the new dock window:
 
 ```csharp
-public override IHostWindow CreateWindowFrom(IDockWindow source)
+public override IDockWindow? CreateWindowFrom(IDockable dockable)
 {
-    var window = base.CreateWindowFrom(source);
-    window.Title = $"Floating - {source.Title}";
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Title = $"Floating - {dockable.Title}";
     window.Width = 800;
     window.Height = 600;
     return window;
 }
-
 ```
 
 If `EnableWindowDrag` on a `DocumentDock` is set to `true`, the tab strip doubles as a drag handle for the entire window. This lets users reposition floating windows by dragging the tabs themselves.

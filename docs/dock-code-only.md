@@ -1,7 +1,7 @@
 # Dock Code-Only Guide
 
 This guide shows how to build a minimal Dock layout entirely in C# using
-`Dock.Model.Avalonia` and `DockControl`. It mirrors the approach used in
+`Dock.Model.Avalonia` and `DockControl`. It is based on
 `samples/DockCodeOnlySample` and avoids XAML or MVVM helpers.
 
 ## Create a new Avalonia project
@@ -69,7 +69,7 @@ public class App : Application
     {
         Styles.Add(new FluentTheme());
         Styles.Add(new DockFluentTheme());
-        RequestedThemeVariant = ThemeVariant.Light;
+        RequestedThemeVariant = ThemeVariant.Dark;
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -98,7 +98,7 @@ public class App : Application
             {
                 Id = "Doc1",
                 Title = "Document 1",
-                Content = new TextBox { Text = "Document 1", AcceptsReturn = true }
+                // Content = new TextBox { Text = "Document 1", AcceptsReturn = true }
             };
 
             documentDock.VisibleDockables = factory.CreateList<IDockable>(document);

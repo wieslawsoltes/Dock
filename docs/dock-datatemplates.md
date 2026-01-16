@@ -98,10 +98,10 @@ public interface ICustomTabDock : IDock
 
 ### 2. Implement the Interface
 
-Create a concrete implementation using your preferred model (Avalonia, MVVM, ReactiveUI, etc.):
+Create a concrete implementation using your preferred model (Avalonia, MVVM, ReactiveUI, etc.). Use the `DockBase` type from the model package you picked.
 
 ```csharp
-public class CustomTabDock : Dock, ICustomTabDock
+public class CustomTabDock : DockBase, ICustomTabDock
 {
     public string TabStyle { get; set; } = "Default";
     public bool ShowTabIcons { get; set; } = true;
@@ -154,7 +154,7 @@ When working with custom dock types and DataTemplates:
 2. **Use descriptive naming** following the pattern: `IMyDock`, `MyDock`, `MyDockControl`
 3. **Add custom templates directly** - they work alongside the default templates automatically
 4. **Test your custom types** to ensure DataTemplate coverage
-5. **Use the bang operator** (`!`) for property bindings when creating templates programmatically
+5. **Use bindings** for template properties when creating templates programmatically, as shown in `DockDataTemplateHelper`
 6. **Consider inheritance** - derive from existing dock types when possible
 7. **Only disable `AutoCreateDataTemplates`** when you want to provide all templates manually
 

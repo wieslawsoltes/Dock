@@ -6,9 +6,9 @@
 
 When its `DataContext` is an `IDockable`, `DockableControl`:
 
-- Registers itself in the appropriate factory dictionary (`VisibleDockableControls`, `PinnedDockableControls`, or `TabDockableControls`).
+- Registers itself in the appropriate factory dictionary (`VisibleDockableControls`, `PinnedDockableControls`, or `TabDockableControls`) and also records the templated root in `VisibleRootControls`, `PinnedRootControls`, or `TabRootControls`.
 - Stores bounds via `SetVisibleBounds`, `SetPinnedBounds`, or `SetTabBounds`.
-- Updates pointer positions during drag operations.
+- Updates pointer positions (including screen coordinates) during pointer presses and moves.
 
 The tracking behavior depends on the `TrackingMode` property.
 

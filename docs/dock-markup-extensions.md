@@ -25,6 +25,6 @@ The URI is resolved relative to the current `IUriContext`. Any element type can 
 
 The extension searches the nearest name scope for an element called `OkButton` and returns it. Use it as a binding source when you need to reference another element in the same scope.
 
-Both extensions reside in the `Avalonia.MarkupExtension` namespace and can be imported in XAML using `xmlns:markup="clr-namespace:Avalonia.MarkupExtension"`.
+Both extensions reside in the `Avalonia.MarkupExtension` namespace and can be imported in XAML using `xmlns:markup="clr-namespace:Avalonia.MarkupExtension;assembly=Dock.MarkupExtension"`.
 
 For an overview of all guides see the [documentation index](README.md).

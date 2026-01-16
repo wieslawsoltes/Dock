@@ -15,6 +15,12 @@ They are used by the default control templates but you can set them manually:
 | `IsDropArea` | `bool` | Identifies a region that can accept dropped dockables. |
 | `IsDragEnabled` | `bool` | Globally enables or disables dragging for child dockables. |
 | `IsDropEnabled` | `bool` | Globally enables or disables dropping of dockables. |
+| `ShowDockIndicatorOnly` | `bool` | Shows only drop indicators, hiding the dock target visuals. |
+| `IndicatorDockOperation` | `DockOperation` | Sets the dock operation when showing indicators only. |
+| `DockAdornerHost` | `Control` | Hosts the dock target adorner instead of the adorned control. |
+| `DockGroup` | `string` | Restricts docking to matching groups (inherited). |
+
+Use `DockGroup` to restrict docking operations across your layout. For details see [Docking groups](dock-docking-groups.md).
 
 Example disabling drag and drop for an entire window:
 

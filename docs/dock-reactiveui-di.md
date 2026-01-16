@@ -158,61 +158,63 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    using Dock.Model.ReactiveUI.Controls;
    using MyDockApp.Models;
 
-   namespace MyDockApp.ViewModels.Documents;
-
-   public class DocumentViewModel : Document
+   namespace MyDockApp.ViewModels.Documents
    {
-       private readonly IDataService _dataService;
-       private readonly CompositeDisposable _disposables = new();
-
-       public DocumentViewModel(IDataService dataService)
+       public class DocumentViewModel : Document
        {
-           _dataService = dataService;
-           
-           var data = _dataService.GetData();
-           Content = data.Message;
-           
-           // Set up reactive properties and commands as needed
-           this.WhenAnyValue(x => x.Content)
-               .Subscribe(content => 
-               {
-                   var updatedData = new DemoData { Message = content };
-                   _dataService.UpdateData(updatedData);
-               })
-               .DisposeWith(_disposables);
-       }
+           private readonly IDataService _dataService;
+           private readonly CompositeDisposable _disposables = new();
 
-       private string _content = string.Empty;
-       public string Content
-       {
-           get => _content;
-           set => this.RaiseAndSetIfChanged(ref _content, value);
+           public DocumentViewModel(IDataService dataService)
+           {
+               _dataService = dataService;
+               
+               var data = _dataService.GetData();
+               Content = data.Message;
+               
+               // Set up reactive properties and commands as needed
+               this.WhenAnyValue(x => x.Content)
+                   .Subscribe(content => 
+                   {
+                       var updatedData = new DemoData { Message = content };
+                       _dataService.UpdateData(updatedData);
+                   })
+                   .DisposeWith(_disposables);
+           }
+
+           private string _content = string.Empty;
+           public string Content
+           {
+               get => _content;
+               set => this.RaiseAndSetIfChanged(ref _content, value);
+           }
        }
    }
 
-   namespace MyDockApp.ViewModels.Tools;
-
-   public class ToolViewModel : Tool
+   namespace MyDockApp.ViewModels.Tools
    {
-       private readonly IDataService _dataService;
-
-       public ToolViewModel(IDataService dataService)
+       public class ToolViewModel : Tool
        {
-           _dataService = dataService;
-           RefreshData();
-       }
+           private readonly IDataService _dataService;
 
-       private string _status = string.Empty;
-       public string Status
-       {
-           get => _status;
-           set => this.RaiseAndSetIfChanged(ref _status, value);
-       }
+           public ToolViewModel(IDataService dataService)
+           {
+               _dataService = dataService;
+               RefreshData();
+           }
 
-       private void RefreshData()
-       {
-           var data = _dataService.GetData();
-           Status = $"Last updated: {data.LastUpdated:HH:mm:ss}";
+           private string _status = string.Empty;
+           public string Status
+           {
+               get => _status;
+               set => this.RaiseAndSetIfChanged(ref _status, value);
+           }
+
+           private void RefreshData()
+           {
+               var data = _dataService.GetData();
+               Status = $"Last updated: {data.LastUpdated:HH:mm:ss}";
+           }
        }
    }
    ```
@@ -435,10 +437,13 @@ Follow these instructions to create a ReactiveUI application with dependency inj
    ```csharp
    using System;
    using Avalonia;
+   using Avalonia.Controls;
    using Avalonia.Controls.ApplicationLifetimes;
+   using Avalonia.Controls.Templates;
    using Avalonia.Markup.Xaml;
-   using ReactiveUI;
    using Microsoft.Extensions.DependencyInjection;
+   using MyDockApp.ViewModels;
+   using ReactiveUI;
 
    namespace MyDockApp;
 
@@ -457,27 +462,27 @@ Follow these instructions to create a ReactiveUI application with dependency inj
            _viewLocator = viewLocator;
        }
 
-       public override void Initialize()
-       {
-           AvaloniaXamlLoader.Load(this);
-       }
+   public override void Initialize()
+   {
+       AvaloniaXamlLoader.Load(this);
+       DataTemplates.Insert(0, (IDataTemplate)_viewLocator);
+   }
 
-       public override void OnFrameworkInitializationCompleted()
+   public override void OnFrameworkInitializationCompleted()
+   {
+       if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && ServiceProvider != null)
        {
-           // Set the ReactiveUI view locator
-           Locator.CurrentMutable.RegisterConstant(_viewLocator, typeof(IViewLocator));
-
-           if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+           var viewModel = ServiceProvider.GetRequiredService<MainWindowViewModel>();
+           var view = ServiceProvider.GetRequiredService<IViewFor<MainWindowViewModel>>();
+           view.ViewModel = viewModel;
+           if (view is Window window)
            {
-               var mainWindow = ServiceProvider?.GetRequiredService<MainWindow>();
-               if (mainWindow != null)
-               {
-                   desktop.MainWindow = mainWindow;
-               }
+               desktop.MainWindow = window;
            }
-
-           base.OnFrameworkInitializationCompleted();
        }
+
+       base.OnFrameworkInitializationCompleted();
+   }
    }
    ```
 

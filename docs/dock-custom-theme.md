@@ -4,7 +4,9 @@ This guide walks through creating a theme file from scratch. Use it when the bui
 
 ## 1. Create an accent dictionary
 
-Define brushes and colors in a new `.axaml` file:
+Define brushes and colors in a new `.axaml` file. Start from
+`src/Dock.Avalonia.Themes.Fluent/Accents/Fluent.axaml` to see the full set of
+resource keys used by the built-in templates:
 
 ```xaml
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
@@ -14,6 +16,7 @@ Define brushes and colors in a new `.axaml` file:
     <SolidColorBrush x:Key="DockThemeForegroundBrush" Color="#EEEEEE" />
     <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
     <StreamGeometry x:Key="DockIconCloseGeometry" />
+    <StreamGeometry x:Key="DockToolIconCloseGeometry" />
 </ResourceDictionary>
 ```
 
@@ -21,7 +24,10 @@ Define brushes and colors in a new `.axaml` file:
 
 ## 2. Merge Dock control styles
 
-Create another `.axaml` file that merges the Dock controls together with your accent dictionary:
+Create another `.axaml` file that merges the Dock controls together with your
+accent dictionary. The Simple theme reuses the Fluent control templates, so you
+can reference them directly via `avares://Dock.Avalonia.Themes.Fluent/Controls/...`
+or copy them into your own assembly and include `/Controls/...` resources.
 
 ```xaml
 <Styles xmlns="https://github.com/avaloniaui"
@@ -31,9 +37,10 @@ Create another `.axaml` file that merges the Dock controls together with your ac
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ControlStrings.axaml" />
                 <ResourceInclude Source="avares://MyApp/Styles/MyDockAccent.axaml" />
-                <ResourceInclude Source="/Controls/DockControl.axaml" />
-                <ResourceInclude Source="/Controls/ToolControl.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/DockControl.axaml" />
+                <ResourceInclude Source="avares://Dock.Avalonia.Themes.Fluent/Controls/ToolControl.axaml" />
                 <!-- include additional Dock controls as desired -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

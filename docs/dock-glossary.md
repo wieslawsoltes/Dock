@@ -11,7 +11,7 @@ This page defines common terms used throughout the Dock documentation and sample
 - **DockWindow / HostWindow** – Floating window created when a dockable is detached from the main layout.
 - **Layout** – The arrangement of docks and dockables currently shown by `DockControl`.
 - **Factory** – Class responsible for creating and modifying layouts at runtime.
-- **DockSerializer** – Component that saves or loads layouts so user customisations persist across sessions.
+- **IDockSerializer** – Interface for saving or loading layouts; `Dock.Serializer.*` provides concrete implementations such as `DockSerializer`.
 - **DockManager** – Implements the algorithms that move or swap dockables during drag and drop.
 - **HostAdapter** – Bridges an `IDockWindow` with the platform window used to display it.
 - **NavigateAdapter** – Provides back and forward history navigation for docks.

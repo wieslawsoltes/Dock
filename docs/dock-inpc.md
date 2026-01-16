@@ -1,8 +1,8 @@
 # Dock INPC Getting Started Guide
 
-This guide explains how to get started with the INPC (INotifyPropertyChanged) implementation of Dock. The INPC model provides basic property change notifications without the overhead of full MVVM command patterns, making it ideal for simpler scenarios or custom MVVM frameworks.
+This guide explains how to get started with the INPC (INotifyPropertyChanged) implementation of Dock. The INPC model provides basic property change notifications with lightweight `ICommand` support (via `SimpleCommand`) without requiring a full MVVM framework, making it ideal for simpler scenarios or custom MVVM stacks.
 
-The `Dock.Model.Inpc` package provides `INotifyPropertyChanged` implementations without additional command support. The sample project `DockInpcSample` in the repository demonstrates this approach. For interface details refer to the [Dock API Reference](dock-reference.md).
+The `Dock.Model.Inpc` package provides `INotifyPropertyChanged` implementations along with simple command helpers used by the built-in dock models. The sample project `DockInpcSample` in the repository demonstrates this approach. For interface details refer to the [Dock API Reference](dock-reference.md).
 
 > **💡 Modern Approach**: For easier document management, consider using [DocumentDock.ItemsSource](dock-itemssource.md) which automatically creates and manages documents from collections. This approach is covered in detail in the [Document and Tool Content Guide](dock-content-guide.md).
 
@@ -322,8 +322,8 @@ The INPC implementation provides:
 - ✅ Property change notifications via `INotifyPropertyChanged`
 - ✅ Basic docking functionality
 - ✅ Serialization support
-- ❌ No built-in command support (you need to implement your own)
-- ❌ No advanced MVVM patterns like commanding infrastructure
+- ✅ Lightweight `SimpleCommand` support for built-in docking commands
+- ❌ No advanced MVVM command infrastructure (e.g., ReactiveUI command patterns)
 
 This makes it perfect for scenarios where you want the docking functionality without the overhead of a full MVVM framework, or when integrating with custom MVVM implementations.
 

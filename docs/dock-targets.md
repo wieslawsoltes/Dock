@@ -4,7 +4,7 @@ Dock shows drop indicators using two controls: `DockTarget` (local docking) and 
 
 ## How targets are created
 
-When a drag starts, `DockControlState` locates a control marked with `DockProperties.IsDockTarget` and creates a target adorner for it. The adorner is hosted either in the visual tree or inside a floating window, depending on `DockSettings.UseFloatingDockAdorner`.
+When a drag starts, `DockControlState` locates a control marked with `DockProperties.IsDropArea`. If that control is also marked with `DockProperties.IsDockTarget`, the docking pipeline creates a target adorner for it. The adorner is hosted either in the visual tree or inside a floating window, depending on `DockSettings.UseFloatingDockAdorner`.
 
 Local targets are attached to the drop control (or `DockProperties.DockAdornerHost` if set). Global targets are attached to the nearest `DockControl` and display global docking options when they are available.
 
@@ -17,6 +17,7 @@ These `DockProperties` determine how targets behave:
 | Property | Purpose |
 | --- | --- |
 | `IsDockTarget` | Marks the control as a docking surface. |
+| `IsDropArea` | Marks the control as a valid drop surface. |
 | `ShowDockIndicatorOnly` | Hide the selector icons and show indicators only. |
 | `IndicatorDockOperation` | Assigns a `DockOperation` (Top/Bottom/Left/Right/Fill) to an indicator part. |
 | `DockAdornerHost` | Redirects the adorner to a specific host control. |

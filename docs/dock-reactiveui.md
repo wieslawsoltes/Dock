@@ -217,7 +217,7 @@ Follow these instructions to create a minimal ReactiveUI based application using
    }
    ```
 
-4. **Initialize the layout using Reactive commands**
+5. **Initialize the layout in your view model**
 
    ```csharp
    _factory = new DockFactory();
@@ -225,13 +225,13 @@ Follow these instructions to create a minimal ReactiveUI based application using
    _factory.InitLayout(Layout);
    ```
 
-5. **Add `DockControl` to the main view**
+6. **Add `DockControl` to the main view**
 
    ```xaml
    <DockControl x:Name="Dock" Layout="{Binding Layout}" />
    ```
 
-6. **Run the application**
+7. **Run the application**
 
    ```bash
    dotnet run

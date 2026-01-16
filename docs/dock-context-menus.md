@@ -1,6 +1,6 @@
 # Context menus and flyouts
 
-Dock defines several built-in context menus and flyouts that are attached to its controls. The menu definitions live in the control theme dictionaries, while the menu text is stored in `Controls/ControlStrings.axaml`. This document lists the available menus and describes how to localize or replace them.
+Dock defines several built-in context menus and flyouts that are attached to its controls. The menu definitions live in the theme control dictionaries under `src/Dock.Avalonia.Themes.Fluent/Controls`, and the menu text is stored in `src/Dock.Avalonia.Themes.Fluent/Controls/ControlStrings.axaml`. The Simple theme links to the same control resources. This document lists the available menus and describes how to localize or replace them.
 
 ## List of built-in menus
 
@@ -14,11 +14,11 @@ Dock defines several built-in context menus and flyouts that are attached to its
 
 The string resources used for menu item headers are defined in `Controls/ControlStrings.axaml`. For example it exposes keys such as `ToolTabStripItemFloatString`, `ToolTabStripItemDockString` and others.
 
-When a dock's `CanCloseLastDockable` property is set to `false` the built-in menus automatically disable commands like **Close** or **Float** if executing them would remove the final item from that dock.
+When a dock's `CanCloseLastDockable` property is set to `false` and only one dockable is visible, the built-in menus hide actions such as **Close** or **Float** using `CanRemoveDockableConverter`.
 
 ## Customizing menus and themes per control
 
-Each control now exposes properties that allow you to customize the context menus, flyouts, and button themes for individual instances:
+Most Dock controls are created by templates, so set these properties via styles or control themes unless you have a direct instance reference. Each control exposes properties that allow you to customize the context menus, flyouts, and button themes for individual instances:
 
 ### ToolChromeControl
 ```csharp
@@ -46,6 +46,24 @@ myToolChromeControl.MaximizeButtonTheme = new ControlTheme(typeof(Button))
     Setters = 
     {
         new Setter(Button.BackgroundProperty, Brushes.Blue),
+        new Setter(Button.ForegroundProperty, Brushes.White)
+    }
+};
+
+myToolChromeControl.PinButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters =
+    {
+        new Setter(Button.BackgroundProperty, Brushes.DarkSlateGray),
+        new Setter(Button.ForegroundProperty, Brushes.White)
+    }
+};
+
+myToolChromeControl.MenuButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters =
+    {
+        new Setter(Button.BackgroundProperty, Brushes.DimGray),
         new Setter(Button.ForegroundProperty, Brushes.White)
     }
 };
@@ -83,6 +101,16 @@ myMdiDocumentWindow.DocumentContextMenu = new ContextMenu
     Items =
     {
         new MenuItem { Header = "Custom Action", Command = myCommand }
+    }
+};
+
+// Optional: theme the close button
+myMdiDocumentWindow.CloseButtonTheme = new ControlTheme(typeof(Button))
+{
+    Setters =
+    {
+        new Setter(Button.BackgroundProperty, Brushes.Orange),
+        new Setter(Button.ForegroundProperty, Brushes.White)
     }
 };
 ```
@@ -172,7 +200,7 @@ The current design provides multiple levels of customization:
 
 4. **Template customization**: The controls use template binding for their menus, making them more efficient and allowing for easier customization.
 
-The new property-based approach provides the most flexibility for runtime customization, while the resource-based approach remains available for global changes. This design allows you to:
+The property-based approach provides the most flexibility for runtime customization, while the resource-based approach remains available for global changes. This design allows you to:
 
 - Customize menus and button themes for specific controls while keeping the default for others
 - Add or remove menu items dynamically

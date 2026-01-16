@@ -14,8 +14,7 @@ The `DocumentTabStrip` control uses the settings when it decides whether a point
 
 ```csharp
 var delta = currentPoint - _dragStartPoint;
-if (!(Math.Abs(delta.X) > DockSettings.MinimumHorizontalDragDistance)
-    && !(Math.Abs(delta.Y) > DockSettings.MinimumVerticalDragDistance))
+if (!DockSettings.IsMinimumDragDistance(delta))
 {
     return; // Not enough movement yet
 }
@@ -31,6 +30,10 @@ You can apply the same check in your custom `PointerMoved` handlers before calli
 - `IsDragArea` marks a region where the user can start dragging.
 - `IsDropArea` marks a region that can receive drops.
 - `IsDragEnabled` and `IsDropEnabled` allow you to enable or disable interactions globally for any subtree.
+- `ShowDockIndicatorOnly` shows only drop indicators, hiding the dock target visuals.
+- `IndicatorDockOperation` sets the dock operation for controls that only show indicators.
+- `DockAdornerHost` directs the dock adorner to a different host control.
+- `DockGroup` restricts docking to matching groups (inherited through the visual tree).
 
 These properties are normally set in the default styles but you can place them on your own controls:
 

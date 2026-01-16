@@ -30,13 +30,13 @@ You can override brushes and other resources to match your application colors:
 
 Any `SolidColorBrush` referenced by the theme can be replaced this way. Controls automatically pick up the new values.
 
-`ToolChromeControl` defines an extra brush for its icons and drag grip:
+`ToolChromeControl` defines an extra brush for its icons:
 
 ```xaml
 <SolidColorBrush x:Key="DockToolChromeIconBrush" Color="#474747" />
 ```
 
-Include replacements for these in your accent dictionary to change the grip or button colors.
+Include replacements for these in your accent dictionary to change icon or button colors.
 
 Several icons are also exposed as `StreamGeometry` resources so you can swap them with your own glyphs:
 
@@ -115,14 +115,14 @@ continue to work. For example `ToolChromeControl` defines `PART_Grip`,
 Controls also toggle pseudo classes to reflect their current state. These can be
 targeted in selectors to customize the appearance:
 
-- `DocumentControl` and `DocumentTabStripItem` use `:active`.
+- `DocumentControl`, `DocumentTabStrip`, and `DocumentTabStripItem` use `:active`.
 - `DocumentTabStrip` and `ToolTabStrip` apply `:create` when new items can be
   added.
 - `ToolChromeControl` sets `:active`, `:pinned`, `:floating` and `:maximized`.
 - `HostWindow` toggles `:toolwindow`, `:dragging`, `:toolchromecontrolswindow` and
   `:documentchromecontrolswindow`.
 - `ProportionalStackPanelSplitter` uses `:horizontal` or `:vertical` depending on
-  orientation.
+  orientation, and `:preview` while preview resizing is active.
 
 These pseudo classes are driven by properties such as `IsActive` and
 `CanCreateItem` on the respective controls.

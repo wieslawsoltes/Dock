@@ -99,7 +99,7 @@ Indicates the current state of an MDI document window.
 
 ## GripMode
 
-Determines how the grip element of a splitter behaves.
+Determines how the grip element in tool chrome behaves (used by tool docks).
 
 | Value | Description |
 | ----- | ----------- |
@@ -119,7 +119,7 @@ Indicates which bounds `TrackingAdapter` is currently storing.
 
 ## DragAction
 
-Represents the allowed drag and drop actions when interacting with external data sources. This is a flags enum, so values can be combined.
+Represents the drag and drop action Dock should perform when docking. This is a flags enum, but Dock uses single values (`Move`, `Link`, `Copy`) for internal docking gestures.
 
 | Value | Description |
 | ----- | ----------- |

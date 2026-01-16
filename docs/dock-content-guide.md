@@ -26,6 +26,8 @@ Make sure you have the required NuGet packages installed:
 
 Examples below use `RelayCommand` from `CommunityToolkit.Mvvm.Input`. Use your own `ICommand` implementation if you prefer a different MVVM toolkit.
 
+If you want MVVM-style base classes with `SetProperty`, install the matching model package (for example `Dock.Model.Mvvm`, `Dock.Model.ReactiveUI`, or `Dock.Model.CaliburMicro`) and use those `Document`/`Tool` base types in the examples.
+
 For XAML usage, you need these namespace declarations:
 
 ```xaml
@@ -44,7 +46,7 @@ The Dock framework supports four main approaches for defining content:
 
 ## Method 1: ItemsSource Collection Binding (Recommended)
 
-DocumentDock supports automatic document creation from collections using the `ItemsSource` property, similar to how `ItemsControl` works in Avalonia. This is the recommended approach for most scenarios.
+DocumentDock supports automatic document creation from collections using the `ItemsSource` property, similar to how `ItemsControl` works in Avalonia. This is the recommended approach for most scenarios and is available in the Avalonia model (`Dock.Model.Avalonia.Controls.DocumentDock`).
 
 ### When to Use This Approach
 
@@ -259,7 +261,7 @@ This approach follows MVVM principles and provides the best flexibility for comp
 ### Step 1: Create a Document ViewModel
 
 ```csharp
-using Dock.Model.Avalonia.Controls;
+using Dock.Model.Mvvm.Controls;
 
 namespace YourApp.ViewModels.Documents;
 
@@ -407,12 +409,12 @@ For simple static content, you can define it directly in XAML:
 
 ## Working with Tools
 
-Tools work similarly to documents. Here's an example:
+Tools work similarly to documents. Here's an example using MVVM base classes:
 
 ### Tool ViewModel
 
 ```csharp
-using Dock.Model.Avalonia.Controls;
+using Dock.Model.Mvvm.Controls;
 
 namespace YourApp.ViewModels.Tools;
 
@@ -475,26 +477,32 @@ public class PropertiesToolViewModel : Tool
 
 ### Issue: "Unexpected content" Error
 
-**Problem**: Getting `System.ArgumentException: "Unexpected content YourView"` when adding documents.
+**Problem**: Getting `System.ArgumentException: "Unexpected content ..."` when adding documents.
 
-**Cause**: Setting a UserControl instance directly to the `Content` property.
+**Cause**: Setting `Content` to a view model or other unsupported object without a template. `Content` must be a `Control`, a template/function (`Func<IServiceProvider, object>`), or template content produced by XAML.
 
-**Solution**: Use one of the supported approaches above (ViewModel pattern or function-based content).
+**Solution**: Use one of the supported approaches above (Control/Function/DataTemplate).
 
 ```csharp
-// ❌ This will cause "Unexpected content" error
+// ❌ Unsupported: view model instance without a template
 var document = new Document
 {
-    Content = new MyUserControl() // Don't do this
+    Content = new MyViewModel()
 };
 
-// ✅ Use ViewModel approach instead
+// ✅ Use ViewModel + DataTemplate approach instead
 var document = new MyDocumentViewModel();
 
-// ✅ Or use function approach
+// ✅ Or provide a Control or factory
 var document = new Document
 {
     Content = new Func<IServiceProvider, object>(_ => new MyUserControl())
+};
+
+// ✅ Direct Control assignment is valid
+var document = new Document
+{
+    Content = new MyUserControl()
 };
 ```
 

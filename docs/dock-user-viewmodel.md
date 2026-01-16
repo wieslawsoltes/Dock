@@ -56,7 +56,7 @@ Applications often have their own view models that expose domain specific proper
    var factory = new DockFactory();
    var layout = factory.CreateLayout();
    factory.InitLayout(layout);
-   Dock.Layout = layout;
+   dockControl.Layout = layout;
    ```
 
 Your custom view models now behave like any other Dock documents or tools while still exposing your application specific state.

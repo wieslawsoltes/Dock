@@ -1,4 +1,4 @@
-### Fluent API for Dock.Model
+# Fluent API for Dock.Model
 
 This guide shows how to build layouts using the fluent extension methods added to `Dock.Model`. The fluent API wraps factory creation and common configuration into chainable calls. You can:
 - Create objects and keep them in variables (no `out var` overloads)
@@ -240,4 +240,3 @@ var dockControl = new DockControl { Factory = factory, Layout = root };
 - The fluent API is additive; existing `IFactory.Create*` APIs remain available.
 - Prefer the configuration lambda over post-creation property sets when possible for readability.
 - For Avalonia hosting, assign the `Factory` and the created `IRootDock` to `DockControl`. Set `InitializeFactory`/`InitializeLayout` if you want automatic initialization.
-

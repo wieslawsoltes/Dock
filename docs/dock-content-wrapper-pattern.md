@@ -2,7 +2,7 @@
 
 This guide covers an advanced pattern for wrapping your own domain models with Dock's document system. This approach is useful when you want to maintain separation between your application's document model and Dock's infrastructure.
 
-> **⚠️ Important**: With the introduction of `DocumentDock.ItemsSource`, most scenarios that required this wrapper pattern can now be solved more elegantly. See [Method 1: ItemsSource Collection Binding](dock-content-guide.md#method-1-itemssource-collection-binding-recommended) in the content guide for the recommended approach.
+> **⚠️ Important**: With the introduction of `DocumentDock.ItemsSource` in the Avalonia model (`Dock.Model.Avalonia.Controls.DocumentDock`), most scenarios that required this wrapper pattern can now be solved more elegantly. See [Method 1: ItemsSource Collection Binding](dock-content-guide.md#method-1-itemssource-collection-binding-recommended) in the content guide for the recommended approach.
 
 > **Note**: This is an advanced pattern. For most use cases, the standard [Document and Tool Content Guide](dock-content-guide.md) approaches are recommended. **Consider ItemsSource first** - it provides the same domain separation with much less code.
 
@@ -15,7 +15,7 @@ Before implementing the wrapper pattern below, consider using `ItemsSource` whic
 <DocumentDock ItemsSource="{Binding SceneDocuments}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
-      <views:SceneView DataContext="{Binding Context}" x:DataType="Document"/>
+      <views:SceneView DataContext="{Binding Context}" />
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
@@ -147,7 +147,6 @@ private void AddSceneDocument()
     };
 
     DocumentsPane.AddDocument(dockDoc);
-    DocumentsPane.ActiveDockable = dockDoc;
 }
 ```
 

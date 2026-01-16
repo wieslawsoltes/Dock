@@ -18,7 +18,7 @@ The available properties are:
 | `ShowDockIndicatorOnly` | `bool` | Hides the dock target visuals and displays only drop indicators. |
 | `IndicatorDockOperation` | `DockOperation` | Specifies which dock operation a control represents when only indicators are shown. |
 | `DockAdornerHost` | `Control` | Specifies the element that should display the dock target adorner. |
-| `DockGroup` | `string` | Group identifier for restriction-based docking. See [Docking Groups](dock-docking-groups.md). |
+| `DockGroup` | `string` | Visual grouping hint for templates (usually bound from `IDockable.DockGroup`). See [Docking Groups](dock-docking-groups.md). |
 
 ## Root Dock Settings
 
@@ -29,6 +29,8 @@ In addition to the properties above, `IRootDock` provides settings that control 
 | `EnableAdaptiveGlobalDockTargets` | `bool` | `false` | When enabled, reduces global dock targets to only show options where the layout would change. Recommended for dashboards and widget areas to simplify the user experience by reducing the number of drop options presented. |
 
 This setting must be configured on your root dock instance and is particularly useful in scenarios where you want to minimize visual clutter and provide a more focused docking experience.
+
+Note that docking rules are enforced by the `IDockable.DockGroup` values in the model; the attached `DockProperties.DockGroup` is used by control templates to surface that value in the visual tree.
 
 ## Using the properties in control themes
 

@@ -55,7 +55,7 @@ var toolB = new Tool
     DockGroup = "Tools"
 };
 
-// Create an unrestricted dock that only accepts other unrestricted dockables
+// Create an unrestricted dock that only accepts other unrestricted dockables (local rules)
 var unrestrictedDock = new ToolDock
 {
     Id = "UnrestrictedDock",
@@ -63,12 +63,12 @@ var unrestrictedDock = new ToolDock
     DockGroup = null // Only accepts other null-group dockables
 };
 
-// Create unrestricted tools that can only dock in unrestricted areas
+// Create unrestricted tools (local docking only; global docking allows ungrouped sources anywhere)
 var unrestrictedTool = new Tool
 {
     Id = "UnrestrictedTool",
     Title = "Unrestricted Tool",
-    DockGroup = null // Can only dock with other null-group targets
+    DockGroup = null // Locally only docks with other null-group targets
 };
 ```
 
@@ -403,17 +403,11 @@ var searchResults = new Tool
 
 ## Attached Property Support
 
-The `DockGroup` is also available as an attached property through `DockProperties.DockGroup`. This provides additional flexibility for setting groups in XAML templates and enables inheritance down the visual tree:
-
-```xaml
-<Window xmlns:dock="clr-namespace:Dock.Settings;assembly=Dock.Settings"
-        dock:DockProperties.DockGroup="WindowGroup">
-  <!-- All child dockables inherit "WindowGroup" -->
-  <DockControl>
-    <!-- Layout content -->
-  </DockControl>
-</Window>
-```
+`DockProperties.DockGroup` is an attached property on Avalonia controls. The
+built-in templates bind it to the dockable's `DockGroup` so you can style or
+inspect groups in the visual tree. It does not override the model's
+`DockGroup`—docking validation still uses `IDockable.DockGroup` and owner
+inheritance.
 
 ### Attached Property Methods
 
@@ -425,7 +419,10 @@ DockProperties.SetDockGroup(myControl, "MyGroup");
 string? group = DockProperties.GetDockGroup(myControl);
 ```
 
-The attached property supports inheritance, so setting it on a parent container automatically applies the group to all child elements unless they have their own explicit group.
+The attached property supports inheritance, so setting it on a parent container
+automatically applies the group to all child elements unless they have their own
+explicit group. Use it for styling or visual diagnostics, not to drive docking
+rules.
 
 ## Implementation Details
 

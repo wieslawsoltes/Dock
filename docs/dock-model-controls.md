@@ -75,19 +75,19 @@ the `CreateDocument` command. When assigned, this factory is invoked to
 create a new document which is then added and activated through the
 `AddDocument` helper.
 
-`IDocumentDockContent` extends this concept by storing a
-`DocumentTemplate` object. Calling `CreateDocumentFromTemplate`
-should produce a new view model implementing `IDocument`. This is
-useful when a document type can be instantiated from a template,
-for example when creating a blank file.
+`IDocumentDockContent` (implemented by the Avalonia model layer) extends this
+concept by storing a `DocumentTemplate` object. `CreateDocumentFromTemplate`
+typically creates a new document and sets its `IDocumentContent.Content` from
+the template (for example `DocumentTemplate.Content` in the Avalonia
+implementation). This is useful for "New" commands or ItemsSource-generated
+documents where the view is defined in XAML.
 
 ## IDocumentTemplate
 
-Templates are lightweight objects that store any information required
-to create a document instance. A factory can inspect the template
-and return a fully initialized document. Use this pattern to support
-"New" commands that generate a specific kind of document without
-hard-coding the creation logic in your views.
+`IDocumentTemplate` represents template content used to build document views. In
+Avalonia the built-in `DocumentTemplate` stores XAML content (or a
+`Func<IServiceProvider, object>`) that becomes the document `Content` when a new
+document is created.
 
 ## IProportionalDock and IProportionalDockSplitter
 

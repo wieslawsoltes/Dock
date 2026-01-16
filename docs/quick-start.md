@@ -42,9 +42,9 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    dotnet add package Dock.Model.Avalonia
    ```
 
-4. **Set up View Locator (Required)**
+3. **Set up View Templates (Optional)**
 
-   Dock requires a view locator to map view models to their corresponding views. Choose one of the following approaches:
+   If you rely on view models via `Context`, register a view locator or data templates for your document and tool views. If you define `Document.Content` or use `DocumentTemplate` in XAML, you can skip this step.
 
    **Option A: Static View Locator with Source Generators (Recommended)**
 
@@ -58,7 +58,6 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    using System;
    using Avalonia.Controls;
    using Avalonia.Controls.Templates;
-   using CommunityToolkit.Mvvm.ComponentModel;
    using Dock.Model.Core;
    using StaticViewLocator;
 
@@ -136,9 +135,9 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    }
    ```
 
-5. **Add Dock styles and View Locator**
+4. **Add Dock styles (and View Locator if used)**
 
-   Reference the theme and register the view locator in `App.axaml`:
+   Reference the theme and register the view locator in `App.axaml` if you use one:
 
    ```xaml
    <Application xmlns="https://github.com/avaloniaui"
@@ -157,7 +156,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
    </Application>
    ```
 
-6. **Add a simple layout**
+5. **Add a simple layout**
 
    **Option A: Traditional MVVM Approach**
 
@@ -253,15 +252,20 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
            xmlns="https://github.com/avaloniaui"
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:dock="https://github.com/avaloniaui">
-       <DockControl>
+   <DockControl InitializeLayout="True" InitializeFactory="True">
+       <DockControl.Factory>
+           <Factory />
+       </DockControl.Factory>
+       <RootDock>
            <DocumentDock ItemsSource="{Binding Documents}">
                <DocumentDock.DocumentTemplate>
                    <DocumentTemplate>
-                       <TextBox Text="{Binding Content}" AcceptsReturn="True" />
+                       <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" />
                    </DocumentTemplate>
                </DocumentDock.DocumentTemplate>
            </DocumentDock>
-       </DockControl>
+       </RootDock>
+   </DockControl>
    </Window>
    ```
 
@@ -305,7 +309,7 @@ This short guide shows how to set up Dock in a new Avalonia application. You wil
 
    For instructions on mapping documents and tools to views see the [Views guide](dock-views.md).
 
-7. **Run the application**
+6. **Run the application**
 
    ```bash
    dotnet run

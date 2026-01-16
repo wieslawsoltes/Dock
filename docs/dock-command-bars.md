@@ -5,7 +5,7 @@ Dock can merge command bars from the active dockable into a host control at the 
 ## How it works
 
 - `DockControl` templates include a `DockCommandBarHost` named `PART_CommandBarHost`.
-- `DockCommandBarManager` listens for active dockable changes and queries the active dockable (or its `Context`) for command bar definitions.
+- `DockCommandBarManager` listens for active dockable changes and queries the active dockable (or its `Context`) for command bar definitions. It also refreshes when the provider raises `CommandBarsChanged`.
 - Definitions are merged with any base bars and rendered using the default adapter into menu bars, tool bars, and ribbon bars.
 
 ## Enable command bar merging

@@ -2,7 +2,7 @@
 
 This reference lists Dock-specific properties for Avalonia controls in the `Dock.Avalonia` packages. Base Avalonia properties (for example, `Width`, `IsVisible`, `Background`) are not repeated here.
 
-Unless noted otherwise, the properties listed are Avalonia styled properties and can be set in XAML or code.
+Unless noted otherwise, the properties listed are Avalonia styled properties and can be set in XAML or code. Properties labeled "CLR" are regular properties that must be set in code.
 
 ## Core host controls
 
@@ -17,10 +17,10 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `DefaultContext` | `object?` | Fallback context for the default context locator. |
 | `AutoCreateDataTemplates` | `bool` | Automatically injects Dock DataTemplates when `true`. |
 | `IsDraggingDock` | `bool` | Set while a drag operation is active; useful for styling. |
-| `DragOffsetCalculator` | `IDragOffsetCalculator` | Controls drag preview positioning. |
-| `DockManager` | `IDockManager` | Dock manager service (read-only). |
-| `DockControlState` | `IDockControlState` | Internal docking state (read-only). |
-| `IsOpen` | `bool` | `true` when the selector overlay is open (read-only). |
+| `DragOffsetCalculator` | `IDragOffsetCalculator` | CLR property that controls drag preview positioning. |
+| `DockManager` | `IDockManager` | CLR property for the dock manager service (read-only). |
+| `DockControlState` | `IDockControlState` | CLR property for internal docking state (read-only). |
+| `IsOpen` | `bool` | CLR property; `true` when the selector overlay is open (read-only). |
 
 ### DockCommandBarHost
 
@@ -194,9 +194,9 @@ Unless noted otherwise, the properties listed are Avalonia styled properties and
 | `IsToolWindow` | `bool` | Marks the window as a tool window. |
 | `ToolChromeControlsWholeWindow` | `bool` | Allows tool chrome to drag the full window. |
 | `DocumentChromeControlsWholeWindow` | `bool` | Allows document chrome to drag the full window. |
-| `HostWindowState` | `IHostWindowState` | Docking state for the host window (read-only). |
-| `IsTracked` | `bool` | Indicates that the host window is tracked. |
-| `Window` | `IDockWindow?` | Backing dock window model. |
+| `HostWindowState` | `IHostWindowState` | CLR property for docking state (read-only). |
+| `IsTracked` | `bool` | CLR property that indicates the window is tracked. |
+| `Window` | `IDockWindow?` | CLR property for the backing dock window model. |
 
 ### HostWindowTitleBar
 

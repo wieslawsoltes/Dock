@@ -17,6 +17,9 @@ Optional packages for serialization:
 ```bash
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+dotnet add package Dock.Serializer.Protobuf          # Binary (protobuf-net)
+dotnet add package Dock.Serializer.Xml               # XML
+dotnet add package Dock.Serializer.Yaml              # YAML
 ```
 
 ## View location
@@ -156,7 +159,6 @@ public sealed class MainViewModel
     {
         Factory = new DockFactory();
         Layout = Factory.CreateLayout();
-        Factory.InitLayout(Layout);
     }
 
     public IFactory Factory { get; }
@@ -170,6 +172,8 @@ public sealed class MainViewModel
              InitializeFactory="True"
              InitializeLayout="True" />
 ```
+
+If you call `Factory.InitLayout` manually, set `InitializeLayout="False"` to avoid double initialization.
 
 ## Notes
 

@@ -22,9 +22,9 @@ support cancellation via a `Cancel` flag.
 | `DockableDocked` | Raised after a dock operation completes such as splitting or floating. |
 | `DockableUndocked` | Raised when a dockable is removed from a dock before being moved or floated. |
 | `DockablePinned` / `DockableUnpinned` | Signalled when a tool is pinned or unpinned. |
-| `WindowOpened` / `WindowClosed` | Fired when a floating window is created or closed. |
-
-Other specialized events like `WindowMoveDragBegin`, `WindowMoveDrag` and `WindowMoveDragEnd` allow intercepting drag operations.
+| `WindowOpened` | Fired when a floating window is created. |
+| `WindowClosing` | Fired before a floating window closes and can be cancelled. |
+| `WindowClosed` | Fired after a floating window is closed. |
 
 ## Additional events
 
@@ -38,6 +38,7 @@ FactoryBase also exposes events for less common scenarios:
 | `WindowActivated` / `WindowDeactivated` | Fired when a host window gains or loses activation. |
 | `DockableActivated` / `DockableDeactivated` | Fired when a dockable gains or loses activation. |
 | `DockableInit` | Raised during `InitDockable` so you can override the resolved `Context`. |
+| `WindowMoveDragBegin` / `WindowMoveDrag` / `WindowMoveDragEnd` | Fired during floating window drag operations. |
 
 ## Subscribing to events
 

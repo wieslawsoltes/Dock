@@ -14,8 +14,7 @@ The default factory can open any dockable in a separate window. This allows you 
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
    dotnet add package Dock.Serializer.Newtonsoft
-   # or use the Protobuf variant
-   dotnet add package Dock.Serializer.Protobuf
+   # or use Dock.Serializer.SystemTextJson / Dock.Serializer.Protobuf / Dock.Serializer.Xml / Dock.Serializer.Yaml
    ```
 
 2. **Define a custom factory**
@@ -57,12 +56,14 @@ The default factory can open any dockable in a separate window. This allows you 
 
    ```csharp
    await using var write = File.OpenWrite("layout.json");
+   _dockState.Save(dockControl.Layout);
    _serializer.Save(write, dockControl.Layout);
 
    await using var read = File.OpenRead("layout.json");
    var layout = _serializer.Load<IDock?>(read);
    if (layout is { })
    {
+       dockControl.Factory?.InitLayout(layout);
        dockControl.Layout = layout;
        _dockState.Restore(layout);
    }
@@ -91,7 +92,8 @@ Applications can load additional dockables from plugins at runtime. Plugins typi
        .Select(t => (IPlugin)Activator.CreateInstance(t)!);
    foreach (var plugin in plugins)
    {
-       factory.AddDockable(rootLayout, plugin.CreateDockable());
+       var dockable = plugin.CreateDockable();
+       factory.AddDockable(rootLayout, dockable);
    }
    ```
 

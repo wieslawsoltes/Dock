@@ -7,13 +7,14 @@
 - **Orientation** – determines whether children are arranged horizontally or vertically.
 - **ProportionProperty** – attached property that specifies the size ratio for each child. Values are normalized so that all proportions add up to `1`.
 - **IsCollapsedProperty** – attached property that temporarily collapses a child without removing it from the layout.
+- **CollapsedProportionProperty** – attached property that remembers the last non-collapsed proportion so a panel can restore its size.
 - **ProportionalStackPanelSplitter** – interactive splitter used to adjust proportions at runtime. Insert between two children.
 
 ## Basic usage
 
 ```xaml
 <psp:ProportionalStackPanel Orientation="Horizontal"
-                           xmlns:psp="clr-namespace:Dock.Controls.ProportionalStackPanel">
+                           xmlns:psp="clr-namespace:Dock.Controls.ProportionalStackPanel;assembly=Dock.Controls.ProportionalStackPanel">
   <Border psp:ProportionalStackPanel.Proportion="0.3" Background="Red"/>
   <psp:ProportionalStackPanelSplitter />
   <Border psp:ProportionalStackPanel.Proportion="0.7" Background="Green"/>

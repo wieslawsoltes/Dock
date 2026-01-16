@@ -15,7 +15,7 @@ You can create your own implementation when these do not fit your application or
 
 ## Using Dock.Model.Inpc
 
-If you only need basic property change notifications without full MVVM command support, use `Dock.Model.Inpc`:
+If you only need basic property change notifications and lightweight `ICommand` implementations without a framework dependency, use `Dock.Model.Inpc`:
 
 ```bash
 dotnet add package Dock.Model.Inpc
@@ -88,15 +88,23 @@ This package provides `INotifyPropertyChanged` implementations without the addit
 5. **Provide command and property change logic** that matches your MVVM framework.
    For example, you might expose `ICommand` objects or ReactiveUI commands.
 
-A minimal dockable using `INotifyPropertyChanged` might look like this:
+A minimal dockable using `INotifyPropertyChanged` might look like this (implement the `IDockable` members you need, or start from `Dock.Model.Inpc.Core.DockableBase` and adapt it):
 
 ```csharp
-public class MyDockable : DockableBase, INotifyPropertyChanged
+public abstract class MyDockableBase : IDockable, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected void OnPropertyChanged([CallerMemberName] string? name = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    protected void Set<T>(ref T field, T value, [CallerMemberName] string? name = null)
+    {
+        if (!EqualityComparer<T>.Default.Equals(field, value))
+        {
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    // Implement IDockable members here or copy from Dock.Model.Inpc.Core.DockableBase.
 }
 ```
 

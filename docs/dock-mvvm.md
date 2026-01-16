@@ -223,7 +223,7 @@ The following steps walk you through creating a very small application that uses
            <DocumentDock.DocumentTemplate>
                <DocumentTemplate>
                    <StackPanel Margin="10" x:DataType="Document">
-                       <TextBox Text="{Binding Title}" Margin="0,0,0,10"/>
+                       <TextBox Text="{Binding Context.Title}" Margin="0,0,0,10"/>
                        <TextBox Text="{Binding Context.Content}" AcceptsReturn="True" Height="300"/>
                    </StackPanel>
                </DocumentTemplate>
@@ -234,7 +234,7 @@ The following steps walk you through creating a very small application that uses
 
    > **💡 Tip**: The ItemsSource approach (Option B) provides cleaner separation between your business models and the docking infrastructure, while still working perfectly with MVVM patterns.
 
-4. **Initialize the layout in your main view model**
+5. **Initialize the layout in your main view model**
 
    ```csharp
    _factory = new DockFactory();
@@ -242,19 +242,20 @@ The following steps walk you through creating a very small application that uses
    _factory.InitLayout(Layout);
    ```
 
-   `InitLayout` configures services such as `ContextLocator` and
-   `DockableLocator`. Use these to reattach `Context` objects after loading
-   layouts or to enable id-based lookups via `GetDockable`. Override this
-   method in your factory if you need to register additional mappings or
+   `InitLayout` resolves `ContextLocator`/`DockableLocator` entries (if you
+   configured them) and assigns owners/active dockables. Populate these
+   dictionaries before calling `InitLayout` if you need to reattach `Context`
+   objects after loading layouts or enable id-based lookups via `GetDockable`.
+   Override this method in your factory to register additional mappings or
    perform custom initialization logic.
 
-5. **Add `DockControl` to `MainWindow.axaml`**
+6. **Add `DockControl` to `MainWindow.axaml`**
 
    ```xaml
    <DockControl x:Name="Dock" Layout="{Binding Layout}" />
    ```
 
-6. **Run the project**
+7. **Run the project**
 
    ```bash
    dotnet run

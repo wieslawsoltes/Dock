@@ -4,7 +4,7 @@ This guide explains how to control the size of dockable items beyond the default
 
 ## Proportions vs fixed sizes
 
-`ProportionalDock` arranges its children according to their `Proportion` property. This is ideal when panes should resize together. For pixel perfect layouts assign `MinWidth`, `MaxWidth`, `MinHeight` or `MaxHeight` on the dockable view model. When these limits are present the layout engine honours them before applying proportions.
+`ProportionalDock` arranges its children according to their `Proportion` property. This is ideal when panes should resize together. For pixel perfect layouts assign `MinWidth`, `MaxWidth`, `MinHeight` or `MaxHeight` on the dockable view model. The proportional size is then clamped to these limits.
 
 Setting both the minimum and maximum to the same value effectively locks the dimension:
 
@@ -45,7 +45,7 @@ The dock splits space proportionally and then clamps the result within the speci
 ```
 
 This is useful when combining fixed size panes with resizable ones or when you want to lock down a layout entirely.
-Setting `ResizePreview="True"` shows only a drag indicator while moving and applies the size when released. The splitter is highlighted during the drag so the preview remains visible against any background.
+Setting `ResizePreview="True"` shows a drag preview while moving and applies the size when released.
 
 ## Common scenarios
 

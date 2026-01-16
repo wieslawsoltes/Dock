@@ -39,7 +39,7 @@ Follow these instructions to create a ReactiveUI application with routing using 
 
 3. **Set up View Locator with Routing Support**
 
-   Create a view locator that supports both regular views and routable views:
+   Create a view locator that resolves views registered with ReactiveUI's `IViewLocator`:
 
    ```csharp
    using System;
@@ -47,23 +47,26 @@ Follow these instructions to create a ReactiveUI application with routing using 
    using Avalonia.Controls.Templates;
    using Dock.Model.Core;
    using ReactiveUI;
-   using StaticViewLocator;
+   using Splat;
 
    namespace MyDockApp;
 
-   [StaticViewLocator]
-   public partial class ViewLocator : IDataTemplate
+   public class ViewLocator : IDataTemplate
    {
        public Control? Build(object? data)
        {
            if (data is null)
+           {
                return null;
+           }
 
-           var type = data.GetType();
-           if (s_views.TryGetValue(type, out var func))
-               return func.Invoke();
+           var viewLocator = Locator.Current.GetService<IViewLocator>();
+           if (viewLocator?.ResolveView(data) is Control control)
+           {
+               return control;
+           }
 
-           throw new Exception($"Unable to create view for type: {type}");
+           throw new Exception($"Unable to create view for type: {data.GetType()}");
        }
 
        public bool Match(object? data)
@@ -73,11 +76,34 @@ Follow these instructions to create a ReactiveUI application with routing using 
                return false;
            }
 
-           var type = data.GetType();
-           return data is IDockable || s_views.ContainsKey(type);
+           if (data is IDockable)
+           {
+               return true;
+           }
+
+           var viewLocator = Locator.Current.GetService<IViewLocator>();
+           return viewLocator?.ResolveView(data) is not null;
        }
    }
    ```
+
+   Register the view mappings in `App.axaml.cs`:
+
+   ```csharp
+   using ReactiveUI;
+   using Splat;
+
+   private void RegisterViews()
+   {
+       Locator.CurrentMutable.Register<IViewFor<DocumentViewModel>>(() => new DocumentView());
+       Locator.CurrentMutable.Register<IViewFor<ToolViewModel>>(() => new ToolView());
+       Locator.CurrentMutable.Register<IViewFor<Page1ViewModel>>(() => new Page1View());
+       Locator.CurrentMutable.Register<IViewFor<Page2ViewModel>>(() => new Page2View());
+       Locator.CurrentMutable.Register<IViewFor<InnerViewModel>>(() => new InnerView());
+   }
+   ```
+
+   Call `RegisterViews()` from `Initialize` so the mappings are available before the layout is created.
 
    Register the view locator in `App.axaml`:
    ```xaml
@@ -105,75 +131,79 @@ Follow these instructions to create a ReactiveUI application with routing using 
    using System;
    using System.Reactive;
    using System.Reactive.Disposables;
-   using ReactiveUI;
    using Dock.Model.ReactiveUI.Navigation.Controls;
+   using ReactiveUI;
 
-   namespace MyDockApp.ViewModels.Documents;
-
-   public class DocumentViewModel : RoutableDocument
+   namespace MyDockApp.ViewModels.Documents
    {
-       public ReactiveCommand<Unit, IRoutableViewModel> GoToPage1 { get; }
-       public ReactiveCommand<Unit, IRoutableViewModel> GoToPage2 { get; }
-       private readonly CompositeDisposable _disposables = new();
-
-       public DocumentViewModel(IScreen host) : base(host)
+       public class DocumentViewModel : RoutableDocument
        {
-           // Navigate to the default page
-           Router.Navigate.Execute(new Page1ViewModel(this, "Document Home"));
+           public ReactiveCommand<Unit, IDisposable>? GoToPage1 { get; }
+           public ReactiveCommand<Unit, IDisposable>? GoToPage2 { get; }
+           private readonly CompositeDisposable _disposables = new();
 
-           // Commands to navigate to different pages
-           GoToPage1 = ReactiveCommand.CreateFromObservable(() =>
-               Router.Navigate.Execute(new Page1ViewModel(this, "Page 1 Content")));
+           public DocumentViewModel(IScreen host) : base(host)
+           {
+               // Navigate to the default page
+               Router.Navigate.Execute(new Page1ViewModel(this, "Document Home"));
 
-           GoToPage2 = ReactiveCommand.CreateFromObservable(() =>
-               Router.Navigate.Execute(new Page2ViewModel(this, "Page 2 Content")));
+               // Commands to navigate to different pages
+               GoToPage1 = ReactiveCommand.Create(() =>
+                   Router.Navigate.Execute(new Page1ViewModel(this, "Page 1 Content")).Subscribe(_ => { }));
 
-           GoToPage1.DisposeWith(_disposables);
-           GoToPage2.DisposeWith(_disposables);
-       }
+               GoToPage2 = ReactiveCommand.Create(() =>
+                   Router.Navigate.Execute(new Page2ViewModel(this, "Page 2 Content")).Subscribe(_ => { }));
 
-       public void InitNavigation(
-           IRoutableViewModel? document2,
-           IRoutableViewModel? tool1,
-           IRoutableViewModel? tool2)
-       {
-           // Navigation to other dockables can be set up here
-           // This is called from the factory after all view models are created
+               GoToPage1.DisposeWith(_disposables);
+               GoToPage2.DisposeWith(_disposables);
+           }
+
+           public void InitNavigation(
+               IRoutableViewModel? document2,
+               IRoutableViewModel? tool1,
+               IRoutableViewModel? tool2)
+           {
+               // Navigation to other dockables can be set up here
+               // This is called from the factory after all view models are created
+           }
        }
    }
 
-   public class ToolViewModel : RoutableTool
+   namespace MyDockApp.ViewModels.Tools
    {
-       public ReactiveCommand<Unit, IRoutableViewModel> GoToDocument1 { get; set; }
-       public ReactiveCommand<Unit, IRoutableViewModel> GoToDocument2 { get; set; }
-       public ReactiveCommand<Unit, IRoutableViewModel> GoToNextTool { get; set; }
-
-       public ToolViewModel(IScreen host) : base(host)
+       public class ToolViewModel : RoutableTool
        {
-           Router.Navigate.Execute(new InnerViewModel(this, "Tool Home"));
-       }
+           public ReactiveCommand<Unit, IDisposable>? GoToDocument1 { get; set; }
+           public ReactiveCommand<Unit, IDisposable>? GoToDocument2 { get; set; }
+           public ReactiveCommand<Unit, IDisposable>? GoToNextTool { get; set; }
 
-       public void InitNavigation(
-           IRoutableViewModel? document1,
-           IRoutableViewModel? document2,
-           IRoutableViewModel? nextTool)
-       {
-           if (document1 is not null)
+           public ToolViewModel(IScreen host) : base(host)
            {
-               GoToDocument1 = ReactiveCommand.Create(() =>
-                   HostScreen.Router.Navigate.Execute(document1).Subscribe(_ => { }));
+               Router.Navigate.Execute(new InnerViewModel(this, "Tool Home"));
            }
 
-           if (document2 is not null)
+           public void InitNavigation(
+               IRoutableViewModel? document1,
+               IRoutableViewModel? document2,
+               IRoutableViewModel? nextTool)
            {
-               GoToDocument2 = ReactiveCommand.Create(() =>
-                   HostScreen.Router.Navigate.Execute(document2).Subscribe(_ => { }));
-           }
+               if (document1 is not null)
+               {
+                   GoToDocument1 = ReactiveCommand.Create(() =>
+                       HostScreen.Router.Navigate.Execute(document1).Subscribe(_ => { }));
+               }
 
-           if (nextTool is not null)
-           {
-               GoToNextTool = ReactiveCommand.Create(() =>
-                   HostScreen.Router.Navigate.Execute(nextTool).Subscribe(_ => { }));
+               if (document2 is not null)
+               {
+                   GoToDocument2 = ReactiveCommand.Create(() =>
+                       HostScreen.Router.Navigate.Execute(document2).Subscribe(_ => { }));
+               }
+
+               if (nextTool is not null)
+               {
+                   GoToNextTool = ReactiveCommand.Create(() =>
+                       HostScreen.Router.Navigate.Execute(nextTool).Subscribe(_ => { }));
+               }
            }
        }
    }

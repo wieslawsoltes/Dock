@@ -26,10 +26,11 @@ This approach automatically creates/removes documents when you add/remove items 
 **My document tabs are blank/empty (ItemsSource approach)**
 
 For `ItemsSource` documents, check:
-1. `DocumentTemplate` has `x:DataType="Document"` on the root element
-2. Access your model via `{Binding Context.PropertyName}` not `{Binding PropertyName}`
-3. Your model implements `INotifyPropertyChanged`
-4. Collection items have recognizable property names like `Title`, `Name`, or `CanClose`
+1. `DocumentTemplate` is set (no template means no documents are created)
+2. Collection items expose `Title`, `Name`, or `DisplayName` (or override `ToString`) for tab headers
+3. Access your model via `{Binding Context.PropertyName}` not `{Binding PropertyName}`
+4. Your model implements `INotifyPropertyChanged` if you expect updates
+5. If you use compiled bindings, set `x:DataType="Document"` on the template root
 
 **My document tabs are blank/empty (ViewModel approach)**
 
@@ -72,7 +73,7 @@ Then bind in XAML:
 <DocumentDock ItemsSource="{Binding OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
-      <TextBox Text="{Binding Context.Content}" x:DataType="Document"/>
+      <TextBox x:DataType="Document" Text="{Binding Context.Content}"/>
     </DocumentTemplate>
   </DocumentDock.DocumentTemplate>
 </DocumentDock>
@@ -100,7 +101,7 @@ Active and focused dockables are serialized with the layout itself, so you do no
 
 **Deserialization fails with unknown types**
 
-`DockSerializer` uses type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an `IServiceProvider` so it can resolve types from the container.
+`IDockSerializer` implementations (for example `Dock.Serializer.SystemTextJson.DockSerializer`) use type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an `IServiceProvider` so it can resolve types from the container.
 
 **What is `DockableLocator` and `ContextLocator`?**
 

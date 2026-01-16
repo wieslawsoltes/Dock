@@ -33,9 +33,9 @@ These steps outline how to set up a small Dock application that defines its layo
    dotnet add package Dock.Serializer.Yaml              # YAML
    ```
 
-3. **Set up View Locator (Required)**
+3. **Set up View Templates (Optional)**
 
-   Even for XAML-only layouts, you need a view locator for document and tool content. Choose one of the following approaches:
+   If you rely on view models via `Context`, register a view locator or data templates for your document and tool views. If you define `Document.Content` or use `DocumentTemplate` in XAML, you can skip this step. Choose one of the following approaches:
 
    **Option A: Static View Locator with Source Generators (Recommended)**
 
@@ -107,7 +107,7 @@ These steps outline how to set up a small Dock application that defines its layo
    }
    ```
 
-   Register the view locator in `App.axaml`:
+   If you use a view locator, register it in `App.axaml`:
    ```xaml
    <Application xmlns="https://github.com/avaloniaui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -207,7 +207,7 @@ These steps outline how to set up a small Dock application that defines its layo
 
    > **💡 Tip**: The ItemsSource approach (Option B) provides automatic document management and is recommended for most applications. For details, see the [DocumentDock ItemsSource guide](dock-itemssource.md).
 
-4. **Save and load layouts**
+5. **Save and load layouts**
 
 Use `DockSerializer` from code-behind to persist or restore the layout.
 
@@ -216,7 +216,7 @@ When declaring layouts this way you typically still provide a small
 models and hook into runtime events while keeping the layout defined in
 markup.
 
-5. **Run the application**
+6. **Run the application**
 
    ```bash
    dotnet run

@@ -19,10 +19,10 @@ var documents = new DocumentDock
 The same property is available on the Avalonia control `DocumentDock` and can also be set in XAML:
 
 ```xml
-<avaloniaDock:DocumentDock EnableWindowDrag="True" />
+<DocumentDock EnableWindowDrag="True" />
 ```
 
-With the property enabled, `DocumentTabStrip` listens for pointer events on its background and calls `BeginMoveDrag` on the surrounding `HostWindow`. The user can grab the tab area and drag the entire window.
+With the property enabled, `DocumentTabStrip` listens for pointer events on its background and initiates a window drag on the surrounding `HostWindow` (or window). The user can grab the tab area and drag the entire window.
 
 ## Scenarios
 

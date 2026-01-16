@@ -4,9 +4,9 @@
 
 ## Why registration is required
 
-Layouts persist the full dockable graph, so `DockSerializer` restores dockable instances directly from the serialized data. `DockableLocator` is for cases where you want to resolve dockables by id at runtime, such as navigation, tool activation, or custom lookup helpers.
+Layouts persist the full dockable graph, so an `IDockSerializer` restores dockable instances directly from the serialized data. `DockableLocator` is for cases where you want to resolve dockables by id at runtime, such as navigation, tool activation, or custom lookup helpers.
 
-`FactoryBase` exposes `GetDockable` as a thin wrapper around the dictionary and returns the object typed as `IDockable`.
+`FactoryBase` exposes `GetDockable<T>` as a thin wrapper around the dictionary and returns the object typed as `T`.
 
 ## Typical setup
 
@@ -36,6 +36,7 @@ var tool = factory.GetDockable<MyTool>("Tool1");
 ```
 
 This method simply forwards the call to `DockableLocator` and casts the result. It returns `null` if the id is not registered.
+Empty ids also return `null`.
 
 ## Best practices
 
@@ -44,6 +45,6 @@ This method simply forwards the call to `DockableLocator` and casts the result. 
 - Keep id strings short but descriptive. They must match the ids you pass to `GetDockable`.
 - If you use dependency injection, the factory methods can resolve services before creating the dockable.
 
-Following these guidelines guarantees that serialization and dynamic creation work reliably.
+Following these guidelines keeps id-based lookup predictable without affecting serialization.
 
 For an overview of all documentation topics see the [documentation index](README.md).

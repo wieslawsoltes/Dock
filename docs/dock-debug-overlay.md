@@ -15,10 +15,19 @@ toggled at runtime using <kbd>F9</kbd> by default:
 
 ```csharp
 #if DEBUG
-var disposable = this.AttachDockDebugOverlay();
+// TopLevel/Window overload returns IDisposable so you can detach later.
+var overlay = this.AttachDockDebugOverlay();
 #endif
 ```
 
 Call the extension method on your `App` or on a specific `Window`/`TopLevel` to
-register the hot key. Optionally pass your own `KeyGesture` to change the
-shortcut.
+register the hot key. The `Application` overload attaches to existing windows
+and does not return a disposable:
+
+```csharp
+#if DEBUG
+Application.Current?.AttachDockDebugOverlay();
+#endif
+```
+
+Optionally pass your own `KeyGesture` to change the shortcut.

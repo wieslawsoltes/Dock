@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
 using Dock.Model.Core;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -15,5 +16,6 @@ public partial class GridDockSplitter : DockableBase, IGridDockSplitter
 {
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial GridResizeDirection ResizeDirection { get; set; }
 }

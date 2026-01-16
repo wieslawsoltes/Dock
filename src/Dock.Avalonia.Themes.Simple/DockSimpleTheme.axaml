@@ -8,6 +8,10 @@
         <ResourceInclude Source="/Controls/ControlStrings.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/DocumentTabStrip.axaml" />
+        <ResourceInclude Source="/Controls/DockCommandBarHost.axaml" />
+        <ResourceInclude Source="/Controls/DockSelectorOverlay.axaml" />
+        <ResourceInclude Source="/Controls/MdiDocumentWindow.axaml" />
+        <ResourceInclude Source="/Controls/MdiDocumentControl.axaml" />
         <ResourceInclude Source="/Controls/ToolTabStripItem.axaml" />
         <ResourceInclude Source="/Controls/ToolTabStrip.axaml" />
         <ResourceInclude Source="/Controls/DockTarget.axaml" />
@@ -29,6 +33,7 @@
         <ResourceInclude Source="/Controls/RootDockControl.axaml" />
         <ResourceInclude Source="/Controls/ToolContentControl.axaml" />
         <ResourceInclude Source="/Controls/ToolDockControl.axaml" />
+        <ResourceInclude Source="/Controls/SplitViewDockControl.axaml" />
         <ResourceInclude Source="/Controls/DockControl.axaml" />
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />

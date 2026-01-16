@@ -15,15 +15,24 @@ Dockable items such as documents, tools and docks implement the `IDockable` inte
 | `IsEmpty` | Indicates a placeholder dockable with no content. |
 | `IsCollapsable` | When `false`, the dock will remain even if it contains no children. |
 | `Proportion` | Size ratio used by `ProportionalDock`. |
+| `Dock` | The default docking mode for this dockable (`DockMode`). |
+| `Column` | Grid column index when hosted in a grid dock. |
+| `Row` | Grid row index when hosted in a grid dock. |
+| `ColumnSpan` | Grid column span when hosted in a grid dock. |
+| `RowSpan` | Grid row span when hosted in a grid dock. |
+| `IsSharedSizeScope` | Participates in shared size scope when hosted in a grid dock. |
+| `CollapsedProportion` | Last known proportion before a dock is collapsed. |
 | `MinWidth` | Optional minimum width. Overrides the current proportion if larger. |
 | `MaxWidth` | Optional maximum width. Overrides the proportion if smaller. |
 | `MinHeight` | Optional minimum height. Overrides the current proportion if larger. |
 | `MaxHeight` | Optional maximum height. Overrides the proportion if smaller. |
 | `CanClose` | Whether the user can close the dockable via UI commands. |
 | `CanPin` | Allows pinning and unpinning of tools. |
+| `KeepPinnedDockableVisible` | Keeps pinned previews visible instead of auto-hiding. |
 | `CanFloat` | Controls if the item may be detached into a floating window. |
 | `CanDrag` | Enables dragging the dockable to another position. |
 | `CanDrop` | Determines if other dockables can be dropped onto this one. |
+| `IsModified` | Marks a dockable as having unsaved changes. |
 | `DockGroup` | Group identifier that restricts which dockables can dock together. See [Docking Groups](dock-docking-groups.md). |
 
 ## Sample usage
@@ -51,9 +60,9 @@ In XAML you set them as attributes:
       CanFloat="True" />
 ```
 
-Global drag and drop behaviour can be toggled using the attached properties from [`Dock.Settings`](dock-settings.md):
+Global drag and drop behavior can be toggled using the attached properties from [`Dock.Settings`](dock-settings.md):
 
-```xml
+```xaml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
         dockSettings:DockProperties.IsDragEnabled="False"
         dockSettings:DockProperties.IsDropEnabled="False">

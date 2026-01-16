@@ -97,6 +97,9 @@ public class RootDock : DockBase, IRootDock
             o => o.Windows, 
             (o, v) => o.Windows = v);
 
+    /// <summary>
+    /// Defines the <see cref="EnableAdaptiveGlobalDockTargets"/> property.
+    /// </summary>
     public static readonly DirectProperty<RootDock, bool> EnableAdaptiveGlobalDockTargetsProperty =
         AvaloniaProperty.RegisterDirect<RootDock, bool>(
             nameof(EnableAdaptiveGlobalDockTargets), o => o.EnableAdaptiveGlobalDockTargets,
@@ -222,6 +225,9 @@ public class RootDock : DockBase, IRootDock
     public ICommand ExitWindows { get; }
     
     /// <inheritdoc/>
+    /// <summary>
+    /// Gets or sets whether global dock targets should adaptively appear only when available.
+    /// </summary>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
     [JsonPropertyName("EnableAdaptiveGlobalDockTargets")]
     public bool EnableAdaptiveGlobalDockTargets

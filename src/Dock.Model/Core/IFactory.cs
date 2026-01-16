@@ -171,6 +171,12 @@ public partial interface IFactory
     IDocumentDock CreateDocumentDock();
 
     /// <summary>
+    /// Creates <see cref="ISplitViewDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="ISplitViewDock"/> class.</returns>
+    ISplitViewDock CreateSplitViewDock();
+
+    /// <summary>
     /// Creates <see cref="IDockWindow"/>.
     /// </summary>
     /// <returns>The new instance of the <see cref="IDockWindow"/> class.</returns>
@@ -468,6 +474,25 @@ public partial interface IFactory
     /// </summary>
     /// <param name="dockable">The document dock.</param>
     void SetDocumentDockTabsLayoutRight(IDockable dockable);
+
+    /// <summary>
+    /// Sets the layout mode for the specified document dock.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    /// <param name="layoutMode">The layout mode to set.</param>
+    void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode);
+
+    /// <summary>
+    /// Sets the layout mode to tabbed.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockLayoutModeTabbed(IDockable dockable);
+
+    /// <summary>
+    /// Sets the layout mode to MDI.
+    /// </summary>
+    /// <param name="dockable">The document dock.</param>
+    void SetDocumentDockLayoutModeMdi(IDockable dockable);
 
     /// <summary>
     /// Hides the dockable and stores it in <see cref="IRootDock.HiddenDockables"/>.

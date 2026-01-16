@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:DockSplitViewSample.ViewModels"
+             xmlns:controls="using:Dock.Model.Controls"
+             mc:Ignorable="d"
+             d:DesignWidth="600" d:DesignHeight="500"
+             x:Class="DockSplitViewSample.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel" x:CompileBindings="True">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="24" Spacing="20" MaxWidth="500">
+      <TextBlock Text="Settings" FontSize="24" FontWeight="SemiBold" />
+      
+      <!-- Pane State -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Pane State" FontWeight="SemiBold" />
+        <CheckBox Content="Pane Open" IsChecked="{Binding SplitViewDock.IsPaneOpen}" />
+      </StackPanel>
+      
+      <!-- Display Mode -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Display Mode" FontWeight="SemiBold" />
+        <ComboBox ItemsSource="{Binding DisplayModes}"
+                  SelectedItem="{Binding SplitViewDock.DisplayMode}"
+                  HorizontalAlignment="Stretch" />
+      </StackPanel>
+      
+      <!-- Pane Placement -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Pane Placement" FontWeight="SemiBold" />
+        <ComboBox ItemsSource="{Binding PanePlacements}"
+                  SelectedItem="{Binding SplitViewDock.PanePlacement}"
+                  HorizontalAlignment="Stretch" />
+      </StackPanel>
+      
+      <!-- Open Pane Width -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Open Pane Width" FontWeight="SemiBold" />
+        <NumericUpDown Value="{Binding SplitViewDock.OpenPaneLength}"
+                       Minimum="150"
+                       Maximum="400"
+                       Increment="10"
+                       FormatString="0"
+                       HorizontalAlignment="Stretch" />
+      </StackPanel>
+      
+      <!-- Compact Pane Width -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Compact Pane Width" FontWeight="SemiBold" />
+        <NumericUpDown Value="{Binding SplitViewDock.CompactPaneLength}"
+                       Minimum="0"
+                       Maximum="80"
+                       Increment="4"
+                       FormatString="0"
+                       HorizontalAlignment="Stretch" />
+      </StackPanel>
+      
+      <!-- Overlay Options -->
+      <StackPanel Spacing="8">
+        <TextBlock Text="Overlay" FontWeight="SemiBold" />
+        <CheckBox Content="Use Light Dismiss Overlay" 
+                  IsChecked="{Binding SplitViewDock.UseLightDismissOverlayMode}" />
+      </StackPanel>
+      
+      <!-- Current Values -->
+      <StackPanel Spacing="8" Margin="0,12,0,0">
+        <TextBlock Text="Current Values" FontWeight="SemiBold" />
+        <TextBlock Text="{Binding SplitViewDock.DisplayMode, StringFormat='Display Mode: {0}'}" />
+        <TextBlock Text="{Binding SplitViewDock.PanePlacement, StringFormat='Pane Placement: {0}'}" />
+        <TextBlock Text="{Binding SplitViewDock.OpenPaneLength, StringFormat='Open Width: {0:F0} px'}" />
+        <TextBlock Text="{Binding SplitViewDock.CompactPaneLength, StringFormat='Compact Width: {0:F0} px'}" />
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

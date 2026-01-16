@@ -10,6 +10,7 @@ using Avalonia.Metadata;
 using Avalonia.Styling;
 using Dock.Model.Avalonia.Core;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 
 namespace Dock.Model.Avalonia.Controls;
 
@@ -17,13 +18,35 @@ namespace Dock.Model.Avalonia.Controls;
 /// Document.
 /// </summary>
 [DataContract(IsReference = true)]
-public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate
+public class Document : DockableBase, IMdiDocument, IDocumentContent, ITemplate<Control?>, IRecyclingDataTemplate
 {
     /// <summary>
     /// Defines the <see cref="Content"/> property.
     /// </summary>
     public static readonly StyledProperty<object?> ContentProperty =
         AvaloniaProperty.Register<Document, object?>(nameof(Content));
+
+    /// <summary>
+    /// Defines the <see cref="MdiBounds"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Document, DockRect> MdiBoundsProperty =
+        AvaloniaProperty.RegisterDirect<Document, DockRect>(nameof(MdiBounds), o => o.MdiBounds, (o, v) => o.MdiBounds = v);
+
+    /// <summary>
+    /// Defines the <see cref="MdiState"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Document, MdiWindowState> MdiStateProperty =
+        AvaloniaProperty.RegisterDirect<Document, MdiWindowState>(nameof(MdiState), o => o.MdiState, (o, v) => o.MdiState = v, MdiWindowState.Normal);
+
+    /// <summary>
+    /// Defines the <see cref="MdiZIndex"/> property.
+    /// </summary>
+    public static readonly DirectProperty<Document, int> MdiZIndexProperty =
+        AvaloniaProperty.RegisterDirect<Document, int>(nameof(MdiZIndex), o => o.MdiZIndex, (o, v) => o.MdiZIndex = v);
+
+    private DockRect _mdiBounds;
+    private MdiWindowState _mdiState = MdiWindowState.Normal;
+    private int _mdiZIndex;
 
     /// <summary>
     /// Initializes new instance of the <see cref="Document"/> class.
@@ -44,6 +67,33 @@ public class Document : DockableBase, IDocument, IDocumentContent, ITemplate<Con
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MdiBounds")]
+    public DockRect MdiBounds
+    {
+        get => _mdiBounds;
+        set => SetAndRaise(MdiBoundsProperty, ref _mdiBounds, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MdiState")]
+    public MdiWindowState MdiState
+    {
+        get => _mdiState;
+        set => SetAndRaise(MdiStateProperty, ref _mdiState, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [JsonPropertyName("MdiZIndex")]
+    public int MdiZIndex
+    {
+        get => _mdiZIndex;
+        set => SetAndRaise(MdiZIndexProperty, ref _mdiZIndex, value);
     }
 
     /// <summary>

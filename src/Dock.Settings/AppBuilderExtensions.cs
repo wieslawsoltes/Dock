@@ -65,6 +65,31 @@ public static class AppBuilderExtensions
             DockSettings.BringWindowsToFrontOnDrag = options.BringWindowsToFrontOnDrag.Value;
         }
 
+        if (options.SelectorEnabled != null)
+        {
+            DockSettings.SelectorEnabled = options.SelectorEnabled.Value;
+        }
+
+        if (options.DocumentSelectorKeyGesture != null)
+        {
+            DockSettings.DocumentSelectorKeyGesture = options.DocumentSelectorKeyGesture;
+        }
+
+        if (options.ToolSelectorKeyGesture != null)
+        {
+            DockSettings.ToolSelectorKeyGesture = options.ToolSelectorKeyGesture;
+        }
+
+        if (options.CommandBarMergingEnabled != null)
+        {
+            DockSettings.CommandBarMergingEnabled = options.CommandBarMergingEnabled.Value;
+        }
+
+        if (options.CommandBarMergingScope != null)
+        {
+            DockSettings.CommandBarMergingScope = options.CommandBarMergingScope.Value;
+        }
+
         return builder;
     }
 
@@ -144,4 +169,3 @@ public static class AppBuilderExtensions
     }
 
 }
-

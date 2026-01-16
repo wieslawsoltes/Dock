@@ -7,6 +7,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -17,6 +18,8 @@ namespace Dock.Model.ReactiveUI.Controls;
 public partial class DocumentDock : DockBase, IDocumentDock
 {
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+    private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;
+    private DocumentCloseButtonShowMode _closeButtonShowMode = DocumentCloseButtonShowMode.Always;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DocumentDock"/> class.
@@ -24,15 +27,36 @@ public partial class DocumentDock : DockBase, IDocumentDock
     public DocumentDock()
     {
         CreateDocument = ReactiveCommand.Create(CreateNewDocument);
+        CascadeDocuments = ReactiveCommand.Create(CascadeDocumentsExecute);
+        TileDocumentsHorizontal = ReactiveCommand.Create(TileDocumentsHorizontalExecute);
+        TileDocumentsVertical = ReactiveCommand.Create(TileDocumentsVerticalExecute);
+        RestoreDocuments = ReactiveCommand.Create(RestoreDocumentsExecute);
     }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanCreateDocument { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
     public ICommand? CreateDocument { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? CascadeDocuments { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? TileDocumentsHorizontal { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? TileDocumentsVertical { get; set; }
+
+    /// <inheritdoc/>
+    [IgnoreDataMember]
+    public ICommand? RestoreDocuments { get; set; }
 
     /// <summary>
     /// Gets or sets factory method used to create new documents.
@@ -42,6 +66,7 @@ public partial class DocumentDock : DockBase, IDocumentDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool EnableWindowDrag { get; set; }
 
     /// <inheritdoc/>
@@ -52,6 +77,22 @@ public partial class DocumentDock : DockBase, IDocumentDock
         set => this.RaiseAndSetIfChanged(ref _tabsLayout, value);
     }
 
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentLayoutMode LayoutMode
+    {
+        get => _layoutMode;
+        set => this.RaiseAndSetIfChanged(ref _layoutMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentCloseButtonShowMode CloseButtonShowMode
+    {
+        get => _closeButtonShowMode;
+        set => this.RaiseAndSetIfChanged(ref _closeButtonShowMode, value);
+    }
+
     private void CreateNewDocument()
     {
         if (DocumentFactory is { } factory)
@@ -59,6 +100,46 @@ public partial class DocumentDock : DockBase, IDocumentDock
             var document = factory();
             AddDocument(document);
         }
+    }
+
+    private void CascadeDocumentsExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.CascadeDocuments(this);
+    }
+
+    private void TileDocumentsHorizontalExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.TileDocumentsHorizontal(this);
+    }
+
+    private void TileDocumentsVerticalExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.TileDocumentsVertical(this);
+    }
+
+    private void RestoreDocumentsExecute()
+    {
+        if (LayoutMode != DocumentLayoutMode.Mdi)
+        {
+            return;
+        }
+
+        MdiLayoutHelper.RestoreDocuments(this);
     }
 
     /// <summary>

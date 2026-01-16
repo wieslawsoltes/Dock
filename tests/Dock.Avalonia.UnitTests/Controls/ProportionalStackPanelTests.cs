@@ -60,6 +60,40 @@ public class ProportionalStackPanelTests
         Assert.Equal(new Rect(0, 152, 100, 148), target.Children[2].Bounds);
     }
 
+    [AvaloniaFact]
+    public void Collapsed_Children_Do_Not_Reset_Other_CollapsedProportions()
+    {
+        var target = new ProportionalStackPanel()
+        {
+            Width = 300,
+            Height = 100,
+            Orientation = Orientation.Horizontal
+        };
+
+        var left = new Border { [ProportionalStackPanel.ProportionProperty] = 0.4 };
+        var splitter = new ProportionalStackPanelSplitter();
+        var right = new Border { [ProportionalStackPanel.ProportionProperty] = 0.6 };
+
+        target.Children.Add(left);
+        target.Children.Add(splitter);
+        target.Children.Add(right);
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        var stored = ProportionalStackPanel.GetCollapsedProportion(right);
+        Assert.False(double.IsNaN(stored));
+
+        ProportionalStackPanel.SetIsCollapsed(left, true);
+
+        target.Measure(Size.Infinity);
+        target.Arrange(new Rect(target.DesiredSize));
+
+        var after = ProportionalStackPanel.GetCollapsedProportion(right);
+        Assert.Equal(stored, after, 3);
+        Assert.Equal(1.0, ProportionalStackPanel.GetProportion(right), 3);
+    }
+
     public static IEnumerable<object[]> GetBorderTestsData()
     {
         yield return [0.5, 604, 300, 300];

@@ -128,6 +128,47 @@ public abstract partial class FactoryBase
             }
         }
 
+        if (dock is ISplitViewDock splitViewDock)
+        {
+            var paneDockable = splitViewDock.PaneDockable;
+            if (paneDockable is not null && dock.VisibleDockables?.Contains(paneDockable) != true)
+            {
+                if (predicate(paneDockable))
+                {
+                    return paneDockable;
+                }
+
+                if (paneDockable is IDock paneDock)
+                {
+                    var result = FindDockable(paneDock, predicate);
+                    if (result is not null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            var contentDockable = splitViewDock.ContentDockable;
+            if (contentDockable is not null &&
+                !ReferenceEquals(contentDockable, paneDockable) &&
+                dock.VisibleDockables?.Contains(contentDockable) != true)
+            {
+                if (predicate(contentDockable))
+                {
+                    return contentDockable;
+                }
+
+                if (contentDockable is IDock contentDock)
+                {
+                    var result = FindDockable(contentDock, predicate);
+                    if (result is not null)
+                    {
+                        return result;
+                    }
+                }
+            }
+        }
+
         if (dock is IRootDock rootDock && rootDock.Windows is not null)
         {
             foreach (var window in rootDock.Windows)

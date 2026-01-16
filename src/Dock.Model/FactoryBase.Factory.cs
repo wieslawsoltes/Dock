@@ -72,6 +72,9 @@ public abstract partial class FactoryBase
     public abstract IDocumentDock CreateDocumentDock();
 
     /// <inheritdoc/>
+    public abstract ISplitViewDock CreateSplitViewDock();
+
+    /// <inheritdoc/>
     public abstract IDockWindow CreateDockWindow();
 
     /// <inheritdoc/>

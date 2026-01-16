@@ -25,6 +25,7 @@ namespace Dock.Model.Avalonia.Core;
 [JsonDerivedType(typeof(ProportionalDock), typeDiscriminator: "ProportionalDock")]
 [JsonDerivedType(typeof(ProportionalDockSplitter), typeDiscriminator: "ProportionalDockSplitter")]
 [JsonDerivedType(typeof(RootDock), typeDiscriminator: "RootDock")]
+[JsonDerivedType(typeof(SplitViewDock), typeDiscriminator: "SplitViewDock")]
 [JsonDerivedType(typeof(ToolDock), typeDiscriminator: "ToolDock")]
 public abstract class DockBase : DockableBase, IDock
 {

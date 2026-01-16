@@ -27,9 +27,39 @@ public interface IDocumentDock : IDock, ILocalTarget
     bool EnableWindowDrag { get; set;}
 
     /// <summary>
+    /// Gets or sets document layout mode.
+    /// </summary>
+    DocumentLayoutMode LayoutMode { get; set; }
+
+    /// <summary>
     /// Gets or sets document tabs layout.
     /// </summary>
     DocumentTabLayout TabsLayout { get; set; }
+
+    /// <summary>
+    /// Gets or sets when document close buttons are displayed.
+    /// </summary>
+    DocumentCloseButtonShowMode CloseButtonShowMode { get; set; }
+
+    /// <summary>
+    /// Gets or sets command to cascade MDI documents.
+    /// </summary>
+    ICommand? CascadeDocuments { get; set; }
+
+    /// <summary>
+    /// Gets or sets command to tile MDI documents horizontally.
+    /// </summary>
+    ICommand? TileDocumentsHorizontal { get; set; }
+
+    /// <summary>
+    /// Gets or sets command to tile MDI documents vertically.
+    /// </summary>
+    ICommand? TileDocumentsVertical { get; set; }
+
+    /// <summary>
+    /// Gets or sets command to restore MDI documents to normal state.
+    /// </summary>
+    ICommand? RestoreDocuments { get; set; }
 
     /// <summary>
     /// Adds the specified document to this dock and activates it.

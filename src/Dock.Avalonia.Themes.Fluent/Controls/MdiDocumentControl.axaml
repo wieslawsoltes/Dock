@@ -1,0 +1,109 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:Dock.Avalonia.Controls"
+                    xmlns:core="using:Dock.Model.Core"
+                    xmlns:dmc="using:Dock.Model.Controls"
+                    x:DataType="dmc:IDocumentDock"
+                    x:CompileBindings="True">
+  <Design.PreviewWith>
+    <controls:MdiDocumentControl Width="300" Height="400" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type controls:MdiDocumentControl}" TargetType="controls:MdiDocumentControl">
+
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="CloseButtonTheme" Value="{DynamicResource ChromeButton}" />
+
+    <Setter Property="IconTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Panel />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="HeaderTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock Text="{Binding Title}"
+                   VerticalAlignment="Center"
+                   Padding="2"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="ModifiedTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <TextBlock VerticalAlignment="Center"
+                   Text="*"
+                   Margin="0,0,2,0" />
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="CloseTemplate">
+      <DataTemplate DataType="core:IDockable">
+        <Viewbox Width="12" Height="12">
+          <Path x:Name="PART_ClosePath"
+                Data="{DynamicResource DockToolIconCloseGeometry}"
+                UseLayoutRounding="False"
+                Classes.active="{Binding $parent[controls:MdiDocumentWindow].IsActive}">
+            <Path.Styles>
+              <Style Selector="Path">
+                <Setter Property="Stretch" Value="UniformToFill" />
+                <Setter Property="Fill" Value="{DynamicResource DockToolChromeIconBrush}" />
+              </Style>
+              <Style Selector="Path.active">
+                <Setter Property="Fill" Value="{DynamicResource DockApplicationAccentForegroundBrush}" />
+              </Style>
+            </Path.Styles>
+          </Path>
+        </Viewbox>
+      </DataTemplate>
+    </Setter>
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Root"
+                Background="Transparent"
+                DockProperties.IsDropArea="True"
+                DockProperties.IsDockTarget="True"
+                DockProperties.DockAdornerHost="{Binding RelativeSource={RelativeSource Self}}">
+          <ItemsControl x:Name="PART_ItemsControl"
+                        Classes="MdiLayoutItems"
+                        ItemsSource="{Binding VisibleDockables}">
+            <ItemsControl.Styles>
+              <Style Selector="ItemsControl.MdiLayoutItems > ContentPresenter"
+                     x:DataType="dmc:IMdiDocument">
+                <Setter Property="ZIndex" Value="{Binding MdiZIndex}" />
+              </Style>
+            </ItemsControl.Styles>
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <controls:MdiLayoutPanel LayoutManager="{Binding $parent[controls:MdiDocumentControl].LayoutManager}" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="dmc:IMdiDocument">
+                <controls:MdiDocumentWindow IconTemplate="{Binding $parent[controls:MdiDocumentControl].IconTemplate}"
+                                            HeaderTemplate="{Binding $parent[controls:MdiDocumentControl].HeaderTemplate}"
+                                            ModifiedTemplate="{Binding $parent[controls:MdiDocumentControl].ModifiedTemplate}"
+                                            CloseTemplate="{Binding $parent[controls:MdiDocumentControl].CloseTemplate}"
+                                            CloseButtonTheme="{Binding $parent[controls:MdiDocumentControl].CloseButtonTheme}"
+                                            DocumentContextMenu="{DynamicResource MdiDocumentWindowContextMenu}"
+                                            MdiState="{Binding MdiState}"
+                                            ZIndex="{Binding MdiZIndex}"
+                                            DockProperties.IsDropArea="True"
+                                            DockProperties.IsDockTarget="True"
+                                            DockProperties.ShowDockIndicatorOnly="True"
+                                            DockProperties.IndicatorDockOperation="Fill"
+                                            DockProperties.DockAdornerHost="{Binding RelativeSource={RelativeSource AncestorType=controls:MdiDocumentControl}}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+  </ControlTheme>
+
+</ResourceDictionary>

@@ -43,8 +43,7 @@ flowchart TD
 2. Pointer events are processed by `DockControlState` which consults
    `DockManager` to validate docking actions.
 3. `DockManager` modifies the view models by invoking factory methods.
-4. `DockSerializer` can load or save the view models to JSON files.
+4. `DockSerializer` can load or save the view models using the configured serializer (JSON, XML, YAML, or binary).
 
 Customising any of these pieces lets you extend Dock with application specific
-behaviour. For an in-depth walkthrough see the [deep dive](dock-deep-dive.md).
-
+behavior. For an in-depth walkthrough see the [deep dive](dock-deep-dive.md).

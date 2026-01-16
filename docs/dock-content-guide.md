@@ -24,9 +24,11 @@ Make sure you have the required NuGet packages installed:
 <PackageReference Include="Dock.Avalonia.Themes.Fluent" />
 ```
 
+Examples below use `RelayCommand` from `CommunityToolkit.Mvvm.Input`. Use your own `ICommand` implementation if you prefer a different MVVM toolkit.
+
 For XAML usage, you need these namespace declarations:
 
-```xml
+```xaml
 xmlns:dock="using:Dock.Model.Avalonia.Controls"
 xmlns:dockCore="using:Dock.Model.Core"
 ```
@@ -93,6 +95,8 @@ public class MyDocumentModel : INotifyPropertyChanged
 
 ### Step 2: Set Up Your ViewModel with a Collection
 
+The examples below use `RelayCommand` from `CommunityToolkit.Mvvm.Input`. Replace it with any `ICommand` implementation you prefer.
+
 ```csharp
 public class MainViewModel : INotifyPropertyChanged
 {
@@ -116,9 +120,9 @@ public class MainViewModel : INotifyPropertyChanged
             Content = "This demonstrates automatic document creation from a collection." 
         });
 
-        AddDocumentCommand = new Command(AddNewDocument);
-        RemoveDocumentCommand = new Command(RemoveLastDocument, () => Documents.Count > 0);
-        ClearAllCommand = new Command(ClearAllDocuments, () => Documents.Count > 0);
+        AddDocumentCommand = new RelayCommand(AddNewDocument);
+        RemoveDocumentCommand = new RelayCommand(RemoveLastDocument, () => Documents.Count > 0);
+        ClearAllCommand = new RelayCommand(ClearAllDocuments, () => Documents.Count > 0);
     }
 
     private void AddNewDocument()
@@ -146,7 +150,7 @@ public class MainViewModel : INotifyPropertyChanged
 
 ### Step 3: Bind to DocumentDock in XAML
 
-```xml
+```xaml
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:YourApp"
@@ -223,7 +227,7 @@ public class FileModel
 
 #### With Commands and Interactions
 
-```xml
+```xaml
 <DocumentDock ItemsSource="{Binding OpenFiles}">
   <DocumentDock.DocumentTemplate>
     <DocumentTemplate>
@@ -280,7 +284,7 @@ public class TextDocumentViewModel : Document
 
 ### Step 2: Create the View
 
-```xml
+```xaml
 <!-- Views/Documents/TextDocumentView.axaml -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -298,7 +302,7 @@ public class TextDocumentViewModel : Document
 
 ### Step 3: Register DataTemplate in App.axaml
 
-```xml
+```xaml
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:YourApp.ViewModels.Documents"
@@ -374,7 +378,7 @@ private void AddDocumentWithFunction()
 
 For simple static content, you can define it directly in XAML:
 
-```xml
+```xaml
 <dock:DocumentDock x:Name="DocumentsPane" Id="DocumentsPane">
   
   <dock:Document Id="WelcomeDoc" Title="Welcome" CanClose="false">
@@ -433,7 +437,7 @@ public class PropertiesToolViewModel : Tool
 
 ### Tool View
 
-```xml
+```xaml
 <!-- Views/Tools/PropertiesToolView.axaml -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -459,7 +463,7 @@ public class PropertiesToolViewModel : Tool
 
 ### Register Tool DataTemplate
 
-```xml
+```xaml
 <Application.DataTemplates>
   <DataTemplate DataType="{x:Type vm:PropertiesToolViewModel}">
     <views:PropertiesToolView />
@@ -505,7 +509,7 @@ var document = new Document
 4. Check that your collection items have the expected property names (Title, Name, etc.)
 
 **Example Fix**:
-```xml
+```xaml
 <!-- ❌ Wrong DataType -->
 <DocumentTemplate x:DataType="local:MyModel">
   <TextBlock Text="{Binding Title}"/>
@@ -536,7 +540,7 @@ var document = new Document
 
 **Solution**: Add the `Dock.Model.Avalonia` package and namespace:
 
-```xml
+```xaml
 xmlns:dock="using:Dock.Model.Avalonia.Controls"
 ```
 
@@ -621,8 +625,8 @@ public class FileDocument : INotifyPropertyChanged
 
     public FileDocument()
     {
-        SaveCommand = new Command(Save, () => IsModified);
-        SaveAsCommand = new Command(SaveAs);
+        SaveCommand = new RelayCommand(Save, () => IsModified);
+        SaveAsCommand = new RelayCommand(SaveAs);
     }
 
     private void Save()
@@ -656,8 +660,8 @@ public class FileManagerViewModel : INotifyPropertyChanged
 
     public FileManagerViewModel()
     {
-        OpenFileCommand = new Command(OpenFile);
-        NewFileCommand = new Command(NewFile);
+        OpenFileCommand = new RelayCommand(OpenFile);
+        NewFileCommand = new RelayCommand(NewFile);
     }
 
     private void NewFile()
@@ -689,7 +693,7 @@ public class FileManagerViewModel : INotifyPropertyChanged
 ```
 
 **XAML:**
-```xml
+```xaml
 <DockControl>
   <DockControl.Factory>
     <Factory />

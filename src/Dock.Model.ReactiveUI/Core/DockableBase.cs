@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Dock.Model.Adapters;
 using Dock.Model.Core;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Core;
 
@@ -10,7 +11,7 @@ namespace Dock.Model.ReactiveUI.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract partial class DockableBase : ReactiveBase, IDockable
+public abstract partial class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
 
@@ -31,6 +32,7 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _collapsedProportion = double.NaN;
         _canClose = true;
         _canPin = true;
+        _keepPinnedDockableVisible = false;
         _canFloat = true;
         _canDrag = true;
         _canDrop = true;
@@ -40,119 +42,163 @@ public abstract partial class DockableBase : ReactiveBase, IDockable
         _maxHeight = double.NaN;
         _isModified = false;
         _dockGroup = null;
+        _showInSelector = true;
+        _selectorTitle = null;
         _trackingAdapter = new TrackingAdapter();
     }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial string Id { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial string Title { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [Reactive]
     public partial object? Context { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial IDockable? Owner { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [Reactive]
     public partial IDockable? OriginalOwner { get; set; }
 
     /// <inheritdoc/>
     [IgnoreDataMember]
+    [Reactive]
     public partial IFactory? Factory { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool IsEmpty { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool IsCollapsable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double Proportion { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial DockMode Dock { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial int Column { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial int Row { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial int ColumnSpan { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial int RowSpan { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool IsSharedSizeScope { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double CollapsedProportion { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double MinWidth { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double MaxWidth { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double MinHeight { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double MaxHeight { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanClose { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanPin { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial bool KeepPinnedDockableVisible { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanFloat { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanDrag { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool CanDrop { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool IsModified { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial string? DockGroup { get; set; }
 
     /// <inheritdoc/>
-    public string? GetControlRecyclingId() => _id;
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial bool ShowInSelector { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial string? SelectorTitle { get; set; }
+
+    /// <inheritdoc/>
+    public string GetControlRecyclingId() => _id;
 
     /// <inheritdoc/>
     public virtual bool OnClose()

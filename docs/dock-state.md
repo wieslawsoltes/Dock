@@ -1,16 +1,16 @@
 # DockState Usage Guide
 
-This document explains why `DockState` exists and how to use it when saving and restoring layouts. It builds on the [serialization guide](dock-serialization.md) and provides additional background for managing active and focused dockables.
+This document explains why `DockState` exists and how to use it when saving and restoring layouts. It builds on the [serialization guide](dock-serialization.md) and provides additional background for restoring document/tool content and document templates after loading layouts.
 
 ## Why DockState is needed
 
-`DockState` tracks which document or tool had focus when you saved the layout. Without this information the deserialized layout could display a different dockable than the one the user previously worked on. Persisting the state ensures that the same document regains focus after loading, creating a seamless experience.
+`DockState` captures values that are not serialized with the layout itself, such as `IToolContent.Content`, `IDocumentContent.Content`, and `IDocumentDockContent.DocumentTemplate`. These properties often reference controls or templates that are intentionally ignored by serializers. Without `DockState`, documents or tools can appear with missing content after a layout is loaded.
 
-The state object also records which dockable was last active in a group. When layouts contain many documents or floating windows, restoring these relationships is important so that navigation history and dock commands behave as expected.
+Active and focused dockables are part of the layout model and are serialized directly, so `DockState` is not required for focus restoration.
 
 ## When to create a DockState
 
-Create one instance of `DockState` for the lifetime of your application. It can be stored in a view model, a service container, or directly in the window code-behind. Reuse the same instance whenever you save or load a layout.
+Create a `DockState` instance for as long as you need to preserve content/templates between `Save` and `Restore` calls. It can be stored in a view model, a service container, or directly in the window code-behind. Reuse the same instance whenever you save or load a layout within the same session.
 
 ```csharp
 private readonly DockState _dockState = new DockState();
@@ -18,7 +18,7 @@ private readonly DockState _dockState = new DockState();
 
 ## Saving the state
 
-Call `DockState.Save` with the root `IDock` before serializing the layout. This captures the active and focused dockables.
+Call `DockState.Save` with the root `IDock` before serializing the layout. This captures document/tool content and document templates so they can be reapplied later.
 
 ```csharp
 var layout = dockControl.Layout;
@@ -26,13 +26,13 @@ if (layout is not null)
 {
     _dockState.Save(layout);
     await using var stream = File.Create("layout.json");
-    _serializer.Save(layout, stream);
+    _serializer.Save(stream, layout);
 }
 ```
 
 ## Restoring the state
 
-After loading the layout, assign it to `DockControl.Layout` and call `DockState.Restore` to reapply the focus information.
+After loading the layout, assign it to `DockControl.Layout` and call `DockState.Restore` to reapply content and templates.
 
 ```csharp
 await using var stream = File.OpenRead("layout.json");
@@ -44,7 +44,7 @@ if (layout is not null)
 }
 ```
 
-Call `DockState.Reset()` when you start with a fresh layout or no longer need the saved data. This clears the internal lists so previously focused dockables are forgotten.
+Call `DockState.Reset()` when you start with a fresh layout or no longer need the cached content/templates. This clears the internal dictionaries so old values are forgotten.
 
 ```csharp
 _dockState.Reset();
@@ -54,10 +54,9 @@ _dockState.Reset();
 
 - Save the state whenever you persist the layout, typically on application exit or when the user triggers a save command.
 - Restore the state immediately after assigning the layout to `DockControl` during application startup.
-- Keep the same `DockState` instance around for the entire session so focus changes are recorded continuously.
-- Reset the state if the user opens a new layout file or chooses to discard the previous session.
+- Keep the same `DockState` instance around while you need to restore cached content or templates.
+- Reset the state if the user opens a new layout file or chooses to discard cached content.
 
-With these practices the docking framework can accurately restore which document or tool was active across runs.
+With these practices the docking framework can restore non-serialized content and templates after layouts are reloaded.
 
 For a working example see the [DockXamlSample](../samples/DockXamlSample) project.
-

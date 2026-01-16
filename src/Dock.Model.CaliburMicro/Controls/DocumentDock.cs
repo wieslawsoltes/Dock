@@ -17,7 +17,13 @@ public class DocumentDock : DockBase, IDocumentDock
     private bool _canCreateDocument = true;
     private ICommand? _createDocument;
     private bool _enableWindowDrag = true;
+    private DocumentLayoutMode _layoutMode = DocumentLayoutMode.Tabbed;
     private DocumentTabLayout _tabsLayout = DocumentTabLayout.Top;
+    private DocumentCloseButtonShowMode _closeButtonShowMode = DocumentCloseButtonShowMode.Always;
+    private ICommand? _cascadeDocuments;
+    private ICommand? _tileDocumentsHorizontal;
+    private ICommand? _tileDocumentsVertical;
+    private ICommand? _restoreDocuments;
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
@@ -45,10 +51,58 @@ public class DocumentDock : DockBase, IDocumentDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentLayoutMode LayoutMode
+    {
+        get => _layoutMode;
+        set => Set(ref _layoutMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public DocumentTabLayout TabsLayout
     {
         get => _tabsLayout;
         set => Set(ref _tabsLayout, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public DocumentCloseButtonShowMode CloseButtonShowMode
+    {
+        get => _closeButtonShowMode;
+        set => Set(ref _closeButtonShowMode, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public ICommand? CascadeDocuments
+    {
+        get => _cascadeDocuments;
+        set => Set(ref _cascadeDocuments, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public ICommand? TileDocumentsHorizontal
+    {
+        get => _tileDocumentsHorizontal;
+        set => Set(ref _tileDocumentsHorizontal, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public ICommand? TileDocumentsVertical
+    {
+        get => _tileDocumentsVertical;
+        set => Set(ref _tileDocumentsVertical, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public ICommand? RestoreDocuments
+    {
+        get => _restoreDocuments;
+        set => Set(ref _restoreDocuments, value);
     }
 
     /// <inheritdoc/>

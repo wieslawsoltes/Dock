@@ -39,7 +39,7 @@ IDockable? RestoreDockable(string id);
 
 ### String Overload Behavior
 
-The string overload (`RestoreDockable(string id)`) searches through all root docks in the factory's `DockControls` collection to find a hidden dockable with the specified ID. If found, it calls the main `RestoreDockable(IDockable)` method.
+The string overload (`RestoreDockable(string id)`) searches all root docks returned by the factory (`Find(d => d is IRootDock)`) and looks for a hidden dockable with the specified ID. If found, it calls the main `RestoreDockable(IDockable)` method.
 
 ## Splitter Management
 
@@ -126,7 +126,7 @@ if (restored == null)
 
 | Condition | Behavior |
 |-----------|----------|
-| `dockable` is null | Throws `NullReferenceException` |
+| `dockable` is null | Not expected; the API requires a non-null dockable |
 | Root dock not found | Method returns early, no action taken |
 | `HiddenDockables` is null | Method returns early, no action taken |
 | Dockable not in `HiddenDockables` | Method returns early, no action taken |
@@ -146,10 +146,9 @@ The library includes comprehensive unit tests covering:
 
 ## Related Documentation
 
-- [Layout Optimization Guide](dock-layout-optimization.md)
-- [Splitter Management](dock-splitter-management.md)
-- [Hide/Show Dockables](dock-hide-show.md)
-- [Event Handling](dock-events.md)
+- [Dock events](dock-events.md)
+- [Dock state guide](dock-state.md)
+- [DockManager guide](dock-manager-guide.md)
 
 ## Implementation Notes
 

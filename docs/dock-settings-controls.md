@@ -1,6 +1,6 @@
 # DockSettings in Controls
 
-`Dock.Settings` defines global properties that help you implement consistent drag and drop behaviour. This guide explains why these settings matter and how to apply them when creating custom controls or overriding templates.
+`Dock.Settings` defines global properties that help you implement consistent drag and drop behavior. This guide explains why these settings matter and how to apply them when creating custom controls or overriding templates.
 
 ## Why use DockSettings?
 
@@ -25,7 +25,7 @@ You can apply the same check in your custom `PointerMoved` handlers before calli
 
 ## Marking drag and drop areas
 
--`DockProperties` exposes attached properties to opt‑in to docking features:
+`DockProperties` exposes attached properties to opt-in to docking features:
 
 - `IsDockTarget` designates the surface that accepts docked items and shows a `DockTargetBase` adorner.
 - `IsDragArea` marks a region where the user can start dragging.
@@ -34,7 +34,7 @@ You can apply the same check in your custom `PointerMoved` handlers before calli
 
 These properties are normally set in the default styles but you can place them on your own controls:
 
-```xml
+```xaml
 <Border xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
         dockSettings:DockProperties.IsDragArea="True"
         dockSettings:DockProperties.IsDropArea="True" />

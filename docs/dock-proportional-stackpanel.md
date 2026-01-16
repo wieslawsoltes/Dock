@@ -1,6 +1,6 @@
 # Proportional StackPanel
 
-`ProportionalStackPanel` is an Avalonia `Panel` included with Dock that sizes its children based on a `Proportion` value. The panel works horizontally or vertically and exposes attached properties to control layout behaviour.
+`ProportionalStackPanel` is an Avalonia `Panel` included with Dock that sizes its children based on a `Proportion` value. The panel works horizontally or vertically and exposes attached properties to control layout behavior.
 
 ## Key features
 

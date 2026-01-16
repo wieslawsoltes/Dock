@@ -84,7 +84,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (globalOperation != DockOperation.None)
         {
-            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
         }
         else
         {
@@ -93,6 +93,8 @@ internal class HostWindowState : DockManagerState, IHostWindowState
                 ValidateLocal(point, localOperation, dragAction, relativeTo);
             } 
         }
+
+        LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
     private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
@@ -169,6 +171,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
+            LogDropRejection(nameof(ValidateLocal), "No focused dockable available for local validation.");
             return false;
         }
 
@@ -180,7 +183,14 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         }
 
         // If no specific target yet, allow local adorners if this control is marked as a dock target
-        return DropControl?.GetValue(DockProperties.IsDockTargetProperty) == true;
+        var isDockTarget = DropControl?.GetValue(DockProperties.IsDockTargetProperty) == true;
+        if (!isDockTarget)
+        {
+            var controlName = DropControl is null ? "null" : DropControl.GetType().Name;
+            LogDropRejection(nameof(ValidateLocal), $"Control '{controlName}' is not marked as a dock target.");
+        }
+
+        return isDockTarget;
     }
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
@@ -188,17 +198,20 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         var layout = _hostWindow.Window?.Layout;
         if (layout?.FocusedDockable is not { } sourceDockable)
         {
+            LogDropRejection(nameof(ValidateGlobal), "No focused dockable available for global validation.");
             return false;
         }
 
         if (DropControl is not { } dropCtrl)
         {
+            LogDropRejection(nameof(ValidateGlobal), "No DropControl available for global validation.");
             return false;
         }
 
         var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
         if (dockControl?.Layout is not { ActiveDockable: IDock activeDock })
         {
+            LogDropRejection(nameof(ValidateGlobal), "Unable to locate an active dock for the DropControl.");
             return false;
         }
 
@@ -208,6 +221,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         // Check if the target dock (or any ancestor) has global docking enabled
         if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
         {
+            LogDropRejection(nameof(ValidateGlobal), $"Global docking is disabled for dock '{targetDock.Title}'.");
             return false;
         }
 
@@ -215,6 +229,7 @@ internal class HostWindowState : DockManagerState, IHostWindowState
 
         if (relativeTo.GetVisualRoot() is null)
         {
+            LogDropRejection(nameof(ValidateGlobal), "Relative visual is not attached to a visual root.");
             return false;
         }
 
@@ -226,10 +241,21 @@ internal class HostWindowState : DockManagerState, IHostWindowState
         // or when docking groups are compatible
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
         {
+            LogDropRejection(
+                nameof(ValidateGlobal),
+                $"Global docking group validation failed for '{sourceDockable.Title}' -> '{targetDock.Title}'.");
             return false;
         }
-        
-        return DockManager.ValidateDockable(sourceDockable, targetDock, dragAction, operation, bExecute: false);
+
+        var isValid = DockManager.ValidateDockable(sourceDockable, targetDock, dragAction, operation, bExecute: false);
+        if (!isValid)
+        {
+            LogDropRejection(
+                nameof(ValidateGlobal),
+                $"DockManager rejected global operation {operation} for '{sourceDockable.Title}' -> '{targetDock.Title}'.");
+        }
+
+        return isValid;
     }
 
     private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)

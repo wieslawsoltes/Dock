@@ -6,13 +6,13 @@ Dock provides an integration library for the default .NET service container. The
 
 First, install the dependency injection package:
 
-```powershell
+```bash
 dotnet add package Dock.Model.Extensions.DependencyInjection
 ```
 
 Also install your preferred serializer package:
 
-```powershell
+```bash
 # Choose one serializer:
 dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
 dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)

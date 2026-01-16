@@ -65,10 +65,27 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     public static readonly StyledProperty<bool> ShowVerticalTargetsProperty = AvaloniaProperty.Register<DockTargetBase, bool>(
         nameof(ShowVerticalTargets), defaultValue: true);
 
+    /// <summary>
+    /// Defines the <see cref="IsGlobalDockAvailable"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsGlobalDockAvailableProperty =
+        AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockAvailable));
+
+    /// <summary>
+    /// Defines the <see cref="IsGlobalDockActive"/> property.
+    /// </summary>
+    public static readonly StyledProperty<bool> IsGlobalDockActiveProperty =
+        AvaloniaProperty.Register<DockTargetBase, bool>(nameof(IsGlobalDockActive));
+
+    /// <summary>
+    /// Initializes a new instance while wiring pseudo-classes to the target visibility and availability observables.
+    /// </summary>
     public DockTargetBase()
     {
         PseudoClasses.Set(":horizontal", this.GetObservable(ShowHorizontalTargetsProperty));
         PseudoClasses.Set(":vertical", this.GetObservable(ShowVerticalTargetsProperty));
+        PseudoClasses.Set(":global-available", this.GetObservable(IsGlobalDockAvailableProperty));
+        PseudoClasses.Set(":global-active", this.GetObservable(IsGlobalDockActiveProperty));
     }
 
     /// <summary>
@@ -99,6 +116,24 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     }
 
     /// <summary>
+    /// Gets or sets a value indicating whether any global docking options are currently available.
+    /// </summary>
+    public bool IsGlobalDockAvailable
+    {
+        get => GetValue(IsGlobalDockAvailableProperty);
+        set => SetValue(IsGlobalDockAvailableProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a global docking operation is active.
+    /// </summary>
+    public bool IsGlobalDockActive
+    {
+        get => GetValue(IsGlobalDockActiveProperty);
+        set => SetValue(IsGlobalDockActiveProperty, value);
+    }
+
+    /// <summary>
     /// A dictionary that maps dock operations to their corresponding indicator controls.
     /// </summary>
     protected Dictionary<DockOperation, Control> IndicatorOperations { get; set; } = new();
@@ -107,6 +142,16 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
     /// A dictionary that maps dock operations to their corresponding selector controls.
     /// </summary>
     protected Dictionary<DockOperation, Control> SelectorsOperations { get; set; } = new();
+
+    private bool IsOperationEnabled(DockOperation operation)
+    {
+        return operation switch
+        {
+            DockOperation.Left or DockOperation.Right => ShowHorizontalTargets,
+            DockOperation.Top or DockOperation.Bottom => ShowVerticalTargets,
+            _ => true
+        };
+    }
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -198,6 +243,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
         var operation = DockProperties.GetIndicatorDockOperation(dropControl);
 
         IndicatorOperations.TryGetValue(operation, out var indicator);
+        SelectorsOperations.TryGetValue(operation, out var selector);
 
         foreach (var kvp in IndicatorOperations)
         {
@@ -205,6 +251,21 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             {
                 kvp.Value.Opacity = 0;
             }
+        }
+
+        if (!IsOperationEnabled(operation))
+        {
+            if (indicator is not null)
+            {
+                indicator.Opacity = 0;
+            }
+
+            if (selector is not null)
+            {
+                selector.Opacity = 0;
+            }
+
+            return DefaultDockOperation;
         }
 
         return InvalidateIndicatorOnly(dropControl, indicator, point, relativeTo, operation, dragAction, visible)
@@ -226,10 +287,33 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
             var operation = kvp.Key;
             SelectorsOperations.TryGetValue(operation, out var selector);
 
+            if (!IsOperationEnabled(operation))
+            {
+                if (selector is not null)
+                {
+                    selector.Opacity = 0;
+                }
+
+                if (kvp.Value is not null)
+                {
+                    kvp.Value.Opacity = 0;
+                }
+
+                continue;
+            }
+
             if (InvalidateIndicator(selector, kvp.Value, point, relativeTo, operation, dragAction,
                     validate, visible))
             {
                 result = operation;
+            }
+        }
+
+        foreach (var kvp in IndicatorOperations)
+        {
+            if (kvp.Key != result)
+            {
+                kvp.Value.Opacity = 0;
             }
         }
 
@@ -386,5 +470,7 @@ public abstract class DockTargetBase : TemplatedControl, IDockTarget
 
         ShowHorizontalTargets = true;
         ShowVerticalTargets = true;
+        IsGlobalDockAvailable = false;
+        IsGlobalDockActive = false;
     }
 }

@@ -3,8 +3,8 @@
 Dock exposes a large set of runtime events through `FactoryBase` so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.
 
 Each event uses a dedicated arguments type that exposes the affected
-dockable or window along with optional cancelation tokens. This makes it
-possible to intercept an operation before it completes.
+dockable or window. Some events (such as `DockableClosing` and `WindowClosing`)
+support cancellation via a `Cancel` flag.
 
 ## Common events
 
@@ -26,12 +26,25 @@ possible to intercept an operation before it completes.
 
 Other specialized events like `WindowMoveDragBegin`, `WindowMoveDrag` and `WindowMoveDragEnd` allow intercepting drag operations.
 
+## Additional events
+
+FactoryBase also exposes events for less common scenarios:
+
+| Event | Description |
+| ----- | ----------- |
+| `DockableSwapped` | Raised when two dockables are swapped. |
+| `DockableHidden` / `DockableRestored` | Fired when dockables are moved to or restored from `IRootDock.HiddenDockables`. |
+| `WindowAdded` / `WindowRemoved` | Signalled when a window is added to or removed from `IRootDock.Windows`. |
+| `WindowActivated` / `WindowDeactivated` | Fired when a host window gains or loses activation. |
+| `DockableActivated` / `DockableDeactivated` | Fired when a dockable gains or loses activation. |
+| `DockableInit` | Raised during `InitDockable` so you can override the resolved `Context`. |
+
 ## Subscribing to events
 
 Create a factory instance and attach handlers before initializing the layout:
 
 ```csharp
-var factory = new DockFactory();
+var factory = new Factory();
 
 factory.ActiveDockableChanged += (_, args) =>
     Console.WriteLine($"Active dockable: {args.Dockable?.Title}");

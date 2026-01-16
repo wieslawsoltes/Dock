@@ -32,6 +32,7 @@ Specifies the operation being performed when a dockable is moved or split.
 
 | Value | Description |
 | ----- | ----------- |
+| `None` | No docking operation. |
 | `Fill` | Replace the target area. |
 | `Left` | Insert to the left. |
 | `Bottom` | Insert below. |
@@ -67,6 +68,35 @@ Controls where document tabs are placed around a document dock. Setting this aff
 | `Left` | Tabs are arranged vertically to the left. |
 | `Right` | Tabs are arranged vertically to the right. |
 
+## DocumentCloseButtonShowMode
+
+Controls when close buttons are displayed on document tabs.
+
+| Value | Description |
+| ----- | ----------- |
+| `Always` | Always show close buttons. |
+| `Active` | Show close buttons only for the active document. |
+| `Never` | Never show close buttons. |
+
+## DocumentLayoutMode
+
+Controls whether a document dock renders documents as tabs or classic MDI windows.
+
+| Value | Description |
+| ----- | ----------- |
+| `Tabbed` | Documents are shown as tabs (default). |
+| `Mdi` | Documents are shown as internal MDI windows. |
+
+## MdiWindowState
+
+Indicates the current state of an MDI document window.
+
+| Value | Description |
+| ----- | ----------- |
+| `Normal` | Window is in its normal size and position. |
+| `Minimized` | Window is minimized. |
+| `Maximized` | Window fills the document area. |
+
 ## GripMode
 
 Determines how the grip element of a splitter behaves.
@@ -89,7 +119,7 @@ Indicates which bounds `TrackingAdapter` is currently storing.
 
 ## DragAction
 
-Represents the allowed drag and drop actions when interacting with external data sources.
+Represents the allowed drag and drop actions when interacting with external data sources. This is a flags enum, so values can be combined.
 
 | Value | Description |
 | ----- | ----------- |
@@ -97,5 +127,27 @@ Represents the allowed drag and drop actions when interacting with external data
 | `Copy` | Data will be copied. |
 | `Move` | Data will be moved. |
 | `Link` | A link to the data will be created. |
+
+## SplitViewDisplayMode
+
+Controls how split view panes are displayed.
+
+| Value | Description |
+| ----- | ----------- |
+| `Inline` | Pane is displayed next to content and does not auto-collapse. |
+| `CompactInline` | Pane is displayed next to content with a compact closed state. |
+| `Overlay` | Pane overlays the content and auto-collapses. |
+| `CompactOverlay` | Overlay mode with a compact closed state. |
+
+## SplitViewPanePlacement
+
+Controls where the split view pane is placed.
+
+| Value | Description |
+| ----- | ----------- |
+| `Left` | Pane is shown to the left of the content. |
+| `Right` | Pane is shown to the right of the content. |
+| `Top` | Pane is shown above the content. |
+| `Bottom` | Pane is shown below the content. |
 
 For a high level overview of Dock terminology see the [glossary](dock-glossary.md).

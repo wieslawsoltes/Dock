@@ -1,0 +1,42 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:DockSplitViewSample.ViewModels"
+        mc:Ignorable="d"
+        d:DesignWidth="900" d:DesignHeight="600"
+        x:Class="DockSplitViewSample.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+        Title="SplitView Dock Sample"
+        Width="900" Height="600"
+        WindowStartupLocation="CenterScreen">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <Window.Resources>
+    <StreamGeometry x:Key="MenuIcon">M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z</StreamGeometry>
+  </Window.Resources>
+  <Grid RowDefinitions="Auto,*">
+    <!-- Header with hamburger button -->
+    <Border Grid.Row="0" 
+            Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
+            BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+            BorderThickness="0,0,0,1"
+            Padding="8,6">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <Button Command="{Binding TogglePaneCommand}"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="8">
+          <PathIcon Width="16" Height="16" Data="{StaticResource MenuIcon}" />
+        </Button>
+        <TextBlock Text="SplitView Dock Sample" 
+                   VerticalAlignment="Center" 
+                   FontWeight="SemiBold" />
+      </StackPanel>
+    </Border>
+    
+    <!-- Dock control -->
+    <DockControl Grid.Row="1" Layout="{Binding Layout}" />
+  </Grid>
+</Window>

@@ -2,8 +2,10 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Runtime.Serialization;
 using Dock.Model.Controls;
+using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -11,6 +13,20 @@ namespace Dock.Model.ReactiveUI.Controls;
 /// Tool.
 /// </summary>
 [DataContract(IsReference = true)]
-public partial class Tool : DockableBase, ITool, IDocument
+public partial class Tool : DockableBase, ITool, IDocument, IMdiDocument
 {
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial DockRect MdiBounds { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial MdiWindowState MdiState { get; set; }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
+    public partial int MdiZIndex { get; set; }
 }

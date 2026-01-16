@@ -1,12 +1,12 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dock.Avalonia.Controls;
 using Dock.Avalonia.Contract;
-using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Settings;
 
@@ -114,12 +114,14 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (globalOperation != DockOperation.None)
         {
-            ValidateGlobal(point, localOperation, dragAction, relativeTo);
+            ValidateGlobal(point, globalOperation, dragAction, relativeTo);
         }
         else
         {
             ValidateLocal(point, localOperation, dragAction, relativeTo);
         }
+
+        LocalAdornerHelper.SetGlobalDockActive(globalOperation != DockOperation.None);
     }
 
     private void Drop(Point point, DragAction dragAction, Control dropControl, Visual relativeTo)
@@ -163,71 +165,118 @@ internal class DockControlState : DockManagerState, IDockControlState
             {
                 var targetDock = DockHelpers.FindProportionalDock(dockControlActiveDock) ?? dockControlActiveDock;
     
-                // TODO: The validation fails in floating window as ActiveDockable is a tool dock.
-                // if (!ValidateGlobalTarget(sourceDockable, targetDock))
-                // {
-                //     return;
-                // }
-
-                Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
-
-                if (sourceDockable.Owner != null) 
-                    sourceDockable.Owner.Proportion = DockSettings.GlobalDockingProportion;
-            }
-        }
-        else
-        {
-            if (_context.DragControl.DataContext is IDockable sourceDockable &&
-                DropControl.DataContext is IDockable targetDockable)
-            {
-                if (!ValidateLocalTarget(sourceDockable, targetDockable))
+                // Validate before executing global docking; if validation fails, fall back to floating when possible.
+                if (!ValidateGlobal(point, globalOperation, dragAction, relativeTo))
                 {
-                    return;
-                }
+                    if (sourceDockable.CanFloat)
+                    {
+                        var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
+                        var factory = activeDockControl?.Layout?.Factory ?? dockControl.Layout?.Factory;
+                        if (activeDockControl is { } active && factory is { })
+                        {
+                            var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
+                            var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
+                            var activePoint = active.PointToClient(screenPixel);
+                            Float(activePoint, active, sourceDockable, factory);
+                        }
+                     }
+                     return;
+                 }
 
-                Execute(point, localOperation, dragAction, relativeTo, sourceDockable, targetDockable);
-            }
-        }
-    }
+                 // TODO: The validation fails in floating window as ActiveDockable is a tool dock.
+                 // if (!ValidateGlobalTarget(sourceDockable, targetDock))
+                 // {
+                 //     return;
+                 // }
 
-    private void Leave()
-    {
-        RemoveAdorners();
-    }
+                 Execute(point, globalOperation, dragAction, relativeTo, sourceDockable, targetDock);
+
+                 if (sourceDockable.Owner != null) 
+                     sourceDockable.Owner.Proportion = DockSettings.GlobalDockingProportion;
+             }
+         }
+         else
+         {
+             if (_context.DragControl.DataContext is IDockable sourceDockable)
+             {
+                 var target = DropControl.DataContext as IDockable;
+                 if (target is null)
+                 {
+                     return;
+                 }
+
+                 if (!ValidateLocalTarget(sourceDockable, target))
+                 {
+                     // If local docking target is invalid, fallback to floating if allowed
+                     if (sourceDockable.CanFloat)
+                     {
+                         var activeDockControl = _context.DragControl.FindAncestorOfType<DockControl>();
+                         var factory = activeDockControl?.Layout?.Factory ?? DropControl.FindAncestorOfType<DockControl>()?.Layout?.Factory;
+                         if (activeDockControl is { } active && factory is { })
+                        {
+                            var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
+                            var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
+                            var activePoint = active.PointToClient(screenPixel);
+                            Float(activePoint, active, sourceDockable, factory);
+                        }
+                     }
+                     return;
+                 }
+
+                 Execute(point, localOperation, dragAction, relativeTo, sourceDockable, target);
+              }
+          }
+      }
+
+     private void Leave()
+     {
+         RemoveAdorners();
+     }
 
     private bool ValidateLocal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
+            LogDropRejection(nameof(ValidateLocal), "DragControl DataContext is not an IDockable.");
             return false;
         }
 
         // For local validation during Enter, we just check if source can do local docking
         // Detailed target validation happens later in ValidateDockable when DropControl is set
-        if (DropControl?.DataContext is IDockable targetDockable)
+        if (DropControl?.DataContext is IDockable)
         {
             return ValidateDockable(point, operation, dragAction, relativeTo, sourceDockable);
         }
 
         // If no specific target yet, allow local adorners if this control is marked as a dock target
-        return DropControl?.GetValue(DockProperties.IsDockTargetProperty) == true;
+        var isDockTarget = DropControl?.GetValue(DockProperties.IsDockTargetProperty) == true;
+        if (!isDockTarget)
+        {
+            var controlName = DropControl is null ? "null" : DropControl.GetType().Name;
+            LogDropRejection(nameof(ValidateLocal), $"Control '{controlName}' is not marked as a dock target.");
+        }
+
+        return isDockTarget;
     }
 
     private bool ValidateGlobal(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
     {
         if (_context.DragControl?.DataContext is not IDockable sourceDockable)
         {
+            LogDropRejection(nameof(ValidateGlobal), "DragControl DataContext is not an IDockable.");
             return false;
         }
 
         if (DropControl is not { } dropCtrl)
         {
+            LogDropRejection(nameof(ValidateGlobal), "No DropControl available for global validation.");
             return false;
         }
 
         var dockControl = dropCtrl.FindAncestorOfType<DockControl>();
         if (dockControl?.Layout is not { ActiveDockable: IDock activeDock })
         {
+            LogDropRejection(nameof(ValidateGlobal), "Unable to locate an active dock for the DropControl.");
             return false;
         }
 
@@ -237,6 +286,7 @@ internal class DockControlState : DockManagerState, IDockControlState
         // Check if the target dock (or any ancestor) has global docking enabled
         if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
         {
+            LogDropRejection(nameof(ValidateGlobal), $"Global docking is disabled for dock '{targetDock.Title}'.");
             return false;
         }
 
@@ -244,6 +294,7 @@ internal class DockControlState : DockManagerState, IDockControlState
 
         if (relativeTo.GetVisualRoot() is null)
         {
+            LogDropRejection(nameof(ValidateGlobal), "Relative visual is not attached to a visual root.");
             return false;
         }
 
@@ -255,10 +306,21 @@ internal class DockControlState : DockManagerState, IDockControlState
         // or when docking groups are compatible
         if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))
         {
+            LogDropRejection(
+                nameof(ValidateGlobal),
+                $"Global docking group validation failed for '{sourceDockable.Title}' -> '{targetDock.Title}'.");
             return false;
         }
-        
-        return DockManager.ValidateDockable(sourceDockable, targetDock, dragAction, operation, bExecute: false);
+
+        var isValid = DockManager.ValidateDockable(sourceDockable, targetDock, dragAction, operation, bExecute: false);
+        if (!isValid)
+        {
+            LogDropRejection(
+                nameof(ValidateGlobal),
+                $"DockManager rejected global operation {operation} for '{sourceDockable.Title}' -> '{targetDock.Title}'.");
+        }
+
+        return isValid;
     }
 
     private bool IsDockTargetVisible(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo)
@@ -309,6 +371,7 @@ internal class DockControlState : DockManagerState, IDockControlState
     {
         if (activeDockControl is not { } inputActiveDockControl)
         {
+            LogDragState("Process aborted: activeDockControl is null.");
             return;
         }
 
@@ -322,16 +385,23 @@ internal class DockControlState : DockManagerState, IDockControlState
                     var isDragEnabled = dragControl.GetValue(DockProperties.IsDragEnabledProperty);
                     if (!isDragEnabled)
                     {
+                        LogDragState($"Pressed ignored: drag disabled on control '{dragControl.GetType().Name}'.");
                         break;
                     }
                     
                     if (dragControl.DataContext is IDockable { CanDrag: false })
                     {
+                        LogDragState("Pressed ignored: dockable cannot be dragged (CanDrag=false).");
                         break;
                     }
 
                     _context.Start(dragControl, point);
                     DropControl = null;
+                    LogDragState($"Drag started from control '{dragControl.GetType().Name}' at {point}.");
+                }
+                else
+                {
+                    LogDragState("Pressed ignored: no drag area under pointer.");
                 }
                 break;
             }
@@ -348,6 +418,11 @@ internal class DockControlState : DockManagerState, IDockControlState
                         {
                             Drop(_context.TargetPoint, dragAction, dropControl, _context.TargetDockControl);
                             executed = true;
+                            LogDragState($"Drop executed on '{dropControl.GetType().Name}' with action '{dragAction}'.");
+                        }
+                        else
+                        {
+                            LogDragState($"Drop skipped: drop disabled on '{dropControl.GetType().Name}'.");
                         }
                     }
 
@@ -356,7 +431,12 @@ internal class DockControlState : DockManagerState, IDockControlState
                         inputActiveDockControl.Layout?.Factory is { } factory)
                     {
                         Float(point, inputActiveDockControl, dockable, factory);
+                        LogDragState($"Drop fallback: floating dockable '{dockable.Title}'.");
                     }
+                }
+                else
+                {
+                    LogDragState("Release ignored: drag operation was never activated.");
                 }
 
                 _dragPreviewHelper.Hide();
@@ -365,12 +445,14 @@ internal class DockControlState : DockManagerState, IDockControlState
                 _context.End();
                 DropControl = null;
                 activeDockControl.IsDraggingDock = false;
+                LogDragState("Drag context reset after release.");
                 break;
             }
             case EventType.Moved:
             {
                 if (_context.PointerPressed == false)
                 {
+                    LogDragState("Move ignored: pointer not pressed.");
                     break;
                 }
 
@@ -389,9 +471,15 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.DragControl, inputActiveDockControl, _context.DragStartPoint);
 
                             _dragPreviewHelper.Show(targetDockable, sp, _context.DragOffset);
+                            LogDragState($"Drag threshold reached for dockable '{targetDockable.Title}'. Showing preview.");
                         }
                         _context.DoDragDrop = true;
                         activeDockControl.IsDraggingDock = true;
+                        LogDragState("Drag operation activated.");
+                    }
+                    else
+                    {
+                        LogDragState($"Move below drag threshold (diff={diff}).");
                     }
                 }
 
@@ -408,21 +496,29 @@ internal class DockControlState : DockManagerState, IDockControlState
                     {
                         if (inputActiveDockControl.GetVisualRoot() is null)
                         {
+                            LogDragState("Skipping dock control search: active dock control not attached to visual tree.");
                             continue;
                         }
 
                         if (inputDockControl.GetVisualRoot() is null)
                         {
+                            LogDragState($"Skipping dock control '{inputDockControl.GetType().Name}': not attached to visual tree.");
                             continue;
                         }
                         var dockControlPoint = inputDockControl.PointToClient(screenPoint);
+                        LogDragState($"Testing dock control '{inputDockControl.GetType().Name}' (Bounds={inputDockControl.Bounds}) at client point {dockControlPoint} (screen {screenPoint}).");
 
                         dropControl = DockHelpers.GetControl(inputDockControl, dockControlPoint, DockProperties.IsDropAreaProperty);
                         if (dropControl is { })
                         {
                             targetPoint = dockControlPoint;
                             targetDockControl = inputDockControl;
+                            LogDragState($"Found drop control '{dropControl.GetType().Name}' in dock '{inputDockControl.GetType().Name}'.");
                             break;
+                        }
+                        else
+                        {
+                            DockHelpers.LogDropAreas(inputDockControl, $"Inspect {inputDockControl.GetType().Name} at {dockControlPoint}");
                         }
                     }
 
@@ -433,6 +529,11 @@ internal class DockControlState : DockManagerState, IDockControlState
                         {
                             targetPoint = point;
                             targetDockControl = inputActiveDockControl;
+                            LogDragState($"Using active dock control '{inputActiveDockControl.GetType().Name}' as drop target.");
+                        }
+                        else
+                        {
+                            DockHelpers.LogDropAreas(inputActiveDockControl, $"ActiveDockControl fallback at point {point}");
                         }
                     }
 
@@ -446,6 +547,7 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 _context.TargetPoint = targetPoint;
                                 _context.TargetDockControl = targetDockControl;
                                 Over(targetPoint, dragAction, dropControl, targetDockControl);
+                                LogDragState($"Dragging over '{dropControl.GetType().Name}' at {targetPoint}.");
                             }
                             else
                             {
@@ -453,12 +555,14 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 {
                                     Leave();
                                     DropControl = null;
+                                    LogDragState("Cleared previous drop control before assigning new target.");
                                 }
 
                                 DropControl = dropControl;
                                 _context.TargetPoint = targetPoint;
                                 _context.TargetDockControl = targetDockControl;
                                 Enter(targetPoint, dragAction, targetDockControl);
+                                LogDragState($"New drop control '{dropControl.GetType().Name}' at {targetPoint}.");
                             }
 
                             var globalOperation = GlobalAdornerHelper.Adorner is GlobalDockTarget globalDockTarget
@@ -469,10 +573,13 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 ? dockTarget.GetDockOperation(targetPoint, dropControl, targetDockControl, dragAction, ValidateLocal, IsDockTargetVisible)
                                 : DockOperation.Fill;
 
+                            LogDragState($"Operations resolved: global={globalOperation}, local={localOperation}.");
+
                             if (globalOperation != DockOperation.None)
                             {
-                                var valid = ValidateGlobal(targetPoint, localOperation, dragAction, targetDockControl);
+                                var valid = ValidateGlobal(targetPoint, globalOperation, dragAction, targetDockControl);
                                 preview = valid ? "Dock" : "None";
+                                LogDragState($"Global validation {(valid ? "succeeded" : "failed")} for operation {globalOperation}.");
                             }
                             else
                             {
@@ -480,16 +587,19 @@ internal class DockControlState : DockManagerState, IDockControlState
                                 preview = valid
                                     ? localOperation == DockOperation.Window ? "Float" : "Dock"
                                     : "None";
+                                LogDragState($"Local validation {(valid ? "succeeded" : "failed")} for operation {localOperation}.");
                             }
                         }
                         else
                         {
+                            LogDragState($"Drop area '{dropControl.GetType().Name}' is disabled.");
                             if (DropControl is { })
                             {
                                 Leave();
                                 DropControl = null;
                                 _context.TargetPoint = default;
                                 _context.TargetDockControl = null;
+                                LogDragState("Cleared drop control due to disabled target.");
                             }
                         }
                     }
@@ -499,10 +609,19 @@ internal class DockControlState : DockManagerState, IDockControlState
                         DropControl = null;
                         _context.TargetPoint = default;
                         _context.TargetDockControl = null;
+                        LogDragState($"No valid drop target at current position (local={point}, screen={screenPoint}); cleared drop context.");
                         var canFloat = _context.DragControl?.DataContext is IDockable sourceDockable && sourceDockable.CanFloat;
                         preview = canFloat ? "Float" : "None";
                     }
 
+                    // If validation produced "None" but the dragged source supports floating, show Float preview.
+                    if (preview == "None" && _context.DragControl?.DataContext is IDockable src && src.CanFloat)
+                    {
+                        preview = "Float";
+                        LogDragState("Preview overridden to Float because source can float.");
+                    }
+
+                    LogDragState($"Preview state set to '{preview}'.");
                     _dragPreviewHelper.Move(screenPoint, _context.DragOffset, preview);
                 }
                 break;

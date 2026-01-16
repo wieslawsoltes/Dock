@@ -1,6 +1,6 @@
 # Dock Settings
 
-`Dock.Settings` exposes global properties and constants that control drag and drop behaviour.
+`Dock.Settings` exposes global properties and constants that control drag and drop behavior.
 Use these when you need to adjust interaction distances or override the default templates.
 
 ## Attached properties
@@ -18,7 +18,7 @@ They are used by the default control templates but you can set them manually:
 
 Example disabling drag and drop for an entire window:
 
-```xml
+```xaml
 <Window xmlns:dockSettings="clr-namespace:Dock.Settings;assembly=Dock.Settings"
         dockSettings:DockProperties.IsDragEnabled="False"
         dockSettings:DockProperties.IsDropEnabled="False">
@@ -75,6 +75,10 @@ Note: the previous global setting and AppBuilder extension for enabling/disablin
 global docking have been removed. Use the per-dock `IDock.EnableGlobalDocking`
 property instead.
 
+`DockSettings.GlobalDockingProportion` controls the split ratio used when a dockable
+is dropped as a global dock target (for example, dropping into a different window).
+The default value is `0.25`.
+
 ## Floating window owner
 
 `DockSettings.UseOwnerForFloatingWindows` keeps floating windows above the main window by setting it as their owner.
@@ -98,6 +102,53 @@ is controlled by `DockSettings.WindowMagnetDistance`.
 and any main window hosting a `DockControl` are activated when dragging begins.
 Enabled by default.
 
+## Selector hotkeys
+
+Dock exposes a document and panel selector that can be toggled with keyboard gestures:
+
+```csharp
+DockSettings.SelectorEnabled = true;
+DockSettings.DocumentSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control);
+DockSettings.ToolSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control | KeyModifiers.Alt);
+```
+
+Disable `SelectorEnabled` to turn off the overlay entirely.
+
+Dockables can also opt out or provide a custom label for the selector:
+
+```csharp
+document.ShowInSelector = false;
+document.SelectorTitle = "Runtime Config";
+```
+
+See [Selector overlay](dock-selector-overlay.md) for behavior and navigation details.
+
+## Command bar merging
+
+Command bar merging is disabled by default. Enable it and choose a scope:
+
+```csharp
+DockSettings.CommandBarMergingEnabled = true;
+DockSettings.CommandBarMergingScope = DockCommandBarMergingScope.ActiveDocument;
+```
+
+See [Command bars](dock-command-bars.md) for definitions and merge behavior.
+
+## Diagnostics logging
+
+Enable verbose diagnostics logging when you need to inspect docking workflows:
+
+```csharp
+DockSettings.EnableDiagnosticsLogging = true;
+DockSettings.DiagnosticsLogHandler = message => Debug.WriteLine(message);
+```
+
+When enabled, Dock writes internal messages to `DiagnosticsLogHandler` if provided,
+otherwise it uses standard debug output.
+
+You can also emit your own messages through `DockLogger`. For details and examples
+see [Diagnostics logging](dock-diagnostics-logging.md).
+
 ## App builder integration
 
 You can configure the settings when building your Avalonia application:
@@ -117,6 +168,26 @@ AppBuilder.Configure<App>()
         MinimumHorizontalDragDistance = 6
     });
 ```
+
+## DockSettingsOptions reference
+
+`DockSettingsOptions` mirrors `DockSettings` and lets you override individual values when calling `WithDockSettings`. Any property left as `null` keeps the current `DockSettings` value.
+
+| Option | Applies to | Description |
+| --- | --- | --- |
+| `MinimumHorizontalDragDistance` | `DockSettings.MinimumHorizontalDragDistance` | Horizontal drag threshold. |
+| `MinimumVerticalDragDistance` | `DockSettings.MinimumVerticalDragDistance` | Vertical drag threshold. |
+| `UseFloatingDockAdorner` | `DockSettings.UseFloatingDockAdorner` | Floating adorner window. |
+| `UsePinnedDockWindow` | `DockSettings.UsePinnedDockWindow` | Floating pinned dock window. |
+| `UseOwnerForFloatingWindows` | `DockSettings.UseOwnerForFloatingWindows` | Assign owners to floating windows. |
+| `EnableWindowMagnetism` | `DockSettings.EnableWindowMagnetism` | Snap floating windows. |
+| `WindowMagnetDistance` | `DockSettings.WindowMagnetDistance` | Snap distance in pixels. |
+| `BringWindowsToFrontOnDrag` | `DockSettings.BringWindowsToFrontOnDrag` | Activate windows when dragging. |
+| `SelectorEnabled` | `DockSettings.SelectorEnabled` | Toggle selector overlay. |
+| `DocumentSelectorKeyGesture` | `DockSettings.DocumentSelectorKeyGesture` | Document selector shortcut. |
+| `ToolSelectorKeyGesture` | `DockSettings.ToolSelectorKeyGesture` | Tool selector shortcut. |
+| `CommandBarMergingEnabled` | `DockSettings.CommandBarMergingEnabled` | Enable command bar merging. |
+| `CommandBarMergingScope` | `DockSettings.CommandBarMergingScope` | Merge scope for command bars. |
 
 ## Hide on close
 

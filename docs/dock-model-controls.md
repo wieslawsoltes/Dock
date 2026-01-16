@@ -14,6 +14,7 @@ when creating your own docks and documents.
 | --- | --- |
 | `IDockDock` | Basic dock panel that can optionally fill the remaining space with the last child. |
 | `IDocument` | Represents a document item. Used for files or editor tabs. |
+| `IMdiDocument` | Stores MDI window bounds, state, and stacking order for classic MDI layouts. |
 | `IDocumentContent` | Document containing arbitrary `Content`. |
 | `IDocumentDock` | Dock that hosts documents and exposes commands to create them. |
 | `IDocumentDockContent` | Dock that creates documents from a `DocumentTemplate`. |
@@ -23,19 +24,20 @@ when creating your own docks and documents.
 | `IGridDock` | Dock that uses `Grid` layout defined by `ColumnDefinitions` and `RowDefinitions`. |
 | `IWrapDock` | Dock built on `WrapPanel` exposing `Orientation`. |
 | `IUniformGridDock` | Dock with equally sized cells configured by `Rows` and `Columns`. |
+| `ISplitViewDock` | Dock that hosts a collapsible pane and a main content area. |
 | `IProportionalDockSplitter` | Splitter element between proportional dock children. |
 | `IGridDockSplitter` | Splitter used inside a grid dock to resize rows or columns. |
 | `IRootDock` | Top level container responsible for pinned docks and windows. |
 | `ITool` | Basic interface for tool panes such as explorers or output views. |
 | `IToolContent` | Tool containing arbitrary `Content`. |
-| `IToolDock` | Dock that hosts tools and supports auto hide behaviour. |
+| `IToolDock` | Dock that hosts tools and supports auto-hide behavior. |
 
 The following sections provide guidelines on applying these contracts in your projects.
 
 ## IDockDock
 
 Use `IDockDock` for dock panels that hold a collection of child dockables.
-The `LastChildFill` property mirrors the behaviour of Avalonia's `DockPanel`.
+The `LastChildFill` property mirrors the behavior of Avalonia's `DockPanel`.
 Set it to `true` when the final child should consume all remaining space.
 Typically this is combined with one or more `ProportionalDock` instances
 that split the available area.
@@ -49,6 +51,13 @@ provide the object through its `Content` property. The MVVM and ReactiveUI
 libraries include base classes that implement these interfaces and also
 raise change notifications.
 
+## IMdiDocument
+
+`IMdiDocument` stores classic MDI window state for documents when an
+`IDocumentDock` is configured to use an MDI layout. It exposes window bounds,
+minimized or maximized state, and a Z-order index so documents can be arranged
+and restored consistently.
+
 ## IDocumentDock and IDocumentDockContent
 
 `IDocumentDock` is a specialized dock that maintains a tab strip of
@@ -56,6 +65,10 @@ documents. It contains optional commands for creating new documents
 and allows dragging the host window via the tab area when
 `EnableWindowDrag` is `true`. `TabsLayout` determines where the tabs
 are placed.
+
+`IDocumentDock.LayoutMode` switches between tabbed documents and classic MDI
+windows. When MDI mode is enabled the dock exposes commands for cascade and
+tile operations, and documents implement `IMdiDocument` to store window state.
 
 `DocumentDock` also exposes a `DocumentFactory` delegate that is used by
 the `CreateDocument` command. When assigned, this factory is invoked to
@@ -87,6 +100,10 @@ which can disable dragging for fixed layouts. When `ResizePreview` is
 true the splitter previews the drag and applies the size changes once
 the pointer is released. The splitter is highlighted while dragging.
 
+## ISplitViewDock
+
+`ISplitViewDock` models a dock with two regions: a collapsible pane and a main content area. It mirrors Avalonia's `SplitView` behavior and exposes properties such as `DisplayMode`, `PanePlacement`, `IsPaneOpen`, `OpenPaneLength`, and `CompactPaneLength`. Use `PaneDockable` for the pane content and `ContentDockable` for the main content area.
+
 ## IRootDock
 
 The root dock owns the entire layout including pinned tools and
@@ -106,7 +123,7 @@ and can be pinned to the sides of the layout.
 ## IToolDock
 
 `IToolDock` represents a panel that manages tool dockables. It can
-auto hide its content and exposes an `Alignment` property for
+auto-hide its content and exposes an `Alignment` property for
 positioning. When `AutoHide` is enabled the dock collapses once the
 pointer leaves the area. `GripMode` controls if the user can resize
 the dock by dragging its border.
@@ -122,4 +139,3 @@ Factory classes found in `Dock.Model.Mvvm` and `Dock.Model.ReactiveUI`
 create these objects and wire them together. Understanding the
 contracts listed on this page will help you customize the layout and
 extend Dock with your own view models.
-

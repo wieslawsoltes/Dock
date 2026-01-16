@@ -26,7 +26,7 @@ Displayed inside a `DocumentDock` to render documents.  The control automaticall
 
 ### ToolDockControl
 
-Used within a `ToolDock` to host tools or side bars.  This control handles layout grip behaviour and interacts with `PinnedDockControl` when tools are pinned or auto-hidden.
+Used within a `ToolDock` to host tools or sidebars. This control handles layout grip behavior and interacts with `PinnedDockControl` when tools are pinned or auto-hidden.
 
 ## Factories
 
@@ -47,7 +47,7 @@ Wraps the same API with ReactiveUI types.  Commands become `ReactiveCommand` and
 A typical initialization sequence looks like:
 
 ```csharp
-var factory = new DockFactory();
+var factory = new Dock.Model.Mvvm.Factory();
 var layout = factory.CreateLayout();
 factory.InitLayout(layout);
 dockControl.Factory = factory;
@@ -67,7 +67,7 @@ This allows users to keep their preferred window arrangement between sessions.
 
 ```csharp
 await using var stream = File.Create(path);
-_serializer.Save(layout, stream);
+_serializer.Save(stream, layout);
 ```
 
 Likewise you can restore a saved layout and reinitialise the factory:
@@ -80,4 +80,3 @@ dockControl.Layout = layout;
 ```
 
 For an overview of all guides see the [documentation index](README.md).
-

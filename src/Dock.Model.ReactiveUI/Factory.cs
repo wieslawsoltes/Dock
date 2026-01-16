@@ -104,6 +104,9 @@ public class Factory : FactoryBase
     public override IDocumentDock CreateDocumentDock() => new DocumentDock();
 
     /// <inheritdoc/>
+    public override ISplitViewDock CreateSplitViewDock() => new SplitViewDock();
+
+    /// <inheritdoc/>
     public override IDockWindow CreateDockWindow() => new DockWindow();
 
     /// <inheritdoc/>

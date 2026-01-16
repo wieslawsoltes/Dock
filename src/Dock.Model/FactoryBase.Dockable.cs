@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -51,18 +50,23 @@ public abstract partial class FactoryBase
             return;
         }
 
+        var wasActive = dock.ActiveDockable == dockable;
+
         RemoveVisibleDockable(dock, dockable);
         OnDockableRemoved(dockable);
 
-        var indexActiveDockable = index > 0 ? index - 1 : 0;
-        if (dock.VisibleDockables.Count > 0)
+        if (wasActive)
         {
-            var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
-            dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
-        }
-        else
-        {
-            dock.ActiveDockable = null;
+            var indexActiveDockable = index > 0 ? index - 1 : 0;
+            if (dock.VisibleDockables.Count > 0)
+            {
+                var nextActiveDockable = dock.VisibleDockables[indexActiveDockable];
+                dock.ActiveDockable = nextActiveDockable is not ISplitter ? nextActiveDockable : null;
+            }
+            else
+            {
+                dock.ActiveDockable = null;
+            }
         }
 
         // Clean up orphaned splitters
@@ -459,20 +463,33 @@ public abstract partial class FactoryBase
     /// <inheritdoc/>
     public void HidePreviewingDockables(IRootDock rootDock)
     {
+        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: true);
+    }
+
+    private void HidePreviewingDockablesInternal(IRootDock rootDock, bool respectKeepVisible)
+    {
         if (rootDock.PinnedDock?.VisibleDockables is null)
         {
             return;
         }
 
-        foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+        var dockables = rootDock.PinnedDock.VisibleDockables.ToList();
+        foreach (var dockable in dockables)
         {
+            if (respectKeepVisible && dockable.KeepPinnedDockableVisible)
+            {
+                continue;
+            }
+
             dockable.Owner = dockable.OriginalOwner;
             dockable.OriginalOwner = null;
+            RemoveVisibleDockable(rootDock.PinnedDock, dockable);
         }
 
-        RemoveAllVisibleDockables(rootDock.PinnedDock);
-
-        rootDock.PinnedDock = null;
+        if (rootDock.PinnedDock.VisibleDockables?.Count == 0)
+        {
+            rootDock.PinnedDock = null;
+        }
     }
 
     /// <inheritdoc/>
@@ -484,7 +501,7 @@ public abstract partial class FactoryBase
             return;
         }
 
-        HidePreviewingDockables(rootDock);
+        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
 
         var owner = dockable.Owner;
         
@@ -505,11 +522,17 @@ public abstract partial class FactoryBase
 
         RemoveAllVisibleDockables(rootDock.PinnedDock);
 
-        // Only set OriginalOwner if the dockable comes from a tool dock.
-        // For dockables that are pinned as part of the initial layout (owner is typically the root),
-        // keep OriginalOwner null so that unpin actions are correctly gated/disabled by the UI.
-        dockable.OriginalOwner = owner is IToolDock ? owner : null;
-        AddVisibleDockable(rootDock.PinnedDock!, dockable);
+        if (rootDock.PinnedDock.VisibleDockables?.Contains(dockable) != true)
+        {
+            if (dockable.OriginalOwner is null && owner is IToolDock)
+            {
+                // Only set OriginalOwner if the dockable comes from a tool dock.
+                // For dockables pinned as part of the initial layout (owner is typically the root),
+                // keep OriginalOwner null so that unpin actions are correctly gated/disabled by the UI.
+                dockable.OriginalOwner = owner;
+            }
+            AddVisibleDockable(rootDock.PinnedDock!, dockable);
+        }
  
         InitDockable(rootDock.PinnedDock, rootDock);
     }
@@ -537,6 +560,28 @@ public abstract partial class FactoryBase
         }
 
         return Alignment.Unset;
+    }
+
+    private void UpdatePinnedBoundsFromVisible(IDockable dockable, IDock owner)
+    {
+        dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            owner.GetVisibleBounds(out _, out _, out width, out height);
+        }
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            return;
+        }
+
+        dockable.SetPinnedBounds(0, 0, width, height);
+    }
+
+    private static bool IsValidSize(double value)
+    {
+        return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
     }
 
     /// <inheritdoc/>
@@ -568,6 +613,7 @@ public abstract partial class FactoryBase
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
+                    UpdatePinnedBoundsFromVisible(dockable, toolDock);
 
                     switch (alignment)
                     {
@@ -717,7 +763,7 @@ public abstract partial class FactoryBase
                         var targetOwner = dockable.OriginalOwner as IDock;
 
                         // Close preview and reset Owner/OriginalOwner for all previewed items.
-                        HidePreviewingDockables(rootDock);
+                        HidePreviewingDockablesInternal(rootDock, respectKeepVisible: false);
 
                         if (targetOwner is null)
                         {
@@ -1118,6 +1164,7 @@ public abstract partial class FactoryBase
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
             targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+            targetDock.LayoutMode = sourceDock.LayoutMode;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {
@@ -1146,6 +1193,21 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc/>
     public void SetDocumentDockTabsLayoutRight(IDockable dockable) => SetDocumentDockTabsLayout(dockable, DocumentTabLayout.Right);
+
+    /// <inheritdoc/>
+    public virtual void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode)
+    {
+        if (dockable is IDocumentDock documentDock)
+        {
+            documentDock.LayoutMode = layoutMode;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SetDocumentDockLayoutModeTabbed(IDockable dockable) => SetDocumentDockLayoutMode(dockable, DocumentLayoutMode.Tabbed);
+
+    /// <inheritdoc/>
+    public void SetDocumentDockLayoutModeMdi(IDockable dockable) => SetDocumentDockLayoutMode(dockable, DocumentLayoutMode.Mdi);
     
     /// <inheritdoc/>
     public virtual void NewVerticalDocumentDock(IDockable dockable)
@@ -1164,6 +1226,7 @@ public abstract partial class FactoryBase
             targetDock.Id = sourceDock.Id;
             targetDock.CanCreateDocument = sourceDock.CanCreateDocument;
             targetDock.EnableWindowDrag = sourceDock.EnableWindowDrag;
+            targetDock.LayoutMode = sourceDock.LayoutMode;
 
             if (sourceDock is IDocumentDockContent sdc && targetDock is IDocumentDockContent tdc)
             {
@@ -1330,13 +1393,43 @@ public abstract partial class FactoryBase
         UpdateIsEmpty(dock);
     }
 
+    private static bool IsDockableEmpty(IDockable? dockable)
+    {
+        return dockable is null
+               || dockable is ISplitter
+               || dockable is IDock { IsEmpty: true, IsCollapsable: true };
+    }
+
+    private static bool IsSplitViewDockEmpty(ISplitViewDock splitViewDock)
+    {
+        var visibleDockables = splitViewDock.VisibleDockables;
+        if (visibleDockables is { Count: > 0 } &&
+            visibleDockables.Any(dockable => !IsDockableEmpty(dockable)))
+        {
+            return false;
+        }
+
+        return IsSplitViewDockContentEmpty(splitViewDock);
+    }
+
+    private static bool IsSplitViewDockContentEmpty(ISplitViewDock splitViewDock)
+    {
+        return IsDockableEmpty(splitViewDock.PaneDockable)
+               && IsDockableEmpty(splitViewDock.ContentDockable);
+    }
+
     private void UpdateIsEmpty(IDock dock)
     {
         bool oldIsEmpty = dock.IsEmpty;
+        var visibleDockables = dock.VisibleDockables;
 
-        var newIsEmpty = dock.VisibleDockables == null
-                         || dock.VisibleDockables?.Count == 0
-                         || dock.VisibleDockables!.All(x => x is IDock { IsEmpty: true, IsCollapsable: true } or ISplitter);
+        var newIsEmpty = dock switch
+        {
+            ISplitViewDock splitViewDock => IsSplitViewDockEmpty(splitViewDock),
+            _ => visibleDockables == null
+                 || visibleDockables.Count == 0
+                 || visibleDockables.All(IsDockableEmpty)
+        };
 
         if (oldIsEmpty != newIsEmpty)
         {

@@ -137,4 +137,84 @@ public class DockControlsTests
         Assert.True(template.Match(new TextBlock()));
         Assert.False(template.Match("text"));
     }
+
+    [AvaloniaFact]
+    public void SplitViewDock_Defaults()
+    {
+        var dock = new SplitViewDock();
+        Assert.Equal(48.0, dock.CompactPaneLength);
+        Assert.Equal(320.0, dock.OpenPaneLength);
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.Overlay, dock.DisplayMode);
+        Assert.False(dock.IsPaneOpen);
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Left, dock.PanePlacement);
+        Assert.False(dock.UseLightDismissOverlayMode);
+        Assert.Null(dock.PaneDockable);
+        Assert.Null(dock.ContentDockable);
+    }
+
+    [AvaloniaFact]
+    public void SplitViewDock_Set_Properties()
+    {
+        var dock = new SplitViewDock
+        {
+            CompactPaneLength = 64,
+            OpenPaneLength = 256,
+            DisplayMode = Dock.Model.Core.SplitViewDisplayMode.CompactOverlay,
+            IsPaneOpen = true,
+            PanePlacement = Dock.Model.Core.SplitViewPanePlacement.Right,
+            UseLightDismissOverlayMode = true
+        };
+        
+        Assert.Equal(64.0, dock.CompactPaneLength);
+        Assert.Equal(256.0, dock.OpenPaneLength);
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.CompactOverlay, dock.DisplayMode);
+        Assert.True(dock.IsPaneOpen);
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Right, dock.PanePlacement);
+        Assert.True(dock.UseLightDismissOverlayMode);
+    }
+
+    [AvaloniaFact]
+    public void SplitViewDock_Set_PaneDockable_And_ContentDockable()
+    {
+        var factory = new Factory();
+        var tool = factory.CreateTool();
+        var documentDock = factory.CreateDocumentDock();
+        
+        var splitViewDock = new SplitViewDock
+        {
+            PaneDockable = tool,
+            ContentDockable = documentDock
+        };
+        
+        Assert.Same(tool, splitViewDock.PaneDockable);
+        Assert.Same(documentDock, splitViewDock.ContentDockable);
+    }
+
+    [AvaloniaFact]
+    public void SplitViewDock_All_DisplayModes()
+    {
+        var dock1 = new SplitViewDock { DisplayMode = Dock.Model.Core.SplitViewDisplayMode.Inline };
+        var dock2 = new SplitViewDock { DisplayMode = Dock.Model.Core.SplitViewDisplayMode.CompactInline };
+        var dock3 = new SplitViewDock { DisplayMode = Dock.Model.Core.SplitViewDisplayMode.Overlay };
+        var dock4 = new SplitViewDock { DisplayMode = Dock.Model.Core.SplitViewDisplayMode.CompactOverlay };
+        
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.Inline, dock1.DisplayMode);
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.CompactInline, dock2.DisplayMode);
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.Overlay, dock3.DisplayMode);
+        Assert.Equal(Dock.Model.Core.SplitViewDisplayMode.CompactOverlay, dock4.DisplayMode);
+    }
+
+    [AvaloniaFact]
+    public void SplitViewDock_All_PanePlacements()
+    {
+        var dock1 = new SplitViewDock { PanePlacement = Dock.Model.Core.SplitViewPanePlacement.Left };
+        var dock2 = new SplitViewDock { PanePlacement = Dock.Model.Core.SplitViewPanePlacement.Right };
+        var dock3 = new SplitViewDock { PanePlacement = Dock.Model.Core.SplitViewPanePlacement.Top };
+        var dock4 = new SplitViewDock { PanePlacement = Dock.Model.Core.SplitViewPanePlacement.Bottom };
+        
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Left, dock1.PanePlacement);
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Right, dock2.PanePlacement);
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Top, dock3.PanePlacement);
+        Assert.Equal(Dock.Model.Core.SplitViewPanePlacement.Bottom, dock4.PanePlacement);
+    }
 }

@@ -1,6 +1,6 @@
 # Custom Dock Themes
 
-This guide walks through creating a theme file from scratch. Use it when the built‑in Fluent and Simple themes do not match your application branding.
+This guide walks through creating a theme file from scratch. Use it when the built-in Fluent and Simple themes do not match your application branding.
 
 ## 1. Create an accent dictionary
 
@@ -17,7 +17,7 @@ Define brushes and colors in a new `.axaml` file:
 </ResourceDictionary>
 ```
 
-`StreamGeometry` resources like `DockIconCloseGeometry` let you replace the built in vector icons.
+`StreamGeometry` resources like `DockIconCloseGeometry` let you replace the built-in vector icons.
 
 ## 2. Merge Dock control styles
 

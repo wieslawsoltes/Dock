@@ -10,7 +10,7 @@ namespace Dock.Model.Mvvm.Core;
 /// Dockable base class.
 /// </summary>
 [DataContract(IsReference = true)]
-public abstract class DockableBase : ReactiveBase, IDockable
+public abstract class DockableBase : ReactiveBase, IDockable, IDockSelectorInfo
 {
     private readonly TrackingAdapter _trackingAdapter;
     private string _id = string.Empty;
@@ -31,6 +31,7 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _collapsedProportion = double.NaN;
     private bool _canClose = true;
     private bool _canPin = true;
+    private bool _keepPinnedDockableVisible;
     private bool _canFloat = true;
     private bool _canDrag = true;
     private bool _canDrop = true;
@@ -40,6 +41,8 @@ public abstract class DockableBase : ReactiveBase, IDockable
     private double _maxHeight = double.NaN;
     private bool _isModified;
     private string? _dockGroup;
+    private bool _showInSelector = true;
+    private string? _selectorTitle;
 
     /// <summary>
     /// Initializes new instance of the <see cref="DockableBase"/> class.
@@ -228,6 +231,14 @@ public abstract class DockableBase : ReactiveBase, IDockable
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool KeepPinnedDockableVisible
+    {
+        get => _keepPinnedDockableVisible;
+        set => SetProperty(ref _keepPinnedDockableVisible, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
     public bool CanFloat
     {
         get => _canFloat;
@@ -264,6 +275,22 @@ public abstract class DockableBase : ReactiveBase, IDockable
     {
         get => _dockGroup;
         set => SetProperty(ref _dockGroup, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public bool ShowInSelector
+    {
+        get => _showInSelector;
+        set => SetProperty(ref _showInSelector, value);
+    }
+
+    /// <inheritdoc/>
+    [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    public string? SelectorTitle
+    {
+        get => _selectorTitle;
+        set => SetProperty(ref _selectorTitle, value);
     }
 
     /// <inheritdoc/>

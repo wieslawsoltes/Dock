@@ -294,7 +294,7 @@ When using `Dock.Model.Inpc`, you need to:
 
 3. **Factory Setup**: Use `Dock.Model.Inpc.Factory` as your base factory class.
 
-4. **Context and Dockable Locators**: For serialization support, populate the `ContextLocator` and `DockableLocator` dictionaries in your factory's `InitLayout` method:
+4. **Context and Dockable Locators**: To reattach contexts after loading layouts (and to enable id-based lookups), populate the `ContextLocator` and `DockableLocator` dictionaries in your factory's `InitLayout` method:
 
    ```csharp
    public override void InitLayout(IDockable layout)

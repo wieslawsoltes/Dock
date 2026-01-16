@@ -5,6 +5,7 @@ MVVM frameworks:
 
 - `Dock.Model.Avalonia` - Plain Avalonia version with minimal dependencies
 - `Dock.Model.Mvvm` - MVVM implementation with `INotifyPropertyChanged` helpers
+- `Dock.Model.CaliburMicro` - Caliburn.Micro implementation with `PropertyChangedBase`
 - `Dock.Model.Inpc` - Basic `INotifyPropertyChanged` implementation without MVVM commands
 - `Dock.Model.ReactiveUI` - ReactiveUI integration with observables and commands
 - `Dock.Model.ReactiveProperty` - ReactiveProperty framework integration  
@@ -16,7 +17,7 @@ You can create your own implementation when these do not fit your application or
 
 If you only need basic property change notifications without full MVVM command support, use `Dock.Model.Inpc`:
 
-```powershell
+```bash
 dotnet add package Dock.Model.Inpc
 ```
 
@@ -26,7 +27,7 @@ This package provides `INotifyPropertyChanged` implementations without the addit
 
 1. **Create a new class library** and add a reference to `Dock.Model`.
 
-2. **Set up View Locator (Required)** - All Dock implementations require a view locator:
+2. **Set up a view locator (when using DataTemplates)** - If your dockables rely on view model to view mapping, register a view locator:
 
    ```csharp
    using System;
@@ -100,7 +101,7 @@ public class MyDockable : DockableBase, INotifyPropertyChanged
 ```
 
 Your factory can then create instances of `MyDockable` and initialize them using
-`InitLayout` just like the built‑in MVVM and ReactiveUI versions.  The
+`InitLayout` just like the built-in MVVM and ReactiveUI versions.  The
 interfaces and helper methods in `FactoryBase` remain the same regardless of the
 underlying framework.
 

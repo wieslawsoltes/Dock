@@ -5,9 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.VisualTree;
-
-using System.Runtime.InteropServices;
 using Dock.Avalonia.Internal;
 using Avalonia.Layout;
 using Avalonia.Styling;
@@ -194,20 +191,24 @@ public class DocumentTabStrip : TabStrip
                 if (source == this)
                     return true;
 
-                var allow = source is { } s &&
-                            !(s is DocumentTabStripItem) &&
-                            !(s is Button) &&
-                            !WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s) &&
-                            !WindowDragHelper.IsChildOfType<Button>(this, s);
+                // Preserve original behavior when source is null by evaluating override based on layout state.
+                var s = source;
 
-                if (!allow &&
+                var isButtonRelated = s is not null && WindowDragHelper.IsChildOfType<Button>(this, s);
+                var isTabItemRelated = s is DocumentTabStripItem || (s is not null && WindowDragHelper.IsChildOfType<DocumentTabStripItem>(this, s));
+
+                // Base rule: allow drag when not interacting with a tab item or any button (including descendants).
+                var baseAllow = s is not null && !isTabItemRelated && !isButtonRelated;
+
+                // Override: if there is only one item and the last dockable cannot be closed, allow drag
+                // BUT do not allow this override when the interaction is on/inside a Button.
+                var overrideAllow =
+                    !baseAllow &&
+                    !isButtonRelated &&
                     Items is { } items && items.Count == 1 &&
-                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false })
-                {
-                    allow = true;
-                }
+                    DataContext is Dock.Model.Core.IDock { CanCloseLastDockable: false };
 
-                return allow;
+                return baseAllow || overrideAllow;
             });
     }
 

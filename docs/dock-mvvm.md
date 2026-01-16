@@ -23,14 +23,14 @@ The following steps walk you through creating a very small application that uses
 
 2. **Install the Dock packages**
 
-   ```powershell
+   ```bash
    dotnet add package Dock.Avalonia
    dotnet add package Dock.Model.Mvvm
    dotnet add package Dock.Avalonia.Themes.Fluent
    ```
 
    **Optional packages:**
-   ```powershell
+   ```bash
    # For serialization (choose one):
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
@@ -243,9 +243,10 @@ The following steps walk you through creating a very small application that uses
    ```
 
    `InitLayout` configures services such as `ContextLocator` and
-   `DockableLocator` which the view models use to resolve their
-   corresponding views. Override this method in your factory if you need
-   to register additional mappings or perform custom initialization logic.
+   `DockableLocator`. Use these to reattach `Context` objects after loading
+   layouts or to enable id-based lookups via `GetDockable`. Override this
+   method in your factory if you need to register additional mappings or
+   perform custom initialization logic.
 
 5. **Add `DockControl` to `MainWindow.axaml`**
 

@@ -1,6 +1,7 @@
 // Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
@@ -23,6 +24,8 @@ namespace Dock.Avalonia.Controls;
 [TemplatePart("PART_PinnedDockSplitter", typeof(GridSplitter))]
 public class PinnedDockControl : TemplatedControl
 {
+    private const double BoundsEpsilon = 0.5;
+
     /// <summary>
     /// Define the <see cref="PinnedDockAlignment"/> property.
     /// </summary>
@@ -42,6 +45,10 @@ public class PinnedDockControl : TemplatedControl
     private GridSplitter? _pinnedDockSplitter;
     private PinnedDockWindow? _window;
     private Window? _ownerWindow;
+    private IDockable? _lastPinnedDockable;
+    private double _lastPinnedWidth = double.NaN;
+    private double _lastPinnedHeight = double.NaN;
+    private bool _isResizingPinnedDock;
 
     static PinnedDockControl()
     {
@@ -109,28 +116,35 @@ public class PinnedDockControl : TemplatedControl
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        ApplyPinnedDockSize();
     }
 
     /// <inheritdoc/>
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+        LayoutUpdated -= OnLayoutUpdated;
+        this.AttachedToVisualTree -= OnAttached;
+        this.DetachedFromVisualTree -= OnDetached;
+        DetachSplitterHandlers();
         _pinnedDockGrid = e.NameScope.Get<Grid>("PART_PinnedDockGrid");
         _pinnedDock = e.NameScope.Get<ContentControl>("PART_PinnedDock");
         _pinnedDockSplitter = e.NameScope.Find<GridSplitter>("PART_PinnedDockSplitter");
+        AttachSplitterHandlers();
         UpdateGrid();
 
-        if (DockSettings.UsePinnedDockWindow)
-        {
-            LayoutUpdated += OnLayoutUpdated;
-            this.AttachedToVisualTree += OnAttached;
-            this.DetachedFromVisualTree += OnDetached;
-        }
+        LayoutUpdated += OnLayoutUpdated;
+        this.AttachedToVisualTree += OnAttached;
+        this.DetachedFromVisualTree += OnDetached;
     }
 
     private void OnAttached(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        UpdateWindow();
+        if (DockSettings.UsePinnedDockWindow)
+        {
+            UpdateWindow();
+        }
     }
 
     private void OnDetached(object? sender, VisualTreeAttachmentEventArgs e)
@@ -139,10 +153,13 @@ public class PinnedDockControl : TemplatedControl
         LayoutUpdated -= OnLayoutUpdated;
         this.AttachedToVisualTree -= OnAttached;
         this.DetachedFromVisualTree -= OnDetached;
+        DetachSplitterHandlers();
     }
 
     private void OnLayoutUpdated(object? sender, EventArgs e)
     {
+        ApplyPinnedDockSize();
+        UpdatePinnedDockableBounds();
         UpdateWindow();
     }
 
@@ -227,6 +244,224 @@ public class PinnedDockControl : TemplatedControl
 
     }
 
+    private void ApplyPinnedDockSize()
+    {
+        if (_isResizingPinnedDock)
+        {
+            return;
+        }
+
+        if (_pinnedDockGrid is null || DataContext is not IRootDock rootDock)
+        {
+            return;
+        }
+
+        var dockable = GetPinnedDockable(rootDock);
+        if (dockable is null)
+        {
+            return;
+        }
+
+        dockable.GetPinnedBounds(out _, out _, out var width, out var height);
+
+        switch (PinnedDockAlignment)
+        {
+            case Alignment.Unset:
+            case Alignment.Left:
+                if (!IsValidSize(width))
+                {
+                    return;
+                }
+                if (IsColumnSizeApplied(_pinnedDockGrid.ColumnDefinitions, 0, width))
+                {
+                    return;
+                }
+                SetColumnSize(_pinnedDockGrid.ColumnDefinitions, 0, width);
+                _lastPinnedDockable = dockable;
+                _lastPinnedWidth = width;
+                break;
+            case Alignment.Right:
+                if (!IsValidSize(width))
+                {
+                    return;
+                }
+                if (IsColumnSizeApplied(_pinnedDockGrid.ColumnDefinitions, 2, width))
+                {
+                    return;
+                }
+                SetColumnSize(_pinnedDockGrid.ColumnDefinitions, 2, width);
+                _lastPinnedDockable = dockable;
+                _lastPinnedWidth = width;
+                break;
+            case Alignment.Top:
+                if (!IsValidSize(height))
+                {
+                    return;
+                }
+                if (IsRowSizeApplied(_pinnedDockGrid.RowDefinitions, 0, height))
+                {
+                    return;
+                }
+                SetRowSize(_pinnedDockGrid.RowDefinitions, 0, height);
+                _lastPinnedDockable = dockable;
+                _lastPinnedHeight = height;
+                break;
+            case Alignment.Bottom:
+                if (!IsValidSize(height))
+                {
+                    return;
+                }
+                if (IsRowSizeApplied(_pinnedDockGrid.RowDefinitions, 2, height))
+                {
+                    return;
+                }
+                SetRowSize(_pinnedDockGrid.RowDefinitions, 2, height);
+                _lastPinnedDockable = dockable;
+                _lastPinnedHeight = height;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void UpdatePinnedDockableBounds()
+    {
+        if (_pinnedDock is null || DataContext is not IRootDock rootDock)
+        {
+            return;
+        }
+
+        var dockable = GetPinnedDockable(rootDock);
+        if (dockable is null)
+        {
+            return;
+        }
+
+        dockable.GetPinnedBounds(out _, out _, out var storedWidth, out var storedHeight);
+
+        var hasStoredBounds = IsValidSize(storedWidth) && IsValidSize(storedHeight);
+        if (!_isResizingPinnedDock && hasStoredBounds)
+        {
+            return;
+        }
+
+        var width = _pinnedDock.Bounds.Width;
+        var height = _pinnedDock.Bounds.Height;
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            return;
+        }
+
+        if (AreClose(width, storedWidth) && AreClose(height, storedHeight))
+        {
+            return;
+        }
+
+        dockable.SetPinnedBounds(0, 0, width, height);
+        _lastPinnedDockable = dockable;
+        _lastPinnedWidth = width;
+        _lastPinnedHeight = height;
+    }
+
+    private static IDockable? GetPinnedDockable(IRootDock rootDock)
+    {
+        return rootDock.PinnedDock?.VisibleDockables?.FirstOrDefault();
+    }
+
+    private static void SetColumnSize(ColumnDefinitions definitions, int index, double size)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return;
+        }
+
+        definitions[index].Width = new GridLength(size, GridUnitType.Pixel);
+    }
+
+    private static void SetRowSize(RowDefinitions definitions, int index, double size)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return;
+        }
+
+        definitions[index].Height = new GridLength(size, GridUnitType.Pixel);
+    }
+
+    private static bool IsColumnSizeApplied(ColumnDefinitions definitions, int index, double size)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return false;
+        }
+
+        var length = definitions[index].Width;
+        return length.IsAbsolute && AreClose(length.Value, size);
+    }
+
+    private static bool IsRowSizeApplied(RowDefinitions definitions, int index, double size)
+    {
+        if (index < 0 || index >= definitions.Count)
+        {
+            return false;
+        }
+
+        var length = definitions[index].Height;
+        return length.IsAbsolute && AreClose(length.Value, size);
+    }
+
+    private static bool IsValidSize(double size)
+    {
+        return !double.IsNaN(size) && !double.IsInfinity(size) && size > 0;
+    }
+
+    private static bool AreClose(double left, double right)
+    {
+        return Math.Abs(left - right) <= BoundsEpsilon;
+    }
+
+    private void AttachSplitterHandlers()
+    {
+        if (_pinnedDockSplitter is null)
+        {
+            return;
+        }
+
+        _pinnedDockSplitter.DragStarted += OnPinnedDockSplitterDragStarted;
+        _pinnedDockSplitter.DragDelta += OnPinnedDockSplitterDragDelta;
+        _pinnedDockSplitter.DragCompleted += OnPinnedDockSplitterDragCompleted;
+    }
+
+    private void DetachSplitterHandlers()
+    {
+        if (_pinnedDockSplitter is null)
+        {
+            return;
+        }
+
+        _pinnedDockSplitter.DragStarted -= OnPinnedDockSplitterDragStarted;
+        _pinnedDockSplitter.DragDelta -= OnPinnedDockSplitterDragDelta;
+        _pinnedDockSplitter.DragCompleted -= OnPinnedDockSplitterDragCompleted;
+    }
+
+    private void OnPinnedDockSplitterDragStarted(object? sender, VectorEventArgs e)
+    {
+        _isResizingPinnedDock = true;
+        UpdatePinnedDockableBounds();
+    }
+
+    private void OnPinnedDockSplitterDragDelta(object? sender, VectorEventArgs e)
+    {
+        UpdatePinnedDockableBounds();
+    }
+
+    private void OnPinnedDockSplitterDragCompleted(object? sender, VectorEventArgs e)
+    {
+        UpdatePinnedDockableBounds();
+        _isResizingPinnedDock = false;
+    }
+
     private void OwnerWindow_PositionChanged(object? sender, PixelPointEventArgs e)
     {
         CloseWindow();
@@ -249,8 +484,36 @@ public class PinnedDockControl : TemplatedControl
                point.Y <= _pinnedDockGrid.Bounds.Height;
     }
 
+    private bool ShouldKeepPinnedDockableVisible()
+    {
+        if (DataContext is not IRootDock rootDock)
+        {
+            return false;
+        }
+
+        if (rootDock.PinnedDock?.VisibleDockables is null)
+        {
+            return false;
+        }
+
+        foreach (var dockable in rootDock.PinnedDock.VisibleDockables)
+        {
+            if (dockable.KeepPinnedDockableVisible)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void OwnerWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        if (ShouldKeepPinnedDockableVisible())
+        {
+            return;
+        }
+
         if (!IsPointerInsidePinnedDock(e))
         {
             CloseWindow();
@@ -259,7 +522,11 @@ public class PinnedDockControl : TemplatedControl
 
     private void OwnerWindow_Deactivated(object? sender, EventArgs e)
     {
+        if (ShouldKeepPinnedDockableVisible())
+        {
+            return;
+        }
+
         CloseWindow();
     }
 }
-

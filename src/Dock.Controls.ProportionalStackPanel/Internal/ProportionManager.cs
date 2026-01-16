@@ -110,12 +110,14 @@ internal class ProportionManager
 
     private void ApplyProportions()
     {
+        var hasCollapsedChildren = _childInfos.Any(info => info.IsCollapsed);
+
         foreach (var info in _childInfos)
         {
             var clampedProportion = _constraintHandler.ClampProportion(info.Control, info.TargetProportion);
             ProportionalStackPanel.SetProportion(info.Control, clampedProportion);
             
-            if (!info.IsCollapsed)
+            if (!info.IsCollapsed && !hasCollapsedChildren)
             {
                 ProportionalStackPanel.SetCollapsedProportion(info.Control, clampedProportion);
             }

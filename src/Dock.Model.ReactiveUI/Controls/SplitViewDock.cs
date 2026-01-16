@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Core;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -26,34 +27,42 @@ public partial class SplitViewDock : DockBase, ISplitViewDock
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double CompactPaneLength { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial SplitViewDisplayMode DisplayMode { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool IsPaneOpen { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial double OpenPaneLength { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial SplitViewPanePlacement PanePlacement { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial bool UseLightDismissOverlayMode { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial IDockable? PaneDockable { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial IDockable? ContentDockable { get; set; }
 
     /// <inheritdoc/>

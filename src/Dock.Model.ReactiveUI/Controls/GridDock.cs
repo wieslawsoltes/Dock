@@ -3,6 +3,7 @@
 using System.Runtime.Serialization;
 using Dock.Model.Controls;
 using Dock.Model.ReactiveUI.Core;
+using ReactiveUI.SourceGenerators;
 
 namespace Dock.Model.ReactiveUI.Controls;
 
@@ -14,9 +15,11 @@ public partial class GridDock : DockBase, IGridDock
 {
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial string? ColumnDefinitions { get; set; }
 
     /// <inheritdoc/>
     [DataMember(IsRequired = false, EmitDefaultValue = true)]
+    [Reactive]
     public partial string? RowDefinitions { get; set; }
 }

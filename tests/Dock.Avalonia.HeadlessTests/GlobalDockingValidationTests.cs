@@ -170,10 +170,9 @@ public class GlobalDockingValidationTests
 
         var dockManager = CreateDockManager();
         var result = dockManager.ValidateTool(source, target, DragAction.Move, DockOperation.Fill, false);
-        
-        // This should still pass at the DockManager level since it doesn't check the per-dock setting
-        // The per-dock setting is enforced at the UI level in ValidateGlobal methods
-        Assert.True(result, "DockManager.ValidateTool doesn't check per-dock global docking setting - that's done at UI level");
+
+        // Manager now honors EnableGlobalDocking inheritance; per-dock disable should reject.
+        Assert.False(result, "Global docking disabled on target dock must be rejected");
     }
 
     #endregion

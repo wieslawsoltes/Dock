@@ -68,6 +68,11 @@ public class DockService : IDockService
         var targetDockable = GetDockable(targetDock);
         if (targetDockable is null)
         {
+            if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDock))
+            {
+                return false;
+            }
+
             // For global docking operations (no specific target dockable), use global validation
             // This allows non-grouped dockables to dock anywhere globally
             if (!DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock))

@@ -25,6 +25,10 @@ internal static class DockDataTemplateHelper
     {
         yield return CreateDataTemplate<IDocumentContent>(() => new DocumentContentControl());
         yield return CreateDataTemplate<IToolContent>(() => new ToolContentControl());
+        yield return CreateDataTemplate<IOverlayDock>(() => new OverlayDockControl());
+        yield return CreateDataTemplate<IOverlayPanel>(() => new OverlayPanelControl());
+        yield return CreateDataTemplate<IOverlaySplitterGroup>(() => new OverlaySplitterGroupControl());
+        yield return CreateDataTemplate<IOverlaySplitter>(() => new OverlaySplitterControl());
         yield return CreateDataTemplate<IProportionalDockSplitter>(() => new ProportionalStackPanelSplitter
         {
             [!ProportionalStackPanelSplitter.IsResizingEnabledProperty] = new Binding(nameof(IProportionalDockSplitter.CanResize)),

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Dock.Model.Adapters;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -1106,6 +1107,168 @@ public abstract partial class FactoryBase
 
     /// <inheritdoc/>
     public void SetDocumentDockLayoutModeMdi(IDockable dockable) => SetDocumentDockLayoutMode(dockable, DocumentLayoutMode.Mdi);
+
+    /// <inheritdoc/>
+    public virtual void SetOverlayPanelContent(IOverlayPanel overlayPanel, IDockable? content)
+    {
+        if (overlayPanel is null)
+        {
+            return;
+        }
+
+        var visible = overlayPanel.VisibleDockables;
+
+        if (visible is null)
+        {
+            if (content is null)
+            {
+                return;
+            }
+
+            visible = CreateList<IDockable>();
+            content.Owner = overlayPanel;
+            visible.Add(content);
+            overlayPanel.VisibleDockables = visible;
+            return;
+        }
+
+        if (visible.Count == 0)
+        {
+            if (content is null)
+            {
+                return;
+            }
+
+            content.Owner = overlayPanel;
+            visible.Add(content);
+            return;
+        }
+
+        if (content is null)
+        {
+            visible.RemoveAt(0);
+            return;
+        }
+
+        content.Owner = overlayPanel;
+        visible[0] = content;
+    }
+
+    /// <inheritdoc/>
+    public virtual void SetOverlayDockBackground(IDockable dockable, IDockable? background)
+    {
+        if (dockable is not IOverlayDock overlayDock)
+        {
+            return;
+        }
+
+        if (background is not null)
+        {
+            background.Owner = overlayDock;
+        }
+
+        this.OverlayAdapter.SetBackground(overlayDock, background, () => CreateList<IDockable>());
+    }
+
+    /// <inheritdoc/>
+    public virtual void SetOverlayDockOverlayPanels(IDockable dockable, IList<IOverlayPanel>? panels)
+    {
+        if (dockable is not IOverlayDock overlayDock)
+        {
+            return;
+        }
+
+        if (panels is not null)
+        {
+            foreach (var panel in panels)
+            {
+                if (panel is null)
+                {
+                    continue;
+                }
+
+                panel.Owner = overlayDock;
+            }
+        }
+
+        this.OverlayAdapter.SetPanels(overlayDock, panels, () => CreateList<IDockable>());
+    }
+
+    /// <inheritdoc/>
+    public virtual void SetOverlayDockSplitterGroups(IDockable dockable, IList<IOverlaySplitterGroup>? splitterGroups)
+    {
+        if (dockable is not IOverlayDock overlayDock)
+        {
+            return;
+        }
+
+        if (splitterGroups is not null)
+        {
+            foreach (var group in splitterGroups)
+            {
+                if (group is null)
+                {
+                    continue;
+                }
+
+                group.Owner = overlayDock;
+            }
+        }
+
+        this.OverlayAdapter.SetSplitterGroupsOwner(overlayDock, splitterGroups);
+    }
+
+    /// <inheritdoc/>
+    public virtual void SetOverlaySplitterGroupPanels(IOverlaySplitterGroup splitterGroup, IList<IOverlayPanel>? previous, IList<IOverlayPanel>? next)
+    {
+        if (previous is not null)
+        {
+            foreach (var panel in previous)
+            {
+                if (panel is null)
+                {
+                    continue;
+                }
+
+                if (ReferenceEquals(panel.SplitterGroup, splitterGroup))
+                {
+                    panel.SplitterGroup = null;
+                }
+            }
+        }
+
+        if (next is not null)
+        {
+            foreach (var panel in next)
+            {
+                if (panel is null)
+                {
+                    continue;
+                }
+
+                panel.SplitterGroup = splitterGroup;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void SetOverlaySplitterGroupSplitters(IOverlaySplitterGroup splitterGroup, IList<IOverlaySplitter>? splitters)
+    {
+        if (splitters is null)
+        {
+            return;
+        }
+
+        foreach (var splitter in splitters)
+        {
+            if (splitter is null)
+            {
+                continue;
+            }
+
+            splitter.Owner = splitterGroup;
+        }
+    }
     
     /// <inheritdoc/>
     public virtual void NewVerticalDocumentDock(IDockable dockable)

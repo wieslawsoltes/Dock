@@ -486,4 +486,35 @@ public class DockGroupValidationTests
 
         Assert.Equal(expectedGroup, effectiveGroup);
     }
+
+    [Theory]
+    [InlineData(null, null, true)]      // Non-grouped into non-grouped target
+    [InlineData(null, "GroupA", true)] // Non-grouped into grouped target (global docking allowed)
+    [InlineData("GroupA", null, false)] // Grouped cannot dock globally into non-grouped target
+    [InlineData("GroupA", "GroupA", true)] // Grouped into same group
+    [InlineData("GroupA", "GroupB", false)] // Grouped into different group
+    [InlineData("", "GroupA", true)]  // Empty treated as non-grouped
+    [InlineData("GroupA", "", false)] // Grouped into empty target should fail
+    public void DockGroupValidator_ValidateGlobalDocking_AllScenarios(string? sourceGroup, string? targetGroup, bool expected)
+    {
+        var source = new SimpleDockable { Id = "Source", DockGroup = sourceGroup };
+        var target = new SimpleDock { Id = "Target", DockGroup = targetGroup };
+
+        var result = DockGroupValidator.ValidateGlobalDocking(source, target);
+
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void DockGroupValidator_ValidateGlobalDocking_InheritsEffectiveGroup()
+    {
+        var grandparent = new SimpleDock { Id = "Grandparent", DockGroup = "Inherited" };
+        var parent = new SimpleDock { Id = "Parent", Owner = grandparent };
+        var child = new SimpleDockable { Id = "Child", Owner = parent };
+        var target = new SimpleDock { Id = "Target", DockGroup = "Inherited" };
+
+        var result = DockGroupValidator.ValidateGlobalDocking(child, target);
+
+        Assert.True(result);
+    }
 }

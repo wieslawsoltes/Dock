@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:psp="using:Dock.Controls.ProportionalStackPanel"
+                    xmlns:dmc="using:Dock.Model.Controls">
+  <Design.PreviewWith>
+    <OverlaySplitterGroupControl Width="300" Height="180" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type OverlaySplitterGroupControl}" TargetType="OverlaySplitterGroupControl">
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding GroupTitle}" />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Chrome"
+          Background="{DynamicResource DockThemeBackgroundBrush}"
+          BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+          BorderThickness="1">
+          <Grid RowDefinitions="Auto,*">
+            <Border x:Name="PART_Header"
+                    Grid.Row="0"
+                    Background="{DynamicResource DockThemeBorderLowBrush}"
+                    Height="24"
+                    IsVisible="{Binding ShowGroupHeader}">
+              <Grid>
+                <Thumb x:Name="PART_MoveThumb"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Background="Transparent" />
+                <TextBlock Margin="8,0,8,0"
+                           VerticalAlignment="Center"
+                           FontSize="{DynamicResource DockFontSizeNormal}"
+                           Foreground="{DynamicResource DockApplicationAccentForegroundBrush}"
+                           Text="{Binding GroupTitle}" />
+              </Grid>
+            </Border>
+
+            <ItemsControl x:Name="PART_ItemsHost"
+                          Grid.Row="1">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <psp:ProportionalStackPanel Orientation="{Binding Orientation}" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

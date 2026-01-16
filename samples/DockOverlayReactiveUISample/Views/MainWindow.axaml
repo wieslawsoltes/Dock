@@ -1,0 +1,20 @@
+<Window x:Class="DockOverlayReactiveUISample.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:vm="using:DockOverlayReactiveUISample.ViewModels"
+        xmlns:views="using:DockOverlayReactiveUISample.Views"
+        mc:Ignorable="d"
+        d:DesignWidth="1280" d:DesignHeight="760"
+        x:DataType="vm:MainWindowViewModel" x:CompileBindings="True"
+        Title="Overlay Dock ReactiveUI Sample"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource DockThemeBackgroundBrush}"
+        FontFamily="Segoe UI, SF Pro Display, Noto Sans, Cantarel"
+        Width="1280" Height="760">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <views:MainView />
+</Window>

@@ -107,6 +107,18 @@ public class Factory : FactoryBase
     public override ISplitViewDock CreateSplitViewDock() => new SplitViewDock();
 
     /// <inheritdoc/>
+    public override IOverlayDock CreateOverlayDock() => new OverlayDock();
+
+    /// <inheritdoc/>
+    public override IOverlayPanel CreateOverlayPanel() => new OverlayPanel();
+
+    /// <inheritdoc/>
+    public override IOverlaySplitterGroup CreateOverlaySplitterGroup() => new OverlaySplitterGroup();
+
+    /// <inheritdoc/>
+    public override IOverlaySplitter CreateOverlaySplitter() => new OverlaySplitter();
+
+    /// <inheritdoc/>
     public override IDockWindow CreateDockWindow() => new DockWindow();
 
     /// <inheritdoc/>

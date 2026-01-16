@@ -29,7 +29,7 @@ public sealed class DockXmlSerializer : IDockSerializer
         _settings = new DataContractSerializerSettings
         {
             PreserveObjectReferences = true,
-            KnownTypes = knownTypes
+            KnownTypes = KnownTypeHelper.CollectKnownTypes(knownTypes)
         };
     }
 

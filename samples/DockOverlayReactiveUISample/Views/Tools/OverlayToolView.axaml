@@ -1,0 +1,16 @@
+<UserControl x:Class="DockOverlayReactiveUISample.Views.Tools.OverlayToolView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockOverlayReactiveUISample.ViewModels.Tools"
+             mc:Ignorable="d"
+             d:DesignWidth="320" d:DesignHeight="200"
+             x:DataType="vm:OverlayToolViewModel" x:CompileBindings="True">
+  <Border Padding="8" Background="Transparent">
+    <StackPanel Spacing="4">
+      <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding Context}" TextWrapping="Wrap" FontSize="12" Opacity="0.8" />
+    </StackPanel>
+  </Border>
+</UserControl>

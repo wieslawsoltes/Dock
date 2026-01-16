@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:conv="using:Dock.Avalonia.Converters"
+                    xmlns:dmc="using:Dock.Model.Controls">
+  <Design.PreviewWith>
+    <OverlayPanelControl Width="240" Height="160" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type OverlayPanelControl}" TargetType="OverlayPanelControl">
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="Opacity" Value="{Binding Opacity}" />
+
+    <Setter Property="Template">
+      <ControlTemplate>
+          <Border x:Name="PART_Chrome"
+                  Background="{DynamicResource DockThemeBackgroundBrush}"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  CornerRadius="{Binding CornerRadius, Converter={x:Static conv:DoubleToCornerRadiusConverter.Instance}}"
+                  Opacity="{Binding VisibilityOpacity, RelativeSource={RelativeSource TemplatedParent}}"
+                  BoxShadow="{Binding ShowShadow, Converter={x:Static conv:OverlayShadowConverter.Instance}}">
+              <Border.Effect>
+                <MultiBinding Converter="{x:Static conv:OverlayBackdropBlurEffectConverter.Instance}">
+                  <Binding Path="UseBackdropBlur" />
+                  <Binding Path="BlurRadius" />
+                </MultiBinding>
+              </Border.Effect>
+              <Grid RowDefinitions="Auto,*">
+              <Grid Grid.Row="0"
+                    Height="28"
+                    Background="{DynamicResource DockThemeBorderLowBrush}"
+                    IsVisible="{Binding ShowHeader}"
+                    ColumnDefinitions="Auto,*,Auto">
+                <Thumb x:Name="PART_MoveThumb"
+                       Width="20"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Stretch"
+                       Cursor="SizeAll"
+                       Background="Transparent" />
+                <ContentPresenter x:Name="PART_Header"
+                                  Grid.Column="1"
+                                  Margin="8,0,8,0"
+                                  VerticalAlignment="Center"
+                                  Content="{Binding Title}"
+                                  Foreground="{DynamicResource DockApplicationAccentForegroundBrush}"
+                                  FontSize="{DynamicResource DockFontSizeNormal}" />
+                <Border x:Name="PART_DockDragHandle"
+                        Grid.Column="2"
+                        Width="20"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Stretch"
+                        Cursor="Hand"
+                        Background="Transparent" />
+              </Grid>
+
+            <ContentPresenter x:Name="PART_ContentPresenter"
+                              Grid.Row="1"
+                              Margin="4"
+                              Content="{Binding Content}"
+                              HorizontalAlignment="{Binding HorizontalContentAlignment, Converter={x:Static conv:OverlayHorizontalAlignmentConverter.Instance}}"
+                              VerticalAlignment="{Binding VerticalContentAlignment, Converter={x:Static conv:OverlayVerticalAlignmentConverter.Instance}}"
+                              DockProperties.IsDropArea="True"
+                              DockProperties.IsDockTarget="{Binding ShowDockTargets}" />
+
+            <Thumb x:Name="PART_ResizeThumb"
+                   Grid.RowSpan="2"
+                   Width="12"
+                   Height="12"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Cursor="SizeAll"
+                   Background="{DynamicResource DockThemeAccentBrush}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

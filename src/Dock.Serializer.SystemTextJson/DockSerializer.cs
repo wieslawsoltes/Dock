@@ -7,6 +7,9 @@ using System.Text;
 using Dock.Model.Core;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+#if NET6_0_OR_GREATER
+using System.Text.Json.Serialization.Metadata;
+#endif
 
 namespace Dock.Serializer.SystemTextJson;
 
@@ -33,6 +36,11 @@ public sealed class DockSerializer : IDockSerializer
                 new JsonConverterFactoryList(listType)
             }
         };
+#if NET6_0_OR_GREATER
+        _options.TypeInfoResolver = JsonTypeInfoResolver.Combine(
+            new DefaultJsonTypeInfoResolver(),
+            new DockModelTypeResolver());
+#endif
     }
 
     /// <summary>

@@ -23,6 +23,57 @@ public class DockManager : IDockManager
         }
     }
 
+    private static bool EnsureOverlayDockGroup(IOverlayPanel overlayPanel, IDockable sourceDockable, IDock nestedDock)
+    {
+        var sourceGroup = DockGroupValidator.GetEffectiveDockGroup(sourceDockable);
+        var panelGroup = overlayPanel.DockGroup;
+        var dockGroup = nestedDock.DockGroup;
+        if (!string.IsNullOrEmpty(sourceGroup))
+        {
+            if (!string.IsNullOrEmpty(panelGroup)
+                && !string.Equals(panelGroup, sourceGroup, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(dockGroup)
+                && !string.Equals(dockGroup, sourceGroup, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(panelGroup))
+            {
+                overlayPanel.DockGroup = sourceGroup;
+            }
+
+            if (string.IsNullOrEmpty(dockGroup))
+            {
+                nestedDock.DockGroup = sourceGroup;
+            }
+
+            return true;
+        }
+
+        if (!string.IsNullOrEmpty(panelGroup) && !string.IsNullOrEmpty(dockGroup)
+            && !string.Equals(panelGroup, dockGroup, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(panelGroup) && !string.IsNullOrEmpty(dockGroup))
+        {
+            overlayPanel.DockGroup = dockGroup;
+        }
+
+        if (!string.IsNullOrEmpty(panelGroup) && string.IsNullOrEmpty(dockGroup))
+        {
+            nestedDock.DockGroup = panelGroup;
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="DockManager"/> class.
     /// </summary>
@@ -54,6 +105,179 @@ public class DockManager : IDockManager
         // ReSharper disable once CompareOfFloatsByEqualityOperator
         var heightConflict = IsFixed(a.MinHeight, a.MaxHeight) && IsFixed(b.MinHeight, b.MaxHeight) && a.MinHeight != b.MinHeight;
         return widthConflict || heightConflict;
+    }
+
+    private static IDock? CreateNestedDockFor(IDockable sourceDockable, IFactory factory)
+    {
+        switch (sourceDockable)
+        {
+            case ITool or IToolDock:
+            {
+                var toolDock = factory.CreateToolDock();
+                toolDock.Title = nameof(IToolDock);
+                toolDock.VisibleDockables = factory.CreateList<IDockable>();
+                return toolDock;
+            }
+            case IDocumentDock sourceDocumentDock:
+            {
+                var documentDock = factory.CreateDocumentDock();
+                documentDock.Title = nameof(IDocumentDock);
+                documentDock.VisibleDockables = factory.CreateList<IDockable>();
+                documentDock.Id = sourceDocumentDock.Id;
+                documentDock.CanCreateDocument = sourceDocumentDock.CanCreateDocument;
+                documentDock.EnableWindowDrag = sourceDocumentDock.EnableWindowDrag;
+
+                if (sourceDocumentDock is IDocumentDockContent sourceDocumentDockContent
+                    && documentDock is IDocumentDockContent targetDocumentDockContent)
+                {
+                    targetDocumentDockContent.DocumentTemplate = sourceDocumentDockContent.DocumentTemplate;
+                }
+
+                return documentDock;
+            }
+            case IDocument:
+            {
+                var documentDock = factory.CreateDocumentDock();
+                documentDock.Title = nameof(IDocumentDock);
+                documentDock.VisibleDockables = factory.CreateList<IDockable>();
+                return documentDock;
+            }
+            case IDock:
+            {
+                var proportionalDock = factory.CreateProportionalDock();
+                proportionalDock.Title = nameof(IProportionalDock);
+                proportionalDock.VisibleDockables = factory.CreateList<IDockable>();
+                return proportionalDock;
+            }
+            default:
+            {
+                return null;
+            }
+        }
+    }
+
+    private bool EnsureNestedDock(IOverlayPanel overlayPanel, IDockable sourceDockable, out IDock nestedDock)
+    {
+        nestedDock = overlayPanel.NestedDock ?? null!;
+        var factory = (sourceDockable.Owner as IDock)?.Factory ?? overlayPanel.Factory;
+
+        if (factory is null)
+        {
+            return false;
+        }
+
+        if (nestedDock is null)
+        {
+            nestedDock = CreateNestedDockFor(sourceDockable, factory) ?? factory.CreateDocumentDock();
+            if (nestedDock is null)
+            {
+                return false;
+            }
+
+            CopyDockGroup(sourceDockable, nestedDock);
+            factory.SetOverlayPanelContent(overlayPanel, nestedDock);
+        }
+
+        if (!ReferenceEquals(nestedDock.Owner, overlayPanel))
+        {
+            factory.SetOverlayPanelContent(overlayPanel, nestedDock);
+        }
+
+        if (!EnsureOverlayDockGroup(overlayPanel, sourceDockable, nestedDock))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool DockIntoOverlayPanel(IDockable sourceDockable, IOverlayPanel overlayPanel, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (!overlayPanel.AllowDockInto)
+        {
+            return false;
+        }
+
+        if (!EnsureNestedDock(overlayPanel, sourceDockable, out var nestedDock))
+        {
+            return false;
+        }
+
+        if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, nestedDock))
+        {
+            return false;
+        }
+
+        return DockDockableIntoDock(sourceDockable, nestedDock, action, operation, bExecute);
+    }
+
+    private bool DockIntoOverlayDock(IDockable sourceDockable, IOverlayDock overlayDock, DragAction action, DockOperation operation, bool bExecute)
+    {
+        if (action != DragAction.Move)
+        {
+            return false;
+        }
+
+        // Forward non-fill operations to the background dock (local docking semantics)
+        if (operation != DockOperation.Fill)
+        {
+            if (overlayDock.BackgroundDockable is not IDock backgroundDock)
+            {
+                return false;
+            }
+
+            if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, backgroundDock))
+            {
+                return false;
+            }
+
+            return DockDockableIntoDock(sourceDockable, backgroundDock, action, operation, bExecute);
+        }
+
+        if (!DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, overlayDock))
+        {
+            return false;
+        }
+
+        if (!bExecute)
+        {
+            return true;
+        }
+
+        if (sourceDockable.Owner is not IDock sourceOwner || sourceOwner.Factory is not { } factory)
+        {
+            return false;
+        }
+
+        var nestedDock = CreateNestedDockFor(sourceDockable, factory);
+        if (nestedDock is null)
+        {
+            return false;
+        }
+
+        CopyDockGroup(sourceDockable, nestedDock);
+
+        var overlayPanel = factory.CreateOverlayPanel();
+        CopyDockGroup(sourceDockable, overlayPanel);
+        overlayPanel.X = Position.X;
+        overlayPanel.Y = Position.Y;
+        overlayPanel.Opacity = overlayDock.DefaultPanelOpacity;
+        overlayPanel.UseBackdropBlur = overlayDock.EnableBackdropBlur;
+        factory.SetOverlayPanelContent(overlayPanel, nestedDock);
+
+        var panels = overlayDock.OverlayPanels ?? factory.CreateList<IOverlayPanel>();
+        panels.Add(overlayPanel);
+        factory.SetOverlayDockOverlayPanels(overlayDock, panels);
+
+        factory.MoveDockable(sourceOwner, nestedDock, sourceDockable, null);
+        nestedDock.ActiveDockable = sourceDockable;
+
+        if (overlayDock.ActiveDockable is null)
+        {
+            overlayDock.ActiveDockable = overlayPanel;
+        }
+
+        return true;
     }
 
 
@@ -166,6 +390,11 @@ public class DockManager : IDockManager
             return false;
         }
 
+        if (!DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetRootDock))
+        {
+            return false;
+        }
+
         if (!bExecute)
         {
             return true;
@@ -228,6 +457,8 @@ public class DockManager : IDockManager
         return targetDockable switch
         {
             IRootDock rootDock => DockDockableIntoRoot(sourceTool, rootDock, action, operation, bExecute),
+            IOverlayPanel overlayPanel => DockIntoOverlayPanel(sourceTool, overlayPanel, action, operation, bExecute),
+            IOverlayDock overlayDock => DockIntoOverlayDock(sourceTool, overlayDock, action, operation, bExecute),
             IToolDock toolDock =>
                 (!PreventSizeConflicts || toolDock.VisibleDockables?.OfType<ITool>().All(t => !HasSizeConflict(sourceTool, t)) != false)
                 && DockDockableIntoDock(sourceTool, toolDock, action, operation, bExecute),
@@ -409,6 +640,8 @@ public class DockManager : IDockManager
             IRootDock rootDock => DockDockableIntoRoot(sourceDocument, rootDock, action, operation, bExecute),
             IDocumentDock documentDock => DockDockableIntoDock(sourceDocument, documentDock, action, operation, bExecute),
             IDocument document => _dockService.DockDockableIntoDockable(sourceDocument, document, action, bExecute),
+            IOverlayPanel overlayPanel => DockIntoOverlayPanel(sourceDocument, overlayPanel, action, operation, bExecute),
+            IOverlayDock overlayDock => DockIntoOverlayDock(sourceDocument, overlayDock, action, operation, bExecute),
             IProportionalDock proportionalDock => DockDockableIntoDock(sourceDocument, proportionalDock, action, operation, bExecute),
             _ => false
         };
@@ -425,6 +658,8 @@ public class DockManager : IDockManager
         return targetDockable switch
         {
             IRootDock _ => _dockService.DockDockableIntoWindow(sourceDock, targetDockable, ScreenPosition, bExecute),
+            IOverlayPanel overlayPanel => DockIntoOverlayPanel(sourceDock, overlayPanel, action, operation, bExecute),
+            IOverlayDock overlayDock => DockIntoOverlayDock(sourceDock, overlayDock, action, operation, bExecute),
             IToolDock toolDock => 
                 sourceDock != toolDock && DockDockable(sourceDock, targetDockable, toolDock, action, operation, bExecute),
             ITool { Owner: IToolDock toolDock } => 
@@ -547,6 +782,13 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool ValidateDockable(IDockable sourceDockable, IDockable targetDockable, DragAction action, DockOperation operation, bool bExecute)
     {
+        if (targetDockable is IGlobalTarget
+            && targetDockable is not IOverlayDock
+            && !DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDockable))
+        {
+            return false;
+        }
+
         return sourceDockable switch
         {
             IToolDock toolDock => ValidateDock(toolDock, targetDockable, action, operation, bExecute),
@@ -565,6 +807,21 @@ public class DockManager : IDockManager
     /// <inheritdoc/>
     public bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation)
     {
+        if (targetDockable is IGlobalTarget
+            && targetDockable is not IOverlayDock
+            && !DockInheritanceHelper.GetEffectiveEnableGlobalDocking(targetDockable))
+        {
+            return false;
+        }
+
+        if (targetDockable is IOverlayPanel overlayPanel)
+        {
+            if (!overlayPanel.AllowDockInto || !overlayPanel.ShowDockTargets)
+            {
+                return false;
+            }
+        }
+
         if (operation != DockOperation.Fill)
         {
             return true;

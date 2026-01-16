@@ -1,0 +1,26 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls">
+  <Design.PreviewWith>
+    <OverlaySplitterControl Width="6" Height="80" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type OverlaySplitterControl}" TargetType="OverlaySplitterControl">
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="MinWidth" Value="4" />
+    <Setter Property="MinHeight" Value="4" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Thumb"
+                Background="{DynamicResource DockThemeAccentBrush}"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Cursor="{TemplateBinding Cursor}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

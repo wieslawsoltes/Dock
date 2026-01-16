@@ -1095,6 +1095,101 @@ public static class FluentExtensions
         return factory;
     }
 
+    // IOverlayDock creation helpers
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlayDock"/> and optionally configures it.
+    /// </summary>
+    /// <param name="factory">The factory used to create the dock.</param>
+    /// <param name="configure">Optional configuration action.</param>
+    /// <returns>The created <see cref="IOverlayDock"/>.</returns>
+    public static IOverlayDock OverlayDock(this IFactory factory, Action<IOverlayDock>? configure = null)
+    {
+        var dock = factory.CreateOverlayDock();
+        configure?.Invoke(dock);
+        return dock;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlayDock"/>, assigns it to <paramref name="dock"/>, and returns the same factory for chaining.
+    /// </summary>
+    /// <param name="factory">The factory used to create the dock.</param>
+    /// <param name="dock">Outputs the created <see cref="IOverlayDock"/>.</param>
+    /// <param name="configure">Optional configuration action.</param>
+    /// <returns>The same <see cref="IFactory"/> instance.</returns>
+    public static IFactory OverlayDock(this IFactory factory, out IOverlayDock dock, Action<IOverlayDock>? configure = null)
+    {
+        dock = factory.CreateOverlayDock();
+        configure?.Invoke(dock);
+        return factory;
+    }
+
+    // IOverlayPanel creation helpers
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlayPanel"/> and optionally configures it.
+    /// </summary>
+    public static IOverlayPanel OverlayPanel(this IFactory factory, Action<IOverlayPanel>? configure = null)
+    {
+        var panel = factory.CreateOverlayPanel();
+        configure?.Invoke(panel);
+        return panel;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlayPanel"/>, assigns it to <paramref name="panel"/>, and returns the same factory for chaining.
+    /// </summary>
+    public static IFactory OverlayPanel(this IFactory factory, out IOverlayPanel panel, Action<IOverlayPanel>? configure = null)
+    {
+        panel = factory.CreateOverlayPanel();
+        configure?.Invoke(panel);
+        return factory;
+    }
+
+    // IOverlaySplitterGroup creation helpers
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlaySplitterGroup"/> and optionally configures it.
+    /// </summary>
+    public static IOverlaySplitterGroup OverlaySplitterGroup(this IFactory factory, Action<IOverlaySplitterGroup>? configure = null)
+    {
+        var group = factory.CreateOverlaySplitterGroup();
+        configure?.Invoke(group);
+        return group;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlaySplitterGroup"/>, assigns it to <paramref name="group"/>, and returns the same factory for chaining.
+    /// </summary>
+    public static IFactory OverlaySplitterGroup(this IFactory factory, out IOverlaySplitterGroup group, Action<IOverlaySplitterGroup>? configure = null)
+    {
+        group = factory.CreateOverlaySplitterGroup();
+        configure?.Invoke(group);
+        return factory;
+    }
+
+    // IOverlaySplitter creation helpers
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlaySplitter"/> and optionally configures it.
+    /// </summary>
+    public static IOverlaySplitter OverlaySplitter(this IFactory factory, Action<IOverlaySplitter>? configure = null)
+    {
+        var splitter = factory.CreateOverlaySplitter();
+        configure?.Invoke(splitter);
+        return splitter;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="IOverlaySplitter"/>, assigns it to <paramref name="splitter"/>, and returns the same factory for chaining.
+    /// </summary>
+    public static IFactory OverlaySplitter(this IFactory factory, out IOverlaySplitter splitter, Action<IOverlaySplitter>? configure = null)
+    {
+        splitter = factory.CreateOverlaySplitter();
+        configure?.Invoke(splitter);
+        return factory;
+    }
+
     // ISplitViewDock configuration helpers
 
     /// <summary>

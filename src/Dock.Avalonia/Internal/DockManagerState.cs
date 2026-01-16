@@ -224,7 +224,7 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected virtual void Execute(Point point, DockOperation operation, DragAction dragAction, Visual relativeTo, IDockable sourceDockable, IDockable targetDockable)
     {
-        _dockManager.Position = DockHelpers.ToDockPoint(point);
+        _dockManager.Position = GetDockPoint(point, relativeTo, targetDockable);
 
         if (relativeTo.GetVisualRoot() is null)
         {
@@ -250,7 +250,7 @@ internal abstract class DockManagerState : IDockManagerState
             return false;
         }
 
-        _dockManager.Position = DockHelpers.ToDockPoint(point);
+        _dockManager.Position = GetDockPoint(point, relativeTo, targetDockable);
 
         if (relativeTo.GetVisualRoot() is null)
         {
@@ -274,6 +274,11 @@ internal abstract class DockManagerState : IDockManagerState
 
     protected bool ValidateLocalTarget(IDockable sourceDockable, IDockable targetDockable)
     {
+        if (targetDockable is IOverlayDock overlayDock)
+        {
+            return DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, overlayDock);
+        }
+
         if (targetDockable is not ILocalTarget)
         {
             LogDropRejection(
@@ -292,6 +297,26 @@ internal abstract class DockManagerState : IDockManagerState
         }
 
         return isValid;
+    }
+
+    private DockPoint GetDockPoint(Point point, Visual relativeTo, IDockable targetDockable)
+    {
+        if (targetDockable is not IOverlayDock || DropControl is not { } dropControl)
+        {
+            return DockHelpers.ToDockPoint(point);
+        }
+
+        var localPoint = relativeTo.TranslatePoint(point, dropControl);
+        if (localPoint is null)
+        {
+            var screenPoint = DockHelpers.GetScreenPoint(relativeTo, point);
+            var screenPixel = new PixelPoint((int)Math.Round(screenPoint.X), (int)Math.Round(screenPoint.Y));
+            localPoint = dropControl.PointToClient(screenPixel);
+        }
+
+        return localPoint is { } translated
+            ? DockHelpers.ToDockPoint(translated)
+            : DockHelpers.ToDockPoint(point);
     }
 
     protected bool ValidateGlobalTarget(IDockable sourceDockable, IDockable targetDockable)

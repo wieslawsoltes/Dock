@@ -1,0 +1,56 @@
+<UserControl x:Class="DockOverlayReactiveUISample.Views.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:DockOverlayReactiveUISample.ViewModels"
+             mc:Ignorable="d"
+             d:DesignWidth="1200" d:DesignHeight="720"
+             x:DataType="vm:MainWindowViewModel" x:CompileBindings="True">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <Grid RowDefinitions="Auto,*" ColumnDefinitions="320,*" Background="Transparent">
+    <Border Grid.ColumnSpan="2" Padding="12" Background="{DynamicResource DockThemeBackgroundBrush}" BorderBrush="{DynamicResource DockThemeBorderLowBrush}" BorderThickness="0,0,0,1">
+      <DockPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Spacing="4">
+          <TextBlock Text="Overlay Dock ReactiveUI Sample" FontWeight="Bold" />
+          <TextBlock Text="Scenario picker for overlay layouts" FontSize="12" Opacity="0.7" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+          <Button Content="Toggle theme" Command="{Binding ToggleThemeCommand}" />
+          <Button Content="Reset" Command="{Binding ResetScenarioCommand}" />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <Border Grid.Row="1" Grid.Column="0" Padding="12" Margin="0" Background="{DynamicResource DockThemeBackgroundBrush}" BorderBrush="{DynamicResource DockThemeBorderLowBrush}" BorderThickness="0,0,1,0">
+      <StackPanel Spacing="12">
+        <TextBlock Text="Scenario picker" FontWeight="SemiBold" FontSize="14" />
+        <ListBox ItemsSource="{Binding Scenarios}" SelectedItem="{Binding SelectedScenario}" MinHeight="200">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Margin="4" Spacing="2">
+                <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="12" Opacity="0.8" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock Text="{Binding SelectedScenario.Description}" TextWrapping="Wrap" Opacity="0.8" />
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Content="Load scenario" Command="{Binding LoadScenarioCommand}" IsEnabled="{Binding SelectedScenario}" />
+          <Button Content="Close layout" Command="{Binding CloseLayoutCommand}" IsEnabled="{Binding Layout}" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Row="1" Grid.Column="1" Padding="8" Margin="8,0,0,0" Background="{DynamicResource DockThemeBackgroundBrush}" BorderBrush="{DynamicResource DockThemeBorderLowBrush}" BorderThickness="1">
+      <Grid>
+        <DockControl Layout="{Binding Layout}"
+                     Factory="{Binding LayoutFactory}"
+                     InitializeLayout="True" />
+      </Grid>
+    </Border>
+  </Grid>
+</UserControl>

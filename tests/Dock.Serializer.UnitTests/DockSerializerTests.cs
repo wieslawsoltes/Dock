@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dock.Model.Controls;
+using Dock.Model.Mvvm.Controls;
 using Dock.Serializer;
 using Xunit;
 
@@ -101,5 +103,25 @@ public class DockSerializerTests
         var text = reader.ReadToEnd();
 
         Assert.Equal("null", text.Trim());
+    }
+
+    [Fact]
+    public void OverlayLayout_Roundtrips_WithTypeNames()
+    {
+        var serializer = new DockSerializer();
+        var layout = OverlayLayoutBuilder.CreateLayout();
+
+        var json = serializer.Serialize(layout);
+        var result = serializer.Deserialize<OverlayDock>(json);
+
+        Assert.NotNull(result);
+        Assert.Equal(layout.VisibleDockables?.Count, result!.VisibleDockables?.Count);
+        Assert.IsType<OverlaySplitterGroup>(Assert.Single(result.SplitterGroups!));
+        var restoredPanels = Assert.Single(result.SplitterGroups!).Panels;
+        Assert.NotNull(restoredPanels);
+        Assert.All(restoredPanels!, p => Assert.IsType<OverlayPanel>(p));
+
+        var restoredBackground = result.VisibleDockables!.First();
+        Assert.IsType<DocumentDock>(restoredBackground);
     }
 }

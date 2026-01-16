@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Dock.Model.Mvvm.Controls;
 using Dock.Serializer.Yaml;
 using Xunit;
 
@@ -71,5 +72,23 @@ public class YamlDockSerializerTests
         Assert.Equal(sample.Name, loaded!.Name);
         Assert.IsType<ObservableCollection<int>>(loaded.Numbers);
         Assert.Equal(sample.Numbers, loaded.Numbers.ToList());
+    }
+
+    [Fact]
+    public void OverlayLayout_Roundtrips()
+    {
+        var serializer = new DockYamlSerializer();
+        var layout = OverlayLayoutBuilder.CreateLayout();
+
+        var yaml = serializer.Serialize(layout);
+        var result = serializer.Deserialize<OverlayDock>(yaml);
+
+        Assert.NotNull(result);
+        Assert.Equal(layout.VisibleDockables?.Count, result!.VisibleDockables?.Count);
+        Assert.IsType<OverlaySplitterGroup>(Assert.Single(result.SplitterGroups!));
+        var restoredPanels = Assert.Single(result.SplitterGroups!).Panels;
+        Assert.NotNull(restoredPanels);
+        Assert.All(restoredPanels!, panel => Assert.IsType<OverlayPanel>(panel));
+        Assert.IsType<DocumentDock>(result.VisibleDockables!.First());
     }
 }

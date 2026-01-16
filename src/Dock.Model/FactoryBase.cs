@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 using System;
 using System.Collections.Generic;
+using Dock.Model.Adapters;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 
@@ -12,6 +13,19 @@ namespace Dock.Model;
 /// </summary>
 public abstract partial class FactoryBase : IFactory
 {
+    private readonly IOverlayAdapter _overlayAdapter;
+
+    /// <summary>
+    /// Initializes new instance of the <see cref="FactoryBase"/> class.
+    /// </summary>
+    protected FactoryBase()
+    {
+        _overlayAdapter = new OverlayAdapter();
+    }
+
+    /// <inheritdoc/>
+    public IOverlayAdapter OverlayAdapter => _overlayAdapter;
+
     private static void CopyDockGroup(IDockable source, IDockable target)
     {
         var group = DockGroupValidator.GetEffectiveDockGroup(source);
@@ -501,6 +515,11 @@ public abstract partial class FactoryBase : IFactory
             case IRootDock rootDock:
             {
                 target = rootDock.ActiveDockable;
+                break;
+            }
+            case IDock dock:
+            {
+                target = dock;
                 break;
             }
             default:

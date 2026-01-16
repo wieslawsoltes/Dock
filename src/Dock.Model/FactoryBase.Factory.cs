@@ -75,6 +75,18 @@ public abstract partial class FactoryBase
     public abstract ISplitViewDock CreateSplitViewDock();
 
     /// <inheritdoc/>
+    public abstract IOverlayDock CreateOverlayDock();
+
+    /// <inheritdoc/>
+    public abstract IOverlayPanel CreateOverlayPanel();
+
+    /// <inheritdoc/>
+    public abstract IOverlaySplitterGroup CreateOverlaySplitterGroup();
+
+    /// <inheritdoc/>
+    public abstract IOverlaySplitter CreateOverlaySplitter();
+
+    /// <inheritdoc/>
     public abstract IDockWindow CreateDockWindow();
 
     /// <inheritdoc/>

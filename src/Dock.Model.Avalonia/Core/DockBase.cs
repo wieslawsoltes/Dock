@@ -22,6 +22,8 @@ namespace Dock.Model.Avalonia.Core;
 [JsonPolymorphic]
 [JsonDerivedType(typeof(DockDock), typeDiscriminator: "DockDock")]
 [JsonDerivedType(typeof(DocumentDock), typeDiscriminator: "DocumentDock")]
+[JsonDerivedType(typeof(OverlayDock), typeDiscriminator: "OverlayDock")]
+[JsonDerivedType(typeof(OverlayPanel), typeDiscriminator: "OverlayPanel")]
 [JsonDerivedType(typeof(ProportionalDock), typeDiscriminator: "ProportionalDock")]
 [JsonDerivedType(typeof(ProportionalDockSplitter), typeDiscriminator: "ProportionalDockSplitter")]
 [JsonDerivedType(typeof(RootDock), typeDiscriminator: "RootDock")]

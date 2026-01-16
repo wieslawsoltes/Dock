@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.Mvvm.Controls;
 using Dock.Serializer.SystemTextJson;
 using Xunit;
 
@@ -15,6 +18,11 @@ public class SystemTextJsonDockSerializerTests
         public string? Name { get; set; }
         public IList<int>? Numbers { get; set; }
         public string ReadOnly => "skip";
+    }
+
+    private class MultiModelSample
+    {
+        public IList<IDockable>? Dockables { get; set; }
     }
 
     private sealed class NonClosingMemoryStream : MemoryStream
@@ -101,5 +109,53 @@ public class SystemTextJsonDockSerializerTests
         var text = reader.ReadToEnd();
 
         Assert.Equal("null", text.Trim());
+    }
+
+    [Fact]
+    public void OverlayLayout_Roundtrips_WithTypeDiscriminators()
+    {
+        var layout = OverlayLayoutBuilder.CreateLayout();
+        var serializer = new DockSerializer();
+
+        var json = serializer.Serialize(layout);
+        var result = serializer.Deserialize<OverlayDock>(json);
+
+        Assert.NotNull(result);
+        Assert.Equal(layout.VisibleDockables?.Count, result!.VisibleDockables?.Count);
+        Assert.IsType<OverlaySplitterGroup>(Assert.Single(result.SplitterGroups!));
+        var restoredPanels = Assert.Single(result.SplitterGroups!).Panels;
+        Assert.NotNull(restoredPanels);
+        Assert.All(restoredPanels!, p => Assert.IsType<OverlayPanel>(p));
+
+        var restoredBackground = result.VisibleDockables!.First();
+        Assert.IsType<DocumentDock>(restoredBackground);
+    }
+
+    [Fact]
+    public void TypeDiscriminators_AreUnique_Across_ModelAssemblies()
+    {
+        var serializer = new DockSerializer();
+        var mvvmDock = new Dock.Model.Mvvm.Controls.OverlayDock { Id = "MvvmOverlay" };
+        var avaloniaDock = new Dock.Model.Avalonia.Controls.OverlayDock { Id = "AvaloniaOverlay" };
+        var sample = new MultiModelSample
+        {
+            Dockables = new List<IDockable> { mvvmDock, avaloniaDock }
+        };
+
+        var json = serializer.Serialize(sample);
+
+        var mvvmTypeName = typeof(Dock.Model.Mvvm.Controls.OverlayDock).FullName ?? typeof(Dock.Model.Mvvm.Controls.OverlayDock).Name;
+        var avaloniaTypeName = typeof(Dock.Model.Avalonia.Controls.OverlayDock).FullName ?? typeof(Dock.Model.Avalonia.Controls.OverlayDock).Name;
+
+        Assert.Contains(mvvmTypeName, json);
+        Assert.Contains(avaloniaTypeName, json);
+
+        var result = serializer.Deserialize<MultiModelSample>(json);
+
+        Assert.NotNull(result);
+        Assert.NotNull(result!.Dockables);
+        Assert.Collection(result.Dockables!,
+            dockable => Assert.IsType<Dock.Model.Mvvm.Controls.OverlayDock>(dockable),
+            dockable => Assert.IsType<Dock.Model.Avalonia.Controls.OverlayDock>(dockable));
     }
 }

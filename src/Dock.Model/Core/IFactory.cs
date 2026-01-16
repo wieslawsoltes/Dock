@@ -42,6 +42,11 @@ public partial interface IFactory
     IDictionary<IDockable, object> TabRootControls { get; }
 
     /// <summary>
+    /// Gets overlay adapter used for overlay dock bookkeeping.
+    /// </summary>
+    IOverlayAdapter OverlayAdapter { get; }
+
+    /// <summary>
     /// Gets tool controls.
     /// </summary>
     IDictionary<IDockable, object> ToolControls { get; }
@@ -175,6 +180,73 @@ public partial interface IFactory
     /// </summary>
     /// <returns>The new instance of the <see cref="ISplitViewDock"/> class.</returns>
     ISplitViewDock CreateSplitViewDock();
+
+    /// <summary>
+    /// Creates <see cref="IOverlayDock"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IOverlayDock"/> class.</returns>
+    IOverlayDock CreateOverlayDock();
+
+    /// <summary>
+    /// Creates <see cref="IOverlayPanel"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IOverlayPanel"/> class.</returns>
+    IOverlayPanel CreateOverlayPanel();
+
+    /// <summary>
+    /// Sets overlay panel content using the factory for collection creation and ownership wiring.
+    /// </summary>
+    /// <param name="overlayPanel">The overlay panel instance.</param>
+    /// <param name="content">The content dockable.</param>
+    void SetOverlayPanelContent(IOverlayPanel overlayPanel, IDockable? content);
+
+    /// <summary>
+    /// Creates <see cref="IOverlaySplitterGroup"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IOverlaySplitterGroup"/> class.</returns>
+    IOverlaySplitterGroup CreateOverlaySplitterGroup();
+
+    /// <summary>
+    /// Creates <see cref="IOverlaySplitter"/>.
+    /// </summary>
+    /// <returns>The new instance of the <see cref="IOverlaySplitter"/> class.</returns>
+    IOverlaySplitter CreateOverlaySplitter();
+
+    /// <summary>
+    /// Sets the background dockable for the specified overlay dock.
+    /// </summary>
+    /// <param name="dockable">The overlay dock.</param>
+    /// <param name="background">The background dockable.</param>
+    void SetOverlayDockBackground(IDockable dockable, IDockable? background);
+
+    /// <summary>
+    /// Sets the overlay panels collection for the specified overlay dock.
+    /// </summary>
+    /// <param name="dockable">The overlay dock.</param>
+    /// <param name="panels">Panels to assign.</param>
+    void SetOverlayDockOverlayPanels(IDockable dockable, IList<IOverlayPanel>? panels);
+
+    /// <summary>
+    /// Sets the splitter groups collection for the specified overlay dock.
+    /// </summary>
+    /// <param name="dockable">The overlay dock.</param>
+    /// <param name="splitterGroups">Splitter groups to assign.</param>
+    void SetOverlayDockSplitterGroups(IDockable dockable, IList<IOverlaySplitterGroup>? splitterGroups);
+
+    /// <summary>
+    /// Updates panel membership for the specified overlay splitter group.
+    /// </summary>
+    /// <param name="splitterGroup">The splitter group being updated.</param>
+    /// <param name="previous">Panels previously attached to the group.</param>
+    /// <param name="next">Panels to attach to the group.</param>
+    void SetOverlaySplitterGroupPanels(IOverlaySplitterGroup splitterGroup, IList<IOverlayPanel>? previous, IList<IOverlayPanel>? next);
+
+    /// <summary>
+    /// Updates splitter ownership for the specified overlay splitter group.
+    /// </summary>
+    /// <param name="splitterGroup">The splitter group being updated.</param>
+    /// <param name="splitters">Splitters to attach to the group.</param>
+    void SetOverlaySplitterGroupSplitters(IOverlaySplitterGroup splitterGroup, IList<IOverlaySplitter>? splitters);
 
     /// <summary>
     /// Creates <see cref="IDockWindow"/>.

@@ -313,6 +313,10 @@ public class DockControlDataTemplateTests
         {
             typeof(IDocumentContent),
             typeof(IToolContent),
+            typeof(IOverlayDock),
+            typeof(IOverlayPanel),
+            typeof(IOverlaySplitterGroup),
+            typeof(IOverlaySplitter),
             typeof(IProportionalDockSplitter),
             typeof(IGridDockSplitter),
             typeof(IDocumentDock),

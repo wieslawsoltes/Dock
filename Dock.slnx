@@ -120,6 +120,7 @@
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />
+    <Project Path="samples/DockOverlayReactiveUISample/DockOverlayReactiveUISample.csproj" />
     <Project Path="samples/DockSimplifiedFluentSample/DockSimplifiedFluentSample.csproj" />
     <Project Path="samples/DockSimplifiedSample/DockSimplifiedSample.csproj" />
     <Project Path="samples/DockSplitViewSample/DockSplitViewSample.csproj" />

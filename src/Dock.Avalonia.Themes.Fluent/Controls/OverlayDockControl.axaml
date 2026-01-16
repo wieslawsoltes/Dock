@@ -1,0 +1,72 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dmc="using:Dock.Model.Controls">
+
+  <Pen x:Key="OverlayAlignmentGridPen"
+       Brush="{DynamicResource DockThemeBorderLowBrush}"
+       Thickness="1" />
+
+  <DrawingBrush x:Key="OverlayAlignmentGridBrush"
+                Stretch="None"
+                TileMode="Tile"
+                SourceRect="0,0,16,16">
+    <DrawingBrush.Drawing>
+      <GeometryDrawing Brush="#10FFFFFF"
+                       Pen="{StaticResource OverlayAlignmentGridPen}"
+                       Geometry="M0,0 L16,0 16,16 0,16 z M0,0 L0,16 M0,0 L16,0" />
+    </DrawingBrush.Drawing>
+  </DrawingBrush>
+  <Design.PreviewWith>
+    <OverlayDockControl Width="400" Height="300" />
+  </Design.PreviewWith>
+
+  <ControlTheme x:Key="{x:Type OverlayDockControl}" TargetType="OverlayDockControl">
+    <Setter Property="(AutomationProperties.AutomationId)" Value="{Binding Id}" />
+    <Setter Property="(AutomationProperties.Name)" Value="{Binding Title}" />
+    <Setter Property="(DockProperties.IsDragEnabled)" Value="{Binding CanDrag}" />
+    <Setter Property="(DockProperties.IsDropEnabled)" Value="{Binding CanDrop}" />
+    <Setter Property="(DockProperties.DockGroup)" Value="{Binding DockGroup}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid x:Name="PART_Root">
+          <ContentPresenter x:Name="PART_BackgroundContent"
+                            Content="{Binding BackgroundDockable}"
+                            DockProperties.IsDropArea="True"
+                            DockProperties.IsDockTarget="True"
+                            DockProperties.DockAdornerHost="{Binding #PART_Root}" />
+
+          <Grid>
+            <Border x:Name="PART_AlignmentGrid"
+                    Background="{StaticResource OverlayAlignmentGridBrush}"
+                    IsHitTestVisible="False"
+                    IsVisible="{Binding ShowAlignmentGrid}" />
+
+            <Canvas x:Name="PART_OverlayCanvas"
+                    DockProperties.IsDropArea="True"
+                    DockProperties.IsDockTarget="True"
+                    DockProperties.DockAdornerHost="{Binding #PART_Root}">
+              <ItemsControl x:Name="PART_SplitterGroups"
+                            ItemsSource="{Binding SplitterGroups}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Canvas />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
+
+              <ItemsControl x:Name="PART_OverlayPanels"
+                            ItemsSource="{Binding OverlayPanels}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Canvas />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
+            </Canvas>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

@@ -158,6 +158,11 @@ public class DockableControl : Panel, IDockableControl
             return;
         }
 
+        if (TrackingMode == TrackingMode.Pinned && this.FindAncestorOfType<ToolPinItemControl>() is not null)
+        {
+            return;
+        }
+
         var x = bounds.X;
         var y = bounds.Y;
         var width = bounds.Width;

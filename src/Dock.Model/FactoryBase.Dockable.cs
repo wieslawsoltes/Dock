@@ -561,6 +561,28 @@ public abstract partial class FactoryBase
         return Alignment.Unset;
     }
 
+    private void UpdatePinnedBoundsFromVisible(IDockable dockable, IDock owner)
+    {
+        dockable.GetVisibleBounds(out _, out _, out var width, out var height);
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            owner.GetVisibleBounds(out _, out _, out width, out height);
+        }
+
+        if (!IsValidSize(width) || !IsValidSize(height))
+        {
+            return;
+        }
+
+        dockable.SetPinnedBounds(0, 0, width, height);
+    }
+
+    private static bool IsValidSize(double value)
+    {
+        return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0;
+    }
+
     /// <inheritdoc/>
     public virtual void PinDockable(IDockable dockable)
     {
@@ -590,6 +612,7 @@ public abstract partial class FactoryBase
                 if (isVisible && !isPinned)
                 {
                     // Pin dockable.
+                    UpdatePinnedBoundsFromVisible(dockable, toolDock);
 
                     switch (alignment)
                     {

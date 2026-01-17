@@ -355,4 +355,4 @@ When the window opens, experiment with creating documents, docking tools, and re
 
 - Integrate the factory and view models into your Prism container using `IContainerRegistry` to enable dependency injection.
 - Extend the sample with Prism navigation to swap between multiple root layouts or to persist layout state via Prism services.
-- Review `docs/dock-dependency-injection.md` in tandem with this guide when combining Prism's DI abstractions with Dock's factory interfaces.
+- Review `dock-dependency-injection.md` in tandem with this guide when combining Prism's DI abstractions with Dock's factory interfaces.

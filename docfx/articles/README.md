@@ -6,7 +6,7 @@ Welcome to the Dock documentation. This page is the entry point for the
 documentation site and collects links to guides, reference topics and other
 resources. These articles explain how to use the Dock layout system from basic
 setup through advanced customization. The examples assume an Avalonia
-application created with the .NET SDK. For build instructions and an overview of the repository see the [project README](../README.md). If you are new to Dock, start with the guides under *Get started*.
+application created with the .NET SDK. For build instructions and an overview of the repository see the [project README](https://github.com/wieslawsoltes/Dock/blob/master/README.md). If you are new to Dock, start with the guides under *Get started*.
 
 ## Get started
 
@@ -102,8 +102,8 @@ Choose the implementation that matches your MVVM framework:
 
 ## Samples and additional resources
 
-See the sample applications under the [samples](../samples/) directory for
-real-world usage. The [project README](../README.md) also lists the available
+See the sample applications under the [samples](https://github.com/wieslawsoltes/Dock/tree/master/samples/) directory for
+real-world usage. The [project README](https://github.com/wieslawsoltes/Dock/blob/master/README.md) also lists the available
 guides and provides basic build instructions.
 
 For the complete source code visit the

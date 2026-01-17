@@ -59,4 +59,4 @@ _dockState.Reset();
 
 With these practices the docking framework can restore non-serialized content and templates after layouts are reloaded.
 
-For a working example see the [DockXamlSample](../samples/DockXamlSample) project.
+For a working example see the [DockXamlSample](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlSample) project.

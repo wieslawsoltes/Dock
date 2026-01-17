@@ -162,4 +162,4 @@ When working with custom dock types and DataTemplates:
 
 - [Creating Custom Models](dock-custom-model.md) - Learn about implementing custom dock models
 - [Styling Guide](dock-styling.md) - Customize the appearance of dock controls
-- [Sample Applications](../samples/) - Examples of custom dock implementations
+- [Sample Applications](https://github.com/wieslawsoltes/Dock/tree/master/samples/) - Examples of custom dock implementations

@@ -21,7 +21,7 @@ If you only need basic property change notifications and lightweight `ICommand` 
 dotnet add package Dock.Model.Inpc
 ```
 
-This package provides `INotifyPropertyChanged` implementations without the additional overhead of command patterns, making it ideal for simpler scenarios or custom MVVM frameworks. The [DockInpcSample](../samples/DockInpcSample) demonstrates this approach.
+This package provides `INotifyPropertyChanged` implementations without the additional overhead of command patterns, making it ideal for simpler scenarios or custom MVVM frameworks. The [DockInpcSample](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockInpcSample) demonstrates this approach.
 
 ## Project setup
 

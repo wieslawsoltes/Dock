@@ -2,7 +2,7 @@
 
 This guide shows how to create Dock layouts entirely in XAML.  Using XAML can be
 convenient when the layout rarely changes or when you wish to edit it without
-recompiling. The [DockXamlSample](../samples/DockXamlSample) demonstrates these
+recompiling. The [DockXamlSample](https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlSample) demonstrates these
 techniques.
 
 ## Step-by-step tutorial

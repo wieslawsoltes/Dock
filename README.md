@@ -110,7 +110,7 @@ Install-Package Dock.Avalonia.Themes.Fluent -Pre
 ```
 
 ## Resources
-* [Documentation index](docs/README.md)
+* [Documentation index](https://wieslawsoltes.github.io/Dock/)
 * Sample applications can be found under the [samples](samples/) directory
   which illustrate each approach in a working project:
   - **`DockXamlSample`** - XAML layouts with ItemsSource examples

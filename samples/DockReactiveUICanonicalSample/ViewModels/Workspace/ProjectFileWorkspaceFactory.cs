@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -110,7 +111,7 @@ public sealed class ProjectFileWorkspaceFactory
             {
                 Id = $"History-{project.Id}-{file.Id}",
                 Title = "History",
-                CanClose = false,
+                CanClose = true,
                 CanFloat = true,
                 CanDrag = true
             }
@@ -208,9 +209,10 @@ public sealed class ProjectFileWorkspaceFactory
     public async Task<ProjectFileWorkspace> CreateWorkspaceAsync(
         IScreen hostScreen,
         Project project,
-        ProjectFile file)
+        ProjectFile file,
+        CancellationToken cancellationToken)
     {
-        await Task.Delay(350).ConfigureAwait(false);
+        await Task.Delay(350, cancellationToken).ConfigureAwait(false);
         return CreateWorkspace(hostScreen, project, file);
     }
 }

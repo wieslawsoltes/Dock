@@ -106,7 +106,34 @@ public class ToolPanelPageViewModel : ReactiveObject, IRoutableViewModel
 
         if (HostScreen is IDockable dockable)
         {
-            dockable.Factory?.RemoveDockable(dockable, false);
+            CloseDockable(dockable);
         }
+    }
+
+    private static void CloseDockable(IDockable dockable)
+    {
+        var factory = FindFactory(dockable);
+        if (factory is null)
+        {
+            return;
+        }
+
+        factory.CloseDockable(dockable);
+    }
+
+    private static IFactory? FindFactory(IDockable dockable)
+    {
+        IDockable? current = dockable;
+        while (current is not null)
+        {
+            if (current is IDock dock && dock.Factory is { } factory)
+            {
+                return factory;
+            }
+
+            current = current.Owner;
+        }
+
+        return null;
     }
 }

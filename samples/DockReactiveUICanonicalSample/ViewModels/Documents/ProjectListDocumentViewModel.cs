@@ -18,6 +18,8 @@ public class ProjectListDocumentViewModel : RoutableDocument
         IConfirmationServiceProvider confirmationServiceProvider)
         : base(host, "projects")
     {
+        CanClose = false;
+
         Router.Navigate.Execute(new ProjectListPageViewModel(
                 this,
                 repository,

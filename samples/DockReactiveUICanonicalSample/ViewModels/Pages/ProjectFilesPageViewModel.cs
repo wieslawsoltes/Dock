@@ -1,6 +1,9 @@
+using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dock.Model.Core;
@@ -12,14 +15,14 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 
-public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IReloadable
+public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IReloadable, IActivatableViewModel
 {
     private readonly IProjectRepository _repository;
     private readonly IDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
-    private bool _canGoBack;
+    private ObservableAsPropertyHelper<bool>? _canGoBack;
 
     public ProjectFilesPageViewModel(
         IScreen hostScreen,
@@ -40,9 +43,6 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
         Files = new ObservableCollection<ProjectFileItemViewModel>();
 
-        ObserveNavigation();
-        Dispatcher.UIThread.Post(() => _ = LoadFilesAsync());
-
         var canGoBack = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -60,9 +60,27 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         }, canGoBack);
 
         CloseFiles = ReactiveCommand.CreateFromTask(CloseFilesAsync);
+
+        this.WhenActivated(disposables =>
+        {
+            _canGoBack = this.WhenAnyValue(x => x.HostScreen.Router.NavigationStack.Count)
+                .Select(count => count > 1)
+                .ToProperty(this, x => x.CanGoBack);
+            disposables.Add(_canGoBack);
+
+            var cts = new CancellationTokenSource();
+            disposables.Add(Disposable.Create(() =>
+            {
+                cts.Cancel();
+                cts.Dispose();
+            }));
+            _ = LoadFilesAsync(cts.Token);
+        });
     }
 
     public string UrlPathSegment { get; } = "project-files";
+
+    public ViewModelActivator Activator { get; } = new();
 
     public IScreen HostScreen { get; }
 
@@ -70,13 +88,9 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
     public ObservableCollection<ProjectFileItemViewModel> Files { get; }
 
-    public bool CanGoBack
-    {
-        get => _canGoBack;
-        private set => this.RaiseAndSetIfChanged(ref _canGoBack, value);
-    }
+    public bool CanGoBack => _canGoBack?.Value ?? false;
 
-    public Task ReloadAsync() => LoadFilesAsync();
+    public Task ReloadAsync() => LoadFilesAsync(CancellationToken.None);
 
     private void OpenFile(ProjectFile file)
     {
@@ -103,26 +117,6 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
     public ReactiveCommand<Unit, Unit> GoBack { get; }
 
     public ReactiveCommand<Unit, Unit> CloseFiles { get; }
-
-    private void ObserveNavigation()
-    {
-        if (HostScreen.Router.NavigationStack is INotifyCollectionChanged notify)
-        {
-            notify.CollectionChanged += OnNavigationStackChanged;
-        }
-
-        UpdateCanGoBack();
-    }
-
-    private void OnNavigationStackChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        UpdateCanGoBack();
-    }
-
-    private void UpdateCanGoBack()
-    {
-        CanGoBack = HostScreen.Router.NavigationStack.Count > 1;
-    }
 
     private async Task CloseFilesAsync()
     {
@@ -159,14 +153,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
             return;
         }
 
-        dockable.CanClose = true;
         factory.CloseDockable(dockable);
-
-        if (dockable.Owner is IDock owner
-            && owner.VisibleDockables?.Contains(dockable) == true)
-        {
-            factory.RemoveDockable(dockable, true);
-        }
     }
 
     private static IFactory? FindFactory(IDockable dockable)
@@ -185,33 +172,47 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         return null;
     }
 
-    private async Task LoadFilesAsync()
+    private async Task LoadFilesAsync(CancellationToken cancellationToken)
     {
-        var busyService = _busyServiceProvider.GetBusyService(HostScreen);
-
-        await busyService.RunAsync("Loading project files...", async () =>
+        try
         {
-            var files = await _repository.GetProjectFilesAsync(Project.Id).ConfigureAwait(false);
-            var total = files.Count;
-            var index = 0;
+            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            await busyService.RunAsync("Loading project files...", async () =>
             {
-                Files.Clear();
-            });
-
-            foreach (var file in files)
-            {
-                index++;
-                busyService.UpdateMessage($"Loading project files... {index}/{total}");
+                cancellationToken.ThrowIfCancellationRequested();
+                var files = await _repository.GetProjectFilesAsync(Project.Id).ConfigureAwait(false);
+                var total = files.Count;
+                var index = 0;
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    Files.Add(new ProjectFileItemViewModel(file, OpenFile, OpenFileTab, OpenFileFloating));
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        Files.Clear();
+                    }
                 });
 
-                await Task.Delay(120).ConfigureAwait(false);
-            }
-        }).ConfigureAwait(false);
+                foreach (var file in files)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    index++;
+                    busyService.UpdateMessage($"Loading project files... {index}/{total}");
+
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            Files.Add(new ProjectFileItemViewModel(file, OpenFile, OpenFileTab, OpenFileFloating));
+                        }
+                    });
+
+                    await Task.Delay(120, cancellationToken).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 }

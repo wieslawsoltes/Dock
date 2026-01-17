@@ -20,6 +20,7 @@ public class ProjectFileDocumentViewModel : RoutableDocument
     {
         Project = project;
         File = file;
+        CanClose = true;
 
         Router.Navigate.Execute(new ProjectFilePageViewModel(
                 this,

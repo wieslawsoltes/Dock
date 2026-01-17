@@ -11,6 +11,7 @@ public class ProjectFileEditorDocumentViewModel : Document
         File = file;
         Id = $"Editor-{project.Id}-{file.Id}";
         Title = file.Name;
+        CanClose = false;
         Content = $"// Project: {project.Name}\n// File: {file.Path}\n\npublic class Sample\n{{\n    public void Run()\n    {{\n        // TODO: Implement editor content.\n    }}\n}}\n";
     }
 

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Disposables;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using DockReactiveUICanonicalSample.Models;
@@ -9,7 +12,7 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 
-public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IReloadable
+public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IReloadable, IActivatableViewModel
 {
     private readonly IProjectRepository _repository;
     private readonly IDockNavigationService _dockNavigation;
@@ -34,49 +37,74 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         Projects = new ObservableCollection<ProjectListItemViewModel>();
 
-        Dispatcher.UIThread.Post(() => _ = LoadProjectsAsync());
+        this.WhenActivated(disposables =>
+        {
+            var cts = new CancellationTokenSource();
+            disposables.Add(Disposable.Create(() =>
+            {
+                cts.Cancel();
+                cts.Dispose();
+            }));
+            _ = LoadProjectsAsync(cts.Token);
+        });
     }
 
     public string UrlPathSegment { get; } = "project-list";
+
+    public ViewModelActivator Activator { get; } = new();
 
     public IScreen HostScreen { get; }
 
     public ObservableCollection<ProjectListItemViewModel> Projects { get; }
 
-    public Task ReloadAsync() => LoadProjectsAsync();
+    public Task ReloadAsync() => LoadProjectsAsync(CancellationToken.None);
 
-    private async Task LoadProjectsAsync()
+    private async Task LoadProjectsAsync(CancellationToken cancellationToken)
     {
-        var busyService = _busyServiceProvider.GetBusyService(HostScreen);
-
-        await busyService.RunAsync("Loading projects...", async () =>
+        try
         {
-            var projects = await _repository.GetProjectsAsync().ConfigureAwait(false);
-            var total = projects.Count;
-            var index = 0;
+            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
 
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            await busyService.RunAsync("Loading projects...", async () =>
             {
-                Projects.Clear();
-            });
-
-            foreach (var project in projects)
-            {
-                index++;
-                busyService.UpdateMessage($"Loading projects... {index}/{total}");
+                cancellationToken.ThrowIfCancellationRequested();
+                var projects = await _repository.GetProjectsAsync().ConfigureAwait(false);
+                var total = projects.Count;
+                var index = 0;
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    Projects.Add(new ProjectListItemViewModel(
-                        project,
-                        OpenProjectFiles,
-                        OpenProjectFilesTab,
-                        OpenProjectFilesFloating));
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        Projects.Clear();
+                    }
                 });
 
-                await Task.Delay(120).ConfigureAwait(false);
-            }
-        }).ConfigureAwait(false);
+                foreach (var project in projects)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    index++;
+                    busyService.UpdateMessage($"Loading projects... {index}/{total}");
+
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        if (!cancellationToken.IsCancellationRequested)
+                        {
+                            Projects.Add(new ProjectListItemViewModel(
+                                project,
+                                OpenProjectFiles,
+                                OpenProjectFilesTab,
+                                OpenProjectFilesFloating));
+                        }
+                    });
+
+                    await Task.Delay(120, cancellationToken).ConfigureAwait(false);
+                }
+            }).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 
     private void OpenProjectFiles(Project project)

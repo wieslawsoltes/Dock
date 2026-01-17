@@ -68,16 +68,16 @@ public class DockFactory : Factory
             _confirmationServiceProvider)
         {
             Id = "Projects",
-            Title = "Projects"
+            Title = "Projects",
+            CanClose = false
         };
 
-        var documentDock = new DocumentDock
-        {
-            Id = "Documents",
-            VisibleDockables = CreateList<IDockable>(projectList),
-            ActiveDockable = projectList,
-            CanCreateDocument = false
-        };
+        var documentDock = CreateDocumentDock();
+        documentDock.Id = "Documents";
+        documentDock.VisibleDockables = CreateList<IDockable>(projectList);
+        documentDock.ActiveDockable = projectList;
+        documentDock.CanCreateDocument = false;
+        documentDock.CanCloseLastDockable = true;
 
         var root = (BusyRootDock)CreateRootDock();
         root.VisibleDockables = CreateList<IDockable>(documentDock);
@@ -91,6 +91,12 @@ public class DockFactory : Factory
 
         return root;
     }
+
+    public override IDocumentDock CreateDocumentDock()
+        => new DocumentDock
+        {
+            CanCloseLastDockable = true
+        };
 
     public override IRootDock CreateRootDock()
         => new BusyRootDock(

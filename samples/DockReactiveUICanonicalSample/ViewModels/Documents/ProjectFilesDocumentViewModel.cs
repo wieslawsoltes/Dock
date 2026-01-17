@@ -20,6 +20,7 @@ public class ProjectFilesDocumentViewModel : RoutableDocument
         : base(host, $"projects/{project.Id}/files")
     {
         Project = project;
+        CanClose = true;
 
         Router.Navigate.Execute(new ProjectFilesPageViewModel(
                 this,

@@ -1,5 +1,8 @@
-using System.Collections.Specialized;
+using System;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dock.Model.Controls;
@@ -12,12 +15,12 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 
-public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IReloadable
+public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IReloadable, IActivatableViewModel
 {
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
-    private bool _canGoBack;
+    private ObservableAsPropertyHelper<bool>? _canGoBack;
     private IRootDock? _workspaceLayout;
 
     public ProjectFilePageViewModel(
@@ -34,9 +37,6 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         _workspaceFactory = workspaceFactory;
         _busyServiceProvider = busyServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
-
-        ObserveNavigation();
-        Dispatcher.UIThread.Post(() => _ = LoadWorkspaceAsync());
 
         var canGoBack = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.CreateFromTask(async () =>
@@ -55,9 +55,27 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         }, canGoBack);
 
         CloseFile = ReactiveCommand.CreateFromTask(CloseFileAsync);
+
+        this.WhenActivated(disposables =>
+        {
+            _canGoBack = this.WhenAnyValue(x => x.HostScreen.Router.NavigationStack.Count)
+                .Select(count => count > 1)
+                .ToProperty(this, x => x.CanGoBack);
+            disposables.Add(_canGoBack);
+
+            var cts = new CancellationTokenSource();
+            disposables.Add(Disposable.Create(() =>
+            {
+                cts.Cancel();
+                cts.Dispose();
+            }));
+            _ = LoadWorkspaceAsync(cts.Token);
+        });
     }
 
     public string UrlPathSegment { get; } = "project-file";
+
+    public ViewModelActivator Activator { get; } = new();
 
     public IScreen HostScreen { get; }
 
@@ -65,11 +83,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     public ProjectFile File { get; }
 
-    public bool CanGoBack
-    {
-        get => _canGoBack;
-        private set => this.RaiseAndSetIfChanged(ref _canGoBack, value);
-    }
+    public bool CanGoBack => _canGoBack?.Value ?? false;
 
     public IRootDock? WorkspaceLayout
     {
@@ -84,41 +98,34 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
     public async Task ReloadAsync()
     {
         await Dispatcher.UIThread.InvokeAsync(() => WorkspaceLayout = null);
-        await LoadWorkspaceAsync().ConfigureAwait(false);
+        await LoadWorkspaceAsync(CancellationToken.None).ConfigureAwait(false);
     }
 
-    private void ObserveNavigation()
+    private async Task LoadWorkspaceAsync(CancellationToken cancellationToken)
     {
-        if (HostScreen.Router.NavigationStack is INotifyCollectionChanged notify)
+        try
         {
-            notify.CollectionChanged += OnNavigationStackChanged;
+            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+
+            await busyService.RunAsync("Loading document view...", async () =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var workspace = await _workspaceFactory
+                    .CreateWorkspaceAsync(HostScreen, Project, File, cancellationToken)
+                    .ConfigureAwait(false);
+
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    if (!cancellationToken.IsCancellationRequested)
+                    {
+                        WorkspaceLayout = workspace.Layout;
+                    }
+                });
+            }).ConfigureAwait(false);
         }
-
-        UpdateCanGoBack();
-    }
-
-    private void OnNavigationStackChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        UpdateCanGoBack();
-    }
-
-    private void UpdateCanGoBack()
-    {
-        CanGoBack = HostScreen.Router.NavigationStack.Count > 1;
-    }
-
-    private async Task LoadWorkspaceAsync()
-    {
-        var busyService = _busyServiceProvider.GetBusyService(HostScreen);
-
-        await busyService.RunAsync("Loading document view...", async () =>
+        catch (OperationCanceledException)
         {
-            var workspace = await _workspaceFactory
-                .CreateWorkspaceAsync(HostScreen, Project, File)
-                .ConfigureAwait(false);
-
-            await Dispatcher.UIThread.InvokeAsync(() => WorkspaceLayout = workspace.Layout);
-        }).ConfigureAwait(false);
+        }
     }
 
     private async Task CloseFileAsync()
@@ -156,14 +163,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
             return;
         }
 
-        dockable.CanClose = true;
         factory.CloseDockable(dockable);
-
-        if (dockable.Owner is IDock owner
-            && owner.VisibleDockables?.Contains(dockable) == true)
-        {
-            factory.RemoveDockable(dockable, true);
-        }
     }
 
     private static IFactory? FindFactory(IDockable dockable)

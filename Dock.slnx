@@ -54,6 +54,7 @@
     <Project Path="samples/DockMvvmSample/DockMvvmSample.csproj" />
     <Project Path="samples/DockPrismSample/DockPrismSample.csproj" />
     <Project Path="samples/DockReactivePropertySample/DockReactivePropertySample.csproj" />
+    <Project Path="samples/DockReactiveUICanonicalSample/DockReactiveUICanonicalSample.csproj" />
     <Project Path="samples/DockReactiveUIDiSample/DockReactiveUIDiSample.csproj" />
     <Project Path="samples/DockReactiveUIRoutingSample/DockReactiveUIRoutingSample.csproj" />
     <Project Path="samples/DockReactiveUISample/DockReactiveUISample.csproj" />

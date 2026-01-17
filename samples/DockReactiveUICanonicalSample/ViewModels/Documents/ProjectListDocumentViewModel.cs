@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
@@ -14,10 +13,18 @@ public class ProjectListDocumentViewModel : RoutableDocument
         IScreen host,
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
-        ProjectFileWorkspaceFactory workspaceFactory)
+        ProjectFileWorkspaceFactory workspaceFactory,
+        IBusyServiceProvider busyServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider)
         : base(host, "projects")
     {
-        Router.Navigate.Execute(new ProjectListPageViewModel(this, repository, dockNavigation, workspaceFactory))
+        Router.Navigate.Execute(new ProjectListPageViewModel(
+                this,
+                repository,
+                dockNavigation,
+                workspaceFactory,
+                busyServiceProvider,
+                confirmationServiceProvider))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 }

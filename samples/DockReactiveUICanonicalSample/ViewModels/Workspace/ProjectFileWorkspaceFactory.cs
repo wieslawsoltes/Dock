@@ -1,24 +1,44 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using DockReactiveUICanonicalSample.Models;
+using DockReactiveUICanonicalSample.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public sealed class ProjectFileWorkspaceFactory
 {
+    private readonly IDialogServiceProvider _dialogServiceProvider;
+    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+
+    public ProjectFileWorkspaceFactory(
+        IDialogServiceProvider dialogServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider)
+    {
+        _dialogServiceProvider = dialogServiceProvider;
+        _confirmationServiceProvider = confirmationServiceProvider;
+    }
+
     public ProjectFileWorkspace CreateWorkspace(IScreen hostScreen, Project project, ProjectFile file)
     {
         var factory = new WorkspaceDockFactory();
 
-        var fileActionsTool = new FileActionsToolViewModel(hostScreen, project, file)
+        var fileActionsTool = new FileActionsToolViewModel(
+            hostScreen,
+            project,
+            file,
+            _dialogServiceProvider,
+            _confirmationServiceProvider)
         {
             Id = $"FileActions-{project.Id}-{file.Id}",
             Title = "File Actions",
-            CanClose = false
+            CanClose = false,
+            CanFloat = true,
+            CanDrag = true
         };
 
         var rightTools = new Dictionary<string, ToolPanelViewModel>
@@ -27,31 +47,43 @@ public sealed class ProjectFileWorkspaceFactory
                 hostScreen,
                 "outline",
                 "Outline",
-                "Symbols and declarations for quick navigation.")
+                "Symbols and declarations for quick navigation.",
+                _dialogServiceProvider,
+                _confirmationServiceProvider)
             {
                 Id = $"Outline-{project.Id}-{file.Id}",
                 Title = "Outline",
-                CanClose = false
+                CanClose = false,
+                CanFloat = true,
+                CanDrag = true
             },
             ["insights"] = new ToolPanelViewModel(
                 hostScreen,
                 "insights",
                 "Insights",
-                "Metrics, warnings, and quality signals.")
+                "Metrics, warnings, and quality signals.",
+                _dialogServiceProvider,
+                _confirmationServiceProvider)
             {
                 Id = $"Insights-{project.Id}-{file.Id}",
                 Title = "Insights",
-                CanClose = false
+                CanClose = false,
+                CanFloat = true,
+                CanDrag = true
             },
             ["history"] = new ToolPanelViewModel(
                 hostScreen,
                 "history",
                 "History",
-                "Recent edits and change summaries.")
+                "Recent edits and change summaries.",
+                _dialogServiceProvider,
+                _confirmationServiceProvider)
             {
                 Id = $"History-{project.Id}-{file.Id}",
                 Title = "History",
-                CanClose = false
+                CanClose = false,
+                CanFloat = true,
+                CanDrag = true
             }
         };
 
@@ -62,6 +94,8 @@ public sealed class ProjectFileWorkspaceFactory
             AutoHide = true,
             IsExpanded = false,
             GripMode = GripMode.AutoHide,
+            CanFloat = true,
+            CanDrag = true,
             Proportion = 0.2,
             VisibleDockables = factory.CreateList<IDockable>()
         };
@@ -73,6 +107,8 @@ public sealed class ProjectFileWorkspaceFactory
             AutoHide = true,
             IsExpanded = false,
             GripMode = GripMode.AutoHide,
+            CanFloat = true,
+            CanDrag = true,
             Proportion = 0.25,
             VisibleDockables = factory.CreateList<IDockable>()
         };
@@ -148,5 +184,14 @@ public sealed class ProjectFileWorkspaceFactory
         workspace.Layout = root;
 
         return workspace;
+    }
+
+    public async Task<ProjectFileWorkspace> CreateWorkspaceAsync(
+        IScreen hostScreen,
+        Project project,
+        ProjectFile file)
+    {
+        await Task.Delay(350).ConfigureAwait(false);
+        return CreateWorkspace(hostScreen, project, file);
     }
 }

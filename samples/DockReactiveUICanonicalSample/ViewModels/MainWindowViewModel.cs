@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
@@ -13,9 +12,29 @@ public class MainWindowViewModel : ReactiveObject, IScreen
     public MainWindowViewModel(
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
-        ProjectFileWorkspaceFactory workspaceFactory)
+        ProjectFileWorkspaceFactory workspaceFactory,
+        IBusyServiceFactory busyServiceFactory,
+        IBusyServiceProvider busyServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IGlobalBusyService globalBusyService,
+        IDialogServiceFactory dialogServiceFactory,
+        IGlobalDialogService globalDialogService,
+        IConfirmationServiceFactory confirmationServiceFactory,
+        IGlobalConfirmationService globalConfirmationService)
     {
-        var dockFactory = new DockFactory(this, repository, dockNavigation, workspaceFactory);
+        var dockFactory = new DockFactory(
+            this,
+            repository,
+            dockNavigation,
+            workspaceFactory,
+            busyServiceFactory,
+            busyServiceProvider,
+            confirmationServiceProvider,
+            globalBusyService,
+            dialogServiceFactory,
+            globalDialogService,
+            confirmationServiceFactory,
+            globalConfirmationService);
         var dockViewModel = new DockViewModel(this, dockFactory);
 
         Router.Navigate.Execute(dockViewModel).Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));

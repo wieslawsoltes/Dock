@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DockReactiveUICanonicalSample.Models;
 
@@ -51,4 +52,16 @@ public sealed class ProjectRepository : IProjectRepository
 
     public Project? GetProject(string id)
         => _projects.FirstOrDefault(project => project.Id == id);
+
+    public async Task<IReadOnlyList<Project>> GetProjectsAsync()
+    {
+        await Task.Delay(350).ConfigureAwait(false);
+        return _projects;
+    }
+
+    public async Task<IReadOnlyList<ProjectFile>> GetProjectFilesAsync(string projectId)
+    {
+        await Task.Delay(350).ConfigureAwait(false);
+        return GetProject(projectId)?.Files ?? new List<ProjectFile>();
+    }
 }

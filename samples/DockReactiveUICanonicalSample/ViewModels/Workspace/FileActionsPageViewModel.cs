@@ -1,25 +1,49 @@
 using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Threading.Tasks;
 using DockReactiveUICanonicalSample.Models;
+using DockReactiveUICanonicalSample.Services;
+using DockReactiveUICanonicalSample.ViewModels.Dialogs;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public class FileActionsPageViewModel : ReactiveObject, IRoutableViewModel
 {
-    public FileActionsPageViewModel(IScreen hostScreen, Project project, ProjectFile file)
+    private readonly IDialogServiceProvider _dialogServiceProvider;
+    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+
+    public FileActionsPageViewModel(
+        IScreen hostScreen,
+        Project project,
+        ProjectFile file,
+        IDialogServiceProvider dialogServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider)
     {
         HostScreen = hostScreen;
         Project = project;
         File = file;
+        _dialogServiceProvider = dialogServiceProvider;
+        _confirmationServiceProvider = confirmationServiceProvider;
 
-        Actions = new ObservableCollection<string>
+        Actions = new ObservableCollection<FileActionItemViewModel>
         {
-            "Open with Preview",
-            "Rename File",
-            "Duplicate",
-            "Reveal in Explorer",
-            "Copy Path",
-            "Mark as Favorite"
+            new FileActionItemViewModel(
+                "Open with Preview",
+                "Show a quick preview dialog for the current file.",
+                ReactiveCommand.CreateFromTask(OpenPreviewAsync)),
+            new FileActionItemViewModel(
+                "Rename File",
+                "Prompt for a new name and confirm the rename.",
+                ReactiveCommand.CreateFromTask(RenameFileAsync)),
+            new FileActionItemViewModel(
+                "Duplicate",
+                "Run a two-step dialog flow for duplication.",
+                ReactiveCommand.CreateFromTask(DuplicateFileAsync)),
+            new FileActionItemViewModel(
+                "Reveal in Explorer",
+                "Show the file path in a dialog.",
+                ReactiveCommand.CreateFromTask(RevealPathAsync))
         };
     }
 
@@ -31,5 +55,104 @@ public class FileActionsPageViewModel : ReactiveObject, IRoutableViewModel
 
     public ProjectFile File { get; }
 
-    public ObservableCollection<string> Actions { get; }
+    public ObservableCollection<FileActionItemViewModel> Actions { get; }
+
+    private IDialogService GetDialogService()
+        => _dialogServiceProvider.GetDialogService(HostScreen);
+
+    private IConfirmationService GetConfirmationService()
+        => _confirmationServiceProvider.GetConfirmationService(HostScreen);
+
+    private async Task OpenPreviewAsync()
+    {
+        var dialog = GetDialogService();
+        await dialog.ShowAsync<bool>(
+            new MessageDialogViewModel($"Previewing {File.Name}..."),
+            "Preview");
+    }
+
+    private async Task RenameFileAsync()
+    {
+        var dialog = GetDialogService();
+        var confirmation = GetConfirmationService();
+
+        var namePrompt = new TextPromptDialogViewModel(
+            "Enter a new filename.",
+            "New name",
+            primaryText: "Rename",
+            secondaryText: "Cancel",
+            initialValue: File.Name);
+
+        var newName = await dialog.ShowAsync<string>(namePrompt, "Rename File");
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            return;
+        }
+
+        var approved = await confirmation.ConfirmAsync(
+            "Confirm Rename",
+            $"Rename {File.Name} to {newName}?",
+            confirmText: "Rename",
+            cancelText: "Keep");
+
+        if (approved)
+        {
+            await dialog.ShowAsync<bool>(
+                new MessageDialogViewModel($"Renamed to {newName}."),
+                "Rename Complete");
+        }
+    }
+
+    private async Task DuplicateFileAsync()
+    {
+        var dialog = GetDialogService();
+        var confirmation = GetConfirmationService();
+
+        var namePrompt = new TextPromptDialogViewModel(
+            "Name the duplicate file.",
+            "Duplicate name",
+            primaryText: "Next",
+            secondaryText: "Cancel",
+            initialValue: $"{File.Name}.copy");
+
+        var newName = await dialog.ShowAsync<string>(namePrompt, "Duplicate File");
+        if (string.IsNullOrWhiteSpace(newName))
+        {
+            return;
+        }
+
+        var pathPrompt = new TextPromptDialogViewModel(
+            "Choose the destination folder.",
+            "Destination path",
+            primaryText: "Next",
+            secondaryText: "Cancel",
+            initialValue: "/workspace/exports");
+
+        var destination = await dialog.ShowAsync<string>(pathPrompt, "Destination");
+        if (string.IsNullOrWhiteSpace(destination))
+        {
+            return;
+        }
+
+        var approved = await confirmation.ConfirmAsync(
+            "Confirm Duplicate",
+            $"Duplicate {File.Name} as {newName} in {destination}?",
+            confirmText: "Duplicate",
+            cancelText: "Cancel");
+
+        if (approved)
+        {
+            await dialog.ShowAsync<bool>(
+                new MessageDialogViewModel("Duplicate queued for processing."),
+                "Duplicate Scheduled");
+        }
+    }
+
+    private async Task RevealPathAsync()
+    {
+        var dialog = GetDialogService();
+        await dialog.ShowAsync<bool>(
+            new MessageDialogViewModel($"Path: {File.Path}"),
+            "File Location");
+    }
 }

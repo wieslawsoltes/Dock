@@ -1,16 +1,272 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:core="using:Dock.Model.Core"
-             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
              x:Class="DockReactiveUICanonicalSample.App">
   <Application.DataTemplates>
-    <DataTemplate DataType="core:IDockable">
-      <rxui:ViewModelViewHost ViewModel="{Binding}" />
+    <DataTemplate DataType="DialogRequest">
+      <DialogShellControl Title="{Binding Title}"
+                          CloseCommand="{Binding Close}"
+                          Content="{Binding Content}" />
+    </DataTemplate>
+    <DataTemplate DataType="ConfirmationRequest">
+      <ConfirmationDialogControl Title="{Binding Title}"
+                                 Message="{Binding Message}"
+                                 ConfirmText="{Binding ConfirmText}"
+                                 CancelText="{Binding CancelText}"
+                                 ConfirmCommand="{Binding Confirm}"
+                                 CancelCommand="{Binding Cancel}" />
+    </DataTemplate>
+    <DataTemplate DataType="TextPromptDialogViewModel">
+      <TextPromptDialogView />
+    </DataTemplate>
+    <DataTemplate DataType="MessageDialogViewModel">
+      <MessageDialogView />
     </DataTemplate>
   </Application.DataTemplates>
 
   <Application.Styles>
     <FluentTheme />
     <DockFluentTheme />
+    <Style Selector="BusyOverlayControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Grid>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              IsEnabled="{TemplateBinding IsContentEnabled}"
+                              IsHitTestVisible="{TemplateBinding IsContentEnabled}" />
+            <Button Content="Reload"
+                    Command="{TemplateBinding ReloadCommand}"
+                    IsEnabled="{TemplateBinding IsReloadEnabled}"
+                    IsVisible="{TemplateBinding IsReloadVisible}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Margin="16"
+                    ZIndex="31" />
+            <Border Background="{DynamicResource DockThemeBackgroundBrush}"
+                    Opacity="0.65"
+                    IsVisible="{TemplateBinding IsBusy}"
+                    IsHitTestVisible="True"
+                    ZIndex="30">
+              <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
+                      BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                      BorderThickness="1"
+                      CornerRadius="8"
+                      Padding="24"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      BoxShadow="0 6 18 #33000000">
+                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding BusyMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Loading...}"
+                             FontSize="14"
+                             FontWeight="SemiBold"
+                             Foreground="{DynamicResource DockThemeForegroundBrush}"
+                             HorizontalAlignment="Center" />
+                  <ProgressBar IsIndeterminate="True"
+                               Width="200"
+                               Height="6"
+                               IsVisible="{Binding ShowProgress, RelativeSource={RelativeSource TemplatedParent}}" />
+                </StackPanel>
+              </Border>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="DialogOverlayControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Grid>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              IsEnabled="{TemplateBinding IsContentEnabled}"
+                              IsHitTestVisible="{TemplateBinding IsContentEnabled}" />
+            <Grid IsVisible="{TemplateBinding IsOverlayVisible}"
+                  IsHitTestVisible="True"
+                  ZIndex="10">
+              <Border Background="{DynamicResource DockThemeForegroundBrush}"
+                      Opacity="0.35"
+                      ZIndex="0" />
+              <Grid ZIndex="1">
+                <TextBlock Text="{Binding OverlayMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Dialog open}"
+                           IsVisible="{TemplateBinding ShowGlobalMessage}"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource DockThemeForegroundBrush}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <ItemsControl ItemsSource="{Binding Dialogs, RelativeSource={RelativeSource TemplatedParent}}"
+                              IsVisible="{TemplateBinding ShowDialogs}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <Grid />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </Grid>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="ConfirmationOverlayControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Grid>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              IsEnabled="{TemplateBinding IsContentEnabled}"
+                              IsHitTestVisible="{TemplateBinding IsContentEnabled}" />
+            <Grid IsVisible="{TemplateBinding IsOverlayVisible}"
+                  IsHitTestVisible="True"
+                  ZIndex="20">
+              <Border Background="{DynamicResource DockThemeForegroundBrush}"
+                      Opacity="0.35"
+                      ZIndex="0" />
+              <Grid ZIndex="1">
+                <TextBlock Text="{Binding OverlayMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Confirmation open}"
+                           IsVisible="{TemplateBinding ShowGlobalMessage}"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource DockThemeForegroundBrush}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <ItemsControl ItemsSource="{Binding Confirmations, RelativeSource={RelativeSource TemplatedParent}}"
+                              IsVisible="{TemplateBinding ShowConfirmations}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <Grid />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </Grid>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="DialogShellControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  CornerRadius="10"
+                  Padding="20"
+                  MinWidth="360"
+                  MaxWidth="640"
+                  BoxShadow="0 6 18 #33000000">
+            <Grid RowDefinitions="Auto,*" RowSpacing="12">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <TextBlock Text="{TemplateBinding Title}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource DockThemeForegroundBrush}"
+                           VerticalAlignment="Center" />
+                <Button Content="✕"
+                        Command="{TemplateBinding CloseCommand}"
+                        IsVisible="{TemplateBinding IsCloseVisible}"
+                        Width="28"
+                        Height="28"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center" />
+              </Grid>
+              <ContentPresenter Grid.Row="1"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="ConfirmationDialogControl">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
+                  BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                  BorderThickness="1"
+                  CornerRadius="10"
+                  Padding="24"
+                  MinWidth="360"
+                  MaxWidth="480"
+                  BoxShadow="0 6 18 #33000000">
+            <StackPanel Spacing="12">
+              <TextBlock Text="{TemplateBinding Title}"
+                         FontSize="16"
+                         FontWeight="SemiBold"
+                         Foreground="{DynamicResource DockThemeForegroundBrush}" />
+              <TextBlock Text="{TemplateBinding Message}"
+                         TextWrapping="Wrap"
+                         Opacity="0.85" />
+              <StackPanel Orientation="Horizontal"
+                          HorizontalAlignment="Right"
+                          Spacing="8">
+                <Button Content="{TemplateBinding CancelText}"
+                        Command="{TemplateBinding CancelCommand}" />
+                <Button Content="{TemplateBinding ConfirmText}"
+                        Command="{TemplateBinding ConfirmCommand}" />
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="HostWindow">
+      <Setter Property="Content">
+        <Template>
+          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+            <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
+              <BusyOverlayControl BusyService="{Binding BusyService}"
+                                  GlobalBusyService="{Binding GlobalBusyService}">
+                <BusyOverlayControl.Content>
+                  <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
+                                              GlobalConfirmationService="{Binding GlobalConfirmationService}">
+                    <ConfirmationOverlayControl.Content>
+                      <DialogOverlayControl DialogService="{Binding DialogService}"
+                                            GlobalDialogService="{Binding GlobalDialogService}">
+                        <DialogOverlayControl.Content>
+                          <DockControl Layout="{Binding}" />
+                        </DialogOverlayControl.Content>
+                      </DialogOverlayControl>
+                    </ConfirmationOverlayControl.Content>
+                  </ConfirmationOverlayControl>
+                </BusyOverlayControl.Content>
+              </BusyOverlayControl>
+            </Panel>
+          </Panel>
+        </Template>
+      </Setter>
+    </Style>
+    <Style Selector="HostWindow:toolwindow">
+      <Setter Property="Content">
+        <Template>
+          <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
+            <BusyOverlayControl BusyService="{Binding BusyService}"
+                                GlobalBusyService="{Binding GlobalBusyService}">
+              <BusyOverlayControl.Content>
+                <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
+                                            GlobalConfirmationService="{Binding GlobalConfirmationService}">
+                  <ConfirmationOverlayControl.Content>
+                    <DialogOverlayControl DialogService="{Binding DialogService}"
+                                          GlobalDialogService="{Binding GlobalDialogService}">
+                      <DialogOverlayControl.Content>
+                        <DockControl Layout="{Binding}" />
+                      </DialogOverlayControl.Content>
+                    </DialogOverlayControl>
+                  </ConfirmationOverlayControl.Content>
+                </ConfirmationOverlayControl>
+              </BusyOverlayControl.Content>
+            </BusyOverlayControl>
+          </Panel>
+        </Template>
+      </Setter>
+    </Style>
+    <Style Selector="HostWindow:toolchromecontrolswindow">
+      <Setter Property="ExtendClientAreaToDecorationsHint" Value="False" />
+      <Setter Property="ExtendClientAreaChromeHints" Value="PreferSystemChrome" />
+    </Style>
   </Application.Styles>
 </Application>

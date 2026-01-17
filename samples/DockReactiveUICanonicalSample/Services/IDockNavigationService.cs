@@ -8,7 +8,7 @@ public interface IDockNavigationService
 {
     void AttachFactory(DockFactory factory, IScreen host);
 
-    void OpenProjectFiles(Project project, bool floatWindow);
+    void OpenProjectFiles(IScreen hostScreen, Project project, bool floatWindow);
 
-    void OpenProjectFile(Project project, ProjectFile file, bool floatWindow);
+    void OpenProjectFile(IScreen hostScreen, Project project, ProjectFile file, bool floatWindow);
 }

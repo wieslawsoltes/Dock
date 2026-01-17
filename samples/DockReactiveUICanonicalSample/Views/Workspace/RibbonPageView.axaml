@@ -1,9 +1,8 @@
 <UserControl x:Class="DockReactiveUICanonicalSample.Views.Workspace.RibbonPageView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:DockReactiveUICanonicalSample.ViewModels.Workspace"
              x:CompileBindings="True"
-             x:DataType="vm:RibbonPageViewModel">
+             x:DataType="RibbonPageViewModel">
   <Border Background="#F3F3F3" Padding="8" CornerRadius="4">
     <StackPanel Orientation="Horizontal" Spacing="8">
       <ToggleButton Content="File Actions"
@@ -17,7 +16,7 @@
           </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemTemplate>
-          <DataTemplate x:DataType="vm:ToolToggleViewModel">
+          <DataTemplate x:DataType="ToolToggleViewModel">
             <ToggleButton Content="{Binding Title}"
                           IsChecked="{Binding IsOpen}"
                           Command="{Binding ToggleCommand}" />

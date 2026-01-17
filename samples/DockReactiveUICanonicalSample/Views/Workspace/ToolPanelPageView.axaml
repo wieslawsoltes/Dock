@@ -1,12 +1,18 @@
 <UserControl x:Class="DockReactiveUICanonicalSample.Views.Workspace.ToolPanelPageView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:DockReactiveUICanonicalSample.ViewModels.Workspace"
              x:CompileBindings="True"
-             x:DataType="vm:ToolPanelPageViewModel">
+             x:DataType="ToolPanelPageViewModel">
   <StackPanel Margin="10" Spacing="6">
     <TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
     <TextBlock Text="{Binding Description}" FontSize="12" Opacity="0.7" />
+    <StackPanel Orientation="Horizontal" Spacing="6">
+      <Button Content="Panel Dialog" Command="{Binding OpenPanelDialog}" />
+      <Button Content="Nested Dialog" Command="{Binding OpenNestedDialog}" />
+      <Button Content="Close Panel"
+              Command="{Binding ClosePanel}"
+              IsVisible="{Binding CanClosePanel}" />
+    </StackPanel>
     <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="4" Padding="8">
       <TextBlock Text="No data loaded." Opacity="0.6" />
     </Border>

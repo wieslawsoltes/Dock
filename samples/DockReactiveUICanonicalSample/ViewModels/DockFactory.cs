@@ -5,7 +5,6 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
-using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Documents;
@@ -20,23 +19,53 @@ public class DockFactory : Factory
     private readonly IProjectRepository _repository;
     private readonly IDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
+    private readonly IBusyServiceFactory _busyServiceFactory;
+    private readonly IBusyServiceProvider _busyServiceProvider;
+    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDialogServiceFactory _dialogServiceFactory;
+    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IConfirmationServiceFactory _confirmationServiceFactory;
+    private readonly IGlobalConfirmationService _globalConfirmationService;
     private IDocumentDock? _documentDock;
 
     public DockFactory(
         IScreen host,
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
-        ProjectFileWorkspaceFactory workspaceFactory)
+        ProjectFileWorkspaceFactory workspaceFactory,
+        IBusyServiceFactory busyServiceFactory,
+        IBusyServiceProvider busyServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IGlobalBusyService globalBusyService,
+        IDialogServiceFactory dialogServiceFactory,
+        IGlobalDialogService globalDialogService,
+        IConfirmationServiceFactory confirmationServiceFactory,
+        IGlobalConfirmationService globalConfirmationService)
     {
         _host = host;
         _repository = repository;
         _dockNavigation = dockNavigation;
         _workspaceFactory = workspaceFactory;
+        _busyServiceFactory = busyServiceFactory;
+        _busyServiceProvider = busyServiceProvider;
+        _confirmationServiceProvider = confirmationServiceProvider;
+        _globalBusyService = globalBusyService;
+        _dialogServiceFactory = dialogServiceFactory;
+        _globalDialogService = globalDialogService;
+        _confirmationServiceFactory = confirmationServiceFactory;
+        _globalConfirmationService = globalConfirmationService;
     }
 
     public override IRootDock CreateLayout()
     {
-        var projectList = new ProjectListDocumentViewModel(_host, _repository, _dockNavigation, _workspaceFactory)
+        var projectList = new ProjectListDocumentViewModel(
+            _host,
+            _repository,
+            _dockNavigation,
+            _workspaceFactory,
+            _busyServiceProvider,
+            _confirmationServiceProvider)
         {
             Id = "Projects",
             Title = "Projects"
@@ -50,17 +79,10 @@ public class DockFactory : Factory
             CanCreateDocument = false
         };
 
-        var root = new RoutableRootDock(_host)
-        {
-            VisibleDockables = CreateList<IDockable>(documentDock),
-            DefaultDockable = documentDock,
-            ActiveDockable = documentDock
-        };
-
-        root.LeftPinnedDockables = CreateList<IDockable>();
-        root.RightPinnedDockables = CreateList<IDockable>();
-        root.TopPinnedDockables = CreateList<IDockable>();
-        root.BottomPinnedDockables = CreateList<IDockable>();
+        var root = (BusyRootDock)CreateRootDock();
+        root.VisibleDockables = CreateList<IDockable>(documentDock);
+        root.DefaultDockable = documentDock;
+        root.ActiveDockable = documentDock;
 
         root.PinnedDock = null;
 
@@ -69,6 +91,22 @@ public class DockFactory : Factory
 
         return root;
     }
+
+    public override IRootDock CreateRootDock()
+        => new BusyRootDock(
+            _host,
+            _busyServiceFactory.Create(),
+            _globalBusyService,
+            _dialogServiceFactory.Create(),
+            _globalDialogService,
+            _confirmationServiceFactory.Create(),
+            _globalConfirmationService)
+        {
+            LeftPinnedDockables = CreateList<IDockable>(),
+            RightPinnedDockables = CreateList<IDockable>(),
+            TopPinnedDockables = CreateList<IDockable>(),
+            BottomPinnedDockables = CreateList<IDockable>()
+        };
 
     public override IDockWindow? CreateWindowFrom(IDockable dockable)
     {
@@ -82,22 +120,27 @@ public class DockFactory : Factory
         return window;
     }
 
-    public void OpenDocument(IDockable document, bool floatWindow)
+    public void OpenDocument(IDockable document, IDocumentDock? documentDock, bool floatWindow)
     {
-        if (_documentDock is null)
+        var targetDock = documentDock ?? _documentDock;
+
+        if (targetDock is null)
         {
             return;
         }
 
-        AddDockable(_documentDock, document);
+        AddDockable(targetDock, document);
         SetActiveDockable(document);
-        SetFocusedDockable(_documentDock, document);
+        SetFocusedDockable(targetDock, document);
 
         if (floatWindow)
         {
             FloatDockable(document);
         }
     }
+
+    public void OpenDocument(IDockable document, bool floatWindow)
+        => OpenDocument(document, _documentDock, floatWindow);
 
     public override void InitLayout(IDockable layout)
     {

@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
@@ -11,6 +12,7 @@ using DockReactiveUICanonicalSample.Views;
 using DockReactiveUICanonicalSample.Views.Documents;
 using DockReactiveUICanonicalSample.Views.Pages;
 using DockReactiveUICanonicalSample.Views.Workspace;
+using Dock.Model.Core;
 using ReactiveUI;
 using Splat;
 
@@ -21,8 +23,16 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        RegisterDockableTemplate();
         RegisterAppServices();
         RegisterViews();
+    }
+
+    private void RegisterDockableTemplate()
+    {
+        DataTemplates.Add(new FuncDataTemplate<IDockable>(
+            (item, _) => new ReactiveUI.Avalonia.ViewModelViewHost { ViewModel = item },
+            supportsRecycling: true));
     }
 
     private static void RegisterAppServices()
@@ -30,13 +40,42 @@ public class App : Application
         var services = Locator.CurrentMutable;
 
         services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
-        services.RegisterLazySingleton<IDockNavigationService>(() => new DockNavigationService());
-        services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory());
+        services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory(
+            Locator.Current.GetService<IDialogServiceProvider>()!,
+            Locator.Current.GetService<IConfirmationServiceProvider>()!));
+        services.RegisterLazySingleton<IGlobalBusyService>(() => new GlobalBusyService());
+        services.RegisterLazySingleton<IGlobalDialogService>(() => new GlobalDialogService());
+        services.RegisterLazySingleton<IGlobalConfirmationService>(() => new GlobalConfirmationService());
+        services.RegisterLazySingleton<IBusyServiceFactory>(() => new BusyServiceFactory(
+            Locator.Current.GetService<IGlobalBusyService>()!));
+        services.RegisterLazySingleton<IDialogServiceFactory>(() => new DialogServiceFactory(
+            Locator.Current.GetService<IGlobalDialogService>()!));
+        services.RegisterLazySingleton<IConfirmationServiceFactory>(() => new ConfirmationServiceFactory(
+            Locator.Current.GetService<IGlobalConfirmationService>()!));
+        services.RegisterLazySingleton<IBusyServiceProvider>(() => new BusyServiceProvider(
+            Locator.Current.GetService<IBusyServiceFactory>()!));
+        services.RegisterLazySingleton<IDialogServiceProvider>(() => new DialogServiceProvider(
+            Locator.Current.GetService<IDialogServiceFactory>()!));
+        services.RegisterLazySingleton<IConfirmationServiceProvider>(() => new ConfirmationServiceProvider(
+            Locator.Current.GetService<IConfirmationServiceFactory>()!));
+        services.RegisterLazySingleton<IDockNavigationService>(() => new DockNavigationService(
+            Locator.Current.GetService<IProjectRepository>()!,
+            Locator.Current.GetService<ProjectFileWorkspaceFactory>()!,
+            Locator.Current.GetService<IBusyServiceProvider>()!,
+            Locator.Current.GetService<IConfirmationServiceProvider>()!));
 
         services.RegisterLazySingleton(() => new MainWindowViewModel(
             Locator.Current.GetService<IProjectRepository>()!,
             Locator.Current.GetService<IDockNavigationService>()!,
-            Locator.Current.GetService<ProjectFileWorkspaceFactory>()!));
+            Locator.Current.GetService<ProjectFileWorkspaceFactory>()!,
+            Locator.Current.GetService<IBusyServiceFactory>()!,
+            Locator.Current.GetService<IBusyServiceProvider>()!,
+            Locator.Current.GetService<IConfirmationServiceProvider>()!,
+            Locator.Current.GetService<IGlobalBusyService>()!,
+            Locator.Current.GetService<IDialogServiceFactory>()!,
+            Locator.Current.GetService<IGlobalDialogService>()!,
+            Locator.Current.GetService<IConfirmationServiceFactory>()!,
+            Locator.Current.GetService<IGlobalConfirmationService>()!));
     }
 
     private static void RegisterViews()

@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
@@ -13,13 +12,23 @@ public class ProjectFilesDocumentViewModel : RoutableDocument
     public ProjectFilesDocumentViewModel(
         IScreen host,
         Project project,
+        IProjectRepository repository,
         IDockNavigationService dockNavigation,
-        ProjectFileWorkspaceFactory workspaceFactory)
+        ProjectFileWorkspaceFactory workspaceFactory,
+        IBusyServiceProvider busyServiceProvider,
+        IConfirmationServiceProvider confirmationServiceProvider)
         : base(host, $"projects/{project.Id}/files")
     {
         Project = project;
 
-        Router.Navigate.Execute(new ProjectFilesPageViewModel(this, project, dockNavigation, workspaceFactory))
+        Router.Navigate.Execute(new ProjectFilesPageViewModel(
+                this,
+                project,
+                repository,
+                dockNavigation,
+                workspaceFactory,
+                busyServiceProvider,
+                confirmationServiceProvider))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Deep Dive | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Deep Dive | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-deep-dive.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-deep-dive">Dock Deep Dive</h1>
+
+<p>This document explains how <code>DockControl</code> routes pointer input through the docking pipeline. Reading this guide together with the source code will help you understand how layout changes are performed.</p>
+<p>While the high level guides focus on using the provided factories this section
+dives into the low level mechanics. Understanding these classes is useful when
+you need behavior not covered by the default implementation.</p>
+<h2 id="dockcontrol">DockControl</h2>
+<p><code>DockControl</code> is the main Avalonia control that hosts a layout. Its constructor creates a <code>DockManager</code> (backed by <code>DockService</code>), a <code>DockControlState</code>, and registers pointer handlers for press, release, move, enter/exit, capture loss, wheel, and keyboard events.</p>
+<p>When the <code>Layout</code> property changes, the control deinitializes the previous layout (if any) and initializes the new one. Initialization ensures a factory is assigned, registers the <code>DockControl</code> with that factory, optionally sets default locators when <code>InitializeFactory</code> is <code>true</code>, and optionally calls <code>InitLayout</code> when <code>InitializeLayout</code> is <code>true</code>.</p>
+<p>Pointer events are forwarded to <code>DockControlState.Process</code>, which performs hit testing, drag/drop state updates, and docking execution using the current set of dock controls.</p>
+<h2 id="dockcontrolstate">DockControlState</h2>
+<p><code>DockControlState</code> keeps track of the current drag operation. It validates potential drop targets using <code>DockManager</code> and displays dock target controls derived from <code>DockTargetBase</code> (for example <code>DockTarget</code> and <code>GlobalDockTarget</code>) when appropriate. Once the user releases the pointer, the state executes the docking operation through <code>DockManager</code>.</p>
+<h2 id="dockmanager">DockManager</h2>
+<p><code>DockManager</code> implements the algorithms that move, swap or split dockables. Methods such as <code>MoveDockable</code>, <code>SwapDockable</code> and <code>SplitToolDockable</code> call back into the factory to modify the view models.</p>
+<pre><code class="lang-csharp">// Example: move a document
+_dockManager.MoveDockable(document, targetDock, index);
+</code></pre>
+<h2 id="putting-it-together">Putting it together</h2>
+<p>When the user drags a tab or tool the pointer handlers in <code>DockControl</code> delegate the event stream to <code>DockControlState</code>. The state object determines the target area and executes the appropriate operation through <code>DockManager</code>. The manager calls the factory which updates collections on the dock view models, completing the layout update.</p>
+<p>If you wish to extend this pipeline—for example to implement custom drag
+restrictions—note that <code>DockControl</code> always constructs its own <code>DockManager</code>.
+To customize behavior, implement <code>IDockManager</code> (optionally delegating to
+<code>DockManager</code>) in a custom host control or a forked <code>DockControl</code>.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-deep-dive.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

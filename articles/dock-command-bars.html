@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Command Bars and Merging | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Command Bars and Merging | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-command-bars.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="command-bars-and-merging">Command Bars and Merging</h1>
+
+<p>Dock can merge command bars from the active dockable into a host control at the top of <code>DockControl</code>. This is implemented by <code>DockCommandBarHost</code> and <code>DockCommandBarManager</code> and is controlled by <code>DockSettings.CommandBarMergingEnabled</code>.</p>
+<h2 id="how-it-works">How it works</h2>
+<ul>
+<li><code>DockControl</code> templates include a <code>DockCommandBarHost</code> named <code>PART_CommandBarHost</code>.</li>
+<li><code>DockCommandBarManager</code> listens for active dockable changes and queries the active dockable (or its <code>Context</code>) for command bar definitions. It also refreshes when the provider raises <code>CommandBarsChanged</code>.</li>
+<li>Definitions are merged with any base bars and rendered using the default adapter into menu bars, tool bars, and ribbon bars.</li>
+</ul>
+<h2 id="enable-command-bar-merging">Enable command bar merging</h2>
+<p>Enable merging globally and choose which dockable contributes bars:</p>
+<pre><code class="lang-csharp">DockSettings.CommandBarMergingEnabled = true;
+DockSettings.CommandBarMergingScope = DockCommandBarMergingScope.ActiveDocument;
+</code></pre>
+<p><code>DockCommandBarMergingScope.ActiveDocument</code> uses the active document only, while <code>ActiveDockable</code> includes tools.</p>
+<h2 id="provide-command-bars-from-a-dockable">Provide command bars from a dockable</h2>
+<p>Implement <code>IDockCommandBarProvider</code> on a document/tool (or on its <code>Context</code>) and return <code>DockCommandBarDefinition</code> instances. The example below uses <code>RelayCommand</code> from <code>CommunityToolkit.Mvvm.Input</code>.</p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+using Dock.Model.CommandBars;
+using Dock.Model.Mvvm.Controls;
+
+public class EditorDocument : Document, IDockCommandBarProvider
+{
+    public event EventHandler? CommandBarsChanged;
+
+    public ICommand SaveCommand { get; } = new RelayCommand(() =&gt; { /* save */ });
+
+    public IReadOnlyList&lt;DockCommandBarDefinition&gt; GetCommandBars()
+    {
+        return new[]
+        {
+            new DockCommandBarDefinition(&quot;EditorMenu&quot;, DockCommandBarKind.Menu)
+            {
+                MergeMode = DockCommandBarMergeMode.Append,
+                Items = new[]
+                {
+                    new DockCommandBarItem(&quot;_File&quot;)
+                    {
+                        Items = new[]
+                        {
+                            new DockCommandBarItem(&quot;_Save&quot;) { Command = SaveCommand },
+                            new DockCommandBarItem(null) { IsSeparator = true },
+                            new DockCommandBarItem(&quot;E_xit&quot;)
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    private void RaiseBarsChanged() =&gt; CommandBarsChanged?.Invoke(this, EventArgs.Empty);
+}
+</code></pre>
+<h2 id="merge-modes-and-ordering">Merge modes and ordering</h2>
+<p><code>DockCommandBarDefinition.MergeMode</code> controls how bars are combined:</p>
+<ul>
+<li><code>Replace</code>: Replace base bars of the same kind.</li>
+<li><code>Append</code>: Append the bar to the merged list.</li>
+<li><code>MergeByGroup</code>: Merge items by <code>GroupId</code> and <code>Order</code>.</li>
+</ul>
+<p>Each bar and item has <code>Order</code> and optional <code>GroupId</code> to control placement.</p>
+<h2 id="base-command-bars">Base command bars</h2>
+<p><code>DockCommandBarHost.BaseCommandBars</code> can supply app-level bars that always appear. This is typically configured in a custom <code>DockControl</code> template or a theme. Bars from active dockables are merged with these base definitions.</p>
+<h2 id="definitions-and-items">Definitions and items</h2>
+<p><code>DockCommandBarDefinition</code> describes a bar and <code>DockCommandBarItem</code> describes items within that bar:</p>
+<h3 id="dockcommandbardefinition">DockCommandBarDefinition</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Id</code></td>
+<td><code>string</code></td>
+<td>Identifier used for merges.</td>
+</tr>
+<tr>
+<td><code>Kind</code></td>
+<td><code>DockCommandBarKind</code></td>
+<td>Menu, ToolBar, or Ribbon.</td>
+</tr>
+<tr>
+<td><code>MergeMode</code></td>
+<td><code>DockCommandBarMergeMode</code></td>
+<td>Replace, Append, or MergeByGroup.</td>
+</tr>
+<tr>
+<td><code>Order</code></td>
+<td><code>int</code></td>
+<td>Sort order among bars.</td>
+</tr>
+<tr>
+<td><code>GroupId</code></td>
+<td><code>string?</code></td>
+<td>Group identifier used for <code>MergeByGroup</code>.</td>
+</tr>
+<tr>
+<td><code>Items</code></td>
+<td><code>IReadOnlyList&lt;DockCommandBarItem&gt;?</code></td>
+<td>Bar items.</td>
+</tr>
+<tr>
+<td><code>Content</code></td>
+<td><code>object?</code></td>
+<td>Custom content rendered by the adapter.</td>
+</tr>
+</tbody>
+</table>
+<p>When <code>Content</code> is set to a <code>Control</code>, the default adapter uses it directly. If <code>Content</code> is set and <code>Items</code> is empty, the adapter wraps it in a <code>ContentControl</code>.</p>
+<h3 id="dockcommandbaritem">DockCommandBarItem</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Header</code></td>
+<td><code>object?</code></td>
+<td>Menu header or button text.</td>
+</tr>
+<tr>
+<td><code>Icon</code></td>
+<td><code>object?</code></td>
+<td>Icon content for menus/toolbars.</td>
+</tr>
+<tr>
+<td><code>Command</code></td>
+<td><code>ICommand?</code></td>
+<td>Command to execute.</td>
+</tr>
+<tr>
+<td><code>CommandParameter</code></td>
+<td><code>object?</code></td>
+<td>Command parameter passed to <code>Command</code>.</td>
+</tr>
+<tr>
+<td><code>Items</code></td>
+<td><code>IReadOnlyList&lt;DockCommandBarItem&gt;?</code></td>
+<td>Child items for submenus.</td>
+</tr>
+<tr>
+<td><code>GroupId</code></td>
+<td><code>string?</code></td>
+<td>Group identifier used for <code>MergeByGroup</code>.</td>
+</tr>
+<tr>
+<td><code>Order</code></td>
+<td><code>int</code></td>
+<td>Order within the bar or group.</td>
+</tr>
+<tr>
+<td><code>IsSeparator</code></td>
+<td><code>bool</code></td>
+<td>Render as a separator.</td>
+</tr>
+</tbody>
+</table>
+<p>Example using <code>Content</code> for a toolbar host:</p>
+<pre><code class="lang-csharp">var bar = new DockCommandBarDefinition(&quot;EditorRibbon&quot;, DockCommandBarKind.Ribbon)
+{
+    Content = new EditorRibbonControl()
+};
+</code></pre>
+<h2 id="host-properties">Host properties</h2>
+<p><code>DockCommandBarHost</code> exposes the merged controls for each command bar kind:</p>
+<ul>
+<li><code>MenuBars</code> - List of menu bar controls created by the adapter.</li>
+<li><code>ToolBars</code> - List of tool bar controls created by the adapter.</li>
+<li><code>RibbonBars</code> - List of ribbon bar controls created by the adapter.</li>
+</ul>
+<p>The default template renders these lists with three <code>ItemsControl</code> instances. If you create a custom theme you can reorder or wrap them however you like:</p>
+<pre><code class="lang-xaml">&lt;ControlTheme x:Key=&quot;{x:Type controls:DockCommandBarHost}&quot; TargetType=&quot;controls:DockCommandBarHost&quot;&gt;
+  &lt;Setter Property=&quot;Template&quot;&gt;
+    &lt;ControlTemplate&gt;
+      &lt;DockPanel&gt;
+        &lt;ItemsControl DockPanel.Dock=&quot;Top&quot;
+                      ItemsSource=&quot;{TemplateBinding MenuBars}&quot; /&gt;
+        &lt;ItemsControl DockPanel.Dock=&quot;Top&quot;
+                      ItemsSource=&quot;{TemplateBinding ToolBars}&quot; /&gt;
+        &lt;ItemsControl ItemsSource=&quot;{TemplateBinding RibbonBars}&quot; /&gt;
+      &lt;/DockPanel&gt;
+    &lt;/ControlTemplate&gt;
+  &lt;/Setter&gt;
+&lt;/ControlTheme&gt;
+</code></pre>
+<h2 id="custom-adapters">Custom adapters</h2>
+<p>The default adapter renders:</p>
+<ul>
+<li><code>DockCommandBarKind.Menu</code> as <code>Menu</code></li>
+<li><code>DockCommandBarKind.ToolBar</code> as a horizontal <code>StackPanel</code> of <code>Button</code> controls</li>
+<li><code>DockCommandBarKind.Ribbon</code> as a horizontal <code>StackPanel</code> of <code>ContentControl</code> items</li>
+</ul>
+<p>To render your own controls, implement <code>IDockCommandBarAdapter</code> and use it in a custom host control or a forked <code>DockControl</code> that constructs a <code>DockCommandBarManager</code> with your adapter.</p>
+<p>For related settings see <a href="dock-settings.html">Dock settings</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-command-bars.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

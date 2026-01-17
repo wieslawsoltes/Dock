@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Model Control Interfaces | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Model Control Interfaces | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-model-controls.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="model-control-interfaces">Model Control Interfaces</h1>
+
+<p>Dock ships with a small set of interfaces under <code>Dock.Model.Controls</code>.
+These contracts describe the view models used to build a layout.
+The interfaces are implemented by the MVVM and ReactiveUI libraries
+and are referenced from the samples throughout this repository.</p>
+<p>This page explains why each interface exists and how it should be used
+when creating your own docks and documents.</p>
+<h2 id="overview">Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDockDock</code></td>
+<td>Basic dock panel that can optionally fill the remaining space with the last child.</td>
+</tr>
+<tr>
+<td><code>IDocument</code></td>
+<td>Represents a document item. Used for files or editor tabs.</td>
+</tr>
+<tr>
+<td><code>IMdiDocument</code></td>
+<td>Stores MDI window bounds, state, and stacking order for classic MDI layouts.</td>
+</tr>
+<tr>
+<td><code>IDocumentContent</code></td>
+<td>Document containing arbitrary <code>Content</code>.</td>
+</tr>
+<tr>
+<td><code>IDocumentDock</code></td>
+<td>Dock that hosts documents and exposes commands to create them.</td>
+</tr>
+<tr>
+<td><code>IDocumentDockContent</code></td>
+<td>Dock that creates documents from a <code>DocumentTemplate</code>.</td>
+</tr>
+<tr>
+<td><code>IDocumentTemplate</code></td>
+<td>Template object used when creating new documents on demand.</td>
+</tr>
+<tr>
+<td><code>IProportionalDock</code></td>
+<td>Dock that arranges children vertically or horizontally using proportions.</td>
+</tr>
+<tr>
+<td><code>IStackDock</code></td>
+<td>Dock based on <code>StackPanel</code> with <code>Orientation</code> and <code>Spacing</code>.</td>
+</tr>
+<tr>
+<td><code>IGridDock</code></td>
+<td>Dock that uses <code>Grid</code> layout defined by <code>ColumnDefinitions</code> and <code>RowDefinitions</code>.</td>
+</tr>
+<tr>
+<td><code>IWrapDock</code></td>
+<td>Dock built on <code>WrapPanel</code> exposing <code>Orientation</code>.</td>
+</tr>
+<tr>
+<td><code>IUniformGridDock</code></td>
+<td>Dock with equally sized cells configured by <code>Rows</code> and <code>Columns</code>.</td>
+</tr>
+<tr>
+<td><code>ISplitViewDock</code></td>
+<td>Dock that hosts a collapsible pane and a main content area.</td>
+</tr>
+<tr>
+<td><code>IProportionalDockSplitter</code></td>
+<td>Splitter element between proportional dock children.</td>
+</tr>
+<tr>
+<td><code>IGridDockSplitter</code></td>
+<td>Splitter used inside a grid dock to resize rows or columns.</td>
+</tr>
+<tr>
+<td><code>IRootDock</code></td>
+<td>Top level container responsible for pinned docks and windows.</td>
+</tr>
+<tr>
+<td><code>ITool</code></td>
+<td>Basic interface for tool panes such as explorers or output views.</td>
+</tr>
+<tr>
+<td><code>IToolContent</code></td>
+<td>Tool containing arbitrary <code>Content</code>.</td>
+</tr>
+<tr>
+<td><code>IToolDock</code></td>
+<td>Dock that hosts tools and supports auto-hide behavior.</td>
+</tr>
+</tbody>
+</table>
+<p>The following sections provide guidelines on applying these contracts in your projects.</p>
+<h2 id="idockdock">IDockDock</h2>
+<p>Use <code>IDockDock</code> for dock panels that hold a collection of child dockables.
+The <code>LastChildFill</code> property mirrors the behavior of Avalonia's <code>DockPanel</code>.
+Set it to <code>true</code> when the final child should consume all remaining space.
+Typically this is combined with one or more <code>ProportionalDock</code> instances
+that split the available area.</p>
+<h2 id="idocument-and-idocumentcontent">IDocument and IDocumentContent</h2>
+<p><code>IDocument</code> marks a dockable as a document. Documents are usually displayed
+in an <code>IDocumentDock</code> and can be closed independently of tools. When a
+document needs to expose additional data, implement <code>IDocumentContent</code> and
+provide the object through its <code>Content</code> property. The MVVM and ReactiveUI
+libraries include base classes that implement these interfaces and also
+raise change notifications.</p>
+<h2 id="imdidocument">IMdiDocument</h2>
+<p><code>IMdiDocument</code> stores classic MDI window state for documents when an
+<code>IDocumentDock</code> is configured to use an MDI layout. It exposes window bounds,
+minimized or maximized state, and a Z-order index so documents can be arranged
+and restored consistently.</p>
+<h2 id="idocumentdock-and-idocumentdockcontent">IDocumentDock and IDocumentDockContent</h2>
+<p><code>IDocumentDock</code> is a specialized dock that maintains a tab strip of
+documents. It contains optional commands for creating new documents
+and allows dragging the host window via the tab area when
+<code>EnableWindowDrag</code> is <code>true</code>. <code>TabsLayout</code> determines where the tabs
+are placed.</p>
+<p><code>IDocumentDock.LayoutMode</code> switches between tabbed documents and classic MDI
+windows. When MDI mode is enabled the dock exposes commands for cascade and
+tile operations, and documents implement <code>IMdiDocument</code> to store window state.</p>
+<p><code>DocumentDock</code> also exposes a <code>DocumentFactory</code> delegate that is used by
+the <code>CreateDocument</code> command. When assigned, this factory is invoked to
+create a new document which is then added and activated through the
+<code>AddDocument</code> helper.</p>
+<p><code>IDocumentDockContent</code> (implemented by the Avalonia model layer) extends this
+concept by storing a <code>DocumentTemplate</code> object. <code>CreateDocumentFromTemplate</code>
+typically creates a new document and sets its <code>IDocumentContent.Content</code> from
+the template (for example <code>DocumentTemplate.Content</code> in the Avalonia
+implementation). This is useful for &quot;New&quot; commands or ItemsSource-generated
+documents where the view is defined in XAML.</p>
+<h2 id="idocumenttemplate">IDocumentTemplate</h2>
+<p><code>IDocumentTemplate</code> represents template content used to build document views. In
+Avalonia the built-in <code>DocumentTemplate</code> stores XAML content (or a
+<code>Func&lt;IServiceProvider, object&gt;</code>) that becomes the document <code>Content</code> when a new
+document is created.</p>
+<h2 id="iproportionaldock-and-iproportionaldocksplitter">IProportionalDock and IProportionalDockSplitter</h2>
+<p>Proportional docks arrange their children either horizontally or
+vertically. Each dockable specifies a <code>Proportion</code> value which is
+interpreted relative to the other siblings. Insert an
+<code>IProportionalDockSplitter</code> between dockables to allow the user to
+resize the areas at runtime. The splitter exposes <code>CanResize</code>
+which can disable dragging for fixed layouts. When <code>ResizePreview</code> is
+true the splitter previews the drag and applies the size changes once
+the pointer is released. The splitter is highlighted while dragging.</p>
+<h2 id="isplitviewdock">ISplitViewDock</h2>
+<p><code>ISplitViewDock</code> models a dock with two regions: a collapsible pane and a main content area. It mirrors Avalonia's <code>SplitView</code> behavior and exposes properties such as <code>DisplayMode</code>, <code>PanePlacement</code>, <code>IsPaneOpen</code>, <code>OpenPaneLength</code>, and <code>CompactPaneLength</code>. Use <code>PaneDockable</code> for the pane content and <code>ContentDockable</code> for the main content area.</p>
+<h2 id="irootdock">IRootDock</h2>
+<p>The root dock owns the entire layout including pinned tools and
+floating windows. It exposes collections for hidden or pinned
+dockables as well as commands to show or exit windows. Implement
+<code>IRootDock</code> on your main view model so that the factory can create
+windows and restore the layout state.</p>
+<h2 id="itool-and-itoolcontent">ITool and IToolContent</h2>
+<p>Tools are dockables that provide auxiliary functionality like
+solution explorers or output panes. Implement <code>ITool</code> for the view
+model and optionally <code>IToolContent</code> when a separate content object
+is required. Tools are typically hosted inside <code>IToolDock</code> panels
+and can be pinned to the sides of the layout.</p>
+<h2 id="itooldock">IToolDock</h2>
+<p><code>IToolDock</code> represents a panel that manages tool dockables. It can
+auto-hide its content and exposes an <code>Alignment</code> property for
+positioning. When <code>AutoHide</code> is enabled the dock collapses once the
+pointer leaves the area. <code>GripMode</code> controls if the user can resize
+the dock by dragging its border.</p>
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>When building a layout you normally start with an <code>IRootDock</code> and add
+<code>IToolDock</code>, <code>IDocumentDock</code> and <code>IProportionalDock</code> instances inside
+it. Documents and tools implement <code>IDocument</code> or <code>ITool</code> and can store
+extra data through the corresponding <code>*Content</code> interfaces.</p>
+<p>Factory classes found in <code>Dock.Model.Mvvm</code> and <code>Dock.Model.ReactiveUI</code>
+create these objects and wire them together. Understanding the
+contracts listed on this page will help you customize the layout and
+extend Dock with your own view models.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-model-controls.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

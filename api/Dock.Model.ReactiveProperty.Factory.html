@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Factory | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Factory | Dock for Avalonia ">
+      
+      <meta name="description" content="Factory.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Model_ReactiveProperty_Factory.md&amp;value=---%0Auid%3A%20Dock.Model.ReactiveProperty.Factory%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Model.ReactiveProperty.Factory">
+
+
+
+  <h1 id="Dock_Model_ReactiveProperty_Factory" data-uid="Dock.Model.ReactiveProperty.Factory" class="text-break">
+Class Factory  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a>.<a class="xref" href="Dock.Model.ReactiveProperty.html">ReactiveProperty</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.ReactiveProperty.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Factory.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Factory : FactoryBase, IFactory</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Dock.Model.FactoryBase.html">FactoryBase</a></div>
+      <div><span class="xref">Factory</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CollapseDock_Dock_Model_Core_IDock_">FactoryBase.CollapseDock(IDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CreateSplitLayout_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_">FactoryBase.CreateSplitLayout(IDock, IDockable, DockOperation)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SplitToDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_">FactoryBase.SplitToDock(IDock, IDockable, DockOperation)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CreateWindowFrom_Dock_Model_Core_IDockable_">FactoryBase.CreateWindowFrom(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_">FactoryBase.SplitToWindow(IDock, IDockable, double, double, double, double)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_AddDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_">FactoryBase.AddDockable(IDock, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InsertDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Int32_">FactoryBase.InsertDockable(IDock, IDockable, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RemoveDockable_Dock_Model_Core_IDockable_System_Boolean_">FactoryBase.RemoveDockable(IDockable, bool)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CleanupOrphanedSplitters_Dock_Model_Core_IDock_">FactoryBase.CleanupOrphanedSplitters(IDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.MoveDockable(IDock, IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_MovePinnedDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.MovePinnedDockable(IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.MoveDockable(IDock, IDock, IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.SwapDockable(IDock, IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.SwapDockable(IDock, IDock, IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_IsDockablePinned_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_">FactoryBase.IsDockablePinned(IDockable, IRootDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HidePreviewingDockables_Dock_Model_Controls_IRootDock_">FactoryBase.HidePreviewingDockables(IRootDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_PreviewPinnedDockable_Dock_Model_Core_IDockable_">FactoryBase.PreviewPinnedDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_PinDockable_Dock_Model_Core_IDockable_">FactoryBase.PinDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_UnpinDockable_Dock_Model_Core_IDockable_">FactoryBase.UnpinDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatDockable_Dock_Model_Core_IDockable_">FactoryBase.FloatDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FloatAllDockables_Dock_Model_Core_IDockable_">FactoryBase.FloatAllDockables(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockAsDocument_Dock_Model_Core_IDockable_">FactoryBase.DockAsDocument(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseDockable_Dock_Model_Core_IDockable_">FactoryBase.CloseDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_Dock_Model_Core_IDockable_">FactoryBase.HandleItemsSourceDocumentClosing(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseOtherDockables_Dock_Model_Core_IDockable_">FactoryBase.CloseOtherDockables(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseAllDockables_Dock_Model_Core_IDockable_">FactoryBase.CloseAllDockables(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseLeftDockables_Dock_Model_Core_IDockable_">FactoryBase.CloseLeftDockables(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseRightDockables_Dock_Model_Core_IDockable_">FactoryBase.CloseRightDockables(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_NewHorizontalDocumentDock_Dock_Model_Core_IDockable_">FactoryBase.NewHorizontalDocumentDock(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockTabsLayout_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentTabLayout_">FactoryBase.SetDocumentDockTabsLayout(IDockable, DocumentTabLayout)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockTabsLayoutLeft_Dock_Model_Core_IDockable_">FactoryBase.SetDocumentDockTabsLayoutLeft(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockTabsLayoutTop_Dock_Model_Core_IDockable_">FactoryBase.SetDocumentDockTabsLayoutTop(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockTabsLayoutRight_Dock_Model_Core_IDockable_">FactoryBase.SetDocumentDockTabsLayoutRight(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockLayoutMode_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentLayoutMode_">FactoryBase.SetDocumentDockLayoutMode(IDockable, DocumentLayoutMode)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockLayoutModeTabbed_Dock_Model_Core_IDockable_">FactoryBase.SetDocumentDockLayoutModeTabbed(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetDocumentDockLayoutModeMdi_Dock_Model_Core_IDockable_">FactoryBase.SetDocumentDockLayoutModeMdi(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_NewVerticalDocumentDock_Dock_Model_Core_IDockable_">FactoryBase.NewVerticalDocumentDock(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HideDockable_Dock_Model_Core_IDockable_">FactoryBase.HideDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HideDockable_System_String_">FactoryBase.HideDockable(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RestoreDockable_Dock_Model_Core_IDockable_">FactoryBase.RestoreDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RestoreDockable_System_String_">FactoryBase.RestoreDockable(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_AddVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_">FactoryBase.AddVisibleDockable(IDock, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InsertVisibleDockable_Dock_Model_Core_IDock_System_Int32_Dock_Model_Core_IDockable_">FactoryBase.InsertVisibleDockable(IDock, int, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RemoveVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_">FactoryBase.RemoveVisibleDockable(IDock, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RemoveAllVisibleDockables_Dock_Model_Core_IDock_">FactoryBase.RemoveAllVisibleDockables(IDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RemoveVisibleDockableAt_Dock_Model_Core_IDock_System_Int32_">FactoryBase.RemoveVisibleDockableAt(IDock, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ActiveDockableChanged">FactoryBase.ActiveDockableChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FocusedDockableChanged">FactoryBase.FocusedDockableChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableInit">FactoryBase.DockableInit</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableAdded">FactoryBase.DockableAdded</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableRemoved">FactoryBase.DockableRemoved</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableClosing">FactoryBase.DockableClosing</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableClosed">FactoryBase.DockableClosed</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableMoved">FactoryBase.DockableMoved</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableDocked">FactoryBase.DockableDocked</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableUndocked">FactoryBase.DockableUndocked</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableSwapped">FactoryBase.DockableSwapped</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockablePinned">FactoryBase.DockablePinned</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableUnpinned">FactoryBase.DockableUnpinned</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableHidden">FactoryBase.DockableHidden</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableRestored">FactoryBase.DockableRestored</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowOpened">FactoryBase.WindowOpened</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowClosing">FactoryBase.WindowClosing</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowClosed">FactoryBase.WindowClosed</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowAdded">FactoryBase.WindowAdded</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowRemoved">FactoryBase.WindowRemoved</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowMoveDragBegin">FactoryBase.WindowMoveDragBegin</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowMoveDrag">FactoryBase.WindowMoveDrag</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowMoveDragEnd">FactoryBase.WindowMoveDragEnd</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowActivated">FactoryBase.WindowActivated</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableActivated">FactoryBase.DockableActivated</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_WindowDeactivated">FactoryBase.WindowDeactivated</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableDeactivated">FactoryBase.DockableDeactivated</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnActiveDockableChanged_Dock_Model_Core_IDockable_">FactoryBase.OnActiveDockableChanged(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnFocusedDockableChanged_Dock_Model_Core_IDockable_">FactoryBase.OnFocusedDockableChanged(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableAdded_Dock_Model_Core_IDockable_">FactoryBase.OnDockableAdded(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableRemoved_Dock_Model_Core_IDockable_">FactoryBase.OnDockableRemoved(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableClosing_Dock_Model_Core_IDockable_">FactoryBase.OnDockableClosing(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableClosed_Dock_Model_Core_IDockable_">FactoryBase.OnDockableClosed(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableMoved_Dock_Model_Core_IDockable_">FactoryBase.OnDockableMoved(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableDocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_">FactoryBase.OnDockableDocked(IDockable, DockOperation)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableUndocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_">FactoryBase.OnDockableUndocked(IDockable, DockOperation)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableSwapped_Dock_Model_Core_IDockable_">FactoryBase.OnDockableSwapped(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockablePinned_Dock_Model_Core_IDockable_">FactoryBase.OnDockablePinned(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableUnpinned_Dock_Model_Core_IDockable_">FactoryBase.OnDockableUnpinned(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableHidden_Dock_Model_Core_IDockable_">FactoryBase.OnDockableHidden(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableRestored_Dock_Model_Core_IDockable_">FactoryBase.OnDockableRestored(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowAdded_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowAdded(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowRemoved_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowRemoved(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowOpened_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowOpened(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableInit_Dock_Model_Core_IDockable_">FactoryBase.OnDockableInit(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowClosing_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowClosing(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowClosed_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowClosed(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowMoveDragBegin_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowMoveDragBegin(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowMoveDrag_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowMoveDrag(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowMoveDragEnd_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowMoveDragEnd(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowActivated_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowActivated(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableActivated_Dock_Model_Core_IDockable_">FactoryBase.OnDockableActivated(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnWindowDeactivated_Dock_Model_Core_IDockWindow_">FactoryBase.OnWindowDeactivated(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_OnDockableDeactivated_Dock_Model_Core_IDockable_">FactoryBase.OnDockableDeactivated(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InitLayout_Dock_Model_Core_IDockable_">FactoryBase.InitLayout(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InitDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_">FactoryBase.InitDockable(IDockable, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_">FactoryBase.InitDockWindow(IDockWindow, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_Dock_Model_Core_IHostWindow_">FactoryBase.InitDockWindow(IDockWindow, IDockable, IHostWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InitActiveDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDock_">FactoryBase.InitActiveDockable(IDockable, IDock)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ActivateWindow_Dock_Model_Core_IDockable_">FactoryBase.ActivateWindow(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetActiveDockable_Dock_Model_Core_IDockable_">FactoryBase.SetActiveDockable(IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_SetFocusedDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_">FactoryBase.SetFocusedDockable(IDock, IDockable)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DefaultContextLocator">FactoryBase.DefaultContextLocator</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DefaultHostWindowLocator">FactoryBase.DefaultHostWindowLocator</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_ContextLocator">FactoryBase.ContextLocator</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HostWindowLocator">FactoryBase.HostWindowLocator</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_DockableLocator">FactoryBase.DockableLocator</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HideToolsOnClose">FactoryBase.HideToolsOnClose</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_HideDocumentsOnClose">FactoryBase.HideDocumentsOnClose</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetContext_System_String_">FactoryBase.GetContext(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetHostWindow_System_String_">FactoryBase.GetHostWindow(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_GetDockable__1_System_String_">FactoryBase.GetDockable&lt;T&gt;(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FindRoot_Dock_Model_Core_IDockable_System_Func_Dock_Model_Controls_IRootDock_System_Boolean__">FactoryBase.FindRoot(IDockable, Func&lt;IRootDock, bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_FindDockable_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__">FactoryBase.FindDockable(IDock, Func&lt;IDockable, bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_Find_System_Func_Dock_Model_Core_IDockable_System_Boolean__">FactoryBase.Find(Func&lt;IDockable, bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_Find_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__">FactoryBase.Find(IDock, Func&lt;IDockable, bool&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_AddWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_">FactoryBase.AddWindow(IRootDock, IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_InsertWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_System_Int32_">FactoryBase.InsertWindow(IRootDock, IDockWindow, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_RemoveWindow_Dock_Model_Core_IDockWindow_">FactoryBase.RemoveWindow(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.FactoryBase.html#Dock_Model_FactoryBase_CloseWindow_Dock_Model_Core_IDockWindow_">FactoryBase.CloseWindow(IDockWindow)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDockDock__System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, out IDockDock, Action&lt;IDockDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, Action&lt;IDockDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockWindow_Dock_Model_Core_IFactory_Dock_Model_Core_IDockWindow__System_Action_Dock_Model_Core_IDockWindow__">FluentExtensions.DockWindow(IFactory, out IDockWindow, Action&lt;IDockWindow&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockWindow_Dock_Model_Core_IFactory_System_Action_Dock_Model_Core_IDockWindow__">FluentExtensions.DockWindow(IFactory, Action&lt;IDockWindow&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Document_Dock_Model_Core_IFactory_Dock_Model_Controls_IDocument__System_Action_Dock_Model_Controls_IDocument__">FluentExtensions.Document(IFactory, out IDocument, Action&lt;IDocument&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Document_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDocument__">FluentExtensions.Document(IFactory, Action&lt;IDocument&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DocumentDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDocumentDock__System_Action_Dock_Model_Controls_IDocumentDock__">FluentExtensions.DocumentDock(IFactory, out IDocumentDock, Action&lt;IDocumentDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DocumentDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDocumentDock__">FluentExtensions.DocumentDock(IFactory, Action&lt;IDocumentDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IGridDock__System_Action_Dock_Model_Controls_IGridDock__">FluentExtensions.GridDock(IFactory, out IGridDock, Action&lt;IGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IGridDock__">FluentExtensions.GridDock(IFactory, Action&lt;IGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDockSplitter_Dock_Model_Core_IFactory_Dock_Model_Controls_IGridDockSplitter__System_Action_Dock_Model_Controls_IGridDockSplitter__">FluentExtensions.GridDockSplitter(IFactory, out IGridDockSplitter, Action&lt;IGridDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDockSplitter_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IGridDockSplitter__">FluentExtensions.GridDockSplitter(IFactory, Action&lt;IGridDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IProportionalDock__Dock_Model_Core_Orientation_System_Action_Dock_Model_Controls_IProportionalDock__">FluentExtensions.ProportionalDock(IFactory, out IProportionalDock, Orientation, Action&lt;IProportionalDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDock_Dock_Model_Core_IFactory_Dock_Model_Core_Orientation_System_Action_Dock_Model_Controls_IProportionalDock__">FluentExtensions.ProportionalDock(IFactory, Orientation, Action&lt;IProportionalDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDockSplitter_Dock_Model_Core_IFactory_Dock_Model_Controls_IProportionalDockSplitter__System_Boolean_System_Boolean_System_Action_Dock_Model_Controls_IProportionalDockSplitter__">FluentExtensions.ProportionalDockSplitter(IFactory, out IProportionalDockSplitter, bool, bool, Action&lt;IProportionalDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDockSplitter_Dock_Model_Core_IFactory_System_Boolean_System_Boolean_System_Action_Dock_Model_Controls_IProportionalDockSplitter__">FluentExtensions.ProportionalDockSplitter(IFactory, bool, bool, Action&lt;IProportionalDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_RootDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IRootDock__System_Action_Dock_Model_Controls_IRootDock__">FluentExtensions.RootDock(IFactory, out IRootDock, Action&lt;IRootDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_RootDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IRootDock__">FluentExtensions.RootDock(IFactory, Action&lt;IRootDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_SplitViewDock_Dock_Model_Core_IFactory_Dock_Model_Controls_ISplitViewDock__System_Action_Dock_Model_Controls_ISplitViewDock__">FluentExtensions.SplitViewDock(IFactory, out ISplitViewDock, Action&lt;ISplitViewDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_SplitViewDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_ISplitViewDock__">FluentExtensions.SplitViewDock(IFactory, Action&lt;ISplitViewDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_StackDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IStackDock__System_Action_Dock_Model_Controls_IStackDock__">FluentExtensions.StackDock(IFactory, out IStackDock, Action&lt;IStackDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_StackDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IStackDock__">FluentExtensions.StackDock(IFactory, Action&lt;IStackDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Tool_Dock_Model_Core_IFactory_Dock_Model_Controls_ITool__System_Action_Dock_Model_Controls_ITool__">FluentExtensions.Tool(IFactory, out ITool, Action&lt;ITool&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Tool_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_ITool__">FluentExtensions.Tool(IFactory, Action&lt;ITool&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ToolDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IToolDock__Dock_Model_Core_Alignment_System_Action_Dock_Model_Controls_IToolDock__">FluentExtensions.ToolDock(IFactory, out IToolDock, Alignment, Action&lt;IToolDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ToolDock_Dock_Model_Core_IFactory_Dock_Model_Core_Alignment_System_Action_Dock_Model_Controls_IToolDock__">FluentExtensions.ToolDock(IFactory, Alignment, Action&lt;IToolDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_UniformGridDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IUniformGridDock__System_Action_Dock_Model_Controls_IUniformGridDock__">FluentExtensions.UniformGridDock(IFactory, out IUniformGridDock, Action&lt;IUniformGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_UniformGridDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IUniformGridDock__">FluentExtensions.UniformGridDock(IFactory, Action&lt;IUniformGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WrapDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IWrapDock__System_Action_Dock_Model_Controls_IWrapDock__">FluentExtensions.WrapDock(IFactory, out IWrapDock, Action&lt;IWrapDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WrapDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IWrapDock__">FluentExtensions.WrapDock(IFactory, Action&lt;IWrapDock&gt;?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory__ctor_" data-uid="Dock.Model.ReactiveProperty.Factory.#ctor*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory__ctor" data-uid="Dock.Model.ReactiveProperty.Factory.#ctor">
+  Factory()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes the new instance of <a class="xref" href="Dock.Model.ReactiveProperty.Factory.html">Factory</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Factory()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_DockControls_" data-uid="Dock.Model.ReactiveProperty.Factory.DockControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_DockControls" data-uid="Dock.Model.ReactiveProperty.Factory.DockControls">
+  DockControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dock controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IList&lt;IDockControl&gt; DockControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_DocumentControls_" data-uid="Dock.Model.ReactiveProperty.Factory.DocumentControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_DocumentControls" data-uid="Dock.Model.ReactiveProperty.Factory.DocumentControls">
+  DocumentControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets document controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, object&gt; DocumentControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_HostWindows_" data-uid="Dock.Model.ReactiveProperty.Factory.HostWindows*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_HostWindows" data-uid="Dock.Model.ReactiveProperty.Factory.HostWindows">
+  HostWindows
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets host windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IList&lt;IHostWindow&gt; HostWindows { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_PinnedDockableControls_" data-uid="Dock.Model.ReactiveProperty.Factory.PinnedDockableControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_PinnedDockableControls" data-uid="Dock.Model.ReactiveProperty.Factory.PinnedDockableControls">
+  PinnedDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets pinned dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, IDockableControl&gt; PinnedDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_PinnedRootControls_" data-uid="Dock.Model.ReactiveProperty.Factory.PinnedRootControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_PinnedRootControls" data-uid="Dock.Model.ReactiveProperty.Factory.PinnedRootControls">
+  PinnedRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets pinned dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, object&gt; PinnedRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_TabDockableControls_" data-uid="Dock.Model.ReactiveProperty.Factory.TabDockableControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_TabDockableControls" data-uid="Dock.Model.ReactiveProperty.Factory.TabDockableControls">
+  TabDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tab dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, IDockableControl&gt; TabDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_TabRootControls_" data-uid="Dock.Model.ReactiveProperty.Factory.TabRootControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_TabRootControls" data-uid="Dock.Model.ReactiveProperty.Factory.TabRootControls">
+  TabRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tab dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, object&gt; TabRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_ToolControls_" data-uid="Dock.Model.ReactiveProperty.Factory.ToolControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_ToolControls" data-uid="Dock.Model.ReactiveProperty.Factory.ToolControls">
+  ToolControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tool controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, object&gt; ToolControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_VisibleDockableControls_" data-uid="Dock.Model.ReactiveProperty.Factory.VisibleDockableControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_VisibleDockableControls" data-uid="Dock.Model.ReactiveProperty.Factory.VisibleDockableControls">
+  VisibleDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L35"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets visible dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, IDockableControl&gt; VisibleDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_VisibleRootControls_" data-uid="Dock.Model.ReactiveProperty.Factory.VisibleRootControls*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_VisibleRootControls" data-uid="Dock.Model.ReactiveProperty.Factory.VisibleRootControls">
+  VisibleRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets visible dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDictionary&lt;IDockable, object&gt; VisibleRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateDockDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDockDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateDockDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDockDock">
+  CreateDockDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDockDock CreateDockDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateDockWindow_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDockWindow*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateDockWindow" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDockWindow">
+  CreateDockWindow()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDockWindow CreateDockWindow()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateDocument_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDocument*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateDocument" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDocument">
+  CreateDocument()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDocument CreateDocument()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateDocumentDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDocumentDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateDocumentDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateDocumentDock">
+  CreateDocumentDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IDocumentDock CreateDocumentDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateGridDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateGridDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateGridDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateGridDock">
+  CreateGridDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IGridDock CreateGridDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateGridDockSplitter_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateGridDockSplitter*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateGridDockSplitter" data-uid="Dock.Model.ReactiveProperty.Factory.CreateGridDockSplitter">
+  CreateGridDockSplitter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IGridDockSplitter CreateGridDockSplitter()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateLayout_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateLayout*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateLayout" data-uid="Dock.Model.ReactiveProperty.Factory.CreateLayout">
+  CreateLayout()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IRootDock CreateLayout()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateList_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateList*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateList__1___0___" data-uid="Dock.Model.ReactiveProperty.Factory.CreateList``1(``0[])">
+  CreateList&lt;T&gt;(params T[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L65"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates list of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IList&lt;T&gt; CreateList&lt;T&gt;(params T[] items)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>items</code> T[]</dt>
+    <dd><p>The initial list items.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;T&gt;</dt>
+    <dd><p>The new instance of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The list item type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateProportionalDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateProportionalDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateProportionalDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateProportionalDock">
+  CreateProportionalDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IProportionalDock CreateProportionalDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateProportionalDockSplitter_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateProportionalDockSplitter*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateProportionalDockSplitter" data-uid="Dock.Model.ReactiveProperty.Factory.CreateProportionalDockSplitter">
+  CreateProportionalDockSplitter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IProportionalDockSplitter CreateProportionalDockSplitter()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateRootDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateRootDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateRootDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateRootDock">
+  CreateRootDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IRootDock CreateRootDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateSplitViewDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateSplitViewDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateSplitViewDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateSplitViewDock">
+  CreateSplitViewDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ISplitViewDock CreateSplitViewDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateStackDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateStackDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateStackDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateStackDock">
+  CreateStackDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IStackDock CreateStackDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateTool_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateTool*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateTool" data-uid="Dock.Model.ReactiveProperty.Factory.CreateTool">
+  CreateTool()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ITool CreateTool()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateToolDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateToolDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateToolDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateToolDock">
+  CreateToolDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IToolDock CreateToolDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateUniformGridDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateUniformGridDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateUniformGridDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateUniformGridDock">
+  CreateUniformGridDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IUniformGridDock CreateUniformGridDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_ReactiveProperty_Factory_CreateWrapDock_" data-uid="Dock.Model.ReactiveProperty.Factory.CreateWrapDock*"></a>
+
+  <h3 id="Dock_Model_ReactiveProperty_Factory_CreateWrapDock" data-uid="Dock.Model.ReactiveProperty.Factory.CreateWrapDock">
+  CreateWrapDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IWrapDock CreateWrapDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.ReactiveProperty/Factory.cs/#L15" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

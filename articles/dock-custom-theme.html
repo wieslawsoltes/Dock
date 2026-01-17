@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Custom Dock Themes | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Custom Dock Themes | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-custom-theme.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="custom-dock-themes">Custom Dock Themes</h1>
+
+<p>This guide walks through creating a theme file from scratch. Use it when the built-in Fluent and Simple themes do not match your application branding.</p>
+<h2 id="1-create-an-accent-dictionary">1. Create an accent dictionary</h2>
+<p>Define brushes and colors in a new <code>.axaml</code> file. Start from
+<code>src/Dock.Avalonia.Themes.Fluent/Accents/Fluent.axaml</code> to see the full set of
+resource keys used by the built-in templates:</p>
+<pre><code class="lang-xaml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockThemeBackgroundBrush&quot; Color=&quot;#202020&quot; /&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockThemeAccentBrush&quot; Color=&quot;#675EDC&quot; /&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockThemeForegroundBrush&quot; Color=&quot;#EEEEEE&quot; /&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockToolChromeIconBrush&quot; Color=&quot;#474747&quot; /&gt;
+    &lt;StreamGeometry x:Key=&quot;DockIconCloseGeometry&quot; /&gt;
+    &lt;StreamGeometry x:Key=&quot;DockToolIconCloseGeometry&quot; /&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<p><code>StreamGeometry</code> resources like <code>DockIconCloseGeometry</code> let you replace the built-in vector icons.</p>
+<h2 id="2-merge-dock-control-styles">2. Merge Dock control styles</h2>
+<p>Create another <code>.axaml</code> file that merges the Dock controls together with your
+accent dictionary. The Simple theme reuses the Fluent control templates, so you
+can reference them directly via <code>avares://Dock.Avalonia.Themes.Fluent/Controls/...</code>
+or copy them into your own assembly and include <code>/Controls/...</code> resources.</p>
+<pre><code class="lang-xaml">&lt;Styles xmlns=&quot;https://github.com/avaloniaui&quot;
+        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        x:Class=&quot;MyApp.MyDockTheme&quot;&gt;
+    &lt;Styles.Resources&gt;
+        &lt;ResourceDictionary&gt;
+            &lt;ResourceDictionary.MergedDictionaries&gt;
+                &lt;ResourceInclude Source=&quot;avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Controls/ControlStrings.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;avares://MyApp/Styles/MyDockAccent.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Controls/DockControl.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;avares://Dock.Avalonia.Themes.Fluent/Controls/ToolControl.axaml&quot; /&gt;
+                &lt;!-- include additional Dock controls as desired --&gt;
+            &lt;/ResourceDictionary.MergedDictionaries&gt;
+        &lt;/ResourceDictionary&gt;
+    &lt;/Styles.Resources&gt;
+&lt;/Styles&gt;
+</code></pre>
+<h2 id="3-apply-the-theme">3. Apply the theme</h2>
+<p>Reference the theme from <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+    &lt;FluentTheme Mode=&quot;Dark&quot; /&gt;
+    &lt;local:MyDockTheme /&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>Your Dock layout now uses the brushes defined in <code>MyDockAccent.axaml</code>. You can further customize control templates by copying them from the Dock source and adjusting the XAML. When editing templates remember to set the <a href="dock-properties.html">DockProperties</a> so that drag and drop continues to work.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-custom-theme.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

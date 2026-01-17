@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Namespace Dock.Model.Core | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Namespace Dock.Model.Core | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Model.Core">
+
+  <h1 id="Dock_Model_Core" data-uid="Dock.Model.Core" class="text-break">Namespace Dock.Model.Core</h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+
+    <h3 id="classes">
+Classes
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockGroupValidator.html">DockGroupValidator</a></dt>
+      <dd><p>Helper class for validating docking groups compatibility.
+Provides shared validation logic used by DockService and DockManager.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockInheritanceHelper.html">DockInheritanceHelper</a></dt>
+      <dd><p>Helper class for computing inherited dock properties through the ownership hierarchy.
+Provides utilities for determining effective property values that cascade down the dock tree.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.MdiLayoutDefaults.html">MdiLayoutDefaults</a></dt>
+      <dd><p>Defaults used by MDI layout helpers and controls.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.MdiLayoutHelper.html">MdiLayoutHelper</a></dt>
+      <dd><p>Helper methods for arranging MDI documents.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.RequiresDataTemplateAttribute.html">RequiresDataTemplateAttribute</a></dt>
+      <dd><p>Indicates that an interface requires a DataTemplate in DockControl.
+This attribute is used to mark dock-related interfaces that need
+corresponding DataTemplates for proper rendering in the dock system.</p>
+</dd>
+    </dl>
+    <h3 id="structs">
+Structs
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockPoint.html">DockPoint</a></dt>
+      <dd><p>Point structure.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockRect.html">DockRect</a></dt>
+      <dd><p>Rectangle structure.</p>
+</dd>
+    </dl>
+    <h3 id="interfaces">
+Interfaces
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+      <dd><p>Dock contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a></dt>
+      <dd><p>Dock control contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockControlState.html">IDockControlState</a></dt>
+      <dd><p>Dock control state contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockManager.html">IDockManager</a></dt>
+      <dd><p>Docking manager contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockManagerState.html">IDockManagerState</a></dt>
+      <dd><p>Dock manager state contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockSelectorInfo.html">IDockSelectorInfo</a></dt>
+      <dd><p>Provides customization options for the document/panel selector overlay.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockSerializer.html">IDockSerializer</a></dt>
+      <dd><p>Docking serializer contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockService.html">IDockService</a></dt>
+      <dd><p>Dock service contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockState.html">IDockState</a></dt>
+      <dd><p>Dock state contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+      <dd><p>Dock window contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+      <dd><p>Dockable contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a></dt>
+      <dd><p>Dockable control contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></dt>
+      <dd><p>Dock factory contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IGlobalTarget.html">IGlobalTarget</a></dt>
+      <dd><p>Global target contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IHostAdapter.html">IHostAdapter</a></dt>
+      <dd><p>Host adapter contract for the <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a>.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+      <dd><p>Host window contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IHostWindowState.html">IHostWindowState</a></dt>
+      <dd><p>Host window state contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.IItemsSourceDock.html">IItemsSourceDock</a></dt>
+      <dd><p>Interface for docks that support ItemsSource-based document generation.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.ILocalTarget.html">ILocalTarget</a></dt>
+      <dd><p>Local target contract.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.INavigateAdapter.html">INavigateAdapter</a></dt>
+      <dd><p>Navigate adapter contract for the <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a>.</p>
+</dd>
+    </dl>
+    <h3 id="enums">
+Enums
+</h3>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.Alignment.html">Alignment</a></dt>
+      <dd><p>Defines dock alignment.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockMode.html">DockMode</a></dt>
+      <dd><p>Defines the available docking modes.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DockOperation.html">DockOperation</a></dt>
+      <dd><p>Defines the available dock operations.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DocumentCloseButtonShowMode.html">DocumentCloseButtonShowMode</a></dt>
+      <dd><p>Controls when document close buttons are displayed.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DocumentLayoutMode.html">DocumentLayoutMode</a></dt>
+      <dd><p>Defines document layout mode.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DocumentTabLayout.html">DocumentTabLayout</a></dt>
+      <dd><p>Defines document tab layout placement.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.DragAction.html">DragAction</a></dt>
+      <dd><p>Defines the available drag actions.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.GridResizeDirection.html">GridResizeDirection</a></dt>
+      <dd><p>Specifies the direction in which a grid can be resized.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.GripMode.html">GripMode</a></dt>
+      <dd><p>Defines grip mode.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.MdiWindowState.html">MdiWindowState</a></dt>
+      <dd><p>Defines MDI window state.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.Orientation.html">Orientation</a></dt>
+      <dd><p>Defines vertical or horizontal orientation.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.SplitViewDisplayMode.html">SplitViewDisplayMode</a></dt>
+      <dd><p>Defines how the SplitView pane is displayed.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.SplitViewPanePlacement.html">SplitViewPanePlacement</a></dt>
+      <dd><p>Defines the position of the SplitView pane.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Dock.Model.Core.TrackingMode.html">TrackingMode</a></dt>
+      <dd><p>Defines tracking mode.</p>
+</dd>
+    </dl>
+
+
+</article>
+
+        <div class="contribution d-print-none">
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

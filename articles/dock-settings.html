@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Settings | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Settings | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-settings.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-settings">Dock Settings</h1>
+
+<p><code>Dock.Settings</code> exposes global properties and constants that control drag and drop behavior.
+Use these when you need to adjust interaction distances or override the default templates.</p>
+<h2 id="attached-properties">Attached properties</h2>
+<p><code>DockProperties</code> defines several attached properties that can be applied to any Avalonia control.
+They are used by the default control templates but you can set them manually:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsDockTarget</code></td>
+<td><code>bool</code></td>
+<td>Marks a control as a docking surface that can display a <code>DockTargetBase</code> adorner.</td>
+</tr>
+<tr>
+<td><code>IsDragArea</code></td>
+<td><code>bool</code></td>
+<td>Identifies a region that allows starting a drag.</td>
+</tr>
+<tr>
+<td><code>IsDropArea</code></td>
+<td><code>bool</code></td>
+<td>Identifies a region that can accept dropped dockables.</td>
+</tr>
+<tr>
+<td><code>IsDragEnabled</code></td>
+<td><code>bool</code></td>
+<td>Globally enables or disables dragging for child dockables.</td>
+</tr>
+<tr>
+<td><code>IsDropEnabled</code></td>
+<td><code>bool</code></td>
+<td>Globally enables or disables dropping of dockables.</td>
+</tr>
+<tr>
+<td><code>ShowDockIndicatorOnly</code></td>
+<td><code>bool</code></td>
+<td>Shows only drop indicators, hiding the dock target visuals.</td>
+</tr>
+<tr>
+<td><code>IndicatorDockOperation</code></td>
+<td><code>DockOperation</code></td>
+<td>Sets the dock operation when showing indicators only.</td>
+</tr>
+<tr>
+<td><code>DockAdornerHost</code></td>
+<td><code>Control</code></td>
+<td>Hosts the dock target adorner instead of the adorned control.</td>
+</tr>
+<tr>
+<td><code>DockGroup</code></td>
+<td><code>string</code></td>
+<td>Restricts docking to matching groups (inherited).</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>DockGroup</code> to restrict docking operations across your layout. For details see <a href="dock-docking-groups.html">Docking groups</a>.</p>
+<p>Example disabling drag and drop for an entire window:</p>
+<pre><code class="lang-xaml">&lt;Window xmlns:dockSettings=&quot;clr-namespace:Dock.Settings;assembly=Dock.Settings&quot;
+        dockSettings:DockProperties.IsDragEnabled=&quot;False&quot;
+        dockSettings:DockProperties.IsDropEnabled=&quot;False&quot;&gt;
+    &lt;DockControl /&gt;
+&lt;/Window&gt;
+</code></pre>
+<h2 id="drag-thresholds">Drag thresholds</h2>
+<p><code>DockSettings</code> contains two public fields controlling how far the pointer must move
+before a drag operation begins:</p>
+<pre><code class="lang-csharp">DockSettings.MinimumHorizontalDragDistance = 4;
+DockSettings.MinimumVerticalDragDistance = 4;
+</code></pre>
+<p>Increase these values if small pointer movements should not initiate dragging.</p>
+<h2 id="global-docking">Global docking</h2>
+<p><code>IDock.EnableGlobalDocking</code> controls whether dockables can be dropped
+onto a specific dock from outside its current dock control. This is useful for creating
+multi-window applications where you can drag dockables between windows. Each dock
+can individually control whether it accepts global docking operations, with the
+default being enabled (true).</p>
+<h3 id="inheritance">Inheritance</h3>
+<p>The <code>EnableGlobalDocking</code> property is inherited down the dock hierarchy. When evaluating
+whether global docking should be allowed for a target dock, the system walks up the
+ownership chain checking all ancestor docks. If any ancestor dock has
+<code>EnableGlobalDocking = false</code>, global docking is disabled for the entire subtree.</p>
+<p>This allows you to disable global docking for a large section of your docking layout
+by setting it to <code>false</code> on a parent dock. For example:</p>
+<pre><code class="lang-csharp">// Disable global docking for an entire window/section
+var parentDock = new ProportionalDock 
+{ 
+    EnableGlobalDocking = false 
+};
+
+// All child docks inherit the disabled setting
+var childDock = new ToolDock 
+{ 
+    Owner = parentDock,
+    EnableGlobalDocking = true  // This is overridden by parent's false
+};
+</code></pre>
+<p>Note: the previous global setting and AppBuilder extension for enabling/disabling
+global docking have been removed. Use the per-dock <code>IDock.EnableGlobalDocking</code>
+property instead.</p>
+<p><code>DockSettings.GlobalDockingProportion</code> controls the split ratio used when a dockable
+is dropped as a global dock target (for example, dropping into a different window).
+The default value is <code>0.25</code>.</p>
+<h2 id="floating-window-owner">Floating window owner</h2>
+<p><code>DockSettings.UseOwnerForFloatingWindows</code> keeps floating windows above the main window by setting it as their owner.</p>
+<h2 id="floating-dock-adorners">Floating dock adorners</h2>
+<p><code>DockSettings.UseFloatingDockAdorner</code> enables showing drop indicators in a transparent floating window instead of overlays on the target controls. See <a href="dock-floating-adorners.html">Floating Dock Adorners</a> for details.</p>
+<h2 id="pinned-dock-windows">Pinned dock windows</h2>
+<p><code>DockSettings.UsePinnedDockWindow</code> shows auto-hidden dockables inside a floating window instead of sliding panels. See <a href="dock-pinned-window.html">Pinned Dock Window</a> for details.</p>
+<h2 id="window-magnetism">Window magnetism</h2>
+<p><code>DockSettings.EnableWindowMagnetism</code> toggles snapping of floating windows. The snap distance
+is controlled by <code>DockSettings.WindowMagnetDistance</code>.</p>
+<h2 id="bring-windows-to-front-on-drag">Bring windows to front on drag</h2>
+<p><code>DockSettings.BringWindowsToFrontOnDrag</code> determines whether all floating windows
+and any main window hosting a <code>DockControl</code> are activated when dragging begins.
+Enabled by default.</p>
+<h2 id="selector-hotkeys">Selector hotkeys</h2>
+<p>Dock exposes a document and panel selector that can be toggled with keyboard gestures:</p>
+<pre><code class="lang-csharp">DockSettings.SelectorEnabled = true;
+DockSettings.DocumentSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control);
+DockSettings.ToolSelectorKeyGesture = new KeyGesture(Key.Tab, KeyModifiers.Control | KeyModifiers.Alt);
+</code></pre>
+<p>Disable <code>SelectorEnabled</code> to turn off the overlay entirely.</p>
+<p>Dockables can also opt out or provide a custom label for the selector:</p>
+<pre><code class="lang-csharp">document.ShowInSelector = false;
+document.SelectorTitle = &quot;Runtime Config&quot;;
+</code></pre>
+<p>See <a href="dock-selector-overlay.html">Selector overlay</a> for behavior and navigation details.</p>
+<h2 id="command-bar-merging">Command bar merging</h2>
+<p>Command bar merging is disabled by default. Enable it and choose a scope:</p>
+<pre><code class="lang-csharp">DockSettings.CommandBarMergingEnabled = true;
+DockSettings.CommandBarMergingScope = DockCommandBarMergingScope.ActiveDocument;
+</code></pre>
+<p>See <a href="dock-command-bars.html">Command bars</a> for definitions and merge behavior.</p>
+<h2 id="diagnostics-logging">Diagnostics logging</h2>
+<p>Enable verbose diagnostics logging when you need to inspect docking workflows:</p>
+<pre><code class="lang-csharp">DockSettings.EnableDiagnosticsLogging = true;
+DockSettings.DiagnosticsLogHandler = message =&gt; Debug.WriteLine(message);
+</code></pre>
+<p>When enabled, Dock writes internal messages to <code>DiagnosticsLogHandler</code> if provided,
+otherwise it uses standard debug output.</p>
+<p>You can also emit your own messages through <code>DockLogger</code>. For details and examples
+see <a href="dock-diagnostics-logging.html">Diagnostics logging</a>.</p>
+<h2 id="app-builder-integration">App builder integration</h2>
+<p>You can configure the settings when building your Avalonia application:</p>
+<pre><code class="lang-csharp">using Dock.Settings;
+
+AppBuilder.Configure&lt;App&gt;()
+    .UsePlatformDetect()
+    .UseFloatingDockAdorner()
+    .UseOwnerForFloatingWindows()
+    .EnableWindowMagnetism()
+    .SetWindowMagnetDistance(16)
+    .BringWindowsToFrontOnDrag()
+    .WithDockSettings(new DockSettingsOptions
+    {
+        MinimumHorizontalDragDistance = 6
+    });
+</code></pre>
+<h2 id="docksettingsoptions-reference">DockSettingsOptions reference</h2>
+<p><code>DockSettingsOptions</code> mirrors <code>DockSettings</code> and lets you override individual values when calling <code>WithDockSettings</code>. Any property left as <code>null</code> keeps the current <code>DockSettings</code> value.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Applies to</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MinimumHorizontalDragDistance</code></td>
+<td><code>DockSettings.MinimumHorizontalDragDistance</code></td>
+<td>Horizontal drag threshold.</td>
+</tr>
+<tr>
+<td><code>MinimumVerticalDragDistance</code></td>
+<td><code>DockSettings.MinimumVerticalDragDistance</code></td>
+<td>Vertical drag threshold.</td>
+</tr>
+<tr>
+<td><code>UseFloatingDockAdorner</code></td>
+<td><code>DockSettings.UseFloatingDockAdorner</code></td>
+<td>Floating adorner window.</td>
+</tr>
+<tr>
+<td><code>UsePinnedDockWindow</code></td>
+<td><code>DockSettings.UsePinnedDockWindow</code></td>
+<td>Floating pinned dock window.</td>
+</tr>
+<tr>
+<td><code>UseOwnerForFloatingWindows</code></td>
+<td><code>DockSettings.UseOwnerForFloatingWindows</code></td>
+<td>Assign owners to floating windows.</td>
+</tr>
+<tr>
+<td><code>EnableWindowMagnetism</code></td>
+<td><code>DockSettings.EnableWindowMagnetism</code></td>
+<td>Snap floating windows.</td>
+</tr>
+<tr>
+<td><code>WindowMagnetDistance</code></td>
+<td><code>DockSettings.WindowMagnetDistance</code></td>
+<td>Snap distance in pixels.</td>
+</tr>
+<tr>
+<td><code>BringWindowsToFrontOnDrag</code></td>
+<td><code>DockSettings.BringWindowsToFrontOnDrag</code></td>
+<td>Activate windows when dragging.</td>
+</tr>
+<tr>
+<td><code>SelectorEnabled</code></td>
+<td><code>DockSettings.SelectorEnabled</code></td>
+<td>Toggle selector overlay.</td>
+</tr>
+<tr>
+<td><code>DocumentSelectorKeyGesture</code></td>
+<td><code>DockSettings.DocumentSelectorKeyGesture</code></td>
+<td>Document selector shortcut.</td>
+</tr>
+<tr>
+<td><code>ToolSelectorKeyGesture</code></td>
+<td><code>DockSettings.ToolSelectorKeyGesture</code></td>
+<td>Tool selector shortcut.</td>
+</tr>
+<tr>
+<td><code>CommandBarMergingEnabled</code></td>
+<td><code>DockSettings.CommandBarMergingEnabled</code></td>
+<td>Enable command bar merging.</td>
+</tr>
+<tr>
+<td><code>CommandBarMergingScope</code></td>
+<td><code>DockSettings.CommandBarMergingScope</code></td>
+<td>Merge scope for command bars.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hide-on-close">Hide on close</h2>
+<p><code>FactoryBase</code> exposes two properties that control whether closing a tool or
+document hides it instead of removing it. Hidden items can be restored through
+the factory helpers:</p>
+<pre><code class="lang-csharp">var factory = new MyFactory
+{
+    HideToolsOnClose = true,
+    HideDocumentsOnClose = true
+};
+</code></pre>
+<p>Both options are disabled by default. When enabled the <code>CloseDockable</code> command
+moves the dockable to the <code>IRootDock.HiddenDockables</code> collection instead of
+deleting it.</p>
+<h2 id="prevent-closing-the-last-dockable">Prevent closing the last dockable</h2>
+<p>Each dock exposes a <code>CanCloseLastDockable</code> property. When set to <code>false</code>
+the <code>CloseDockable</code> command ignores requests that would remove the final
+visible item from that dock.</p>
+<p>For more details on dockable properties see <a href="dock-dockable-properties.html">Dockable Property Settings</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-settings.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

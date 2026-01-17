@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock ReactiveProperty Getting Started Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock ReactiveProperty Getting Started Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactive-property.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-reactiveproperty-getting-started-guide">Dock ReactiveProperty Getting Started Guide</h1>
+
+<p>This guide explains how to get started with the ReactiveProperty implementation of Dock. ReactiveProperty is a powerful MVVM framework that provides reactive properties, collections, and commands with excellent performance and validation support.</p>
+<p>The <code>Dock.Model.ReactiveProperty</code> package integrates Dock with the ReactiveProperty framework. The sample project <code>DockReactivePropertySample</code> in the repository demonstrates this approach. For interface details refer to the <a href="dock-reference.html">Dock API Reference</a>.</p>
+<blockquote>
+<p><strong>💡 Modern Approach</strong>: For easier document management, consider using <a href="dock-itemssource.html">DocumentDock.ItemsSource</a> which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with ReactiveProperty's <code>ObservableCollection</code> and reactive commands. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
+</blockquote>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
+<p>Follow these instructions to create a ReactiveProperty-based application using Dock.</p>
+<ol>
+<li><p><strong>Create a new Avalonia project</strong></p>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MyDockApp
+cd MyDockApp
+</code></pre>
+</li>
+<li><p><strong>Install the Dock packages</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.ReactiveProperty
+dotnet add package Dock.Avalonia.Themes.Fluent
+dotnet add package ReactiveProperty
+</code></pre>
+<p><strong>Optional packages:</strong></p>
+<pre><code class="lang-bash"># For serialization (choose one):
+dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+
+# For dependency injection:
+dotnet add package Dock.Model.Extensions.DependencyInjection
+
+# Additional ReactiveProperty features:
+dotnet add package ReactiveProperty.WPF               # For validation attributes
+</code></pre>
+</li>
+<li><p><strong>Set up View Locator (Required)</strong></p>
+<p>ReactiveProperty requires a view locator to map view models to their corresponding views. Choose one of the following approaches:</p>
+<p><strong>Option A: Static View Locator with Source Generators (Recommended)</strong></p>
+<p>Add the StaticViewLocator package:</p>
+<pre><code class="lang-bash">dotnet add package StaticViewLocator
+</code></pre>
+<p>Create a <code>ViewLocator.cs</code> file:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using Dock.Model.ReactiveProperty.Core;
+using StaticViewLocator;
+
+namespace MyDockApp;
+
+[StaticViewLocator]
+public partial class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var type = data.GetType();
+        if (s_views.TryGetValue(type, out var func))
+            return func.Invoke();
+
+        throw new Exception($&quot;Unable to create view for type: {type}&quot;);
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        var type = data.GetType();
+        return data is IDockable || s_views.ContainsKey(type);
+    }
+}
+</code></pre>
+<p><strong>Option B: Convention-Based View Locator</strong></p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using Dock.Model.ReactiveProperty.Core;
+
+namespace MyDockApp;
+
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        var type = Type.GetType(name);
+
+        if (type != null)
+            return (Control)Activator.CreateInstance(type)!;
+
+        return new TextBlock { Text = &quot;Not Found: &quot; + name };
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        var name = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        return Type.GetType(name) is not null;
+    }
+}
+</code></pre>
+<p>Register the view locator in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:local=&quot;using:MyDockApp&quot;
+             x:Class=&quot;MyDockApp.App&quot;&gt;
+
+  &lt;Application.DataTemplates&gt;
+    &lt;local:ViewLocator /&gt;
+  &lt;/Application.DataTemplates&gt;
+
+  &lt;Application.Styles&gt;
+    &lt;FluentTheme /&gt;
+    &lt;DockFluentTheme /&gt;
+  &lt;/Application.Styles&gt;
+&lt;/Application&gt;
+</code></pre>
+</li>
+<li><p><strong>Create a factory and view models</strong></p>
+<p>Derive from <code>Dock.Model.ReactiveProperty.Factory</code> and implement <code>CreateLayout</code>. Your documents and tools should inherit from the ReactiveProperty versions:</p>
+<pre><code class="lang-csharp">using System.Collections.Generic;
+using System.Reactive.Disposables;
+using Dock.Model.Core;
+using Dock.Model.ReactiveProperty;
+using Dock.Model.ReactiveProperty.Controls;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
+
+namespace MyDockApp.ViewModels;
+
+public class DockFactory : Factory
+{
+    public override IRootDock CreateLayout()
+    {
+        var doc = new DocumentViewModel { Id = &quot;Doc1&quot;, Title = &quot;Document&quot; };
+        var tool = new ToolViewModel { Id = &quot;Tool1&quot;, Title = &quot;Tool1&quot; };
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(
+            new DocumentDock
+            {
+                VisibleDockables = CreateList&lt;IDockable&gt;(doc),
+                ActiveDockable = doc
+            },
+            new ToolDock
+            {
+                VisibleDockables = CreateList&lt;IDockable&gt;(tool),
+                ActiveDockable = tool
+            });
+        return root;
+    }
+}
+
+// Example document view model using ReactiveProperty
+public class DocumentViewModel : Document
+{
+    private readonly CompositeDisposable _disposables = new();
+
+    public ReactivePropertySlim&lt;string&gt; Content { get; }
+    public ReactiveCommand SaveCommand { get; }
+
+    public DocumentViewModel()
+    {
+        Content = new ReactivePropertySlim&lt;string&gt;(&quot;Document content here...&quot;)
+            .AddTo(_disposables);
+
+        SaveCommand = new ReactiveCommand()
+            .WithSubscribe(() =&gt; 
+            {
+                // Save logic here
+                System.Diagnostics.Debug.WriteLine($&quot;Saving document: {Title}&quot;);
+            })
+            .AddTo(_disposables);
+    }
+}
+
+// Example tool view model using ReactiveProperty
+public class ToolViewModel : Tool
+{
+    private readonly CompositeDisposable _disposables = new();
+
+    public ReactivePropertySlim&lt;string&gt; Status { get; }
+    public ReactiveCommand RefreshCommand { get; }
+
+    public ToolViewModel()
+    {
+        Status = new ReactivePropertySlim&lt;string&gt;(&quot;Ready&quot;)
+            .AddTo(_disposables);
+
+        RefreshCommand = new ReactiveCommand()
+            .WithSubscribe(() =&gt; 
+            {
+                Status.Value = &quot;Refreshed at &quot; + System.DateTime.Now.ToString(&quot;HH:mm:ss&quot;);
+            })
+            .AddTo(_disposables);
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create views for your view models</strong></p>
+<p>Create corresponding views for your documents and tools:</p>
+<p><strong>DocumentView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.DocumentView&quot;&gt;
+  &lt;DockPanel&gt;
+    &lt;StackPanel DockPanel.Dock=&quot;Top&quot; Orientation=&quot;Horizontal&quot; Margin=&quot;5&quot;&gt;
+      &lt;Button Content=&quot;Save&quot; Command=&quot;{Binding SaveCommand}&quot; /&gt;
+    &lt;/StackPanel&gt;
+    &lt;TextBox Text=&quot;{Binding Content.Value}&quot; AcceptsReturn=&quot;True&quot; /&gt;
+  &lt;/DockPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>ToolView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.ToolView&quot;&gt;
+  &lt;StackPanel Margin=&quot;5&quot;&gt;
+    &lt;TextBlock Text=&quot;Tool Panel&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,10&quot; /&gt;
+    &lt;TextBlock Text=&quot;{Binding Status.Value}&quot; Margin=&quot;0,0,0,5&quot; /&gt;
+    &lt;Button Content=&quot;Refresh&quot; Command=&quot;{Binding RefreshCommand}&quot; /&gt;
+  &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+</li>
+<li><p><strong>Initialize the layout</strong></p>
+<p>Create and initialize the layout in your main window:</p>
+<pre><code class="lang-csharp">using Avalonia.Controls;
+using Dock.Avalonia.Controls;
+using MyDockApp.ViewModels;
+
+namespace MyDockApp;
+
+public partial class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+        InitializeDock();
+    }
+
+    private void InitializeDock()
+    {
+        var factory = new DockFactory();
+        var layout = factory.CreateLayout();
+        factory.InitLayout(layout);
+
+        // Assuming you have a DockControl named &quot;Dock&quot; in MainWindow.axaml
+        var dockControl = this.Find&lt;DockControl&gt;(&quot;Dock&quot;);
+        if (dockControl != null)
+        {
+            dockControl.Layout = layout;
+        }
+    }
+}
+</code></pre>
+<p>And add a <code>DockControl</code> to <code>MainWindow.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Window xmlns=&quot;https://github.com/avaloniaui&quot;
+        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        x:Class=&quot;MyDockApp.MainWindow&quot;
+        Title=&quot;My Dock App&quot;&gt;
+  &lt;DockControl x:Name=&quot;Dock&quot; /&gt;
+&lt;/Window&gt;
+</code></pre>
+</li>
+<li><p><strong>Run the application</strong></p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+</li>
+</ol>
+<h2 id="reactiveproperty-framework-requirements">ReactiveProperty Framework Requirements</h2>
+<p>When using <code>Dock.Model.ReactiveProperty</code>, you need to:</p>
+<ol>
+<li><p><strong>Reactive Properties</strong>: Use <code>ReactiveProperty&lt;T&gt;</code> or <code>ReactivePropertySlim&lt;T&gt;</code> for bindable properties with validation and change notification support.</p>
+</li>
+<li><p><strong>Commands</strong>: Use <code>ReactiveCommand</code> for user actions with automatic can-execute logic.</p>
+</li>
+<li><p><strong>Disposables</strong>: Properly manage disposables using <code>CompositeDisposable</code> and the <code>AddTo()</code> extension method.</p>
+</li>
+<li><p><strong>View Locator</strong>: Always set up a view locator to map view models to views.</p>
+</li>
+<li><p><strong>Factory Setup</strong>: Use <code>Dock.Model.ReactiveProperty.Factory</code> as your base factory class.</p>
+</li>
+<li><p><strong>Context and Dockable Locators</strong>: To reattach contexts after loading layouts (and to enable id-based lookups), populate the locator dictionaries:</p>
+<pre><code class="lang-csharp">public override void InitLayout(IDockable layout)
+{
+    ContextLocator = new Dictionary&lt;string, Func&lt;object?&gt;&gt;
+    {
+        [&quot;Doc1&quot;] = () =&gt; new DocumentData(),
+        [&quot;Tool1&quot;] = () =&gt; new ToolData()
+    };
+
+    DockableLocator = new Dictionary&lt;string, Func&lt;IDockable?&gt;&gt;
+    {
+        [&quot;Doc1&quot;] = () =&gt; new DocumentViewModel { Id = &quot;Doc1&quot;, Title = &quot;Document&quot; },
+        [&quot;Tool1&quot;] = () =&gt; new ToolViewModel { Id = &quot;Tool1&quot;, Title = &quot;Tool1&quot; }
+    };
+
+    base.InitLayout(layout);
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="reactiveproperty-features">ReactiveProperty Features</h2>
+<p>ReactiveProperty provides several advantages:</p>
+<ul>
+<li>✅ <strong>Reactive Properties</strong>: Properties with built-in change notifications and validation</li>
+<li>✅ <strong>Reactive Commands</strong>: Commands with automatic can-execute logic based on reactive properties</li>
+<li>✅ <strong>Validation</strong>: Built-in validation support with data annotations</li>
+<li>✅ <strong>Performance</strong>: Efficient property change notifications</li>
+<li>✅ <strong>Collections</strong>: Reactive collections with change notifications</li>
+<li>✅ <strong>LINQ</strong>: LINQ-style operators for reactive programming</li>
+</ul>
+<p>Example of validation:</p>
+<pre><code class="lang-csharp">public class DocumentViewModel : Document
+{
+    private readonly CompositeDisposable _disposables = new();
+
+    public ReactiveProperty&lt;string&gt; Title { get; }
+    public ReactiveProperty&lt;string&gt; Content { get; }
+    public ReactiveCommand SaveCommand { get; }
+
+    public DocumentViewModel()
+    {
+        Title = new ReactiveProperty&lt;string&gt;()
+            .SetValidateAttribute(() =&gt; Title)  // Use data annotations
+            .AddTo(_disposables);
+
+        Content = new ReactiveProperty&lt;string&gt;(&quot;Document content...&quot;)
+            .AddTo(_disposables);
+
+        SaveCommand = new ReactiveCommand(
+            Title.ObserveHasErrors.Select(x =&gt; !x))  // Enable when no validation errors
+            .WithSubscribe(() =&gt; Save())
+            .AddTo(_disposables);
+    }
+
+    private void Save()
+    {
+        // Save logic
+    }
+}
+</code></pre>
+<p>For more advanced scenarios, see the <a href="dock-complex-layouts.html">Complex layout tutorials</a> and other ReactiveProperty integration patterns.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactive-property.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

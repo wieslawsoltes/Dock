@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock API Reference | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock API Reference | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reference.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-api-reference">Dock API Reference</h1>
+
+<p>This reference summarizes the most commonly used classes in Dock. It is based on the samples found in the repository and the public APIs in the <code>Dock.Model</code> packages. The MVVM, ReactiveUI and XAML approaches share the same underlying types so the following sections apply to all three.</p>
+<h2 id="core-interfaces">Core interfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDockable</code></td>
+<td>Base interface for items that can be shown in a dock. Provides <code>Id</code>, <code>Title</code>, <code>Context</code>, optional size limits and lifecycle methods like <code>OnClose</code>.</td>
+</tr>
+<tr>
+<td><code>IDock</code></td>
+<td>Extends <code>IDockable</code> with visible dockables (<code>VisibleDockables</code>, <code>ActiveDockable</code>, <code>DefaultDockable</code>, <code>FocusedDockable</code>) and navigation commands (<code>GoBack</code>, <code>GoForward</code>, <code>Navigate</code>, <code>Close</code>). It also exposes <code>OpenedDockablesCount</code>, <code>IsActive</code>, <code>EnableGlobalDocking</code>, and <code>CanCloseLastDockable</code>.</td>
+</tr>
+<tr>
+<td><code>IRootDock</code></td>
+<td>The top-level container. In addition to the <code>IDock</code> members it exposes pinned dock collections and commands to manage windows.</td>
+</tr>
+<tr>
+<td><code>IProportionalDock</code></td>
+<td>A dock that lays out its children horizontally or vertically using a <code>Proportion</code> value.</td>
+</tr>
+<tr>
+<td><code>IStackDock</code></td>
+<td>Dock based on <code>StackPanel</code> with <code>Orientation</code> and <code>Spacing</code>.</td>
+</tr>
+<tr>
+<td><code>IGridDock</code></td>
+<td>Dock using <code>Grid</code> layout via <code>ColumnDefinitions</code> and <code>RowDefinitions</code>.</td>
+</tr>
+<tr>
+<td><code>IWrapDock</code></td>
+<td>Dock built on <code>WrapPanel</code> exposing <code>Orientation</code>.</td>
+</tr>
+<tr>
+<td><code>IUniformGridDock</code></td>
+<td>Dock that arranges items in equally sized cells using <code>Rows</code> and <code>Columns</code>.</td>
+</tr>
+<tr>
+<td><code>IToolDock</code> / <code>IDocumentDock</code></td>
+<td>Specialized docks used for tools and documents.</td>
+</tr>
+<tr>
+<td><code>ITool</code></td>
+<td>Represents a tool pane. Tools can specify <code>MinWidth</code>, <code>MaxWidth</code>, <code>MinHeight</code> and <code>MaxHeight</code> to control their size.</td>
+</tr>
+<tr>
+<td><code>IProportionalDockSplitter</code></td>
+<td>Thin splitter placed between proportional docks. Exposes <code>CanResize</code> and <code>ResizePreview</code> to control dragging. With preview enabled the splitter highlights while dragging.</td>
+</tr>
+<tr>
+<td><code>IGridDockSplitter</code></td>
+<td>Splitter for <code>IGridDock</code> controlling the resize direction.</td>
+</tr>
+<tr>
+<td><code>IDockWindow</code> / <code>IHostWindow</code></td>
+<td>Interfaces representing floating windows created when dockables are detached.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tracking-bounds-and-pointer-positions">Tracking bounds and pointer positions</h2>
+<p><code>IDockable</code> includes a set of methods used by the docking logic to remember the
+position of a dockable and the pointer during drag operations. These methods are
+implemented by <code>DockableBase</code> which stores the values in a <code>TrackingAdapter</code>.
+The adapter starts with <code>NaN</code> coordinates until a value is set.</p>
+<ul>
+<li><code>GetVisibleBounds(out x, out y, out width, out height)</code> and
+<code>SetVisibleBounds(x, y, width, height)</code> return or store the last known bounds
+of the dockable while it is visible in a dock. <code>OnVisibleBoundsChanged</code> is
+invoked whenever the values are updated.</li>
+<li><code>GetPinnedBounds</code>/<code>SetPinnedBounds</code>/<code>OnPinnedBoundsChanged</code> track the
+dimensions used when a tool is pinned to one of the layout edges.</li>
+<li><code>GetTabBounds</code>/<code>SetTabBounds</code>/<code>OnTabBoundsChanged</code> hold the bounds of a
+dockable displayed as a tab inside another dock.</li>
+<li><code>GetPointerPosition</code>/<code>SetPointerPosition</code>/<code>OnPointerPositionChanged</code> store the
+pointer coordinates relative to the dock control.</li>
+<li><code>GetPointerScreenPosition</code>/<code>SetPointerScreenPosition</code>/
+<code>OnPointerScreenPositionChanged</code> do the same using screen coordinates.</li>
+</ul>
+<p>These values are consulted when calculating drop targets or restoring a layout
+from a saved state.</p>
+<h2 id="document-dock-options">Document dock options</h2>
+<p><code>IDocumentDock</code> exposes several key properties for controlling its behavior:</p>
+<ul>
+<li><code>EnableWindowDrag</code> allows the entire window to be dragged via the tab area</li>
+<li><code>TabsLayout</code> chooses where the tabs appear using the <code>DocumentTabLayout</code> enum</li>
+<li><code>LayoutMode</code> switches between <code>Tabbed</code> and <code>Mdi</code> layouts</li>
+<li><code>CloseButtonShowMode</code> controls when document close buttons appear</li>
+<li><code>CanCreateDocument</code> and <code>CreateDocument</code> control the new-document command</li>
+<li><code>CascadeDocuments</code>, <code>TileDocumentsHorizontal</code>, <code>TileDocumentsVertical</code>, and <code>RestoreDocuments</code> are MDI helpers</li>
+</ul>
+<p>The factory provides helper methods <code>SetDocumentDockTabsLayoutLeft</code>, <code>SetDocumentDockTabsLayoutTop</code> and <code>SetDocumentDockTabsLayoutRight</code> to change the layout at runtime.</p>
+<p><code>IDocumentDockContent</code> (implemented by the Avalonia model layer) adds <code>DocumentTemplate</code> and <code>CreateDocumentFromTemplate</code>. The <code>DocumentDock</code> implementations in <code>Dock.Model.Mvvm</code>, <code>Dock.Model.ReactiveUI</code>, and <code>Dock.Model.Avalonia</code> also expose a <code>DocumentFactory</code> delegate; <code>CreateDocument</code> invokes it when set and adds the resulting document via <code>AddDocument</code>. In the Avalonia model, if <code>DocumentFactory</code> is not set, <code>CreateDocument</code> falls back to <code>CreateDocumentFromTemplate</code>.</p>
+<h2 id="itemssource-document-generation">ItemsSource document generation</h2>
+<p><code>IItemsSourceDock</code> is implemented by <code>Dock.Model.Avalonia.Controls.DocumentDock</code> to provide automatic document management:</p>
+<ul>
+<li><code>ItemsSource</code> - Collection of data objects that become documents</li>
+<li><code>IsDocumentFromItemsSource(IDockable)</code> - Checks if a document was auto-generated</li>
+<li><code>RemoveItemFromSource(object)</code> - Removes an item from the source collection</li>
+</ul>
+<p>When <code>ItemsSource</code> is set (and a <code>DocumentTemplate</code> is provided), <code>DocumentDock</code> automatically creates <code>Document</code> instances for each item in the collection. The document's <code>Title</code> is derived from common properties like <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> on the source object. The <code>Context</code> property is set to the source item, making it accessible in <code>DocumentTemplate</code> bindings.</p>
+<p>Changes to <code>INotifyCollectionChanged</code> collections (for example, <code>ObservableCollection&lt;T&gt;</code>) automatically add or remove corresponding documents. When a document generated from <code>ItemsSource</code> is closed, the factory attempts to remove the source item from the collection if it implements <code>IList</code>.</p>
+<h2 id="host-window-options">Host window options</h2>
+<p><code>HostWindow</code> exposes <code>IsToolWindow</code>, <code>ToolChromeControlsWholeWindow</code> and
+<code>DocumentChromeControlsWholeWindow</code>. These properties toggle pseudo classes on
+the window so styles can react to different chrome configurations.</p>
+<h2 id="dockcontrol-properties">DockControl properties</h2>
+<p><code>DockControl</code> is the main Avalonia control that hosts layouts. Common properties include:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Layout</code></td>
+<td>The root dock layout assigned to the control.</td>
+</tr>
+<tr>
+<td><code>Factory</code></td>
+<td>Factory used to initialize or manipulate the layout when <code>Layout.Factory</code> is <code>null</code>.</td>
+</tr>
+<tr>
+<td><code>InitializeFactory</code></td>
+<td>When <code>true</code>, assigns default locators and fallback delegates.</td>
+</tr>
+<tr>
+<td><code>InitializeLayout</code></td>
+<td>When <code>true</code>, calls <code>InitLayout</code> on the factory.</td>
+</tr>
+<tr>
+<td><code>DefaultContext</code></td>
+<td>Fallback context used by <code>DefaultContextLocator</code> when <code>InitializeFactory</code> is enabled.</td>
+</tr>
+<tr>
+<td><code>AutoCreateDataTemplates</code></td>
+<td>When <code>true</code> (default), injects built-in DataTemplates for dock types.</td>
+</tr>
+<tr>
+<td><code>DragOffsetCalculator</code></td>
+<td>Controls how the drag preview window is positioned.</td>
+</tr>
+<tr>
+<td><code>IsDraggingDock</code></td>
+<td>Set while a drag operation is active; useful for styling.</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="dock-control-initialization.html">DockControl initialization</a> and <a href="dock-datatemplates.html">DataTemplates and custom dock types</a> for details.</p>
+<h2 id="control-customization-properties">Control customization properties</h2>
+<p>Several Dock controls expose properties for customizing their context menus, flyouts, and button themes:</p>
+<h3 id="context-menus-and-flyouts">Context Menus and Flyouts</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>ToolFlyout</code></td>
+<td><code>FlyoutBase?</code></td>
+<td>Custom flyout for the tool chrome grip button</td>
+</tr>
+<tr>
+<td><code>ToolTabStripItem</code></td>
+<td><code>TabContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Custom context menu for tool tab items</td>
+</tr>
+<tr>
+<td><code>DocumentTabStripItem</code></td>
+<td><code>DocumentContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Custom context menu for document tab items</td>
+</tr>
+<tr>
+<td><code>ToolPinItemControl</code></td>
+<td><code>PinContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Custom context menu for pinned tool items</td>
+</tr>
+</tbody>
+</table>
+<h3 id="button-themes">Button Themes</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DocumentTabStrip</code></td>
+<td><code>CreateButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the create document button</td>
+</tr>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the close button</td>
+</tr>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>MaximizeButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the maximize/restore button</td>
+</tr>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>PinButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the pin button</td>
+</tr>
+<tr>
+<td><code>ToolChromeControl</code></td>
+<td><code>MenuButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the menu button</td>
+</tr>
+<tr>
+<td><code>DocumentControl</code></td>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Custom theme for the document close button</td>
+</tr>
+</tbody>
+</table>
+<p>These properties allow you to customize the context menus, flyouts, and button themes for individual control instances. When not set, the controls use their default themes defined in the theme resources. See the <a href="dock-context-menus.html">Context menus</a> guide for detailed examples.</p>
+<h2 id="tab-header-and-mdi-template-properties">Tab header and MDI template properties</h2>
+<p>Dock exposes template properties for tab headers and MDI windows:</p>
+<ul>
+<li><code>DocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>IsActive</code>, <code>TabsLayout</code>.</li>
+<li><code>ToolControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>.</li>
+<li><code>MdiDocumentControl</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>LayoutManager</code>, <code>IsActive</code>.</li>
+<li><code>MdiDocumentWindow</code>: <code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code>, <code>CloseButtonTheme</code>, <code>DocumentContextMenu</code>, <code>IsActive</code>, <code>MdiState</code>.</li>
+</ul>
+<p>Use these to customize headers, icons, and modified indicators in styles or templates. See <a href="dock-styling.html">Styling and theming</a> and <a href="dock-mdi.html">MDI document layout</a> for details.</p>
+<h2 id="tab-strip-properties">Tab strip properties</h2>
+<p>The tab strip controls expose additional properties used by the templates:</p>
+<ul>
+<li><code>DocumentTabStrip</code>: <code>CanCreateItem</code>, <code>IsActive</code>, <code>EnableWindowDrag</code>, <code>Orientation</code>, <code>CreateButtonTheme</code>.</li>
+<li><code>ToolTabStrip</code>: <code>CanCreateItem</code>.</li>
+<li><code>DocumentTabStripItem</code>: <code>IsActive</code>.</li>
+<li><code>ToolPinnedControl</code>: <code>Orientation</code> (propagated to <code>ToolPinItemControl</code>).</li>
+</ul>
+<p>These properties drive pseudo classes and layout behaviors for tab strips and pinned tool tabs.</p>
+<h2 id="tool-chrome-state-properties">Tool chrome state properties</h2>
+<p><code>ToolChromeControl</code> exposes state properties that drive its pseudo classes and chrome behavior:</p>
+<ul>
+<li><code>Title</code>, <code>IsActive</code>, <code>IsPinned</code>, <code>IsFloating</code>, <code>IsMaximized</code>.</li>
+</ul>
+<h2 id="factory-api">Factory API</h2>
+<p>The <code>IFactory</code> interface (implemented by <code>Factory</code> in <code>Dock.Model.Mvvm</code> and <code>Dock.Model.ReactiveUI</code>) contains numerous helpers used by the samples to build and manipulate layouts. Important members include:</p>
+<ul>
+<li>Methods such as <code>CreateRootDock</code>, <code>CreateProportionalDock</code>, <code>CreateToolDock</code> and <code>CreateDocumentDock</code> used when constructing the initial layout.</li>
+<li><code>CreateLayout()</code> which returns an <code>IRootDock</code> ready to display.</li>
+<li><code>InitLayout</code>, <code>InitDockable</code> and <code>InitDockWindow</code> for wiring up newly created objects.</li>
+<li>Runtime operations like <code>AddDockable</code>, <code>InsertDockable</code>, <code>MoveDockable</code>, <code>SwapDockable</code>, <code>PinDockable</code>, <code>FloatDockable</code> and the various <code>Close*</code> methods.</li>
+<li>Helpers on <code>DocumentDock</code> like <code>AddDocument</code> and on <code>ToolDock</code> like <code>AddTool</code> to insert and activate dockables programmatically.</li>
+<li>Events (found in <code>IFactory.Events</code>) that signal changes to the layout such as <code>DockableAdded</code>, <code>DockableRemoved</code>, <code>WindowOpened</code> and many more.</li>
+</ul>
+<p>A minimal example of creating a layout manually:</p>
+<pre><code class="lang-csharp">var factory = new Dock.Model.Mvvm.Factory();
+var root = factory.CreateRootDock();
+var docDock = factory.CreateDocumentDock();
+root.VisibleDockables = factory.CreateList&lt;IDockable&gt;(docDock);
+factory.InitLayout(root);
+</code></pre>
+<p>Refer to the factory classes under <code>samples/DockMvvmSample</code> and <code>samples/DockReactiveUISample</code> for practical examples of these methods in use.</p>
+<h2 id="using-the-mvvm-library">Using the MVVM library</h2>
+<p><code>Dock.Model.Mvvm</code> provides base classes that implement property change notification via <code>INotifyPropertyChanged</code>. Create a custom <code>Factory</code> derived from <code>Dock.Model.Mvvm.Factory</code> and override <code>CreateLayout</code> to build your docks. View models should derive from the MVVM versions of <code>Dockable</code>, <code>Tool</code> and <code>Document</code>.</p>
+<p>The MVVM sample demonstrates how to subscribe to factory events and update the UI through commands.</p>
+<h2 id="using-the-caliburnmicro-library">Using the Caliburn.Micro library</h2>
+<p><code>Dock.Model.CaliburMicro</code> mirrors the MVVM model but derives from Caliburn.Micro's <code>PropertyChangedBase</code>. Use <code>Dock.Model.CaliburMicro.Factory</code> alongside <code>Dock.Model.CaliburMicro.Controls.Document</code>, <code>Tool</code>, and the dock types when you want Caliburn.Micro change tracking. The package also includes a lightweight <code>RelayCommand</code> helper for dock commands.</p>
+<h2 id="using-the-reactiveui-library">Using the ReactiveUI library</h2>
+<p><code>Dock.Model.ReactiveUI</code> exposes the same API surface as the MVVM version but replaces the implementation with ReactiveUI types. Commands are typically created using <code>ReactiveCommand</code> and properties use <code>ReactiveObject</code> helpers. The layout and event handling is otherwise identical to the MVVM approach.</p>
+<h2 id="declaring-layouts-in-xaml">Declaring layouts in XAML</h2>
+<p>The XAML sample shows that a layout can be declared entirely in markup using <code>DockControl</code> and the various dock types. Multiple serialization packages are available for persisting these layouts:</p>
+<ul>
+<li><code>Dock.Serializer.Newtonsoft</code> - JSON using Newtonsoft.Json</li>
+<li><code>Dock.Serializer.SystemTextJson</code> - JSON using System.Text.Json</li>
+<li><code>Dock.Serializer.Protobuf</code> - Binary using protobuf-net</li>
+<li><code>Dock.Serializer.Xml</code> - XML serialization</li>
+<li><code>Dock.Serializer.Yaml</code> - YAML serialization</li>
+</ul>
+<p>In XAML you place <code>RootDock</code>, <code>ProportionalDock</code>, <code>ToolDock</code> or <code>DocumentDock</code> elements inside a <code>DockControl</code>, optionally providing a factory for runtime behavior. The samples register serializer instances through dependency injection so commands can call <code>Save</code> and <code>Load</code> to persist user changes.</p>
+<h2 id="further-reading">Further reading</h2>
+<p><strong>Sample applications:</strong></p>
+<ul>
+<li><code>samples/DockMvvmSample</code> – Full MVVM example with commands and data binding</li>
+<li><code>samples/DockReactiveUISample</code> – ReactiveUI variant with observables</li>
+<li><code>samples/DockReactiveUIRoutingSample</code> – Navigation using <code>IScreen</code> and <code>Router</code></li>
+<li><code>samples/DockReactiveUIDiSample</code> – ReactiveUI with dependency injection</li>
+<li><code>samples/DockReactivePropertySample</code> – ReactiveProperty framework integration</li>
+<li><code>samples/DockInpcSample</code> – Basic INotifyPropertyChanged implementation</li>
+<li><code>samples/DockPrismSample</code> – Prism framework integration</li>
+<li><code>samples/DockXamlSample</code> – XAML-only layout with serialization</li>
+<li><code>samples/DockCodeOnlySample</code> – Layout defined fully in C#</li>
+<li><code>samples/DockCodeOnlyMvvmSample</code> – Code-only MVVM layout</li>
+<li><code>samples/DockFluentCodeOnlySample</code> – Fluent theme code-only layout</li>
+<li><code>samples/DockSimplifiedSample</code> – Minimal Dock setup</li>
+<li><code>samples/DockSimplifiedFluentSample</code> – Minimal Dock setup with Fluent theme</li>
+<li><code>samples/DockControlPanelsSample</code> – Dock layout panels and controls</li>
+<li><code>samples/DockSplitViewSample</code> – SplitView integration</li>
+<li><code>samples/NestedDockSample</code> – Complex nested layouts</li>
+<li><code>samples/Notepad</code> – Real-world text editor example</li>
+<li><code>samples/WebViewSample</code> – Embedding web content in dockables</li>
+</ul>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reference.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

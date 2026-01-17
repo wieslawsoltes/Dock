@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Avalonia Controls Reference | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Avalonia Controls Reference | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-controls-reference.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="avalonia-controls-reference">Avalonia Controls Reference</h1>
+
+<p>This reference lists Dock-specific properties for Avalonia controls in the <code>Dock.Avalonia</code> packages. Base Avalonia properties (for example, <code>Width</code>, <code>IsVisible</code>, <code>Background</code>) are not repeated here.</p>
+<p>Unless noted otherwise, the properties listed are Avalonia styled properties and can be set in XAML or code. Properties labeled &quot;CLR&quot; are regular properties that must be set in code.</p>
+<h2 id="core-host-controls">Core host controls</h2>
+<h3 id="dockcontrol">DockControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Layout</code></td>
+<td><code>IDock?</code></td>
+<td>Root layout assigned to the control.</td>
+</tr>
+<tr>
+<td><code>Factory</code></td>
+<td><code>IFactory?</code></td>
+<td>Factory used when <code>Layout.Factory</code> is <code>null</code>.</td>
+</tr>
+<tr>
+<td><code>InitializeFactory</code></td>
+<td><code>bool</code></td>
+<td>When <code>true</code>, assigns default locators and fallback delegates.</td>
+</tr>
+<tr>
+<td><code>InitializeLayout</code></td>
+<td><code>bool</code></td>
+<td>When <code>true</code>, calls <code>InitLayout</code> on the factory.</td>
+</tr>
+<tr>
+<td><code>DefaultContext</code></td>
+<td><code>object?</code></td>
+<td>Fallback context for the default context locator.</td>
+</tr>
+<tr>
+<td><code>AutoCreateDataTemplates</code></td>
+<td><code>bool</code></td>
+<td>Automatically injects Dock DataTemplates when <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>IsDraggingDock</code></td>
+<td><code>bool</code></td>
+<td>Set while a drag operation is active; useful for styling.</td>
+</tr>
+<tr>
+<td><code>DragOffsetCalculator</code></td>
+<td><code>IDragOffsetCalculator</code></td>
+<td>CLR property that controls drag preview positioning.</td>
+</tr>
+<tr>
+<td><code>DockManager</code></td>
+<td><code>IDockManager</code></td>
+<td>CLR property for the dock manager service (read-only).</td>
+</tr>
+<tr>
+<td><code>DockControlState</code></td>
+<td><code>IDockControlState</code></td>
+<td>CLR property for internal docking state (read-only).</td>
+</tr>
+<tr>
+<td><code>IsOpen</code></td>
+<td><code>bool</code></td>
+<td>CLR property; <code>true</code> when the selector overlay is open (read-only).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dockcommandbarhost">DockCommandBarHost</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MenuBars</code></td>
+<td><code>IReadOnlyList&lt;Control&gt;?</code></td>
+<td>Rendered menu bar controls.</td>
+</tr>
+<tr>
+<td><code>ToolBars</code></td>
+<td><code>IReadOnlyList&lt;Control&gt;?</code></td>
+<td>Rendered tool bar controls.</td>
+</tr>
+<tr>
+<td><code>RibbonBars</code></td>
+<td><code>IReadOnlyList&lt;Control&gt;?</code></td>
+<td>Rendered ribbon bar controls.</td>
+</tr>
+<tr>
+<td><code>BaseCommandBars</code></td>
+<td><code>IReadOnlyList&lt;DockCommandBarDefinition&gt;?</code></td>
+<td>App-level bar definitions merged with active dockables.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dockselectoroverlay">DockSelectorOverlay</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsOpen</code></td>
+<td><code>bool</code></td>
+<td>Shows or hides the overlay.</td>
+</tr>
+<tr>
+<td><code>Items</code></td>
+<td><code>IReadOnlyList&lt;DockSelectorItem&gt;?</code></td>
+<td>Items displayed in the selector.</td>
+</tr>
+<tr>
+<td><code>SelectedItem</code></td>
+<td><code>DockSelectorItem?</code></td>
+<td>Currently highlighted item.</td>
+</tr>
+<tr>
+<td><code>Mode</code></td>
+<td><code>DockSelectorMode</code></td>
+<td>Documents or tools selector mode.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="docktargetbase-docktarget-globaldocktarget">DockTargetBase (DockTarget, GlobalDockTarget)</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ShowIndicatorsOnly</code></td>
+<td><code>bool</code></td>
+<td>Hide selector icons and show only drop indicators.</td>
+</tr>
+<tr>
+<td><code>ShowHorizontalTargets</code></td>
+<td><code>bool</code></td>
+<td>Toggle horizontal indicators.</td>
+</tr>
+<tr>
+<td><code>ShowVerticalTargets</code></td>
+<td><code>bool</code></td>
+<td>Toggle vertical indicators.</td>
+</tr>
+<tr>
+<td><code>IsGlobalDockAvailable</code></td>
+<td><code>bool</code></td>
+<td>Indicates global docking availability.</td>
+</tr>
+<tr>
+<td><code>IsGlobalDockActive</code></td>
+<td><code>bool</code></td>
+<td>Indicates global docking active state.</td>
+</tr>
+</tbody>
+</table>
+<p><code>DockTarget</code> and <code>GlobalDockTarget</code> inherit these properties without adding new ones.</p>
+<h2 id="tab-chrome-and-tool-controls">Tab, chrome, and tool controls</h2>
+<h3 id="documentcontrol">DocumentControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IconTemplate</code></td>
+<td><code>object?</code></td>
+<td>Tab icon template.</td>
+</tr>
+<tr>
+<td><code>HeaderTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Tab header template.</td>
+</tr>
+<tr>
+<td><code>ModifiedTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Modified indicator template.</td>
+</tr>
+<tr>
+<td><code>CloseTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Close button template.</td>
+</tr>
+<tr>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the close button.</td>
+</tr>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active document state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>TabsLayout</code></td>
+<td><code>DocumentTabLayout</code></td>
+<td>Tab placement for the document dock.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toolcontrol">ToolControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IconTemplate</code></td>
+<td><code>object?</code></td>
+<td>Tab icon template.</td>
+</tr>
+<tr>
+<td><code>HeaderTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Tab header template.</td>
+</tr>
+<tr>
+<td><code>ModifiedTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Modified indicator template.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="documenttabstrip">DocumentTabStrip</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CanCreateItem</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> when the new-document button is available.</td>
+</tr>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active tab strip state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>EnableWindowDrag</code></td>
+<td><code>bool</code></td>
+<td>Allows dragging the host window by the tab strip.</td>
+</tr>
+<tr>
+<td><code>Orientation</code></td>
+<td><code>Orientation</code></td>
+<td>Tab strip orientation.</td>
+</tr>
+<tr>
+<td><code>CreateButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the create document button.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="documenttabstripitem">DocumentTabStripItem</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active tab state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>DocumentContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Context menu for document tabs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tooltabstrip">ToolTabStrip</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CanCreateItem</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> when the new-tool button is available.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tooltabstripitem">ToolTabStripItem</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TabContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Context menu for tool tabs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toolchromecontrol">ToolChromeControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Title</code></td>
+<td><code>string</code></td>
+<td>Tool title displayed in the chrome.</td>
+</tr>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active tool state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>IsPinned</code></td>
+<td><code>bool</code></td>
+<td>Pinned state (drives <code>:pinned</code>).</td>
+</tr>
+<tr>
+<td><code>IsFloating</code></td>
+<td><code>bool</code></td>
+<td>Floating state (drives <code>:floating</code>).</td>
+</tr>
+<tr>
+<td><code>IsMaximized</code></td>
+<td><code>bool</code></td>
+<td>Maximized state (drives <code>:maximized</code>).</td>
+</tr>
+<tr>
+<td><code>ToolFlyout</code></td>
+<td><code>FlyoutBase?</code></td>
+<td>Flyout for the grip/menu button.</td>
+</tr>
+<tr>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the close button.</td>
+</tr>
+<tr>
+<td><code>MaximizeButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the maximize/restore button.</td>
+</tr>
+<tr>
+<td><code>PinButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the pin button.</td>
+</tr>
+<tr>
+<td><code>MenuButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the menu button.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toolpinnedcontrol">ToolPinnedControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Orientation</code></td>
+<td><code>Orientation</code></td>
+<td>Orientation for pinned tool tabs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toolpinitemcontrol">ToolPinItemControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Orientation</code></td>
+<td><code>Orientation</code></td>
+<td>Orientation for the pin item.</td>
+</tr>
+<tr>
+<td><code>PinContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Context menu for pinned tabs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dockablecontrol">DockableControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TrackingMode</code></td>
+<td><code>TrackingMode</code></td>
+<td>Registers the control for visible, pinned, or tab tracking.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mdi-controls">MDI controls</h2>
+<h3 id="mdilayoutpanel">MdiLayoutPanel</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LayoutManager</code></td>
+<td><code>IMdiLayoutManager?</code></td>
+<td>Arranges MDI windows.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mdidocumentcontrol">MdiDocumentControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IconTemplate</code></td>
+<td><code>object?</code></td>
+<td>Window icon template.</td>
+</tr>
+<tr>
+<td><code>HeaderTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Window header template.</td>
+</tr>
+<tr>
+<td><code>ModifiedTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Modified indicator template.</td>
+</tr>
+<tr>
+<td><code>CloseTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Close button template.</td>
+</tr>
+<tr>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the close button.</td>
+</tr>
+<tr>
+<td><code>LayoutManager</code></td>
+<td><code>IMdiLayoutManager?</code></td>
+<td>Layout manager forwarded to the MDI panel.</td>
+</tr>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active state (drives <code>:active</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mdidocumentwindow">MdiDocumentWindow</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IconTemplate</code></td>
+<td><code>object?</code></td>
+<td>Window icon template.</td>
+</tr>
+<tr>
+<td><code>HeaderTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Window header template.</td>
+</tr>
+<tr>
+<td><code>ModifiedTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Modified indicator template.</td>
+</tr>
+<tr>
+<td><code>CloseTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Close button template.</td>
+</tr>
+<tr>
+<td><code>CloseButtonTheme</code></td>
+<td><code>ControlTheme?</code></td>
+<td>Theme for the close button.</td>
+</tr>
+<tr>
+<td><code>DocumentContextMenu</code></td>
+<td><code>ContextMenu?</code></td>
+<td>Context menu for MDI windows.</td>
+</tr>
+<tr>
+<td><code>IsActive</code></td>
+<td><code>bool</code></td>
+<td>Active state (drives <code>:active</code>).</td>
+</tr>
+<tr>
+<td><code>MdiState</code></td>
+<td><code>MdiWindowState</code></td>
+<td><code>Normal</code>, <code>Minimized</code>, or <code>Maximized</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pinned-and-drag-preview">Pinned and drag preview</h2>
+<h3 id="pinneddockcontrol">PinnedDockControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PinnedDockAlignment</code></td>
+<td><code>Alignment</code></td>
+<td>Edge alignment for the pinned preview.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dragpreviewcontrol">DragPreviewControl</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ContentTemplate</code></td>
+<td><code>IDataTemplate</code></td>
+<td>Template for the dragged dockable content.</td>
+</tr>
+<tr>
+<td><code>Status</code></td>
+<td><code>string</code></td>
+<td><code>Dock</code>, <code>Float</code>, or <code>None</code> status text.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="window-hosts">Window hosts</h2>
+<h3 id="hostwindow">HostWindow</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsToolWindow</code></td>
+<td><code>bool</code></td>
+<td>Marks the window as a tool window.</td>
+</tr>
+<tr>
+<td><code>ToolChromeControlsWholeWindow</code></td>
+<td><code>bool</code></td>
+<td>Allows tool chrome to drag the full window.</td>
+</tr>
+<tr>
+<td><code>DocumentChromeControlsWholeWindow</code></td>
+<td><code>bool</code></td>
+<td>Allows document chrome to drag the full window.</td>
+</tr>
+<tr>
+<td><code>HostWindowState</code></td>
+<td><code>IHostWindowState</code></td>
+<td>CLR property for docking state (read-only).</td>
+</tr>
+<tr>
+<td><code>IsTracked</code></td>
+<td><code>bool</code></td>
+<td>CLR property that indicates the window is tracked.</td>
+</tr>
+<tr>
+<td><code>Window</code></td>
+<td><code>IDockWindow?</code></td>
+<td>CLR property for the backing dock window model.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hostwindowtitlebar">HostWindowTitleBar</h3>
+<p>No Dock-specific properties.</p>
+<h3 id="dockadornerwindow-dragpreviewwindow-pinneddockwindow">DockAdornerWindow, DragPreviewWindow, PinnedDockWindow</h3>
+<p>No Dock-specific properties beyond the base <code>Window</code> members.</p>
+<h2 id="container-controls-without-dock-specific-properties">Container controls without Dock-specific properties</h2>
+<p>These controls do not add custom Dock properties:</p>
+<ul>
+<li><code>DocumentDockControl</code></li>
+<li><code>ToolDockControl</code></li>
+<li><code>DockDockControl</code></li>
+<li><code>RootDockControl</code></li>
+<li><code>ProportionalDockControl</code></li>
+<li><code>StackDockControl</code></li>
+<li><code>GridDockControl</code></li>
+<li><code>WrapDockControl</code></li>
+<li><code>UniformGridDockControl</code></li>
+<li><code>SplitViewDockControl</code></li>
+<li><code>DocumentContentControl</code></li>
+<li><code>ToolContentControl</code></li>
+</ul>
+<p>For related topics see the <a href="dock-styling.html">Styling and theming</a> and <a href="dock-reference.html">Reference guide</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-controls-reference.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

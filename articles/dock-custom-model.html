@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Creating a Custom Dock.Model Implementation | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Creating a Custom Dock.Model Implementation | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-custom-model.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="creating-a-custom-dockmodel-implementation">Creating a Custom Dock.Model Implementation</h1>
+
+<p>Dock ships with a set of factory libraries that adapt the base model to various
+MVVM frameworks:</p>
+<ul>
+<li><code>Dock.Model.Avalonia</code> - Plain Avalonia version with minimal dependencies</li>
+<li><code>Dock.Model.Mvvm</code> - MVVM implementation with <code>INotifyPropertyChanged</code> helpers</li>
+<li><code>Dock.Model.CaliburMicro</code> - Caliburn.Micro implementation with <code>PropertyChangedBase</code></li>
+<li><code>Dock.Model.Inpc</code> - Basic <code>INotifyPropertyChanged</code> implementation without MVVM commands</li>
+<li><code>Dock.Model.ReactiveUI</code> - ReactiveUI integration with observables and commands</li>
+<li><code>Dock.Model.ReactiveProperty</code> - ReactiveProperty framework integration</li>
+<li><code>Dock.Model.Prism</code> - Prism framework integration with commands and bindings</li>
+</ul>
+<p>You can create your own implementation when these do not fit your application or you wish to integrate Dock with another framework.</p>
+<h2 id="using-dockmodelinpc">Using Dock.Model.Inpc</h2>
+<p>If you only need basic property change notifications and lightweight <code>ICommand</code> implementations without a framework dependency, use <code>Dock.Model.Inpc</code>:</p>
+<pre><code class="lang-bash">dotnet add package Dock.Model.Inpc
+</code></pre>
+<p>This package provides <code>INotifyPropertyChanged</code> implementations without the additional overhead of command patterns, making it ideal for simpler scenarios or custom MVVM frameworks. The <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockInpcSample">DockInpcSample</a> demonstrates this approach.</p>
+<h2 id="project-setup">Project setup</h2>
+<ol>
+<li><p><strong>Create a new class library</strong> and add a reference to <code>Dock.Model</code>.</p>
+</li>
+<li><p><strong>Set up a view locator (when using DataTemplates)</strong> - If your dockables rely on view model to view mapping, register a view locator:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+
+public class CustomViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        // Implement your view resolution logic here
+        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        var type = Type.GetType(name);
+
+        if (type != null)
+            return (Control)Activator.CreateInstance(type)!;
+
+        return new TextBlock { Text = &quot;Not Found: &quot; + name };
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        return Type.GetType(name) is not null;
+    }
+}
+</code></pre>
+<p>Register it in your App.axaml:</p>
+<pre><code class="lang-xaml">&lt;Application.DataTemplates&gt;
+  &lt;local:CustomViewLocator /&gt;
+&lt;/Application.DataTemplates&gt;
+</code></pre>
+</li>
+<li><p><strong>Implement the interfaces</strong> from <code>Dock.Model.Core</code> and <code>Dock.Model.Controls</code>
+using the base classes that match your framework.  The existing
+implementations in the repository are good starting points.</p>
+</li>
+<li><p><strong>Derive a Factory</strong> from <code>Dock.Model.FactoryBase</code> and override the creation
+methods (<code>CreateRootDock</code>, <code>CreateToolDock</code>, <code>CreateDocumentDock</code> and so on)
+to return your custom view models.</p>
+</li>
+<li><p><strong>Provide command and property change logic</strong> that matches your MVVM framework.
+For example, you might expose <code>ICommand</code> objects or ReactiveUI commands.</p>
+</li>
+</ol>
+<p>A minimal dockable using <code>INotifyPropertyChanged</code> might look like this (implement the <code>IDockable</code> members you need, or start from <code>Dock.Model.Inpc.Core.DockableBase</code> and adapt it):</p>
+<pre><code class="lang-csharp">public abstract class MyDockableBase : IDockable, INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected void Set&lt;T&gt;(ref T field, T value, [CallerMemberName] string? name = null)
+    {
+        if (!EqualityComparer&lt;T&gt;.Default.Equals(field, value))
+        {
+            field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    // Implement IDockable members here or copy from Dock.Model.Inpc.Core.DockableBase.
+}
+</code></pre>
+<p>Your factory can then create instances of <code>MyDockable</code> and initialize them using
+<code>InitLayout</code> just like the built-in MVVM and ReactiveUI versions.  The
+interfaces and helper methods in <code>FactoryBase</code> remain the same regardless of the
+underlying framework.</p>
+<h2 id="reusing-existing-code">Reusing existing code</h2>
+<p>The easiest way to start is to copy the sources of <code>Dock.Model.Mvvm</code> or
+<code>Dock.Model.ReactiveUI</code> and replace the command and property change types with
+those from your own framework.  Only a handful of classes need to be adjusted,
+mainly the <code>Dockable</code> bases and the <code>Factory</code> implementation.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Custom implementations let you integrate Dock with any MVVM pattern while
+keeping the docking logic intact.  Follow the structure of the provided models
+and adapt the base classes to match your chosen framework.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-custom-model.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

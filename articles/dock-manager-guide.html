@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DockManager Usage Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DockManager Usage Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-manager-guide.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dockmanager-usage-guide">DockManager Usage Guide</h1>
+
+<p><code>DockManager</code> implements the core algorithms that move, swap and split dockables. It is created by <code>DockControl</code> but you can also instantiate it manually for custom hosts.</p>
+<h2 id="why-use-dockmanager">Why use DockManager?</h2>
+<ul>
+<li>The manager centralises all drag-and-drop logic, keeping <code>DockControl</code> free from layout code.</li>
+<li>It exposes the <code>PreventSizeConflicts</code> property which blocks two fixed-size tools from being docked together.</li>
+<li>The manager calls back into the factory so your view models are updated consistently.</li>
+</ul>
+<h2 id="basic-usage">Basic usage</h2>
+<p><code>DockControl</code> automatically creates a <code>DockManager</code> when constructed. You can access it via the read-only <code>DockControl.DockManager</code> property if you need to inspect settings like <code>PreventSizeConflicts</code>.</p>
+<p>If you are building a custom host (not using <code>DockControl</code>), create your own <code>DockManager</code> instance:</p>
+<pre><code class="lang-csharp">var dockManager = new DockManager(new DockService())
+{
+    PreventSizeConflicts = true
+};
+</code></pre>
+<p>During a drag operation <code>DockControlState</code> calls <code>DockManager.ValidateDockable</code> to test potential drop targets. When the pointer is released the same call is executed with <code>bExecute: true</code> so the layout is updated.</p>
+<h2 id="customizing-behavior">Customizing behavior</h2>
+<p><code>DockManager</code> implements <code>IDockManager</code> but does not expose virtual methods. If you need custom docking rules you must implement <code>IDockManager</code> yourself (optionally delegating to <code>DockManager</code>) and use that in a custom host control or a forked <code>DockControl</code>. Common customizations include:</p>
+<ul>
+<li>Disallowing certain dock operations, e.g. preventing documents from being split vertically.</li>
+<li>Changing the logic used when floating dockables into windows.</li>
+<li>Recording diagnostics about drag and drop events.</li>
+</ul>
+<p>Example wrapping <code>DockManager</code> to forbid tools from floating:</p>
+<pre><code class="lang-csharp">public sealed class CustomDockManager : IDockManager
+{
+    private readonly DockManager _inner = new(new DockService());
+
+    public DockPoint Position { get =&gt; _inner.Position; set =&gt; _inner.Position = value; }
+    public DockPoint ScreenPosition { get =&gt; _inner.ScreenPosition; set =&gt; _inner.ScreenPosition = value; }
+    public bool PreventSizeConflicts { get =&gt; _inner.PreventSizeConflicts; set =&gt; _inner.PreventSizeConflicts = value; }
+
+    public bool ValidateTool(ITool sourceTool, IDockable target, DragAction action, DockOperation operation, bool execute)
+    {
+        if (operation == DockOperation.Window)
+            return false;
+        return _inner.ValidateTool(sourceTool, target, action, operation, execute);
+    }
+
+    public bool ValidateDocument(IDocument sourceDocument, IDockable target, DragAction action, DockOperation operation, bool execute) =&gt;
+        _inner.ValidateDocument(sourceDocument, target, action, operation, execute);
+
+    public bool ValidateDock(IDock sourceDock, IDockable target, DragAction action, DockOperation operation, bool execute) =&gt;
+        _inner.ValidateDock(sourceDock, target, action, operation, execute);
+
+    public bool ValidateDockable(IDockable sourceDockable, IDockable target, DragAction action, DockOperation operation, bool execute) =&gt;
+        _inner.ValidateDockable(sourceDockable, target, action, operation, execute);
+
+    public bool IsDockTargetVisible(IDockable sourceDockable, IDockable targetDockable, DockOperation operation) =&gt;
+        _inner.IsDockTargetVisible(sourceDockable, targetDockable, operation);
+}
+</code></pre>
+<p>Use your <code>IDockManager</code> implementation in a custom host control. <code>DockControl</code> always constructs its own <code>DockManager</code>.</p>
+<h2 id="guidelines-for-custom-managers">Guidelines for custom managers</h2>
+<ol>
+<li><strong>Keep factory calls intact.</strong> Most methods delegate changes to the factory. If you override them ensure you still call the factory so view models remain in sync.</li>
+<li><strong>Check <code>PreventSizeConflicts</code>.</strong> When splitting tools always respect this flag or provide an alternative mechanism to avoid invalid layouts.</li>
+<li><strong>Validate before executing.</strong> The built-in state first validates with <code>bExecute: false</code> then re-validates with <code>bExecute: true</code> on drop. Your overrides should follow this pattern to avoid inconsistent states. The validation also considers docking groups - see <a href="dock-docking-groups.html">Docking Groups</a> for details on how this restriction system works.</li>
+<li><strong>Consider user experience.</strong> Changes to docking rules can dramatically affect how the UI feels. Provide visual feedback if an action is disallowed.</li>
+</ol>
+<p>The manager is a small but critical part of Dock. By tailoring it you can adapt the docking behavior to suit almost any workflow.</p>
+<h2 id="dock-target-visibility">Dock target visibility</h2>
+<p><code>DockManager</code> exposes <code>IsDockTargetVisible</code> which determines whether a drop
+indicator is shown. The default implementation hides the center indicator when
+the dragged dockable equals the potential target or when the potential target is
+the current owner of the dragged dockable. Override this method to apply your
+own rules.</p>
+<p>For an overview of other concepts see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-manager-guide.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

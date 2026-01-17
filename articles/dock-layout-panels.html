@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Layout Panel Reference | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Layout Panel Reference | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-layout-panels.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="layout-panel-reference">Layout Panel Reference</h1>
+
+<p>Dock includes several dock types that arrange their children using familiar panel layouts. These complement <code>ProportionalDock</code> and are useful for static or grid based layouts.</p>
+<h2 id="dockdock">DockDock</h2>
+<p><code>IDockDock</code> behaves like Avalonia's <code>DockPanel</code>. Set the <code>Dock</code> property on each
+dockable to position it on the left, right, top or bottom edge. When
+<code>LastChildFill</code> is <code>true</code> (the default) the final child stretches to fill any
+remaining space. Dock docks are commonly used for toolbars or status bars that
+surround a central document area.</p>
+<pre><code class="lang-xaml">&lt;dock:DockDock LastChildFill=&quot;True&quot;&gt;
+    &lt;ToolDock Dock=&quot;Left&quot; /&gt;
+    &lt;DocumentDock /&gt;
+&lt;/dock:DockDock&gt;
+</code></pre>
+<h2 id="stackdock">StackDock</h2>
+<p><code>IStackDock</code> arranges its dockables in a line. The <code>Orientation</code> property chooses between horizontal and vertical layout and <code>Spacing</code> inserts a gap between the items.</p>
+<pre><code class="lang-csharp">var stack = new StackDock
+{
+    Orientation = Orientation.Vertical,
+    Spacing = 6
+};
+</code></pre>
+<p>Stack docks work well for tool strips or areas with a fixed ordering of items.</p>
+<h2 id="griddock-and-griddocksplitter">GridDock and GridDockSplitter</h2>
+<p><code>IGridDock</code> exposes <code>ColumnDefinitions</code> and <code>RowDefinitions</code> strings that mirror Avalonia's <code>Grid</code> syntax. Use them to create complex grids with resizable cells. Place a <code>GridDockSplitter</code> between cells to let the user resize rows or columns at runtime.</p>
+<pre><code class="lang-csharp">var grid = new GridDock
+{
+    ColumnDefinitions = &quot;2*,*&quot;,
+    RowDefinitions = &quot;Auto,*&quot;
+};
+</code></pre>
+<pre><code class="lang-xml">&lt;GridDockSplitter ResizeDirection=&quot;Columns&quot; /&gt;
+</code></pre>
+<h2 id="wrapdock">WrapDock</h2>
+<p><code>IWrapDock</code> lays out items in sequence and wraps them to a new line when there is not enough space. The <code>Orientation</code> property defines whether wrapping occurs horizontally or vertically.</p>
+<h2 id="uniformgriddock">UniformGridDock</h2>
+<p><code>IUniformGridDock</code> divides the available space into equally sized cells. Specify <code>Rows</code> and <code>Columns</code> to control the grid dimensions. All dockables within the dock occupy a single cell.</p>
+<pre><code class="lang-csharp">var uniform = new UniformGridDock { Rows = 2, Columns = 3 };
+</code></pre>
+<h2 id="splitviewdock">SplitViewDock</h2>
+<p><code>ISplitViewDock</code> hosts a collapsible pane and a main content area, similar to Avalonia's <code>SplitView</code>. Use <code>PaneDockable</code> and <code>ContentDockable</code> to assign the two regions and configure behavior with <code>DisplayMode</code>, <code>PanePlacement</code>, <code>IsPaneOpen</code>, <code>OpenPaneLength</code>, and <code>CompactPaneLength</code>.</p>
+<pre><code class="lang-csharp">var splitView = new SplitViewDock
+{
+    PaneDockable = new ToolDock(),
+    ContentDockable = new DocumentDock(),
+    DisplayMode = SplitViewDisplayMode.CompactInline,
+    PanePlacement = SplitViewPanePlacement.Left,
+    IsPaneOpen = true
+};
+</code></pre>
+<h2 id="when-to-use-these-panels">When to use these panels</h2>
+<p>These dock types are best suited for static tool areas or dashboards where the layout seldom changes. They can be combined with other docks inside an <code>IRootDock</code> just like proportional docks. Refer to <a href="dock-model-controls.html">Model Control Interfaces</a> for the complete list of available dock contracts.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-layout-panels.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DocumentDock ItemsSource | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DocumentDock ItemsSource | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-itemssource.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="documentdock-itemssource">DocumentDock ItemsSource</h1>
+
+<p>The <code>DocumentDock.ItemsSource</code> property enables automatic document management by binding to a collection of data objects. This functionality provides a clean, MVVM-friendly approach to managing documents within a dock.</p>
+<h2 id="overview">Overview</h2>
+<p><code>DocumentDock.ItemsSource</code> works similarly to <code>ListBox.ItemsSource</code> in Avalonia, automatically creating and managing documents from a bound collection. When you add or remove items from an <code>INotifyCollectionChanged</code> collection (such as <code>ObservableCollection&lt;T&gt;</code>), the corresponding documents are created or removed in the dock.</p>
+<p><code>ItemsSource</code> is implemented by <code>Dock.Model.Avalonia.Controls.DocumentDock</code>, so it is available in XAML layouts and in the Avalonia model layer. It requires a <code>DocumentTemplate</code> to be set; if no template is supplied, no documents are generated.</p>
+<h2 id="behavior-details">Behavior details</h2>
+<ul>
+<li><code>DocumentDock</code> creates a <code>Document</code> for each item and stores the item in <code>Document.Context</code>.</li>
+<li>The tab title is derived from <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> properties on the item (in that order), falling back to <code>ToString()</code>.</li>
+<li><code>CanClose</code> is copied from the item if present; otherwise it defaults to <code>true</code>.</li>
+<li>When a generated document is closed, the factory attempts to remove the source item from <code>ItemsSource</code> if it implements <code>IList</code>.</li>
+</ul>
+<h2 id="key-benefits">Key Benefits</h2>
+<ul>
+<li><strong>Automatic Document Management</strong>: Documents are created and removed automatically when the collection changes</li>
+<li><strong>MVVM Support</strong>: Natural binding to <code>ObservableCollection&lt;T&gt;</code> in ViewModels</li>
+<li><strong>Clean Separation</strong>: Business models remain separate from UI infrastructure</li>
+<li><strong>Simplified Code</strong>: Eliminates manual document creation and management boilerplate</li>
+</ul>
+<h2 id="basic-usage">Basic Usage</h2>
+<h3 id="1-document-model">1. Document Model</h3>
+<p>Create a model class to represent your document data:</p>
+<pre><code class="lang-csharp">public class FileDocument : INotifyPropertyChanged
+{
+    private string _title = &quot;&quot;;
+    private string _content = &quot;&quot;;
+    
+    public string Title
+    {
+        get =&gt; _title;
+        set =&gt; SetProperty(ref _title, value);
+    }
+    
+    public string Content
+    {
+        get =&gt; _content;
+        set =&gt; SetProperty(ref _content, value);
+    }
+    
+    public bool CanClose { get; set; } = true;
+    
+    // INotifyPropertyChanged implementation
+    public event PropertyChangedEventHandler? PropertyChanged;
+    
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    
+    protected bool SetProperty&lt;T&gt;(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer&lt;T&gt;.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
+}
+</code></pre>
+<h3 id="2-viewmodel-setup">2. ViewModel Setup</h3>
+<p>Create a ViewModel with an <code>ObservableCollection</code> of your document models:</p>
+<p>The example below uses <code>RelayCommand</code> from <code>CommunityToolkit.Mvvm.Input</code>. Replace it with any <code>ICommand</code> implementation you prefer.</p>
+<pre><code class="lang-csharp">public class MainViewModel : INotifyPropertyChanged
+{
+    public ObservableCollection&lt;FileDocument&gt; Documents { get; } = new();
+    
+    public ICommand AddDocumentCommand { get; }
+    public ICommand RemoveDocumentCommand { get; }
+    
+    public MainViewModel()
+    {
+        AddDocumentCommand = new RelayCommand(AddDocument);
+        RemoveDocumentCommand = new RelayCommand&lt;FileDocument&gt;(RemoveDocument);
+        
+        // Add some initial documents
+        Documents.Add(new FileDocument 
+        { 
+            Title = &quot;Welcome.txt&quot;,
+            Content = &quot;Welcome to the application!&quot;
+        });
+    }
+    
+    private void AddDocument()
+    {
+        Documents.Add(new FileDocument 
+        { 
+            Title = $&quot;Document {Documents.Count + 1}.txt&quot;,
+            Content = &quot;New document content&quot;
+        });
+    }
+    
+    private void RemoveDocument(FileDocument document)
+    {
+        Documents.Remove(document);
+    }
+}
+</code></pre>
+<h3 id="3-xaml-binding">3. XAML Binding</h3>
+<p>Bind the collection to <code>DocumentDock.ItemsSource</code> and define a <code>DocumentTemplate</code>:</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+  &lt;DocumentDock.DocumentTemplate&gt;
+    &lt;DocumentTemplate&gt;
+      &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;
+        &lt;TextBlock Text=&quot;Document Properties&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+        
+        &lt;TextBlock Text=&quot;Title:&quot; FontWeight=&quot;SemiBold&quot;/&gt;
+        &lt;TextBox Text=&quot;{Binding Context.Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+        
+        &lt;TextBlock Text=&quot;Content:&quot; FontWeight=&quot;SemiBold&quot;/&gt;
+        &lt;TextBox Text=&quot;{Binding Context.Content}&quot; 
+                 AcceptsReturn=&quot;True&quot; 
+                 TextWrapping=&quot;Wrap&quot;
+                 Height=&quot;200&quot;/&gt;
+      &lt;/StackPanel&gt;
+    &lt;/DocumentTemplate&gt;
+  &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<h2 id="property-mapping">Property Mapping</h2>
+<p>The system automatically maps properties from your model to <code>Document</code> properties:</p>
+<table>
+<thead>
+<tr>
+<th>Model Property</th>
+<th>Document Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Title</code></td>
+<td><code>Title</code></td>
+<td>Tab title display</td>
+</tr>
+<tr>
+<td><code>Name</code></td>
+<td><code>Title</code></td>
+<td>Alternative to Title</td>
+</tr>
+<tr>
+<td><code>DisplayName</code></td>
+<td><code>Title</code></td>
+<td>Alternative to Title</td>
+</tr>
+<tr>
+<td><code>CanClose</code></td>
+<td><code>CanClose</code></td>
+<td>Controls if tab can be closed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-with-multiple-property-options">Example with Multiple Property Options</h3>
+<pre><code class="lang-csharp">public class DocumentModel
+{
+    // Any of these will be used for the tab title (in order of preference):
+    public string Title { get; set; }        // First choice
+    public string Name { get; set; }         // Second choice  
+    public string DisplayName { get; set; }  // Third choice
+    
+    // Controls whether the tab can be closed
+    public bool CanClose { get; set; } = true;
+}
+</code></pre>
+<h2 id="document-template-context">Document Template Context</h2>
+<p><code>DocumentTemplate</code> is built with the generated <code>Document</code> as its data context, so bind to document properties directly and use <code>Context</code> to reach the source model:</p>
+<pre><code class="lang-xaml">&lt;DocumentTemplate&gt;
+  &lt;Grid x:DataType=&quot;Document&quot;&gt;
+    &lt;!-- Access your model properties via Context --&gt;
+    &lt;TextBlock Text=&quot;{Binding Context.Title}&quot;/&gt;
+    &lt;TextBox Text=&quot;{Binding Context.Content}&quot;/&gt;
+    
+    &lt;!-- You can also access Document properties directly --&gt;
+    &lt;TextBlock Text=&quot;{Binding Title}&quot;/&gt;
+  &lt;/Grid&gt;
+&lt;/DocumentTemplate&gt;
+</code></pre>
+<h2 id="common-use-cases">Common Use Cases</h2>
+<h3 id="file-editor">File Editor</h3>
+<pre><code class="lang-csharp">public class FileModel : INotifyPropertyChanged
+{
+    public string Name { get; set; }           // Becomes tab title
+    public string FilePath { get; set; }
+    public string Content { get; set; }
+    public bool IsDirty { get; set; }
+    public bool IsReadOnly { get; set; }
+    
+    public bool CanClose =&gt; !IsDirty;         // Prevent closing unsaved files
+    
+    public ICommand SaveCommand { get; }
+    public ICommand RevertCommand { get; }
+}
+</code></pre>
+<h3 id="settings-panel">Settings Panel</h3>
+<pre><code class="lang-csharp">public class SettingsPage : INotifyPropertyChanged
+{
+    public string Title { get; set; }         // Tab title
+    public string Category { get; set; }
+    public string Icon { get; set; }
+    public Dictionary&lt;string, object&gt; Settings { get; set; } = new();
+    
+    public bool CanClose { get; set; } = true;
+}
+</code></pre>
+<h3 id="data-viewer">Data Viewer</h3>
+<pre><code class="lang-csharp">public class DataView : INotifyPropertyChanged
+{
+    public string DisplayName { get; set; }   // Tab title
+    public ObservableCollection&lt;object&gt; Data { get; set; } = new();
+    public string Filter { get; set; } = &quot;&quot;;
+    public bool CanClose { get; set; } = true;
+    
+    public ICommand RefreshCommand { get; }
+    public ICommand ExportCommand { get; }
+}
+</code></pre>
+<h2 id="advanced-scenarios">Advanced Scenarios</h2>
+<h3 id="dynamic-content-types">Dynamic Content Types</h3>
+<pre><code class="lang-csharp">public class DynamicDocument : INotifyPropertyChanged
+{
+    public string Title { get; set; }
+    public DocumentType Type { get; set; }
+    public object Data { get; set; }
+    
+    public bool CanClose { get; set; } = true;
+}
+
+public enum DocumentType
+{
+    Text,
+    Image,
+    Chart,
+    Table
+}
+</code></pre>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+  &lt;DocumentDock.DocumentTemplate&gt;
+    &lt;DocumentTemplate&gt;
+      &lt;ContentControl x:DataType=&quot;Document&quot;&gt;
+        &lt;ContentControl.Content&gt;
+          &lt;MultiBinding Converter=&quot;{StaticResource DocumentTypeConverter}&quot;&gt;
+            &lt;Binding Path=&quot;Context.Type&quot;/&gt;
+            &lt;Binding Path=&quot;Context.Data&quot;/&gt;
+          &lt;/MultiBinding&gt;
+        &lt;/ContentControl.Content&gt;
+      &lt;/ContentControl&gt;
+    &lt;/DocumentTemplate&gt;
+  &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<h3 id="custom-commands-integration">Custom Commands Integration</h3>
+<pre><code class="lang-csharp">public class CommandDocument : INotifyPropertyChanged
+{
+    public string Title { get; set; }
+    public ICommand CloseCommand { get; }
+    public ICommand SaveCommand { get; }
+    
+    public bool CanClose { get; set; } = true;
+    
+    public CommandDocument()
+    {
+        CloseCommand = new RelayCommand(() =&gt; {
+            // Custom close logic
+            var parent = GetParentCollection();
+            parent?.Remove(this);
+        });
+        
+        SaveCommand = new RelayCommand(Save);
+    }
+    
+    private void Save()
+    {
+        // Save logic
+    }
+}
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Implement INotifyPropertyChanged</strong>: Ensures UI updates when model properties change</li>
+<li><strong>Use ObservableCollection</strong>: Automatically notifies the UI of collection changes</li>
+<li><strong>Keep Models Simple</strong>: Avoid complex UI logic in document models</li>
+<li><strong>Meaningful Titles</strong>: Provide clear, descriptive titles for tabs</li>
+<li><strong>Handle CanClose</strong>: Use this property to prevent accidental data loss</li>
+<li><strong>Consider Commands</strong>: Implement actions as commands for better MVVM support</li>
+<li><strong>Data Validation</strong>: Validate model properties to ensure data integrity</li>
+</ol>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<ul>
+<li><strong>Large Collections</strong>: Consider virtualization for collections with many items</li>
+<li><strong>Frequent Updates</strong>: Batch collection changes when possible</li>
+<li><strong>Memory Management</strong>: Ensure proper cleanup of resources in document models</li>
+<li><strong>Template Complexity</strong>: Keep <code>DocumentTemplate</code> lightweight for better performance</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<p><strong>Documents not appearing:</strong></p>
+<ul>
+<li>Ensure <code>ItemsSource</code> is properly bound</li>
+<li>Check that the collection implements <code>INotifyCollectionChanged</code> (use <code>ObservableCollection</code>)</li>
+<li>Verify <code>DocumentTemplate</code> is defined</li>
+</ul>
+<p><strong>Title not showing:</strong></p>
+<ul>
+<li>Check that your model has a <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> property</li>
+<li>Ensure the property is public and has a getter</li>
+</ul>
+<p><strong>Templates not updating:</strong></p>
+<ul>
+<li>Implement <code>INotifyPropertyChanged</code> in your model</li>
+<li>Use proper binding syntax with <code>Context.PropertyName</code></li>
+</ul>
+<p><strong>Tabs not closable:</strong></p>
+<ul>
+<li>Set <code>CanClose = true</code> in your model (default behavior)</li>
+<li>Check that the property is accessible</li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="dock-content-guide.html">Document and Tool Content Guide</a> - Comprehensive content setup</li>
+<li><a href="dock-advanced.html">Dock Advanced Topics</a> - Advanced docking scenarios</li>
+<li><a href="dock-faq.html">Dock FAQ</a> - Common questions and troubleshooting</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-itemssource.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

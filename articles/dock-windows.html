@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Floating Windows | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Floating Windows | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-windows.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="floating-windows">Floating Windows</h1>
+
+<p>Dock can detach dockables into separate floating windows. These windows are represented by the <code>IDockWindow</code> interface and hosted using <code>IHostWindow</code> implementations.</p>
+<h2 id="creating-windows">Creating windows</h2>
+<p><code>FactoryBase</code> exposes a <code>CreateWindowFrom</code> method which returns an <code>IDockWindow</code>. Override this method on your factory to customize the dock window that represents a floating layout:</p>
+<pre><code class="lang-csharp">public override IDockWindow? CreateWindowFrom(IDockable dockable)
+{
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Title = $&quot;Dock - {dockable.Title}&quot;;
+    return window;
+}
+</code></pre>
+<p>Calling <code>FloatDockable</code> on the factory opens a dockable in a new window. The new <code>IDockWindow</code> is tracked by the root dock and stores its bounds and title so it can be serialized together with the layout.</p>
+<p>To customize the platform window (<code>IHostWindow</code>) used by floating docks, use <code>HostWindowLocator</code> or <code>DefaultHostWindowLocator</code>. See <a href="dock-host-window-locator.html">Host window locators</a> for details.</p>
+<h2 id="idockwindow-model-members">IDockWindow model members</h2>
+<p><code>IDockWindow</code> represents the floating window model and includes:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Id</code></td>
+<td><code>string</code></td>
+<td>Window identifier.</td>
+</tr>
+<tr>
+<td><code>X</code>, <code>Y</code></td>
+<td><code>double</code></td>
+<td>Window position.</td>
+</tr>
+<tr>
+<td><code>Width</code>, <code>Height</code></td>
+<td><code>double</code></td>
+<td>Window size.</td>
+</tr>
+<tr>
+<td><code>Topmost</code></td>
+<td><code>bool</code></td>
+<td>Keeps the window on top when <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>Title</code></td>
+<td><code>string</code></td>
+<td>Window title.</td>
+</tr>
+<tr>
+<td><code>Owner</code></td>
+<td><code>IDockable?</code></td>
+<td>Dockable that owns the window.</td>
+</tr>
+<tr>
+<td><code>Factory</code></td>
+<td><code>IFactory?</code></td>
+<td>Factory used by the window.</td>
+</tr>
+<tr>
+<td><code>Layout</code></td>
+<td><code>IRootDock?</code></td>
+<td>Root layout hosted in the window.</td>
+</tr>
+<tr>
+<td><code>Host</code></td>
+<td><code>IHostWindow?</code></td>
+<td>Platform host window.</td>
+</tr>
+<tr>
+<td><code>OnClose()</code></td>
+<td><code>bool</code></td>
+<td>Close callback (return <code>false</code> to cancel).</td>
+</tr>
+<tr>
+<td><code>OnMoveDragBegin()</code></td>
+<td><code>bool</code></td>
+<td>Drag begin callback (return <code>false</code> to cancel).</td>
+</tr>
+<tr>
+<td><code>OnMoveDrag()</code></td>
+<td><code>void</code></td>
+<td>Drag in progress callback.</td>
+</tr>
+<tr>
+<td><code>OnMoveDragEnd()</code></td>
+<td><code>void</code></td>
+<td>Drag end callback.</td>
+</tr>
+<tr>
+<td><code>Save()</code></td>
+<td><code>void</code></td>
+<td>Persist size/position into the model.</td>
+</tr>
+<tr>
+<td><code>Present(bool)</code></td>
+<td><code>void</code></td>
+<td>Show the window.</td>
+</tr>
+<tr>
+<td><code>Exit()</code></td>
+<td><code>void</code></td>
+<td>Close the window.</td>
+</tr>
+<tr>
+<td><code>SetActive()</code></td>
+<td><code>void</code></td>
+<td>Activate the window.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ihostwindow-members">IHostWindow members</h2>
+<p><code>IHostWindow</code> is the platform-facing host. It provides:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HostWindowState</code></td>
+<td><code>IHostWindowState?</code></td>
+<td>Docking state for the host.</td>
+</tr>
+<tr>
+<td><code>IsTracked</code></td>
+<td><code>bool</code></td>
+<td>Whether size/position is tracked.</td>
+</tr>
+<tr>
+<td><code>Window</code></td>
+<td><code>IDockWindow?</code></td>
+<td>Backing dock window model.</td>
+</tr>
+<tr>
+<td><code>Present(bool)</code></td>
+<td><code>void</code></td>
+<td>Show the host window.</td>
+</tr>
+<tr>
+<td><code>Exit()</code></td>
+<td><code>void</code></td>
+<td>Close the host window.</td>
+</tr>
+<tr>
+<td><code>SetPosition/GetPosition</code></td>
+<td><code>void</code></td>
+<td>Read/write the host position.</td>
+</tr>
+<tr>
+<td><code>SetSize/GetSize</code></td>
+<td><code>void</code></td>
+<td>Read/write the host size.</td>
+</tr>
+<tr>
+<td><code>SetTitle</code></td>
+<td><code>void</code></td>
+<td>Update the host title.</td>
+</tr>
+<tr>
+<td><code>SetLayout</code></td>
+<td><code>void</code></td>
+<td>Assign the hosted layout.</td>
+</tr>
+<tr>
+<td><code>SetActive</code></td>
+<td><code>void</code></td>
+<td>Activate the host window.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="window-chrome-options">Window chrome options</h2>
+<p><code>HostWindow</code> provides two boolean properties that control how its chrome behaves:</p>
+<ul>
+<li><code>ToolChromeControlsWholeWindow</code></li>
+<li><code>DocumentChromeControlsWholeWindow</code></li>
+</ul>
+<p>When enabled these toggle the <code>:toolchromecontrolswindow</code> or
+<code>:documentchromecontrolswindow</code> pseudo class respectively. Styles can use these
+states to remove the standard system chrome and let the Dock chrome occupy the
+entire window.</p>
+<h2 id="presenting-and-closing">Presenting and closing</h2>
+<p><code>IDockWindow</code> exposes <code>Present(bool isDialog)</code> to show the window and <code>Exit()</code> to close it programmatically. The default implementation uses <code>HostAdapter</code> to bridge between the interface and the underlying Avalonia <code>Window</code>.</p>
+<p>Use the <code>WindowOpened</code> and <code>WindowClosed</code> events on the factory to track when floating windows appear or disappear.</p>
+<pre><code class="lang-csharp">factory.WindowClosed += (_, e) =&gt;
+    Console.WriteLine($&quot;Closed {e.Window?.Title}&quot;);
+</code></pre>
+<h2 id="window-magnetism">Window magnetism</h2>
+<p>Floating windows can optionally snap to the edges of other floating windows while being dragged.
+This behavior is controlled by two settings on <code>DockSettings</code>:</p>
+<ul>
+<li><code>EnableWindowMagnetism</code> enables or disables the feature.</li>
+<li><code>WindowMagnetDistance</code> specifies how close windows must be before they snap together.</li>
+</ul>
+<p>When magnetism is enabled, <code>HostWindow</code> compares its position against other tracked windows during a drag
+and adjusts the position if it falls within the snap distance. This makes it easy to align multiple floating
+windows.</p>
+<h2 id="bringing-windows-to-front">Bringing windows to front</h2>
+<p>If <code>DockSettings.BringWindowsToFrontOnDrag</code> is enabled, initiating a drag will activate
+all floating windows and any main window hosting a <code>DockControl</code> so they stay above other
+applications until the drag completes.</p>
+<p>For more advanced scenarios see <a href="dock-adapters.html">Adapter Classes</a> and the <a href="dock-advanced.html">Advanced Guide</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-windows.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock ReactiveUI with Routing Getting Started Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock ReactiveUI with Routing Getting Started Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactiveui-routing.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-reactiveui-with-routing-getting-started-guide">Dock ReactiveUI with Routing Getting Started Guide</h1>
+
+<p>This guide explains how to get started with Dock using ReactiveUI's routing capabilities. This approach enables navigation between different views within documents and tools, creating a spa-like experience within a docking interface.</p>
+<p>The sample project <code>DockReactiveUIRoutingSample</code> in the repository demonstrates this approach. For interface details refer to the <a href="dock-reference.html">Dock API Reference</a>.</p>
+<blockquote>
+<p><strong>💡 Navigation Pattern</strong>: ReactiveUI's routing system provides powerful navigation capabilities that work seamlessly within Dock's dockable interface. This is particularly useful for creating complex multi-view documents or tools with internal navigation.</p>
+</blockquote>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
+<p>Follow these instructions to create a ReactiveUI application with routing using Dock.</p>
+<ol>
+<li><p><strong>Create a new Avalonia project</strong></p>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MyDockApp
+cd MyDockApp
+</code></pre>
+</li>
+<li><p><strong>Install the required packages</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.ReactiveUI
+dotnet add package Dock.Model.ReactiveUI.Navigation
+dotnet add package Dock.Avalonia.Themes.Fluent
+dotnet add package ReactiveUI.Avalonia
+</code></pre>
+<p><strong>Optional packages:</strong></p>
+<pre><code class="lang-bash"># For serialization (choose one):
+dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+
+# For dependency injection:
+dotnet add package Dock.Model.Extensions.DependencyInjection
+</code></pre>
+</li>
+<li><p><strong>Set up View Locator with Routing Support</strong></p>
+<p>Create a view locator that resolves views registered with ReactiveUI's <code>IViewLocator</code>:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using ReactiveUI;
+using Splat;
+
+namespace MyDockApp;
+
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+        {
+            return null;
+        }
+
+        var viewLocator = Locator.Current.GetService&lt;IViewLocator&gt;();
+        if (viewLocator?.ResolveView(data) is Control control)
+        {
+            return control;
+        }
+
+        throw new Exception($&quot;Unable to create view for type: {data.GetType()}&quot;);
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        var viewLocator = Locator.Current.GetService&lt;IViewLocator&gt;();
+        return viewLocator?.ResolveView(data) is not null;
+    }
+}
+</code></pre>
+<p>Register the view mappings in <code>App.axaml.cs</code>:</p>
+<pre><code class="lang-csharp">using ReactiveUI;
+using Splat;
+
+private void RegisterViews()
+{
+    Locator.CurrentMutable.Register&lt;IViewFor&lt;DocumentViewModel&gt;&gt;(() =&gt; new DocumentView());
+    Locator.CurrentMutable.Register&lt;IViewFor&lt;ToolViewModel&gt;&gt;(() =&gt; new ToolView());
+    Locator.CurrentMutable.Register&lt;IViewFor&lt;Page1ViewModel&gt;&gt;(() =&gt; new Page1View());
+    Locator.CurrentMutable.Register&lt;IViewFor&lt;Page2ViewModel&gt;&gt;(() =&gt; new Page2View());
+    Locator.CurrentMutable.Register&lt;IViewFor&lt;InnerViewModel&gt;&gt;(() =&gt; new InnerView());
+}
+</code></pre>
+<p>Call <code>RegisterViews()</code> from <code>Initialize</code> so the mappings are available before the layout is created.</p>
+<p>Register the view locator in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:local=&quot;using:MyDockApp&quot;
+             x:Class=&quot;MyDockApp.App&quot;&gt;
+
+  &lt;Application.DataTemplates&gt;
+    &lt;local:ViewLocator /&gt;
+  &lt;/Application.DataTemplates&gt;
+
+  &lt;Application.Styles&gt;
+    &lt;FluentTheme /&gt;
+    &lt;DockFluentTheme /&gt;
+  &lt;/Application.Styles&gt;
+&lt;/Application&gt;
+</code></pre>
+</li>
+<li><p><strong>Create routable view models</strong></p>
+<p>Create view models that implement routing functionality:</p>
+<pre><code class="lang-csharp">using System;
+using System.Reactive;
+using System.Reactive.Disposables;
+using Dock.Model.ReactiveUI.Navigation.Controls;
+using ReactiveUI;
+
+namespace MyDockApp.ViewModels.Documents
+{
+    public class DocumentViewModel : RoutableDocument
+    {
+        public ReactiveCommand&lt;Unit, IDisposable&gt;? GoToPage1 { get; }
+        public ReactiveCommand&lt;Unit, IDisposable&gt;? GoToPage2 { get; }
+        private readonly CompositeDisposable _disposables = new();
+
+        public DocumentViewModel(IScreen host) : base(host)
+        {
+            // Navigate to the default page
+            Router.Navigate.Execute(new Page1ViewModel(this, &quot;Document Home&quot;));
+
+            // Commands to navigate to different pages
+            GoToPage1 = ReactiveCommand.Create(() =&gt;
+                Router.Navigate.Execute(new Page1ViewModel(this, &quot;Page 1 Content&quot;)).Subscribe(_ =&gt; { }));
+
+            GoToPage2 = ReactiveCommand.Create(() =&gt;
+                Router.Navigate.Execute(new Page2ViewModel(this, &quot;Page 2 Content&quot;)).Subscribe(_ =&gt; { }));
+
+            GoToPage1.DisposeWith(_disposables);
+            GoToPage2.DisposeWith(_disposables);
+        }
+
+        public void InitNavigation(
+            IRoutableViewModel? document2,
+            IRoutableViewModel? tool1,
+            IRoutableViewModel? tool2)
+        {
+            // Navigation to other dockables can be set up here
+            // This is called from the factory after all view models are created
+        }
+    }
+}
+
+namespace MyDockApp.ViewModels.Tools
+{
+    public class ToolViewModel : RoutableTool
+    {
+        public ReactiveCommand&lt;Unit, IDisposable&gt;? GoToDocument1 { get; set; }
+        public ReactiveCommand&lt;Unit, IDisposable&gt;? GoToDocument2 { get; set; }
+        public ReactiveCommand&lt;Unit, IDisposable&gt;? GoToNextTool { get; set; }
+
+        public ToolViewModel(IScreen host) : base(host)
+        {
+            Router.Navigate.Execute(new InnerViewModel(this, &quot;Tool Home&quot;));
+        }
+
+        public void InitNavigation(
+            IRoutableViewModel? document1,
+            IRoutableViewModel? document2,
+            IRoutableViewModel? nextTool)
+        {
+            if (document1 is not null)
+            {
+                GoToDocument1 = ReactiveCommand.Create(() =&gt;
+                    HostScreen.Router.Navigate.Execute(document1).Subscribe(_ =&gt; { }));
+            }
+
+            if (document2 is not null)
+            {
+                GoToDocument2 = ReactiveCommand.Create(() =&gt;
+                    HostScreen.Router.Navigate.Execute(document2).Subscribe(_ =&gt; { }));
+            }
+
+            if (nextTool is not null)
+            {
+                GoToNextTool = ReactiveCommand.Create(() =&gt;
+                    HostScreen.Router.Navigate.Execute(nextTool).Subscribe(_ =&gt; { }));
+            }
+        }
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create inner routable view models</strong></p>
+<p>Create the view models that represent different pages/views within documents and tools:</p>
+<pre><code class="lang-csharp">using ReactiveUI;
+
+namespace MyDockApp.ViewModels;
+
+public class Page1ViewModel : ReactiveObject, IRoutableViewModel
+{
+    public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
+    public IScreen HostScreen { get; }
+
+    private string _content;
+    public string Content
+    {
+        get =&gt; _content;
+        set =&gt; this.RaiseAndSetIfChanged(ref _content, value);
+    }
+
+    public Page1ViewModel(IScreen screen, string content)
+    {
+        HostScreen = screen;
+        _content = content;
+    }
+}
+
+public class Page2ViewModel : ReactiveObject, IRoutableViewModel
+{
+    public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
+    public IScreen HostScreen { get; }
+
+    private string _content;
+    public string Content
+    {
+        get =&gt; _content;
+        set =&gt; this.RaiseAndSetIfChanged(ref _content, value);
+    }
+
+    private DateTime _timestamp = DateTime.Now;
+    public DateTime Timestamp
+    {
+        get =&gt; _timestamp;
+        set =&gt; this.RaiseAndSetIfChanged(ref _timestamp, value);
+    }
+
+    public Page2ViewModel(IScreen screen, string content)
+    {
+        HostScreen = screen;
+        _content = content;
+    }
+}
+
+public class InnerViewModel : ReactiveObject, IRoutableViewModel
+{
+    public string? UrlPathSegment { get; } = Guid.NewGuid().ToString().Substring(0, 5);
+    public IScreen HostScreen { get; }
+
+    private string _message;
+    public string Message
+    {
+        get =&gt; _message;
+        set =&gt; this.RaiseAndSetIfChanged(ref _message, value);
+    }
+
+    public InnerViewModel(IScreen screen, string message)
+    {
+        HostScreen = screen;
+        _message = message;
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create the factory with routing setup</strong></p>
+<pre><code class="lang-csharp">using Dock.Model.Core;
+using Dock.Model.ReactiveUI;
+using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Navigation.Controls;
+using MyDockApp.ViewModels.Documents;
+using ReactiveUI;
+
+namespace MyDockApp.ViewModels;
+
+public class DockFactory : Factory
+{
+    private readonly IScreen _host;
+
+    public DockFactory(IScreen host)
+    {
+        _host = host;
+    }
+
+    public override IRootDock CreateLayout()
+    {
+        var document1 = new DocumentViewModel(_host) { Id = &quot;Doc1&quot;, Title = &quot;Document 1&quot; };
+        var document2 = new DocumentViewModel(_host) { Id = &quot;Doc2&quot;, Title = &quot;Document 2&quot; };
+        var tool1 = new ToolViewModel(_host) { Id = &quot;Tool1&quot;, Title = &quot;Tool 1&quot; };
+        var tool2 = new ToolViewModel(_host) { Id = &quot;Tool2&quot;, Title = &quot;Tool 2&quot; };
+
+        // Set up cross-navigation between view models
+        document1.InitNavigation(document2, tool1, tool2);
+        document2.InitNavigation(document1, tool1, tool2);
+        tool1.InitNavigation(document1, document2, tool2);
+        tool2.InitNavigation(document1, document2, tool1);
+
+        var documentDock = new DocumentDock
+        {
+            Id = &quot;Documents&quot;,
+            VisibleDockables = CreateList&lt;IDockable&gt;(document1, document2),
+            ActiveDockable = document1
+        };
+
+        var toolDock = new ToolDock
+        {
+            Id = &quot;Tools&quot;,
+            VisibleDockables = CreateList&lt;IDockable&gt;(tool1, tool2),
+            ActiveDockable = tool1
+        };
+
+        var proportionalDock = CreateProportionalDock();
+        proportionalDock.Orientation = Orientation.Horizontal;
+        proportionalDock.VisibleDockables = CreateList&lt;IDockable&gt;(
+            documentDock,
+            CreateProportionalDockSplitter(),
+            toolDock
+        );
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(proportionalDock);
+        root.ActiveDockable = proportionalDock;
+        root.DefaultDockable = proportionalDock;
+
+        return root;
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create views for routable view models</strong></p>
+<p><strong>DocumentView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:rxui=&quot;http://reactiveui.net&quot;
+             x:Class=&quot;MyDockApp.Views.Documents.DocumentView&quot;&gt;
+  &lt;DockPanel&gt;
+    &lt;StackPanel DockPanel.Dock=&quot;Top&quot; Orientation=&quot;Horizontal&quot; Margin=&quot;5&quot;&gt;
+      &lt;Button Content=&quot;Page 1&quot; Command=&quot;{Binding GoToPage1}&quot; Margin=&quot;0,0,5,0&quot; /&gt;
+      &lt;Button Content=&quot;Page 2&quot; Command=&quot;{Binding GoToPage2}&quot; /&gt;
+    &lt;/StackPanel&gt;
+    &lt;rxui:RoutedViewHost Router=&quot;{Binding Router}&quot; /&gt;
+  &lt;/DockPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>ToolView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:rxui=&quot;http://reactiveui.net&quot;
+             x:Class=&quot;MyDockApp.Views.Tools.ToolView&quot;&gt;
+  &lt;DockPanel&gt;
+    &lt;StackPanel DockPanel.Dock=&quot;Top&quot; Margin=&quot;5&quot;&gt;
+      &lt;TextBlock Text=&quot;Tool Navigation&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,5&quot; /&gt;
+      &lt;StackPanel Orientation=&quot;Horizontal&quot;&gt;
+        &lt;Button Content=&quot;Go to Doc 1&quot; Command=&quot;{Binding GoToDocument1}&quot; Margin=&quot;0,0,5,0&quot; /&gt;
+        &lt;Button Content=&quot;Go to Doc 2&quot; Command=&quot;{Binding GoToDocument2}&quot; Margin=&quot;0,0,5,0&quot; /&gt;
+        &lt;Button Content=&quot;Next Tool&quot; Command=&quot;{Binding GoToNextTool}&quot; /&gt;
+      &lt;/StackPanel&gt;
+    &lt;/StackPanel&gt;
+    &lt;rxui:RoutedViewHost Router=&quot;{Binding Router}&quot; /&gt;
+  &lt;/DockPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>Page1View.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.Page1View&quot;&gt;
+  &lt;StackPanel Margin=&quot;10&quot;&gt;
+    &lt;TextBlock Text=&quot;Page 1&quot; FontSize=&quot;16&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,10&quot; /&gt;
+    &lt;TextBox Text=&quot;{Binding Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;200&quot; /&gt;
+  &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>Page2View.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.Page2View&quot;&gt;
+  &lt;StackPanel Margin=&quot;10&quot;&gt;
+    &lt;TextBlock Text=&quot;Page 2&quot; FontSize=&quot;16&quot; FontWeight=&quot;Bold&quot; Margin=&quot;0,0,0,10&quot; /&gt;
+    &lt;TextBox Text=&quot;{Binding Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;100&quot; Margin=&quot;0,0,0,10&quot; /&gt;
+    &lt;TextBlock Text=&quot;{Binding Timestamp, StringFormat='Created: {0:yyyy-MM-dd HH:mm:ss}'}&quot; /&gt;
+  &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+</li>
+<li><p><strong>Set up the main window and application</strong></p>
+<p><strong>MainWindow.axaml.cs:</strong></p>
+<pre><code class="lang-csharp">using Avalonia.Controls;
+using Dock.Avalonia.Controls;
+using MyDockApp.ViewModels;
+using ReactiveUI;
+
+namespace MyDockApp;
+
+public partial class MainWindow : Window, IScreen
+{
+    public RoutingState Router { get; } = new RoutingState();
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        InitializeDock();
+    }
+
+    private void InitializeDock()
+    {
+        var factory = new DockFactory(this);
+        var layout = factory.CreateLayout();
+        factory.InitLayout(layout);
+
+        var dockControl = this.Find&lt;DockControl&gt;(&quot;Dock&quot;);
+        if (dockControl != null)
+        {
+            dockControl.Layout = layout;
+        }
+    }
+}
+</code></pre>
+<p><strong>MainWindow.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;Window xmlns=&quot;https://github.com/avaloniaui&quot;
+        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        x:Class=&quot;MyDockApp.MainWindow&quot;
+        Title=&quot;Dock with ReactiveUI Routing&quot;&gt;
+  &lt;DockControl x:Name=&quot;Dock&quot; /&gt;
+&lt;/Window&gt;
+</code></pre>
+</li>
+<li><p><strong>Run the application</strong></p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+</li>
+</ol>
+<h2 id="reactiveui-routing-features">ReactiveUI Routing Features</h2>
+<p>This approach provides several powerful features:</p>
+<ol>
+<li><strong>Internal Navigation</strong>: Each document or tool can have multiple internal views with navigation</li>
+<li><strong>Cross-Dockable Navigation</strong>: Navigate from any dockable to any other dockable</li>
+<li><strong>State Management</strong>: ReactiveUI's router maintains navigation history and state</li>
+<li><strong>Dynamic Content</strong>: Create rich, multi-page experiences within dockables</li>
+<li><strong>URL-like Navigation</strong>: Use UrlPathSegments for navigation tracking</li>
+</ol>
+<h2 id="key-concepts">Key Concepts</h2>
+<ul>
+<li><strong>IScreen</strong>: The host that manages the router (typically your main window or view model)</li>
+<li><strong>RoutableDocument/RoutableTool</strong>: Dockable implementations that include routing capabilities</li>
+<li><strong>IRoutableViewModel</strong>: View models that can be navigated to within a router</li>
+<li><strong>RoutedViewHost</strong>: XAML control that displays the current routed view</li>
+<li><strong>Router</strong>: Manages navigation state and history</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Navigation Setup</strong>: Initialize navigation links after all view models are created</li>
+<li><strong>Memory Management</strong>: Dispose of commands and subscriptions properly</li>
+<li><strong>State Persistence</strong>: Consider how navigation state should be preserved during serialization</li>
+<li><strong>User Experience</strong>: Provide clear navigation cues and maintain consistent UX patterns</li>
+</ol>
+<p>This pattern is excellent for creating complex applications that need rich navigation within a docking interface, such as IDEs, data analysis tools, or complex business applications.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactiveui-routing.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

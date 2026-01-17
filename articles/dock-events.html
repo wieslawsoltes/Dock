@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Events Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Events Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-events.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-events-guide">Dock Events Guide</h1>
+
+<p>Dock exposes a large set of runtime events through <code>FactoryBase</code> so that applications can react to changes in the layout. The other guides only briefly mention these hooks. This document lists the most commonly used events and shows how to subscribe to them.</p>
+<p>Each event uses a dedicated arguments type that exposes the affected
+dockable or window. Some events (such as <code>DockableClosing</code> and <code>WindowClosing</code>)
+support cancellation via a <code>Cancel</code> flag.</p>
+<h2 id="common-events">Common events</h2>
+<p><code>FactoryBase</code> publishes events via the <code>IFactory</code> interface. Each event passes an arguments object containing the affected dockable or window.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ActiveDockableChanged</code></td>
+<td>Fired when the active dockable within a dock changes.</td>
+</tr>
+<tr>
+<td><code>FocusedDockableChanged</code></td>
+<td>Triggered when focus moves to another dockable.</td>
+</tr>
+<tr>
+<td><code>DockableAdded</code></td>
+<td>Raised after a dockable is inserted into a dock.</td>
+</tr>
+<tr>
+<td><code>DockableRemoved</code></td>
+<td>Raised after a dockable has been removed.</td>
+</tr>
+<tr>
+<td><code>DockableClosing</code></td>
+<td>Fired before a dockable is closed so it can be cancelled.</td>
+</tr>
+<tr>
+<td><code>DockableClosed</code></td>
+<td>Occurs when a dockable is closed via command or UI.</td>
+</tr>
+<tr>
+<td><code>DockableMoved</code></td>
+<td>Indicates a dockable was rearranged within its parent.</td>
+</tr>
+<tr>
+<td><code>DockableDocked</code></td>
+<td>Raised after a dock operation completes such as splitting or floating.</td>
+</tr>
+<tr>
+<td><code>DockableUndocked</code></td>
+<td>Raised when a dockable is removed from a dock before being moved or floated.</td>
+</tr>
+<tr>
+<td><code>DockablePinned</code> / <code>DockableUnpinned</code></td>
+<td>Signalled when a tool is pinned or unpinned.</td>
+</tr>
+<tr>
+<td><code>WindowOpened</code></td>
+<td>Fired when a floating window is created.</td>
+</tr>
+<tr>
+<td><code>WindowClosing</code></td>
+<td>Fired before a floating window closes and can be cancelled.</td>
+</tr>
+<tr>
+<td><code>WindowClosed</code></td>
+<td>Fired after a floating window is closed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="additional-events">Additional events</h2>
+<p>FactoryBase also exposes events for less common scenarios:</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DockableSwapped</code></td>
+<td>Raised when two dockables are swapped.</td>
+</tr>
+<tr>
+<td><code>DockableHidden</code> / <code>DockableRestored</code></td>
+<td>Fired when dockables are moved to or restored from <code>IRootDock.HiddenDockables</code>.</td>
+</tr>
+<tr>
+<td><code>WindowAdded</code> / <code>WindowRemoved</code></td>
+<td>Signalled when a window is added to or removed from <code>IRootDock.Windows</code>.</td>
+</tr>
+<tr>
+<td><code>WindowActivated</code> / <code>WindowDeactivated</code></td>
+<td>Fired when a host window gains or loses activation.</td>
+</tr>
+<tr>
+<td><code>DockableActivated</code> / <code>DockableDeactivated</code></td>
+<td>Fired when a dockable gains or loses activation.</td>
+</tr>
+<tr>
+<td><code>DockableInit</code></td>
+<td>Raised during <code>InitDockable</code> so you can override the resolved <code>Context</code>.</td>
+</tr>
+<tr>
+<td><code>WindowMoveDragBegin</code> / <code>WindowMoveDrag</code> / <code>WindowMoveDragEnd</code></td>
+<td>Fired during floating window drag operations.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="subscribing-to-events">Subscribing to events</h2>
+<p>Create a factory instance and attach handlers before initializing the layout:</p>
+<pre><code class="lang-csharp">var factory = new Factory();
+
+factory.ActiveDockableChanged += (_, args) =&gt;
+    Console.WriteLine($&quot;Active dockable: {args.Dockable?.Title}&quot;);
+factory.DockableAdded += (_, args) =&gt;
+    Console.WriteLine($&quot;Added: {args.Dockable?.Title}&quot;);
+factory.DockableDocked += (_, args) =&gt;
+    Console.WriteLine($&quot;Docked: {args.Dockable?.Title} via {args.Operation}&quot;);
+factory.DockableUndocked += (_, args) =&gt;
+    Console.WriteLine($&quot;Undocked: {args.Dockable?.Title}&quot;);
+factory.WindowOpened += (_, args) =&gt;
+    Console.WriteLine($&quot;Window opened: {args.Window?.Title}&quot;);
+
+var layout = factory.CreateLayout();
+factory.InitLayout(layout);
+</code></pre>
+<p>Some events allow the operation to be cancelled by setting the <code>Cancel</code> property on the event args instance.</p>
+<h2 id="when-to-use-events">When to use events</h2>
+<p>Events are useful for:</p>
+<ul>
+<li>Tracking which document or tool currently has focus.</li>
+<li>Persisting window placement after the user moves a floating window.</li>
+<li>Implementing custom logic when new documents are created at runtime.</li>
+</ul>
+<p>Consult the samples for practical examples where events are wired to view models and commands.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-events.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

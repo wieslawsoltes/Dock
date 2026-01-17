@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DataTemplates and Custom Dock Types | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DataTemplates and Custom Dock Types | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-datatemplates.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="datatemplates-and-custom-dock-types">DataTemplates and Custom Dock Types</h1>
+
+<p>This guide explains how DockControl uses DataTemplates to render different dock elements and how to create custom dock types with their own visual representation.</p>
+<h2 id="overview">Overview</h2>
+<p>The Dock library uses Avalonia's DataTemplate system to render different types of dock elements. Each dock type (documents, tools, containers, splitters) has a corresponding DataTemplate that defines how it should be visually represented.</p>
+<h3 id="key-components">Key Components</h3>
+<ul>
+<li><strong>DockControl</strong>: The main control that hosts dock layouts and manages DataTemplates</li>
+<li><strong>DockDataTemplateHelper</strong>: Centralized creation of built-in DataTemplates</li>
+<li><strong>RequiresDataTemplateAttribute</strong>: Marks interfaces that need DataTemplates</li>
+<li><strong>AutoCreateDataTemplates</strong>: Property to control automatic DataTemplate creation</li>
+</ul>
+<h2 id="how-datatemplates-work">How DataTemplates Work</h2>
+<p>DockControl automatically creates DataTemplates for all dock types when its template is applied. The process works as follows:</p>
+<ol>
+<li><strong>Automatic Creation</strong>: When <code>AutoCreateDataTemplates</code> is <code>true</code> (default), DockControl automatically adds DataTemplates for all built-in dock types</li>
+<li><strong>Template Matching</strong>: Avalonia matches dock objects to their corresponding DataTemplate based on type</li>
+<li><strong>Visual Rendering</strong>: The matched DataTemplate creates the appropriate control to render the dock element</li>
+</ol>
+<h3 id="controlling-datatemplate-creation">Controlling DataTemplate Creation</h3>
+<p>You can control DataTemplate behavior using the <code>AutoCreateDataTemplates</code> property:</p>
+<pre><code class="lang-csharp">// Disable automatic creation to use custom templates
+dockControl.AutoCreateDataTemplates = false;
+
+// Or in XAML
+&lt;DockControl AutoCreateDataTemplates=&quot;False&quot; /&gt;
+</code></pre>
+<h2 id="requiresdatatemplateattribute">RequiresDataTemplateAttribute</h2>
+<p>The <code>RequiresDataTemplateAttribute</code> marks dock interfaces that need DataTemplates. This ensures all dock types have proper visual representation.</p>
+<h3 id="usage">Usage</h3>
+<p>When creating custom dock types, mark the interface with this attribute:</p>
+<pre><code class="lang-csharp">[RequiresDataTemplate]
+public interface IMyCustomDock : IDock
+{
+    // Interface members
+}
+</code></pre>
+<p>This attribute serves two purposes:</p>
+<ul>
+<li><strong>Documentation</strong>: Clearly indicates which interfaces need visual representation</li>
+<li><strong>Testing</strong>: Unit tests automatically verify that all marked interfaces have DataTemplates</li>
+</ul>
+<h2 id="built-in-datatemplates">Built-in DataTemplates</h2>
+<p>The library provides DataTemplates for all built-in dock types:</p>
+<p><strong>Content Types:</strong></p>
+<ul>
+<li><code>IDocumentContent</code> → <code>DocumentContentControl</code></li>
+<li><code>IToolContent</code> → <code>ToolContentControl</code></li>
+</ul>
+<p><strong>Container Types:</strong></p>
+<ul>
+<li><code>IDocumentDock</code> → <code>DocumentDockControl</code></li>
+<li><code>IToolDock</code> → <code>ToolDockControl</code></li>
+<li><code>ISplitViewDock</code> → <code>SplitViewDockControl</code></li>
+<li><code>IProportionalDock</code> → <code>ProportionalDockControl</code></li>
+<li><code>IStackDock</code> → <code>StackDockControl</code></li>
+<li><code>IGridDock</code> → <code>GridDockControl</code></li>
+<li><code>IWrapDock</code> → <code>WrapDockControl</code></li>
+<li><code>IUniformGridDock</code> → <code>UniformGridDockControl</code></li>
+<li><code>IDockDock</code> → <code>DockDockControl</code></li>
+<li><code>IRootDock</code> → <code>RootDockControl</code></li>
+</ul>
+<p><strong>Splitter Types:</strong></p>
+<ul>
+<li><code>IProportionalDockSplitter</code> → <code>ProportionalStackPanelSplitter</code></li>
+<li><code>IGridDockSplitter</code> → <code>GridSplitter</code></li>
+</ul>
+<p>All DataTemplates are created automatically by <code>DockDataTemplateHelper</code> using Avalonia's binding syntax.</p>
+<h2 id="creating-custom-dock-types">Creating Custom Dock Types</h2>
+<p>To create a custom dock type with its own visual representation:</p>
+<h3 id="1-define-the-interface">1. Define the Interface</h3>
+<p>Create your custom dock interface and mark it with the attribute:</p>
+<pre><code class="lang-csharp">[RequiresDataTemplate]
+public interface ICustomTabDock : IDock
+{
+    string TabStyle { get; set; }
+    bool ShowTabIcons { get; set; }
+}
+</code></pre>
+<h3 id="2-implement-the-interface">2. Implement the Interface</h3>
+<p>Create a concrete implementation using your preferred model (Avalonia, MVVM, ReactiveUI, etc.). Use the <code>DockBase</code> type from the model package you picked.</p>
+<pre><code class="lang-csharp">public class CustomTabDock : DockBase, ICustomTabDock
+{
+    public string TabStyle { get; set; } = &quot;Default&quot;;
+    public bool ShowTabIcons { get; set; } = true;
+}
+</code></pre>
+<h3 id="3-create-the-control">3. Create the Control</h3>
+<p>Design the visual control for your dock type:</p>
+<pre><code class="lang-csharp">public class CustomTabDockControl : TemplatedControl
+{
+    // Implement your custom control logic
+}
+</code></pre>
+<h3 id="4-add-the-datatemplate">4. Add the DataTemplate</h3>
+<p><strong>Option A: In Code (Recommended)</strong></p>
+<pre><code class="lang-csharp">// Add your custom template alongside the default ones
+var customTemplate = new FuncDataTemplate&lt;ICustomTabDock&gt;(
+    (data, scope) =&gt; new CustomTabDockControl { DataContext = data });
+dockControl.DataTemplates.Add(customTemplate);
+
+// Default templates are automatically added if AutoCreateDataTemplates is true (default)
+// To disable default templates entirely, set AutoCreateDataTemplates = false
+</code></pre>
+<p><strong>Option B: In XAML</strong></p>
+<pre><code class="lang-xaml">&lt;DockControl&gt;
+    &lt;DockControl.DataTemplates&gt;
+        &lt;!-- Your custom template is added alongside the default ones --&gt;
+        &lt;DataTemplate DataType=&quot;{x:Type model:ICustomTabDock}&quot;&gt;
+            &lt;controls:CustomTabDockControl /&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/DockControl.DataTemplates&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<p>When working with custom dock types and DataTemplates:</p>
+<ol>
+<li><strong>Always mark custom dock interfaces</strong> with <code>[RequiresDataTemplate]</code></li>
+<li><strong>Use descriptive naming</strong> following the pattern: <code>IMyDock</code>, <code>MyDock</code>, <code>MyDockControl</code></li>
+<li><strong>Add custom templates directly</strong> - they work alongside the default templates automatically</li>
+<li><strong>Test your custom types</strong> to ensure DataTemplate coverage</li>
+<li><strong>Use bindings</strong> for template properties when creating templates programmatically, as shown in <code>DockDataTemplateHelper</code></li>
+<li><strong>Consider inheritance</strong> - derive from existing dock types when possible</li>
+<li><strong>Only disable <code>AutoCreateDataTemplates</code></strong> when you want to provide all templates manually</li>
+</ol>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="dock-custom-model.html">Creating Custom Models</a> - Learn about implementing custom dock models</li>
+<li><a href="dock-styling.html">Styling Guide</a> - Customize the appearance of dock controls</li>
+<li><a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/">Sample Applications</a> - Examples of custom dock implementations</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-datatemplates.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

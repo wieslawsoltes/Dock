@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Context locators | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Context locators | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-context-locator.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="context-locators">Context locators</h1>
+
+<p>Dock assigns <code>dockable.Context</code> when a layout is initialized or loaded if the dockable does not already have a context. The objects are resolved through two properties on <code>IFactory</code>:
+<code>ContextLocator</code> and <code>DefaultContextLocator</code>.</p>
+<h2 id="contextlocator-dictionary"><code>ContextLocator</code> dictionary</h2>
+<p><code>ContextLocator</code> is a <code>Dictionary&lt;string, Func&lt;object?&gt;&gt;</code> mapping an identifier to
+a factory method. Each entry returns the object that becomes <code>dockable.Context</code>
+(often used as a view <code>DataContext</code>) for the dockable with the same <code>Id</code>.
+Populate this dictionary before calling <code>InitLayout</code>, including when you
+initialize a layout loaded with an <code>IDockSerializer</code>.</p>
+<pre><code class="lang-csharp">public override void InitLayout(IDockable layout)
+{
+    ContextLocator = new Dictionary&lt;string, Func&lt;object?&gt;&gt;
+    {
+        [&quot;Document1&quot;] = () =&gt; new DocumentViewModel(),
+        [&quot;Tool1&quot;] = () =&gt; new Tool1ViewModel(),
+    };
+
+    base.InitLayout(layout);
+}
+</code></pre>
+<p>During <code>InitDockable</code> the factory looks up the dockable <code>Id</code> in
+<code>ContextLocator</code> and assigns the returned object to <code>dockable.Context</code> when it
+is still <code>null</code>. If the id is not found, it falls back to
+<code>DefaultContextLocator</code>. Empty ids skip the lookup entirely, so ensure you set
+<code>Id</code> on dockables you want resolved.</p>
+<h2 id="defaultcontextlocator-fallback"><code>DefaultContextLocator</code> fallback</h2>
+<p><code>DefaultContextLocator</code> is a <code>Func&lt;object?&gt;</code> invoked when
+<code>ContextLocator</code> has no entry for the requested identifier. Use it to provide a
+common fallback or to integrate with a dependency injection container.</p>
+<pre><code class="lang-csharp">DefaultContextLocator = () =&gt; _services.GetService&lt;MainViewModel&gt;();
+</code></pre>
+<p>When <code>GetContext</code> cannot resolve a specific non-empty id it will call this
+delegate. If it returns <code>null</code>, the dockable keeps its existing <code>Context</code>
+(often <code>null</code>).</p>
+<h2 id="dockcontrol-default-context">DockControl default context</h2>
+<p>When <code>DockControl.InitializeFactory</code> is <code>true</code>, the control assigns
+<code>DefaultContextLocator</code> for you and returns the value of
+<code>DockControl.DefaultContext</code>. This is a convenient way to supply a shared
+fallback without touching the factory:</p>
+<pre><code class="lang-csharp">var dockControl = new DockControl
+{
+    DefaultContext = new MainViewModel(),
+    InitializeFactory = true
+};
+</code></pre>
+<p>If you want to configure <code>DefaultContextLocator</code> yourself, disable
+<code>InitializeFactory</code> or assign your locator after the control initializes.</p>
+<h2 id="why-it-matters">Why it matters</h2>
+<p>Dockable views often rely on <code>dockable.Context</code> (directly or via templates) to
+function correctly. When loading a layout that references custom documents or
+tools, the factory must be able to recreate those view models. Register each
+type in <code>ContextLocator</code> and provide a default via <code>DefaultContextLocator</code> so
+that unknown ids do not break the layout.</p>
+<p>These locators work alongside <code>DockableLocator</code> and <code>HostWindowLocator</code> which
+resolve dockable instances and host windows. Ensure all locators are populated
+before deserializing layouts or initializing new ones.</p>
+<p>For a high level overview of the factory API see the
+<a href="dock-advanced.html">Advanced guide</a> and <a href="dock-reference.html">Reference guide</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-context-locator.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

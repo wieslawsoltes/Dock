@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Adapter Classes | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Adapter Classes | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-adapters.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="adapter-classes">Adapter Classes</h1>
+
+<p>Dock exposes a small set of helper classes that adapt the core interfaces to different host environments or provide additional runtime services. The built-in model base classes (<code>DockWindow</code>, <code>DockBase</code>, <code>DockableBase</code>) wire these adapters in, so most applications interact with them through <code>IDock</code>, <code>IDockable</code>, and <code>IDockWindow</code>. You can use the adapters directly when implementing custom base types or host integrations.</p>
+<h2 id="hostadapter">HostAdapter</h2>
+<p><code>HostAdapter</code> implements <code>IHostAdapter</code> and bridges a dock window (<code>IDockWindow</code>) with a platform-specific host window (<code>IHostWindow</code>). It resolves the host window via <code>IFactory.GetHostWindow</code> when needed, pushes layout, title, size, and position into the host when presenting, and reads the current size and position back when saving.</p>
+<p>Typical usage looks like the following:</p>
+<pre><code class="lang-csharp">var hostAdapter = new HostAdapter(dockWindow);
+hostAdapter.Present(isDialog: false);
+</code></pre>
+<p>The adapter fetches the host window instance from <code>IFactory.GetHostWindow</code> if it has not already been assigned. Calling <code>Save</code> stores the last known position and dimensions so they can be restored later. <code>Exit</code> closes the host and clears the reference, and <code>SetActive</code> forwards the activation request to the host window.</p>
+<h2 id="navigateadapter">NavigateAdapter</h2>
+<p><code>NavigateAdapter</code> implements <code>INavigateAdapter</code> and provides history-based navigation for docks. It maintains two stacks for back and forward navigation and exposes methods such as <code>GoBack</code>, <code>GoForward</code>, and <code>Navigate</code>. <code>Navigate</code> accepts an <code>IDockable</code>, a dockable ID (<code>string</code>), or <code>null</code> to reset navigation.</p>
+<p>Create an instance for a given <code>IDock</code> and use it to issue navigation commands:</p>
+<pre><code class="lang-csharp">var adapter = new NavigateAdapter(rootDock);
+adapter.Navigate(document, bSnapshot: true);
+</code></pre>
+<p>The adapter cooperates with the factory to activate dockables and can also show or close floating windows via <code>ShowWindows</code> and <code>ExitWindows</code>. The built-in <code>DockBase</code> types already use this adapter to implement <code>GoBack</code>, <code>GoForward</code>, <code>Navigate</code>, and <code>Close</code>.</p>
+<h2 id="trackingadapter">TrackingAdapter</h2>
+<p><code>TrackingAdapter</code> stores bounds and pointer positions used when dockables are visible, pinned, or displayed as tabs. It tracks both control-local and screen pointer positions. The docking logic reads these values when calculating drop targets or restoring the layout after a drag operation.</p>
+<p>A new adapter contains <code>NaN</code> values for all coordinates until you call the various <code>Set*</code> methods. <code>DockableBase</code> uses it to implement the <code>IDockable</code> tracking methods, so most applications interact with <code>TrackingAdapter</code> indirectly through the built-in docking controls.</p>
+<h2 id="when-to-use-adapters">When to use adapters</h2>
+<p>The provided adapters give you a ready-made implementation for common behaviors such as window hosting and dock navigation. You can derive from them or implement the corresponding interfaces yourself if your application has special requirements.</p>
+<p>For an overview of other Dock concepts see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-adapters.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

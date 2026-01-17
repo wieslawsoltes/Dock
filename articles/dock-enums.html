@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Enumerations | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Enumerations | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-enums.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-enumerations">Dock Enumerations</h1>
+
+<p>Several Dock APIs rely on small enumeration types. This page lists the most common ones so you know what values to expect when configuring docks or handling events.</p>
+<h2 id="alignment">Alignment</h2>
+<p>Used by tools and docks to describe where they are placed relative to the main layout.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unset</code></td>
+<td>Alignment has not been specified.</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Positioned on the left side.</td>
+</tr>
+<tr>
+<td><code>Bottom</code></td>
+<td>Positioned at the bottom.</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Positioned on the right side.</td>
+</tr>
+<tr>
+<td><code>Top</code></td>
+<td>Positioned at the top.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dockmode">DockMode</h2>
+<p>Indicates the default docking location for a dock or dockable.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Center</code></td>
+<td>Fills the remaining space.</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Docks to the left.</td>
+</tr>
+<tr>
+<td><code>Bottom</code></td>
+<td>Docks to the bottom.</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Docks to the right.</td>
+</tr>
+<tr>
+<td><code>Top</code></td>
+<td>Docks to the top.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dockoperation">DockOperation</h2>
+<p>Specifies the operation being performed when a dockable is moved or split.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>No docking operation.</td>
+</tr>
+<tr>
+<td><code>Fill</code></td>
+<td>Replace the target area.</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Insert to the left.</td>
+</tr>
+<tr>
+<td><code>Bottom</code></td>
+<td>Insert below.</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Insert to the right.</td>
+</tr>
+<tr>
+<td><code>Top</code></td>
+<td>Insert above.</td>
+</tr>
+<tr>
+<td><code>Window</code></td>
+<td>Open in a floating window.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="orientation">Orientation</h2>
+<p>Controls whether a proportional dock arranges its children horizontally or vertically.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Horizontal</code></td>
+<td>Children are stacked from left to right.</td>
+</tr>
+<tr>
+<td><code>Vertical</code></td>
+<td>Children are stacked from top to bottom.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="gridresizedirection">GridResizeDirection</h2>
+<p>Specifies whether a grid splitter moves rows or columns.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Columns</code></td>
+<td>Resize grid columns.</td>
+</tr>
+<tr>
+<td><code>Rows</code></td>
+<td>Resize grid rows.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documenttablayout">DocumentTabLayout</h2>
+<p>Controls where document tabs are placed around a document dock. Setting this affects both orientation and docking position of the tab strip.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Top</code></td>
+<td>Tabs are shown above the document content.</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Tabs are arranged vertically to the left.</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Tabs are arranged vertically to the right.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentclosebuttonshowmode">DocumentCloseButtonShowMode</h2>
+<p>Controls when close buttons are displayed on document tabs.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Always</code></td>
+<td>Always show close buttons.</td>
+</tr>
+<tr>
+<td><code>Active</code></td>
+<td>Show close buttons only for the active document.</td>
+</tr>
+<tr>
+<td><code>Never</code></td>
+<td>Never show close buttons.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="documentlayoutmode">DocumentLayoutMode</h2>
+<p>Controls whether a document dock renders documents as tabs or classic MDI windows.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tabbed</code></td>
+<td>Documents are shown as tabs (default).</td>
+</tr>
+<tr>
+<td><code>Mdi</code></td>
+<td>Documents are shown as internal MDI windows.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mdiwindowstate">MdiWindowState</h2>
+<p>Indicates the current state of an MDI document window.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Normal</code></td>
+<td>Window is in its normal size and position.</td>
+</tr>
+<tr>
+<td><code>Minimized</code></td>
+<td>Window is minimized.</td>
+</tr>
+<tr>
+<td><code>Maximized</code></td>
+<td>Window fills the document area.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="gripmode">GripMode</h2>
+<p>Determines how the grip element in tool chrome behaves (used by tool docks).</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Visible</code></td>
+<td>Grip is always shown.</td>
+</tr>
+<tr>
+<td><code>AutoHide</code></td>
+<td>Grip hides until the pointer is over it.</td>
+</tr>
+<tr>
+<td><code>Hidden</code></td>
+<td>Grip is not displayed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trackingmode">TrackingMode</h2>
+<p>Indicates which bounds <code>TrackingAdapter</code> is currently storing.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Visible</code></td>
+<td>Tracks the visible bounds.</td>
+</tr>
+<tr>
+<td><code>Pinned</code></td>
+<td>Tracks the pinned bounds.</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>Tracks the tab bounds.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dragaction">DragAction</h2>
+<p>Represents the drag and drop action Dock should perform when docking. This is a flags enum, but Dock uses single values (<code>Move</code>, <code>Link</code>, <code>Copy</code>) for internal docking gestures.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>No action permitted.</td>
+</tr>
+<tr>
+<td><code>Copy</code></td>
+<td>Data will be copied.</td>
+</tr>
+<tr>
+<td><code>Move</code></td>
+<td>Data will be moved.</td>
+</tr>
+<tr>
+<td><code>Link</code></td>
+<td>A link to the data will be created.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="splitviewdisplaymode">SplitViewDisplayMode</h2>
+<p>Controls how split view panes are displayed.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Inline</code></td>
+<td>Pane is displayed next to content and does not auto-collapse.</td>
+</tr>
+<tr>
+<td><code>CompactInline</code></td>
+<td>Pane is displayed next to content with a compact closed state.</td>
+</tr>
+<tr>
+<td><code>Overlay</code></td>
+<td>Pane overlays the content and auto-collapses.</td>
+</tr>
+<tr>
+<td><code>CompactOverlay</code></td>
+<td>Overlay mode with a compact closed state.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="splitviewpaneplacement">SplitViewPanePlacement</h2>
+<p>Controls where the split view pane is placed.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Left</code></td>
+<td>Pane is shown to the left of the content.</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Pane is shown to the right of the content.</td>
+</tr>
+<tr>
+<td><code>Top</code></td>
+<td>Pane is shown above the content.</td>
+</tr>
+<tr>
+<td><code>Bottom</code></td>
+<td>Pane is shown below the content.</td>
+</tr>
+</tbody>
+</table>
+<p>For a high level overview of Dock terminology see the <a href="dock-glossary.html">glossary</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-enums.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

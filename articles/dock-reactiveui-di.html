@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock ReactiveUI with Dependency Injection Getting Started Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock ReactiveUI with Dependency Injection Getting Started Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactiveui-di.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-reactiveui-with-dependency-injection-getting-started-guide">Dock ReactiveUI with Dependency Injection Getting Started Guide</h1>
+
+<p>This guide explains how to get started with Dock using ReactiveUI and dependency injection. This approach provides a clean separation of concerns, testability, and proper service management for complex applications.</p>
+<p>The sample project <code>DockReactiveUIDiSample</code> in the repository demonstrates this approach. For interface details refer to the <a href="dock-reference.html">Dock API Reference</a>.</p>
+<blockquote>
+<p><strong>💡 Modern Approach</strong>: For easier document management, consider using <a href="dock-itemssource.html">DocumentDock.ItemsSource</a> which automatically creates and manages documents from collections. The ItemsSource approach works seamlessly with dependency injection and ReactiveUI. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
+</blockquote>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
+<p>Follow these instructions to create a ReactiveUI application with dependency injection using Dock.</p>
+<ol>
+<li><p><strong>Create a new Avalonia project</strong></p>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MyDockApp
+cd MyDockApp
+</code></pre>
+</li>
+<li><p><strong>Install the required packages</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.ReactiveUI
+dotnet add package Dock.Model.Extensions.DependencyInjection
+dotnet add package Dock.Avalonia.Themes.Fluent
+dotnet add package Microsoft.Extensions.DependencyInjection
+dotnet add package Microsoft.Extensions.Hosting
+dotnet add package ReactiveUI.Avalonia
+</code></pre>
+<p><strong>Optional packages:</strong></p>
+<pre><code class="lang-bash"># For serialization (choose one):
+dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+</code></pre>
+</li>
+<li><p><strong>Set up Dependency Injection View Locator</strong></p>
+<p>Create a service-based ViewLocator that resolves views through the DI container:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyDockApp;
+
+public class ViewLocator : IDataTemplate, IViewLocator
+{
+    private readonly IServiceProvider _provider;
+
+    public ViewLocator(IServiceProvider provider)
+    {
+        _provider = provider;
+    }
+
+    private IViewFor? Resolve(object viewModel)
+    {
+        var vmType = viewModel.GetType();
+        var serviceType = typeof(IViewFor&lt;&gt;).MakeGenericType(vmType);
+
+        if (_provider.GetService(serviceType) is IViewFor view)
+        {
+            view.ViewModel = viewModel;
+            return view;
+        }
+
+        // Fallback: try to resolve by naming convention
+        var viewName = vmType.FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        if (viewName is not null)
+        {
+            var viewType = Type.GetType(viewName);
+            if (viewType != null &amp;&amp; _provider.GetService(viewType) is IViewFor view2)
+            {
+                view2.ViewModel = viewModel;
+                return view2;
+            }
+        }
+
+        return null;
+    }
+
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        if (Resolve(data) is IViewFor view &amp;&amp; view is Control control)
+            return control;
+
+        var viewName = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        return new TextBlock { Text = $&quot;Not Found: {viewName}&quot; };
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        return Resolve(data) is not null;
+    }
+
+    IViewFor? IViewLocator.ResolveView&lt;T&gt;(T? viewModel, string? contract) where T : default =&gt;
+        viewModel is null ? null : Resolve(viewModel);
+}
+</code></pre>
+</li>
+<li><p><strong>Create your data models and services</strong></p>
+<p>Create a simple data service and model:</p>
+<pre><code class="lang-csharp">namespace MyDockApp.Models;
+
+public class DemoData
+{
+    public string Message { get; set; } = &quot;Hello from Dependency Injection!&quot;;
+    public DateTime LastUpdated { get; set; } = DateTime.Now;
+}
+
+public interface IDataService
+{
+    DemoData GetData();
+    void UpdateData(DemoData data);
+}
+
+public class DataService : IDataService
+{
+    private DemoData _data = new();
+
+    public DemoData GetData() =&gt; _data;
+
+    public void UpdateData(DemoData data)
+    {
+        _data = data;
+        _data.LastUpdated = DateTime.Now;
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create view models using dependency injection</strong></p>
+<pre><code class="lang-csharp">using System.Reactive.Disposables;
+using ReactiveUI;
+using Dock.Model.ReactiveUI.Controls;
+using MyDockApp.Models;
+
+namespace MyDockApp.ViewModels.Documents
+{
+    public class DocumentViewModel : Document
+    {
+        private readonly IDataService _dataService;
+        private readonly CompositeDisposable _disposables = new();
+
+        public DocumentViewModel(IDataService dataService)
+        {
+            _dataService = dataService;
+
+            var data = _dataService.GetData();
+            Content = data.Message;
+
+            // Set up reactive properties and commands as needed
+            this.WhenAnyValue(x =&gt; x.Content)
+                .Subscribe(content =&gt; 
+                {
+                    var updatedData = new DemoData { Message = content };
+                    _dataService.UpdateData(updatedData);
+                })
+                .DisposeWith(_disposables);
+        }
+
+        private string _content = string.Empty;
+        public string Content
+        {
+            get =&gt; _content;
+            set =&gt; this.RaiseAndSetIfChanged(ref _content, value);
+        }
+    }
+}
+
+namespace MyDockApp.ViewModels.Tools
+{
+    public class ToolViewModel : Tool
+    {
+        private readonly IDataService _dataService;
+
+        public ToolViewModel(IDataService dataService)
+        {
+            _dataService = dataService;
+            RefreshData();
+        }
+
+        private string _status = string.Empty;
+        public string Status
+        {
+            get =&gt; _status;
+            set =&gt; this.RaiseAndSetIfChanged(ref _status, value);
+        }
+
+        private void RefreshData()
+        {
+            var data = _dataService.GetData();
+            Status = $&quot;Last updated: {data.LastUpdated:HH:mm:ss}&quot;;
+        }
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create a factory with dependency injection</strong></p>
+<pre><code class="lang-csharp">using System;
+using System.Collections.Generic;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI;
+using Dock.Model.ReactiveUI.Controls;
+using MyDockApp.Models;
+using MyDockApp.ViewModels.Documents;
+using MyDockApp.ViewModels.Tools;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyDockApp.ViewModels;
+
+public class DockFactory : Factory
+{
+    private readonly IServiceProvider _provider;
+
+    public DockFactory(IServiceProvider provider)
+    {
+        _provider = provider;
+    }
+
+    public override IRootDock CreateLayout()
+    {
+        var document = _provider.GetRequiredService&lt;DocumentViewModel&gt;();
+        document.Id = &quot;Document1&quot;;
+        document.Title = &quot;Document&quot;;
+
+        var tool = _provider.GetRequiredService&lt;ToolViewModel&gt;();
+        tool.Id = &quot;Tool1&quot;;
+        tool.Title = &quot;Tool&quot;;
+
+        var proportionalDock = CreateProportionalDock();
+        proportionalDock.Orientation = Orientation.Horizontal;
+        proportionalDock.VisibleDockables = CreateList&lt;IDockable&gt;(
+            new DocumentDock
+            {
+                VisibleDockables = CreateList&lt;IDockable&gt;(document),
+                ActiveDockable = document
+            },
+            CreateProportionalDockSplitter(),
+            new ToolDock
+            {
+                VisibleDockables = CreateList&lt;IDockable&gt;(tool),
+                ActiveDockable = tool
+            });
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(proportionalDock);
+        root.ActiveDockable = proportionalDock;
+        root.DefaultDockable = proportionalDock;
+
+        return root;
+    }
+
+    public override void InitLayout(IDockable layout)
+    {
+        DockableLocator = new Dictionary&lt;string, Func&lt;IDockable?&gt;&gt;
+        {
+            [&quot;Document1&quot;] = () =&gt;
+            {
+                var vm = _provider.GetRequiredService&lt;DocumentViewModel&gt;();
+                vm.Id = &quot;Document1&quot;;
+                vm.Title = &quot;Document&quot;;
+                return vm;
+            },
+            [&quot;Tool1&quot;] = () =&gt;
+            {
+                var vm = _provider.GetRequiredService&lt;ToolViewModel&gt;();
+                vm.Id = &quot;Tool1&quot;;
+                vm.Title = &quot;Tool&quot;;
+                return vm;
+            }
+        };
+
+        ContextLocator = new Dictionary&lt;string, Func&lt;object?&gt;&gt;
+        {
+            [&quot;Document1&quot;] = () =&gt; _provider.GetRequiredService&lt;DemoData&gt;(),
+            [&quot;Tool1&quot;] = () =&gt; _provider.GetRequiredService&lt;DemoData&gt;()
+        };
+
+        DefaultContextLocator = () =&gt; _provider.GetService(typeof(DemoData));
+
+        base.InitLayout(layout);
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Create views</strong></p>
+<p><strong>DocumentView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.Documents.DocumentView&quot;&gt;
+  &lt;TextBox Text=&quot;{Binding Content}&quot; AcceptsReturn=&quot;True&quot; /&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>DocumentView.axaml.cs:</strong></p>
+<pre><code class="lang-csharp">using ReactiveUI.Avalonia;
+using MyDockApp.ViewModels.Documents;
+
+namespace MyDockApp.Views.Documents;
+
+public partial class DocumentView : ReactiveUserControl&lt;DocumentViewModel&gt;
+{
+    public DocumentView()
+    {
+        InitializeComponent();
+    }
+}
+</code></pre>
+<p><strong>ToolView.axaml:</strong></p>
+<pre><code class="lang-xaml">&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             x:Class=&quot;MyDockApp.Views.Tools.ToolView&quot;&gt;
+  &lt;StackPanel Margin=&quot;5&quot;&gt;
+    &lt;TextBlock Text=&quot;Tool Panel&quot; FontWeight=&quot;Bold&quot; /&gt;
+    &lt;TextBlock Text=&quot;{Binding Status}&quot; /&gt;
+  &lt;/StackPanel&gt;
+&lt;/UserControl&gt;
+</code></pre>
+<p><strong>ToolView.axaml.cs:</strong></p>
+<pre><code class="lang-csharp">using ReactiveUI.Avalonia;
+using MyDockApp.ViewModels.Tools;
+
+namespace MyDockApp.Views.Tools;
+
+public partial class ToolView : ReactiveUserControl&lt;ToolViewModel&gt;
+{
+    public ToolView()
+    {
+        InitializeComponent();
+    }
+}
+</code></pre>
+</li>
+<li><p><strong>Set up dependency injection in Program.cs</strong></p>
+<pre><code class="lang-csharp">using System;
+using Avalonia;
+using ReactiveUI.Avalonia;
+using Dock.Model.Extensions.DependencyInjection;
+using Dock.Serializer;
+using MyDockApp.Models;
+using MyDockApp.ViewModels;
+using MyDockApp.ViewModels.Documents;
+using MyDockApp.ViewModels.Tools;
+using MyDockApp.Views;
+using MyDockApp.Views.Documents;
+using MyDockApp.Views.Tools;
+using ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyDockApp;
+
+internal class Program
+{
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        using var provider = Initialize();
+        BuildAvaloniaApp(provider).StartWithClassicDesktopLifetime(args);
+    }
+
+    private static ServiceProvider Initialize()
+    {
+        var services = new ServiceCollection();
+        ConfigureServices(services);
+        return services.BuildServiceProvider();
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSingleton&lt;App&gt;();
+        services.AddSingleton&lt;IViewLocator, ViewLocator&gt;();
+
+        // Register data services
+        services.AddSingleton&lt;DemoData&gt;();
+        services.AddSingleton&lt;IDataService, DataService&gt;();
+
+        // Register view models
+        services.AddTransient&lt;DocumentViewModel&gt;();
+        services.AddTransient&lt;ToolViewModel&gt;();
+        services.AddSingleton&lt;MainWindowViewModel&gt;();
+
+        // Register views
+        services.AddTransient&lt;IViewFor&lt;DocumentViewModel&gt;, DocumentView&gt;();
+        services.AddTransient&lt;IViewFor&lt;ToolViewModel&gt;, ToolView&gt;();
+        services.AddTransient&lt;IViewFor&lt;MainWindowViewModel&gt;, MainWindow&gt;();
+
+        // Register Dock services
+        services.AddDock&lt;DockFactory, DockSerializer&gt;();
+    }
+
+    public static AppBuilder BuildAvaloniaApp(IServiceProvider provider)
+        =&gt; AppBuilder.Configure(() =&gt; provider.GetRequiredService&lt;App&gt;())
+            .UsePlatformDetect()
+            .WithInterFont()
+            .UseReactiveUI()
+            .LogToTrace();
+}
+</code></pre>
+</li>
+<li><p><strong>Update App.axaml.cs to use dependency injection</strong></p>
+<pre><code class="lang-csharp">using System;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
+using Avalonia.Markup.Xaml;
+using Microsoft.Extensions.DependencyInjection;
+using MyDockApp.ViewModels;
+using ReactiveUI;
+
+namespace MyDockApp;
+
+public partial class App : Application
+{
+    public IServiceProvider? ServiceProvider { get; }
+    private readonly IViewLocator _viewLocator;
+
+    public App()
+    {
+    }
+
+    public App(IServiceProvider? serviceProvider, IViewLocator viewLocator)
+    {
+        ServiceProvider = serviceProvider;
+        _viewLocator = viewLocator;
+    }
+
+public override void Initialize()
+{
+    AvaloniaXamlLoader.Load(this);
+    DataTemplates.Insert(0, (IDataTemplate)_viewLocator);
+}
+
+public override void OnFrameworkInitializationCompleted()
+{
+    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &amp;&amp; ServiceProvider != null)
+    {
+        var viewModel = ServiceProvider.GetRequiredService&lt;MainWindowViewModel&gt;();
+        var view = ServiceProvider.GetRequiredService&lt;IViewFor&lt;MainWindowViewModel&gt;&gt;();
+        view.ViewModel = viewModel;
+        if (view is Window window)
+        {
+            desktop.MainWindow = window;
+        }
+    }
+
+    base.OnFrameworkInitializationCompleted();
+}
+}
+</code></pre>
+</li>
+<li><p><strong>Run the application</strong></p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+</li>
+</ol>
+<h2 id="dependency-injection-benefits">Dependency Injection Benefits</h2>
+<p>Using dependency injection with Dock provides several advantages:</p>
+<ol>
+<li><strong>Testability</strong>: Easy to mock services for unit testing</li>
+<li><strong>Separation of Concerns</strong>: Clear separation between data access, business logic, and UI</li>
+<li><strong>Service Management</strong>: Automatic lifetime management of services</li>
+<li><strong>Configuration</strong>: Easy to configure different implementations for different environments</li>
+<li><strong>Extensibility</strong>: Easy to add new services and features</li>
+</ol>
+<h2 id="key-points">Key Points</h2>
+<ul>
+<li><strong>Service Registration</strong>: Register all view models, views, and services in the DI container</li>
+<li><strong>Factory Dependencies</strong>: Pass the service provider to the factory for dynamic service resolution</li>
+<li><strong>View Locator</strong>: Use a DI-aware view locator that resolves views from the container</li>
+<li><strong>Reactive Commands</strong>: Leverage ReactiveUI's reactive programming model with injected services</li>
+<li><strong>Proper Disposal</strong>: Ensure proper cleanup of reactive subscriptions using <code>DisposeWith()</code></li>
+</ul>
+<p>This approach is ideal for complex applications that require proper service management, testability, and clean architecture principles.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-reactiveui-di.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

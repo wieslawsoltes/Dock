@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Glossary | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Glossary | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-glossary.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-glossary">Dock Glossary</h1>
+
+<p>This page defines common terms used throughout the Dock documentation and sample code. Use it as a quick reference when reading the guides.</p>
+<ul>
+<li><strong>DockControl</strong> – Avalonia control that displays the layout and processes pointer input.</li>
+<li><strong>Dockable</strong> – Base interface for items that can appear inside a dock. Documents, tools and docks all derive from it.</li>
+<li><strong>Dock</strong> – Container that hosts a collection of dockables and exposes navigation commands.</li>
+<li><strong>RootDock</strong> – The top-level dock that owns the complete layout and manages pinned docks and windows.</li>
+<li><strong>ProportionalDock</strong> – Arranges its children horizontally or vertically according to their <code>Proportion</code> values.</li>
+<li><strong>ToolDock / DocumentDock</strong> – Specialized docks intended for tools or documents respectively.</li>
+<li><strong>DockWindow / HostWindow</strong> – Floating window created when a dockable is detached from the main layout.</li>
+<li><strong>Layout</strong> – The arrangement of docks and dockables currently shown by <code>DockControl</code>.</li>
+<li><strong>Factory</strong> – Class responsible for creating and modifying layouts at runtime.</li>
+<li><strong>IDockSerializer</strong> – Interface for saving or loading layouts; <code>Dock.Serializer.*</code> provides concrete implementations such as <code>DockSerializer</code>.</li>
+<li><strong>DockManager</strong> – Implements the algorithms that move or swap dockables during drag and drop.</li>
+<li><strong>HostAdapter</strong> – Bridges an <code>IDockWindow</code> with the platform window used to display it.</li>
+<li><strong>NavigateAdapter</strong> – Provides back and forward history navigation for docks.</li>
+<li><strong>TrackingAdapter</strong> – Stores bounds information while dockables are moved or pinned.</li>
+<li><strong>DockMode</strong> – Enumerates the default docking location such as Left, Right or Center.</li>
+<li><strong>DockPoint</strong> – Simple structure representing an X/Y coordinate.</li>
+<li><strong>DockRect</strong> – Rectangle structure used for MDI bounds (X, Y, Width, Height).</li>
+</ul>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-glossary.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

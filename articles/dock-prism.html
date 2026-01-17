@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Prism Integration | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Prism Integration | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-prism.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-prism-integration">Dock Prism Integration</h1>
+
+<p>Dock includes a Prism-oriented model that mirrors the functionality exposed for the default MVVM pipeline while embracing Prism conventions such as <code>BindableBase</code> and <code>DelegateCommand</code>. The following sections describe the additional requirements, initialization patterns, and code samples needed to wire Dock with Prism.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Reference the <code>Dock.Model.Prism</code> project or package in your Prism application.
+<ul>
+<li>Samples reference the project directly from <code>src/Dock.Model.Prism/Dock.Model.Prism.csproj</code>.</li>
+<li>When using the NuGet packages, add <code>Dock.Model.Prism</code> and Prism's <code>Prism.Core</code> (implicitly pulled by the <code>build/Prism.props</code> import).</li>
+</ul>
+</li>
+<li>Import the shared Dock Avalonia infrastructure used by all samples: <code>Dock.Model</code>, <code>Dock.Avalonia</code>, <code>Dock.Avalonia.Themes.Fluent</code>, and the diagnostics assemblies when needed.</li>
+<li>In multi-targeted solutions, ensure the Prism props file (<code>build/Prism.props</code>) is imported so the <code>Prism.Core</code> package version stays aligned with the repository.</li>
+</ul>
+<h2 id="prism-bootstrapping">Prism Bootstrapping</h2>
+<p>Dock does not replace the Prism bootstrapper. Prism's typical <code>App</code> initialization remains the entry point and Dock components behave like any other view model graph.</p>
+<pre><code class="lang-csharp">// Program.cs
+public static AppBuilder BuildAvaloniaApp() =&gt;
+    AppBuilder.Configure&lt;App&gt;()
+        .UsePlatformDetect()
+        .WithInterFont()
+        .LogToTrace();
+</code></pre>
+<p>Within the Prism-aware application, instantiate the Dock layout in your <code>Application</code> subclass. The sample (<code>DockPrismSample</code>) performs the initialization in <code>App.axaml.cs</code>:</p>
+<pre><code class="lang-csharp">public override void OnFrameworkInitializationCompleted()
+{
+    var mainWindowViewModel = new MainWindowViewModel();
+
+    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+    {
+        var mainWindow = new MainWindow { DataContext = mainWindowViewModel };
+        desktop.MainWindow = mainWindow;
+    }
+
+    base.OnFrameworkInitializationCompleted();
+}
+</code></pre>
+<p>Dock view models live in Prism view model classes and are resolved the same way as any other Prism component: you can register factories in Prism's container or instantiate them manually as shown above. The sample keeps the construction simple to focus on the docking behavior.</p>
+<h2 id="view-model-integration">View Model Integration</h2>
+<p>Use Prism types in place of the CommunityToolkit equivalents that the MVVM sample references:</p>
+<ul>
+<li>Derive view models from <code>Prism.Mvvm.BindableBase</code> (or a custom subclass) to get property change notifications.</li>
+<li>Use <code>Prism.Commands.DelegateCommand</code> for Dock command bindings such as layout reset or document creation.</li>
+</ul>
+<pre><code class="lang-csharp">// MainWindowViewModel.cs
+public class MainWindowViewModel : BindableBase
+{
+    private readonly IEventAggregator _eventAggregator;
+    private readonly IFactory? _factory;
+    private IRootDock? _layout;
+
+    public IRootDock? Layout
+    {
+        get =&gt; _layout;
+        set =&gt; SetProperty(ref _layout, value);
+    }
+
+    public ICommand NewLayout { get; }
+
+    public MainWindowViewModel()
+    {
+        _eventAggregator = new EventAggregator();
+        _factory = new DockFactory(new DemoData(), _eventAggregator);
+
+        var layout = _factory?.CreateLayout();
+        if (layout is not null)
+        {
+            _factory?.InitLayout(layout);
+        }
+
+        Layout = layout;
+        if (Layout is { } root)
+        {
+            root.Navigate.Execute(&quot;Home&quot;);
+        }
+
+        NewLayout = new DelegateCommand(ResetLayout);
+    }
+
+    private void ResetLayout()
+    {
+        if (Layout?.Close.CanExecute(null) == true)
+        {
+            Layout.Close.Execute(null);
+        }
+
+        var layout = _factory?.CreateLayout();
+        if (layout is not null)
+        {
+            _factory.InitLayout(layout);
+            Layout = layout;
+        }
+    }
+}
+</code></pre>
+<p>The Dock factory continues to derive from <code>Dock.Model.Prism.Factory</code>, which supplies Prism-aware base classes for dockables. Dockables created in this factory automatically inherit Prism features like <code>BindableBase</code>.</p>
+<pre><code class="lang-csharp">// DockFactory.cs
+public class DockFactory : Factory
+{
+    private readonly object _context;
+    private readonly IEventAggregator _eventAggregator;
+
+    public DockFactory(object context, IEventAggregator eventAggregator)
+    {
+        _context = context;
+        _eventAggregator = eventAggregator;
+    }
+
+    public override IDocumentDock CreateDocumentDock() =&gt; new CustomDocumentDock(_eventAggregator);
+
+    public override IRootDock CreateLayout()
+    {
+        var document = new DocumentViewModel(_eventAggregator) { Id = &quot;Document1&quot;, Title = &quot;Document1&quot; };
+
+        var documentDock = new CustomDocumentDock(_eventAggregator)
+        {
+            ActiveDockable = document,
+            VisibleDockables = CreateList&lt;IDockable&gt;(document),
+            CanCreateDocument = true
+        };
+
+        var root = CreateRootDock();
+        root.ActiveDockable = documentDock;
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(documentDock);
+        return root;
+    }
+}
+</code></pre>
+<h2 id="custom-commands-and-documents">Custom Commands and Documents</h2>
+<p>Prism's command infrastructure makes it straightforward to wire Dock actions:</p>
+<pre><code class="lang-csharp">// CustomDocumentDock.cs
+public class CustomDocumentDock : DocumentDock
+{
+    private readonly IEventAggregator _eventAggregator;
+
+    public CustomDocumentDock(IEventAggregator eventAggregator)
+    {
+        _eventAggregator = eventAggregator;
+        CreateDocument = new DelegateCommand(CreateNewDocument);
+    }
+
+    private void CreateNewDocument()
+    {
+        if (!CanCreateDocument)
+        {
+            return;
+        }
+
+        var index = VisibleDockables?.Count + 1 ?? 1;
+        var document = new DocumentViewModel(_eventAggregator)
+        {
+            Id = $&quot;Document{index}&quot;,
+            Title = $&quot;Document{index}&quot;
+        };
+
+        Factory?.AddDockable(this, document);
+        Factory?.SetActiveDockable(document);
+        Factory?.SetFocusedDockable(this, document);
+    }
+}
+</code></pre>
+<p>Any Dock command property (for example <code>Close</code>, <code>Pin</code>, or custom menu items) can be backed by a Prism <code>DelegateCommand</code> or <code>CompositeCommand</code>. This aligns Dock's dynamic layout operations with Prism's well-known command aggregation features.</p>
+<h2 id="prism-concepts-in-dock-layouts">Prism Concepts in Dock Layouts</h2>
+<p>Build on the base sample by layering common Prism patterns alongside Dock's layout primitives.</p>
+<ul>
+<li><strong>Event Aggregator</strong>: Broadcast document state changes so tools can react without direct references.</li>
+<li><strong>Composite Commands</strong>: Coordinate toolbar buttons that trigger multiple dock actions simultaneously.</li>
+<li><strong>Region Coordination</strong>: Use Prism's region adapters so navigation requests populate docked areas.</li>
+<li><strong>Module Initialization</strong>: Register dockables from Prism modules to keep the layout modular and discoverable.</li>
+</ul>
+<h3 id="event-aggregator-and-dockables">Event Aggregator and Dockables</h3>
+<p>Inject Prism's <code>IEventAggregator</code> into dockables to publish layout activity and decouple tools from documents.</p>
+<pre><code class="lang-csharp">public class DocumentClosedEvent : PubSubEvent&lt;DocumentClosedPayload&gt;;
+public record DocumentClosedPayload(string Id, string Title);
+
+public class DocumentViewModel : Document
+{
+    private readonly IEventAggregator _eventAggregator;
+
+    public DocumentViewModel(IEventAggregator eventAggregator)
+    {
+        _eventAggregator = eventAggregator;
+    }
+
+    protected override bool OnClose()
+    {
+        _eventAggregator.GetEvent&lt;DocumentClosedEvent&gt;()
+            .Publish(new DocumentClosedPayload(Id, Title));
+        return base.OnClose();
+    }
+}
+
+public class Tool1ViewModel : Tool
+{
+    public string? Status { get; private set; }
+
+    public Tool1ViewModel(IEventAggregator eventAggregator)
+    {
+        eventAggregator.GetEvent&lt;DocumentClosedEvent&gt;()
+            .Subscribe(payload =&gt; Status = $&quot;Closed {payload.Title}&quot;);
+    }
+}
+</code></pre>
+<h3 id="composite-commands-for-layout-actions">Composite Commands for Layout Actions</h3>
+<p>Aggregate dock operations with Prism's <code>CompositeCommand</code> to keep UI buttons in sync with multiple dockables.</p>
+<pre><code class="lang-csharp">public static class DockCommands
+{
+    public static readonly CompositeCommand SaveAndPin = new();
+}
+
+public class DocumentViewModel : Document
+{
+    public DocumentViewModel()
+    {
+        DockCommands.SaveAndPin.RegisterCommand(Save);
+    }
+
+    public DelegateCommand Save =&gt; new(() =&gt; /* persist content */);
+}
+
+public class ToolViewModel : Tool
+{
+    public ToolViewModel()
+    {
+        DockCommands.SaveAndPin.RegisterCommand(new DelegateCommand(() =&gt; CanPin = true));
+    }
+}
+</code></pre>
+<p>Bind <code>DockCommands.SaveAndPin</code> to a toolbar button to invoke every registered Dock command in one gesture.</p>
+<h3 id="prism-navigation-inside-docked-regions">Prism Navigation Inside Docked Regions</h3>
+<p>Adapt Dock controls into Prism regions so navigation requests populate docked panes rather than replacing windows.</p>
+<pre><code class="lang-csharp">using System.Linq;
+using Dock.Avalonia.Controls;
+using Dock.Model.Core;
+
+public class DockRegionAdapter : RegionAdapterBase&lt;DockControl&gt;
+{
+    public DockRegionAdapter(IRegionBehaviorFactory factory) : base(factory)
+    {
+    }
+
+    protected override void Adapt(IRegion region, DockControl regionTarget)
+    {
+        region.Views.CollectionChanged += (_, _) =&gt;
+        {
+            if (regionTarget.Layout is not IDock targetDock)
+            {
+                return;
+            }
+
+            foreach (var dockable in region.Views.OfType&lt;IDockable&gt;())
+            {
+                if (targetDock.VisibleDockables?.Contains(dockable) == true)
+                {
+                    continue;
+                }
+
+                if (targetDock.Factory is { } factory)
+                {
+                    factory.AddDockable(targetDock, dockable);
+                    factory.SetActiveDockable(dockable);
+                }
+                else if (targetDock.VisibleDockables is { })
+                {
+                    targetDock.VisibleDockables.Add(dockable);
+                }
+            }
+        };
+    }
+
+    protected override IRegion CreateRegion() =&gt; new AllActiveRegion();
+}
+
+protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings mappings)
+{
+    base.ConfigureRegionAdapterMappings(mappings);
+    mappings.RegisterMapping(typeof(DockControl), Container.Resolve&lt;DockRegionAdapter&gt;());
+}
+</code></pre>
+<p>With the adapter registered, add <code>IDockable</code> view models to the region (or resolve them from the container) and the adapter inserts them into the dock. Use Dock data templates to render those dockables in the UI.</p>
+<h3 id="loading-dockables-from-prism-modules">Loading Dockables from Prism Modules</h3>
+<p>Use <code>IModule</code> to register and insert dockables when modules initialize.</p>
+<pre><code class="lang-csharp">public class ReportsModule : IModule
+{
+    public void RegisterTypes(IContainerRegistry containerRegistry)
+    {
+        containerRegistry.RegisterForNavigation&lt;ReportsView, ReportsViewModel&gt;();
+    }
+
+    public void OnInitialized(IContainerProvider containerProvider)
+    {
+        var factory = containerProvider.Resolve&lt;IFactory&gt;();
+        var reportsDock = containerProvider.Resolve&lt;ReportsViewModel&gt;();
+
+        if (factory.GetDockable&lt;IDockable&gt;(&quot;RightTools&quot;) is { } toolsDock)
+        {
+            factory.AddDockable(toolsDock, reportsDock);
+            factory.SetActiveDockable(reportsDock);
+        }
+    }
+}
+</code></pre>
+<p>This keeps the Dock layout extensible and aligned with Prism's module loading lifecycle.</p>
+<h2 id="running-the-sample">Running the Sample</h2>
+<p>The <code>DockPrismSample</code> mirrors the MVVM sample but swaps in Prism infrastructure. To explore it:</p>
+<pre><code class="lang-bash">cd path/to/Dock
+./build.sh            # optional: restore, build, test everything
+# or run the sample directly
+DOTNET_CLI_TELEMETRY_OPTOUT=1 dotnet run --project samples/DockPrismSample/DockPrismSample.csproj
+</code></pre>
+<p>When the window opens, experiment with creating documents, docking tools, and resetting the layout to observe how Prism commands and property notifications flow through the Dock model.</p>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li>Integrate the factory and view models into your Prism container using <code>IContainerRegistry</code> to enable dependency injection.</li>
+<li>Extend the sample with Prism navigation to swap between multiple root layouts or to persist layout state via Prism services.</li>
+<li>Review <code>dock-dependency-injection.md</code> in tandem with this guide when combining Prism's DI abstractions with Dock's factory interfaces.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-prism.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

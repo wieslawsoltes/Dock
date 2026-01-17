@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock API Scenarios | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock API Scenarios | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-api-scenarios.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-api-scenarios">Dock API Scenarios</h1>
+
+<p>This short document collects the most common ways the Dock API is used. The examples apply equally to the MVVM, ReactiveUI, and Avalonia/XAML model variants.</p>
+<h2 id="dock-controls">Dock controls</h2>
+<p>Dock provides several themed controls that host parts of a layout. These are Avalonia controls used by the built-in themes and data templates.</p>
+<h3 id="dockcontrol">DockControl</h3>
+<p>The main control placed in your view to display a layout. Set the <code>Layout</code> and optionally the <code>Factory</code> properties from code or XAML:</p>
+<pre><code class="lang-xaml">&lt;DockControl Layout=&quot;{Binding Layout}&quot;
+             Factory=&quot;{Binding Factory}&quot;
+             InitializeLayout=&quot;True&quot;
+             InitializeFactory=&quot;True&quot; /&gt;
+</code></pre>
+<h3 id="documentdockcontrol">DocumentDockControl</h3>
+<p>Default Avalonia control for <code>IDocumentDock</code>. The theme template switches between <code>DocumentControl</code> (tabbed) and <code>MdiDocumentControl</code> (MDI) based on <code>LayoutMode</code>.</p>
+<h3 id="tooldockcontrol">ToolDockControl</h3>
+<p>Default Avalonia control for <code>IToolDock</code>. The theme template hosts <code>ToolChromeControl</code> and <code>ToolControl</code> to render the active tool and chrome buttons.</p>
+<h2 id="factories">Factories</h2>
+<p>All runtime operations go through a factory. Pick the implementation that matches your project style:</p>
+<h3 id="dockmodelavaloniafactory"><code>Dock.Model.Avalonia.Factory</code></h3>
+<p>The plain Avalonia variant.  Useful when creating layouts directly in code or XAML without MVVM helpers.</p>
+<h3 id="dockmodelmvvmfactory"><code>Dock.Model.Mvvm.Factory</code></h3>
+<p>Provides base classes implementing <code>INotifyPropertyChanged</code>.  Ideal for traditional MVVM view models.</p>
+<h3 id="dockmodelreactiveuifactory"><code>Dock.Model.ReactiveUI.Factory</code></h3>
+<p>Wraps the same API with ReactiveUI types. Commands become <code>ReactiveCommand</code> and properties derive from <code>ReactiveObject</code>.</p>
+<p>Other packages expose the same factory pattern, including <code>Dock.Model.Prism.Factory</code>, <code>Dock.Model.CaliburMicro.Factory</code>, <code>Dock.Model.Inpc.Factory</code>, and <code>Dock.Model.ReactiveProperty.Factory</code>.</p>
+<p>A typical initialization sequence looks like:</p>
+<pre><code class="lang-csharp">var factory = new Dock.Model.Mvvm.Factory();
+var layout = factory.CreateLayout();
+factory.InitLayout(layout);
+dockControl.Factory = factory;
+dockControl.Layout = layout;
+</code></pre>
+<p>These factories expose methods such as <code>AddDockable</code>, <code>MoveDockable</code> or <code>FloatDockable</code> and raise events like <code>ActiveDockableChanged</code> so you can react to changes.</p>
+<p>Use the MVVM, ReactiveUI or XAML samples as references for complete implementations.</p>
+<h3 id="saving-and-restoring-a-layout">Saving and restoring a layout</h3>
+<p>Layouts can be persisted using any <code>IDockSerializer</code> implementation such as:
+<code>Dock.Serializer.Newtonsoft</code>, <code>Dock.Serializer.SystemTextJson</code>,
+<code>Dock.Serializer.Protobuf</code>, <code>Dock.Serializer.Xml</code>, or <code>Dock.Serializer.Yaml</code>.
+This allows users to keep their preferred window arrangement between sessions.</p>
+<pre><code class="lang-csharp">await using var stream = File.Create(path);
+_dockState.Save(layout);
+_serializer.Save(stream, layout);
+</code></pre>
+<p>Likewise you can restore a saved layout and reinitialize the factory and dock state:</p>
+<pre><code class="lang-csharp">await using var stream = File.OpenRead(path);
+var layout = _serializer.Load&lt;IDock?&gt;(stream);
+if (layout is { })
+{
+    dockControl.Layout = layout;
+    dockControl.Factory?.InitLayout(layout);
+    _dockState.Restore(layout);
+}
+</code></pre>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-api-scenarios.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

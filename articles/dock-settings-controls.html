@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DockSettings in Controls | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DockSettings in Controls | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-settings-controls.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="docksettings-in-controls">DockSettings in Controls</h1>
+
+<p><code>Dock.Settings</code> defines global properties that help you implement consistent drag and drop behavior. This guide explains why these settings matter and how to apply them when creating custom controls or overriding templates.</p>
+<h2 id="why-use-docksettings">Why use DockSettings?</h2>
+<p>All Dock controls start a drag operation only after the pointer moves a short distance. The thresholds are exposed as <code>DockSettings.MinimumHorizontalDragDistance</code> and <code>DockSettings.MinimumVerticalDragDistance</code>. By relying on these values you ensure every control reacts the same way and users do not accidentally begin dragging.</p>
+<p>When you build your own controls or replace the default templates you should respect these distances instead of hard coding your own numbers.</p>
+<h2 id="checking-drag-thresholds">Checking drag thresholds</h2>
+<p>The <code>DocumentTabStrip</code> control uses the settings when it decides whether a pointer movement counts as a drag:</p>
+<pre><code class="lang-csharp">var delta = currentPoint - _dragStartPoint;
+if (!DockSettings.IsMinimumDragDistance(delta))
+{
+    return; // Not enough movement yet
+}
+</code></pre>
+<p>You can apply the same check in your custom <code>PointerMoved</code> handlers before calling <code>BeginMoveDrag</code> on the host window.</p>
+<h2 id="marking-drag-and-drop-areas">Marking drag and drop areas</h2>
+<p><code>DockProperties</code> exposes attached properties to opt-in to docking features:</p>
+<ul>
+<li><code>IsDockTarget</code> designates the surface that accepts docked items and shows a <code>DockTargetBase</code> adorner.</li>
+<li><code>IsDragArea</code> marks a region where the user can start dragging.</li>
+<li><code>IsDropArea</code> marks a region that can receive drops.</li>
+<li><code>IsDragEnabled</code> and <code>IsDropEnabled</code> allow you to enable or disable interactions globally for any subtree.</li>
+<li><code>ShowDockIndicatorOnly</code> shows only drop indicators, hiding the dock target visuals.</li>
+<li><code>IndicatorDockOperation</code> sets the dock operation for controls that only show indicators.</li>
+<li><code>DockAdornerHost</code> directs the dock adorner to a different host control.</li>
+<li><code>DockGroup</code> restricts docking to matching groups (inherited through the visual tree).</li>
+</ul>
+<p>These properties are normally set in the default styles but you can place them on your own controls:</p>
+<pre><code class="lang-xaml">&lt;Border xmlns:dockSettings=&quot;clr-namespace:Dock.Settings;assembly=Dock.Settings&quot;
+        dockSettings:DockProperties.IsDragArea=&quot;True&quot;
+        dockSettings:DockProperties.IsDropArea=&quot;True&quot; /&gt;
+</code></pre>
+<p>From code you can toggle interactions dynamically:</p>
+<pre><code class="lang-csharp">DockProperties.SetIsDragEnabled(myControl, false);
+DockProperties.SetIsDropEnabled(myControl, false);
+</code></pre>
+<h2 id="guidelines">Guidelines</h2>
+<ol>
+<li>Use the <code>DockSettings</code> drag distances whenever you implement pointer logic for dragging dockables.</li>
+<li>Apply <code>DockProperties</code> to identify drag handles and drop zones in your templates.</li>
+<li>Consider disabling drag or drop interactions with <code>IsDragEnabled</code> and <code>IsDropEnabled</code> when your UI needs to lock down docking temporarily.</li>
+</ol>
+<p>For an overview of all settings see <a href="dock-settings.html">Dock settings</a> and the other guides listed in the documentation index.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-settings-controls.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Styling and Theming | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Styling and Theming | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-styling.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="styling-and-theming">Styling and Theming</h1>
+
+<p>This guide demonstrates how to customize the appearance of Dock controls using Avalonia styles. It shows how to apply built-in themes, override style resources and tweak control templates.</p>
+<h2 id="applying-a-theme">Applying a theme</h2>
+<p>Dock ships with <strong>Fluent</strong> and <strong>Simple</strong> themes. Include one of them in <code>App.axaml</code> together with an Avalonia base theme:</p>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+  &lt;FluentTheme Mode=&quot;Dark&quot; /&gt;
+  &lt;DockFluentTheme /&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>The <code>DockFluentTheme</code> merges all default styles for the docking controls. Use <code>DockSimpleTheme</code> if you prefer lighter accents.</p>
+<h2 id="overriding-resources">Overriding resources</h2>
+<p>You can override brushes and other resources to match your application colors:</p>
+<pre><code class="lang-xaml">&lt;Application.Resources&gt;
+  &lt;Color x:Key=&quot;RegionColor&quot;&gt;#FF1E1E1E&lt;/Color&gt;
+  &lt;Color x:Key=&quot;SystemAccentColor&quot;&gt;#FF007ACC&lt;/Color&gt;
+  &lt;SolidColorBrush x:Key=&quot;DockThemeBackgroundBrush&quot;
+                  Color=&quot;{StaticResource RegionColor}&quot; /&gt;
+&lt;/Application.Resources&gt;
+</code></pre>
+<p>Any <code>SolidColorBrush</code> referenced by the theme can be replaced this way. Controls automatically pick up the new values.</p>
+<p><code>ToolChromeControl</code> defines an extra brush for its icons:</p>
+<pre><code class="lang-xaml">&lt;SolidColorBrush x:Key=&quot;DockToolChromeIconBrush&quot; Color=&quot;#474747&quot; /&gt;
+</code></pre>
+<p>Include replacements for these in your accent dictionary to change icon or button colors.</p>
+<p>Several icons are also exposed as <code>StreamGeometry</code> resources so you can swap them with your own glyphs:</p>
+<pre><code class="lang-xaml">&lt;StreamGeometry x:Key=&quot;DockIconCloseGeometry&quot; /&gt;
+&lt;StreamGeometry x:Key=&quot;DockToolIconCloseGeometry&quot; /&gt;
+&lt;StreamGeometry x:Key=&quot;DockIconAddDocumentGeometry&quot; /&gt;
+</code></pre>
+<p>Update these geometries to customize the plus, close or other tool icons used throughout Dock.</p>
+<h2 id="custom-control-styles">Custom control styles</h2>
+<p>Specific Dock controls can also be styled by selector. The sample applications set custom headers like this:</p>
+<pre><code class="lang-xaml">&lt;Style Selector=&quot;DocumentControl&quot;&gt;
+  &lt;Setter Property=&quot;HeaderTemplate&quot;&gt;
+    &lt;DataTemplate DataType=&quot;core:IDockable&quot;&gt;
+      &lt;StackPanel Orientation=&quot;Horizontal&quot;&gt;
+        &lt;PathIcon Data=&quot;M5 1L13 9V15H3V1Z&quot; Width=&quot;16&quot; Height=&quot;16&quot; /&gt;
+        &lt;TextBlock Text=&quot;{Binding Title}&quot; Padding=&quot;4,0,0,0&quot; /&gt;
+      &lt;/StackPanel&gt;
+    &lt;/DataTemplate&gt;
+  &lt;/Setter&gt;
+&lt;/Style&gt;
+</code></pre>
+<p>Create additional styles for <code>ToolControl</code>, <code>ToolChromeControl</code> or any other Dock control to adjust fonts, padding and colors.</p>
+<pre><code class="lang-text">-----------------------------------------------
+| Tool |     Document      |      Tool       |
+-----------------------------------------------
+|                                         |
+|     [ dark themed document content ]    |
+|                                         |
+-----------------------------------------------
+</code></pre>
+<p>The ASCII representation above shows a dark themed layout with custom colors applied.</p>
+<p>For a deeper look at Dock internals see the <a href="dock-deep-dive.html">Deep Dive</a> guide.</p>
+<h2 id="tab-and-window-templates">Tab and window templates</h2>
+<p>Dock exposes template properties so you can control tab headers, icons, and modified indicators:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Properties</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DocumentControl</code></td>
+<td><code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code></td>
+<td>Used for document tabs in tabbed mode.</td>
+</tr>
+<tr>
+<td><code>ToolControl</code></td>
+<td><code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code></td>
+<td>Used for tool tabs.</td>
+</tr>
+<tr>
+<td><code>MdiDocumentControl</code></td>
+<td><code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code></td>
+<td>Forwarded to <code>MdiDocumentWindow</code> in MDI mode.</td>
+</tr>
+<tr>
+<td><code>MdiDocumentWindow</code></td>
+<td><code>IconTemplate</code>, <code>HeaderTemplate</code>, <code>ModifiedTemplate</code>, <code>CloseTemplate</code></td>
+<td>Used in MDI window chrome.</td>
+</tr>
+</tbody>
+</table>
+<p>Example overriding the modified indicator:</p>
+<pre><code class="lang-xaml">&lt;Style Selector=&quot;DocumentControl&quot;&gt;
+  &lt;Setter Property=&quot;ModifiedTemplate&quot;&gt;
+    &lt;DataTemplate&gt;
+      &lt;TextBlock Text=&quot;*&quot; Foreground=&quot;{DynamicResource DockThemeAccentBrush}&quot; /&gt;
+    &lt;/DataTemplate&gt;
+  &lt;/Setter&gt;
+&lt;/Style&gt;
+</code></pre>
+<h2 id="template-parts-and-pseudo-classes">Template parts and pseudo classes</h2>
+<p>Dock controls mark important elements in their templates with <code>PART_</code> names. When
+copying these templates keep the parts intact so features such as window dragging
+continue to work. For example <code>ToolChromeControl</code> defines <code>PART_Grip</code>,
+<code>PART_CloseButton</code> and <code>PART_MaximizeRestoreButton</code>, while <code>HostWindow</code> exposes
+<code>PART_TitleBar</code>.</p>
+<p>Controls also toggle pseudo classes to reflect their current state. These can be
+targeted in selectors to customize the appearance:</p>
+<ul>
+<li><code>DocumentControl</code>, <code>DocumentTabStrip</code>, and <code>DocumentTabStripItem</code> use <code>:active</code>.</li>
+<li><code>DocumentTabStrip</code> and <code>ToolTabStrip</code> apply <code>:create</code> when new items can be
+added.</li>
+<li><code>ToolChromeControl</code> sets <code>:active</code>, <code>:pinned</code>, <code>:floating</code> and <code>:maximized</code>.</li>
+<li><code>HostWindow</code> toggles <code>:toolwindow</code>, <code>:dragging</code>, <code>:toolchromecontrolswindow</code> and
+<code>:documentchromecontrolswindow</code>.</li>
+<li><code>ProportionalStackPanelSplitter</code> uses <code>:horizontal</code> or <code>:vertical</code> depending on
+orientation, and <code>:preview</code> while preview resizing is active.</li>
+</ul>
+<p>These pseudo classes are driven by properties such as <code>IsActive</code> and
+<code>CanCreateItem</code> on the respective controls.</p>
+<p><code>DockControl</code> also exposes <code>IsDraggingDock</code>, which is toggled during drag
+operations. Theme styles can bind to it to disable hit testing or adjust
+appearance while dragging.</p>
+<p>Refer to the source code for the complete list of parts and classes.</p>
+<h2 id="drag-preview-control">Drag preview control</h2>
+<p><code>DragPreviewControl</code> renders the floating preview during a drag. It exposes:</p>
+<ul>
+<li><code>ContentTemplate</code> to render the dragged dockable.</li>
+<li><code>Status</code> set to <code>Dock</code>, <code>Float</code>, or <code>None</code>, which the default theme uses to show status icons and strings.</li>
+</ul>
+<p>You can swap the content template in a theme:</p>
+<pre><code class="lang-xaml">&lt;Style Selector=&quot;DragPreviewControl&quot;&gt;
+  &lt;Setter Property=&quot;ContentTemplate&quot;&gt;
+    &lt;DataTemplate&gt;
+      &lt;TextBlock Text=&quot;{Binding Title}&quot; FontWeight=&quot;SemiBold&quot; /&gt;
+    &lt;/DataTemplate&gt;
+  &lt;/Setter&gt;
+&lt;/Style&gt;
+</code></pre>
+<h2 id="creating-a-custom-theme">Creating a custom theme</h2>
+<p>While overriding individual resources works for small tweaks, you can also define an entirely custom theme. Dock themes are ordinary <code>Styles</code> files that merge resource dictionaries. Create a new <code>.axaml</code> file and merge the Dock control styles along with your own accent resources.</p>
+<pre><code class="lang-xaml">&lt;Styles xmlns=&quot;https://github.com/avaloniaui&quot;
+        xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+        x:Class=&quot;MyApp.MyDockTheme&quot;&gt;
+    &lt;Styles.Resources&gt;
+        &lt;ResourceDictionary&gt;
+            &lt;ResourceDictionary.MergedDictionaries&gt;
+                &lt;ResourceInclude Source=&quot;avares://Dock.Controls.ProportionalStackPanel/ProportionalStackPanelSplitter.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;avares://MyApp/Styles/MyDockAccent.axaml&quot; /&gt;
+                &lt;ResourceInclude Source=&quot;/Controls/DockControl.axaml&quot; /&gt;
+                &lt;!-- include other Dock controls as needed --&gt;
+            &lt;/ResourceDictionary.MergedDictionaries&gt;
+        &lt;/ResourceDictionary&gt;
+    &lt;/Styles.Resources&gt;
+&lt;/Styles&gt;
+</code></pre>
+<p><code>MyDockAccent.axaml</code> defines brushes used by the templates:</p>
+<pre><code class="lang-xaml">&lt;ResourceDictionary xmlns=&quot;https://github.com/avaloniaui&quot;
+                    xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockThemeBackgroundBrush&quot; Color=&quot;#202020&quot; /&gt;
+    &lt;SolidColorBrush x:Key=&quot;DockThemeAccentBrush&quot; Color=&quot;#675EDC&quot; /&gt;
+&lt;/ResourceDictionary&gt;
+</code></pre>
+<p>Reference your theme instead of <code>DockFluentTheme</code> in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application.Styles&gt;
+    &lt;FluentTheme Mode=&quot;Dark&quot; /&gt;
+    &lt;local:MyDockTheme /&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>See <a href="dock-properties.html">Dock properties</a> for details on setting attached properties when creating custom templates.</p>
+<p>For a complete walkthrough see <a href="dock-custom-theme.html">Custom themes</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-styling.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

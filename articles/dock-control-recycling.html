@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Control Recycling Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Control Recycling Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-control-recycling.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="control-recycling-guide">Control Recycling Guide</h1>
+
+<p>Dock's control recycling system reuses visual elements created for dockables. When a dockable reappears in the layout the cached control is returned instead of instantiating a new one. This helps retain control state and reduces visual churn when documents or tools are moved around.</p>
+<h2 id="adding-the-package">Adding the package</h2>
+<p>Include the <code>Dock.Controls.Recycling</code> NuGet package alongside your existing Dock references. It provides the <code>ControlRecycling</code> and <code>ControlRecyclingDataTemplate</code> types used to enable the feature.</p>
+<h2 id="enabling-recycling-in-xaml">Enabling recycling in XAML</h2>
+<p>Define a <code>ControlRecycling</code> resource and assign it to <code>DockControl</code> using the <code>ControlRecyclingDataTemplate.ControlRecycling</code> attached property. The attached property is inheritable, so setting it on the <code>DockControl</code> makes it available to the internal content presenters that opt into recycling.</p>
+<pre><code class="lang-xaml">&lt;Application.Resources&gt;
+  &lt;ControlRecycling x:Key=&quot;ControlRecyclingKey&quot; /&gt;
+&lt;/Application.Resources&gt;
+
+&lt;Application.Styles&gt;
+  &lt;Style Selector=&quot;DockControl&quot;&gt;
+    &lt;Setter Property=&quot;(ControlRecyclingDataTemplate.ControlRecycling)&quot;
+            Value=&quot;{StaticResource ControlRecyclingKey}&quot; /&gt;
+  &lt;/Style&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<p>With this in place the controls generated for each dockable are kept in an internal cache. When the same dockable data is presented again the cached view control is reused.</p>
+<h2 id="using-ids-for-caching">Using IDs for caching</h2>
+<p><code>ControlRecycling</code> can store controls by arbitrary keys. Dockables implement <code>IControlRecyclingIdProvider</code> which exposes <code>GetControlRecyclingId</code> returning their <code>Id</code>. Setting <code>TryToUseIdAsKey=&quot;True&quot;</code> uses this identifier for the cache key.</p>
+<pre><code class="lang-xaml">&lt;ControlRecycling x:Key=&quot;ControlRecyclingKey&quot; TryToUseIdAsKey=&quot;True&quot; /&gt;
+</code></pre>
+<p>This allows the same dockable to be recognized even if the instance itself changes, for example after deserializing a layout. Ensure <code>Id</code> values are stable and unique within a layout.</p>
+<h2 id="example">Example</h2>
+<p>The sample applications ship with recycling enabled. A minimal MVVM setup looks like this:</p>
+<pre><code class="lang-csharp">public class DocumentViewModel : Dock.Model.Mvvm.Controls.DockableBase
+{
+    public DocumentViewModel(string id, string title)
+    {
+        Id = id;
+        Title = title;
+    }
+}
+</code></pre>
+<pre><code class="lang-xaml">&lt;DockControl Layout=&quot;{Binding Layout}&quot;
+             InitializeLayout=&quot;True&quot;
+             InitializeFactory=&quot;True&quot; /&gt;
+</code></pre>
+<p>As documents are opened and closed the same view control is reused for a given <code>DocumentViewModel</code>. If needed the cache can be cleared manually:</p>
+<pre><code class="lang-csharp">controlRecycling.Clear();
+</code></pre>
+<h3 id="xaml-only-layouts">XAML-only layouts</h3>
+<p>Control recycling also applies when the layout is declared purely in XAML. Dockables defined in markup can specify an <code>Id</code> which the recycling cache can use (via <code>TryToUseIdAsKey</code>) to match and reuse visuals even after a reload. This lets tools and documents retain their internal state even when no view models or bindings are present.</p>
+<pre><code class="lang-xaml">&lt;DockControl x:Name=&quot;Dock&quot; InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
+  &lt;RootDock&gt;
+    &lt;DocumentDock&gt;
+      &lt;Document Id=&quot;Doc1&quot; Title=&quot;Welcome&quot;&gt;
+        &lt;TextBox Text=&quot;Edit me&quot; /&gt;
+      &lt;/Document&gt;
+    &lt;/DocumentDock&gt;
+    &lt;ToolDock&gt;
+      &lt;Tool Id=&quot;Tool1&quot; Title=&quot;Settings&quot;&gt;
+        &lt;Slider Minimum=&quot;0&quot; Maximum=&quot;100&quot; Value=&quot;40&quot; /&gt;
+      &lt;/Tool&gt;
+    &lt;/ToolDock&gt;
+  &lt;/RootDock&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<p>With recycling enabled the <code>Document</code> and <code>Tool</code> above keep their content each time they are reopened or toggled. Even without bindings the <code>TextBox</code> and <code>Slider</code> values persist. Control recycling works for both MVVM and ReactiveUI samples as well as the XAML-only approach. Inspect the <code>App.axaml</code> files under the <code>samples</code> directory for complete working examples.</p>
+<h3 id="custom-templates">Custom templates</h3>
+<p>Recycling is enabled by default in the Fluent and Simple theme templates because they include <code>ControlRecyclingDataTemplate</code> in the document and tool content presenters. If you build a custom control theme, include <code>ControlRecyclingDataTemplate</code> in your content presenter template so the cache can participate.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-control-recycling.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

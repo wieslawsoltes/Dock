@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Programmatic Docking with DockService | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Programmatic Docking with DockService | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-programmatic-docking.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="programmatic-docking-with-dockservice">Programmatic Docking with DockService</h1>
+
+<p><code>DockService</code> is the low-level implementation of <code>IDockService</code> used by <code>DockManager</code> to validate and execute docking operations. Use it when you are building a custom host, testing docking logic, or triggering dock moves from code while keeping the same rules as drag-and-drop.</p>
+<h2 id="when-to-use-dockservice">When to use DockService</h2>
+<ul>
+<li>You need the same validation logic that the drag-and-drop pipeline uses.</li>
+<li>You are hosting Dock without <code>DockControl</code> and still want docking behavior.</li>
+<li>You want to test docking rules (including docking groups) without UI interaction.</li>
+</ul>
+<p>For most app-level operations, prefer the factory helpers (<code>AddDockable</code>, <code>MoveDockable</code>, <code>FloatDockable</code>, etc.). <code>DockService</code> sits below those APIs and assumes owners and factories are already initialized.</p>
+<h2 id="validation-pattern">Validation pattern</h2>
+<p>All methods take a <code>bExecute</code> flag. Call with <code>false</code> to validate, then with <code>true</code> to apply:</p>
+<pre><code class="lang-csharp">using Dock.Model;
+using Dock.Model.Core;
+
+var dockService = new DockService();
+
+if (dockService.MoveDockable(source, sourceOwner, targetDock, false))
+{
+    dockService.MoveDockable(source, sourceOwner, targetDock, true);
+}
+</code></pre>
+<p>This matches the workflow in <code>DockManager</code>, which validates a target during drag and executes on drop.</p>
+<h2 id="operations-overview">Operations overview</h2>
+<h3 id="movedockable">MoveDockable</h3>
+<p>Moves a dockable into a target dock. For empty target docks, <code>DockService</code> uses global docking validation so ungrouped dockables can dock anywhere. For populated docks it enforces strict docking group compatibility across the entire target dock.</p>
+<h3 id="swapdockable">SwapDockable</h3>
+<p>Swaps the source with the target dock's active dockable (or the last visible dockable if none is active). Docking group compatibility is enforced for the entire target dock.</p>
+<h3 id="splitdockable">SplitDockable</h3>
+<p>Splits the target dock into a new dock created by the factory:</p>
+<ul>
+<li><code>ITool</code> sources create a new <code>IToolDock</code>.</li>
+<li><code>IDocument</code> sources create a new <code>IDocumentDock</code>.</li>
+<li>Document docks copy <code>Id</code>, <code>CanCreateDocument</code>, <code>EnableWindowDrag</code>, and <code>DocumentTemplate</code> (when the dock implements <code>IDocumentDockContent</code>).</li>
+</ul>
+<p>The split uses the specified <code>DockOperation</code> (Left, Right, Top, Bottom). Group compatibility is validated against the new empty dock before the split is applied.</p>
+<h3 id="dockdockableintodockable">DockDockableIntoDockable</h3>
+<p>Moves or swaps dockables based on the <code>DragAction</code>:</p>
+<ul>
+<li><code>DragAction.Move</code> docks into the target.</li>
+<li><code>DragAction.Link</code> swaps with the target.</li>
+<li><code>DragAction.Copy</code> is not supported and returns <code>false</code>.</li>
+</ul>
+<p>This method handles both local docking (same owner) and cross-dock docking.</p>
+<h3 id="dockdockableintowindow">DockDockableIntoWindow</h3>
+<p>Floats a dockable into a new window if <code>CanFloat</code> is <code>true</code>. The service uses the visible bounds of the dockable or its owner to size the floating window, falling back to default dimensions when no bounds are available. The target window is created through the factory's <code>SplitToWindow</code> method.</p>
+<h2 id="requirements-and-tips">Requirements and tips</h2>
+<ul>
+<li>Ensure <code>Owner</code> and <code>Factory</code> are set on dockables by calling <code>InitLayout</code> or <code>InitDockable</code> from your factory.</li>
+<li>Docking group rules are enforced by <code>DockGroupValidator</code>. See <a href="dock-docking-groups.html">Docking groups</a> for details.</li>
+<li>If you need to customize docking rules, wrap or replace <code>IDockService</code> when constructing your own <code>DockManager</code>.</li>
+</ul>
+<p>For an overview of other guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-programmatic-docking.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

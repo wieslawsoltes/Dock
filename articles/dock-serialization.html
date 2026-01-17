@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Serialization and Persistence | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Serialization and Persistence | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-serialization.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-serialization-and-persistence">Dock Serialization and Persistence</h1>
+
+<p>This guide expands on the FAQ and shows how layouts can be serialized and restored using the available serializers.</p>
+<p>Dock provides multiple serialization options. Each serializer accepts an optional list type
+for dockable collections. If you do not specify one, the serializers default to
+<code>ObservableCollection&lt;&gt;</code>.</p>
+<ul>
+<li><strong><code>Dock.Serializer.Newtonsoft</code></strong> - JSON serialization using Newtonsoft.Json</li>
+<li><strong><code>Dock.Serializer.SystemTextJson</code></strong> - JSON serialization using System.Text.Json</li>
+<li><strong><code>Dock.Serializer.Protobuf</code></strong> - Binary serialization using protobuf-net</li>
+<li><strong><code>Dock.Serializer.Xml</code></strong> - XML serialization</li>
+<li><strong><code>Dock.Serializer.Yaml</code></strong> - YAML serialization</li>
+</ul>
+<p>All serializers implement <code>IDockSerializer</code> and can be paired with <code>DockState</code> to restore document/tool content and document templates that are not serialized. The code snippets below use asynchronous file APIs but any <code>Stream</code> works.</p>
+<h2 id="using-json-serialization-newtonsoftjson">Using JSON serialization (Newtonsoft.Json)</h2>
+<pre><code class="lang-csharp">using Dock.Serializer;
+
+var serializer = new DockSerializer();
+</code></pre>
+<p>To customize list types or use DI-based construction, use the overloads on
+<code>Dock.Serializer.DockSerializer</code>.</p>
+<pre><code class="lang-csharp">using Dock.Serializer;
+
+var serializer = new DockSerializer(typeof(List&lt;&gt;));
+var serializerWithDi = new DockSerializer(serviceProvider);
+</code></pre>
+<h2 id="using-json-serialization-systemtextjson">Using JSON serialization (System.Text.Json)</h2>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+var serializer = new DockSerializer();
+</code></pre>
+<p>To customize list types, use the list type overload.</p>
+<pre><code class="lang-csharp">using Dock.Serializer.SystemTextJson;
+
+var serializer = new DockSerializer(typeof(List&lt;&gt;));
+</code></pre>
+<h2 id="using-binary-serialization-protobuf">Using binary serialization (Protobuf)</h2>
+<pre><code class="lang-csharp">using Dock.Serializer.Protobuf;
+
+var serializer = new ProtobufDockSerializer();
+</code></pre>
+<p>To customize list types, use the list type overload.</p>
+<pre><code class="lang-csharp">using Dock.Serializer.Protobuf;
+
+var serializer = new ProtobufDockSerializer(typeof(List&lt;&gt;));
+</code></pre>
+<h2 id="using-xml-serialization">Using XML serialization</h2>
+<pre><code class="lang-csharp">using Dock.Serializer.Xml;
+
+var serializer = new DockXmlSerializer();
+</code></pre>
+<p>For XML, you can specify a list type and any known types required for your
+custom dockables.</p>
+<pre><code class="lang-csharp">using Dock.Serializer.Xml;
+
+var serializer = new DockXmlSerializer(typeof(List&lt;&gt;), typeof(MyDockable));
+</code></pre>
+<h2 id="using-yaml-serialization">Using YAML serialization</h2>
+<pre><code class="lang-csharp">using Dock.Serializer.Yaml;
+
+var serializer = new DockYamlSerializer();
+</code></pre>
+<p>To customize list types, use the list type overload.</p>
+<pre><code class="lang-csharp">using Dock.Serializer.Yaml;
+
+var serializer = new DockYamlSerializer(typeof(List&lt;&gt;));
+</code></pre>
+<h2 id="saving-a-layout">Saving a layout</h2>
+<p>Persist the current layout when the application closes so the user can continue where they left off.</p>
+<pre><code class="lang-csharp">await using var stream = File.Create(&quot;layout.json&quot;);
+_serializer.Save(stream, dockControl.Layout!);
+</code></pre>
+<p><code>dockControl.Layout</code> must reference the current <code>IDock</code> root. The serializer writes JSON, YAML, XML,
+or binary data to the stream depending on the implementation you chose.
+If you need to preserve document/tool content or document templates, call <code>_dockState.Save</code> before saving.</p>
+<h2 id="loading-a-layout">Loading a layout</h2>
+<p>When starting the application, load the previously saved layout and restore any cached content or templates.</p>
+<pre><code class="lang-csharp">await using var stream = File.OpenRead(&quot;layout.json&quot;);
+var layout = _serializer.Load&lt;IDock?&gt;(stream);
+if (layout is { })
+{
+    dockControl.Layout = layout;
+    _dockState.Restore(layout); // restore content/templates
+}
+</code></pre>
+<p>Before calling <code>Load</code>, make sure the assemblies that define your dockable types are loaded. If you need
+DI-based construction, use the <code>Dock.Serializer.DockSerializer</code> overload that accepts an
+<code>IServiceProvider</code>.</p>
+<h2 id="typical-pattern">Typical pattern</h2>
+<ol>
+<li>Save <code>dockControl.Layout</code> with <code>DockSerializer</code>.</li>
+<li>Load the layout and call <code>_dockState.Restore</code> to restore content/templates if needed.</li>
+<li>Handle the case where the layout file does not exist or fails to deserialize.</li>
+</ol>
+<p>Following this pattern keeps the window arrangement consistent across sessions.</p>
+<h2 id="dockable-identifiers">Dockable identifiers</h2>
+<p>Every dockable stores an <code>Id</code> string that is written to the layout file. The
+value is application-defined and can be used with <code>ContextLocator</code> or
+<code>GetDockable</code> for id-based lookup. When a document dock is split or cloned the
+framework copies the original <code>Id</code>, so multiple docks can share the same id.
+Track your own unique identifier if your application must distinguish
+individual document docks.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-serialization.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Advanced Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Advanced Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-advanced.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-advanced-guide">Dock Advanced Guide</h1>
+
+<p>This guide highlights advanced features from the Dock samples. The API is shared across the MVVM, ReactiveUI, and Avalonia/XAML model variants (plus INPC/Prism/Caliburn.Micro), so the same concepts apply no matter which approach you use. This guide assumes you are familiar with the basics from the other guides. Interface descriptions are available in the <a href="dock-reference.html">Dock API Reference</a>. It focuses on runtime customization and advanced APIs.</p>
+<h2 id="custom-factories">Custom factories</h2>
+<p>Many samples derive from a <code>Factory</code> implementation and override methods to configure the layout. In addition to <code>CreateLayout</code>, you can override:</p>
+<ul>
+<li><code>CreateWindowFrom</code> to customize new floating windows</li>
+<li><code>CreateDocumentDock</code> to provide a custom <code>IDocumentDock</code> implementation</li>
+<li><code>InitLayout</code> to wire up <code>ContextLocator</code>, <code>DockableLocator</code> and <code>HostWindowLocator</code></li>
+</ul>
+<p>The MVVM and ReactiveUI samples use these hooks to register view models,
+window factories and other services required at runtime. By overriding the
+factory methods you can control how floating windows are created, inject your
+own tool or document types and tie into application specific services such as
+dependency injection containers.</p>
+<pre><code class="lang-csharp">public override void InitLayout(IDockable layout)
+{
+    ContextLocator = new Dictionary&lt;string, Func&lt;object?&gt;&gt;
+    {
+        [&quot;Document1&quot;] = () =&gt; new DemoDocument(),
+        [&quot;Tool1&quot;] = () =&gt; new Tool1(),
+        // additional entries omitted
+    };
+
+    HostWindowLocator = new Dictionary&lt;string, Func&lt;IHostWindow?&gt;&gt;
+    {
+        [nameof(IDockWindow)] = () =&gt; new HostWindow()
+    };
+
+    base.InitLayout(layout);
+}
+</code></pre>
+<h2 id="handling-events">Handling events</h2>
+<p><code>FactoryBase</code> exposes events for virtually every docking action. The samples subscribe to them to trace runtime changes.</p>
+<p>Events are useful for hooking into your application's own logging or
+analytics system. For example you might record when documents are opened
+or closed so that the next run can restore them.</p>
+<pre><code class="lang-csharp">factory.DockableAdded += (_, args) =&gt;
+{
+    Debug.WriteLine($&quot;[DockableAdded] {args.Dockable?.Title}&quot;);
+};
+factory.ActiveDockableChanged += (_, args) =&gt;
+{
+    Debug.WriteLine($&quot;[ActiveDockableChanged] {args.Dockable?.Title}&quot;);
+};
+factory.FocusedDockableChanged += (_, args) =&gt;
+{
+    Debug.WriteLine($&quot;[FocusedDockableChanged] {args.Dockable?.Title}&quot;);
+};
+</code></pre>
+<p>You can react to focus changes, window moves or when dockables are pinned and unpinned.</p>
+<h2 id="saving-and-loading-layouts">Saving and loading layouts</h2>
+<p>The XAML sample demonstrates persisting layouts with an <code>IDockSerializer</code> implementation:</p>
+<pre><code class="lang-csharp">await using var stream = await file.OpenReadAsync();
+var layout = _serializer.Load&lt;IDock?&gt;(stream);
+if (layout is { })
+{
+    dock.Layout = layout;
+    dock.Factory?.InitLayout(layout);
+    _dockState.Restore(layout);
+}
+</code></pre>
+<p>When saving, call <code>DockState.Save</code> before serializing the layout:</p>
+<pre><code class="lang-csharp">if (dock.Layout is { } layout)
+{
+    _dockState.Save(layout);
+    _serializer.Save(stream, layout);
+}
+</code></pre>
+<p><code>DockState</code> tracks document/tool content (and document templates) so that state can be restored after loading.</p>
+<h2 id="dynamic-documents-and-tools">Dynamic documents and tools</h2>
+<h3 id="traditional-approach">Traditional approach</h3>
+<p>The Notepad sample shows how to create documents at runtime. New <code>FileViewModel</code> instances are added to an <code>IDocumentDock</code> using factory methods:</p>
+<pre><code class="lang-csharp">files.AddDocument(fileViewModel);
+</code></pre>
+<p><code>ToolDock</code> offers a matching <code>AddTool</code> helper for dynamically created tools.</p>
+<p><code>DocumentDock</code> includes a <code>DocumentFactory</code> delegate that works with the
+<code>CreateDocument</code> command. Assigning this factory lets the dock create a
+new document on demand which is then passed to <code>AddDocument</code> and
+activated automatically.</p>
+<h3 id="modern-itemssource-approach">Modern ItemsSource approach</h3>
+<p>For more efficient document management in the Avalonia model, use <code>DocumentDock.ItemsSource</code> to bind directly to data collections:</p>
+<pre><code class="lang-csharp">// In your ViewModel
+public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
+
+// Add/remove documents by manipulating the collection
+OpenFiles.Add(new FileModel { Title = &quot;New File&quot;, Content = &quot;...&quot; });
+OpenFiles.Remove(fileToClose);
+</code></pre>
+<p>With XAML binding:</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+    &lt;DocumentDock.DocumentTemplate&gt;
+        &lt;DocumentTemplate&gt;
+            &lt;TextEditor Text=&quot;{Binding Context.Content}&quot; x:DataType=&quot;Document&quot;/&gt;
+        &lt;/DocumentTemplate&gt;
+    &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<p>This approach automatically creates and removes documents as the collection changes, provides automatic title mapping from properties like <code>Title</code> or <code>Name</code>, and integrates seamlessly with MVVM patterns. <code>ItemsSource</code> requires a <code>DocumentTemplate</code>; without one, documents are not generated. See the <a href="dock-itemssource.html">DocumentDock ItemsSource guide</a> for comprehensive details.</p>
+<p>Drag-and-drop handlers and file dialogs are used to open and save documents on the fly.</p>
+<h2 id="floating-windows">Floating windows</h2>
+<p>Calling <code>FloatDockable</code> opens a dockable in a separate window. You can override <code>CreateWindowFrom</code> to tweak the new dock window:</p>
+<pre><code class="lang-csharp">public override IDockWindow? CreateWindowFrom(IDockable dockable)
+{
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Title = $&quot;Floating - {dockable.Title}&quot;;
+    window.Width = 800;
+    window.Height = 600;
+    return window;
+}
+</code></pre>
+<p>If <code>EnableWindowDrag</code> on a <code>DocumentDock</code> is set to <code>true</code>, the tab strip doubles as a drag handle for the entire window. This lets users reposition floating windows by dragging the tabs themselves.</p>
+<h2 id="tracking-bounds">Tracking bounds</h2>
+<p><code>DockableBase</code> keeps track of several coordinate sets used while dragging or
+pinning dockables. Methods like <code>SetVisibleBounds</code>, <code>SetPinnedBounds</code> and
+<code>SetTabBounds</code> store the latest position, whereas the matching <code>Get*</code> methods
+return the values. Two additional methods record the pointer location relative to
+the dock control and to the screen.</p>
+<pre><code class="lang-csharp">// Record the bounds of a tool while it is pinned
+tool.SetPinnedBounds(x, y, width, height);
+
+// Retrieve the saved pointer location from the last drag
+tool.GetPointerScreenPosition(out var screenX, out var screenY);
+</code></pre>
+<p>Override <code>OnVisibleBoundsChanged</code>, <code>OnPinnedBoundsChanged</code>, <code>OnTabBoundsChanged</code>
+and the pointer variants if you need to react when these coordinates change,
+for example to persist them or to show custom overlays.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Explore the samples under <code>samples/</code> for complete implementations. Mixing these techniques with the basics lets you build complex layouts that can be persisted and restored.</p>
+<p>If you are new to Dock, start with the <a href="dock-mvvm.html">MVVM Guide</a> before diving into these topics.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-advanced.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

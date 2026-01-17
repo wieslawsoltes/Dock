@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Fluent API for Dock.Model | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Fluent API for Dock.Model | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-fluent-extensions.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="fluent-api-for-dockmodel">Fluent API for Dock.Model</h1>
+
+<p>This guide shows how to build layouts using the fluent extension methods added to <code>Dock.Model</code>. The fluent API wraps factory creation and common configuration into chainable calls. You can:</p>
+<ul>
+<li>Create objects and keep them in variables (no <code>out var</code> overloads)</li>
+<li>Or use <code>out var</code> overloads to capture created instances while continuing a single fluent chain</li>
+</ul>
+<p>The <code>Document</code> and <code>Tool</code> fluent creators live in <code>Dock.Model.FluentExtensions</code> and call <code>IFactory.CreateDocument</code> and <code>IFactory.CreateTool</code>. When you use <code>Dock.Model.Mvvm.Factory</code>, those methods return the MVVM <code>Document</code> and <code>Tool</code> types.</p>
+<h3 id="step-by-step-introduction-single-document-and-tool">Step-by-step introduction (single document and tool)</h3>
+<h4 id="1-without-out-var-overloads-local-variables">1) Without <code>out var</code> overloads (local variables)</h4>
+<pre><code class="lang-csharp">using Dock.Avalonia.Controls;
+using Dock.Model;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.Mvvm;
+
+var factory = new Dock.Model.Mvvm.Factory();
+
+// Leaf models
+var document = factory.Document(d =&gt; d.WithId(&quot;Document1&quot;).WithTitle(&quot;Document 1&quot;));
+var tool     = factory.Tool(t =&gt; t.WithId(&quot;Tool1&quot;).WithTitle(&quot;Tool 1&quot;));
+
+// Docks
+var documentDock = factory.DocumentDock(d =&gt; d
+    .WithId(&quot;Documents&quot;)
+    .WithTitle(&quot;Documents&quot;)
+    .AppendDocument(document)
+    .WithActiveDockable(document)
+    .WithProportion(0.75));
+
+var toolDock = factory.ToolDock(Alignment.Left, t =&gt; t
+    .WithId(&quot;Tools&quot;)
+    .WithTitle(&quot;Tools&quot;)
+    .AppendTool(tool)
+    .WithActiveDockable(tool)
+    .WithProportion(0.25));
+
+var splitter = factory.ProportionalDockSplitter();
+
+var mainLayout = factory.ProportionalDock(Orientation.Horizontal, p =&gt; p
+    .WithId(&quot;MainLayout&quot;)
+    .Add(toolDock, splitter, documentDock));
+
+var rootDock = factory.RootDock(r =&gt; r
+    .WithId(&quot;Root&quot;)
+    .WithTitle(&quot;Root&quot;)
+    .Add(mainLayout)
+    .WithActiveDockable(mainLayout));
+
+// Host in DockControl
+var dockControl = new DockControl
+{
+    Factory = factory,
+    Layout = rootDock,
+    InitializeFactory = true,
+    InitializeLayout = true
+};
+</code></pre>
+<h4 id="2-with-out-var-overloads-single-fluent-chain">2) With <code>out var</code> overloads (single fluent chain)</h4>
+<pre><code class="lang-csharp">using Dock.Avalonia.Controls;
+using Dock.Model;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.Mvvm;
+
+var factory = new Dock.Model.Mvvm.Factory();
+
+factory
+    .Document(out var document, d =&gt; d.WithId(&quot;Document1&quot;).WithTitle(&quot;Document 1&quot;))
+    .Tool(out var tool, t =&gt; t.WithId(&quot;Tool1&quot;).WithTitle(&quot;Tool 1&quot;))
+    .DocumentDock(out var documentDock, d =&gt; d
+        .WithId(&quot;Documents&quot;)
+        .WithTitle(&quot;Documents&quot;)
+        .AppendDocument(document)
+        .WithActiveDockable(document)
+        .WithProportion(0.75))
+    .ToolDock(out var toolDock, Alignment.Left, t =&gt; t
+        .WithId(&quot;Tools&quot;)
+        .WithTitle(&quot;Tools&quot;)
+        .AppendTool(tool)
+        .WithActiveDockable(tool)
+        .WithProportion(0.25))
+    .ProportionalDockSplitter(out var splitter)
+    .ProportionalDock(out var mainLayout, Orientation.Horizontal, p =&gt; p
+        .WithId(&quot;MainLayout&quot;)
+        .Add(toolDock, splitter, documentDock))
+    .RootDock(out var rootDock, r =&gt; r
+        .WithId(&quot;Root&quot;)
+        .WithTitle(&quot;Root&quot;)
+        .Add(mainLayout)
+        .WithActiveDockable(mainLayout));
+
+var dockControl = new DockControl
+{
+    Factory = factory,
+    Layout = rootDock,
+    InitializeFactory = true,
+    InitializeLayout = true
+};
+</code></pre>
+<h3 id="advanced-example-multiple-panes-and-splitters-code-only-mvvm">Advanced example (multiple panes and splitters; code-only MVVM)</h3>
+<h4 id="without-out-var-overloads">Without <code>out var</code> overloads</h4>
+<pre><code class="lang-csharp">using Dock.Avalonia.Controls;
+using Dock.Model;
+using Dock.Model.Core;
+using Dock.Model.Mvvm;
+using Dock.Model.Mvvm.Controls;
+
+var factory = new Factory();
+
+// Leaf models
+var leftTool   = factory.Tool(t =&gt; t.WithId(&quot;Tool1&quot;).WithTitle(&quot;Tool 1&quot;));
+var bottomTool = factory.Tool(t =&gt; t.WithId(&quot;Tool2&quot;).WithTitle(&quot;Output&quot;));
+var doc1       = factory.Document(d =&gt; d.WithId(&quot;Doc1&quot;).WithTitle(&quot;Document 1&quot;));
+
+// Docks and layout
+var documentDock = factory.DocumentDock(d =&gt; d
+    .WithId(&quot;Documents&quot;)
+    .WithIsCollapsable(false)
+    .WithCanCreateDocument(true));
+
+var leftPane = factory.ToolDock(Alignment.Left, t =&gt; t
+    .WithId(&quot;LeftPane&quot;)
+    .AppendTool(leftTool)
+    .WithActiveDockable(leftTool));
+
+var split1 = factory.ProportionalDockSplitter();
+var split2 = factory.ProportionalDockSplitter();
+
+var bottomPane = factory.ToolDock(Alignment.Bottom, t =&gt; t
+    .WithId(&quot;BottomPane&quot;)
+    .AppendTool(bottomTool)
+    .WithActiveDockable(bottomTool));
+
+var mainLayout = factory.ProportionalDock(Orientation.Horizontal, p =&gt; p
+    .Add(leftPane, split1, documentDock, split2, bottomPane));
+
+var root = factory.RootDock(r =&gt; r
+    .Add(mainLayout)
+    .WithDefaultDockable(mainLayout)
+    .WithActiveDockable(mainLayout));
+
+// Proportions
+leftPane.WithProportion(0.25);
+bottomPane.WithProportion(0.25);
+
+// Optional: provide a factory for new documents
+if (documentDock is DocumentDock dd)
+{
+    dd.DocumentFactory = () =&gt; new Document
+    {
+        Id = $&quot;Doc{(documentDock.VisibleDockables?.Count ?? 0) + 1}&quot;,
+        Title = $&quot;Document {(documentDock.VisibleDockables?.Count ?? 0) + 1}&quot;
+    };
+}
+
+documentDock.AddDocument(doc1);
+
+// Initialize and host
+factory.InitLayout(root);
+var dockControl = new DockControl { Factory = factory, Layout = root };
+</code></pre>
+<h4 id="with-out-var-overloads">With <code>out var</code> overloads</h4>
+<pre><code class="lang-csharp">using Dock.Avalonia.Controls;
+using Dock.Model;
+using Dock.Model.Core;
+using Dock.Model.Mvvm;
+using Dock.Model.Mvvm.Controls;
+
+var factory = new Factory();
+
+factory
+    .Tool(out var leftTool,   t =&gt; t.WithId(&quot;Tool1&quot;).WithTitle(&quot;Tool 1&quot;))
+    .Tool(out var bottomTool, t =&gt; t.WithId(&quot;Tool2&quot;).WithTitle(&quot;Output&quot;))
+    .Document(out var doc1,   d =&gt; d.WithId(&quot;Doc1&quot;).WithTitle(&quot;Document 1&quot;))
+    .DocumentDock(out var documentDock, d =&gt; d
+        .WithId(&quot;Documents&quot;)
+        .WithIsCollapsable(false)
+        .WithCanCreateDocument(true))
+    .ToolDock(out var leftPane, Alignment.Left, t =&gt; t
+        .WithId(&quot;LeftPane&quot;)
+        .AppendTool(leftTool)
+        .WithActiveDockable(leftTool))
+    .ProportionalDockSplitter(out var split1)
+    .ProportionalDockSplitter(out var split2)
+    .ToolDock(out var bottomPane, Alignment.Bottom, t =&gt; t
+        .WithId(&quot;BottomPane&quot;)
+        .AppendTool(bottomTool)
+        .WithActiveDockable(bottomTool))
+    .ProportionalDock(out var mainLayout, Orientation.Horizontal, p =&gt; p
+        .Add(leftPane, split1, documentDock, split2, bottomPane))
+    .RootDock(out var root, r =&gt; r
+        .Add(mainLayout)
+        .WithDefaultDockable(mainLayout)
+        .WithActiveDockable(mainLayout));
+
+// Proportions
+leftPane.WithProportion(0.25);
+bottomPane.WithProportion(0.25);
+
+// Optional: provide a factory for new documents
+if (documentDock is DocumentDock dd)
+{
+    dd.DocumentFactory = () =&gt; new Document
+    {
+        Id = $&quot;Doc{(documentDock.VisibleDockables?.Count ?? 0) + 1}&quot;,
+        Title = $&quot;Document {(documentDock.VisibleDockables?.Count ?? 0) + 1}&quot;
+    };
+}
+
+documentDock.AddDocument(doc1);
+
+// Initialize and host in DockControl
+factory.InitLayout(root);
+var dockControl = new DockControl { Factory = factory, Layout = root };
+</code></pre>
+<h3 id="recipes">Recipes</h3>
+<ul>
+<li><strong>Capture while chaining (out var)</strong>: Use the <code>IFactory</code>-returning overloads to continue the chain while capturing the created instance.</li>
+<li><strong>Add documents/tools</strong>: Use <code>AppendDocument</code> and <code>AppendTool</code> to avoid name shadowing with instance methods.</li>
+<li><strong>Configure inline</strong>: Most models support <code>WithId</code>, <code>WithTitle</code>, <code>WithProportion</code>, <code>WithActiveDockable</code>, etc., in the configuration <code>Action&lt;T&gt;</code>.</li>
+<li><strong>Leaf creators (MVVM)</strong>: <code>factory.Document(...)</code> and <code>factory.Tool(...)</code> come from <code>Dock.Model.Mvvm</code>.</li>
+</ul>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>The fluent API is additive; existing <code>IFactory.Create*</code> APIs remain available.</li>
+<li>Prefer the configuration lambda over post-creation property sets when possible for readability.</li>
+<li>For Avalonia hosting, assign the <code>Factory</code> and the created <code>IRootDock</code> to <code>DockControl</code>. Set <code>InitializeFactory</code>/<code>InitializeLayout</code> if you want automatic initialization.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-fluent-extensions.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

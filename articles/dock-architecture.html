@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Architecture Overview | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Architecture Overview | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-architecture.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-architecture-overview">Dock Architecture Overview</h1>
+
+<p>This document provides a high-level look at the major components that make up Dock.
+It explains how they cooperate so you can understand the design before reading
+the <a href="dock-deep-dive.html">deep dive</a>.</p>
+<h2 id="major-components">Major components</h2>
+<ul>
+<li><strong>DockControl</strong> – Avalonia control that hosts the layout and forwards
+pointer input to the docking pipeline.</li>
+<li><strong>DockManager</strong> – Implements the algorithms that move, swap or split
+dockables during drag operations. It exposes a <code>PreventSizeConflicts</code>
+property that stops docking tools together when their fixed sizes clash.
+It also enforces docking group restrictions to control which dockables
+can be docked together.</li>
+<li><strong>DockService</strong> – Performs the actual move/split/swap operations on docks and
+dockables and calls into the factory to update view models.</li>
+<li><strong>DockControlState</strong> – Tracks pointer interactions and validates potential
+drop targets using <code>DockManager</code>.</li>
+<li><strong>Factories</strong> – Build and initialize dock view models. They expose
+commands for runtime operations such as adding or closing documents.</li>
+<li><strong>DockState</strong> – Captures document/tool content and templates that are not
+serialized with the layout so they can be restored after loading.</li>
+<li><strong>IDockSerializer</strong> – Loads and saves layouts to disk so user changes can
+be persisted across sessions.</li>
+</ul>
+<h2 id="interaction-overview">Interaction overview</h2>
+<pre><code class="lang-mermaid">flowchart TD
+    UI[DockControl]
+    State[DockControlState]
+    Manager[DockManager]
+    Service[DockService]
+    Factory[IFactory / FactoryBase]
+    VM[Dock view models]
+    Serializer[IDockSerializer]
+    StateStore[DockState]
+
+    UI --&gt; State
+    State --&gt; Manager
+    Manager --&gt; Service
+    Service --&gt; Factory
+    Factory --&gt; VM
+    UI --&gt; VM
+    Serializer &lt;--&gt; VM
+    StateStore &lt;--&gt; VM
+</code></pre>
+<ol>
+<li><code>DockControl</code> displays the layout created by the factory.</li>
+<li>Pointer events are processed by <code>DockControlState</code> which consults
+<code>DockManager</code> to validate docking actions.</li>
+<li><code>DockManager</code> delegates to <code>DockService</code>, which calls factory methods to
+update the view models.</li>
+<li><code>IDockSerializer</code> loads or saves the layout model, while <code>DockState</code> captures
+non-serialized content and templates so they can be restored after loading.</li>
+</ol>
+<p>Customising any of these pieces lets you extend Dock with application specific
+behavior. For an in-depth walkthrough see the <a href="dock-deep-dive.html">deep dive</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-architecture.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

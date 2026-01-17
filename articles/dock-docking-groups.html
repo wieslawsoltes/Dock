@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Docking Groups | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Docking Groups | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-docking-groups.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="docking-groups">Docking Groups</h1>
+
+<p>Docking groups provide a powerful mechanism for controlling which dockables can be docked together. By assigning the same group identifier to related dockables, you can create isolated docking areas where only specific types of content can be arranged together.</p>
+<h2 id="overview">Overview</h2>
+<p>The <code>DockGroup</code> property is available on all dockables (<code>IDockable</code>) and allows you to:</p>
+<ul>
+<li>Restrict which dockables can be docked together</li>
+<li>Create separate workspaces for different content types</li>
+<li>Prevent accidental mixing of incompatible content</li>
+<li>Build complex layouts with isolated functional areas</li>
+</ul>
+<p><strong>Key Behavior:</strong></p>
+<ul>
+<li><strong>Local docking</strong>: Strict validation - both source and target must be in the same &quot;group state&quot;</li>
+<li><strong>Global docking</strong>: Looser validation - ungrouped sources can dock anywhere, grouped sources must match the target group
+<ul>
+<li><strong>Non-grouped sources</strong>: Can dock globally anywhere (regardless of target content)</li>
+<li><strong>Grouped sources</strong>: Can dock globally only into targets with the same group</li>
+</ul>
+</li>
+<li><strong>Ungrouped local docking</strong>: Both source and target have <code>null</code>/empty groups (maximum flexibility)</li>
+<li><strong>Grouped local docking</strong>: Both source and target have the same non-null group identifier (restricted within group)</li>
+<li><strong>Mixed local states are rejected</strong>: One grouped + one ungrouped = local docking denied</li>
+</ul>
+<h2 id="basic-usage">Basic Usage</h2>
+<h3 id="setting-dockgroup-in-code">Setting DockGroup in Code</h3>
+<pre><code class="lang-csharp">// Create documents that can only dock with other documents
+var document1 = new Document
+{
+    Id = &quot;Doc1&quot;,
+    Title = &quot;Document 1&quot;,
+    DockGroup = &quot;Documents&quot;
+};
+
+var document2 = new Document
+{
+    Id = &quot;Doc2&quot;, 
+    Title = &quot;Document 2&quot;,
+    DockGroup = &quot;Documents&quot;
+};
+
+// Create tools that can only dock with other tools
+var toolA = new Tool
+{
+    Id = &quot;ToolA&quot;,
+    Title = &quot;Tool A&quot;, 
+    DockGroup = &quot;Tools&quot;
+};
+
+var toolB = new Tool
+{
+    Id = &quot;ToolB&quot;,
+    Title = &quot;Tool B&quot;,
+    DockGroup = &quot;Tools&quot;
+};
+
+// Create an unrestricted dock that only accepts other unrestricted dockables (local rules)
+var unrestrictedDock = new ToolDock
+{
+    Id = &quot;UnrestrictedDock&quot;,
+    Title = &quot;Unrestricted Dock&quot;,
+    DockGroup = null // Only accepts other null-group dockables
+};
+
+// Create unrestricted tools (local docking only; global docking allows ungrouped sources anywhere)
+var unrestrictedTool = new Tool
+{
+    Id = &quot;UnrestrictedTool&quot;,
+    Title = &quot;Unrestricted Tool&quot;,
+    DockGroup = null // Locally only docks with other null-group targets
+};
+</code></pre>
+<h3 id="setting-dockgroup-in-xaml">Setting DockGroup in XAML</h3>
+<pre><code class="lang-xaml">&lt;RootDock&gt;
+  &lt;DocumentDock DockGroup=&quot;Documents&quot;&gt;
+    &lt;Document Id=&quot;Doc1&quot; Title=&quot;Document 1&quot; DockGroup=&quot;Documents&quot; /&gt;
+    &lt;Document Id=&quot;Doc2&quot; Title=&quot;Document 2&quot; DockGroup=&quot;Documents&quot; /&gt;
+  &lt;/DocumentDock&gt;
+  
+  &lt;ToolDock DockGroup=&quot;LeftTools&quot; Alignment=&quot;Left&quot;&gt;
+    &lt;Tool Id=&quot;Explorer&quot; Title=&quot;Explorer&quot; DockGroup=&quot;LeftTools&quot; /&gt;
+    &lt;Tool Id=&quot;Outline&quot; Title=&quot;Outline&quot; DockGroup=&quot;LeftTools&quot; /&gt;
+  &lt;/ToolDock&gt;
+  
+  &lt;ToolDock DockGroup=&quot;RightTools&quot; Alignment=&quot;Right&quot;&gt;
+    &lt;Tool Id=&quot;Properties&quot; Title=&quot;Properties&quot; DockGroup=&quot;RightTools&quot; /&gt;
+    &lt;Tool Id=&quot;Toolbox&quot; Title=&quot;Toolbox&quot; DockGroup=&quot;RightTools&quot; /&gt;
+  &lt;/ToolDock&gt;
+&lt;/RootDock&gt;
+</code></pre>
+<h2 id="group-inheritance">Group Inheritance</h2>
+<p>Docking groups support inheritance through the ownership hierarchy. If a dockable doesn't have an explicit <code>DockGroup</code> set, the system walks up the ownership chain to find an inherited group.</p>
+<h3 id="example-inherited-groups">Example: Inherited Groups</h3>
+<pre><code class="lang-csharp">// Create a parent dock with a group
+var parentDock = new ToolDock
+{
+    Id = &quot;ParentDock&quot;,
+    Title = &quot;Parent Tools&quot;,
+    DockGroup = &quot;InheritedGroup&quot;
+};
+
+// Child dockables without explicit groups inherit from parent
+var childTool1 = new Tool
+{
+    Id = &quot;Child1&quot;,
+    Title = &quot;Child Tool 1&quot;,
+    DockGroup = null, // Will inherit &quot;InheritedGroup&quot;
+    Owner = parentDock
+};
+
+var childTool2 = new Tool  
+{
+    Id = &quot;Child2&quot;,
+    Title = &quot;Child Tool 2&quot;, 
+    DockGroup = null, // Will inherit &quot;InheritedGroup&quot;
+    Owner = parentDock
+};
+
+parentDock.VisibleDockables = new List&lt;IDockable&gt; { childTool1, childTool2 };
+</code></pre>
+<p>The inheritance mechanism allows you to set a group on a container dock and have all child dockables automatically belong to that group, simplifying configuration.</p>
+<h2 id="global-vs-local-docking">Global vs Local Docking</h2>
+<p>Understanding the difference between global and local docking is crucial for working with docking groups:</p>
+<h3 id="local-docking">Local Docking</h3>
+<p><strong>Local docking</strong> occurs when dockables are moved within the same dock container or between closely related areas. Examples include:</p>
+<ul>
+<li>Reordering tabs within the same tab group</li>
+<li>Docking a tool to a specific position within the same dock container</li>
+<li>Moving items within the same window or panel area</li>
+</ul>
+<p><strong>Validation</strong>: Uses strict group rules - both source and target must be compatible according to their groups.</p>
+<h3 id="global-docking">Global Docking</h3>
+<p><strong>Global docking</strong> occurs when dockables are moved across different dock containers, windows, or major workspace areas. Examples include:</p>
+<ul>
+<li>Dragging a dockable from one window to another window's proportional dock area</li>
+<li>Moving content between different major sections of the workspace</li>
+<li>Cross-window or cross-container docking operations</li>
+</ul>
+<p><strong>Validation</strong>: Uses rules that allow ungrouped sources anywhere but require grouped sources to match the target:</p>
+<ul>
+<li><strong>Non-grouped sources</strong> (DockGroup = null/empty): Can dock globally anywhere</li>
+<li><strong>Grouped sources</strong> (DockGroup = &quot;SomeGroup&quot;): Can dock globally only into targets with the same group</li>
+</ul>
+<p>The system automatically determines which validation mode to use based on the operation context. This design allows maximum flexibility for workspace organization (global docking) while maintaining strict isolation where needed (local docking).</p>
+<h2 id="validation-rules">Validation Rules</h2>
+<p>The docking system enforces different rules depending on whether the operation is <strong>local docking</strong> (within the same dock container) or <strong>global docking</strong> (across different dock containers/windows):</p>
+<h3 id="global-docking-rules">Global Docking Rules</h3>
+<p>Global docking uses validation that allows ungrouped sources anywhere and grouped sources only into matching targets:</p>
+<h4 id="1-non-grouped-source-rule-global">1. Non-Grouped Source Rule (Global)</h4>
+<p>Dockables with <code>null</code> or empty groups can dock globally anywhere, regardless of target content:</p>
+<pre><code class="lang-csharp">// This can dock globally into any proportional dock area
+var flexibleTool = new Tool { DockGroup = null };
+
+// This can also dock globally anywhere
+var anotherFlexible = new Tool { DockGroup = &quot;&quot; };
+
+// Even if the target has grouped content, non-grouped sources can still dock globally
+var targetWithGroupedContent = new ProportionalDock 
+{ 
+    VisibleDockables = new List&lt;IDockable&gt; 
+    {
+        new Tool { DockGroup = &quot;SpecificGroup&quot; }
+    }
+};
+// flexibleTool can still dock globally into targetWithGroupedContent
+</code></pre>
+<h4 id="2-grouped-source-rule-global">2. Grouped Source Rule (Global)</h4>
+<p>Dockables with non-null groups can dock globally only into targets with the same group:</p>
+<pre><code class="lang-csharp">// These CANNOT dock globally into ungrouped or different-group targets
+var groupedTool = new Tool { DockGroup = &quot;SomeGroup&quot; };
+
+// Blocked from global docking when target is ungrouped
+var emptyTarget = new ProportionalDock { VisibleDockables = new List&lt;IDockable&gt;() };
+var groupedTarget = new ProportionalDock 
+{ 
+    VisibleDockables = new List&lt;IDockable&gt; 
+    {
+        new Tool { DockGroup = &quot;SomeGroup&quot; }
+    }
+};
+// groupedTool can dock globally into groupedTarget (same group)
+// groupedTool cannot dock globally into emptyTarget or different-group targets
+</code></pre>
+<h3 id="local-docking-rules">Local Docking Rules</h3>
+<p>Local docking uses strict validation that requires compatible groups between source and target:</p>
+<h4 id="1-same-group-rule-local">1. Same Group Rule (Local)</h4>
+<p>Dockables with the same non-null group can be docked together locally:</p>
+<pre><code class="lang-csharp">// These can dock together locally
+var tool1 = new Tool { DockGroup = &quot;GroupA&quot; };
+var tool2 = new Tool { DockGroup = &quot;GroupA&quot; };
+</code></pre>
+<h4 id="2-null-group-rule-local">2. Null Group Rule (Local)</h4>
+<p>Dockables with <code>null</code> or empty groups can dock locally with other <code>null</code>/empty group dockables:</p>
+<pre><code class="lang-csharp">// These can dock together locally
+var flexibleTool1 = new Tool { DockGroup = null };
+var flexibleTool2 = new Tool { DockGroup = &quot;&quot; };
+</code></pre>
+<h4 id="3-different-group-rule-local">3. Different Group Rule (Local)</h4>
+<p>Dockables with different non-null groups cannot be docked together locally:</p>
+<pre><code class="lang-csharp">// These CANNOT dock together locally
+var toolA = new Tool { DockGroup = &quot;GroupA&quot; };
+var toolB = new Tool { DockGroup = &quot;GroupB&quot; };
+</code></pre>
+<h4 id="4-mixed-state-rule-local">4. Mixed State Rule (Local)</h4>
+<p>One grouped + one ungrouped = local docking denied (prevents contamination and breakouts):</p>
+<pre><code class="lang-csharp">// These CANNOT dock together locally
+var groupedTool = new Tool { DockGroup = &quot;GroupA&quot; };
+var ungroupedTool = new Tool { DockGroup = null };
+</code></pre>
+<h4 id="5-empty-dock-rule-local">5. Empty Dock Rule (Local)</h4>
+<p>Empty docks (with no visible dockables) accept any dockable regardless of group for local docking:</p>
+<pre><code class="lang-csharp">var emptyDock = new ToolDock
+{
+    DockGroup = &quot;SpecificGroup&quot;,
+    VisibleDockables = new List&lt;IDockable&gt;() // Empty
+};
+
+// Any dockable can be dropped into an empty dock locally
+</code></pre>
+<h3 id="understanding-global-vs-local-docking">Understanding Global vs Local Docking</h3>
+<ul>
+<li><strong>Global Docking</strong> occurs when dragging dockables across different dock containers or windows (e.g., dragging from one window to another's proportional dock area)</li>
+<li><strong>Local Docking</strong> occurs when dragging dockables within the same dock container (e.g., reordering tabs or docking to specific positions within the same dock)</li>
+</ul>
+<p>The key difference is that global docking is designed to be more permissive for non-grouped content, allowing flexible workspace organization, while local docking maintains strict group isolation to prevent accidental mixing of incompatible content.</p>
+<h2 id="practical-examples">Practical Examples</h2>
+<h3 id="visual-studio-style-layout">Visual Studio-Style Layout</h3>
+<pre><code class="lang-csharp">public class MainDockFactory : Factory
+{
+    public override IRootDock CreateLayout()
+    {
+        // Document area - only documents can dock here
+        var documentsPane = new DocumentDock
+        {
+            Id = &quot;DocumentsPane&quot;,
+            Title = &quot;Documents&quot;,
+            DockGroup = &quot;Documents&quot;
+        };
+
+        // Left panel area - only left tools can dock here
+        var leftPanelDock = new ToolDock
+        {
+            Id = &quot;LeftPanelDock&quot;, 
+            Title = &quot;Left Tools&quot;,
+            DockGroup = &quot;LeftPanels&quot;,
+            Alignment = Alignment.Left
+        };
+
+        // Right panel area - only right tools can dock here  
+        var rightPanelDock = new ToolDock
+        {
+            Id = &quot;RightPanelDock&quot;,
+            Title = &quot;Right Tools&quot;, 
+            DockGroup = &quot;RightPanels&quot;,
+            Alignment = Alignment.Right
+        };
+
+        // Bottom panel area - only bottom tools can dock here
+        var bottomPanelDock = new ToolDock
+        {
+            Id = &quot;BottomPanelDock&quot;,
+            Title = &quot;Bottom Tools&quot;,
+            DockGroup = &quot;BottomPanels&quot;, 
+            Alignment = Alignment.Bottom
+        };
+
+        // Create specific tools for each area
+        var solutionExplorer = new Tool 
+        { 
+            Id = &quot;SolutionExplorer&quot;, 
+            Title = &quot;Solution Explorer&quot;,
+            DockGroup = &quot;LeftPanels&quot; 
+        };
+        
+        var properties = new Tool 
+        { 
+            Id = &quot;Properties&quot;, 
+            Title = &quot;Properties&quot;,
+            DockGroup = &quot;RightPanels&quot; 
+        };
+        
+        var errorList = new Tool 
+        { 
+            Id = &quot;ErrorList&quot;, 
+            Title = &quot;Error List&quot;, 
+            DockGroup = &quot;BottomPanels&quot; 
+        };
+
+        // Assign tools to their respective docks
+        leftPanelDock.VisibleDockables = CreateList&lt;IDockable&gt;(solutionExplorer);
+        rightPanelDock.VisibleDockables = CreateList&lt;IDockable&gt;(properties);  
+        bottomPanelDock.VisibleDockables = CreateList&lt;IDockable&gt;(errorList);
+
+        return CreateRootDock(documentsPane, leftPanelDock, rightPanelDock, bottomPanelDock);
+    }
+}
+</code></pre>
+<h3 id="mixed-content-with-flexible-areas">Mixed Content with Flexible Areas</h3>
+<pre><code class="lang-csharp">// Create areas with specific purposes
+var codeEditorsGroup = &quot;CodeEditors&quot;;
+var designersGroup = &quot;Designers&quot;; 
+var debuggingGroup = &quot;Debugging&quot;;
+
+// Code editors - only code-related content
+var codeEditor1 = new Document 
+{ 
+    Id = &quot;Code1&quot;, 
+    Title = &quot;Program.cs&quot;, 
+    DockGroup = codeEditorsGroup 
+};
+
+var codeEditor2 = new Document 
+{ 
+    Id = &quot;Code2&quot;, 
+    Title = &quot;MainWindow.cs&quot;, 
+    DockGroup = codeEditorsGroup 
+};
+
+// Designers - only design-related content  
+var xamlDesigner = new Document 
+{ 
+    Id = &quot;Designer1&quot;, 
+    Title = &quot;MainWindow.xaml&quot;, 
+    DockGroup = designersGroup 
+};
+
+var formDesigner = new Document 
+{ 
+    Id = &quot;Designer2&quot;, 
+    Title = &quot;Form1.cs[Design]&quot;, 
+    DockGroup = designersGroup 
+};
+
+// Debugging tools - only debugging content
+var debugOutput = new Tool 
+{ 
+    Id = &quot;DebugOutput&quot;, 
+    Title = &quot;Debug Output&quot;, 
+    DockGroup = debuggingGroup 
+};
+
+var watchWindow = new Tool 
+{ 
+    Id = &quot;Watch&quot;, 
+    Title = &quot;Watch&quot;, 
+    DockGroup = debuggingGroup 
+};
+
+// Flexible tools - can dock anywhere
+var searchResults = new Tool 
+{ 
+    Id = &quot;Search&quot;, 
+    Title = &quot;Search Results&quot;, 
+    DockGroup = null // Flexible
+};
+</code></pre>
+<h2 id="attached-property-support">Attached Property Support</h2>
+<p><code>DockProperties.DockGroup</code> is an attached property on Avalonia controls. The
+built-in templates bind it to the dockable's <code>DockGroup</code> so you can style or
+inspect groups in the visual tree. It does not override the model's
+<code>DockGroup</code>—docking validation still uses <code>IDockable.DockGroup</code> and owner
+inheritance.</p>
+<h3 id="attached-property-methods">Attached Property Methods</h3>
+<pre><code class="lang-csharp">// Set group via attached property
+DockProperties.SetDockGroup(myControl, &quot;MyGroup&quot;);
+
+// Get group via attached property  
+string? group = DockProperties.GetDockGroup(myControl);
+</code></pre>
+<p>The attached property supports inheritance, so setting it on a parent container
+automatically applies the group to all child elements unless they have their own
+explicit group. Use it for styling or visual diagnostics, not to drive docking
+rules.</p>
+<h2 id="implementation-details">Implementation Details</h2>
+<h3 id="dockgroupvalidator">DockGroupValidator</h3>
+<p>The <code>DockGroupValidator</code> class contains the core validation logic for docking groups, with separate methods for global and local docking:</p>
+<h4 id="global-docking-validation">Global Docking Validation</h4>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Validates if a dockable can be docked globally based on docking groups.
+/// Global docking rules:
+/// - Non-grouped sources can dock globally anywhere.
+/// - Grouped sources can dock globally only into a target with the same group.
+/// &lt;/summary&gt;
+public static bool ValidateGlobalDocking(IDockable sourceDockable, IDock targetDock)
+{
+    var sourceGroup = GetEffectiveDockGroup(sourceDockable);
+    var targetGroup = GetEffectiveDockGroup(targetDock);
+
+    var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+    var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+    if (!sourceHasGroup &amp;&amp; !targetHasGroup)
+    {
+        return true;
+    }
+
+    if (!sourceHasGroup &amp;&amp; targetHasGroup)
+    {
+        return true;
+    }
+
+    if (sourceHasGroup &amp;&amp; !targetHasGroup)
+    {
+        return false;
+    }
+
+    return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+}
+</code></pre>
+<h4 id="local-docking-validation">Local Docking Validation</h4>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Validates if two dockables can be docked together based on their docking groups.
+/// Uses strict validation rules for local docking operations.
+/// &lt;/summary&gt;
+public static bool ValidateDockingGroups(IDockable sourceDockable, IDockable targetDockable)
+{
+    var sourceGroup = GetEffectiveDockGroup(sourceDockable);
+    var targetGroup = GetEffectiveDockGroup(targetDockable);
+
+    // Strict docking group compatibility rules for local docking:
+    // 1. Non-grouped can dock with non-grouped only
+    // 2. Grouped can dock with same group only  
+    // 3. Different groups are incompatible
+    // 4. Mixed states (grouped + non-grouped) are incompatible
+    
+    var sourceHasGroup = !string.IsNullOrEmpty(sourceGroup);
+    var targetHasGroup = !string.IsNullOrEmpty(targetGroup);
+
+    if (!sourceHasGroup &amp;&amp; !targetHasGroup)
+    {
+        return true; // Both non-grouped - compatible
+    }
+
+    if (!sourceHasGroup &amp;&amp; targetHasGroup)
+    {
+        return false; // Non-grouped can't dock into grouped dockables
+    }
+
+    if (sourceHasGroup &amp;&amp; !targetHasGroup)
+    {
+        return false; // Grouped can't dock into non-grouped dockables
+    }
+
+    // Both are grouped - they must have the same group
+    return string.Equals(sourceGroup, targetGroup, StringComparison.Ordinal);
+}
+</code></pre>
+<h4 id="dock-specific-validation">Dock-Specific Validation</h4>
+<pre><code class="lang-csharp">/// &lt;summary&gt;
+/// Validates if a dockable can be docked into a dock based on docking groups.
+/// The source must be compatible with all existing dockables in the target dock.
+/// &lt;/summary&gt;
+public static bool ValidateDockingGroupsInDock(IDockable sourceDockable, IDock targetDock)
+{
+    // If the target dock has no visible dockables, allow the operation
+    if (targetDock.VisibleDockables?.Count == 0)
+    {
+        return true;
+    }
+
+    // Check compatibility with each existing dockable in the target dock
+    if (targetDock.VisibleDockables != null)
+    {
+        foreach (var existingDockable in targetDock.VisibleDockables)
+        {
+            if (!ValidateDockingGroups(sourceDockable, existingDockable))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+</code></pre>
+<h3 id="effective-group-resolution">Effective Group Resolution</h3>
+<p>The system resolves the effective group for a dockable by walking up the ownership hierarchy:</p>
+<pre><code class="lang-csharp">private static string? GetEffectiveDockGroup(IDockable dockable)
+{
+    var current = dockable;
+    
+    // Walk up the hierarchy until we find a group or reach the root
+    while (current != null)
+    {
+        if (!string.IsNullOrEmpty(current.DockGroup))
+        {
+            return current.DockGroup;
+        }
+        
+        current = current.Owner;
+    }
+    
+    return null;
+}
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="1-use-descriptive-group-names">1. Use Descriptive Group Names</h3>
+<p>Choose clear, descriptive names for your groups:</p>
+<pre><code class="lang-csharp">// Good
+DockGroup = &quot;DocumentEditors&quot;
+DockGroup = &quot;DebugTools&quot;  
+DockGroup = &quot;DesignSurfaces&quot;
+
+// Avoid  
+DockGroup = &quot;Group1&quot;
+DockGroup = &quot;A&quot;
+</code></pre>
+<h3 id="2-keep-groups-logical">2. Keep Groups Logical</h3>
+<p>Group dockables that logically belong together:</p>
+<pre><code class="lang-csharp">// Related editing tools
+var groupEditing = &quot;Editing&quot;;
+var findTool = new Tool { DockGroup = groupEditing };
+var replaceTool = new Tool { DockGroup = groupEditing };
+
+// Related debugging tools  
+var groupDebug = &quot;Debug&quot;;
+var breakpointsTool = new Tool { DockGroup = groupDebug };
+var watchTool = new Tool { DockGroup = groupDebug };
+</code></pre>
+<h3 id="3-use-inheritance-strategically">3. Use Inheritance Strategically</h3>
+<p>Set groups on container docks to automatically group all children:</p>
+<pre><code class="lang-csharp">var debugDock = new ToolDock
+{
+    DockGroup = &quot;Debug&quot;, // All child tools inherit this
+    VisibleDockables = CreateList&lt;IDockable&gt;(
+        new Tool { Id = &quot;Breakpoints&quot; }, // Inherits &quot;Debug&quot;
+        new Tool { Id = &quot;Watch&quot; },       // Inherits &quot;Debug&quot;  
+        new Tool { Id = &quot;Output&quot; }       // Inherits &quot;Debug&quot;
+    )
+};
+</code></pre>
+<h3 id="4-provide-flexible-areas">4. Provide Flexible Areas</h3>
+<p>Include some dockables with <code>null</code> groups for maximum flexibility:</p>
+<pre><code class="lang-csharp">var flexibleTool = new Tool
+{
+    Id = &quot;FlexTool&quot;,
+    Title = &quot;Flexible Tool&quot;,
+    DockGroup = null // Can dock globally anywhere and locally with other ungrouped dockables
+};
+</code></pre>
+<h3 id="5-test-group-interactions">5. Test Group Interactions</h3>
+<p>Verify that your group setup provides the expected docking behavior:</p>
+<pre><code class="lang-csharp">// Test that validation works correctly
+var dockManager = new DockManager(new DockService());
+
+var canDock = dockManager.ValidateTool(sourceTool, targetDock, 
+    DragAction.Move, DockOperation.Fill, false);
+
+Assert.True(canDock); // or Assert.False for restricted cases
+</code></pre>
+<h2 id="common-scenarios">Common Scenarios</h2>
+<h3 id="preventing-documenttool-mixing">Preventing Document/Tool Mixing</h3>
+<pre><code class="lang-csharp">// Documents can only dock locally with other documents
+// Globally they can dock only into targets with the same group
+var doc = new Document { DockGroup = &quot;Documents&quot; };
+
+// Tools can only dock locally with other tools
+// Globally they can dock only into targets with the same group
+var tool = new Tool { DockGroup = &quot;Tools&quot; };
+
+// They cannot be mixed locally due to different groups
+// And cannot participate in global docking unless the target group matches
+</code></pre>
+<h3 id="creating-workspace-modes">Creating Workspace Modes</h3>
+<pre><code class="lang-csharp">// Design mode - only design-related content (local docking only)
+var designMode = &quot;Design&quot;;
+
+// Debug mode - only debugging content (local docking only)
+var debugMode = &quot;Debug&quot;;
+
+// Switch groups based on current mode
+foreach (var dockable in allDockables)
+{
+    dockable.DockGroup = isDesignMode ? designMode : debugMode;
+    // Note: Setting groups restricts global docking to same-group targets
+    // They can only dock locally with others in the same mode
+}
+
+// For flexible workspace organization, consider ungrouped tools:
+var flexibleTool = new Tool 
+{ 
+    DockGroup = null // Can dock globally anywhere and locally with other ungrouped tools
+};
+</code></pre>
+<h3 id="role-based-access">Role-Based Access</h3>
+<pre><code class="lang-csharp">// Developer tools
+var devGroup = &quot;Developer&quot;;
+
+// Designer tools  
+var designGroup = &quot;Designer&quot;;
+
+// Admin tools
+var adminGroup = &quot;Administrator&quot;;
+
+// Assign based on user role
+var userRole = GetCurrentUserRole();
+myTool.DockGroup = userRole.ToString();
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<p><strong>Q: My dockables won't dock together even though they have the same group</strong>
+A: Check for:</p>
+<ul>
+<li>Typos in group names (case-sensitive)</li>
+<li>Whitespace differences</li>
+<li>One dockable inheriting a different group from its parent</li>
+</ul>
+<p><strong>Q: Dockables with null groups aren't docking</strong><br>
+A: Verify:</p>
+<ul>
+<li>For global docking: Non-grouped dockables should always be able to dock globally</li>
+<li>For local docking: Both source and target must be ungrouped (not mixed with grouped content)</li>
+<li>The target dock's <code>CanDrop</code> property is true</li>
+<li>No other restrictions (like <code>CanDrag</code> being false)</li>
+<li>The dock operation is valid for the target</li>
+</ul>
+<p><strong>Q: Group inheritance isn't working</strong>
+A: Ensure:</p>
+<ul>
+<li>The parent-child relationship is set via the <code>Owner</code> property</li>
+<li>The child doesn't have an explicit group that overrides inheritance</li>
+<li>The ownership hierarchy is correct</li>
+</ul>
+<h3 id="debugging-groups">Debugging Groups</h3>
+<p>Use the validation methods to test group compatibility:</p>
+<pre><code class="lang-csharp">// Check effective groups
+var sourceGroup = DockGroupValidator.GetEffectiveDockGroup(sourceDockable);
+var targetGroup = DockGroupValidator.GetEffectiveDockGroup(targetDockable);
+
+Console.WriteLine($&quot;Source: '{sourceGroup}', Target: '{targetGroup}'&quot;);
+
+// Test local docking validation
+var isValidLocal = DockGroupValidator.ValidateDockingGroups(sourceDockable, targetDockable);
+Console.WriteLine($&quot;Can dock locally: {isValidLocal}&quot;);
+
+// Test global docking validation (if target is a dock)
+if (targetDockable is IDock targetDock)
+{
+    var isValidGlobal = DockGroupValidator.ValidateGlobalDocking(sourceDockable, targetDock);
+    Console.WriteLine($&quot;Can dock globally: {isValidGlobal}&quot;);
+}
+
+// Test docking into a specific dock
+if (targetDockable is IDock targetDockForDockValidation)
+{
+    var isValidInDock = DockGroupValidator.ValidateDockingGroupsInDock(sourceDockable, targetDockForDockValidation);
+    Console.WriteLine($&quot;Can dock into dock: {isValidInDock}&quot;);
+}
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="dock-dockable-properties.html">Dockable Properties</a> - Other properties that control docking behavior</li>
+<li><a href="dock-properties.html">Dock Properties</a> - Attached properties for visual controls</li>
+<li><a href="dock-manager-guide.html">DockManager Guide</a> - Core docking logic and validation</li>
+<li><a href="dock-layout-panels.html">Layout Panels</a> - Container types that support groups</li>
+<li><a href="dock-mvvm.html">MVVM Guide</a> - Using groups in MVVM applications</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-docking-groups.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

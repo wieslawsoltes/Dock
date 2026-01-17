@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Code-Only Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Code-Only Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-code-only.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-code-only-guide">Dock Code-Only Guide</h1>
+
+<p>This guide shows how to build a minimal Dock layout entirely in C# using
+<code>Dock.Model.Avalonia</code> and <code>DockControl</code>. It is based on
+<code>samples/DockCodeOnlySample</code> and avoids XAML or MVVM helpers.</p>
+<h2 id="create-a-new-avalonia-project">Create a new Avalonia project</h2>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MinimalDockApp
+cd MinimalDockApp
+</code></pre>
+<h2 id="install-the-dock-packages">Install the Dock packages</h2>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.Avalonia
+dotnet add package Dock.Avalonia.Themes.Fluent
+# or use Dock.Avalonia.Themes.Simple
+</code></pre>
+<p>Optional serializers (choose one):</p>
+<pre><code class="lang-bash">dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+dotnet add package Dock.Serializer.Protobuf          # Binary
+dotnet add package Dock.Serializer.Xml               # XML
+dotnet add package Dock.Serializer.Yaml              # YAML
+</code></pre>
+<h2 id="minimal-code-only-app">Minimal code-only app</h2>
+<p>Replace your <code>Program.cs</code> with the following:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Styling;
+using Avalonia.Themes.Fluent;
+using Dock.Avalonia.Controls;
+using Dock.Avalonia.Themes.Fluent;
+using Dock.Model.Avalonia;
+using Dock.Model.Avalonia.Controls;
+using Dock.Model.Core;
+
+namespace MinimalDockApp;
+
+internal class Program
+{
+    [STAThread]
+    private static void Main(string[] args)
+    {
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+    }
+
+    private static AppBuilder BuildAvaloniaApp()
+        =&gt; AppBuilder.Configure&lt;App&gt;()
+            .UsePlatformDetect()
+            .LogToTrace();
+}
+
+public class App : Application
+{
+    public override void OnFrameworkInitializationCompleted()
+    {
+        Styles.Add(new FluentTheme());
+        Styles.Add(new DockFluentTheme());
+        RequestedThemeVariant = ThemeVariant.Dark;
+
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var dockControl = new DockControl();
+            var factory = new Factory();
+
+            var documentDock = new DocumentDock
+            {
+                Id = &quot;Documents&quot;,
+                IsCollapsable = false,
+                CanCreateDocument = true
+            };
+
+            documentDock.DocumentFactory = () =&gt;
+            {
+                var index = documentDock.VisibleDockables?.Count ?? 0;
+                return new Document
+                {
+                    Id = $&quot;Doc{index + 1}&quot;,
+                    Title = $&quot;Document {index + 1}&quot;,
+                    Content = new TextBox { Text = $&quot;Document {index + 1}&quot;, AcceptsReturn = true }
+                };
+            };
+
+            var document = new Document
+            {
+                Id = &quot;Doc1&quot;,
+                Title = &quot;Document 1&quot;,
+                // Content = new TextBox { Text = &quot;Document 1&quot;, AcceptsReturn = true }
+            };
+
+            documentDock.VisibleDockables = factory.CreateList&lt;IDockable&gt;(document);
+            documentDock.ActiveDockable = document;
+
+            var leftTool = new Tool { Id = &quot;Tool1&quot;, Title = &quot;Tool 1&quot; };
+            var bottomTool = new Tool { Id = &quot;Tool2&quot;, Title = &quot;Output&quot; };
+
+            var mainLayout = new ProportionalDock
+            {
+                Orientation = Orientation.Horizontal,
+                VisibleDockables = factory.CreateList&lt;IDockable&gt;(
+                    new ToolDock
+                    {
+                        Id = &quot;LeftPane&quot;,
+                        Alignment = Alignment.Left,
+                        Proportion = 0.25,
+                        VisibleDockables = factory.CreateList&lt;IDockable&gt;(leftTool),
+                        ActiveDockable = leftTool
+                    },
+                    new ProportionalDockSplitter(),
+                    documentDock,
+                    new ProportionalDockSplitter(),
+                    new ToolDock
+                    {
+                        Id = &quot;BottomPane&quot;,
+                        Alignment = Alignment.Bottom,
+                        Proportion = 0.25,
+                        VisibleDockables = factory.CreateList&lt;IDockable&gt;(bottomTool),
+                        ActiveDockable = bottomTool
+                    })
+            };
+
+            var root = factory.CreateRootDock();
+            root.VisibleDockables = factory.CreateList&lt;IDockable&gt;(mainLayout);
+            root.DefaultDockable = mainLayout;
+
+            factory.InitLayout(root);
+            dockControl.Factory = factory;
+            dockControl.Layout = root;
+
+            desktop.MainWindow = new Window
+            {
+                Width = 800,
+                Height = 600,
+                Content = dockControl
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+</code></pre>
+<h2 id="run-the-application">Run the application</h2>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+<p>The window will show a document dock flanked by left and bottom tool panes.
+<code>DocumentDock</code> exposes <code>AddDocument</code> for adding and activating documents in
+code, and <code>ToolDock</code> provides <code>AddTool</code> for tool panes.</p>
+<h2 id="notes-on-content">Notes on content</h2>
+<p><code>Document.Content</code> can be set to an Avalonia control instance (as shown above),
+which makes it easy to host simple UI without a view locator or data templates.
+For larger applications, consider using data templates or the
+<a href="dock-itemssource.html">ItemsSource approach</a> instead.</p>
+<p>You can find a complete project in the repository under
+<code>samples/DockCodeOnlySample</code>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-code-only.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

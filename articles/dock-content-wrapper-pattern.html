@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Advanced Content Wrapper Pattern | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Advanced Content Wrapper Pattern | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-content-wrapper-pattern.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="advanced-content-wrapper-pattern">Advanced Content Wrapper Pattern</h1>
+
+<p>This guide covers an advanced pattern for wrapping your own domain models with Dock's document system. This approach is useful when you want to maintain separation between your application's document model and Dock's infrastructure.</p>
+<blockquote>
+<p><strong>⚠️ Important</strong>: With the introduction of <code>DocumentDock.ItemsSource</code> in the Avalonia model (<code>Dock.Model.Avalonia.Controls.DocumentDock</code>), most scenarios that required this wrapper pattern can now be solved more elegantly. See <a href="dock-content-guide.html#method-1-itemssource-collection-binding-recommended">Method 1: ItemsSource Collection Binding</a> in the content guide for the recommended approach.</p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong>: This is an advanced pattern. For most use cases, the standard <a href="dock-content-guide.html">Document and Tool Content Guide</a> approaches are recommended. <strong>Consider ItemsSource first</strong> - it provides the same domain separation with much less code.</p>
+</blockquote>
+<h2 id="modern-approach-itemssource-recommended">Modern Approach: ItemsSource (Recommended)</h2>
+<p>Before implementing the wrapper pattern below, consider using <code>ItemsSource</code> which provides automatic domain model binding:</p>
+<pre><code class="lang-xaml">&lt;!-- Modern approach with ItemsSource --&gt;
+&lt;DocumentDock ItemsSource=&quot;{Binding SceneDocuments}&quot;&gt;
+  &lt;DocumentDock.DocumentTemplate&gt;
+    &lt;DocumentTemplate&gt;
+      &lt;views:SceneView DataContext=&quot;{Binding Context}&quot; /&gt;
+    &lt;/DocumentTemplate&gt;
+  &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<p>With a simple domain model:</p>
+<pre><code class="lang-csharp">public class SceneDocument : INotifyPropertyChanged
+{
+    public string Title { get; set; } = &quot;Untitled Scene&quot;;  // Automatically used for tab title
+    public List&lt;SceneObject&gt; Objects { get; set; } = new();
+    // ... rest of your domain model
+}
+
+// In your ViewModel
+public ObservableCollection&lt;SceneDocument&gt; SceneDocuments { get; } = new();
+</code></pre>
+<p>This achieves the same domain separation goals with much less code and automatic collection synchronization.</p>
+<h2 id="when-you-still-need-the-wrapper-pattern">When You Still Need the Wrapper Pattern</h2>
+<p>The wrapper pattern below may still be useful for:</p>
+<ol>
+<li><strong>Legacy Integration</strong>: Existing complex document systems that can't be easily adapted to ItemsSource</li>
+<li><strong>Dynamic Content Types</strong>: When you need to dynamically switch between completely different content types within documents</li>
+<li><strong>Advanced Serialization</strong>: Complex layout persistence scenarios requiring custom document handling</li>
+</ol>
+<h2 id="the-wrapper-pattern">The Wrapper Pattern</h2>
+<p>Instead of inheriting directly from Dock's <code>Document</code> class, you can create a wrapper pattern that separates your domain model from the docking infrastructure:</p>
+<h3 id="step-1-define-your-domain-model">Step 1: Define Your Domain Model</h3>
+<pre><code class="lang-csharp">// Your application's document model
+public abstract class AppDocument
+{
+    public string Name { get; set; } = &quot;&quot;;
+    public object? Content { get; set; }
+}
+
+public class SceneDocument : AppDocument
+{
+    public SceneDocument()
+    {
+        Name = &quot;Untitled Scene&quot;;
+    }
+    
+    // Scene-specific properties
+    public List&lt;SceneObject&gt; Objects { get; set; } = new();
+}
+</code></pre>
+<h3 id="step-2-create-the-view">Step 2: Create the View</h3>
+<pre><code class="lang-xaml">&lt;!-- Views/SceneView.axaml --&gt;
+&lt;UserControl xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:models=&quot;using:YourApp.Models&quot;
+             x:Class=&quot;YourApp.Views.SceneView&quot;
+             x:DataType=&quot;models:SceneDocument&quot;&gt;
+
+  &lt;Design.DataContext&gt;
+    &lt;models:SceneDocument /&gt;
+  &lt;/Design.DataContext&gt;
+
+  &lt;Grid RowDefinitions=&quot;Auto,*&quot;&gt;
+    &lt;TextBlock Grid.Row=&quot;0&quot; Text=&quot;{Binding Name}&quot; FontWeight=&quot;Bold&quot; Margin=&quot;5&quot;/&gt;
+    &lt;Border Grid.Row=&quot;1&quot; Background=&quot;LightGray&quot; Margin=&quot;5&quot;&gt;
+      &lt;TextBlock Text=&quot;Scene viewport here&quot; 
+                 HorizontalAlignment=&quot;Center&quot; 
+                 VerticalAlignment=&quot;Center&quot;/&gt;
+    &lt;/Border&gt;
+  &lt;/Grid&gt;
+
+&lt;/UserControl&gt;
+</code></pre>
+<h3 id="step-3-set-up-document-template">Step 3: Set Up Document Template</h3>
+<pre><code class="lang-xaml">&lt;!-- In your MainView.axaml or wherever you define the DocumentDock --&gt;
+&lt;dock:DocumentDock x:Name=&quot;DocumentsPane&quot; Id=&quot;DocumentsPane&quot;&gt;
+  
+  &lt;dock:DocumentDock.DocumentTemplate&gt;
+    &lt;dock:DocumentTemplate x:DataType=&quot;dock:Document&quot;&gt;
+      &lt;!-- Use ContentControl to display the wrapped content --&gt;
+      &lt;ContentControl DataContext=&quot;{Binding Context}&quot; 
+                      x:DataType=&quot;models:AppDocument&quot;
+                      Content=&quot;{Binding Content}&quot; /&gt;
+    &lt;/dock:DocumentTemplate&gt;
+  &lt;/dock:DocumentDock.DocumentTemplate&gt;
+
+&lt;/dock:DocumentDock&gt;
+</code></pre>
+<h3 id="step-4-register-datatemplate-for-your-domain-model">Step 4: Register DataTemplate for Your Domain Model</h3>
+<pre><code class="lang-xaml">&lt;!-- In App.axaml --&gt;
+&lt;Application.DataTemplates&gt;
+  &lt;DataTemplate DataType=&quot;{x:Type models:SceneDocument}&quot;&gt;
+    &lt;views:SceneView /&gt;
+  &lt;/DataTemplate&gt;
+&lt;/Application.DataTemplates&gt;
+</code></pre>
+<h3 id="step-5-create-and-add-documents">Step 5: Create and Add Documents</h3>
+<pre><code class="lang-csharp">private void AddSceneDocument()
+{
+    // Create your domain model
+    var sceneDoc = new SceneDocument
+    {
+        Name = &quot;New Scene&quot;,
+        Content = new SceneView() // Set the view as content
+    };
+
+    // Wrap it in a Dock Document
+    var dockDoc = new Dock.Model.Avalonia.Controls.Document
+    {
+        Id = Guid.NewGuid().ToString(),
+        Title = sceneDoc.Name,
+        Context = sceneDoc, // Your domain model becomes the Context
+        Content = DocumentsPane.DocumentTemplate?.Content // Use the template
+    };
+
+    DocumentsPane.AddDocument(dockDoc);
+}
+</code></pre>
+<h2 id="migration-from-wrapper-pattern-to-itemssource">Migration from Wrapper Pattern to ItemsSource</h2>
+<p>If you're currently using the wrapper pattern and want to migrate to the simpler ItemsSource approach:</p>
+<h3 id="before-wrapper-pattern">Before (Wrapper Pattern):</h3>
+<pre><code class="lang-csharp">// Complex wrapper setup
+var dockDoc = new Document
+{
+    Title = sceneDoc.Name,
+    Context = sceneDoc,
+    Content = DocumentsPane.DocumentTemplate?.Content
+};
+DocumentsPane.AddDocument(dockDoc);
+</code></pre>
+<h3 id="after-itemssource">After (ItemsSource):</h3>
+<pre><code class="lang-csharp">// Simple collection manipulation
+SceneDocuments.Add(sceneDoc); // Automatically creates and adds document
+</code></pre>
+<p>The XAML also becomes much simpler with ItemsSource since the binding and template application is handled automatically.</p>
+<h2 id="alternative-composition-over-inheritance">Alternative: Composition Over Inheritance</h2>
+<p>A cleaner version of this pattern uses composition:</p>
+<pre><code class="lang-csharp">public class DocumentWrapper : Document
+{
+    private AppDocument? _appDocument;
+    
+    public AppDocument? AppDocument
+    {
+        get =&gt; _appDocument;
+        set
+        {
+            _appDocument = value;
+            if (value != null)
+            {
+                Title = value.Name;
+                Content = value.Content;
+            }
+        }
+    }
+}
+</code></pre>
+<p>Then use it like:</p>
+<pre><code class="lang-csharp">var wrapper = new DocumentWrapper
+{
+    AppDocument = new SceneDocument { Name = &quot;My Scene&quot; }
+};
+
+DocumentsPane.AddDocument(wrapper);
+</code></pre>
+<p>This approach provides the same benefits but with a cleaner API and better integration with Dock's systems.</p>
+<h2 id="summary">Summary</h2>
+<p>While the wrapper pattern provides flexibility for complex scenarios, the new <code>ItemsSource</code> functionality covers the majority of use cases with significantly less complexity. Consider using <code>ItemsSource</code> first, and only fall back to the wrapper pattern for advanced scenarios that require the additional control and flexibility it provides.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-content-wrapper-pattern.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

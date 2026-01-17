@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Properties in Control Templates | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Properties in Control Templates | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-properties.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-properties-in-control-templates">Dock Properties in Control Templates</h1>
+
+<p><code>DockProperties</code> is a set of attached properties provided by the <code>Dock.Settings</code> package. They expose metadata used by the drag and drop engine to detect where docking interactions can start and where dockables can be dropped. The default themes apply these properties so the layout system can find the correct visuals during a drag operation.</p>
+<h2 id="why-are-dockproperties-required">Why are DockProperties required?</h2>
+<p>When a user drags a document or tool the <code>DockControl</code> walks up the visual tree to locate elements marked as drop areas or drag handles. Without these markers the engine cannot determine valid targets and dragging will not behave correctly. The built-in styles set these properties on specific elements (for example tab headers or layout panels) but custom templates must do the same.</p>
+<p>The available properties are:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IsDockTarget</code></td>
+<td><code>bool</code></td>
+<td>Marks a control as a surface that can show a <code>DockTargetBase</code> adorner and accept drops.</td>
+</tr>
+<tr>
+<td><code>IsDragArea</code></td>
+<td><code>bool</code></td>
+<td>Identifies an element that can initiate a drag when pressed.</td>
+</tr>
+<tr>
+<td><code>IsDropArea</code></td>
+<td><code>bool</code></td>
+<td>Identifies an element that can accept dropped dockables.</td>
+</tr>
+<tr>
+<td><code>IsDragEnabled</code></td>
+<td><code>bool</code></td>
+<td>Enables or disables dragging of dockables contained within the control.</td>
+</tr>
+<tr>
+<td><code>IsDropEnabled</code></td>
+<td><code>bool</code></td>
+<td>Enables or disables dropping of dockables onto the control.</td>
+</tr>
+<tr>
+<td><code>ShowDockIndicatorOnly</code></td>
+<td><code>bool</code></td>
+<td>Hides the dock target visuals and displays only drop indicators.</td>
+</tr>
+<tr>
+<td><code>IndicatorDockOperation</code></td>
+<td><code>DockOperation</code></td>
+<td>Specifies which dock operation a control represents when only indicators are shown.</td>
+</tr>
+<tr>
+<td><code>DockAdornerHost</code></td>
+<td><code>Control</code></td>
+<td>Specifies the element that should display the dock target adorner.</td>
+</tr>
+<tr>
+<td><code>DockGroup</code></td>
+<td><code>string</code></td>
+<td>Visual grouping hint for templates (usually bound from <code>IDockable.DockGroup</code>). See <a href="dock-docking-groups.html">Docking Groups</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="root-dock-settings">Root Dock Settings</h2>
+<p>In addition to the properties above, <code>IRootDock</code> provides settings that control global docking behavior:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EnableAdaptiveGlobalDockTargets</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>When enabled, reduces global dock targets to only show options where the layout would change. Recommended for dashboards and widget areas to simplify the user experience by reducing the number of drop options presented.</td>
+</tr>
+</tbody>
+</table>
+<p>This setting must be configured on your root dock instance and is particularly useful in scenarios where you want to minimize visual clutter and provide a more focused docking experience.</p>
+<p>Note that docking rules are enforced by the <code>IDockable.DockGroup</code> values in the model; the attached <code>DockProperties.DockGroup</code> is used by control templates to surface that value in the visual tree.</p>
+<h2 id="using-the-properties-in-control-themes">Using the properties in control themes</h2>
+<p>Every control template that participates in docking should set the appropriate <code>DockProperties</code>. The default themes include them on tab strips, pinned panels and window chrome. When creating a custom template copy these setters so dragging continues to work:</p>
+<pre><code class="lang-xaml">&lt;Style Selector=&quot;{x:Type DocumentTabStrip}&quot;&gt;
+    &lt;Setter Property=&quot;(DockProperties.IsDragEnabled)&quot; Value=&quot;{Binding CanDrag}&quot; /&gt;
+    &lt;Setter Property=&quot;(DockProperties.IsDropEnabled)&quot; Value=&quot;{Binding CanDrop}&quot; /&gt;
+&lt;/Style&gt;
+
+&lt;!-- Parts of the template that accept drops --&gt;
+&lt;Border x:Name=&quot;PART_BorderFill&quot;
+        DockProperties.IsDropArea=&quot;True&quot;
+        DockProperties.IsDockTarget=&quot;True&quot;
+        DockProperties.ShowDockIndicatorOnly=&quot;True&quot;
+        DockProperties.IndicatorDockOperation=&quot;Fill&quot;
+        DockProperties.DockAdornerHost=&quot;{TemplateBinding DockAdornerHost}&quot; /&gt;
+</code></pre>
+<p>Without the attached properties above the drag logic would not detect the border as a valid drop area and documents could not be rearranged.</p>
+<h2 id="setting-dockproperties-in-code">Setting DockProperties in code</h2>
+<p>The properties can be accessed through static getter and setter methods. They are normal Avalonia attached properties, so you may modify them at runtime if needed:</p>
+<pre><code class="lang-csharp">// Disable dropping onto a specific control
+DockProperties.SetIsDropEnabled(myControl, false);
+
+// Query whether a control is marked as a drag handle
+bool isDragArea = DockProperties.GetIsDragArea(myBorder);
+</code></pre>
+<p>These helpers are useful when toggling behavior dynamically, for example to disable drag operations while a modal dialog is shown.</p>
+<p>For global drag and drop settings see the <a href="dock-settings.html">Dock settings</a> guide which demonstrates how the same properties can be attached at the window level. For details on the target visuals and selector icons see <a href="dock-targets.html">Dock targets and indicators</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-properties.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

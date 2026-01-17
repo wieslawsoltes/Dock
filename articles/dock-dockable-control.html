@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>DockableControl and TrackingMode | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="DockableControl and TrackingMode | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-dockable-control.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dockablecontrol-and-trackingmode">DockableControl and TrackingMode</h1>
+
+<p><code>DockableControl</code> is a lightweight wrapper used by Dock templates to track the visual state of an <code>IDockable</code>. It registers the control in the factory tracking dictionaries and records bounds/pointer positions for drag operations.</p>
+<h2 id="what-dockablecontrol-does">What DockableControl does</h2>
+<p>When its <code>DataContext</code> is an <code>IDockable</code>, <code>DockableControl</code>:</p>
+<ul>
+<li>Registers itself in the appropriate factory dictionary (<code>VisibleDockableControls</code>, <code>PinnedDockableControls</code>, or <code>TabDockableControls</code>) and also records the templated root in <code>VisibleRootControls</code>, <code>PinnedRootControls</code>, or <code>TabRootControls</code>.</li>
+<li>Stores bounds via <code>SetVisibleBounds</code>, <code>SetPinnedBounds</code>, or <code>SetTabBounds</code>.</li>
+<li>Updates pointer positions (including screen coordinates) during pointer presses and moves.</li>
+</ul>
+<p>The tracking behavior depends on the <code>TrackingMode</code> property.</p>
+<h2 id="trackingmode-values">TrackingMode values</h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Registers in</th>
+<th>Updates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Visible</code></td>
+<td><code>VisibleDockableControls</code>, <code>VisibleRootControls</code></td>
+<td>Visible bounds</td>
+</tr>
+<tr>
+<td><code>Pinned</code></td>
+<td><code>PinnedDockableControls</code>, <code>PinnedRootControls</code></td>
+<td>Pinned bounds</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td><code>TabDockableControls</code>, <code>TabRootControls</code></td>
+<td>Tab bounds</td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-dockablecontrol-in-templates">Using DockableControl in templates</h2>
+<p>If you override templates for document content, tool content, tab items, or pinned items, keep <code>DockableControl</code> in place and set the matching <code>TrackingMode</code>.</p>
+<p>Document content (visible):</p>
+<pre><code class="lang-xaml">&lt;DockableControl TrackingMode=&quot;Visible&quot;&gt;
+  &lt;ContentPresenter Content=&quot;{Binding}&quot; /&gt;
+&lt;/DockableControl&gt;
+</code></pre>
+<p>Tab item (tab tracking):</p>
+<pre><code class="lang-xaml">&lt;DockableControl TrackingMode=&quot;Tab&quot;&gt;
+  &lt;Border&gt;
+    &lt;TextBlock Text=&quot;{Binding Title}&quot; /&gt;
+  &lt;/Border&gt;
+&lt;/DockableControl&gt;
+</code></pre>
+<p>Pinned item (pinned tracking):</p>
+<pre><code class="lang-xaml">&lt;DockableControl TrackingMode=&quot;Pinned&quot;&gt;
+  &lt;ContentPresenter Content=&quot;{Binding}&quot; /&gt;
+&lt;/DockableControl&gt;
+</code></pre>
+<p>Without <code>DockableControl</code>, factory tracking dictionaries stay empty and Dock loses bounds/pointer history for that dockable.</p>
+<h2 id="related-guides">Related guides</h2>
+<ul>
+<li><a href="dock-tracking-controls.html">Tracking controls</a></li>
+<li><a href="dock-properties.html">Dock properties</a></li>
+<li><a href="dock-styling.html">Styling and theming</a></li>
+</ul>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-dockable-control.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

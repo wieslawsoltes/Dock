@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Host Window Locators | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Host Window Locators | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-host-window-locator.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="host-window-locators">Host Window Locators</h1>
+
+<p>Dock can display floating windows when a dockable is detached from the main layout.
+<code>IFactory</code> uses <em>host window locators</em> to supply the platform window objects
+that wrap these floating docks. This guide explains how the <code>HostWindowLocator</code>
+and <code>DefaultHostWindowLocator</code> properties work and shows typical usage patterns.</p>
+<h2 id="why-locators-are-required">Why locators are required</h2>
+<p>The <code>HostAdapter</code> component bridges an <code>IDockWindow</code> with an <code>IHostWindow</code>
+implementation. When a dockable is floated the adapter queries the factory using
+<code>GetHostWindow</code> to obtain the actual host window instance. Without a locator the
+factory cannot create platform windows and floating docks will fail to appear.</p>
+<p>Registering locators also allows you to integrate dependency injection or apply
+platform specific customisation when new windows are created.</p>
+<h2 id="providing-host-windows">Providing host windows</h2>
+<p><code>HostWindowLocator</code> is a dictionary mapping string keys to functions that return
+an <code>IHostWindow</code>. When <code>GetHostWindow</code> is called with a key, the factory invokes
+the matching function. A common setup registers a default entry for
+<code>IDockWindow</code>:</p>
+<pre><code class="lang-csharp">HostWindowLocator = new Dictionary&lt;string, Func&lt;IHostWindow?&gt;&gt;
+{
+    [nameof(IDockWindow)] = () =&gt; new HostWindow()
+};
+</code></pre>
+<p>When different window styles are required, add additional keys and choose which
+one to pass to <code>GetHostWindow</code>.</p>
+<h2 id="dockcontrol-defaults">DockControl defaults</h2>
+<p>When <code>DockControl.InitializeFactory</code> is <code>true</code>, the control assigns
+<code>HostWindowLocator</code> with a default <code>IDockWindow</code> mapping and sets
+<code>DefaultHostWindowLocator</code> to create a new <code>HostWindow</code>. This makes floating
+windows work without extra setup, but it also overwrites any locators you
+configured earlier. Disable <code>InitializeFactory</code> if you want to provide your own
+locators up front.</p>
+<h2 id="fallback-locator">Fallback locator</h2>
+<p>If no entry matches the provided key, <code>GetHostWindow</code> calls
+<code>DefaultHostWindowLocator</code>. Set this delegate to return a generic host window
+when the dictionary does not contain a specific mapping:</p>
+<pre><code class="lang-csharp">DefaultHostWindowLocator = () =&gt; new HostWindow();
+</code></pre>
+<p>The fallback ensures floating windows still open even if a key is missing.</p>
+<h2 id="recommended-setup">Recommended setup</h2>
+<ol>
+<li>Populate <code>HostWindowLocator</code> inside <code>InitLayout</code> or during application
+startup.</li>
+<li>Provide a <code>DefaultHostWindowLocator</code> so floating windows always have a host.</li>
+<li>Call <code>GetHostWindow(id)</code> from custom code or rely on <code>HostAdapter</code>, which
+invokes it automatically when presenting windows.</li>
+</ol>
+<p>Using locators in this way keeps window creation centralized in the factory and
+makes it easy to customize the hosting behavior.</p>
+<p>For further details on floating windows see the <a href="dock-windows.html">Floating windows guide</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-host-window-locator.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

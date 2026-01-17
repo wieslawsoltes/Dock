@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Caliburn.Micro Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Caliburn.Micro Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-caliburn-micro.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-caliburnmicro-guide">Dock Caliburn.Micro Guide</h1>
+
+<p>This guide explains how to use Dock with Caliburn.Micro. It mirrors the MVVM workflow but uses Caliburn.Micro's <code>PropertyChangedBase</code> for change notifications and includes a simple <code>RelayCommand</code> helper.</p>
+<h2 id="packages">Packages</h2>
+<p>Install the Dock packages and a theme:</p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.CaliburMicro
+dotnet add package Dock.Avalonia.Themes.Fluent
+</code></pre>
+<p>Optional packages for serialization:</p>
+<pre><code class="lang-bash">dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+dotnet add package Dock.Serializer.Protobuf          # Binary (protobuf-net)
+dotnet add package Dock.Serializer.Xml               # XML
+dotnet add package Dock.Serializer.Yaml              # YAML
+</code></pre>
+<h2 id="view-location">View location</h2>
+<p>Dock uses Avalonia <code>IDataTemplate</code> resolution for dockable views. You can keep your Caliburn.Micro conventions or register a simple view locator:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+
+namespace MyDockApp;
+
+public sealed class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        var type = Type.GetType(name);
+
+        return type is null
+            ? new TextBlock { Text = $&quot;Not Found: {name}&quot; }
+            : (Control)Activator.CreateInstance(type)!;
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+            return false;
+
+        if (data is IDockable)
+            return true;
+
+        var name = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        return Type.GetType(name) is not null;
+    }
+}
+</code></pre>
+<p>Register it in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application.DataTemplates&gt;
+  &lt;local:ViewLocator /&gt;
+&lt;/Application.DataTemplates&gt;
+
+&lt;Application.Styles&gt;
+  &lt;FluentTheme /&gt;
+  &lt;DockFluentTheme /&gt;
+&lt;/Application.Styles&gt;
+</code></pre>
+<h2 id="dockables-and-commands">Dockables and commands</h2>
+<p>Use the Caliburn.Micro flavored base classes from <code>Dock.Model.CaliburMicro</code>. They inherit from <code>PropertyChangedBase</code> and expose the same docking properties as the MVVM version.</p>
+<pre><code class="lang-csharp">using Dock.Model.CaliburMicro.Controls;
+using Dock.Model.CaliburMicro.Core;
+
+public sealed class DocumentViewModel : Document
+{
+    private string _text = string.Empty;
+
+    public string Text
+    {
+        get =&gt; _text;
+        set =&gt; Set(ref _text, value);
+    }
+}
+
+public sealed class ToolViewModel : Tool
+{
+    private bool _isEnabled;
+
+    public ToolViewModel()
+    {
+        ToggleCommand = new RelayCommand(() =&gt; IsEnabled = !IsEnabled);
+    }
+
+    public bool IsEnabled
+    {
+        get =&gt; _isEnabled;
+        set =&gt; Set(ref _isEnabled, value);
+    }
+
+    public RelayCommand ToggleCommand { get; }
+}
+</code></pre>
+<p><code>RelayCommand</code> lives in <code>Dock.Model.CaliburMicro.Core</code> and is the same helper used by the built-in dock commands (go back, go forward, navigate, close). You can use any other <code>ICommand</code> implementation if you prefer.</p>
+<h2 id="factory-and-layout">Factory and layout</h2>
+<p>Create a factory by inheriting from <code>Dock.Model.CaliburMicro.Factory</code> and build your layout in <code>CreateLayout</code>:</p>
+<pre><code class="lang-csharp">using Dock.Model.CaliburMicro;
+using Dock.Model.CaliburMicro.Controls;
+using Dock.Model.Core;
+
+public sealed class DockFactory : Factory
+{
+    public override IRootDock CreateLayout()
+    {
+        var tool = new ToolViewModel { Id = &quot;Tool1&quot;, Title = &quot;Toolbox&quot; };
+        var document = new DocumentViewModel { Id = &quot;Doc1&quot;, Title = &quot;Welcome&quot; };
+
+        var toolDock = CreateToolDock();
+        toolDock.VisibleDockables = CreateList&lt;IDockable&gt;(tool);
+        toolDock.ActiveDockable = tool;
+
+        var documentDock = CreateDocumentDock();
+        documentDock.VisibleDockables = CreateList&lt;IDockable&gt;(document);
+        documentDock.ActiveDockable = document;
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(toolDock, documentDock);
+        root.ActiveDockable = documentDock;
+        root.DefaultDockable = documentDock;
+
+        return root;
+    }
+}
+</code></pre>
+<p>Initialize the layout and assign it to <code>DockControl</code>:</p>
+<pre><code class="lang-csharp">public sealed class MainViewModel
+{
+    public MainViewModel()
+    {
+        Factory = new DockFactory();
+        Layout = Factory.CreateLayout();
+    }
+
+    public IFactory Factory { get; }
+    public IRootDock Layout { get; }
+}
+</code></pre>
+<pre><code class="lang-xaml">&lt;DockControl Layout=&quot;{Binding Layout}&quot;
+             Factory=&quot;{Binding Factory}&quot;
+             InitializeFactory=&quot;True&quot;
+             InitializeLayout=&quot;True&quot; /&gt;
+</code></pre>
+<p>If you call <code>Factory.InitLayout</code> manually, set <code>InitializeLayout=&quot;False&quot;</code> to avoid double initialization.</p>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The Caliburn.Micro model uses the same <code>IFactory</code> API and dockable interfaces as MVVM and ReactiveUI.</li>
+<li>Use <code>Dock.Model.CaliburMicro.Controls.Document</code>, <code>Tool</code>, <code>RootDock</code>, and related dock types to keep Caliburn.Micro change tracking consistent.</li>
+</ul>
+<p>For an overview of other guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-caliburn-micro.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

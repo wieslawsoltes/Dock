@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock Sizing Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock Sizing Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-sizing.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-sizing-guide">Dock Sizing Guide</h1>
+
+<p>This guide explains how to control the size of dockable items beyond the default proportional layout. Dock positions are normally calculated from each dockable's <code>Proportion</code> value, but you can override this behavior with pixel based limits and by disabling splitters.</p>
+<h2 id="proportions-vs-fixed-sizes">Proportions vs fixed sizes</h2>
+<p><code>ProportionalDock</code> arranges its children according to their <code>Proportion</code> property. This is ideal when panes should resize together. For pixel perfect layouts assign <code>MinWidth</code>, <code>MaxWidth</code>, <code>MinHeight</code> or <code>MaxHeight</code> on the dockable view model. The proportional size is then clamped to these limits.</p>
+<p>Setting both the minimum and maximum to the same value effectively locks the dimension:</p>
+<pre><code class="lang-csharp">var errorsTool = new ToolViewModel
+{
+    Id = &quot;Errors&quot;,
+    Title = &quot;Errors&quot;,
+    MinWidth = 300,
+    MaxWidth = 300,
+};
+</code></pre>
+<p>With identical values the pane cannot be resized by the user and will always occupy <code>300</code> pixels.</p>
+<h2 id="pixel-sizing-with-limits">Pixel sizing with limits</h2>
+<p>You can also mix proportions and absolute limits. For example a sidebar might be at least <code>200</code> pixels wide but grow with the window until it reaches <code>400</code> pixels:</p>
+<pre><code class="lang-csharp">var explorer = new ToolViewModel
+{
+    Id = &quot;Explorer&quot;,
+    Title = &quot;Explorer&quot;,
+    MinWidth = 200,
+    MaxWidth = 400,
+};
+</code></pre>
+<p>The dock splits space proportionally and then clamps the result within the specified range.</p>
+<h2 id="disabling-splitter-interaction">Disabling splitter interaction</h2>
+<p><code>ProportionalDockSplitter</code> exposes a <code>CanResize</code> property. When <code>false</code> the user cannot drag that splitter which keeps adjacent panes at their current sizes:</p>
+<pre><code class="lang-xaml">&lt;ProportionalDockSplitter x:Name=&quot;LeftSplitter&quot; CanResize=&quot;False&quot; /&gt;
+</code></pre>
+<p>This is useful when combining fixed size panes with resizable ones or when you want to lock down a layout entirely.
+Setting <code>ResizePreview=&quot;True&quot;</code> shows a drag preview while moving and applies the size when released.</p>
+<h2 id="common-scenarios">Common scenarios</h2>
+<ul>
+<li><strong>Fixed sidebar</strong> – Set equal <code>MinWidth</code> and <code>MaxWidth</code> on the tool dock and disable the neighbouring splitter.</li>
+<li><strong>Resizable panel with limits</strong> – Specify <code>MinWidth</code> and <code>MaxWidth</code> to constrain how small or large the panel becomes.</li>
+<li><strong>Non-resizable document area</strong> – Place a splitter with <code>CanResize=&quot;False&quot;</code> between the document dock and other panes.</li>
+</ul>
+<p>By combining these properties you can achieve precise control over the dimensions of each dockable.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-sizing.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

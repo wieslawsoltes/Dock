@@ -1,0 +1,5508 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class FactoryBase | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class FactoryBase | Dock for Avalonia ">
+      
+      <meta name="description" content="Factory base class.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Model_FactoryBase.md&amp;value=---%0Auid%3A%20Dock.Model.FactoryBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Model.FactoryBase">
+
+
+
+  <h1 id="Dock_Model_FactoryBase" data-uid="Dock.Model.FactoryBase" class="text-break">
+Class FactoryBase  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Factory base class.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class FactoryBase : IFactory</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">FactoryBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Dock.Model.Avalonia.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.CaliburMicro.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.Inpc.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.Mvvm.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.Prism.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.ReactiveProperty.Factory.html">Factory</a></div>
+      <div><a class="xref" href="Dock.Model.ReactiveUI.Factory.html">Factory</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDockDock__System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, out IDockDock, Action&lt;IDockDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDockDock__">FluentExtensions.DockDock(IFactory, Action&lt;IDockDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockWindow_Dock_Model_Core_IFactory_Dock_Model_Core_IDockWindow__System_Action_Dock_Model_Core_IDockWindow__">FluentExtensions.DockWindow(IFactory, out IDockWindow, Action&lt;IDockWindow&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DockWindow_Dock_Model_Core_IFactory_System_Action_Dock_Model_Core_IDockWindow__">FluentExtensions.DockWindow(IFactory, Action&lt;IDockWindow&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Document_Dock_Model_Core_IFactory_Dock_Model_Controls_IDocument__System_Action_Dock_Model_Controls_IDocument__">FluentExtensions.Document(IFactory, out IDocument, Action&lt;IDocument&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Document_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDocument__">FluentExtensions.Document(IFactory, Action&lt;IDocument&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DocumentDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IDocumentDock__System_Action_Dock_Model_Controls_IDocumentDock__">FluentExtensions.DocumentDock(IFactory, out IDocumentDock, Action&lt;IDocumentDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_DocumentDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IDocumentDock__">FluentExtensions.DocumentDock(IFactory, Action&lt;IDocumentDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IGridDock__System_Action_Dock_Model_Controls_IGridDock__">FluentExtensions.GridDock(IFactory, out IGridDock, Action&lt;IGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IGridDock__">FluentExtensions.GridDock(IFactory, Action&lt;IGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDockSplitter_Dock_Model_Core_IFactory_Dock_Model_Controls_IGridDockSplitter__System_Action_Dock_Model_Controls_IGridDockSplitter__">FluentExtensions.GridDockSplitter(IFactory, out IGridDockSplitter, Action&lt;IGridDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_GridDockSplitter_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IGridDockSplitter__">FluentExtensions.GridDockSplitter(IFactory, Action&lt;IGridDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IProportionalDock__Dock_Model_Core_Orientation_System_Action_Dock_Model_Controls_IProportionalDock__">FluentExtensions.ProportionalDock(IFactory, out IProportionalDock, Orientation, Action&lt;IProportionalDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDock_Dock_Model_Core_IFactory_Dock_Model_Core_Orientation_System_Action_Dock_Model_Controls_IProportionalDock__">FluentExtensions.ProportionalDock(IFactory, Orientation, Action&lt;IProportionalDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDockSplitter_Dock_Model_Core_IFactory_Dock_Model_Controls_IProportionalDockSplitter__System_Boolean_System_Boolean_System_Action_Dock_Model_Controls_IProportionalDockSplitter__">FluentExtensions.ProportionalDockSplitter(IFactory, out IProportionalDockSplitter, bool, bool, Action&lt;IProportionalDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ProportionalDockSplitter_Dock_Model_Core_IFactory_System_Boolean_System_Boolean_System_Action_Dock_Model_Controls_IProportionalDockSplitter__">FluentExtensions.ProportionalDockSplitter(IFactory, bool, bool, Action&lt;IProportionalDockSplitter&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_RootDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IRootDock__System_Action_Dock_Model_Controls_IRootDock__">FluentExtensions.RootDock(IFactory, out IRootDock, Action&lt;IRootDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_RootDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IRootDock__">FluentExtensions.RootDock(IFactory, Action&lt;IRootDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_SplitViewDock_Dock_Model_Core_IFactory_Dock_Model_Controls_ISplitViewDock__System_Action_Dock_Model_Controls_ISplitViewDock__">FluentExtensions.SplitViewDock(IFactory, out ISplitViewDock, Action&lt;ISplitViewDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_SplitViewDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_ISplitViewDock__">FluentExtensions.SplitViewDock(IFactory, Action&lt;ISplitViewDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_StackDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IStackDock__System_Action_Dock_Model_Controls_IStackDock__">FluentExtensions.StackDock(IFactory, out IStackDock, Action&lt;IStackDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_StackDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IStackDock__">FluentExtensions.StackDock(IFactory, Action&lt;IStackDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Tool_Dock_Model_Core_IFactory_Dock_Model_Controls_ITool__System_Action_Dock_Model_Controls_ITool__">FluentExtensions.Tool(IFactory, out ITool, Action&lt;ITool&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_Tool_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_ITool__">FluentExtensions.Tool(IFactory, Action&lt;ITool&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ToolDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IToolDock__Dock_Model_Core_Alignment_System_Action_Dock_Model_Controls_IToolDock__">FluentExtensions.ToolDock(IFactory, out IToolDock, Alignment, Action&lt;IToolDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_ToolDock_Dock_Model_Core_IFactory_Dock_Model_Core_Alignment_System_Action_Dock_Model_Controls_IToolDock__">FluentExtensions.ToolDock(IFactory, Alignment, Action&lt;IToolDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_UniformGridDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IUniformGridDock__System_Action_Dock_Model_Controls_IUniformGridDock__">FluentExtensions.UniformGridDock(IFactory, out IUniformGridDock, Action&lt;IUniformGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_UniformGridDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IUniformGridDock__">FluentExtensions.UniformGridDock(IFactory, Action&lt;IUniformGridDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WrapDock_Dock_Model_Core_IFactory_Dock_Model_Controls_IWrapDock__System_Action_Dock_Model_Controls_IWrapDock__">FluentExtensions.WrapDock(IFactory, out IWrapDock, Action&lt;IWrapDock&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WrapDock_Dock_Model_Core_IFactory_System_Action_Dock_Model_Controls_IWrapDock__">FluentExtensions.WrapDock(IFactory, Action&lt;IWrapDock&gt;?)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Dock_Model_FactoryBase_ContextLocator_" data-uid="Dock.Model.FactoryBase.ContextLocator*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ContextLocator" data-uid="Dock.Model.FactoryBase.ContextLocator">
+  ContextLocator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Context">Context</a> locator registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Dictionary&lt;string, Func&lt;object?&gt;&gt;? ContextLocator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DefaultContextLocator_" data-uid="Dock.Model.FactoryBase.DefaultContextLocator*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DefaultContextLocator" data-uid="Dock.Model.FactoryBase.DefaultContextLocator">
+  DefaultContextLocator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Context">Context</a> default locator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Func&lt;object?&gt;? DefaultContextLocator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DefaultHostWindowLocator_" data-uid="Dock.Model.FactoryBase.DefaultHostWindowLocator*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DefaultHostWindowLocator" data-uid="Dock.Model.FactoryBase.DefaultHostWindowLocator">
+  DefaultHostWindowLocator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a> default locator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Func&lt;IHostWindow?&gt;? DefaultHostWindowLocator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DockControls_" data-uid="Dock.Model.FactoryBase.DockControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DockControls" data-uid="Dock.Model.FactoryBase.DockControls">
+  DockControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets dock controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IList&lt;IDockControl&gt; DockControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DockableLocator_" data-uid="Dock.Model.FactoryBase.DockableLocator*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DockableLocator" data-uid="Dock.Model.FactoryBase.DockableLocator">
+  DockableLocator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> locator registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IDictionary&lt;string, Func&lt;IDockable?&gt;&gt;? DockableLocator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DocumentControls_" data-uid="Dock.Model.FactoryBase.DocumentControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DocumentControls" data-uid="Dock.Model.FactoryBase.DocumentControls">
+  DocumentControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Controls.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets document controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, object&gt; DocumentControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HideDocumentsOnClose_" data-uid="Dock.Model.FactoryBase.HideDocumentsOnClose*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HideDocumentsOnClose" data-uid="Dock.Model.FactoryBase.HideDocumentsOnClose">
+  HideDocumentsOnClose
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When true closing a document hides it instead of removing it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool HideDocumentsOnClose { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HideToolsOnClose_" data-uid="Dock.Model.FactoryBase.HideToolsOnClose*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HideToolsOnClose" data-uid="Dock.Model.FactoryBase.HideToolsOnClose">
+  HideToolsOnClose
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When true closing a tool hides it instead of removing it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool HideToolsOnClose { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HostWindowLocator_" data-uid="Dock.Model.FactoryBase.HostWindowLocator*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HostWindowLocator" data-uid="Dock.Model.FactoryBase.HostWindowLocator">
+  HostWindowLocator
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets <a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a> locator registry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Dictionary&lt;string, Func&lt;IHostWindow?&gt;&gt;? HostWindowLocator { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2">Dictionary</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HostWindows_" data-uid="Dock.Model.FactoryBase.HostWindows*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HostWindows" data-uid="Dock.Model.FactoryBase.HostWindows">
+  HostWindows
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets host windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IList&lt;IHostWindow&gt; HostWindows { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_PinnedDockableControls_" data-uid="Dock.Model.FactoryBase.PinnedDockableControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_PinnedDockableControls" data-uid="Dock.Model.FactoryBase.PinnedDockableControls">
+  PinnedDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets pinned dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, IDockableControl&gt; PinnedDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_PinnedRootControls_" data-uid="Dock.Model.FactoryBase.PinnedRootControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_PinnedRootControls" data-uid="Dock.Model.FactoryBase.PinnedRootControls">
+  PinnedRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets pinned dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, object&gt; PinnedRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_TabDockableControls_" data-uid="Dock.Model.FactoryBase.TabDockableControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_TabDockableControls" data-uid="Dock.Model.FactoryBase.TabDockableControls">
+  TabDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tab dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, IDockableControl&gt; TabDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_TabRootControls_" data-uid="Dock.Model.FactoryBase.TabRootControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_TabRootControls" data-uid="Dock.Model.FactoryBase.TabRootControls">
+  TabRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tab dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, object&gt; TabRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_ToolControls_" data-uid="Dock.Model.FactoryBase.ToolControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ToolControls" data-uid="Dock.Model.FactoryBase.ToolControls">
+  ToolControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Controls.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets tool controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, object&gt; ToolControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_VisibleDockableControls_" data-uid="Dock.Model.FactoryBase.VisibleDockableControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_VisibleDockableControls" data-uid="Dock.Model.FactoryBase.VisibleDockableControls">
+  VisibleDockableControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets visible dockable controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, IDockableControl&gt; VisibleDockableControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="Dock.Model.Core.IDockableControl.html">IDockableControl</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_VisibleRootControls_" data-uid="Dock.Model.FactoryBase.VisibleRootControls*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_VisibleRootControls" data-uid="Dock.Model.FactoryBase.VisibleRootControls">
+  VisibleRootControls
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets visible dockable root controls.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDictionary&lt;IDockable, object&gt; VisibleRootControls { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Dock_Model_FactoryBase_ActivateWindow_" data-uid="Dock.Model.FactoryBase.ActivateWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_ActivateWindow_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.ActivateWindow(Dock.Model.Core.IDockable)">
+  ActivateWindow(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Activates the specified dockable window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ActivateWindow(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable window to activate.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_AddDockable_" data-uid="Dock.Model.FactoryBase.AddDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_AddDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.AddDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
+  AddDockable(IDock, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> into dock <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AddDockable(IDock dock, IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The owner dock.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to add.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_AddVisibleDockable_" data-uid="Dock.Model.FactoryBase.AddVisibleDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_AddVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.AddVisibleDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
+  AddVisibleDockable(IDock, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1398"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds the dockable to the visible dockables list of the dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void AddVisibleDockable(IDock dock, IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_AddWindow_" data-uid="Dock.Model.FactoryBase.AddWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_AddWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.AddWindow(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow)">
+  AddWindow(IRootDock, IDockWindow)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds window into dock windows list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AddWindow(IRootDock rootDock, IDockWindow window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dock.</p>
+</dd>
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to add.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CleanupOrphanedSplitters_" data-uid="Dock.Model.FactoryBase.CleanupOrphanedSplitters*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CleanupOrphanedSplitters_Dock_Model_Core_IDock_" data-uid="Dock.Model.FactoryBase.CleanupOrphanedSplitters(Dock.Model.Core.IDock)">
+  CleanupOrphanedSplitters(IDock)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Cleans up orphaned splitters that are no longer needed.
+A splitter is orphaned if:</p>
+<ol>
+<li>It's at the beginning or end of the dockables list</li>
+<li>It's consecutive with another splitter</li>
+<li>It's the only dockable in the list
+A splitter between two non-splitter dockables is NOT orphaned and should be kept.</li>
+</ol>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CleanupOrphanedSplitters(IDock dock)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseAllDockables_" data-uid="Dock.Model.FactoryBase.CloseAllDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseAllDockables(Dock.Model.Core.IDockable)">
+  CloseAllDockables(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseAllDockables(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable owner source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseDockable_" data-uid="Dock.Model.FactoryBase.CloseDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseDockable(Dock.Model.Core.IDockable)">
+  CloseDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1086"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes dockable from owner <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection, and call IDockable.OnClose.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseLeftDockables_" data-uid="Dock.Model.FactoryBase.CloseLeftDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseLeftDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseLeftDockables(Dock.Model.Core.IDockable)">
+  CloseLeftDockables(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1182"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the left of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseLeftDockables(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable owner source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseOtherDockables_" data-uid="Dock.Model.FactoryBase.CloseOtherDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseOtherDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseOtherDockables(Dock.Model.Core.IDockable)">
+  CloseOtherDockables(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> of the dockable owner, excluding the dockable itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseOtherDockables(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable owner source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseRightDockables_" data-uid="Dock.Model.FactoryBase.CloseRightDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseRightDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CloseRightDockables(Dock.Model.Core.IDockable)">
+  CloseRightDockables(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1199"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Calls <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_CloseDockable_Dock_Model_Core_IDockable_">CloseDockable(IDockable)</a> on all tabs to the right of the dockable, from the <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection of the dockable owner.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseRightDockables(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable owner source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CloseWindow_" data-uid="Dock.Model.FactoryBase.CloseWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CloseWindow_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.CloseWindow(Dock.Model.Core.IDockWindow)">
+  CloseWindow(IDockWindow)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Closes window layout and its dockables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CloseWindow(IDockWindow window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to close.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CollapseDock_" data-uid="Dock.Model.FactoryBase.CollapseDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CollapseDock_Dock_Model_Core_IDock_" data-uid="Dock.Model.FactoryBase.CollapseDock(Dock.Model.Core.IDock)">
+  CollapseDock(IDock)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Collapses dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void CollapseDock(IDock dock)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock to collapse.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateDockDock_" data-uid="Dock.Model.FactoryBase.CreateDockDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateDockDock" data-uid="Dock.Model.FactoryBase.CreateDockDock">
+  CreateDockDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDockDock CreateDockDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDockDock.html">IDockDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateDockWindow_" data-uid="Dock.Model.FactoryBase.CreateDockWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateDockWindow" data-uid="Dock.Model.FactoryBase.CreateDockWindow">
+  CreateDockWindow()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDockWindow CreateDockWindow()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateDocument_" data-uid="Dock.Model.FactoryBase.CreateDocument*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateDocument" data-uid="Dock.Model.FactoryBase.CreateDocument">
+  CreateDocument()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDocument CreateDocument()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDocument.html">IDocument</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateDocumentDock_" data-uid="Dock.Model.FactoryBase.CreateDocumentDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateDocumentDock" data-uid="Dock.Model.FactoryBase.CreateDocumentDock">
+  CreateDocumentDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IDocumentDock CreateDocumentDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IDocumentDock.html">IDocumentDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateGridDock_" data-uid="Dock.Model.FactoryBase.CreateGridDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateGridDock" data-uid="Dock.Model.FactoryBase.CreateGridDock">
+  CreateGridDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IGridDock CreateGridDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IGridDock.html">IGridDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateGridDockSplitter_" data-uid="Dock.Model.FactoryBase.CreateGridDockSplitter*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateGridDockSplitter" data-uid="Dock.Model.FactoryBase.CreateGridDockSplitter">
+  CreateGridDockSplitter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IGridDockSplitter CreateGridDockSplitter()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IGridDockSplitter.html">IGridDockSplitter</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateLayout_" data-uid="Dock.Model.FactoryBase.CreateLayout*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateLayout" data-uid="Dock.Model.FactoryBase.CreateLayout">
+  CreateLayout()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IRootDock? CreateLayout()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateList_" data-uid="Dock.Model.FactoryBase.CreateList*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateList__1___0___" data-uid="Dock.Model.FactoryBase.CreateList``1(``0[])">
+  CreateList&lt;T&gt;(params T[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates list of type <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IList&lt;T&gt; CreateList&lt;T&gt;(params T[] items)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>items</code> T[]</dt>
+    <dd><p>The initial list items.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;T&gt;</dt>
+    <dd><p>The new instance of <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList&lt;T&gt;</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The list item type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateProportionalDock_" data-uid="Dock.Model.FactoryBase.CreateProportionalDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateProportionalDock" data-uid="Dock.Model.FactoryBase.CreateProportionalDock">
+  CreateProportionalDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IProportionalDock CreateProportionalDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IProportionalDock.html">IProportionalDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateProportionalDockSplitter_" data-uid="Dock.Model.FactoryBase.CreateProportionalDockSplitter*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateProportionalDockSplitter" data-uid="Dock.Model.FactoryBase.CreateProportionalDockSplitter">
+  CreateProportionalDockSplitter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IProportionalDockSplitter CreateProportionalDockSplitter()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IProportionalDockSplitter.html">IProportionalDockSplitter</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateRootDock_" data-uid="Dock.Model.FactoryBase.CreateRootDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateRootDock" data-uid="Dock.Model.FactoryBase.CreateRootDock">
+  CreateRootDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IRootDock CreateRootDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateSplitLayout_" data-uid="Dock.Model.FactoryBase.CreateSplitLayout*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateSplitLayout_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.CreateSplitLayout(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
+  CreateSplitLayout(IDock, IDockable, DockOperation)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates a new split layout from source dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IDock CreateSplitLayout(IDock dock, IDockable dockable, DockOperation operation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock to perform operation on.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The optional dockable to add to a split side.</p>
+</dd>
+    <dt><code>operation</code> <a class="xref" href="Dock.Model.Core.DockOperation.html">DockOperation</a></dt>
+    <dd><p>The dock operation.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateSplitViewDock_" data-uid="Dock.Model.FactoryBase.CreateSplitViewDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateSplitViewDock" data-uid="Dock.Model.FactoryBase.CreateSplitViewDock">
+  CreateSplitViewDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ISplitViewDock CreateSplitViewDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.ISplitViewDock.html">ISplitViewDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateStackDock_" data-uid="Dock.Model.FactoryBase.CreateStackDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateStackDock" data-uid="Dock.Model.FactoryBase.CreateStackDock">
+  CreateStackDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IStackDock CreateStackDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IStackDock.html">IStackDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateTool_" data-uid="Dock.Model.FactoryBase.CreateTool*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateTool" data-uid="Dock.Model.FactoryBase.CreateTool">
+  CreateTool()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ITool CreateTool()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.ITool.html">ITool</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateToolDock_" data-uid="Dock.Model.FactoryBase.CreateToolDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateToolDock" data-uid="Dock.Model.FactoryBase.CreateToolDock">
+  CreateToolDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IToolDock CreateToolDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IToolDock.html">IToolDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateUniformGridDock_" data-uid="Dock.Model.FactoryBase.CreateUniformGridDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateUniformGridDock" data-uid="Dock.Model.FactoryBase.CreateUniformGridDock">
+  CreateUniformGridDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IUniformGridDock CreateUniformGridDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IUniformGridDock.html">IUniformGridDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateWindowFrom_" data-uid="Dock.Model.FactoryBase.CreateWindowFrom*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateWindowFrom_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.CreateWindowFrom(Dock.Model.Core.IDockable)">
+  CreateWindowFrom(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates dock window from source dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IDockWindow? CreateWindowFrom(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to embed into window.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_CreateWrapDock_" data-uid="Dock.Model.FactoryBase.CreateWrapDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_CreateWrapDock" data-uid="Dock.Model.FactoryBase.CreateWrapDock">
+  CreateWrapDock()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Factory.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IWrapDock CreateWrapDock()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a></dt>
+    <dd><p>The new instance of the <a class="xref" href="Dock.Model.Controls.IWrapDock.html">IWrapDock</a> class.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_DockAsDocument_" data-uid="Dock.Model.FactoryBase.DockAsDocument*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_DockAsDocument_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.DockAsDocument(Dock.Model.Core.IDockable)">
+  DockAsDocument(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1061"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Docks dockable as tabbed document in the nearest document dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void DockAsDocument(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_Find_" data-uid="Dock.Model.FactoryBase.Find*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_Find_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.FactoryBase.Find(Dock.Model.Core.IDock,System.Func{Dock.Model.Core.IDockable,System.Boolean})">
+  Find(IDock, Func&lt;IDockable, bool&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches dock for dockables in all registered <a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IDockable&gt; Find(IDock dock, Func&lt;IDockable, bool&gt; predicate)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+    <dt><code>predicate</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The predicate to filter dockables.&gt;</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>&gt;</dt>
+    <dd><p>The dockables collection.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_Find_" data-uid="Dock.Model.FactoryBase.Find*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_Find_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.FactoryBase.Find(System.Func{Dock.Model.Core.IDockable,System.Boolean})">
+  Find(Func&lt;IDockable, bool&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches for dockables in all registered <a class="xref" href="Dock.Model.Core.IDockControl.html">IDockControl</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IDockable&gt; Find(Func&lt;IDockable, bool&gt; predicate)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>predicate</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The predicate to filter dockables.&gt;</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>&gt;</dt>
+    <dd><p>The dockables collection.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_FindDockable_" data-uid="Dock.Model.FactoryBase.FindDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_FindDockable_Dock_Model_Core_IDock_System_Func_Dock_Model_Core_IDockable_System_Boolean__" data-uid="Dock.Model.FactoryBase.FindDockable(Dock.Model.Core.IDock,System.Func{Dock.Model.Core.IDockable,System.Boolean})">
+  FindDockable(IDock, Func&lt;IDockable, bool&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches dock for dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IDockable? FindDockable(IDock dock, Func&lt;IDockable, bool&gt; predicate)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock.</p>
+</dd>
+    <dt><code>predicate</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The predicate to filter dockables.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable instance or null if dockable was not found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_FindRoot_" data-uid="Dock.Model.FactoryBase.FindRoot*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_FindRoot_Dock_Model_Core_IDockable_System_Func_Dock_Model_Controls_IRootDock_System_Boolean__" data-uid="Dock.Model.FactoryBase.FindRoot(Dock.Model.Core.IDockable,System.Func{Dock.Model.Controls.IRootDock,System.Boolean})">
+  FindRoot(IDockable, Func&lt;IRootDock, bool&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Searches for root dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IRootDock? FindRoot(IDockable dockable, Func&lt;IRootDock, bool&gt;? predicate = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to find root for.</p>
+</dd>
+    <dt><code>predicate</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>The predicate to filter root docks.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dockable instance or null if root dockable was not found.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_FloatAllDockables_" data-uid="Dock.Model.FactoryBase.FloatAllDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_FloatAllDockables_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.FloatAllDockables(Dock.Model.Core.IDockable)">
+  FloatAllDockables(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L974"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Floats owner dock with all dockables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void FloatAllDockables(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable owner source.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_FloatDockable_" data-uid="Dock.Model.FactoryBase.FloatDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_FloatDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.FloatDockable(Dock.Model.Core.IDockable)">
+  FloatDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L929"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Floats dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void FloatDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to float.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_GetContext_" data-uid="Dock.Model.FactoryBase.GetContext*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_GetContext_System_String_" data-uid="Dock.Model.FactoryBase.GetContext(System.String)">
+  GetContext(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets registered context in <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_ContextLocator">ContextLocator</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual object? GetContext(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The object id.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The located context.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_GetDockable_" data-uid="Dock.Model.FactoryBase.GetDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_GetDockable__1_System_String_" data-uid="Dock.Model.FactoryBase.GetDockable``1(System.String)">
+  GetDockable&lt;T&gt;(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets registered dockable in <a class="xref" href="Dock.Model.Core.IFactory.html#Dock_Model_Core_IFactory_DockableLocator">DockableLocator</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual T? GetDockable&lt;T&gt;(string id) where T : class, IDockable</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The dockable id.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The located dockable.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The dockable return type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_GetHostWindow_" data-uid="Dock.Model.FactoryBase.GetHostWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_GetHostWindow_System_String_" data-uid="Dock.Model.FactoryBase.GetHostWindow(System.String)">
+  GetHostWindow(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Locator.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets registered host window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IHostWindow? GetHostWindow(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The host id.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd><p>The located host.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_" data-uid="Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HandleItemsSourceDocumentClosing_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.HandleItemsSourceDocumentClosing(Dock.Model.Core.IDockable)">
+  HandleItemsSourceDocumentClosing(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Handles closing of documents that were generated from ItemsSource by removing the source item from the collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void HandleItemsSourceDocumentClosing(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable being closed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HideDockable_" data-uid="Dock.Model.FactoryBase.HideDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HideDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.HideDockable(Dock.Model.Core.IDockable)">
+  HideDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1307"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hides the dockable and stores it in <a class="xref" href="Dock.Model.Controls.IRootDock.html#Dock_Model_Controls_IRootDock_HiddenDockables">HiddenDockables</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void HideDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to hide.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HideDockable_" data-uid="Dock.Model.FactoryBase.HideDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HideDockable_System_String_" data-uid="Dock.Model.FactoryBase.HideDockable(System.String)">
+  HideDockable(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1335"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hides the dockable with the specified id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void HideDockable(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The dockable id.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_HidePreviewingDockables_" data-uid="Dock.Model.FactoryBase.HidePreviewingDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_HidePreviewingDockables_Dock_Model_Controls_IRootDock_" data-uid="Dock.Model.FactoryBase.HidePreviewingDockables(Dock.Model.Controls.IRootDock)">
+  HidePreviewingDockables(IRootDock)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L464"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Hides all temporarily shown pinned dockables.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void HidePreviewingDockables(IRootDock rootDock)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The owner of the pinned dockables</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InitActiveDockable_" data-uid="Dock.Model.FactoryBase.InitActiveDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InitActiveDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDock_" data-uid="Dock.Model.FactoryBase.InitActiveDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDock)">
+  InitActiveDockable(IDockable?, IDock)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L228"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialize active dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitActiveDockable(IDockable? dockable, IDock owner)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to update.</p>
+</dd>
+    <dt><code>owner</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The owner dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InitDockWindow_" data-uid="Dock.Model.FactoryBase.InitDockWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.InitDockWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockable)">
+  InitDockWindow(IDockWindow, IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialize dock window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitDockWindow(IDockWindow window, IDockable? owner)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to update.</p>
+</dd>
+    <dt><code>owner</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The window owner dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InitDockWindow_" data-uid="Dock.Model.FactoryBase.InitDockWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InitDockWindow_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_Dock_Model_Core_IHostWindow_" data-uid="Dock.Model.FactoryBase.InitDockWindow(Dock.Model.Core.IDockWindow,Dock.Model.Core.IDockable,Dock.Model.Core.IHostWindow)">
+  InitDockWindow(IDockWindow, IDockable?, IHostWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L209"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialize dock window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitDockWindow(IDockWindow window, IDockable? owner, IHostWindow? hostWindow)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to update.</p>
+</dd>
+    <dt><code>owner</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The window owner dockable.</p>
+</dd>
+    <dt><code>hostWindow</code> <a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InitDockable_" data-uid="Dock.Model.FactoryBase.InitDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InitDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.InitDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  InitDockable(IDockable, IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialize dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitDockable(IDockable dockable, IDockable? owner)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to update.</p>
+</dd>
+    <dt><code>owner</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The owner dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InitLayout_" data-uid="Dock.Model.FactoryBase.InitLayout*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InitLayout_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.InitLayout(Dock.Model.Core.IDockable)">
+  InitLayout(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initialize layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitLayout(IDockable layout)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>layout</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The layout to initialize.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InsertDockable_" data-uid="Dock.Model.FactoryBase.InsertDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InsertDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Int32_" data-uid="Dock.Model.FactoryBase.InsertDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Int32)">
+  InsertDockable(IDock, IDockable, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inserts <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a> into dock <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InsertDockable(IDock dock, IDockable dockable, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The owner dock.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to add.</p>
+</dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The dockable index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InsertVisibleDockable_" data-uid="Dock.Model.FactoryBase.InsertVisibleDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InsertVisibleDockable_Dock_Model_Core_IDock_System_Int32_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.InsertVisibleDockable(Dock.Model.Core.IDock,System.Int32,Dock.Model.Core.IDockable)">
+  InsertVisibleDockable(IDock, int, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1411"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inserts the dockable to the visible dockables list of the dock at the specified index.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void InsertVisibleDockable(IDock dock, int index, IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_InsertWindow_" data-uid="Dock.Model.FactoryBase.InsertWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_InsertWindow_Dock_Model_Controls_IRootDock_Dock_Model_Core_IDockWindow_System_Int32_" data-uid="Dock.Model.FactoryBase.InsertWindow(Dock.Model.Controls.IRootDock,Dock.Model.Core.IDockWindow,System.Int32)">
+  InsertWindow(IRootDock, IDockWindow, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Inserts window into dock windows list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InsertWindow(IRootDock rootDock, IDockWindow window, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dock.</p>
+</dd>
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to add.</p>
+</dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The window index.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_IsDockablePinned_" data-uid="Dock.Model.FactoryBase.IsDockablePinned*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_IsDockablePinned_Dock_Model_Core_IDockable_Dock_Model_Controls_IRootDock_" data-uid="Dock.Model.FactoryBase.IsDockablePinned(Dock.Model.Core.IDockable,Dock.Model.Controls.IRootDock)">
+  IsDockablePinned(IDockable, IRootDock?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L416"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns true if dockable is pinned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDockablePinned(IDockable dockable, IRootDock? rootDock = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to check.</p>
+</dd>
+    <dt><code>rootDock</code> <a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd><p>The root dock. If null, the root will be automatically found.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_MoveDockable_" data-uid="Dock.Model.FactoryBase.MoveDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.MoveDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  MoveDockable(IDock, IDock, IDockable, IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L241"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves dockable into another <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void MoveDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable? targetDockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sourceDock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The source dock.</p>
+</dd>
+    <dt><code>targetDock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The target dock.</p>
+</dd>
+    <dt><code>sourceDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The source dockable.</p>
+</dd>
+    <dt><code>targetDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The target dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_MoveDockable_" data-uid="Dock.Model.FactoryBase.MoveDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_MoveDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.MoveDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  MoveDockable(IDock, IDockable, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves dockable inside <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void MoveDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock.</p>
+</dd>
+    <dt><code>sourceDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The source dockable.</p>
+</dd>
+    <dt><code>targetDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The target dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_MovePinnedDockable_" data-uid="Dock.Model.FactoryBase.MovePinnedDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_MovePinnedDockable_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.MovePinnedDockable(Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  MovePinnedDockable(IDockable, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Moves pinned dockable within the same pinned collection (reordering).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void MovePinnedDockable(IDockable sourceDockable, IDockable targetDockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sourceDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The source pinned dockable to move.</p>
+</dd>
+    <dt><code>targetDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The target pinned dockable to move relative to.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_NewHorizontalDocumentDock_" data-uid="Dock.Model.FactoryBase.NewHorizontalDocumentDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_NewHorizontalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.NewHorizontalDocumentDock(Dock.Model.Core.IDockable)">
+  NewHorizontalDocumentDock(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1216"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Splits document into a new horizontal document dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void NewHorizontalDocumentDock(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to split.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_NewVerticalDocumentDock_" data-uid="Dock.Model.FactoryBase.NewVerticalDocumentDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_NewVerticalDocumentDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.NewVerticalDocumentDock(Dock.Model.Core.IDockable)">
+  NewVerticalDocumentDock(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1278"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Splits document into a new vertical document dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void NewVerticalDocumentDock(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to split.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnActiveDockableChanged_" data-uid="Dock.Model.FactoryBase.OnActiveDockableChanged*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnActiveDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnActiveDockableChanged(Dock.Model.Core.IDockable)">
+  OnActiveDockableChanged(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the active dockable changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnActiveDockableChanged(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The activate dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableActivated_" data-uid="Dock.Model.FactoryBase.OnDockableActivated*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableActivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableActivated(Dock.Model.Core.IDockable)">
+  OnDockableActivated(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L279"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been activated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableActivated(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The activated dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableAdded_" data-uid="Dock.Model.FactoryBase.OnDockableAdded*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableAdded_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableAdded(Dock.Model.Core.IDockable)">
+  OnDockableAdded(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableAdded(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The added dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableClosed_" data-uid="Dock.Model.FactoryBase.OnDockableClosed*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableClosed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableClosed(Dock.Model.Core.IDockable)">
+  OnDockableClosed(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableClosed(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The closed dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableClosing_" data-uid="Dock.Model.FactoryBase.OnDockableClosing*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableClosing_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableClosing(Dock.Model.Core.IDockable)">
+  OnDockableClosing(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable is closing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnDockableClosing(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The closing dockable.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>False if closing canceled, otherwise true.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableDeactivated_" data-uid="Dock.Model.FactoryBase.OnDockableDeactivated*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableDeactivated_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableDeactivated(Dock.Model.Core.IDockable)">
+  OnDockableDeactivated(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been deactivated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableDeactivated(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The deactivated dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableDocked_" data-uid="Dock.Model.FactoryBase.OnDockableDocked*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableDocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.OnDockableDocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
+  OnDockableDocked(IDockable?, DockOperation)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L147"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been docked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableDocked(IDockable? dockable, DockOperation operation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The docked dockable.</p>
+</dd>
+    <dt><code>operation</code> <a class="xref" href="Dock.Model.Core.DockOperation.html">DockOperation</a></dt>
+    <dd><p>The dock operation performed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableHidden_" data-uid="Dock.Model.FactoryBase.OnDockableHidden*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableHidden_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableHidden(Dock.Model.Core.IDockable)">
+  OnDockableHidden(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L177"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been hidden.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableHidden(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The hidden dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableInit_" data-uid="Dock.Model.FactoryBase.OnDockableInit*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableInit_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableInit(Dock.Model.Core.IDockable)">
+  OnDockableInit(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L207"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been init.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableInit(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The init dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableMoved_" data-uid="Dock.Model.FactoryBase.OnDockableMoved*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableMoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableMoved(Dock.Model.Core.IDockable)">
+  OnDockableMoved(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L141"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been moved.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableMoved(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The moved dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockablePinned_" data-uid="Dock.Model.FactoryBase.OnDockablePinned*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockablePinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockablePinned(Dock.Model.Core.IDockable)">
+  OnDockablePinned(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been pinned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockablePinned(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The pinned dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableRemoved_" data-uid="Dock.Model.FactoryBase.OnDockableRemoved*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableRemoved_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableRemoved(Dock.Model.Core.IDockable)">
+  OnDockableRemoved(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableRemoved(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The removed dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableRestored_" data-uid="Dock.Model.FactoryBase.OnDockableRestored*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableRestored_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableRestored(Dock.Model.Core.IDockable)">
+  OnDockableRestored(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been restored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableRestored(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The restored dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableSwapped_" data-uid="Dock.Model.FactoryBase.OnDockableSwapped*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableSwapped_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableSwapped(Dock.Model.Core.IDockable)">
+  OnDockableSwapped(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been swapped.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableSwapped(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The swapped dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableUndocked_" data-uid="Dock.Model.FactoryBase.OnDockableUndocked*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableUndocked_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.OnDockableUndocked(Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
+  OnDockableUndocked(IDockable?, DockOperation)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been undocked.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableUndocked(IDockable? dockable, DockOperation operation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The undocked dockable.</p>
+</dd>
+    <dt><code>operation</code> <a class="xref" href="Dock.Model.Core.DockOperation.html">DockOperation</a></dt>
+    <dd><p>The dock operation performed.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnDockableUnpinned_" data-uid="Dock.Model.FactoryBase.OnDockableUnpinned*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnDockableUnpinned_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnDockableUnpinned(Dock.Model.Core.IDockable)">
+  OnDockableUnpinned(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the dockable has been unpinned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnDockableUnpinned(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The unpinned dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnFocusedDockableChanged_" data-uid="Dock.Model.FactoryBase.OnFocusedDockableChanged*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnFocusedDockableChanged_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.OnFocusedDockableChanged(Dock.Model.Core.IDockable)">
+  OnFocusedDockableChanged(IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the focused dockable changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnFocusedDockableChanged(IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The focused dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowActivated_" data-uid="Dock.Model.FactoryBase.OnWindowActivated*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowActivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowActivated(Dock.Model.Core.IDockWindow)">
+  OnWindowActivated(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been activated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowActivated(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The activated window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowAdded_" data-uid="Dock.Model.FactoryBase.OnWindowAdded*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowAdded_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowAdded(Dock.Model.Core.IDockWindow)">
+  OnWindowAdded(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowAdded(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The added window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowClosed_" data-uid="Dock.Model.FactoryBase.OnWindowClosed*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowClosed_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowClosed(Dock.Model.Core.IDockWindow)">
+  OnWindowClosed(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowClosed(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The closed window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowClosing_" data-uid="Dock.Model.FactoryBase.OnWindowClosing*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowClosing_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowClosing(Dock.Model.Core.IDockWindow)">
+  OnWindowClosing(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L223"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window is closing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnWindowClosing(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The closing window.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>False if closing canceled, otherwise true.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowDeactivated_" data-uid="Dock.Model.FactoryBase.OnWindowDeactivated*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowDeactivated_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowDeactivated(Dock.Model.Core.IDockWindow)">
+  OnWindowDeactivated(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L285"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been deactivated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowDeactivated(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The deactivated window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowMoveDrag_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDrag*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowMoveDrag_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDrag(Dock.Model.Core.IDockWindow)">
+  OnWindowMoveDrag(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L259"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowMoveDrag(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The dragged window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowMoveDragBegin_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragBegin*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowMoveDragBegin_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragBegin(Dock.Model.Core.IDockWindow)">
+  OnWindowMoveDragBegin(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called before the window dragging starts.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnWindowMoveDragBegin(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The dragged window.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>False if dragging canceled, otherwise true.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowMoveDragEnd_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragEnd*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowMoveDragEnd_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowMoveDragEnd(Dock.Model.Core.IDockWindow)">
+  OnWindowMoveDragEnd(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L266"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowMoveDragEnd(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The dragged window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowOpened_" data-uid="Dock.Model.FactoryBase.OnWindowOpened*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowOpened_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowOpened(Dock.Model.Core.IDockWindow)">
+  OnWindowOpened(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L201"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been opened.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowOpened(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The opened window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_OnWindowRemoved_" data-uid="Dock.Model.FactoryBase.OnWindowRemoved*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_OnWindowRemoved_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.OnWindowRemoved(Dock.Model.Core.IDockWindow)">
+  OnWindowRemoved(IDockWindow?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window has been removed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnWindowRemoved(IDockWindow? window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The removed window.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_PinDockable_" data-uid="Dock.Model.FactoryBase.PinDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_PinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.PinDockable(Dock.Model.Core.IDockable)">
+  PinDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L591"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Pins or unpins a dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void PinDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to pin/unpin.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_PreviewPinnedDockable_" data-uid="Dock.Model.FactoryBase.PreviewPinnedDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_PreviewPinnedDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.PreviewPinnedDockable(Dock.Model.Core.IDockable)">
+  PreviewPinnedDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Temporarily shows a pinned dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PreviewPinnedDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to show.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RemoveAllVisibleDockables_" data-uid="Dock.Model.FactoryBase.RemoveAllVisibleDockables*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RemoveAllVisibleDockables_Dock_Model_Core_IDock_" data-uid="Dock.Model.FactoryBase.RemoveAllVisibleDockables(Dock.Model.Core.IDock)">
+  RemoveAllVisibleDockables(IDock)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1436"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes all visible dockable of the dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RemoveAllVisibleDockables(IDock dock)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RemoveDockable_" data-uid="Dock.Model.FactoryBase.RemoveDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RemoveDockable_Dock_Model_Core_IDockable_System_Boolean_" data-uid="Dock.Model.FactoryBase.RemoveDockable(Dock.Model.Core.IDockable,System.Boolean)">
+  RemoveDockable(IDockable, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes dockable from owner <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RemoveDockable(IDockable dockable, bool collapse)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to remove.</p>
+</dd>
+    <dt><code>collapse</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The flag indicating whether to collapse empty dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RemoveVisibleDockable_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RemoveVisibleDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
+  RemoveVisibleDockable(IDock, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1424"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the dockable from the visible dockables list of the dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RemoveVisibleDockable(IDock dock, IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RemoveVisibleDockableAt_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockableAt*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RemoveVisibleDockableAt_Dock_Model_Core_IDock_System_Int32_" data-uid="Dock.Model.FactoryBase.RemoveVisibleDockableAt(Dock.Model.Core.IDock,System.Int32)">
+  RemoveVisibleDockableAt(IDock, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1451"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes the dockable at the specified index from the visible dockables list of the dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void RemoveVisibleDockableAt(IDock dock, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RemoveWindow_" data-uid="Dock.Model.FactoryBase.RemoveWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RemoveWindow_Dock_Model_Core_IDockWindow_" data-uid="Dock.Model.FactoryBase.RemoveWindow(Dock.Model.Core.IDockWindow)">
+  RemoveWindow(IDockWindow)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Removes window from owner windows list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RemoveWindow(IDockWindow window)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>window</code> <a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></dt>
+    <dd><p>The window to remove.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RestoreDockable_" data-uid="Dock.Model.FactoryBase.RestoreDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RestoreDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.RestoreDockable(Dock.Model.Core.IDockable)">
+  RestoreDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1345"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RestoreDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to restore.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_RestoreDockable_" data-uid="Dock.Model.FactoryBase.RestoreDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_RestoreDockable_System_String_" data-uid="Dock.Model.FactoryBase.RestoreDockable(System.String)">
+  RestoreDockable(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1375"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Restores a hidden dockable to its original dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDockable? RestoreDockable(string id)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The dockable id.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The restored dockable or null.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetActiveDockable_" data-uid="Dock.Model.FactoryBase.SetActiveDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetActiveDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetActiveDockable(Dock.Model.Core.IDockable)">
+  SetActiveDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets an active dockable. If the dockable is contained inside an dock it
+will become the selected dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetActiveDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to select.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockLayoutMode_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutMode*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutMode_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentLayoutMode_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutMode(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentLayoutMode)">
+  SetDocumentDockLayoutMode(IDockable, DocumentLayoutMode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1263"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the layout mode for the specified document dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetDocumentDockLayoutMode(IDockable dockable, DocumentLayoutMode layoutMode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+    <dt><code>layoutMode</code> <a class="xref" href="Dock.Model.Core.DocumentLayoutMode.html">DocumentLayoutMode</a></dt>
+    <dd><p>The layout mode to set.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeMdi_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeMdi*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeMdi_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeMdi(Dock.Model.Core.IDockable)">
+  SetDocumentDockLayoutModeMdi(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the layout mode to MDI.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDocumentDockLayoutModeMdi(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeTabbed_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeTabbed*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockLayoutModeTabbed_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockLayoutModeTabbed(Dock.Model.Core.IDockable)">
+  SetDocumentDockLayoutModeTabbed(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1272"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the layout mode to tabbed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDocumentDockLayoutModeTabbed(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockTabsLayout_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayout*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayout_Dock_Model_Core_IDockable_Dock_Model_Core_DocumentTabLayout_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayout(Dock.Model.Core.IDockable,Dock.Model.Core.DocumentTabLayout)">
+  SetDocumentDockTabsLayout(IDockable, DocumentTabLayout)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the tabs layout for the specified document dock.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetDocumentDockTabsLayout(IDockable dockable, DocumentTabLayout layout)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+    <dt><code>layout</code> <a class="xref" href="Dock.Model.Core.DocumentTabLayout.html">DocumentTabLayout</a></dt>
+    <dd><p>The layout to set.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutLeft_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutLeft*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutLeft_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutLeft(Dock.Model.Core.IDockable)">
+  SetDocumentDockTabsLayoutLeft(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1254"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the tabs layout to left.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDocumentDockTabsLayoutLeft(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutRight_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutRight*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutRight_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutRight(Dock.Model.Core.IDockable)">
+  SetDocumentDockTabsLayoutRight(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the tabs layout to right.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDocumentDockTabsLayoutRight(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutTop_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutTop*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetDocumentDockTabsLayoutTop_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetDocumentDockTabsLayoutTop(Dock.Model.Core.IDockable)">
+  SetDocumentDockTabsLayoutTop(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L1257"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the tabs layout to top.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDocumentDockTabsLayoutTop(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The document dock.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SetFocusedDockable_" data-uid="Dock.Model.FactoryBase.SetFocusedDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SetFocusedDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SetFocusedDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable)">
+  SetFocusedDockable(IDock, IDockable?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Init.cs/#L276"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Sets the currently focused dockable updating IsActive flags.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetFocusedDockable(IDock dock, IDockable? dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock to set the focused dockable on.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to set.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SplitToDock_" data-uid="Dock.Model.FactoryBase.SplitToDock*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SplitToDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_DockOperation_" data-uid="Dock.Model.FactoryBase.SplitToDock(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.DockOperation)">
+  SplitToDock(IDock, IDockable, DockOperation)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.cs/#L315"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Splits dock and updates owner layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SplitToDock(IDock dock, IDockable dockable, DockOperation operation)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock to perform operation on.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The optional dockable to add to a split side.</p>
+</dd>
+    <dt><code>operation</code> <a class="xref" href="Dock.Model.Core.DockOperation.html">DockOperation</a></dt>
+    <dd><p>The dock operation to perform.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SplitToWindow_" data-uid="Dock.Model.FactoryBase.SplitToWindow*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SplitToWindow_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_System_Double_System_Double_System_Double_System_Double_" data-uid="Dock.Model.FactoryBase.SplitToWindow(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,System.Double,System.Double,System.Double,System.Double)">
+  SplitToWindow(IDock, IDockable, double, double, double, double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.cs/#L545"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Splits dock to the <a class="xref" href="Dock.Model.Core.DockOperation.html#Dock_Model_Core_DockOperation_Window">Window</a> and updates <a class="xref" href="Dock.Model.Core.IDockable.html#Dock_Model_Core_IDockable_Owner">Owner</a> layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SplitToWindow(IDock dock, IDockable dockable, double x, double y, double width, double height)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The window owner.</p>
+</dd>
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to add to a split window.</p>
+</dd>
+    <dt><code>x</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The window X coordinate.</p>
+</dd>
+    <dt><code>y</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The window Y coordinate.</p>
+</dd>
+    <dt><code>width</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The window width.</p>
+</dd>
+    <dt><code>height</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>The window height.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SwapDockable_" data-uid="Dock.Model.FactoryBase.SwapDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SwapDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  SwapDockable(IDock, IDock, IDockable, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L383"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Swaps dockable into between <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SwapDockable(IDock sourceDock, IDock targetDock, IDockable sourceDockable, IDockable targetDockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>sourceDock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The source dock.</p>
+</dd>
+    <dt><code>targetDock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The target dock.</p>
+</dd>
+    <dt><code>sourceDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The source dockable.</p>
+</dd>
+    <dt><code>targetDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The target dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_SwapDockable_" data-uid="Dock.Model.FactoryBase.SwapDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_SwapDockable_Dock_Model_Core_IDock_Dock_Model_Core_IDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.SwapDockable(Dock.Model.Core.IDock,Dock.Model.Core.IDockable,Dock.Model.Core.IDockable)">
+  SwapDockable(IDock, IDockable, IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L353"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Swaps dockable in inside <a class="xref" href="Dock.Model.Core.IDock.html#Dock_Model_Core_IDock_VisibleDockables">VisibleDockables</a> collections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SwapDockable(IDock dock, IDockable sourceDockable, IDockable targetDockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dock</code> <a class="xref" href="Dock.Model.Core.IDock.html">IDock</a></dt>
+    <dd><p>The dock.</p>
+</dd>
+    <dt><code>sourceDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The source dockable.</p>
+</dd>
+    <dt><code>targetDockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The target dockable.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_FactoryBase_UnpinDockable_" data-uid="Dock.Model.FactoryBase.UnpinDockable*"></a>
+
+  <h3 id="Dock_Model_FactoryBase_UnpinDockable_Dock_Model_Core_IDockable_" data-uid="Dock.Model.FactoryBase.UnpinDockable(Dock.Model.Core.IDockable)">
+  UnpinDockable(IDockable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Dockable.cs/#L920"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Unpins a dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnpinDockable(IDockable dockable)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dockable</code> <a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd><p>The dockable to unpin.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="events">Events
+</h2>
+
+
+
+  <h3 id="Dock_Model_FactoryBase_ActiveDockableChanged" data-uid="Dock.Model.FactoryBase.ActiveDockableChanged">
+  ActiveDockableChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Active dockable changed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;ActiveDockableChangedEventArgs&gt;? ActiveDockableChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.ActiveDockableChangedEventArgs.html">ActiveDockableChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableActivated" data-uid="Dock.Model.FactoryBase.DockableActivated">
+  DockableActivated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable activated event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableActivatedEventArgs&gt;? DockableActivated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableActivatedEventArgs.html">DockableActivatedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableAdded" data-uid="Dock.Model.FactoryBase.DockableAdded">
+  DockableAdded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable added event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableAddedEventArgs&gt;? DockableAdded</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableAddedEventArgs.html">DockableAddedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableClosed" data-uid="Dock.Model.FactoryBase.DockableClosed">
+  DockableClosed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable closed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableClosedEventArgs&gt;? DockableClosed</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableClosedEventArgs.html">DockableClosedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableClosing" data-uid="Dock.Model.FactoryBase.DockableClosing">
+  DockableClosing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable closing event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableClosingEventArgs&gt;? DockableClosing</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableClosingEventArgs.html">DockableClosingEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableDeactivated" data-uid="Dock.Model.FactoryBase.DockableDeactivated">
+  DockableDeactivated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable deactivated event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableDeactivatedEventArgs&gt;? DockableDeactivated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableDeactivatedEventArgs.html">DockableDeactivatedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableDocked" data-uid="Dock.Model.FactoryBase.DockableDocked">
+  DockableDocked
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable docked event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableDockedEventArgs&gt;? DockableDocked</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableDockedEventArgs.html">DockableDockedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableHidden" data-uid="Dock.Model.FactoryBase.DockableHidden">
+  DockableHidden
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable hidden event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableHiddenEventArgs&gt;? DockableHidden</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableHiddenEventArgs.html">DockableHiddenEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableInit" data-uid="Dock.Model.FactoryBase.DockableInit">
+  DockableInit
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L21"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable init event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableInitEventArgs&gt;? DockableInit</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableInitEventArgs.html">DockableInitEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableMoved" data-uid="Dock.Model.FactoryBase.DockableMoved">
+  DockableMoved
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable moved event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableMovedEventArgs&gt;? DockableMoved</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableMovedEventArgs.html">DockableMovedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockablePinned" data-uid="Dock.Model.FactoryBase.DockablePinned">
+  DockablePinned
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable pinned event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockablePinnedEventArgs&gt;? DockablePinned</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockablePinnedEventArgs.html">DockablePinnedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableRemoved" data-uid="Dock.Model.FactoryBase.DockableRemoved">
+  DockableRemoved
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable removed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableRemovedEventArgs&gt;? DockableRemoved</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableRemovedEventArgs.html">DockableRemovedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableRestored" data-uid="Dock.Model.FactoryBase.DockableRestored">
+  DockableRestored
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable restored event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableRestoredEventArgs&gt;? DockableRestored</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableRestoredEventArgs.html">DockableRestoredEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableSwapped" data-uid="Dock.Model.FactoryBase.DockableSwapped">
+  DockableSwapped
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable swapped event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableSwappedEventArgs&gt;? DockableSwapped</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableSwappedEventArgs.html">DockableSwappedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableUndocked" data-uid="Dock.Model.FactoryBase.DockableUndocked">
+  DockableUndocked
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable undocked event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableUndockedEventArgs&gt;? DockableUndocked</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableUndockedEventArgs.html">DockableUndockedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_DockableUnpinned" data-uid="Dock.Model.FactoryBase.DockableUnpinned">
+  DockableUnpinned
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L51"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Dockable unpinned event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;DockableUnpinnedEventArgs&gt;? DockableUnpinned</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.DockableUnpinnedEventArgs.html">DockableUnpinnedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_FocusedDockableChanged" data-uid="Dock.Model.FactoryBase.FocusedDockableChanged">
+  FocusedDockableChanged
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Focused dockable changed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;FocusedDockableChangedEventArgs&gt;? FocusedDockableChanged</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.FocusedDockableChangedEventArgs.html">FocusedDockableChangedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowActivated" data-uid="Dock.Model.FactoryBase.WindowActivated">
+  WindowActivated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window activated event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowActivatedEventArgs&gt;? WindowActivated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowActivatedEventArgs.html">WindowActivatedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowAdded" data-uid="Dock.Model.FactoryBase.WindowAdded">
+  WindowAdded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window added event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowAddedEventArgs&gt;? WindowAdded</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowAddedEventArgs.html">WindowAddedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowClosed" data-uid="Dock.Model.FactoryBase.WindowClosed">
+  WindowClosed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window closed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowClosedEventArgs&gt;? WindowClosed</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowClosedEventArgs.html">WindowClosedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowClosing" data-uid="Dock.Model.FactoryBase.WindowClosing">
+  WindowClosing
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window closing event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowClosingEventArgs&gt;? WindowClosing</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowClosingEventArgs.html">WindowClosingEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowDeactivated" data-uid="Dock.Model.FactoryBase.WindowDeactivated">
+  WindowDeactivated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window deactivated event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowDeactivatedEventArgs&gt;? WindowDeactivated</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowDeactivatedEventArgs.html">WindowDeactivatedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowMoveDrag" data-uid="Dock.Model.FactoryBase.WindowMoveDrag">
+  WindowMoveDrag
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window dragging event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowMoveDragEventArgs&gt;? WindowMoveDrag</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowMoveDragEventArgs.html">WindowMoveDragEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowMoveDragBegin" data-uid="Dock.Model.FactoryBase.WindowMoveDragBegin">
+  WindowMoveDragBegin
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window dragging begin event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowMoveDragBeginEventArgs&gt;? WindowMoveDragBegin</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowMoveDragBeginEventArgs.html">WindowMoveDragBeginEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowMoveDragEnd" data-uid="Dock.Model.FactoryBase.WindowMoveDragEnd">
+  WindowMoveDragEnd
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window dragging end event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowMoveDragEndEventArgs&gt;? WindowMoveDragEnd</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowMoveDragEndEventArgs.html">WindowMoveDragEndEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowOpened" data-uid="Dock.Model.FactoryBase.WindowOpened">
+  WindowOpened
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window opened event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowOpenedEventArgs&gt;? WindowOpened</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowOpenedEventArgs.html">WindowOpenedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h3 id="Dock_Model_FactoryBase_WindowRemoved" data-uid="Dock.Model.FactoryBase.WindowRemoved">
+  WindowRemoved
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Events.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Window removed event handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public event EventHandler&lt;WindowRemovedEventArgs&gt;? WindowRemoved</code></pre>
+  </div>
+
+
+
+
+
+
+  <h4 class="section">Event Type</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a class="xref" href="Dock.Model.Core.Events.WindowRemovedEventArgs.html">WindowRemovedEventArgs</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model/FactoryBase.Window.cs/#L12" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

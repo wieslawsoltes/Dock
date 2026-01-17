@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DockWindow | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DockWindow | Dock for Avalonia ">
+      
+      <meta name="description" content="Dock window.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/new/master/apiSpec/new?filename=Dock_Model_Inpc_Core_DockWindow.md&amp;value=---%0Auid%3A%20Dock.Model.Inpc.Core.DockWindow%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Dock.Model.Inpc.Core.DockWindow">
+
+
+
+  <h1 id="Dock_Model_Inpc_Core_DockWindow" data-uid="Dock.Model.Inpc.Core.DockWindow" class="text-break">
+Class DockWindow  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Dock.html">Dock</a>.<a class="xref" href="Dock.Model.html">Model</a>.<a class="xref" href="Dock.Model.Inpc.html">Inpc</a>.<a class="xref" href="Dock.Model.Inpc.Core.html">Core</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Dock.Model.Inpc.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Dock window.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataContract(IsReference = true)]
+public class DockWindow : ReactiveBase, INotifyPropertyChanged, IDockWindow</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Dock.Model.Inpc.Core.ReactiveBase.html">ReactiveBase</a></div>
+      <div><span class="xref">DockWindow</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></div>
+      <div><a class="xref" href="Dock.Model.Core.IDockWindow.html">IDockWindow</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.ReactiveBase.html#Dock_Model_Inpc_Core_ReactiveBase_PropertyChanged">ReactiveBase.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.ReactiveBase.html#Dock_Model_Inpc_Core_ReactiveBase_OnPropertyChanged_System_String_">ReactiveBase.OnPropertyChanged(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Dock.Model.Inpc.Core.ReactiveBase.html#Dock_Model_Inpc_Core_ReactiveBase_SetProperty__1___0____0_System_String_">ReactiveBase.SetProperty&lt;T&gt;(ref T, T, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithFactory_Dock_Model_Core_IDockWindow_Dock_Model_Core_IFactory_">FluentExtensions.WithFactory(IDockWindow, IFactory?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithHost_Dock_Model_Core_IDockWindow_Dock_Model_Core_IHostWindow_">FluentExtensions.WithHost(IDockWindow, IHostWindow?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithId_Dock_Model_Core_IDockWindow_System_String_">FluentExtensions.WithId(IDockWindow, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithLayout_Dock_Model_Core_IDockWindow_Dock_Model_Controls_IRootDock_">FluentExtensions.WithLayout(IDockWindow, IRootDock?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithOwner_Dock_Model_Core_IDockWindow_Dock_Model_Core_IDockable_">FluentExtensions.WithOwner(IDockWindow, IDockable?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithPosition_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithPosition(IDockWindow, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithSize_Dock_Model_Core_IDockWindow_System_Double_System_Double_">FluentExtensions.WithSize(IDockWindow, double, double)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithTitle_Dock_Model_Core_IDockWindow_System_String_">FluentExtensions.WithTitle(IDockWindow, string)</a>
+  </div>
+  <div>
+      <a class="xref" href="Dock.Model.FluentExtensions.html#Dock_Model_FluentExtensions_WithTopmost_Dock_Model_Core_IDockWindow_System_Boolean_">FluentExtensions.WithTopmost(IDockWindow, bool)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow__ctor_" data-uid="Dock.Model.Inpc.Core.DockWindow.#ctor*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow__ctor" data-uid="Dock.Model.Inpc.Core.DockWindow.#ctor">
+  DockWindow()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes new instance of the <a class="xref" href="Dock.Model.Inpc.Core.DockWindow.html">DockWindow</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DockWindow()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Factory_" data-uid="Dock.Model.Inpc.Core.DockWindow.Factory*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Factory" data-uid="Dock.Model.Inpc.Core.DockWindow.Factory">
+  Factory
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dock factory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public IFactory? Factory { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IFactory.html">IFactory</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Height_" data-uid="Dock.Model.Inpc.Core.DockWindow.Height*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Height" data-uid="Dock.Model.Inpc.Core.DockWindow.Height">
+  Height
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window height.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = true, EmitDefaultValue = true)]
+public double Height { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Host_" data-uid="Dock.Model.Inpc.Core.DockWindow.Host*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Host" data-uid="Dock.Model.Inpc.Core.DockWindow.Host">
+  Host
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets dock window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public IHostWindow? Host { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IHostWindow.html">IHostWindow</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Id_" data-uid="Dock.Model.Inpc.Core.DockWindow.Id*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Id" data-uid="Dock.Model.Inpc.Core.DockWindow.Id">
+  Id
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public string Id { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Layout_" data-uid="Dock.Model.Inpc.Core.DockWindow.Layout*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Layout" data-uid="Dock.Model.Inpc.Core.DockWindow.Layout">
+  Layout
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets layout.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public IRootDock? Layout { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Controls.IRootDock.html">IRootDock</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Owner_" data-uid="Dock.Model.Inpc.Core.DockWindow.Owner*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Owner" data-uid="Dock.Model.Inpc.Core.DockWindow.Owner">
+  Owner
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window owner dockable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[IgnoreDataMember]
+public IDockable? Owner { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Dock.Model.Core.IDockable.html">IDockable</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Title_" data-uid="Dock.Model.Inpc.Core.DockWindow.Title*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Title" data-uid="Dock.Model.Inpc.Core.DockWindow.Title">
+  Title
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window title.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public string Title { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Topmost_" data-uid="Dock.Model.Inpc.Core.DockWindow.Topmost*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Topmost" data-uid="Dock.Model.Inpc.Core.DockWindow.Topmost">
+  Topmost
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether this window appears on top of all other windows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = false, EmitDefaultValue = true)]
+public bool Topmost { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Width_" data-uid="Dock.Model.Inpc.Core.DockWindow.Width*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Width" data-uid="Dock.Model.Inpc.Core.DockWindow.Width">
+  Width
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window width.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = true, EmitDefaultValue = true)]
+public double Width { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_X_" data-uid="Dock.Model.Inpc.Core.DockWindow.X*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_X" data-uid="Dock.Model.Inpc.Core.DockWindow.X">
+  X
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = true, EmitDefaultValue = true)]
+public double X { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Y_" data-uid="Dock.Model.Inpc.Core.DockWindow.Y*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Y" data-uid="Dock.Model.Inpc.Core.DockWindow.Y">
+  Y
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets window X coordinate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[DataMember(IsRequired = true, EmitDefaultValue = true)]
+public double Y { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Exit_" data-uid="Dock.Model.Inpc.Core.DockWindow.Exit*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Exit" data-uid="Dock.Model.Inpc.Core.DockWindow.Exit">
+  Exit()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Exits window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Exit()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_OnClose_" data-uid="Dock.Model.Inpc.Core.DockWindow.OnClose*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_OnClose" data-uid="Dock.Model.Inpc.Core.DockWindow.OnClose">
+  OnClose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window is closed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnClose()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True to accept the close, and false to cancel the close.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_OnMoveDrag_" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDrag*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_OnMoveDrag" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDrag">
+  OnMoveDrag()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L140"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called when the window is dragged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnMoveDrag()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_OnMoveDragBegin_" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDragBegin*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_OnMoveDragBegin" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDragBegin">
+  OnMoveDragBegin()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called before the window dragging start.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool OnMoveDragBegin()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True to accept the dragging, and false to cancel the dragging.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_OnMoveDragEnd_" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDragEnd*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_OnMoveDragEnd" data-uid="Dock.Model.Inpc.Core.DockWindow.OnMoveDragEnd">
+  OnMoveDragEnd()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Called after the window dragging ended.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnMoveDragEnd()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Present_" data-uid="Dock.Model.Inpc.Core.DockWindow.Present*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Present_System_Boolean_" data-uid="Dock.Model.Inpc.Core.DockWindow.Present(System.Boolean)">
+  Present(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Presents window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Present(bool isDialog)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isDialog</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>The value that indicates whether window is dialog.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_Save_" data-uid="Dock.Model.Inpc.Core.DockWindow.Save*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_Save" data-uid="Dock.Model.Inpc.Core.DockWindow.Save">
+  Save()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves window properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Save()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Dock_Model_Inpc_Core_DockWindow_SetActive_" data-uid="Dock.Model.Inpc.Core.DockWindow.SetActive*"></a>
+
+  <h3 id="Dock_Model_Inpc_Core_DockWindow_SetActive" data-uid="Dock.Model.Inpc.Core.DockWindow.SetActive">
+  SetActive()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Activates the window.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetActive()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/src/Dock.Model.Inpc/Core/DockWindow.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

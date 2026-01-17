@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock MVVM Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock MVVM Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-mvvm.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-mvvm-guide">Dock MVVM Guide</h1>
+
+<p>This guide explains how to get started with the MVVM version of Dock and describes the available features. It assumes you already have a basic Avalonia application.</p>
+<p>The MVVM helpers provided by <code>Dock.Model.Mvvm</code> add <code>INotifyPropertyChanged</code>
+support to the core interfaces and expose a <code>Factory</code> base class that wires up
+commands and events for you.  The sample project <code>DockMvvmSample</code> in the
+repository shows a full implementation. For a breakdown of interfaces such as
+<code>IDockable</code> or <code>IRootDock</code> see the <a href="dock-reference.html">Dock API Reference</a>.</p>
+<blockquote>
+<p><strong>💡 Modern Approach</strong>: For easier document management, consider using <a href="dock-itemssource.html">DocumentDock.ItemsSource</a> which automatically creates and manages documents from collections. This approach is covered in detail in the <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
+</blockquote>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
+<p>The following steps walk you through creating a very small application that uses Dock with the MVVM helpers.</p>
+<ol>
+<li><p><strong>Create a new Avalonia project</strong></p>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MyDockApp
+cd MyDockApp
+</code></pre>
+</li>
+<li><p><strong>Install the Dock packages</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.Mvvm
+dotnet add package Dock.Avalonia.Themes.Fluent
+</code></pre>
+<p><strong>Optional packages:</strong></p>
+<pre><code class="lang-bash"># For serialization (choose one):
+dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+
+# For dependency injection:
+dotnet add package Dock.Model.Extensions.DependencyInjection
+</code></pre>
+</li>
+<li><p><strong>Set up View Locator (Required)</strong></p>
+<p>Dock requires a view locator to map view models to their corresponding views. Choose one of the following approaches:</p>
+<p><strong>Option A: Static View Locator with Source Generators (Recommended)</strong></p>
+<p>Add the StaticViewLocator package:</p>
+<pre><code class="lang-bash">dotnet add package StaticViewLocator
+</code></pre>
+<p>Create a <code>ViewLocator.cs</code> file:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Dock.Model.Core;
+using StaticViewLocator;
+
+namespace MyDockApp;
+
+[StaticViewLocator]
+public partial class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var type = data.GetType();
+        if (s_views.TryGetValue(type, out var func))
+            return func.Invoke();
+
+        throw new Exception($&quot;Unable to create view for type: {type}&quot;);
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        var type = data.GetType();
+        return data is IDockable || s_views.ContainsKey(type);
+    }
+}
+</code></pre>
+<p><strong>Option B: Convention-Based View Locator</strong></p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+
+namespace MyDockApp;
+
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var name = data.GetType().FullName!.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        var type = Type.GetType(name);
+
+        if (type != null)
+            return (Control)Activator.CreateInstance(type)!;
+
+        return new TextBlock { Text = &quot;Not Found: &quot; + name };
+    }
+
+    public bool Match(object? data)
+    {
+        if (data is null)
+        {
+            return false;
+        }
+
+        if (data is IDockable)
+        {
+            return true;
+        }
+
+        var name = data.GetType().FullName?.Replace(&quot;ViewModel&quot;, &quot;View&quot;);
+        return Type.GetType(name) is not null;
+    }
+}
+</code></pre>
+<p>Register the view locator in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:local=&quot;using:MyDockApp&quot;
+             x:Class=&quot;MyDockApp.App&quot;&gt;
+
+  &lt;Application.DataTemplates&gt;
+    &lt;local:ViewLocator /&gt;
+  &lt;/Application.DataTemplates&gt;
+
+  &lt;Application.Styles&gt;
+    &lt;FluentTheme /&gt;
+    &lt;DockFluentTheme /&gt;
+  &lt;/Application.Styles&gt;
+&lt;/Application&gt;
+</code></pre>
+</li>
+<li><p><strong>Create a factory and view models</strong></p>
+<p><strong>Option A: Traditional Factory Approach</strong></p>
+<p>Derive from <code>Dock.Model.Mvvm.Factory</code> and build the layout by composing docks. Documents and tools should derive from the MVVM versions of <code>Document</code> and <code>Tool</code>.</p>
+<pre><code class="lang-csharp">public class DockFactory : Factory
+{
+    public override IRootDock CreateLayout()
+    {
+        var document = new DocumentViewModel { Id = &quot;Doc1&quot;, Title = &quot;Document&quot; };
+        var documents = CreateList&lt;IDockable&gt;(document);
+
+        var root = CreateRootDock();
+        root.VisibleDockables = CreateList&lt;IDockable&gt;(
+            new DocumentDock
+            {
+                VisibleDockables = documents,
+                ActiveDockable = document
+            });
+        root.DefaultDockable = root.VisibleDockables[0];
+        return root;
+    }
+}
+</code></pre>
+<p><strong>Option B: ItemsSource Approach (Recommended for document management)</strong></p>
+<p>For dynamic document management, you can also use the ItemsSource approach with MVVM. Create a simple data model and let DocumentDock manage the documents automatically:</p>
+<pre><code class="lang-csharp">// Simple data model (no need to inherit from Document)
+public class FileDocumentModel : INotifyPropertyChanged
+{
+    private string _title = &quot;&quot;;
+    private string _content = &quot;&quot;;
+
+    public string Title
+    {
+        get =&gt; _title;
+        set =&gt; SetProperty(ref _title, value);
+    }
+
+    public string Content
+    {
+        get =&gt; _content;
+        set =&gt; SetProperty(ref _content, value);
+    }
+
+    public bool CanClose { get; set; } = true;
+
+    // INotifyPropertyChanged implementation...
+}
+
+// Main ViewModel  
+public class MainViewModel : INotifyPropertyChanged
+{
+    public ObservableCollection&lt;FileDocumentModel&gt; Documents { get; } = new();
+
+    // Add commands as needed...
+}
+</code></pre>
+<p>Then use XAML with ItemsSource:</p>
+<pre><code class="lang-xaml">&lt;DockControl&gt;
+    &lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+        &lt;DocumentDock.DocumentTemplate&gt;
+            &lt;DocumentTemplate&gt;
+                &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;
+                    &lt;TextBox Text=&quot;{Binding Context.Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+                    &lt;TextBox Text=&quot;{Binding Context.Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;300&quot;/&gt;
+                &lt;/StackPanel&gt;
+            &lt;/DocumentTemplate&gt;
+        &lt;/DocumentDock.DocumentTemplate&gt;
+    &lt;/DocumentDock&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<blockquote>
+<p><strong>💡 Tip</strong>: The ItemsSource approach (Option B) provides cleaner separation between your business models and the docking infrastructure, while still working perfectly with MVVM patterns.</p>
+</blockquote>
+</li>
+<li><p><strong>Initialize the layout in your main view model</strong></p>
+<pre><code class="lang-csharp">_factory = new DockFactory();
+Layout = _factory.CreateLayout();
+_factory.InitLayout(Layout);
+</code></pre>
+<p><code>InitLayout</code> resolves <code>ContextLocator</code>/<code>DockableLocator</code> entries (if you
+configured them) and assigns owners/active dockables. Populate these
+dictionaries before calling <code>InitLayout</code> if you need to reattach <code>Context</code>
+objects after loading layouts or enable id-based lookups via <code>GetDockable</code>.
+Override this method in your factory to register additional mappings or
+perform custom initialization logic.</p>
+</li>
+<li><p><strong>Add <code>DockControl</code> to <code>MainWindow.axaml</code></strong></p>
+<pre><code class="lang-xaml">&lt;DockControl x:Name=&quot;Dock&quot; Layout=&quot;{Binding Layout}&quot; /&gt;
+</code></pre>
+</li>
+<li><p><strong>Run the project</strong></p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+</li>
+</ol>
+<h2 id="installing">Installing</h2>
+<p>Add the packages for Dock and the MVVM model to your project:</p>
+<pre><code class="lang-powershell">Install-Package Dock.Avalonia
+Install-Package Dock.Model.Mvvm
+Install-Package Dock.Avalonia.Themes.Fluent
+</code></pre>
+<h2 id="creating-a-layout">Creating a layout</h2>
+<p>You usually derive from <code>Factory</code> and build the layout by composing docks. The sample <code>DockFactory</code> shows how tools and documents are created and added to a root layout. More customization options such as overriding <code>CreateWindowFrom</code> are covered in the <a href="dock-advanced.html">Advanced Guide</a>:</p>
+<pre><code class="lang-csharp">public override IRootDock CreateLayout()
+{
+    var doc1 = new DocumentViewModel { Id = &quot;Document1&quot;, Title = &quot;Document1&quot; };
+    var tool1 = new Tool1ViewModel { Id = &quot;Tool1&quot;, Title = &quot;Tool1&quot; };
+
+    var root = CreateRootDock();
+    root.VisibleDockables = CreateList&lt;IDockable&gt;(
+        new DocumentDock
+        {
+            VisibleDockables = CreateList&lt;IDockable&gt;(doc1),
+            ActiveDockable = doc1
+        },
+        new ToolDock
+        {
+            VisibleDockables = CreateList&lt;IDockable&gt;(tool1),
+            ActiveDockable = tool1,
+            Alignment = Alignment.Left
+        }
+    );
+    return root;
+}
+</code></pre>
+<h2 id="docking-operations">Docking operations</h2>
+<p><code>FactoryBase</code> exposes many methods to manipulate the layout at runtime. Some of the most useful ones are:</p>
+<ul>
+<li><code>AddDockable</code>, <code>InsertDockable</code> and <code>RemoveDockable</code> to manage content.</li>
+<li><code>MoveDockable</code> and <code>SwapDockable</code> for rearranging items.</li>
+<li><code>PinDockable</code>/<code>UnpinDockable</code> to keep tools in the pinned area.</li>
+<li><code>FloatDockable</code> to open a dockable in a separate window.</li>
+<li>Commands such as <code>CloseDockable</code>, <code>CloseOtherDockables</code> or <code>CloseAllDockables</code>.</li>
+</ul>
+<pre><code class="lang-csharp">// Example: add a new document at runtime
+var newDoc = new DocumentViewModel { Id = &quot;Doc2&quot;, Title = &quot;Another&quot; };
+documentDock.AddDocument(newDoc);
+</code></pre>
+<p>To drive a &quot;New&quot; command you can assign a delegate to the
+<code>DocumentFactory</code> property. The built-in <code>CreateDocument</code> command will
+invoke this factory, pass the result to <code>AddDocument</code> and activate the
+new document.</p>
+<h2 id="docking-groups">Docking groups</h2>
+<p>You can use docking groups to control which dockables can be docked together. This is useful for creating isolated areas where only specific types of content can be placed.</p>
+<pre><code class="lang-csharp">// Documents can only dock with other documents
+var doc1 = new DocumentViewModel 
+{ 
+    Id = &quot;Doc1&quot;, 
+    Title = &quot;Document 1&quot;,
+    DockGroup = &quot;Documents&quot; 
+};
+
+// Tools can only dock with other tools
+var tool1 = new ToolViewModel 
+{ 
+    Id = &quot;Tool1&quot;, 
+    Title = &quot;Tool 1&quot;,
+    DockGroup = &quot;Tools&quot; 
+};
+
+// This tool can dock anywhere (no restrictions)
+var flexibleTool = new ToolViewModel 
+{ 
+    Id = &quot;FlexTool&quot;, 
+    Title = &quot;Flexible Tool&quot;,
+    DockGroup = null 
+};
+</code></pre>
+<p>For a complete guide on docking groups see <a href="dock-docking-groups.html">Docking Groups</a>.</p>
+<h2 id="events">Events</h2>
+<p><code>FactoryBase</code> also publishes events for most actions. They allow you to observe changes in active dockable, pinned state or window management.</p>
+<pre><code class="lang-csharp">_factory.DockableAdded += (_, e) =&gt; Console.WriteLine($&quot;Added {e.Dockable?.Id}&quot;);
+</code></pre>
+<h2 id="next-steps">Next steps</h2>
+<p>Use the MVVM sample as a starting point for your application. You can extend the factory to create custom docks, documents and tools.
+See the <a href="dock-advanced.html">Advanced Guide</a> for details on overriding factory methods and consult the <a href="dock-reference.html">Dock API Reference</a> for a complete list of interfaces.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-mvvm.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

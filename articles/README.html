@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock documentation | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock documentation | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-documentation">Dock documentation</h1>
+
+<h2 id="overview">Overview</h2>
+<p>Welcome to the Dock documentation. This page is the entry point for the
+documentation site and collects links to guides, reference topics and other
+resources. These articles explain how to use the Dock layout system from basic
+setup through advanced customization. The examples assume an Avalonia
+application created with the .NET SDK. For build instructions and an overview of the repository see the <a href="https://github.com/wieslawsoltes/Dock/blob/master/README.md">project README</a>. If you are new to Dock, start with the guides under <em>Get started</em>.</p>
+<h2 id="get-started">Get started</h2>
+<ul>
+<li><a href="quick-start.html">Quick start</a> – Set up a minimal Dock layout with modern approaches.</li>
+<li><strong><a href="dock-itemssource.html">DocumentDock ItemsSource</a></strong> – <strong>Automatic document management using data binding (recommended for most scenarios)</strong>.</li>
+<li><strong><a href="dock-content-guide.html">Document and Tool Content Guide</a></strong> – <strong>Comprehensive guide for setting up document and tool content with examples (START HERE for content setup)</strong>.</li>
+</ul>
+<h3 id="model-implementation-guides">Model Implementation Guides</h3>
+<p>Choose the implementation that matches your MVVM framework:</p>
+<ul>
+<li><a href="dock-mvvm.html">MVVM guide</a> – Build layouts using MVVM view models with INotifyPropertyChanged.</li>
+<li><a href="dock-caliburn-micro.html">Caliburn.Micro guide</a> – Caliburn.Micro integration with Dock model base classes.</li>
+<li><a href="dock-reactiveui.html">ReactiveUI guide</a> – ReactiveUI integration with observables and reactive commands.</li>
+<li><a href="dock-reactive-property.html">ReactiveProperty guide</a> – ReactiveProperty framework integration with reactive properties and validation.</li>
+<li><a href="dock-inpc.html">INPC guide</a> – Basic INotifyPropertyChanged implementation without MVVM commands.</li>
+<li><a href="dock-reactiveui-di.html">ReactiveUI with Dependency Injection</a> – ReactiveUI with dependency injection for complex applications.</li>
+<li><a href="dock-reactiveui-routing.html">ReactiveUI with Routing</a> – ReactiveUI with routing for SPA-like navigation within dockables.</li>
+</ul>
+<h3 id="other-approaches">Other Approaches</h3>
+<ul>
+<li><a href="dock-xaml.html">XAML guide</a> – Declare layouts purely in XAML with ItemsSource support.</li>
+<li><a href="dock-code-only.html">Code-only guide</a> – Build Dock layouts entirely in C# with minimal dependencies.</li>
+<li><a href="dock-user-viewmodel.html">User view model guide</a> – Combine your own view models with Dock.</li>
+<li><a href="dock-views.html">Views guide</a> – Display content for documents and tools.</li>
+</ul>
+<h2 id="how-to-guides">How-to guides</h2>
+<ul>
+<li><a href="dock-complex-layouts.html">Complex layout tutorials</a> – Multi-window and plugin walkthroughs.</li>
+</ul>
+<h2 id="concepts">Concepts</h2>
+<ul>
+<li><a href="dock-active-document.html">Active document</a> – Retrieve the currently focused document.</li>
+<li><a href="dock-mdi.html">MDI document layout</a> – Use classic MDI windows inside document docks.</li>
+<li><a href="dock-mdi-layout-helpers.html">MDI layout helpers</a> – Understand cascade/tile helpers and defaults.</li>
+<li><a href="dock-events.html">Events guide</a> – Subscribe to dock and window events.</li>
+<li><a href="dock-api-scenarios.html">API scenarios</a> – Common coding patterns.</li>
+<li><a href="dock-dockablelocator.html">DockableLocator usage</a> – Register and resolve dockables.</li>
+<li><a href="dock-serialization.html">Serialization and persistence</a> – Save and restore layouts.</li>
+<li><a href="dock-serialization-state.html">Serialization state</a> – Restore document/tool content and templates.</li>
+<li><a href="dock-state.html">Dock state guide</a> – Why and how to use <code>DockState</code>.</li>
+<li><a href="dock-restore-dockable.html">RestoreDockable behavior</a> – Understand dockable restoration and splitter management.</li>
+<li><a href="dock-dependency-injection.html">Dependency injection</a> – Register Dock services with <code>IServiceCollection</code>.</li>
+<li><a href="dock-context-locator.html">Context locators</a> – Provide <code>DataContext</code> objects for dockables.</li>
+<li><a href="dock-docking-groups.html">Docking groups</a> – Control which dockables can be docked together using group identifiers.</li>
+<li><a href="dock-architecture.html">Architecture overview</a> – High level design of the docking system.</li>
+<li><a href="dock-deep-dive.html">Deep dive</a> – Internals of <code>DockControl</code>.</li>
+<li><a href="dock-manager-guide.html">DockManager guide</a> – When and how to customize <code>DockManager</code>.</li>
+<li><a href="dock-control-initialization.html">DockControl initialization</a> – Defaults, locators, and setup flags.</li>
+<li><a href="dock-programmatic-docking.html">Programmatic docking</a> – Use <code>DockService</code> to validate and execute docking operations.</li>
+<li><a href="dock-drag-actions.html">Drag actions and modifiers</a> – How modifier keys map to docking actions.</li>
+<li><a href="dock-styling.html">Styling and theming</a> – Customize the appearance of Dock controls.</li>
+<li><a href="dock-datatemplates.html">DataTemplates and custom dock types</a> – Create custom dock types with their own visual representation.</li>
+<li><a href="dock-custom-theme.html">Custom themes</a> – Build and apply your own theme.</li>
+<li><a href="dock-context-menus.html">Context menus</a> – Localize or replace built-in menus.</li>
+<li><a href="dock-control-recycling.html">Control recycling</a> – Reuse visuals when dockables return.</li>
+<li><a href="dock-proportional-stackpanel.html">Proportional StackPanel</a> – Layout panel with adjustable proportions.</li>
+<li><a href="dock-sizing.html">Sizing guide</a> – Control pixel sizes and fixed dimensions.</li>
+<li><a href="dock-windows.html">Floating windows</a> – Detach dockables into separate windows.</li>
+<li><a href="dock-window-drag.html">Enable window drag</a> – Drag the host window via the document tab strip.</li>
+<li><a href="dock-host-window-locator.html">Host window locators</a> – Provide platform windows for floating docks.</li>
+<li><a href="dock-drag-offset-calculator.html">Drag offset calculator</a> – Control where the drag preview window appears.</li>
+<li><a href="dock-floating-adorners.html">Floating dock adorners</a> – Display drop indicators in a transparent window.</li>
+<li><a href="dock-targets.html">Dock targets and indicators</a> – Customize drop targets and selector visuals.</li>
+<li><a href="dock-debug-overlay.html">Debug overlay</a> – Visualize dock targets and drop areas.</li>
+<li><a href="dock-diagnostics-logging.html">Diagnostics logging</a> – Enable internal logging and route messages.</li>
+<li><a href="dock-selector-overlay.html">Selector overlay</a> – Switch documents and tools with keyboard gestures.</li>
+<li><a href="dock-command-bars.html">Command bars</a> – Merge menus and toolbars from active dockables.</li>
+<li><a href="dock-pinned-window.html">Pinned dock window</a> – Show auto-hidden tools in a floating window.</li>
+<li><a href="dock-window-owner.html">Floating window owner</a> – Keep floating windows in front of the main window.</li>
+<li><a href="dock-root-dock-debug.html">RootDockDebug window</a> – Toggle a runtime inspector for Dock layouts.</li>
+<li><a href="dock-debug-views.html">Debug views</a> – Reusable controls used by RootDockDebug.</li>
+<li><a href="dock-advanced.html">Advanced guide</a> – Custom factories and runtime features.</li>
+<li><a href="dock-content-wrapper-pattern.html">Advanced Content Wrapper Pattern</a> – Separate domain models from docking infrastructure.</li>
+<li><a href="dock-custom-model.html">Custom Dock.Model implementations</a> – Integrate Dock with other MVVM frameworks.</li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="dock-reference.html">Reference guide</a> – Overview of the core APIs.</li>
+<li><a href="dock-controls-reference.html">Avalonia controls reference</a> – Dock-specific properties for Avalonia controls.</li>
+<li><a href="dock-geometry.html">Geometry types</a> – DockPoint and DockRect usage.</li>
+<li><a href="dock-glossary.html">Glossary</a> – Definitions of common Dock terms.</li>
+<li><a href="dock-dockable-properties.html">Dockable property settings</a> – Configure per item behavior.</li>
+<li><a href="dock-markup-extensions.html">Markup extensions</a> – Load and reference XAML fragments.</li>
+<li><a href="dock-adapters.html">Adapter classes</a> – Host, navigation and tracking helpers.</li>
+<li><a href="dock-tracking-controls.html">Tracking controls</a> – Collections that map dockables to their visuals.</li>
+<li><a href="dock-dockable-control.html">DockableControl tracking</a> – How tracking modes register dockable visuals.</li>
+<li><a href="dock-enums.html">Enumerations</a> – Values used by Dock APIs.</li>
+<li><a href="dock-model-controls.html">Model control interfaces</a> – Contracts used to define documents, tools and docks.</li>
+<li><a href="dock-layout-panels.html">Layout panels</a> – Dock, stack, grid and wrap style docks.</li>
+<li><a href="dock-settings.html">Dock settings</a> – Global drag/drop options and thresholds.</li>
+<li><a href="dock-properties.html">Dock properties</a> – Use attached properties to mark drag areas and drop targets.</li>
+<li><a href="dock-settings-controls.html">DockSettings in controls</a> – Apply global drag/drop settings when writing custom controls.</li>
+</ul>
+<h2 id="samples-and-additional-resources">Samples and additional resources</h2>
+<p>See the sample applications under the <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/">samples</a> directory for
+real-world usage. The <a href="https://github.com/wieslawsoltes/Dock/blob/master/README.md">project README</a> also lists the available
+guides and provides basic build instructions.</p>
+<p>For the complete source code visit the
+<a href="https://github.com/wieslawsoltes/Dock">GitHub repository</a>. NuGet packages are
+published on <a href="https://www.nuget.org/packages/Dock.Avalonia/">NuGet.org</a>,
+including both <code>Dock.Avalonia</code> and <code>Dock.Model.Mvvm</code>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><a href="dock-faq.html">FAQ</a> – Solutions to common issues.</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

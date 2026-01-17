@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock FAQ | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock FAQ | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-faq.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-faq">Dock FAQ</h1>
+
+<p>This page answers common questions that come up when using Dock.</p>
+<h2 id="content-setup">Content setup</h2>
+<p><strong>What's the best way to create documents dynamically?</strong></p>
+<p>Use the new <code>ItemsSource</code> property on <code>DocumentDock</code> for automatic document management:</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+  &lt;DocumentDock.DocumentTemplate&gt;
+    &lt;DocumentTemplate&gt;
+      &lt;StackPanel x:DataType=&quot;Document&quot;&gt;
+        &lt;TextBlock Text=&quot;{Binding Title}&quot;/&gt;
+        &lt;TextBox Text=&quot;{Binding Context.Content}&quot;/&gt;
+      &lt;/StackPanel&gt;
+    &lt;/DocumentTemplate&gt;
+  &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<p>This approach automatically creates/removes documents when you add/remove items from your collection, similar to how <code>ListBox.ItemsSource</code> works.</p>
+<p><strong>My document tabs are blank/empty (ItemsSource approach)</strong></p>
+<p>For <code>ItemsSource</code> documents, check:</p>
+<ol>
+<li><code>DocumentTemplate</code> is set (no template means no documents are created)</li>
+<li>Collection items expose <code>Title</code>, <code>Name</code>, or <code>DisplayName</code> (or override <code>ToString</code>) for tab headers</li>
+<li>Access your model via <code>{Binding Context.PropertyName}</code> not <code>{Binding PropertyName}</code></li>
+<li>Your model implements <code>INotifyPropertyChanged</code> if you expect updates</li>
+<li>If you use compiled bindings, set <code>x:DataType=&quot;Document&quot;</code> on the template root</li>
+</ol>
+<p><strong>My document tabs are blank/empty (ViewModel approach)</strong></p>
+<p>For the ViewModel + DataTemplate approach, check:</p>
+<ol>
+<li>DataTemplate is registered in <code>App.axaml</code></li>
+<li>DataType matches your ViewModel type exactly</li>
+<li>ViewModel namespace is imported correctly</li>
+<li>View's <code>x:DataType</code> matches the ViewModel</li>
+</ol>
+<p>For comprehensive setup guides, see <a href="dock-content-guide.html">Document and Tool Content Guide</a>.</p>
+<p><strong>I get &quot;Unexpected content&quot; errors when adding documents</strong></p>
+<p>This happens when you set a UserControl instance directly to the <code>Content</code> property. Use one of these approaches instead:</p>
+<ul>
+<li>Use <code>ItemsSource</code> with <code>DocumentTemplate</code> (recommended for most cases)</li>
+<li>Create a ViewModel that inherits from <code>Document</code> and use DataTemplate</li>
+<li>Use <code>Content = new Func&lt;IServiceProvider, object&gt;(_ =&gt; new MyView())</code></li>
+</ul>
+<p>See <a href="dock-content-guide.html">Document and Tool Content Guide</a> for examples.</p>
+<p><strong>How do I bind to collections of business objects?</strong></p>
+<p>Use the <code>ItemsSource</code> property to bind your existing domain models directly:</p>
+<pre><code class="lang-csharp">// Your existing model
+public class FileModel : INotifyPropertyChanged
+{
+    public string Title { get; set; }      // Used for tab title
+    public string Content { get; set; }    // Accessible via Context.Content
+    public bool CanClose { get; set; }     // Controls if tab can be closed
+}
+
+// In your ViewModel
+public ObservableCollection&lt;FileModel&gt; OpenFiles { get; } = new();
+</code></pre>
+<p>Then bind in XAML:</p>
+<pre><code class="lang-xaml">&lt;DocumentDock ItemsSource=&quot;{Binding OpenFiles}&quot;&gt;
+  &lt;DocumentDock.DocumentTemplate&gt;
+    &lt;DocumentTemplate&gt;
+      &lt;TextBox x:DataType=&quot;Document&quot; Text=&quot;{Binding Context.Content}&quot;/&gt;
+    &lt;/DocumentTemplate&gt;
+  &lt;/DocumentDock.DocumentTemplate&gt;
+&lt;/DocumentDock&gt;
+</code></pre>
+<p><strong>Missing dock types in XAML (e.g., &quot;Unable to resolve type RootDock&quot;)</strong></p>
+<p>Add the <code>Dock.Model.Avalonia</code> package and namespace:</p>
+<pre><code class="lang-xaml">xmlns:dock=&quot;using:Dock.Model.Avalonia.Controls&quot;
+</code></pre>
+<h2 id="focus-management">Focus management</h2>
+<p><strong>Why does the active document change when I load a saved layout?</strong></p>
+<p>Active and focused dockables are serialized with the layout itself, so you do not need <code>DockState</code> to restore focus. If the active document is not what you expect after loading, make sure you:</p>
+<ol>
+<li>Assign the layout to <code>DockControl.Layout</code> before calling <code>InitLayout</code>.</li>
+<li>Do not overwrite <code>ActiveDockable</code> or <code>DefaultDockable</code> after loading.</li>
+</ol>
+<p><code>DockState</code> is used for restoring document/tool content and document templates, not focus.</p>
+<h2 id="serialization-pitfalls">Serialization pitfalls</h2>
+<p><strong>Deserialization fails with unknown types</strong></p>
+<p><code>IDockSerializer</code> implementations (for example <code>Dock.Serializer.SystemTextJson.DockSerializer</code>) use type information embedded in the layout. If a type cannot be resolved, ensure the assembly that defines it is loaded and referenced by the application. For dependency injection scenarios, construct the serializer with an <code>IServiceProvider</code> so it can resolve types from the container.</p>
+<p><strong>What is <code>DockableLocator</code> and <code>ContextLocator</code>?</strong></p>
+<p><code>DockableLocator</code> is a dictionary of functions that create dockables when you
+need to resolve them by id at runtime (for example via <code>GetDockable</code>).
+<code>ContextLocator</code> returns objects that become <code>dockable.Context</code> during
+initialization when a dockable does not already have a context. Populate
+these dictionaries in <code>InitLayout</code> if your app relies on id-based lookup or
+needs to recreate contexts for serialized layouts.</p>
+<p><strong>Are dock <code>Id</code>s unique?</strong></p>
+<p>No. The <code>Id</code> string is an app-defined identifier stored in the layout and used
+by helpers such as <code>ContextLocator</code> or <code>GetDockable</code>. When a document dock is
+split or cloned the factory copies the source <code>Id</code>, so multiple docks can share
+the same id. If you need to distinguish individual docks, store a separate
+unique identifier on your view models.</p>
+<h2 id="other-questions">Other questions</h2>
+<p><strong>Floating windows appear in the wrong place</strong></p>
+<p>Override <code>CreateWindowFrom</code> in your factory to configure new windows when a dockable is floated. This allows you to center windows or set their dimensions.</p>
+<pre><code class="lang-csharp">public override IDockWindow? CreateWindowFrom(IDockable dockable)
+{
+    var window = base.CreateWindowFrom(dockable);
+    if (window is null)
+    {
+        return null;
+    }
+
+    window.Width = 800;
+    window.Height = 600;
+    window.X = 100;
+    window.Y = 100;
+    return window;
+}
+</code></pre>
+<p><strong>Can I give a tool a fixed size?</strong></p>
+<p>Set <code>MinWidth</code> and <code>MaxWidth</code> (or the height equivalents) on the tool view model. When both values are the same the tool cannot be resized. <code>DockManager</code> has a <code>PreventSizeConflicts</code> flag which stops docking tools together if their fixed sizes are incompatible.</p>
+<p><strong>Pinned tools show up on the wrong side</strong></p>
+<p>When a tool is pinned the framework looks at the <code>Alignment</code> of its
+containing <code>ToolDock</code>.  If no alignment is specified the dock defaults to
+<code>Left</code>, which can make right–hand panels collapse to the left when pinned.
+Set <code>Alignment</code> to <code>Right</code>, <code>Left</code>, <code>Top</code> or <code>Bottom</code> depending on where the
+dock should live:</p>
+<pre><code class="lang-csharp">new ToolDock
+{
+    VisibleDockables = CreateList&lt;IDockable&gt;(myTool),
+    Alignment = Alignment.Right
+};
+</code></pre>
+<p><strong>Can I cancel switching the active dockable or closing a dock?</strong></p>
+<p>Dock currently raises <code>ActiveDockableChanged</code> only <em>after</em> the active dockable
+has been updated, so the change cannot be cancelled. Closing dockables is
+cancellable via <code>DockableClosing</code>, which runs before the dockable is closed.
+Set <code>Cancel</code> to keep the dockable open:</p>
+<pre><code class="lang-csharp">factory.DockableClosing += (_, args) =&gt;
+{
+    if (!CanCloseDockable(args.Dockable))
+    {
+        args.Cancel = true;
+    }
+};
+</code></pre>
+<p>You can also cancel window closure with <code>WindowClosing</code>, which is fired when a
+host window is about to close. Set the <code>Cancel</code> property on the event arguments
+to keep the window open:</p>
+<pre><code class="lang-csharp">factory.WindowClosing += (_, args) =&gt;
+{
+    if (!CanShutdown())
+    {
+        args.Cancel = true; // prevents the window from closing
+    }
+};
+</code></pre>
+<p>Dock does not provide a pre-change hook for active dockable switching.</p>
+<p><strong>How do I disable undocking or drag-and-drop?</strong></p>
+<p>Disable undocking per dockable by setting its <code>CanDrag</code> or <code>CanDrop</code> property to
+<code>false</code>:</p>
+<pre><code class="lang-csharp">document.CanDrag = false;
+tool.CanDrop = false;
+</code></pre>
+<p>You can still toggle drag or drop globally using the attached <code>DockProperties</code>
+from <a href="dock-settings.html"><code>Dock.Settings</code></a>:</p>
+<pre><code class="lang-xaml">&lt;Window xmlns:dockSettings=&quot;clr-namespace:Dock.Settings;assembly=Dock.Settings&quot;
+        dockSettings:DockProperties.IsDragEnabled=&quot;False&quot;
+        dockSettings:DockProperties.IsDropEnabled=&quot;False&quot;&gt;
+    &lt;DockControl /&gt;
+&lt;/Window&gt;
+</code></pre>
+<p>The default templates bind these attached properties to the <code>CanDrag</code> and <code>CanDrop</code>
+properties of each dockable. In most cases you simply toggle the boolean
+properties on your view models and let the templates update <code>DockProperties</code> for
+you.</p>
+<p>Dockables may still be floated programmatically unless their <code>CanFloat</code> property
+is set to <code>false</code>.</p>
+<p><strong>How can I prevent certain dockables from docking together?</strong></p>
+<p>Use docking groups to control which dockables can dock together. Set the <code>DockGroup</code> property on your dockables:</p>
+<pre><code class="lang-csharp">// Documents can dock locally with other documents
+// Can dock globally only into targets with the same group
+document.DockGroup = &quot;Documents&quot;;
+
+// Tools can dock locally with other tools
+// Can dock globally only into targets with the same group
+tool.DockGroup = &quot;Tools&quot;;
+
+// This can dock globally anywhere and locally with other ungrouped dockables
+flexibleTool.DockGroup = null;
+</code></pre>
+<p>Dockables with the same group can dock together locally, while different groups cannot mix. Grouped dockables can dock globally only into targets with the same group and cannot dock globally into ungrouped or different-group targets. Non-grouped dockables (null/empty groups) can dock globally anywhere and locally with other non-grouped dockables. See <a href="dock-docking-groups.html">Docking Groups</a> for details.</p>
+<p><strong>How do I float a dockable from its tab?</strong></p>
+<p>Double-click the tab of a document or tool to detach it into a separate window.
+The dockable must have <code>CanFloat</code> enabled.</p>
+<p>For a general overview of Dock see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-faq.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

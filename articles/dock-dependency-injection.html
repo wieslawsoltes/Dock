@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dependency injection | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dependency injection | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-dependency-injection.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dependency-injection">Dependency injection</h1>
+
+<p>Dock provides an integration library for the default .NET service container. The <code>Dock.Model.Extensions.DependencyInjection</code> package exposes an <code>AddDock</code> extension for <code>IServiceCollection</code>.</p>
+<h2 id="installation">Installation</h2>
+<p>First, install the dependency injection package:</p>
+<pre><code class="lang-bash">dotnet add package Dock.Model.Extensions.DependencyInjection
+</code></pre>
+<p>Also install your preferred serializer package:</p>
+<pre><code class="lang-bash"># Choose one serializer:
+dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+dotnet add package Dock.Serializer.Protobuf          # Binary
+dotnet add package Dock.Serializer.Xml               # XML  
+dotnet add package Dock.Serializer.Yaml              # YAML
+</code></pre>
+<h2 id="register-services">Register services</h2>
+<p>Reference the package and register your factory and serializer types during startup:</p>
+<pre><code class="lang-csharp">using Dock.Model.Extensions.DependencyInjection;
+using Dock.Serializer; // or your preferred serializer namespace
+
+// Register with JSON serializer (Newtonsoft.Json)
+services.AddDock&lt;MyDockFactory, DockSerializer&gt;();
+
+// Or with System.Text.Json serializer
+services.AddDock&lt;MyDockFactory, Dock.Serializer.SystemTextJson.DockSerializer&gt;();
+
+// Or with Protobuf serializer
+services.AddDock&lt;MyDockFactory, ProtobufDockSerializer&gt;();
+
+// Or with XML serializer
+services.AddDock&lt;MyDockFactory, DockXmlSerializer&gt;();
+
+// Or with YAML serializer  
+services.AddDock&lt;MyDockFactory, DockYamlSerializer&gt;();
+</code></pre>
+<p>This registers <code>IDockState</code>, your factory implementation as <code>IFactory</code>, and the serializer as <code>IDockSerializer</code>.</p>
+<h2 id="complete-example">Complete example</h2>
+<p>Here's a full example showing how to set up dependency injection with Dock:</p>
+<pre><code class="lang-csharp">using Microsoft.Extensions.DependencyInjection;
+using Dock.Model.Extensions.DependencyInjection;
+using Dock.Serializer;
+
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register your view models and views
+    services.AddTransient&lt;MyDocumentViewModel&gt;();
+    services.AddTransient&lt;MyToolViewModel&gt;();
+    
+    // Register Dock services
+    services.AddDock&lt;MyDockFactory, DockSerializer&gt;();
+    
+    // Register other application services
+    services.AddSingleton&lt;MyApplicationService&gt;();
+}
+</code></pre>
+<h2 id="using-the-services">Using the services</h2>
+<p>After registering the services, inject them into your view models or other services:</p>
+<pre><code class="lang-csharp">public class MainWindowViewModel
+{
+    private readonly IFactory _factory;
+    private readonly IDockState _dockState;
+    private readonly IDockSerializer _serializer;
+
+    public MainWindowViewModel(
+        IFactory factory, 
+        IDockState dockState, 
+        IDockSerializer serializer)
+    {
+        _factory = factory;
+        _dockState = dockState;
+        _serializer = serializer;
+        
+        // Create layout using the factory
+        Layout = _factory.CreateLayout();
+        _factory.InitLayout(Layout);
+    }
+    
+    public IRootDock Layout { get; }
+}
+</code></pre>
+<h2 id="framework-specific-registration">Framework-specific registration</h2>
+<p>For ReactiveUI applications, you can also register the ReactiveUI-specific factory:</p>
+<pre><code class="lang-csharp">using Dock.Model.Extensions.DependencyInjection;
+using Dock.Model.ReactiveUI;
+
+services.AddDock&lt;MyReactiveUIFactory, DockSerializer&gt;();
+</code></pre>
+<p>Where <code>MyReactiveUIFactory</code> derives from <code>Dock.Model.ReactiveUI.Factory</code>.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-dependency-injection.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

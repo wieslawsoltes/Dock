@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Dock XAML Guide | Dock for Avalonia </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Dock XAML Guide | Dock for Avalonia ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-xaml.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="dock-xaml-guide">Dock XAML Guide</h1>
+
+<p>This guide shows how to create Dock layouts entirely in XAML.  Using XAML can be
+convenient when the layout rarely changes or when you wish to edit it without
+recompiling. The <a href="https://github.com/wieslawsoltes/Dock/tree/master/samples/DockXamlSample">DockXamlSample</a> demonstrates these
+techniques.</p>
+<h2 id="step-by-step-tutorial">Step-by-step tutorial</h2>
+<p>These steps outline how to set up a small Dock application that defines its layout in XAML.</p>
+<ol>
+<li><p><strong>Create a new Avalonia project</strong></p>
+<pre><code class="lang-bash">dotnet new avalonia.app -o MyDockApp
+cd MyDockApp
+</code></pre>
+</li>
+<li><p><strong>Install the Dock packages</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Avalonia
+dotnet add package Dock.Model.Avalonia
+dotnet add package Dock.Avalonia.Themes.Fluent
+</code></pre>
+<p><strong>Optional packages for serialization (choose one):</strong></p>
+<pre><code class="lang-bash">dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
+dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
+dotnet add package Dock.Serializer.Protobuf          # Binary
+dotnet add package Dock.Serializer.Xml               # XML
+dotnet add package Dock.Serializer.Yaml              # YAML
+</code></pre>
+</li>
+<li><p><strong>Set up View Templates (Optional)</strong></p>
+<p>If you rely on view models via <code>Context</code>, register a view locator or data templates for your document and tool views. If you define <code>Document.Content</code> or use <code>DocumentTemplate</code> in XAML, you can skip this step. Choose one of the following approaches:</p>
+<p><strong>Option A: Static View Locator with Source Generators (Recommended)</strong></p>
+<p>Add the StaticViewLocator package:</p>
+<pre><code class="lang-bash">dotnet add package StaticViewLocator
+</code></pre>
+<p>Create a <code>ViewLocator.cs</code> file:</p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+using StaticViewLocator;
+
+namespace MyDockApp;
+
+[StaticViewLocator]
+public partial class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        if (data is null)
+            return null;
+
+        var type = data.GetType();
+        if (s_views.TryGetValue(type, out var func))
+            return func.Invoke();
+
+        // Fallback for simple content
+        if (data is string text)
+            return new TextBox { Text = text, AcceptsReturn = true };
+
+        return new TextBlock { Text = data.ToString() };
+    }
+
+    public bool Match(object? data)
+    {
+        return data is IDockable || data != null;
+    }
+}
+</code></pre>
+<p><strong>Option B: Simple View Locator for Basic Content</strong></p>
+<pre><code class="lang-csharp">using System;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Dock.Model.Core;
+
+namespace MyDockApp;
+
+public class ViewLocator : IDataTemplate
+{
+    public Control? Build(object? data)
+    {
+        return data switch
+        {
+            IDockable dockable when !string.IsNullOrEmpty(dockable.Title) =&gt; 
+                new TextBox { Text = $&quot;Content for {dockable.Title}&quot;, AcceptsReturn = true },
+            string text =&gt; new TextBox { Text = text, AcceptsReturn = true },
+            _ =&gt; new TextBlock { Text = data?.ToString() ?? &quot;No Content&quot; }
+        };
+    }
+
+    public bool Match(object? data) =&gt; true;
+}
+</code></pre>
+<p>If you use a view locator, register it in <code>App.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;Application xmlns=&quot;https://github.com/avaloniaui&quot;
+             xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
+             xmlns:local=&quot;using:MyDockApp&quot;
+             x:Class=&quot;MyDockApp.App&quot;&gt;
+
+  &lt;Application.DataTemplates&gt;
+    &lt;local:ViewLocator /&gt;
+  &lt;/Application.DataTemplates&gt;
+
+  &lt;Application.Styles&gt;
+    &lt;FluentTheme /&gt;
+    &lt;DockFluentTheme /&gt;
+  &lt;/Application.Styles&gt;
+&lt;/Application&gt;
+</code></pre>
+</li>
+<li><p><strong>Declare the layout in XAML</strong></p>
+<p><strong>Option A: Traditional Static Layout</strong></p>
+<p>Add a <code>DockControl</code> and the initial docks in <code>MainWindow.axaml</code>:</p>
+<pre><code class="lang-xaml">&lt;DockControl x:Name=&quot;Dock&quot; InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
+    &lt;DockControl.Factory&gt;
+        &lt;Factory /&gt;
+    &lt;/DockControl.Factory&gt;
+    &lt;RootDock&gt;
+        &lt;DocumentDock&gt;
+            &lt;Document Id=&quot;Doc1&quot; Title=&quot;Welcome&quot; /&gt;
+        &lt;/DocumentDock&gt;
+    &lt;/RootDock&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<p><strong>Option B: ItemsSource Data Binding (Recommended)</strong></p>
+<p>For dynamic document management, use <code>ItemsSource</code> to bind to your data collections:</p>
+<pre><code class="lang-xaml">&lt;DockControl InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
+    &lt;DockControl.Factory&gt;
+        &lt;Factory /&gt;
+    &lt;/DockControl.Factory&gt;
+    &lt;RootDock&gt;
+        &lt;DocumentDock ItemsSource=&quot;{Binding Documents}&quot;&gt;
+            &lt;DocumentDock.DocumentTemplate&gt;
+                &lt;DocumentTemplate&gt;
+                    &lt;StackPanel Margin=&quot;10&quot; x:DataType=&quot;Document&quot;&gt;
+                        &lt;TextBlock Text=&quot;Title:&quot; FontWeight=&quot;Bold&quot;/&gt;
+                        &lt;TextBox Text=&quot;{Binding Title}&quot; Margin=&quot;0,0,0,10&quot;/&gt;
+                        &lt;TextBlock Text=&quot;Content:&quot; FontWeight=&quot;Bold&quot;/&gt;
+                        &lt;TextBox Text=&quot;{Binding Context.Content}&quot; AcceptsReturn=&quot;True&quot; Height=&quot;200&quot;/&gt;
+                    &lt;/StackPanel&gt;
+                &lt;/DocumentTemplate&gt;
+            &lt;/DocumentDock.DocumentTemplate&gt;
+        &lt;/DocumentDock&gt;
+    &lt;/RootDock&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<p>For this approach, you'll need a ViewModel with a document collection:</p>
+<pre><code class="lang-csharp">public class MainViewModel : INotifyPropertyChanged
+{
+    public ObservableCollection&lt;FileDocument&gt; Documents { get; } = new()
+    {
+        new FileDocument { Title = &quot;Document 1&quot;, Content = &quot;Content here...&quot; },
+        new FileDocument { Title = &quot;Document 2&quot;, Content = &quot;More content...&quot; }
+    };
+}
+
+public class FileDocument : INotifyPropertyChanged
+{
+    private string _title = &quot;&quot;;
+    private string _content = &quot;&quot;;
+
+    public string Title
+    {
+        get =&gt; _title;
+        set =&gt; SetProperty(ref _title, value);
+    }
+
+    public string Content
+    {
+        get =&gt; _content;
+        set =&gt; SetProperty(ref _content, value);
+    }
+
+    public bool CanClose { get; set; } = true;
+
+    // INotifyPropertyChanged implementation...
+}
+</code></pre>
+<blockquote>
+<p><strong>💡 Tip</strong>: The ItemsSource approach (Option B) provides automatic document management and is recommended for most applications. For details, see the <a href="dock-itemssource.html">DocumentDock ItemsSource guide</a>.</p>
+</blockquote>
+</li>
+<li><p><strong>Save and load layouts</strong></p>
+</li>
+</ol>
+<p>Use <code>DockSerializer</code> from code-behind to persist or restore the layout.</p>
+<p>When declaring layouts this way you typically still provide a small
+<code>Factory</code> implementation. The factory allows you to resolve your view
+models and hook into runtime events while keeping the layout defined in
+markup.</p>
+<ol start="6">
+<li><p><strong>Run the application</strong></p>
+<pre><code class="lang-bash">dotnet run
+</code></pre>
+</li>
+</ol>
+<h2 id="installing">Installing</h2>
+<p>Add the core Dock packages to your project:</p>
+<pre><code class="lang-powershell">Install-Package Dock.Avalonia
+Install-Package Dock.Model.Avalonia
+Install-Package Dock.Serializer.Newtonsoft
+Install-Package Dock.Serializer.Protobuf
+Install-Package Dock.Avalonia.Themes.Fluent
+</code></pre>
+<p>These packages provide the <code>DockControl</code> and layout serialization helpers.</p>
+<h2 id="defining-the-layout">Defining the layout</h2>
+<p>Layouts can be declared directly in your XAML files. The sample's <code>MainView.axaml</code> contains a <code>DockControl</code> that initializes the default <code>Factory</code> and loads the layout from markup:</p>
+<pre><code class="lang-xaml">&lt;DockControl x:Name=&quot;Dock&quot; Grid.Row=&quot;1&quot; InitializeLayout=&quot;True&quot; InitializeFactory=&quot;True&quot;&gt;
+  &lt;DockControl.Factory&gt;
+    &lt;Factory /&gt;
+  &lt;/DockControl.Factory&gt;
+  &lt;RootDock x:Name=&quot;Root&quot; Id=&quot;Root&quot; IsCollapsable=&quot;False&quot; DefaultDockable=&quot;{Binding #MainLayout}&quot;&gt;
+    &lt;ProportionalDock x:Name=&quot;MainLayout&quot; Id=&quot;MainLayout&quot; Orientation=&quot;Horizontal&quot;&gt;
+      &lt;ToolDock x:Name=&quot;LeftPane&quot; Id=&quot;LeftPane&quot; Proportion=&quot;0.25&quot; Alignment=&quot;Left&quot;&gt;
+        &lt;Tool x:Name=&quot;SolutionExplorer&quot; Id=&quot;SolutionExplorer&quot; Title=&quot;Solution Explorer&quot; /&gt;
+      &lt;/ToolDock&gt;
+      &lt;ProportionalDockSplitter x:Name=&quot;LeftSplitter&quot; Id=&quot;LeftSplitter&quot; /&gt;
+      &lt;!-- Additional docks omitted --&gt;
+    &lt;/ProportionalDock&gt;
+  &lt;/RootDock&gt;
+&lt;/DockControl&gt;
+</code></pre>
+<p>The hierarchy of <code>RootDock</code>, <code>ProportionalDock</code>, <code>ToolDock</code> and <code>DocumentDock</code> mirrors the structure you would build from code. Setting <code>InitializeLayout</code> and <code>InitializeFactory</code> to <code>True</code> instructs <code>DockControl</code> to create and initialize the layout automatically.</p>
+<h2 id="saving-and-loading-layouts">Saving and loading layouts</h2>
+<p><code>DockSerializer</code> can persist layouts to disk. <code>MainView.axaml.cs</code> implements simple commands for loading and saving a JSON file:</p>
+<pre><code class="lang-csharp">var layout = _serializer.Load&lt;IDock?&gt;(stream);
+if (layout is { })
+{
+    dock.Layout = layout;
+    _dockState.Restore(layout);
+}
+</code></pre>
+<p>Use <code>SaveFilePickerAsync</code> and <code>OpenFilePickerAsync</code> from Avalonia to choose the file location. The sample stores the current dock state so it can be restored after loading a saved layout.</p>
+<h2 id="next-steps">Next steps</h2>
+<p>Use the XAML sample as a template if you prefer declaring layouts in markup rather than creating them via a factory. You can combine this approach with MVVM or ReactiveUI view models for additional logic.</p>
+<p>For an overview of all guides see the <a href="README.html">documentation index</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/wieslawsoltes/Dock/blob/master/docfx/articles/dock-xaml.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

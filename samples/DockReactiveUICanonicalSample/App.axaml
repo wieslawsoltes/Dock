@@ -1,0 +1,16 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:Dock.Model.Core"
+             xmlns:rxui="clr-namespace:ReactiveUI.Avalonia;assembly=ReactiveUI.Avalonia"
+             x:Class="DockReactiveUICanonicalSample.App">
+  <Application.DataTemplates>
+    <DataTemplate DataType="core:IDockable">
+      <rxui:ViewModelViewHost ViewModel="{Binding}" />
+    </DataTemplate>
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+    <DockFluentTheme />
+  </Application.Styles>
+</Application>

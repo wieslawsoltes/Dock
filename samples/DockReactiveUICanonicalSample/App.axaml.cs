@@ -1,0 +1,82 @@
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
+using DockReactiveUICanonicalSample.Models;
+using DockReactiveUICanonicalSample.Services;
+using DockReactiveUICanonicalSample.ViewModels;
+using DockReactiveUICanonicalSample.ViewModels.Documents;
+using DockReactiveUICanonicalSample.ViewModels.Pages;
+using DockReactiveUICanonicalSample.ViewModels.Workspace;
+using DockReactiveUICanonicalSample.Views;
+using DockReactiveUICanonicalSample.Views.Documents;
+using DockReactiveUICanonicalSample.Views.Pages;
+using DockReactiveUICanonicalSample.Views.Workspace;
+using ReactiveUI;
+using Splat;
+
+namespace DockReactiveUICanonicalSample;
+
+public class App : Application
+{
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+        RegisterAppServices();
+        RegisterViews();
+    }
+
+    private static void RegisterAppServices()
+    {
+        var services = Locator.CurrentMutable;
+
+        services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
+        services.RegisterLazySingleton<IDockNavigationService>(() => new DockNavigationService());
+        services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory());
+
+        services.RegisterLazySingleton(() => new MainWindowViewModel(
+            Locator.Current.GetService<IProjectRepository>()!,
+            Locator.Current.GetService<IDockNavigationService>()!,
+            Locator.Current.GetService<ProjectFileWorkspaceFactory>()!));
+    }
+
+    private static void RegisterViews()
+    {
+        var services = Locator.CurrentMutable;
+
+        services.Register<IViewFor<DockViewModel>>(() => new DockView());
+
+        services.Register<IViewFor<ProjectListDocumentViewModel>>(() => new ProjectListDocumentView());
+        services.Register<IViewFor<ProjectFilesDocumentViewModel>>(() => new ProjectFilesDocumentView());
+        services.Register<IViewFor<ProjectFileDocumentViewModel>>(() => new ProjectFileDocumentView());
+        services.Register<IViewFor<ProjectFileEditorDocumentViewModel>>(() => new ProjectFileEditorDocumentView());
+
+        services.Register<IViewFor<ProjectListPageViewModel>>(() => new ProjectListPageView());
+        services.Register<IViewFor<ProjectFilesPageViewModel>>(() => new ProjectFilesPageView());
+        services.Register<IViewFor<ProjectFilePageViewModel>>(() => new ProjectFilePageView());
+
+        services.Register<IViewFor<RibbonToolViewModel>>(() => new RibbonToolView());
+        services.Register<IViewFor<RibbonPageViewModel>>(() => new RibbonPageView());
+        services.Register<IViewFor<FileActionsToolViewModel>>(() => new FileActionsToolView());
+        services.Register<IViewFor<FileActionsPageViewModel>>(() => new FileActionsPageView());
+        services.Register<IViewFor<ToolPanelViewModel>>(() => new ToolPanelView());
+        services.Register<IViewFor<ToolPanelPageViewModel>>(() => new ToolPanelPageView());
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var mainWindowViewModel = Locator.Current.GetService<MainWindowViewModel>()!;
+
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = mainWindowViewModel
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+#if DEBUG
+        this.AttachDevTools();
+#endif
+    }
+}

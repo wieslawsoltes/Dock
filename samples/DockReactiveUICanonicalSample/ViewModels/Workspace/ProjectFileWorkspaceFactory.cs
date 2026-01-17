@@ -1,0 +1,152 @@
+using System.Collections.Generic;
+using Dock.Model.Controls;
+using Dock.Model.Core;
+using Dock.Model.ReactiveUI;
+using Dock.Model.ReactiveUI.Controls;
+using DockReactiveUICanonicalSample.Models;
+using ReactiveUI;
+
+namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
+
+public sealed class ProjectFileWorkspaceFactory
+{
+    public ProjectFileWorkspace CreateWorkspace(IScreen hostScreen, Project project, ProjectFile file)
+    {
+        var factory = new WorkspaceDockFactory();
+
+        var fileActionsTool = new FileActionsToolViewModel(hostScreen, project, file)
+        {
+            Id = $"FileActions-{project.Id}-{file.Id}",
+            Title = "File Actions",
+            CanClose = false
+        };
+
+        var rightTools = new Dictionary<string, ToolPanelViewModel>
+        {
+            ["outline"] = new ToolPanelViewModel(
+                hostScreen,
+                "outline",
+                "Outline",
+                "Symbols and declarations for quick navigation.")
+            {
+                Id = $"Outline-{project.Id}-{file.Id}",
+                Title = "Outline",
+                CanClose = false
+            },
+            ["insights"] = new ToolPanelViewModel(
+                hostScreen,
+                "insights",
+                "Insights",
+                "Metrics, warnings, and quality signals.")
+            {
+                Id = $"Insights-{project.Id}-{file.Id}",
+                Title = "Insights",
+                CanClose = false
+            },
+            ["history"] = new ToolPanelViewModel(
+                hostScreen,
+                "history",
+                "History",
+                "Recent edits and change summaries.")
+            {
+                Id = $"History-{project.Id}-{file.Id}",
+                Title = "History",
+                CanClose = false
+            }
+        };
+
+        var leftDock = new ToolDock
+        {
+            Id = "FileActionsDock",
+            Alignment = Alignment.Left,
+            AutoHide = true,
+            IsExpanded = false,
+            GripMode = GripMode.AutoHide,
+            Proportion = 0.2,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var rightDock = new ToolDock
+        {
+            Id = "WorkspaceToolsDock",
+            Alignment = Alignment.Right,
+            AutoHide = true,
+            IsExpanded = false,
+            GripMode = GripMode.AutoHide,
+            Proportion = 0.25,
+            VisibleDockables = factory.CreateList<IDockable>()
+        };
+
+        var workspace = new ProjectFileWorkspace(factory, leftDock, fileActionsTool, rightDock, rightTools);
+
+        var ribbonTool = new RibbonToolViewModel(hostScreen, workspace, rightTools.Values)
+        {
+            Id = $"Ribbon-{project.Id}-{file.Id}",
+            Title = "Ribbon",
+            CanClose = false
+        };
+
+        var ribbonDock = new ToolDock
+        {
+            Id = "RibbonDock",
+            Alignment = Alignment.Top,
+            AutoHide = false,
+            IsExpanded = true,
+            GripMode = GripMode.Hidden,
+            Proportion = 0.15,
+            VisibleDockables = factory.CreateList<IDockable>(ribbonTool),
+            ActiveDockable = ribbonTool
+        };
+
+        var editorDocument = new ProjectFileEditorDocumentViewModel(project, file);
+
+        var editorDock = new DocumentDock
+        {
+            Id = "EditorDock",
+            VisibleDockables = factory.CreateList<IDockable>(editorDocument),
+            ActiveDockable = editorDocument,
+            CanCreateDocument = false
+        };
+
+        var contentLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Horizontal,
+            ActiveDockable = editorDock,
+            VisibleDockables = factory.CreateList<IDockable>(
+                leftDock,
+                new ProportionalDockSplitter(),
+                editorDock,
+                new ProportionalDockSplitter(),
+                rightDock)
+        };
+
+        var mainLayout = new ProportionalDock
+        {
+            Orientation = Orientation.Vertical,
+            ActiveDockable = contentLayout,
+            VisibleDockables = factory.CreateList<IDockable>(
+                ribbonDock,
+                new ProportionalDockSplitter { CanResize = false },
+                contentLayout)
+        };
+
+        var root = new RootDock
+        {
+            Id = "FileWorkspaceRoot",
+            ActiveDockable = mainLayout,
+            DefaultDockable = mainLayout,
+            VisibleDockables = factory.CreateList<IDockable>(mainLayout)
+        };
+
+        root.LeftPinnedDockables = factory.CreateList<IDockable>();
+        root.RightPinnedDockables = factory.CreateList<IDockable>();
+        root.TopPinnedDockables = factory.CreateList<IDockable>();
+        root.BottomPinnedDockables = factory.CreateList<IDockable>();
+        root.PinnedDock = null;
+
+        factory.InitLayout(root);
+        workspace.Layout = root;
+
+        return workspace;
+    }
+}

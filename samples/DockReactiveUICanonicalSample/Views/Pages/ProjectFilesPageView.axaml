@@ -1,0 +1,48 @@
+<UserControl x:Class="DockReactiveUICanonicalSample.Views.Pages.ProjectFilesPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pages="using:DockReactiveUICanonicalSample.ViewModels.Pages"
+             xmlns:vm="using:DockReactiveUICanonicalSample.ViewModels.Pages"
+             x:CompileBindings="True"
+             x:DataType="vm:ProjectFilesPageViewModel">
+  <Grid RowDefinitions="Auto,*" Margin="12" RowSpacing="10">
+    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+      <Button Content="Back"
+              Command="{Binding GoBack}"
+              VerticalAlignment="Center" />
+      <StackPanel Grid.Column="1" Spacing="4">
+        <TextBlock Text="{Binding Project.Name}" FontSize="18" FontWeight="SemiBold" />
+        <TextBlock Text="Select a file to open the embedded workspace." FontSize="12" Opacity="0.7" />
+      </StackPanel>
+    </Grid>
+
+    <ListBox Grid.Row="1" ItemsSource="{Binding Files}" Background="Transparent">
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="pages:ProjectFileItemViewModel">
+          <Border BorderThickness="1" BorderBrush="#DDDDDD" CornerRadius="6" Padding="10" Margin="0,0,0,8">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Path}" FontSize="12" Opacity="0.7" />
+              </StackPanel>
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                <Button Content="Open File"
+                        Command="{Binding OpenFile}" />
+                <Button Content="Open Tab"
+                        Command="{Binding OpenFileTab}" />
+                <Button Content="Float"
+                        Command="{Binding OpenFileFloating}" />
+              </StackPanel>
+            </Grid>
+            <Border.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="Open File in Floating Tab"
+                          Command="{Binding OpenFileFloating}" />
+              </ContextMenu>
+            </Border.ContextMenu>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Grid>
+</UserControl>

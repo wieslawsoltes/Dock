@@ -41,6 +41,12 @@ public class App : Application
 
         services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
         services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory(
+            Locator.Current.GetService<IBusyServiceFactory>()!,
+            Locator.Current.GetService<IGlobalBusyService>()!,
+            Locator.Current.GetService<IDialogServiceFactory>()!,
+            Locator.Current.GetService<IGlobalDialogService>()!,
+            Locator.Current.GetService<IConfirmationServiceFactory>()!,
+            Locator.Current.GetService<IGlobalConfirmationService>()!,
             Locator.Current.GetService<IDialogServiceProvider>()!,
             Locator.Current.GetService<IConfirmationServiceProvider>()!));
         services.RegisterLazySingleton<IGlobalBusyService>(() => new GlobalBusyService());

@@ -28,20 +28,14 @@ public sealed class BusyServiceProvider : IBusyServiceProvider
         {
             if (currentScreen is BusyRootDock busyRoot)
             {
-                return busyRoot;
+                return ResolveBusyRootDock(busyRoot);
             }
 
             if (currentScreen is IDockable dockable)
             {
-                var currentDockable = dockable;
-                while (currentDockable is not null)
+                if (FindBusyRootDockInOwnerChain(dockable) is { } busyRootDock)
                 {
-                    if (currentDockable is BusyRootDock busyRootDock)
-                    {
-                        return busyRootDock;
-                    }
-
-                    currentDockable = currentDockable.Owner;
+                    return ResolveBusyRootDock(busyRootDock);
                 }
             }
 
@@ -55,5 +49,40 @@ public sealed class BusyServiceProvider : IBusyServiceProvider
         }
 
         return null;
+    }
+
+    private static BusyRootDock? FindBusyRootDockInOwnerChain(IDockable dockable)
+    {
+        var currentDockable = dockable;
+        while (currentDockable is not null)
+        {
+            if (currentDockable is BusyRootDock busyRootDock)
+            {
+                return busyRootDock;
+            }
+
+            currentDockable = currentDockable.Owner;
+        }
+
+        return null;
+    }
+
+    private static BusyRootDock ResolveBusyRootDock(BusyRootDock busyRoot)
+    {
+        if (busyRoot.Window is not null)
+        {
+            return busyRoot;
+        }
+
+        if (busyRoot.HostScreen is IDockable hostDockable)
+        {
+            if (FindBusyRootDockInOwnerChain(hostDockable) is { } outerRoot
+                && !ReferenceEquals(outerRoot, busyRoot))
+            {
+                return outerRoot;
+            }
+        }
+
+        return busyRoot;
     }
 }

@@ -6,29 +6,58 @@ using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
+using DockReactiveUICanonicalSample.ViewModels;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public sealed class ProjectFileWorkspaceFactory
 {
+    private readonly IBusyServiceFactory _busyServiceFactory;
+    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDialogServiceFactory _dialogServiceFactory;
+    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IConfirmationServiceFactory _confirmationServiceFactory;
+    private readonly IGlobalConfirmationService _globalConfirmationService;
     private readonly IDialogServiceProvider _dialogServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
 
     public ProjectFileWorkspaceFactory(
+        IBusyServiceFactory busyServiceFactory,
+        IGlobalBusyService globalBusyService,
+        IDialogServiceFactory dialogServiceFactory,
+        IGlobalDialogService globalDialogService,
+        IConfirmationServiceFactory confirmationServiceFactory,
+        IGlobalConfirmationService globalConfirmationService,
         IDialogServiceProvider dialogServiceProvider,
         IConfirmationServiceProvider confirmationServiceProvider)
     {
+        _busyServiceFactory = busyServiceFactory;
+        _globalBusyService = globalBusyService;
+        _dialogServiceFactory = dialogServiceFactory;
+        _globalDialogService = globalDialogService;
+        _confirmationServiceFactory = confirmationServiceFactory;
+        _globalConfirmationService = globalConfirmationService;
         _dialogServiceProvider = dialogServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
     }
 
     public ProjectFileWorkspace CreateWorkspace(IScreen hostScreen, Project project, ProjectFile file)
     {
-        var factory = new WorkspaceDockFactory();
+        var factory = new WorkspaceDockFactory(
+            hostScreen,
+            _busyServiceFactory,
+            _globalBusyService,
+            _dialogServiceFactory,
+            _globalDialogService,
+            _confirmationServiceFactory,
+            _globalConfirmationService);
+        var root = (BusyRootDock)factory.CreateRootDock();
+        root.Id = "FileWorkspaceRoot";
+        root.PinnedDock = null;
 
         var fileActionsTool = new FileActionsToolViewModel(
-            hostScreen,
+            root,
             project,
             file,
             _dialogServiceProvider,
@@ -44,7 +73,7 @@ public sealed class ProjectFileWorkspaceFactory
         var rightTools = new Dictionary<string, ToolPanelViewModel>
         {
             ["outline"] = new ToolPanelViewModel(
-                hostScreen,
+                root,
                 "outline",
                 "Outline",
                 "Symbols and declarations for quick navigation.",
@@ -58,7 +87,7 @@ public sealed class ProjectFileWorkspaceFactory
                 CanDrag = true
             },
             ["insights"] = new ToolPanelViewModel(
-                hostScreen,
+                root,
                 "insights",
                 "Insights",
                 "Metrics, warnings, and quality signals.",
@@ -72,7 +101,7 @@ public sealed class ProjectFileWorkspaceFactory
                 CanDrag = true
             },
             ["history"] = new ToolPanelViewModel(
-                hostScreen,
+                root,
                 "history",
                 "History",
                 "Recent edits and change summaries.",
@@ -115,7 +144,7 @@ public sealed class ProjectFileWorkspaceFactory
 
         var workspace = new ProjectFileWorkspace(factory, leftDock, fileActionsTool, rightDock, rightTools);
 
-        var ribbonTool = new RibbonToolViewModel(hostScreen, workspace, rightTools.Values)
+        var ribbonTool = new RibbonToolViewModel(root, workspace, rightTools.Values)
         {
             Id = $"Ribbon-{project.Id}-{file.Id}",
             Title = "Ribbon",
@@ -166,19 +195,9 @@ public sealed class ProjectFileWorkspaceFactory
                 contentLayout)
         };
 
-        var root = new RootDock
-        {
-            Id = "FileWorkspaceRoot",
-            ActiveDockable = mainLayout,
-            DefaultDockable = mainLayout,
-            VisibleDockables = factory.CreateList<IDockable>(mainLayout)
-        };
-
-        root.LeftPinnedDockables = factory.CreateList<IDockable>();
-        root.RightPinnedDockables = factory.CreateList<IDockable>();
-        root.TopPinnedDockables = factory.CreateList<IDockable>();
-        root.BottomPinnedDockables = factory.CreateList<IDockable>();
-        root.PinnedDock = null;
+        root.ActiveDockable = mainLayout;
+        root.DefaultDockable = mainLayout;
+        root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
 
         factory.InitLayout(root);
         workspace.Layout = root;

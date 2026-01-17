@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:DockReactiveUICanonicalSample.Controls">
+  <ControlTheme x:Key="{x:Type controls:ConfirmationDialogControl}" TargetType="controls:ConfirmationDialogControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{DynamicResource DockThemeControlBackgroundBrush}"
+                BorderBrush="{DynamicResource DockThemeBorderLowBrush}"
+                BorderThickness="1"
+                CornerRadius="10"
+                Padding="24"
+                MinWidth="360"
+                MaxWidth="480"
+                BoxShadow="0 6 18 #33000000">
+          <StackPanel Spacing="12">
+            <TextBlock Text="{TemplateBinding Title}"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource DockThemeForegroundBrush}" />
+            <TextBlock Text="{TemplateBinding Message}"
+                       TextWrapping="Wrap"
+                       Opacity="0.85" />
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="8">
+              <Button Content="{TemplateBinding CancelText}"
+                      Command="{TemplateBinding CancelCommand}" />
+              <Button Content="{TemplateBinding ConfirmText}"
+                      Command="{TemplateBinding ConfirmCommand}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

@@ -4,5 +4,5 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public interface IConfirmationServiceProvider
 {
-    IConfirmationService GetConfirmationService(IScreen hostScreen);
+    IDockConfirmationService GetConfirmationService(IScreen hostScreen);
 }

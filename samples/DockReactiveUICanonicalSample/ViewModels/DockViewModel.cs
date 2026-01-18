@@ -8,12 +8,12 @@ public class DockViewModel : ReactiveObject, IRoutableViewModel
 {
     private readonly DockFactory _factory;
     private IRootDock? _layout;
-    private IBusyService? _busyService;
-    private IGlobalBusyService? _globalBusyService;
-    private IDialogService? _dialogService;
-    private IGlobalDialogService? _globalDialogService;
-    private IConfirmationService? _confirmationService;
-    private IGlobalConfirmationService? _globalConfirmationService;
+    private IDockBusyService? _busyService;
+    private IDockGlobalBusyService? _globalBusyService;
+    private IDockDialogService? _dialogService;
+    private IDockGlobalDialogService? _globalDialogService;
+    private IDockConfirmationService? _confirmationService;
+    private IDockGlobalConfirmationService? _globalConfirmationService;
 
     public DockViewModel(IScreen hostScreen, DockFactory factory)
     {
@@ -60,37 +60,37 @@ public class DockViewModel : ReactiveObject, IRoutableViewModel
         }
     }
 
-    public IBusyService? BusyService
+    public IDockBusyService? BusyService
     {
         get => _busyService;
         private set => this.RaiseAndSetIfChanged(ref _busyService, value);
     }
 
-    public IGlobalBusyService? GlobalBusyService
+    public IDockGlobalBusyService? GlobalBusyService
     {
         get => _globalBusyService;
         private set => this.RaiseAndSetIfChanged(ref _globalBusyService, value);
     }
 
-    public IDialogService? DialogService
+    public IDockDialogService? DialogService
     {
         get => _dialogService;
         private set => this.RaiseAndSetIfChanged(ref _dialogService, value);
     }
 
-    public IGlobalDialogService? GlobalDialogService
+    public IDockGlobalDialogService? GlobalDialogService
     {
         get => _globalDialogService;
         private set => this.RaiseAndSetIfChanged(ref _globalDialogService, value);
     }
 
-    public IConfirmationService? ConfirmationService
+    public IDockConfirmationService? ConfirmationService
     {
         get => _confirmationService;
         private set => this.RaiseAndSetIfChanged(ref _confirmationService, value);
     }
 
-    public IGlobalConfirmationService? GlobalConfirmationService
+    public IDockGlobalConfirmationService? GlobalConfirmationService
     {
         get => _globalConfirmationService;
         private set => this.RaiseAndSetIfChanged(ref _globalConfirmationService, value);

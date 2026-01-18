@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:overlays="using:Dock.Avalonia.Controls.Overlays">
+  <overlays:OverlayLayerCollection x:Key="DockDefaultOverlayLayers" x:Shared="False">
+    <overlays:OverlayLayer ZIndex="10"
+                           StyleKey="{x:Static OverlayLayerStyleKeys.DialogLayerThemeKey}">
+      <DialogOverlayControl DialogService="{Binding DialogService}"
+                            GlobalDialogService="{Binding GlobalDialogService}" />
+    </overlays:OverlayLayer>
+    <overlays:OverlayLayer ZIndex="20"
+                           StyleKey="{x:Static OverlayLayerStyleKeys.ConfirmationLayerThemeKey}">
+      <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
+                                  GlobalConfirmationService="{Binding GlobalConfirmationService}" />
+    </overlays:OverlayLayer>
+    <overlays:OverlayLayer ZIndex="30"
+                           StyleKey="{x:Static OverlayLayerStyleKeys.BusyLayerThemeKey}">
+      <BusyOverlayControl BusyService="{Binding BusyService}"
+                          GlobalBusyService="{Binding GlobalBusyService}" />
+    </overlays:OverlayLayer>
+  </overlays:OverlayLayerCollection>
+
+  <ControlTheme x:Key="{x:Type OverlayHost}" TargetType="OverlayHost">
+    <Setter Property="OverlayLayers" Value="{DynamicResource DockDefaultOverlayLayers}" />
+  </ControlTheme>
+</ResourceDictionary>

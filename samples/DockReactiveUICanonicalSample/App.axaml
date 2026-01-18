@@ -2,19 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="DockReactiveUICanonicalSample.App">
   <Application.DataTemplates>
-    <DataTemplate DataType="DialogRequest">
-      <DialogShellControl Title="{Binding Title}"
-                          CloseCommand="{Binding Close}"
-                          Content="{Binding Content}" />
-    </DataTemplate>
-    <DataTemplate DataType="ConfirmationRequest">
-      <ConfirmationDialogControl Title="{Binding Title}"
-                                 Message="{Binding Message}"
-                                 ConfirmText="{Binding ConfirmText}"
-                                 CancelText="{Binding CancelText}"
-                                 ConfirmCommand="{Binding Confirm}"
-                                 CancelCommand="{Binding Cancel}" />
-    </DataTemplate>
     <DataTemplate DataType="TextPromptDialogViewModel">
       <TextPromptDialogView />
     </DataTemplate>
@@ -30,11 +17,6 @@
       <Styles.Resources>
         <ResourceDictionary>
           <ResourceDictionary.MergedDictionaries>
-            <ResourceInclude Source="avares://DockReactiveUICanonicalSample/Styles/BusyOverlayControl.axaml" />
-            <ResourceInclude Source="avares://DockReactiveUICanonicalSample/Styles/DialogOverlayControl.axaml" />
-            <ResourceInclude Source="avares://DockReactiveUICanonicalSample/Styles/ConfirmationOverlayControl.axaml" />
-            <ResourceInclude Source="avares://DockReactiveUICanonicalSample/Styles/DialogShellControl.axaml" />
-            <ResourceInclude Source="avares://DockReactiveUICanonicalSample/Styles/ConfirmationDialogControl.axaml" />
           </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
       </Styles.Resources>
@@ -44,22 +26,9 @@
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
-              <BusyOverlayControl BusyService="{Binding BusyService}"
-                                  GlobalBusyService="{Binding GlobalBusyService}">
-                <BusyOverlayControl.Content>
-                  <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
-                                              GlobalConfirmationService="{Binding GlobalConfirmationService}">
-                    <ConfirmationOverlayControl.Content>
-                      <DialogOverlayControl DialogService="{Binding DialogService}"
-                                            GlobalDialogService="{Binding GlobalDialogService}">
-                        <DialogOverlayControl.Content>
-                          <DockControl Layout="{Binding}" />
-                        </DialogOverlayControl.Content>
-                      </DialogOverlayControl>
-                    </ConfirmationOverlayControl.Content>
-                  </ConfirmationOverlayControl>
-                </BusyOverlayControl.Content>
-              </BusyOverlayControl>
+              <OverlayHost>
+                <DockControl Layout="{Binding}" />
+              </OverlayHost>
             </Panel>
           </Panel>
         </Template>
@@ -69,22 +38,9 @@
       <Setter Property="Content">
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-            <BusyOverlayControl BusyService="{Binding BusyService}"
-                                GlobalBusyService="{Binding GlobalBusyService}">
-              <BusyOverlayControl.Content>
-                <ConfirmationOverlayControl ConfirmationService="{Binding ConfirmationService}"
-                                            GlobalConfirmationService="{Binding GlobalConfirmationService}">
-                  <ConfirmationOverlayControl.Content>
-                    <DialogOverlayControl DialogService="{Binding DialogService}"
-                                          GlobalDialogService="{Binding GlobalDialogService}">
-                      <DialogOverlayControl.Content>
-                        <DockControl Layout="{Binding}" />
-                      </DialogOverlayControl.Content>
-                    </DialogOverlayControl>
-                  </ConfirmationOverlayControl.Content>
-                </ConfirmationOverlayControl>
-              </BusyOverlayControl.Content>
-            </BusyOverlayControl>
+            <OverlayHost>
+              <DockControl Layout="{Binding}" />
+            </OverlayHost>
           </Panel>
         </Template>
       </Setter>

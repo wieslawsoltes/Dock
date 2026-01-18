@@ -57,10 +57,10 @@ public class FileActionsPageViewModel : ReactiveObject, IRoutableViewModel
 
     public ObservableCollection<FileActionItemViewModel> Actions { get; }
 
-    private IDialogService GetDialogService()
+    private IDockDialogService GetDialogService()
         => _dialogServiceProvider.GetDialogService(HostScreen);
 
-    private IConfirmationService GetConfirmationService()
+    private IDockConfirmationService GetConfirmationService()
         => _confirmationServiceProvider.GetConfirmationService(HostScreen);
 
     private async Task OpenPreviewAsync()

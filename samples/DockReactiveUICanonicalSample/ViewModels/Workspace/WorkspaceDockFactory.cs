@@ -14,20 +14,20 @@ public sealed class WorkspaceDockFactory : Factory
 {
     private readonly IScreen _host;
     private readonly IBusyServiceFactory _busyServiceFactory;
-    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDockGlobalBusyService _globalBusyService;
     private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IDockGlobalDialogService _globalDialogService;
     private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IGlobalConfirmationService _globalConfirmationService;
+    private readonly IDockGlobalConfirmationService _globalConfirmationService;
 
     public WorkspaceDockFactory(
         IScreen host,
         IBusyServiceFactory busyServiceFactory,
-        IGlobalBusyService globalBusyService,
+        IDockGlobalBusyService globalBusyService,
         IDialogServiceFactory dialogServiceFactory,
-        IGlobalDialogService globalDialogService,
+        IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IGlobalConfirmationService globalConfirmationService)
+        IDockGlobalConfirmationService globalConfirmationService)
     {
         _host = host;
         _busyServiceFactory = busyServiceFactory;

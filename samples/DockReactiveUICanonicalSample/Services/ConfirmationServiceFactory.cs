@@ -2,12 +2,12 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class ConfirmationServiceFactory : IConfirmationServiceFactory
 {
-    private readonly IGlobalConfirmationService _globalConfirmationService;
+    private readonly IDockGlobalConfirmationService _globalConfirmationService;
 
-    public ConfirmationServiceFactory(IGlobalConfirmationService globalConfirmationService)
+    public ConfirmationServiceFactory(IDockGlobalConfirmationService globalConfirmationService)
     {
         _globalConfirmationService = globalConfirmationService;
     }
 
-    public IConfirmationService Create() => new ConfirmationService(_globalConfirmationService);
+    public IDockConfirmationService Create() => new DockConfirmationService(_globalConfirmationService);
 }

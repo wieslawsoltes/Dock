@@ -2,12 +2,12 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class BusyServiceFactory : IBusyServiceFactory
 {
-    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDockGlobalBusyService _globalBusyService;
 
-    public BusyServiceFactory(IGlobalBusyService globalBusyService)
+    public BusyServiceFactory(IDockGlobalBusyService globalBusyService)
     {
         _globalBusyService = globalBusyService;
     }
 
-    public IBusyService Create() => new BusyService(_globalBusyService);
+    public IDockBusyService Create() => new DockBusyService(_globalBusyService);
 }

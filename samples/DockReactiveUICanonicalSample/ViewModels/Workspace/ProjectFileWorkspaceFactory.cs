@@ -15,21 +15,21 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 public sealed class ProjectFileWorkspaceFactory
 {
     private readonly IBusyServiceFactory _busyServiceFactory;
-    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDockGlobalBusyService _globalBusyService;
     private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IDockGlobalDialogService _globalDialogService;
     private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IGlobalConfirmationService _globalConfirmationService;
+    private readonly IDockGlobalConfirmationService _globalConfirmationService;
     private readonly IDialogServiceProvider _dialogServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
 
     public ProjectFileWorkspaceFactory(
         IBusyServiceFactory busyServiceFactory,
-        IGlobalBusyService globalBusyService,
+        IDockGlobalBusyService globalBusyService,
         IDialogServiceFactory dialogServiceFactory,
-        IGlobalDialogService globalDialogService,
+        IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IGlobalConfirmationService globalConfirmationService,
+        IDockGlobalConfirmationService globalConfirmationService,
         IDialogServiceProvider dialogServiceProvider,
         IConfirmationServiceProvider confirmationServiceProvider)
     {

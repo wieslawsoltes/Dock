@@ -83,6 +83,7 @@
     <Project Path="src/Dock.Model.ReactiveProperty/Dock.Model.ReactiveProperty.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI.Navigation/Dock.Model.ReactiveUI.Navigation.csproj" />
     <Project Path="src/Dock.Model.ReactiveUI/Dock.Model.ReactiveUI.csproj" />
+    <Project Path="src/Dock.Model.ReactiveUI.Services/Dock.Model.ReactiveUI.Services.csproj" />
     <Project Path="src/Dock.Model/Dock.Model.csproj" />
     <Project Path="src/Dock.Serializer.Newtonsoft/Dock.Serializer.Newtonsoft.csproj" />
     <Project Path="src/Dock.Serializer.Protobuf/Dock.Serializer.Protobuf.csproj" />

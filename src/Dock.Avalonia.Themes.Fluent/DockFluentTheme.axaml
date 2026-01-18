@@ -38,6 +38,14 @@
         <ResourceInclude Source="/Controls/DockControl.axaml" />
         <ResourceInclude Source="/Controls/HostWindowTitleBar.axaml" />
         <ResourceInclude Source="/Controls/HostWindow.axaml" />
+        <ResourceInclude Source="/Controls/BusyOverlayControl.axaml" />
+        <ResourceInclude Source="/Controls/DialogOverlayControl.axaml" />
+        <ResourceInclude Source="/Controls/ConfirmationOverlayControl.axaml" />
+        <ResourceInclude Source="/Controls/OverlayLayerStyles.axaml" />
+        <ResourceInclude Source="/Controls/OverlayLayerDefaults.axaml" />
+        <ResourceInclude Source="/Controls/OverlayDataTemplates.axaml" />
+        <ResourceInclude Source="/Controls/DialogShellControl.axaml" />
+        <ResourceInclude Source="/Controls/ConfirmationDialogControl.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewControl.axaml" />
         <ResourceInclude Source="/Controls/DragPreviewWindow.axaml" />
         <ResourceInclude Source="/Controls/PinnedDockWindow.axaml" />

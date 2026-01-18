@@ -16,11 +16,11 @@ public class MainWindowViewModel : ReactiveObject, IScreen
         IBusyServiceFactory busyServiceFactory,
         IBusyServiceProvider busyServiceProvider,
         IConfirmationServiceProvider confirmationServiceProvider,
-        IGlobalBusyService globalBusyService,
+        IDockGlobalBusyService globalBusyService,
         IDialogServiceFactory dialogServiceFactory,
-        IGlobalDialogService globalDialogService,
+        IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IGlobalConfirmationService globalConfirmationService)
+        IDockGlobalConfirmationService globalConfirmationService)
     {
         var dockFactory = new DockFactory(
             this,

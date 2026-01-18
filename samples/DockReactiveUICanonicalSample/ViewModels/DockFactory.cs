@@ -22,11 +22,11 @@ public class DockFactory : Factory
     private readonly IBusyServiceFactory _busyServiceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
-    private readonly IGlobalBusyService _globalBusyService;
+    private readonly IDockGlobalBusyService _globalBusyService;
     private readonly IDialogServiceFactory _dialogServiceFactory;
-    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IDockGlobalDialogService _globalDialogService;
     private readonly IConfirmationServiceFactory _confirmationServiceFactory;
-    private readonly IGlobalConfirmationService _globalConfirmationService;
+    private readonly IDockGlobalConfirmationService _globalConfirmationService;
     private IDocumentDock? _documentDock;
 
     public DockFactory(
@@ -37,11 +37,11 @@ public class DockFactory : Factory
         IBusyServiceFactory busyServiceFactory,
         IBusyServiceProvider busyServiceProvider,
         IConfirmationServiceProvider confirmationServiceProvider,
-        IGlobalBusyService globalBusyService,
+        IDockGlobalBusyService globalBusyService,
         IDialogServiceFactory dialogServiceFactory,
-        IGlobalDialogService globalDialogService,
+        IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IGlobalConfirmationService globalConfirmationService)
+        IDockGlobalConfirmationService globalConfirmationService)
     {
         _host = host;
         _repository = repository;

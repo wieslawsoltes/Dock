@@ -55,7 +55,9 @@
       <Template>
         <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
           <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
-            <DockControl Layout="{Binding}" />
+            <OverlayHost>
+              <DockControl Layout="{Binding}" />
+            </OverlayHost>
           </Panel>
         </Panel>
       </Template>
@@ -105,7 +107,9 @@
       <Setter Property="Content">
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-            <DockControl Layout="{Binding}" />
+            <OverlayHost>
+              <DockControl Layout="{Binding}" />
+            </OverlayHost>
           </Panel>
         </Template>
       </Setter>

@@ -2,5 +2,5 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public interface IBusyServiceFactory
 {
-    IBusyService Create();
+    IDockBusyService Create();
 }

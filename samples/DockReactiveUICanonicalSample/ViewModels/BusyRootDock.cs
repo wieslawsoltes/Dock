@@ -17,12 +17,12 @@ public sealed class BusyRootDock : RoutableRootDock, IDisposable
 
     public BusyRootDock(
         IScreen host,
-        IBusyService busyService,
-        IGlobalBusyService globalBusyService,
-        IDialogService dialogService,
-        IGlobalDialogService globalDialogService,
-        IConfirmationService confirmationService,
-        IGlobalConfirmationService globalConfirmationService)
+        IDockBusyService busyService,
+        IDockGlobalBusyService globalBusyService,
+        IDockDialogService dialogService,
+        IDockGlobalDialogService globalDialogService,
+        IDockConfirmationService confirmationService,
+        IDockGlobalConfirmationService globalConfirmationService)
         : base(host, "root")
     {
         BusyService = busyService;
@@ -36,17 +36,17 @@ public sealed class BusyRootDock : RoutableRootDock, IDisposable
         BusyService.SetReloadHandler(ReloadCurrentAsync);
     }
 
-    public IBusyService BusyService { get; }
+    public IDockBusyService BusyService { get; }
 
-    public IGlobalBusyService GlobalBusyService { get; }
+    public IDockGlobalBusyService GlobalBusyService { get; }
 
-    public IDialogService DialogService { get; }
+    public IDockDialogService DialogService { get; }
 
-    public IGlobalDialogService GlobalDialogService { get; }
+    public IDockGlobalDialogService GlobalDialogService { get; }
 
-    public IConfirmationService ConfirmationService { get; }
+    public IDockConfirmationService ConfirmationService { get; }
 
-    public IGlobalConfirmationService GlobalConfirmationService { get; }
+    public IDockGlobalConfirmationService GlobalConfirmationService { get; }
 
     public bool IsBusy
     {
@@ -82,8 +82,8 @@ public sealed class BusyRootDock : RoutableRootDock, IDisposable
 
     private void OnBusyServiceChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(IBusyService.IsBusy)
-            || e.PropertyName == nameof(IBusyService.Message))
+        if (e.PropertyName == nameof(IDockBusyService.IsBusy)
+            || e.PropertyName == nameof(IDockBusyService.Message))
         {
             SyncFromService();
         }

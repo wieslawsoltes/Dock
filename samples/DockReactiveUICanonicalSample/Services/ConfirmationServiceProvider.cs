@@ -7,14 +7,14 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class ConfirmationServiceProvider : IConfirmationServiceProvider
 {
-    private readonly IConfirmationService _fallback;
+    private readonly IDockConfirmationService _fallback;
 
     public ConfirmationServiceProvider(IConfirmationServiceFactory confirmationServiceFactory)
     {
         _fallback = confirmationServiceFactory.Create();
     }
 
-    public IConfirmationService GetConfirmationService(IScreen hostScreen)
+    public IDockConfirmationService GetConfirmationService(IScreen hostScreen)
     {
         return FindBusyRootDock(hostScreen)?.ConfirmationService ?? _fallback;
     }

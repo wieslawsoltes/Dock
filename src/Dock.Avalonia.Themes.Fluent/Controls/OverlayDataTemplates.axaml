@@ -1,0 +1,17 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:services="using:Dock.Model.Services">
+  <DataTemplate x:Key="DockDialogRequestTemplate" DataType="services:DialogRequest">
+    <DialogShellControl Title="{Binding Title}"
+                        CloseCommand="{Binding Close}"
+                        Content="{Binding Content}" />
+  </DataTemplate>
+  <DataTemplate x:Key="DockConfirmationRequestTemplate" DataType="services:ConfirmationRequest">
+    <ConfirmationDialogControl Title="{Binding Title}"
+                               Message="{Binding Message}"
+                               ConfirmText="{Binding ConfirmText}"
+                               CancelText="{Binding CancelText}"
+                               ConfirmCommand="{Binding Confirm}"
+                               CancelCommand="{Binding Cancel}" />
+  </DataTemplate>
+</ResourceDictionary>

@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Dialogs;
 
-public abstract class DialogViewModelBase : ReactiveObject, IDialogContent
+public abstract class DialogViewModelBase : ReactiveObject, IDockDialogContent
 {
     private Action<object?>? _closeAction;
 

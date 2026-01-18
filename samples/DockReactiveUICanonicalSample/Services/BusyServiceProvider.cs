@@ -7,14 +7,14 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class BusyServiceProvider : IBusyServiceProvider
 {
-    private readonly IBusyService _fallback;
+    private readonly IDockBusyService _fallback;
 
     public BusyServiceProvider(IBusyServiceFactory busyServiceFactory)
     {
         _fallback = busyServiceFactory.Create();
     }
 
-    public IBusyService GetBusyService(IScreen hostScreen)
+    public IDockBusyService GetBusyService(IScreen hostScreen)
     {
         return FindBusyRootDock(hostScreen)?.BusyService ?? _fallback;
     }

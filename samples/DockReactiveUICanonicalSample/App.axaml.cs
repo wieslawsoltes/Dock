@@ -42,22 +42,22 @@ public class App : Application
         services.RegisterLazySingleton<IProjectRepository>(() => new ProjectRepository());
         services.RegisterLazySingleton(() => new ProjectFileWorkspaceFactory(
             Locator.Current.GetService<IBusyServiceFactory>()!,
-            Locator.Current.GetService<IGlobalBusyService>()!,
+            Locator.Current.GetService<IDockGlobalBusyService>()!,
             Locator.Current.GetService<IDialogServiceFactory>()!,
-            Locator.Current.GetService<IGlobalDialogService>()!,
+            Locator.Current.GetService<IDockGlobalDialogService>()!,
             Locator.Current.GetService<IConfirmationServiceFactory>()!,
-            Locator.Current.GetService<IGlobalConfirmationService>()!,
+            Locator.Current.GetService<IDockGlobalConfirmationService>()!,
             Locator.Current.GetService<IDialogServiceProvider>()!,
             Locator.Current.GetService<IConfirmationServiceProvider>()!));
-        services.RegisterLazySingleton<IGlobalBusyService>(() => new GlobalBusyService());
-        services.RegisterLazySingleton<IGlobalDialogService>(() => new GlobalDialogService());
-        services.RegisterLazySingleton<IGlobalConfirmationService>(() => new GlobalConfirmationService());
+        services.RegisterLazySingleton<IDockGlobalBusyService>(() => new DockGlobalBusyService());
+        services.RegisterLazySingleton<IDockGlobalDialogService>(() => new DockGlobalDialogService());
+        services.RegisterLazySingleton<IDockGlobalConfirmationService>(() => new DockGlobalConfirmationService());
         services.RegisterLazySingleton<IBusyServiceFactory>(() => new BusyServiceFactory(
-            Locator.Current.GetService<IGlobalBusyService>()!));
+            Locator.Current.GetService<IDockGlobalBusyService>()!));
         services.RegisterLazySingleton<IDialogServiceFactory>(() => new DialogServiceFactory(
-            Locator.Current.GetService<IGlobalDialogService>()!));
+            Locator.Current.GetService<IDockGlobalDialogService>()!));
         services.RegisterLazySingleton<IConfirmationServiceFactory>(() => new ConfirmationServiceFactory(
-            Locator.Current.GetService<IGlobalConfirmationService>()!));
+            Locator.Current.GetService<IDockGlobalConfirmationService>()!));
         services.RegisterLazySingleton<IBusyServiceProvider>(() => new BusyServiceProvider(
             Locator.Current.GetService<IBusyServiceFactory>()!));
         services.RegisterLazySingleton<IDialogServiceProvider>(() => new DialogServiceProvider(
@@ -77,11 +77,11 @@ public class App : Application
             Locator.Current.GetService<IBusyServiceFactory>()!,
             Locator.Current.GetService<IBusyServiceProvider>()!,
             Locator.Current.GetService<IConfirmationServiceProvider>()!,
-            Locator.Current.GetService<IGlobalBusyService>()!,
+            Locator.Current.GetService<IDockGlobalBusyService>()!,
             Locator.Current.GetService<IDialogServiceFactory>()!,
-            Locator.Current.GetService<IGlobalDialogService>()!,
+            Locator.Current.GetService<IDockGlobalDialogService>()!,
             Locator.Current.GetService<IConfirmationServiceFactory>()!,
-            Locator.Current.GetService<IGlobalConfirmationService>()!));
+            Locator.Current.GetService<IDockGlobalConfirmationService>()!));
     }
 
     private static void RegisterViews()

@@ -7,14 +7,14 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class DialogServiceProvider : IDialogServiceProvider
 {
-    private readonly IDialogService _fallback;
+    private readonly IDockDialogService _fallback;
 
     public DialogServiceProvider(IDialogServiceFactory dialogServiceFactory)
     {
         _fallback = dialogServiceFactory.Create();
     }
 
-    public IDialogService GetDialogService(IScreen hostScreen)
+    public IDockDialogService GetDialogService(IScreen hostScreen)
     {
         return FindBusyRootDock(hostScreen)?.DialogService ?? _fallback;
     }

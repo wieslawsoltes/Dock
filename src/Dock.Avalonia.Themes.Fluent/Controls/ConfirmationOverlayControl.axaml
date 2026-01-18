@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ControlTheme x:Key="{x:Type ConfirmationOverlayControl}" TargetType="ConfirmationOverlayControl">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid>
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            IsEnabled="{TemplateBinding IsContentEnabled}"
+                            IsHitTestVisible="{TemplateBinding IsContentEnabled}" />
+          <Grid IsVisible="{TemplateBinding IsOverlayVisible}"
+                IsHitTestVisible="True"
+                ZIndex="20">
+            <Border Background="{DynamicResource DockThemeForegroundBrush}"
+                    Opacity="0.35"
+                    ZIndex="0" />
+            <Grid ZIndex="1">
+              <TextBlock Text="{Binding OverlayMessage, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=Confirmation open}"
+                         IsVisible="{TemplateBinding ShowGlobalMessage}"
+                         FontSize="14"
+                         FontWeight="SemiBold"
+                         Foreground="{DynamicResource DockThemeForegroundBrush}"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center" />
+              <ItemsControl ItemsSource="{Binding Confirmations, RelativeSource={RelativeSource TemplatedParent}}"
+                            ItemTemplate="{DynamicResource DockConfirmationRequestTemplate}"
+                            IsVisible="{TemplateBinding ShowConfirmations}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <Grid />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
+            </Grid>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

@@ -2,12 +2,12 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class DialogServiceFactory : IDialogServiceFactory
 {
-    private readonly IGlobalDialogService _globalDialogService;
+    private readonly IDockGlobalDialogService _globalDialogService;
 
-    public DialogServiceFactory(IGlobalDialogService globalDialogService)
+    public DialogServiceFactory(IDockGlobalDialogService globalDialogService)
     {
         _globalDialogService = globalDialogService;
     }
 
-    public IDialogService Create() => new DialogService(_globalDialogService);
+    public IDockDialogService Create() => new DockDialogService(_globalDialogService);
 }

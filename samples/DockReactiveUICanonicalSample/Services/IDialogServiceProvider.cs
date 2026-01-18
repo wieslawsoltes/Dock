@@ -4,5 +4,5 @@ namespace DockReactiveUICanonicalSample.Services;
 
 public interface IDialogServiceProvider
 {
-    IDialogService GetDialogService(IScreen hostScreen);
+    IDockDialogService GetDialogService(IScreen hostScreen);
 }

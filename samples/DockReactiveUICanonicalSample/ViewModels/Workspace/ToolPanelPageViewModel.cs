@@ -50,10 +50,10 @@ public class ToolPanelPageViewModel : ReactiveObject, IRoutableViewModel
 
     public ReactiveCommand<Unit, Unit> ClosePanel { get; }
 
-    private IDialogService GetDialogService()
+    private IDockDialogService GetDialogService()
         => _dialogServiceProvider.GetDialogService(HostScreen);
 
-    private IConfirmationService GetConfirmationService()
+    private IDockConfirmationService GetConfirmationService()
         => _confirmationServiceProvider.GetConfirmationService(HostScreen);
 
     private async Task OpenPanelDialogAsync()

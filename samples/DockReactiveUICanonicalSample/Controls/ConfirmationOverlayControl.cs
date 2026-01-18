@@ -129,6 +129,25 @@ public sealed class ConfirmationOverlayControl : TemplatedControl
         private set => SetAndRaise(ConfirmationsProperty, ref _confirmations, value);
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (_attachedConfirmationService is not null)
+        {
+            _attachedConfirmationService.PropertyChanged -= OnConfirmationServicePropertyChanged;
+            _attachedConfirmationService = null;
+        }
+
+        if (_attachedGlobalConfirmationService is not null)
+        {
+            _attachedGlobalConfirmationService.PropertyChanged -= OnGlobalConfirmationServicePropertyChanged;
+            _attachedGlobalConfirmationService = null;
+        }
+
+        Confirmations = null;
+    }
+
     private void OnConfirmationServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
         if (_attachedConfirmationService is not null)

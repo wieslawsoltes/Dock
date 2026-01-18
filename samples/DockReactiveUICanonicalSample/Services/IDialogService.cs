@@ -15,4 +15,6 @@ public interface IDialogService : INotifyPropertyChanged
     Task<T?> ShowAsync<T>(object content, string? title = null);
 
     void Close(DialogRequest request, object? result = null);
+
+    void CancelAll();
 }

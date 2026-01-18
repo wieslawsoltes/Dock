@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
@@ -72,7 +71,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                 var total = projects.Count;
                 var index = 0;
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                await MainThreadDispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
@@ -86,7 +85,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     index++;
                     busyService.UpdateMessage($"Loading projects... {index}/{total}");
 
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    await MainThreadDispatcher.InvokeAsync(() =>
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {

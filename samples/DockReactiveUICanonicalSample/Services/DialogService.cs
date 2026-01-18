@@ -62,6 +62,17 @@ public sealed class DialogService : ReactiveObject, IDialogService
         Dispatcher.UIThread.Post(() => CloseOnUiThread(request, result));
     }
 
+    public void CancelAll()
+    {
+        if (Dispatcher.UIThread.CheckAccess())
+        {
+            CancelAllOnUiThread();
+            return;
+        }
+
+        Dispatcher.UIThread.Post(CancelAllOnUiThread);
+    }
+
     private void CloseOnUiThread(DialogRequest request, object? result)
     {
         if (!_dialogs.Contains(request))
@@ -74,5 +85,19 @@ public sealed class DialogService : ReactiveObject, IDialogService
         request.Complete(result);
         ActiveDialog = _dialogs.LastOrDefault();
         this.RaisePropertyChanged(nameof(HasDialogs));
+    }
+
+    private void CancelAllOnUiThread()
+    {
+        if (_dialogs.Count == 0)
+        {
+            return;
+        }
+
+        var pending = _dialogs.ToArray();
+        foreach (var request in pending)
+        {
+            CloseOnUiThread(request, null);
+        }
     }
 }

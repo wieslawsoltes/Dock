@@ -4,7 +4,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using Dock.Model.Controls;
 using Dock.Model.Core;
 using DockReactiveUICanonicalSample.Models;
@@ -46,7 +45,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
             await busyService.RunAsync("Returning to files...", async () =>
             {
                 await Task.Delay(150).ConfigureAwait(false);
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                await MainThreadDispatcher.InvokeAsync(() =>
                 {
                     HostScreen.Router.NavigateBack.Execute()
                         .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
@@ -97,7 +96,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     public async Task ReloadAsync()
     {
-        await Dispatcher.UIThread.InvokeAsync(() => WorkspaceLayout = null);
+        await MainThreadDispatcher.InvokeAsync(() => WorkspaceLayout = null);
         await LoadWorkspaceAsync(CancellationToken.None).ConfigureAwait(false);
     }
 
@@ -114,7 +113,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     .CreateWorkspaceAsync(HostScreen, Project, File, cancellationToken)
                     .ConfigureAwait(false);
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                await MainThreadDispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {

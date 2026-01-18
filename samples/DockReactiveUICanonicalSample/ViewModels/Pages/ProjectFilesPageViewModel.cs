@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 using Dock.Model.Core;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
@@ -51,7 +50,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
             await busyService.RunAsync("Returning to projects...", async () =>
             {
                 await Task.Delay(150).ConfigureAwait(false);
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                await MainThreadDispatcher.InvokeAsync(() =>
                 {
                     HostScreen.Router.NavigateBack.Execute()
                         .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
@@ -185,7 +184,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                 var total = files.Count;
                 var index = 0;
 
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                await MainThreadDispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
@@ -199,7 +198,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                     index++;
                     busyService.UpdateMessage($"Loading project files... {index}/{total}");
 
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    await MainThreadDispatcher.InvokeAsync(() =>
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {

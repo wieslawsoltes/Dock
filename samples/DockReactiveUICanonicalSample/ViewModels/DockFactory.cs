@@ -126,6 +126,18 @@ public class DockFactory : Factory
         return window;
     }
 
+    public override void OnWindowClosed(IDockWindow? window)
+    {
+        base.OnWindowClosed(window);
+        CleanupWindow(window);
+    }
+
+    public override void OnWindowRemoved(IDockWindow? window)
+    {
+        base.OnWindowRemoved(window);
+        CleanupWindow(window);
+    }
+
     public void OpenDocument(IDockable document, IDocumentDock? documentDock, bool floatWindow)
     {
         var targetDock = documentDock ?? _documentDock;
@@ -156,5 +168,13 @@ public class DockFactory : Factory
         };
 
         base.InitLayout(layout);
+    }
+
+    private static void CleanupWindow(IDockWindow? window)
+    {
+        if (window?.Layout is BusyRootDock busyRoot)
+        {
+            busyRoot.Dispose();
+        }
     }
 }

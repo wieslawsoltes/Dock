@@ -152,6 +152,23 @@ public sealed class BusyOverlayControl : TemplatedControl
         private set => SetAndRaise(ReloadCommandProperty, ref _reloadCommand, value);
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (_attachedService is not null)
+        {
+            _attachedService.PropertyChanged -= OnBusyServicePropertyChanged;
+            _attachedService = null;
+        }
+
+        if (_attachedGlobalService is not null)
+        {
+            _attachedGlobalService.PropertyChanged -= OnGlobalBusyServicePropertyChanged;
+            _attachedGlobalService = null;
+        }
+    }
+
     private void OnBusyServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
         if (_attachedService is not null)

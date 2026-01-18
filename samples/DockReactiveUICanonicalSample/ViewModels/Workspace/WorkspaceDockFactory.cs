@@ -54,6 +54,18 @@ public sealed class WorkspaceDockFactory : Factory
             BottomPinnedDockables = CreateList<IDockable>()
         };
 
+    public override void OnWindowClosed(IDockWindow? window)
+    {
+        base.OnWindowClosed(window);
+        CleanupWindow(window);
+    }
+
+    public override void OnWindowRemoved(IDockWindow? window)
+    {
+        base.OnWindowRemoved(window);
+        CleanupWindow(window);
+    }
+
     public override void InitLayout(IDockable layout)
     {
         HostWindowLocator = new Dictionary<string, Func<IHostWindow?>>
@@ -74,5 +86,13 @@ public sealed class WorkspaceDockFactory : Factory
         }
 
         return window;
+    }
+
+    private static void CleanupWindow(IDockWindow? window)
+    {
+        if (window?.Layout is BusyRootDock busyRoot)
+        {
+            busyRoot.Dispose();
+        }
     }
 }

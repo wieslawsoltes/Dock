@@ -19,4 +19,6 @@ public interface IConfirmationService : INotifyPropertyChanged
         string cancelText = "Cancel");
 
     void Close(ConfirmationRequest request, bool result);
+
+    void CancelAll();
 }

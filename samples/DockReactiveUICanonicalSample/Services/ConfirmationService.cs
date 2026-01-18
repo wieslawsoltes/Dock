@@ -60,6 +60,17 @@ public sealed class ConfirmationService : ReactiveObject, IConfirmationService
         Dispatcher.UIThread.Post(() => CloseOnUiThread(request, result));
     }
 
+    public void CancelAll()
+    {
+        if (Dispatcher.UIThread.CheckAccess())
+        {
+            CancelAllOnUiThread();
+            return;
+        }
+
+        Dispatcher.UIThread.Post(CancelAllOnUiThread);
+    }
+
     private void CloseOnUiThread(ConfirmationRequest request, bool result)
     {
         if (!_confirmations.Contains(request))
@@ -72,5 +83,19 @@ public sealed class ConfirmationService : ReactiveObject, IConfirmationService
         request.Complete(result);
         ActiveConfirmation = _confirmations.LastOrDefault();
         this.RaisePropertyChanged(nameof(HasConfirmations));
+    }
+
+    private void CancelAllOnUiThread()
+    {
+        if (_confirmations.Count == 0)
+        {
+            return;
+        }
+
+        var pending = _confirmations.ToArray();
+        foreach (var request in pending)
+        {
+            CloseOnUiThread(request, false);
+        }
     }
 }

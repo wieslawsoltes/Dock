@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,11 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;
 
-public sealed class BusyRootDock : RoutableRootDock
+public sealed class BusyRootDock : RoutableRootDock, IDisposable
 {
     private bool _isBusy;
     private string? _busyMessage;
+    private bool _isDisposed;
 
     public BusyRootDock(
         IScreen host,
@@ -63,6 +65,20 @@ public sealed class BusyRootDock : RoutableRootDock
     }
 
     public bool IsDockEnabled => !IsBusy;
+
+    public void Dispose()
+    {
+        if (_isDisposed)
+        {
+            return;
+        }
+
+        _isDisposed = true;
+        BusyService.PropertyChanged -= OnBusyServiceChanged;
+        BusyService.SetReloadHandler(null);
+        DialogService.CancelAll();
+        ConfirmationService.CancelAll();
+    }
 
     private void OnBusyServiceChanged(object? sender, PropertyChangedEventArgs e)
     {

@@ -129,6 +129,25 @@ public sealed class DialogOverlayControl : TemplatedControl
         private set => SetAndRaise(DialogsProperty, ref _dialogs, value);
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+
+        if (_attachedDialogService is not null)
+        {
+            _attachedDialogService.PropertyChanged -= OnDialogServicePropertyChanged;
+            _attachedDialogService = null;
+        }
+
+        if (_attachedGlobalDialogService is not null)
+        {
+            _attachedGlobalDialogService.PropertyChanged -= OnGlobalDialogServicePropertyChanged;
+            _attachedGlobalDialogService = null;
+        }
+
+        Dialogs = null;
+    }
+
     private void OnDialogServiceChanged(AvaloniaPropertyChangedEventArgs args)
     {
         if (_attachedDialogService is not null)

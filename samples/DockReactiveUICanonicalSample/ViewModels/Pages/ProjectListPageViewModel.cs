@@ -18,6 +18,8 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private bool _hasLoaded;
+    private bool _isLoading;
 
     public ProjectListPageViewModel(
         IScreen hostScreen,
@@ -38,6 +40,11 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         this.WhenActivated(disposables =>
         {
+            if (_hasLoaded || _isLoading)
+            {
+                return;
+            }
+
             var cts = new CancellationTokenSource();
             disposables.Add(Disposable.Create(() =>
             {
@@ -56,10 +63,21 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     public ObservableCollection<ProjectListItemViewModel> Projects { get; }
 
-    public Task ReloadAsync() => LoadProjectsAsync(CancellationToken.None);
+    public Task ReloadAsync()
+    {
+        _hasLoaded = false;
+        return LoadProjectsAsync(CancellationToken.None);
+    }
 
     private async Task LoadProjectsAsync(CancellationToken cancellationToken)
     {
+        if (_isLoading)
+        {
+            return;
+        }
+
+        _isLoading = true;
+
         try
         {
             var busyService = _busyServiceProvider.GetBusyService(HostScreen);
@@ -100,9 +118,15 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     await Task.Delay(120, cancellationToken).ConfigureAwait(false);
                 }
             }).ConfigureAwait(false);
+
+            _hasLoaded = true;
         }
         catch (OperationCanceledException)
         {
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 

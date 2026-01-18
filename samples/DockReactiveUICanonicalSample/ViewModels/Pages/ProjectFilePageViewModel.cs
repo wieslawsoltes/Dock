@@ -21,6 +21,8 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
     private IRootDock? _workspaceLayout;
+    private bool _hasLoaded;
+    private bool _isLoading;
 
     public ProjectFilePageViewModel(
         IScreen hostScreen,
@@ -62,6 +64,11 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
                 .ToProperty(this, x => x.CanGoBack);
             disposables.Add(_canGoBack);
 
+            if (_hasLoaded || _isLoading)
+            {
+                return;
+            }
+
             var cts = new CancellationTokenSource();
             disposables.Add(Disposable.Create(() =>
             {
@@ -96,12 +103,20 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     public async Task ReloadAsync()
     {
+        _hasLoaded = false;
         await MainThreadDispatcher.InvokeAsync(() => WorkspaceLayout = null);
         await LoadWorkspaceAsync(CancellationToken.None).ConfigureAwait(false);
     }
 
     private async Task LoadWorkspaceAsync(CancellationToken cancellationToken)
     {
+        if (_isLoading)
+        {
+            return;
+        }
+
+        _isLoading = true;
+
         try
         {
             var busyService = _busyServiceProvider.GetBusyService(HostScreen);
@@ -121,9 +136,15 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     }
                 });
             }).ConfigureAwait(false);
+
+            _hasLoaded = true;
         }
         catch (OperationCanceledException)
         {
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 

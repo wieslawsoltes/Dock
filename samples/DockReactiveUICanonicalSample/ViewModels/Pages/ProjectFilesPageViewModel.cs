@@ -22,6 +22,8 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
+    private bool _hasLoaded;
+    private bool _isLoading;
 
     public ProjectFilesPageViewModel(
         IScreen hostScreen,
@@ -67,6 +69,11 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                 .ToProperty(this, x => x.CanGoBack);
             disposables.Add(_canGoBack);
 
+            if (_hasLoaded || _isLoading)
+            {
+                return;
+            }
+
             var cts = new CancellationTokenSource();
             disposables.Add(Disposable.Create(() =>
             {
@@ -89,7 +96,11 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
     public bool CanGoBack => _canGoBack?.Value ?? false;
 
-    public Task ReloadAsync() => LoadFilesAsync(CancellationToken.None);
+    public Task ReloadAsync()
+    {
+        _hasLoaded = false;
+        return LoadFilesAsync(CancellationToken.None);
+    }
 
     private void OpenFile(ProjectFile file)
     {
@@ -173,6 +184,13 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
     private async Task LoadFilesAsync(CancellationToken cancellationToken)
     {
+        if (_isLoading)
+        {
+            return;
+        }
+
+        _isLoading = true;
+
         try
         {
             var busyService = _busyServiceProvider.GetBusyService(HostScreen);
@@ -209,9 +227,15 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                     await Task.Delay(120, cancellationToken).ConfigureAwait(false);
                 }
             }).ConfigureAwait(false);
+
+            _hasLoaded = true;
         }
         catch (OperationCanceledException)
         {
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 }

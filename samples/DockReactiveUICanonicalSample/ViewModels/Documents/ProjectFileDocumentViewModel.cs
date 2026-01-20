@@ -1,6 +1,5 @@
 using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Pages;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using Dock.Model.ReactiveUI.Services;
@@ -15,10 +14,9 @@ public class ProjectFileDocumentViewModel : RoutableDocumentBase
         Project project,
         ProjectFile file,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
-        : base(host, $"projects/{project.Id}/files/{file.Id}")
+        : base(host, overlayServicesProvider, $"projects/{project.Id}/files/{file.Id}")
     {
         Project = project;
         File = file;
@@ -29,8 +27,7 @@ public class ProjectFileDocumentViewModel : RoutableDocumentBase
                 project,
                 file,
                 workspaceFactory,
-                busyServiceProvider,
-                confirmationServiceProvider,
+                overlayServicesProvider,
                 dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }

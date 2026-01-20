@@ -15,10 +15,9 @@ public class ProjectListDocumentViewModel : RoutableDocumentBase
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
-        : base(host, "projects")
+        : base(host, overlayServicesProvider, "projects")
     {
         CanClose = false;
 
@@ -27,8 +26,7 @@ public class ProjectListDocumentViewModel : RoutableDocumentBase
                 repository,
                 dockNavigation,
                 workspaceFactory,
-                busyServiceProvider,
-                confirmationServiceProvider,
+                overlayServicesProvider,
                 dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }

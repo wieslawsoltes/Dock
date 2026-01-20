@@ -22,8 +22,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
     private readonly IProjectRepository _repository;
     private readonly SampleDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
-    private readonly IBusyServiceProvider _busyServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IDockDispatcher _dispatcher;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
     private bool _hasLoaded;
@@ -35,8 +34,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         IProjectRepository repository,
         SampleDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
@@ -44,8 +42,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         _repository = repository;
         _dockNavigation = dockNavigation;
         _workspaceFactory = workspaceFactory;
-        _busyServiceProvider = busyServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
         _dispatcher = dispatcher;
 
         Files = new ObservableCollection<ProjectFileItemViewModel>();
@@ -53,7 +50,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         var canGoBack = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.CreateFromTask(async () =>
         {
-            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+            var busyService = _overlayServicesProvider.GetServices(HostScreen).Busy;
 
             await busyService.RunAsync("Returning to projects...", async () =>
             {
@@ -114,8 +111,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                 Project,
                 file,
                 _workspaceFactory,
-                _busyServiceProvider,
-                _confirmationServiceProvider,
+                _overlayServicesProvider,
                 _dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
@@ -136,7 +132,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
     private async Task CloseFilesAsync()
     {
-        var confirmation = _confirmationServiceProvider.GetConfirmationService(HostScreen);
+        var confirmation = _overlayServicesProvider.GetServices(HostScreen).Confirmations;
         var approved = await confirmation.ConfirmAsync(
             "Close Files",
             $"Close {Project.Name} files?",
@@ -171,7 +167,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
         try
         {
-            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+            var busyService = _overlayServicesProvider.GetServices(HostScreen).Busy;
 
             await busyService.RunAsync("Loading project files...", async () =>
             {

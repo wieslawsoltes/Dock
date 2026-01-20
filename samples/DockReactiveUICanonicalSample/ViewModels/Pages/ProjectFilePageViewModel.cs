@@ -8,7 +8,6 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Navigation.Services;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
 using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
@@ -19,8 +18,7 @@ namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IReloadable, IActivatableViewModel
 {
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
-    private readonly IBusyServiceProvider _busyServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IDockDispatcher _dispatcher;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
     private IRootDock? _workspaceLayout;
@@ -34,22 +32,20 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         Project project,
         ProjectFile file,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
         Project = project;
         File = file;
         _workspaceFactory = workspaceFactory;
-        _busyServiceProvider = busyServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
         _dispatcher = dispatcher;
 
         var canGoBack = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.CreateFromTask(async () =>
         {
-            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+            var busyService = _overlayServicesProvider.GetServices(HostScreen).Busy;
 
             await busyService.RunAsync("Returning to files...", async () =>
             {
@@ -134,7 +130,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         try
         {
-            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+            var busyService = _overlayServicesProvider.GetServices(HostScreen).Busy;
 
             await busyService.RunAsync("Loading document view...", async () =>
             {
@@ -171,7 +167,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     private async Task CloseFileAsync()
     {
-        var confirmation = _confirmationServiceProvider.GetConfirmationService(HostScreen);
+        var confirmation = _overlayServicesProvider.GetServices(HostScreen).Confirmations;
         var approved = await confirmation.ConfirmAsync(
             "Close File",
             $"Close {File.Name}?",

@@ -1,36 +1,32 @@
 using Dock.Model.ReactiveUI.Navigation.Controls;
-using DockReactiveUICanonicalSample.Services;
+using Dock.Model.ReactiveUI.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public class ToolPanelViewModel : RoutableToolBase
 {
-    private readonly IDialogServiceProvider _dialogServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
 
     public ToolPanelViewModel(
         IScreen hostScreen,
         string toolId,
         string title,
         string description,
-        IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
-        : base(hostScreen, "tool-panel")
+        IHostOverlayServicesProvider overlayServicesProvider)
+        : base(hostScreen, overlayServicesProvider, "tool-panel")
     {
         ToolId = toolId;
         Title = title;
         Description = description;
-        _dialogServiceProvider = dialogServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
 
         Router.Navigate.Execute(new ToolPanelPageViewModel(
                 this,
                 toolId,
                 title,
                 description,
-                _dialogServiceProvider,
-                _confirmationServiceProvider))
+                _overlayServicesProvider))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 

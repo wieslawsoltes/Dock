@@ -2,7 +2,8 @@ using System.Reactive;
 using System.Threading.Tasks;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI.Navigation.Services;
-using DockReactiveUICanonicalSample.Services;
+using Dock.Model.ReactiveUI.Services;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.ViewModels.Dialogs;
 using ReactiveUI;
 
@@ -10,23 +11,20 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public class ToolPanelPageViewModel : ReactiveObject, IRoutableViewModel
 {
-    private readonly IDialogServiceProvider _dialogServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
 
     public ToolPanelPageViewModel(
         IScreen hostScreen,
         string toolId,
         string title,
         string description,
-        IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IHostOverlayServicesProvider overlayServicesProvider)
     {
         HostScreen = hostScreen;
         ToolId = toolId;
         Title = title;
         Description = description;
-        _dialogServiceProvider = dialogServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
 
         OpenPanelDialog = ReactiveCommand.CreateFromTask(OpenPanelDialogAsync);
         OpenNestedDialog = ReactiveCommand.CreateFromTask(OpenNestedDialogAsync);
@@ -52,10 +50,10 @@ public class ToolPanelPageViewModel : ReactiveObject, IRoutableViewModel
     public ReactiveCommand<Unit, Unit> ClosePanel { get; }
 
     private IDockDialogService GetDialogService()
-        => _dialogServiceProvider.GetDialogService(HostScreen);
+        => _overlayServicesProvider.GetServices(HostScreen).Dialogs;
 
     private IDockConfirmationService GetConfirmationService()
-        => _confirmationServiceProvider.GetConfirmationService(HostScreen);
+        => _overlayServicesProvider.GetServices(HostScreen).Confirmations;
 
     private async Task OpenPanelDialogAsync()
     {

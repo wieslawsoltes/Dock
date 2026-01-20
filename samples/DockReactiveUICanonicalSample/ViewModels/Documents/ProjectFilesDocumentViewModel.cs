@@ -16,10 +16,9 @@ public class ProjectFilesDocumentViewModel : RoutableDocumentBase
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
-        : base(host, $"projects/{project.Id}/files")
+        : base(host, overlayServicesProvider, $"projects/{project.Id}/files")
     {
         Project = project;
         CanClose = true;
@@ -30,8 +29,7 @@ public class ProjectFilesDocumentViewModel : RoutableDocumentBase
                 repository,
                 dockNavigation,
                 workspaceFactory,
-                busyServiceProvider,
-                confirmationServiceProvider,
+                overlayServicesProvider,
                 dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }

@@ -17,8 +17,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private readonly IProjectRepository _repository;
     private readonly IDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
-    private readonly IBusyServiceProvider _busyServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
     private readonly IDockDispatcher _dispatcher;
     private bool _hasLoaded;
     private bool _isLoading;
@@ -28,16 +27,14 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
         IProjectRepository repository,
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
-        IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
         IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
         _repository = repository;
         _dockNavigation = dockNavigation;
         _workspaceFactory = workspaceFactory;
-        _busyServiceProvider = busyServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
         _dispatcher = dispatcher;
 
         Projects = new ObservableCollection<ProjectListItemViewModel>();
@@ -84,7 +81,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         try
         {
-            var busyService = _busyServiceProvider.GetBusyService(HostScreen);
+            var busyService = _overlayServicesProvider.GetServices(HostScreen).Busy;
 
             await busyService.RunAsync("Loading projects...", async () =>
             {
@@ -142,8 +139,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                 _repository,
                 _dockNavigation,
                 _workspaceFactory,
-                _busyServiceProvider,
-                _confirmationServiceProvider,
+                _overlayServicesProvider,
                 _dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }

@@ -1,8 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.Services;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Dialogs;
 using ReactiveUI;
 
@@ -10,21 +11,18 @@ namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public class FileActionsPageViewModel : ReactiveObject, IRoutableViewModel
 {
-    private readonly IDialogServiceProvider _dialogServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
 
     public FileActionsPageViewModel(
         IScreen hostScreen,
         Project project,
         ProjectFile file,
-        IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IHostOverlayServicesProvider overlayServicesProvider)
     {
         HostScreen = hostScreen;
         Project = project;
         File = file;
-        _dialogServiceProvider = dialogServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
 
         Actions = new ObservableCollection<FileActionItemViewModel>
         {
@@ -58,10 +56,10 @@ public class FileActionsPageViewModel : ReactiveObject, IRoutableViewModel
     public ObservableCollection<FileActionItemViewModel> Actions { get; }
 
     private IDockDialogService GetDialogService()
-        => _dialogServiceProvider.GetDialogService(HostScreen);
+        => _overlayServicesProvider.GetServices(HostScreen).Dialogs;
 
     private IDockConfirmationService GetConfirmationService()
-        => _confirmationServiceProvider.GetConfirmationService(HostScreen);
+        => _overlayServicesProvider.GetServices(HostScreen).Confirmations;
 
     private async Task OpenPreviewAsync()
     {

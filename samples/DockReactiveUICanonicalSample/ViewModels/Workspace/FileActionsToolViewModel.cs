@@ -1,32 +1,28 @@
 using Dock.Model.ReactiveUI.Navigation.Controls;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.Models;
-using DockReactiveUICanonicalSample.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
 public class FileActionsToolViewModel : RoutableToolBase
 {
-    private readonly IDialogServiceProvider _dialogServiceProvider;
-    private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
 
     public FileActionsToolViewModel(
         IScreen hostScreen,
         Project project,
         ProjectFile file,
-        IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
-        : base(hostScreen, "file-actions")
+        IHostOverlayServicesProvider overlayServicesProvider)
+        : base(hostScreen, overlayServicesProvider, "file-actions")
     {
-        _dialogServiceProvider = dialogServiceProvider;
-        _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
 
         Router.Navigate.Execute(new FileActionsPageViewModel(
                 this,
                 project,
                 file,
-                _dialogServiceProvider,
-                _confirmationServiceProvider))
+                _overlayServicesProvider))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 }

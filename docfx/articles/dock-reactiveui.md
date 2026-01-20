@@ -34,12 +34,15 @@ Follow these instructions to create a minimal ReactiveUI based application using
    dotnet add package Dock.Serializer.Newtonsoft        # JSON (Newtonsoft.Json)
    dotnet add package Dock.Serializer.SystemTextJson    # JSON (System.Text.Json)
    
-   # For navigation scenarios:
-   dotnet add package Dock.Model.ReactiveUI.Navigation
+   # For navigation helpers and overlay services:
+   dotnet add package Dock.Model.ReactiveUI.Services
    
    # For dependency injection:
    dotnet add package Dock.Model.Extensions.DependencyInjection
    ```
+
+   Navigation types ship in `Dock.Model.ReactiveUI.Services` and keep the
+   `Dock.Model.ReactiveUI.Navigation.*` namespaces for compatibility.
 
 3. **Set up View Locator (Required)**
 

@@ -160,6 +160,8 @@
     href: dock-properties.md
   - name: DockSettings in controls
     href: dock-settings-controls.md
+  - name: Overlay services and host resolution
+    href: dock-overlay-services-reference.md
 - name: Troubleshooting
   items:
   - name: FAQ

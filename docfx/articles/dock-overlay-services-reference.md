@@ -84,3 +84,6 @@ services.AddSingleton<IHostServiceResolver, MyHostServiceResolver>();
 ```
 
 Your resolver should map the current `IScreen` to the host layout or window that owns the overlay services.
+
+## See also
+- [Overlay customization](dock-overlay-customization.md)

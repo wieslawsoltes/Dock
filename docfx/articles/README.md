@@ -58,6 +58,7 @@ Choose the implementation that matches your MVVM framework:
 - [Programmatic docking](dock-programmatic-docking.md) – Use `DockService` to validate and execute docking operations.
 - [Drag actions and modifiers](dock-drag-actions.md) – How modifier keys map to docking actions.
 - [Styling and theming](dock-styling.md) – Customize the appearance of Dock controls.
+- [Overlay customization](dock-overlay-customization.md) – Customize overlay layers and control themes.
 - [DataTemplates and custom dock types](dock-datatemplates.md) – Create custom dock types with their own visual representation.
 - [Custom themes](dock-custom-theme.md) – Build and apply your own theme.
 - [Context menus](dock-context-menus.md) – Localize or replace built-in menus.

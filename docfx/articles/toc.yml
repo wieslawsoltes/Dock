@@ -82,6 +82,8 @@
     href: dock-fluent-extensions.md
   - name: Styling and theming
     href: dock-styling.md
+  - name: Overlay customization
+    href: dock-overlay-customization.md
   - name: DataTemplates and custom dock types
     href: dock-datatemplates.md
   - name: Custom themes

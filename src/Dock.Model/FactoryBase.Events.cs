@@ -195,6 +195,7 @@ public abstract partial class FactoryBase
     public virtual void OnWindowRemoved(IDockWindow? window)
     {
         WindowRemoved?.Invoke(this, new WindowRemovedEventArgs(window));
+        NotifyWindowRemoved(window);
     }
 
     /// <inheritdoc />
@@ -238,6 +239,7 @@ public abstract partial class FactoryBase
     public virtual void OnWindowClosed(IDockWindow? window)
     {
         WindowClosed?.Invoke(this, new WindowClosedEventArgs(window));
+        NotifyWindowClosed(window);
     }
 
     /// <inheritdoc />

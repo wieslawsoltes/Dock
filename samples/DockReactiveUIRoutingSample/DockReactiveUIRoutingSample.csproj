@@ -16,7 +16,7 @@
   <Import Project="..\..\build\ReactiveUI.Avalonia.props" />
   <Import Project="..\..\build\Avalonia.Diagnostics.props" />
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Navigation\Dock.Model.ReactiveUI.Navigation.csproj" />
+    <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI.Services\Dock.Model.ReactiveUI.Services.csproj" />
     <ProjectReference Include="..\..\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia\Dock.Avalonia.csproj" />
     <ProjectReference Include="..\..\src\Dock.Avalonia.Diagnostics\Dock.Avalonia.Diagnostics.csproj" />

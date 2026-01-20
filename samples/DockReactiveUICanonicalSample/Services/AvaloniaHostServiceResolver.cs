@@ -36,6 +36,16 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
                     return resolved;
                 }
             }
+
+            var dockControl = FindDockControl(dockable);
+            if (dockControl is not null)
+            {
+                var resolved = ResolveFromControl<TService>(dockControl);
+                if (resolved is not null)
+                {
+                    return resolved;
+                }
+            }
         }
 
         return _fallback.Resolve<TService>(screen);
@@ -62,6 +72,47 @@ public sealed class AvaloniaHostServiceResolver : IHostServiceResolver
                 {
                     return control;
                 }
+            }
+
+            current = current.Owner;
+        }
+
+        return null;
+    }
+
+    private static DockControl? FindDockControl(IDockable dockable)
+    {
+        var factory = FindFactory(dockable);
+        if (factory is null)
+        {
+            return null;
+        }
+
+        foreach (var dockControl in factory.DockControls.OfType<DockControl>())
+        {
+            if (dockControl.GetVisualRoot() is null || dockControl.Layout is null)
+            {
+                continue;
+            }
+
+            if (ReferenceEquals(dockControl.Layout, dockable)
+                || factory.FindDockable(dockControl.Layout, d => ReferenceEquals(d, dockable)) is not null)
+            {
+                return dockControl;
+            }
+        }
+
+        return null;
+    }
+
+    private static IFactory? FindFactory(IDockable dockable)
+    {
+        var current = dockable;
+        while (current is not null)
+        {
+            if (current.Factory is IFactory factory)
+            {
+                return factory;
             }
 
             current = current.Owner;

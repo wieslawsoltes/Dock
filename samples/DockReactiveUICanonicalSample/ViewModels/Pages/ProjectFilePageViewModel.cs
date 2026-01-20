@@ -26,6 +26,8 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private IRootDock? _workspaceLayout;
     private bool _hasLoaded;
     private bool _isLoading;
+    private bool _isActive;
+    private bool _reloadRequested;
 
     public ProjectFilePageViewModel(
         IScreen hostScreen,
@@ -63,13 +65,21 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         this.WhenActivated(disposables =>
         {
+            _isActive = true;
+            disposables.Add(Disposable.Create(() => _isActive = false));
+
             _canGoBack = this.WhenAnyValue(x => x.HostScreen.Router.NavigationStack.Count)
                 .Select(count => count > 1)
                 .ToProperty(this, x => x.CanGoBack);
             disposables.Add(_canGoBack);
 
-            if (_hasLoaded || _isLoading)
+            if ((_hasLoaded && WorkspaceLayout is not null) || _isLoading)
             {
+                if (_isLoading)
+                {
+                    _reloadRequested = true;
+                }
+
                 return;
             }
 
@@ -107,6 +117,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
     public async Task ReloadAsync()
     {
+        _reloadRequested = false;
         _hasLoaded = false;
         await _dispatcher.InvokeAsync(() => WorkspaceLayout = null);
         await LoadWorkspaceAsync(CancellationToken.None).ConfigureAwait(false);
@@ -149,6 +160,12 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         finally
         {
             _isLoading = false;
+
+            if (_reloadRequested && _isActive && !_hasLoaded)
+            {
+                _reloadRequested = false;
+                _ = LoadWorkspaceAsync(CancellationToken.None);
+            }
         }
     }
 

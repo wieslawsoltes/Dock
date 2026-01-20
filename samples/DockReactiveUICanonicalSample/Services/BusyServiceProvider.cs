@@ -1,89 +1,19 @@
-using System.Collections.Generic;
-using Dock.Model.Core;
-using DockReactiveUICanonicalSample.ViewModels;
+using Dock.Model.ReactiveUI.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.Services;
 
 public sealed class BusyServiceProvider : IBusyServiceProvider
 {
-    private readonly IDockBusyService _fallback;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
 
-    public BusyServiceProvider(IBusyServiceFactory busyServiceFactory)
+    public BusyServiceProvider(IHostOverlayServicesProvider overlayServicesProvider)
     {
-        _fallback = busyServiceFactory.Create();
+        _overlayServicesProvider = overlayServicesProvider;
     }
 
     public IDockBusyService GetBusyService(IScreen hostScreen)
     {
-        return FindBusyRootDock(hostScreen)?.BusyService ?? _fallback;
+        return _overlayServicesProvider.GetServices(hostScreen).Busy;
     }
-
-    private static BusyRootDock? FindBusyRootDock(IScreen hostScreen)
-    {
-        var visited = new HashSet<IScreen>();
-        var currentScreen = hostScreen;
-
-        while (currentScreen is not null && visited.Add(currentScreen))
-        {
-            if (currentScreen is BusyRootDock busyRoot)
-            {
-                return ResolveBusyRootDock(busyRoot);
-            }
-
-            if (currentScreen is IDockable dockable)
-            {
-                if (FindBusyRootDockInOwnerChain(dockable) is { } busyRootDock)
-                {
-                    return ResolveBusyRootDock(busyRootDock);
-                }
-            }
-
-            if (currentScreen is IRoutableViewModel routable && routable.HostScreen is { } nextScreen)
-            {
-                currentScreen = nextScreen;
-                continue;
-            }
-
-            break;
-        }
-
-        return null;
-    }
-
-    private static BusyRootDock? FindBusyRootDockInOwnerChain(IDockable dockable)
-    {
-        var currentDockable = dockable;
-        while (currentDockable is not null)
-        {
-            if (currentDockable is BusyRootDock busyRootDock)
-            {
-                return busyRootDock;
-            }
-
-            currentDockable = currentDockable.Owner;
-        }
-
-        return null;
-    }
-
-    private static BusyRootDock ResolveBusyRootDock(BusyRootDock busyRoot)
-    {
-        if (busyRoot.Window is not null)
-        {
-            return busyRoot;
-        }
-
-        if (busyRoot.HostScreen is IDockable hostDockable)
-        {
-            if (FindBusyRootDockInOwnerChain(hostDockable) is { } outerRoot
-                && !ReferenceEquals(outerRoot, busyRoot))
-            {
-                return outerRoot;
-            }
-        }
-
-        return busyRoot;
-    }
-
 }

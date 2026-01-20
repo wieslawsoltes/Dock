@@ -1,10 +1,9 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.ViewModels.Documents;
-using ReactiveUI.Avalonia;
 
 namespace DockReactiveUICanonicalSample.Views.Documents;
 
-public partial class ProjectListDocumentView : ReactiveUserControl<ProjectListDocumentViewModel>
+public partial class ProjectListDocumentView : DockReactiveUserControl<ProjectListDocumentViewModel>
 {
     public ProjectListDocumentView()
     {

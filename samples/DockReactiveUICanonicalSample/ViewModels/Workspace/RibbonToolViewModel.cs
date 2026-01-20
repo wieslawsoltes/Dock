@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
-public class RibbonToolViewModel : RoutableTool
+public class RibbonToolViewModel : RoutableToolBase
 {
     public RibbonToolViewModel(
         IScreen hostScreen,

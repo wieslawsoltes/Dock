@@ -5,6 +5,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Navigation.Controls;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
@@ -22,6 +23,8 @@ public sealed class ProjectFileWorkspaceFactory
     private readonly IDockGlobalConfirmationService _globalConfirmationService;
     private readonly IDialogServiceProvider _dialogServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IHostOverlayServicesProvider _overlayServicesProvider;
+    private readonly IWindowLifecycleService _windowLifecycleService;
 
     public ProjectFileWorkspaceFactory(
         IBusyServiceFactory busyServiceFactory,
@@ -31,7 +34,9 @@ public sealed class ProjectFileWorkspaceFactory
         IConfirmationServiceFactory confirmationServiceFactory,
         IDockGlobalConfirmationService globalConfirmationService,
         IDialogServiceProvider dialogServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IHostOverlayServicesProvider overlayServicesProvider,
+        IWindowLifecycleService windowLifecycleService)
     {
         _busyServiceFactory = busyServiceFactory;
         _globalBusyService = globalBusyService;
@@ -41,6 +46,8 @@ public sealed class ProjectFileWorkspaceFactory
         _globalConfirmationService = globalConfirmationService;
         _dialogServiceProvider = dialogServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
+        _overlayServicesProvider = overlayServicesProvider;
+        _windowLifecycleService = windowLifecycleService;
     }
 
     public ProjectFileWorkspace CreateWorkspace(IScreen hostScreen, Project project, ProjectFile file)
@@ -52,10 +59,18 @@ public sealed class ProjectFileWorkspaceFactory
             _dialogServiceFactory,
             _globalDialogService,
             _confirmationServiceFactory,
-            _globalConfirmationService);
-        var root = (BusyRootDock)factory.CreateRootDock();
-        root.Id = "FileWorkspaceRoot";
+            _globalConfirmationService,
+            _windowLifecycleService);
+        var hostServices = _overlayServicesProvider.GetServices(hostScreen);
+        var root = new WorkspaceRootDock(hostScreen, hostServices, "workspace-root")
+        {
+            Id = "FileWorkspaceRoot"
+        };
         root.PinnedDock = null;
+        root.LeftPinnedDockables = factory.CreateList<IDockable>();
+        root.RightPinnedDockables = factory.CreateList<IDockable>();
+        root.TopPinnedDockables = factory.CreateList<IDockable>();
+        root.BottomPinnedDockables = factory.CreateList<IDockable>();
 
         var fileActionsTool = new FileActionsToolViewModel(
             root,
@@ -201,6 +216,10 @@ public sealed class ProjectFileWorkspaceFactory
         root.VisibleDockables = factory.CreateList<IDockable>(mainLayout);
 
         factory.InitLayout(root);
+        if (hostScreen is IDockable hostDockable)
+        {
+            root.Owner = hostDockable;
+        }
         workspace.Layout = root;
 
         return workspace;

@@ -9,7 +9,7 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;
 
-public sealed class BusyRootDock : RoutableRootDock, IDisposable
+public sealed class BusyRootDock : RoutableRootDock, IHostOverlayServices, IDisposable
 {
     private bool _isBusy;
     private string? _busyMessage;
@@ -47,6 +47,12 @@ public sealed class BusyRootDock : RoutableRootDock, IDisposable
     public IDockConfirmationService ConfirmationService { get; }
 
     public IDockGlobalConfirmationService GlobalConfirmationService { get; }
+
+    public IDockBusyService Busy => BusyService;
+
+    public IDockDialogService Dialogs => DialogService;
+
+    public IDockConfirmationService Confirmations => ConfirmationService;
 
     public bool IsBusy
     {

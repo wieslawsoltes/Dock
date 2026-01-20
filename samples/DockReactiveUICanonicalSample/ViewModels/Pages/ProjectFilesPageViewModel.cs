@@ -6,21 +6,25 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dock.Model.Core;
+using DockNavigationHelpers = Dock.Model.ReactiveUI.Navigation.Services.DockNavigationHelpers;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
+using SampleDockNavigationService = DockReactiveUICanonicalSample.Services.IDockNavigationService;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Pages;
 
 public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IReloadable, IActivatableViewModel
 {
     private readonly IProjectRepository _repository;
-    private readonly IDockNavigationService _dockNavigation;
+    private readonly SampleDockNavigationService _dockNavigation;
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IDockDispatcher _dispatcher;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
     private bool _hasLoaded;
     private bool _isLoading;
@@ -29,10 +33,11 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         IScreen hostScreen,
         Project project,
         IProjectRepository repository,
-        IDockNavigationService dockNavigation,
+        SampleDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
         IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
         Project = project;
@@ -41,6 +46,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
         _workspaceFactory = workspaceFactory;
         _busyServiceProvider = busyServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
+        _dispatcher = dispatcher;
 
         Files = new ObservableCollection<ProjectFileItemViewModel>();
 
@@ -52,10 +58,9 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
             await busyService.RunAsync("Returning to projects...", async () =>
             {
                 await Task.Delay(150).ConfigureAwait(false);
-                await MainThreadDispatcher.InvokeAsync(() =>
+                await _dispatcher.InvokeAsync(() =>
                 {
-                    HostScreen.Router.NavigateBack.Execute()
-                        .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
+                    DockNavigationHelpers.TryNavigateBack(HostScreen);
                 });
             }).ConfigureAwait(false);
         }, canGoBack);
@@ -110,7 +115,8 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                 file,
                 _workspaceFactory,
                 _busyServiceProvider,
-                _confirmationServiceProvider))
+                _confirmationServiceProvider,
+                _dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 
@@ -144,42 +150,14 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
 
         if (HostScreen.Router.NavigationStack.Count > 1)
         {
-            HostScreen.Router.NavigateBack.Execute()
-                .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
+            DockNavigationHelpers.TryNavigateBack(HostScreen);
             return;
         }
 
         if (HostScreen is IDockable dockable)
         {
-            CloseDockable(dockable);
+            DockNavigationHelpers.TryCloseDockable(dockable);
         }
-    }
-
-    private static void CloseDockable(IDockable dockable)
-    {
-        var factory = FindFactory(dockable);
-        if (factory is null)
-        {
-            return;
-        }
-
-        factory.CloseDockable(dockable);
-    }
-
-    private static IFactory? FindFactory(IDockable dockable)
-    {
-        IDockable? current = dockable;
-        while (current is not null)
-        {
-            if (current is IDock dock && dock.Factory is { } factory)
-            {
-                return factory;
-            }
-
-            current = current.Owner;
-        }
-
-        return null;
     }
 
     private async Task LoadFilesAsync(CancellationToken cancellationToken)
@@ -202,7 +180,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                 var total = files.Count;
                 var index = 0;
 
-                await MainThreadDispatcher.InvokeAsync(() =>
+                await _dispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
@@ -216,7 +194,7 @@ public class ProjectFilesPageViewModel : ReactiveObject, IRoutableViewModel, IRe
                     index++;
                     busyService.UpdateMessage($"Loading project files... {index}/{total}");
 
-                    await MainThreadDispatcher.InvokeAsync(() =>
+                    await _dispatcher.InvokeAsync(() =>
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {

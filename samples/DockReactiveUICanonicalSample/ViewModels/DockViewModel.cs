@@ -1,10 +1,12 @@
+using System;
 using Dock.Model.Controls;
+using Dock.Model.Services;
 using DockReactiveUICanonicalSample.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels;
 
-public class DockViewModel : ReactiveObject, IRoutableViewModel
+public class DockViewModel : ReactiveObject, IRoutableViewModel, IHostOverlayServices
 {
     private readonly DockFactory _factory;
     private IRootDock? _layout;
@@ -95,4 +97,19 @@ public class DockViewModel : ReactiveObject, IRoutableViewModel
         get => _globalConfirmationService;
         private set => this.RaiseAndSetIfChanged(ref _globalConfirmationService, value);
     }
+
+    IDockBusyService IHostOverlayServices.Busy => BusyService ?? throw new InvalidOperationException("Busy service is not available.");
+
+    IDockDialogService IHostOverlayServices.Dialogs => DialogService ?? throw new InvalidOperationException("Dialog service is not available.");
+
+    IDockConfirmationService IHostOverlayServices.Confirmations => ConfirmationService ?? throw new InvalidOperationException("Confirmation service is not available.");
+
+    IDockGlobalBusyService IHostOverlayServices.GlobalBusyService
+        => _globalBusyService ?? throw new InvalidOperationException("Global busy service is not available.");
+
+    IDockGlobalDialogService IHostOverlayServices.GlobalDialogService
+        => _globalDialogService ?? throw new InvalidOperationException("Global dialog service is not available.");
+
+    IDockGlobalConfirmationService IHostOverlayServices.GlobalConfirmationService
+        => _globalConfirmationService ?? throw new InvalidOperationException("Global confirmation service is not available.");
 }

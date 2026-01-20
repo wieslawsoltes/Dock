@@ -26,7 +26,7 @@
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
             <Panel Margin="{Binding $parent[HostWindow].WindowDecorationMargin}">
-              <OverlayHost>
+              <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
                 <DockControl Layout="{Binding}" />
               </OverlayHost>
             </Panel>
@@ -38,7 +38,7 @@
       <Setter Property="Content">
         <Template>
           <Panel Margin="{Binding $parent[HostWindow].OffScreenMargin}">
-            <OverlayHost>
+            <OverlayHost VisualTreeLifecycleBehavior.IsEnabled="True">
               <DockControl Layout="{Binding}" />
             </OverlayHost>
           </Panel>

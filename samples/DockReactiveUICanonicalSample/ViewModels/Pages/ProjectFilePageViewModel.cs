@@ -6,9 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dock.Model.Controls;
 using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Navigation.Services;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 
@@ -19,6 +21,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IDockDispatcher _dispatcher;
     private ObservableAsPropertyHelper<bool>? _canGoBack;
     private IRootDock? _workspaceLayout;
     private bool _hasLoaded;
@@ -30,7 +33,8 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         ProjectFile file,
         ProjectFileWorkspaceFactory workspaceFactory,
         IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
         Project = project;
@@ -38,6 +42,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
         _workspaceFactory = workspaceFactory;
         _busyServiceProvider = busyServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
+        _dispatcher = dispatcher;
 
         var canGoBack = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.CreateFromTask(async () =>
@@ -47,10 +52,9 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
             await busyService.RunAsync("Returning to files...", async () =>
             {
                 await Task.Delay(150).ConfigureAwait(false);
-                await MainThreadDispatcher.InvokeAsync(() =>
+                await _dispatcher.InvokeAsync(() =>
                 {
-                    HostScreen.Router.NavigateBack.Execute()
-                        .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
+                    DockNavigationHelpers.TryNavigateBack(HostScreen);
                 });
             }).ConfigureAwait(false);
         }, canGoBack);
@@ -104,7 +108,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
     public async Task ReloadAsync()
     {
         _hasLoaded = false;
-        await MainThreadDispatcher.InvokeAsync(() => WorkspaceLayout = null);
+        await _dispatcher.InvokeAsync(() => WorkspaceLayout = null);
         await LoadWorkspaceAsync(CancellationToken.None).ConfigureAwait(false);
     }
 
@@ -128,7 +132,7 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     .CreateWorkspaceAsync(HostScreen, Project, File, cancellationToken)
                     .ConfigureAwait(false);
 
-                await MainThreadDispatcher.InvokeAsync(() =>
+                await _dispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
@@ -164,41 +168,13 @@ public class ProjectFilePageViewModel : ReactiveObject, IRoutableViewModel, IRel
 
         if (HostScreen.Router.NavigationStack.Count > 1)
         {
-            HostScreen.Router.NavigateBack.Execute()
-                .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
+            DockNavigationHelpers.TryNavigateBack(HostScreen);
             return;
         }
 
         if (HostScreen is IDockable dockable)
         {
-            CloseDockable(dockable);
+            DockNavigationHelpers.TryCloseDockable(dockable);
         }
-    }
-
-    private static void CloseDockable(IDockable dockable)
-    {
-        var factory = FindFactory(dockable);
-        if (factory is null)
-        {
-            return;
-        }
-
-        factory.CloseDockable(dockable);
-    }
-
-    private static IFactory? FindFactory(IDockable dockable)
-    {
-        IDockable? current = dockable;
-        while (current is not null)
-        {
-            if (current is IDock dock && dock.Factory is { } factory)
-            {
-                return factory;
-            }
-
-            current = current.Owner;
-        }
-
-        return null;
     }
 }

@@ -1,10 +1,9 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI.Avalonia;
 
 namespace DockReactiveUICanonicalSample.Views.Workspace;
 
-public partial class RibbonPageView : ReactiveUserControl<RibbonPageViewModel>
+public partial class RibbonPageView : DockReactiveUserControl<RibbonPageViewModel>
 {
     public RibbonPageView()
     {

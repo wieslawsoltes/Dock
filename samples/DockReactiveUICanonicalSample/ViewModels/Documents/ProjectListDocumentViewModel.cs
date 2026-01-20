@@ -3,11 +3,12 @@ using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Pages;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
+using Dock.Model.ReactiveUI.Services;
 using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Documents;
 
-public class ProjectListDocumentViewModel : RoutableDocument
+public class ProjectListDocumentViewModel : RoutableDocumentBase
 {
     public ProjectListDocumentViewModel(
         IScreen host,
@@ -15,7 +16,8 @@ public class ProjectListDocumentViewModel : RoutableDocument
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
         IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IDockDispatcher dispatcher)
         : base(host, "projects")
     {
         CanClose = false;
@@ -26,7 +28,8 @@ public class ProjectListDocumentViewModel : RoutableDocument
                 dockNavigation,
                 workspaceFactory,
                 busyServiceProvider,
-                confirmationServiceProvider))
+                confirmationServiceProvider,
+                dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 }

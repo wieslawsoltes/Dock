@@ -1,10 +1,9 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI.Avalonia;
 
 namespace DockReactiveUICanonicalSample.Views.Workspace;
 
-public partial class FileActionsToolView : ReactiveUserControl<FileActionsToolViewModel>
+public partial class FileActionsToolView : DockReactiveUserControl<FileActionsToolViewModel>
 {
     public FileActionsToolView()
     {

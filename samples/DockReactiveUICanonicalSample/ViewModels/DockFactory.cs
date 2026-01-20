@@ -5,6 +5,7 @@ using Dock.Model.Controls;
 using Dock.Model.Core;
 using Dock.Model.ReactiveUI;
 using Dock.Model.ReactiveUI.Controls;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Documents;
@@ -27,6 +28,8 @@ public class DockFactory : Factory
     private readonly IDockGlobalDialogService _globalDialogService;
     private readonly IConfirmationServiceFactory _confirmationServiceFactory;
     private readonly IDockGlobalConfirmationService _globalConfirmationService;
+    private readonly IWindowLifecycleService _windowLifecycleService;
+    private readonly IDockDispatcher _dispatcher;
     private IDocumentDock? _documentDock;
 
     public DockFactory(
@@ -41,7 +44,9 @@ public class DockFactory : Factory
         IDialogServiceFactory dialogServiceFactory,
         IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService)
+        IDockGlobalConfirmationService globalConfirmationService,
+        IWindowLifecycleService windowLifecycleService,
+        IDockDispatcher dispatcher)
     {
         _host = host;
         _repository = repository;
@@ -55,6 +60,10 @@ public class DockFactory : Factory
         _globalDialogService = globalDialogService;
         _confirmationServiceFactory = confirmationServiceFactory;
         _globalConfirmationService = globalConfirmationService;
+        _windowLifecycleService = windowLifecycleService;
+        _dispatcher = dispatcher;
+
+        WindowLifecycleServices.Add(_windowLifecycleService);
     }
 
     public override IRootDock CreateLayout()
@@ -65,7 +74,8 @@ public class DockFactory : Factory
             _dockNavigation,
             _workspaceFactory,
             _busyServiceProvider,
-            _confirmationServiceProvider)
+            _confirmationServiceProvider,
+            _dispatcher)
         {
             Id = "Projects",
             Title = "Projects",
@@ -126,18 +136,6 @@ public class DockFactory : Factory
         return window;
     }
 
-    public override void OnWindowClosed(IDockWindow? window)
-    {
-        base.OnWindowClosed(window);
-        CleanupWindow(window);
-    }
-
-    public override void OnWindowRemoved(IDockWindow? window)
-    {
-        base.OnWindowRemoved(window);
-        CleanupWindow(window);
-    }
-
     public void OpenDocument(IDockable document, IDocumentDock? documentDock, bool floatWindow)
     {
         var targetDock = documentDock ?? _documentDock;
@@ -170,11 +168,4 @@ public class DockFactory : Factory
         base.InitLayout(layout);
     }
 
-    private static void CleanupWindow(IDockWindow? window)
-    {
-        if (window?.Layout is BusyRootDock busyRoot)
-        {
-            busyRoot.Dispose();
-        }
-    }
 }

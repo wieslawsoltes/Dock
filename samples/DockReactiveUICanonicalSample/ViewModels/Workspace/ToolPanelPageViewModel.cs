@@ -1,6 +1,7 @@
 using System.Reactive;
 using System.Threading.Tasks;
 using Dock.Model.Core;
+using Dock.Model.ReactiveUI.Navigation.Services;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels.Dialogs;
 using ReactiveUI;
@@ -106,34 +107,7 @@ public class ToolPanelPageViewModel : ReactiveObject, IRoutableViewModel
 
         if (HostScreen is IDockable dockable)
         {
-            CloseDockable(dockable);
+            DockNavigationHelpers.TryCloseDockable(dockable);
         }
-    }
-
-    private static void CloseDockable(IDockable dockable)
-    {
-        var factory = FindFactory(dockable);
-        if (factory is null)
-        {
-            return;
-        }
-
-        factory.CloseDockable(dockable);
-    }
-
-    private static IFactory? FindFactory(IDockable dockable)
-    {
-        IDockable? current = dockable;
-        while (current is not null)
-        {
-            if (current is IDock dock && dock.Factory is { } factory)
-            {
-                return factory;
-            }
-
-            current = current.Owner;
-        }
-
-        return null;
     }
 }

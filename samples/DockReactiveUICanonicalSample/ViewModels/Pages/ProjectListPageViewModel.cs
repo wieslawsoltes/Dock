@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DockReactiveUICanonicalSample.Models;
 using DockReactiveUICanonicalSample.Services;
 using DockReactiveUICanonicalSample.ViewModels;
+using Dock.Model.ReactiveUI.Services;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
 using ReactiveUI;
 
@@ -18,6 +19,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
     private readonly ProjectFileWorkspaceFactory _workspaceFactory;
     private readonly IBusyServiceProvider _busyServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;
+    private readonly IDockDispatcher _dispatcher;
     private bool _hasLoaded;
     private bool _isLoading;
 
@@ -27,7 +29,8 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
         IDockNavigationService dockNavigation,
         ProjectFileWorkspaceFactory workspaceFactory,
         IBusyServiceProvider busyServiceProvider,
-        IConfirmationServiceProvider confirmationServiceProvider)
+        IConfirmationServiceProvider confirmationServiceProvider,
+        IDockDispatcher dispatcher)
     {
         HostScreen = hostScreen;
         _repository = repository;
@@ -35,6 +38,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
         _workspaceFactory = workspaceFactory;
         _busyServiceProvider = busyServiceProvider;
         _confirmationServiceProvider = confirmationServiceProvider;
+        _dispatcher = dispatcher;
 
         Projects = new ObservableCollection<ProjectListItemViewModel>();
 
@@ -89,7 +93,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                 var total = projects.Count;
                 var index = 0;
 
-                await MainThreadDispatcher.InvokeAsync(() =>
+                await _dispatcher.InvokeAsync(() =>
                 {
                     if (!cancellationToken.IsCancellationRequested)
                     {
@@ -103,7 +107,7 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                     index++;
                     busyService.UpdateMessage($"Loading projects... {index}/{total}");
 
-                    await MainThreadDispatcher.InvokeAsync(() =>
+                    await _dispatcher.InvokeAsync(() =>
                     {
                         if (!cancellationToken.IsCancellationRequested)
                         {
@@ -139,7 +143,8 @@ public class ProjectListPageViewModel : ReactiveObject, IRoutableViewModel, IRel
                 _dockNavigation,
                 _workspaceFactory,
                 _busyServiceProvider,
-                _confirmationServiceProvider))
+                _confirmationServiceProvider,
+                _dispatcher))
             .Subscribe(System.Reactive.Observer.Create<IRoutableViewModel>(_ => { }));
     }
 

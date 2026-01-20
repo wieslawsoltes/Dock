@@ -19,6 +19,7 @@ public sealed class WorkspaceDockFactory : Factory
     private readonly IDockGlobalDialogService _globalDialogService;
     private readonly IConfirmationServiceFactory _confirmationServiceFactory;
     private readonly IDockGlobalConfirmationService _globalConfirmationService;
+    private readonly IWindowLifecycleService _windowLifecycleService;
 
     public WorkspaceDockFactory(
         IScreen host,
@@ -27,7 +28,8 @@ public sealed class WorkspaceDockFactory : Factory
         IDialogServiceFactory dialogServiceFactory,
         IDockGlobalDialogService globalDialogService,
         IConfirmationServiceFactory confirmationServiceFactory,
-        IDockGlobalConfirmationService globalConfirmationService)
+        IDockGlobalConfirmationService globalConfirmationService,
+        IWindowLifecycleService windowLifecycleService)
     {
         _host = host;
         _busyServiceFactory = busyServiceFactory;
@@ -36,6 +38,9 @@ public sealed class WorkspaceDockFactory : Factory
         _globalDialogService = globalDialogService;
         _confirmationServiceFactory = confirmationServiceFactory;
         _globalConfirmationService = globalConfirmationService;
+        _windowLifecycleService = windowLifecycleService;
+
+        WindowLifecycleServices.Add(_windowLifecycleService);
     }
 
     public override IRootDock CreateRootDock()
@@ -53,18 +58,6 @@ public sealed class WorkspaceDockFactory : Factory
             TopPinnedDockables = CreateList<IDockable>(),
             BottomPinnedDockables = CreateList<IDockable>()
         };
-
-    public override void OnWindowClosed(IDockWindow? window)
-    {
-        base.OnWindowClosed(window);
-        CleanupWindow(window);
-    }
-
-    public override void OnWindowRemoved(IDockWindow? window)
-    {
-        base.OnWindowRemoved(window);
-        CleanupWindow(window);
-    }
 
     public override void InitLayout(IDockable layout)
     {
@@ -88,11 +81,4 @@ public sealed class WorkspaceDockFactory : Factory
         return window;
     }
 
-    private static void CleanupWindow(IDockWindow? window)
-    {
-        if (window?.Layout is BusyRootDock busyRoot)
-        {
-            busyRoot.Dispose();
-        }
-    }
 }

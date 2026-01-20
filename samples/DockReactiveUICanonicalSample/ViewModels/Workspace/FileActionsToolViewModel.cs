@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace DockReactiveUICanonicalSample.ViewModels.Workspace;
 
-public class FileActionsToolViewModel : RoutableTool
+public class FileActionsToolViewModel : RoutableToolBase
 {
     private readonly IDialogServiceProvider _dialogServiceProvider;
     private readonly IConfirmationServiceProvider _confirmationServiceProvider;

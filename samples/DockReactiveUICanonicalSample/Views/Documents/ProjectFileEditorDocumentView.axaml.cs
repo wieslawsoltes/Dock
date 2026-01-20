@@ -1,10 +1,9 @@
 using Avalonia.Markup.Xaml;
 using DockReactiveUICanonicalSample.ViewModels.Workspace;
-using ReactiveUI.Avalonia;
 
 namespace DockReactiveUICanonicalSample.Views.Documents;
 
-public partial class ProjectFileEditorDocumentView : ReactiveUserControl<ProjectFileEditorDocumentViewModel>
+public partial class ProjectFileEditorDocumentView : DockReactiveUserControl<ProjectFileEditorDocumentViewModel>
 {
     public ProjectFileEditorDocumentView()
     {
